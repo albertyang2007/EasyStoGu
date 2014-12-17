@@ -1,4 +1,3 @@
-SCTP
+EasyStoGu
 ====
-
-SCTP usage in JDK6 and JDK7
+Easy to use analyze StoGu
