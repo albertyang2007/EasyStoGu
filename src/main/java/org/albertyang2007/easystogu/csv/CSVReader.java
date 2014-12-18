@@ -12,9 +12,14 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
 public class CSVReader {
+    private ArrayList<DayPriceVO> allDataList = null;
+
+    public CSVReader(String file) {
+        getAllData(file);
+    }
 
     public List<DayPriceVO> getAllData(String file) {
-        ArrayList<DayPriceVO> list = new ArrayList<DayPriceVO>();
+        allDataList = new ArrayList<DayPriceVO>();
         try {
             CSVParser parser = CSVParser.parse(ResourceLoaderHelper.loadAsFile(file), Charset.defaultCharset(),
                     CSVFormat.EXCEL);
@@ -23,29 +28,41 @@ public class CSVReader {
                     DayPriceVO vo = new DayPriceVO(record.iterator());
                     //System.out.println(vo);
                     if (vo.isValidated()) {
-                        list.add(vo);
+                        allDataList.add(vo);
                     }
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return list;
+        return allDataList;
     }
 
-    public List<Double> getAllClosedPrice(String file) {
-        List<DayPriceVO> list = this.getAllData(file);
+    public List<Double> getAllClosedPrice() {
         List<Double> rtnList = new ArrayList<Double>();
-        for (DayPriceVO vo : list) {
+        for (DayPriceVO vo : allDataList) {
             rtnList.add(vo.close);
         }
         return rtnList;
     }
 
-    public static void main(String[] args) {
-        String csvFilePath = "classpath:/000821.csv";
-        CSVReader ins = new CSVReader();
-        ins.getAllData(csvFilePath);
+    public List<Double> getAllHightPrice() {
+        List<Double> rtnList = new ArrayList<Double>();
+        for (DayPriceVO vo : allDataList) {
+            rtnList.add(vo.high);
+        }
+        return rtnList;
     }
 
+    public List<Double> getAllLowPrice() {
+        List<Double> rtnList = new ArrayList<Double>();
+        for (DayPriceVO vo : allDataList) {
+            rtnList.add(vo.low);
+        }
+        return rtnList;
+    }
+
+    public static void main(String[] args) {
+
+    }
 }

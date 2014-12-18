@@ -55,15 +55,15 @@ public class MACDHelper1 {
         macdData.put("DIF", dif);
         macdData.put("DEA", dea);
         macdData.put("MACD", (dif - dea) * 2);
-        System.out.println("DIF=" + dif + ",DEA=" + dea + ",MACD=" + (dif - dea) * 2);
+        System.out.println("DIF=" + dif + "\nDEA=" + dea + "\nMACD=" + (dif - dea) * 2);
         return macdData;
     }
 
     public static void main(String[] args) {
         // TODO Auto-generated method stub
         String csvFilePath = "classpath:/000821.csv";
-        CSVReader reader = new CSVReader();
-        List<Double> list = reader.getAllClosedPrice(csvFilePath);
+        CSVReader reader = new CSVReader(csvFilePath);
+        List<Double> list = reader.getAllClosedPrice();
         //µπ–Ú÷ÿΩ®list
         int length = list.size();
         double[] close = new double[length];

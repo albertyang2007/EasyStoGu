@@ -10,8 +10,8 @@ public class MACDHelper2 {
     public static void main(String[] args) {
         TALIBWraper talib = new TALIBWraper();
         String csvFilePath = "classpath:/000821.csv";
-        CSVReader reader = new CSVReader();
-        List<Double> list = reader.getAllClosedPrice(csvFilePath);
+        CSVReader reader = new CSVReader(csvFilePath);
+        List<Double> list = reader.getAllClosedPrice();
 
         //revert list
         int length = list.size();
@@ -26,9 +26,9 @@ public class MACDHelper2 {
         double dif = macd[0][list.size() - 1];
         double dea = macd[1][list.size() - 1];
         double macdRtn = (dif - dea) * 2;
-        System.out.println(dif);
-        System.out.println(dea);
-        System.out.println(macdRtn);
+        System.out.println("DIF=" + dif);
+        System.out.println("DEA=" + dea);
+        System.out.println("MACD=" + macdRtn);
         //output:
         //DIF=0.621911206552296
         //DEA=0.5740987235058063
