@@ -1,15 +1,15 @@
-package org.albertyang2007.easystogu.indicator.macd;
+package org.easystogu.indicator.macd;
 
 import java.util.List;
 
-import org.albertyang2007.easystogu.csv.CSVReader;
-import org.albertyang2007.easystogu.indicator.TALIBWraper;
+import org.easystogu.indicator.TALIBWraper;
+import org.easystogu.yahoo.csv.CSVReader;
 
 public class MACDHelper2 {
 
     public static void main(String[] args) {
         TALIBWraper talib = new TALIBWraper();
-        String csvFilePath = "classpath:/000821.csv";
+        String csvFilePath = "classpath:/600388.csv";
         CSVReader reader = new CSVReader(csvFilePath);
         List<Double> list = reader.getAllClosedPrice();
 

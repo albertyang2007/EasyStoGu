@@ -1,10 +1,10 @@
-package org.albertyang2007.easystogu.indicator.macd;
+package org.easystogu.indicator.macd;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.albertyang2007.easystogu.csv.CSVReader;
+import org.easystogu.yahoo.csv.CSVReader;
 
 public class MACDHelper1 {
     /**
@@ -61,7 +61,7 @@ public class MACDHelper1 {
 
     public static void main(String[] args) {
         // TODO Auto-generated method stub
-        String csvFilePath = "classpath:/000821.csv";
+        String csvFilePath = "classpath:/600388.csv";
         CSVReader reader = new CSVReader(csvFilePath);
         List<Double> list = reader.getAllClosedPrice();
         //µπ–Ú÷ÿΩ®list

@@ -1,4 +1,4 @@
-package org.albertyang2007.easystogu.indicator;
+package org.easystogu.indicator;
 
 import com.tictactec.ta.lib.Core;
 import com.tictactec.ta.lib.MAType;
