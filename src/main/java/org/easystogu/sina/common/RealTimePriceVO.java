@@ -2,6 +2,8 @@ package org.easystogu.sina.common;
 
 import java.util.List;
 
+import org.easystogu.utils.Strings;
+
 //http://hq.sinajs.cn/list=sh601318,sz000830
 //http://hq.sinajs.cn/list=sh601006
 //这个url会返回一串文本，例如：
@@ -36,17 +38,42 @@ import java.util.List;
 //31：”15:05:32″，时间；
 
 public class RealTimePriceVO {
-	public String codeNumber;
-	public String name;
-	public String date;
-	public double open;
-	public double close;
-	public double current;
-	public double high;
-	public double low;
-	public double dealBuy;
-	public double dealSale;
-	public long volume;
-	public long deal;
-	public List<DealVO> dealDetails;// 五档明细
+    public String codeNumber;
+    public String name;
+    public double open;
+    public double lastClose;
+    public double current;
+    public double high;
+    public double low;
+    public double dealBuy;
+    public double dealSale;
+    public long volume;
+    public long deal;
+    public List<DealVO> dealDetails;// 五档明细
+    public String date;
+
+    public RealTimePriceVO(String codeNumber, String line) {
+
+        if (Strings.isEmpty(line.trim())) {
+            return;
+        }
+
+        this.codeNumber = codeNumber;
+        int index = 0;
+        String[] items = line.split(",");
+        this.name = items[index++];
+        this.open = Double.parseDouble(items[index++]);
+        this.lastClose = Double.parseDouble(items[index++]);
+        this.current = Double.parseDouble(items[index++]);
+        this.high = Double.parseDouble(items[index++]);
+        this.low = Double.parseDouble(items[index++]);
+
+        this.date = items[items.length - 2];
+    }
+
+    @Override
+    public String toString() {
+        return this.codeNumber + ":[open:" + this.open + ", lastClose:" + this.lastClose + ",current:" + this.current
+                + ",high:" + this.high + ", low:" + this.low + ",date:" + this.date + "]";
+    }
 }
