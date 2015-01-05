@@ -38,42 +38,53 @@ import org.easystogu.utils.Strings;
 //31：”15:05:32″，时间；
 
 public class RealTimePriceVO {
-    public String codeNumber;
-    public String name;
-    public double open;
-    public double lastClose;
-    public double current;
-    public double high;
-    public double low;
-    public double dealBuy;
-    public double dealSale;
-    public long volume;
-    public long deal;
-    public List<DealVO> dealDetails;// 五档明细
-    public String date;
+	public String codeNumber;
+	public String name;
+	public double open;
+	public double lastClose;
+	public double current;
+	public double high;
+	public double low;
+	public double dealBuy;
+	public double dealSale;
+	public long volume;
+	public long deal;
+	public List<DealVO> dealDetails;// 五档明细
+	public String date;
 
-    public RealTimePriceVO(String codeNumber, String line) {
+	public RealTimePriceVO(String codeNumber, String line) {
 
-        if (Strings.isEmpty(line.trim())) {
-            return;
-        }
+		if (Strings.isEmpty(line.trim())) {
+			return;
+		}
 
-        this.codeNumber = codeNumber;
-        int index = 0;
-        String[] items = line.split(",");
-        this.name = items[index++];
-        this.open = Double.parseDouble(items[index++]);
-        this.lastClose = Double.parseDouble(items[index++]);
-        this.current = Double.parseDouble(items[index++]);
-        this.high = Double.parseDouble(items[index++]);
-        this.low = Double.parseDouble(items[index++]);
+		this.codeNumber = codeNumber;
+		int index = 0;
+		String[] items = line.split(",");
+		this.name = items[index++];
+		this.open = Double.parseDouble(items[index++]);
+		this.lastClose = Double.parseDouble(items[index++]);
+		this.current = Double.parseDouble(items[index++]);
+		this.high = Double.parseDouble(items[index++]);
+		this.low = Double.parseDouble(items[index++]);
 
-        this.date = items[items.length - 2];
-    }
+		this.date = items[items.length - 2];
+	}
 
-    @Override
-    public String toString() {
-        return this.codeNumber + ":[open:" + this.open + ", lastClose:" + this.lastClose + ",current:" + this.current
-                + ",high:" + this.high + ", low:" + this.low + ",date:" + this.date + "]";
-    }
+	@Override
+	public String toString() {
+		return this.codeNumber + this.name + "\t:[lastClose:" + this.lastClose
+				+ ",\topen:" + this.open + "("
+				+ toPercent(this.open, this.lastClose) + ")" + ",\thigh:"
+				+ this.high + "(" + toPercent(this.high, this.lastClose) + ")"
+				+ ",\tcurrent:" + this.current + "("
+				+ toPercent(this.current, this.lastClose) + ")" + ",\tlow:"
+				+ this.low + "(" + toPercent(this.low, this.lastClose) + ")"
+				+ ",\tdate:" + this.date + "]";
+	}
+
+	public String toPercent(double d1, double d2) {
+		double p = (d1 - d2) * 100 / d2;
+		return String.format("%.2f", p) + "%";
+	}
 }
