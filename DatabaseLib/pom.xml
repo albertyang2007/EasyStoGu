@@ -10,18 +10,28 @@
 
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.albertyang2007.easystogu</groupId>
-	<artifactId>easystogu-indicator</artifactId>
+	<artifactId>easystogu-databaselib</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<name>EasyStoGu-DatabaseLib</name>
 	<packaging>jar</packaging>
-	<name>EasyStoGu-Indicator</name>
-	<description>EasyStoGu-Indicator: Indicator such as MACD, KDJ, BOLL, Vol etc.</description>
+	<description>EasyStoGu-DatabaseLib: define database lib for all project</description>
 
 	<dependencies>
 		<dependency>
 			<groupId>org.albertyang2007.easystogu</groupId>
-			<artifactId>easystogu-yahoodatacollect</artifactId>
+			<artifactId>easystogu-commonlib</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
+		<!-- for postgresql store session -->
+		<dependency>
+			<groupId>org.apache.tomcat</groupId>
+			<artifactId>tomcat-jdbc</artifactId>
+			<version>7.0.55</version>
+		</dependency>
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>9.3-1102-jdbc4</version>
+		</dependency>
 	</dependencies>
-
 </project>
