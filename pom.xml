@@ -29,6 +29,7 @@
 				<module>SinaDataCollect</module>
 				<module>YahooDataCollect</module>
 				<module>Indicator</module>				
+				<module>Analyse</module>		
             </modules>
         </profile>
     </profiles>

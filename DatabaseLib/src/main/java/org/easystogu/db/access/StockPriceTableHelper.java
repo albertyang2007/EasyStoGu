@@ -23,6 +23,13 @@ public class StockPriceTableHelper {
 	private DataSource dataSource = PostgreSqlDataSourceFactory
 			.createDataSource();
 	public static final String INSERT_SQL = "INSERT INTO STOCKPRICE (stockId, date, open, high, low, close, volume) VALUES (:stockId, :date, :open, :high, :low, :close, :volume)";
+	public static final String SELECT_BY_STOCKID_SQL = "SELECT * FROM STOCKPRICE WHERE stockId = :stockId";
+
+	// avg price, for example MA5, MA10, MA20, MA30
+	public static final String AVG_CLOSE_PRICE_SQL = "SELECT avg(ma) from (SELECT close AS ma FROM STOCKPRICE WHERE stockId = :stockId ORDER BY date DESC LIMIT :limit) AS myma";
+
+	// avg volume, for example MAVOL5, MAVOL10
+	public static final String AVG_VOLUME_SQL = "SELECT avg(mavol) from (SELECT volume AS mavol FROM STOCKPRICE WHERE stockId = :stockId ORDER BY date DESC LIMIT :limit) AS mymavol";
 
 	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
@@ -44,6 +51,18 @@ public class StockPriceTableHelper {
 			vo.setOpen(rs.getDouble("open"));
 			vo.setVolume(rs.getLong("volume"));
 			return vo;
+		}
+	}
+
+	private static final class AVGPriceVOMapper implements RowMapper<Double> {
+		public Double mapRow(ResultSet rs, int rowNum) throws SQLException {
+			return rs.getDouble("avg");
+		}
+	}
+
+	private static final class AVGVolumeVOMapper implements RowMapper<Double> {
+		public Double mapRow(ResultSet rs, int rowNum) throws SQLException {
+			return rs.getDouble("avg");
 		}
 	}
 
@@ -85,6 +104,55 @@ public class StockPriceTableHelper {
 	public void insert(List<StockPriceVO> list) throws Exception {
 		for (StockPriceVO vo : list) {
 			this.insert(vo);
+		}
+	}
+
+	public Double getAvgClosePrice(String stockId, int day) {
+		try {
+
+			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+			namedParameters.addValue("stockId", stockId);
+			namedParameters.addValue("limit", day);
+
+			Double avg = this.namedParameterJdbcTemplate.queryForObject(
+					AVG_CLOSE_PRICE_SQL, namedParameters,
+					new AVGPriceVOMapper());
+
+			return avg;
+		} catch (Exception e) {
+			logger.error("exception meets for getAvgClosePrice stockId="
+					+ stockId, e);
+			return 0.0;
+		}
+	}
+
+	public Long getAvgVolume(String stockId, int day) {
+		try {
+
+			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+			namedParameters.addValue("stockId", stockId);
+			namedParameters.addValue("limit", day);
+
+			Double avg = this.namedParameterJdbcTemplate.queryForObject(
+					AVG_VOLUME_SQL, namedParameters, new AVGVolumeVOMapper());
+
+			return avg.longValue();
+		} catch (Exception e) {
+			logger.error("exception meets for getAvgVolume stockId=" + stockId,
+					e);
+			return 0l;
+		}
+	}
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		StockPriceTableHelper ins = new StockPriceTableHelper();
+		try {
+			System.out.println(ins.getAvgClosePrice("000333", 5));
+			System.out.println(ins.getAvgVolume("000333", 10));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 }

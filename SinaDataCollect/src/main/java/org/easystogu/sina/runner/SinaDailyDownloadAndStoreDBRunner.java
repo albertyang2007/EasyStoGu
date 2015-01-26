@@ -1,6 +1,7 @@
 package org.easystogu.sina.runner;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.easystogu.config.StockListConfigurationService;
@@ -8,6 +9,7 @@ import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.table.StockPriceVO;
 import org.easystogu.sina.common.RealTimePriceVO;
 import org.easystogu.sina.helper.SinaDataDownloadHelper;
+import org.easystogu.utils.WeekdayUtil;
 
 public class SinaDailyDownloadAndStoreDBRunner {
 	private StockListConfigurationService stockConfig = StockListConfigurationService
@@ -73,6 +75,12 @@ public class SinaDailyDownloadAndStoreDBRunner {
 		// TODO Auto-generated method stub
 		// 每日下载收盘数据和入库
 		// 由于http url请求长度不能超过2083，需要将请求分批发送
+		if (WeekdayUtil.isCurrentTimeWorkingDayInDealTime()) {
+			System.out
+					.println("Now is still in deal time. Please wait, or just comment this code.");
+			return;
+		}
+
 		SinaDailyDownloadAndStoreDBRunner runner = new SinaDailyDownloadAndStoreDBRunner();
 		runner.downloadDataAndSaveIntoDB();
 		runner.printResult();
