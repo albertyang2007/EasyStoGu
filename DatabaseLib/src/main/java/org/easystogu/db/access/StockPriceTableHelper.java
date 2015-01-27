@@ -3,6 +3,7 @@ package org.easystogu.db.access;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -23,7 +24,8 @@ public class StockPriceTableHelper {
 	private DataSource dataSource = PostgreSqlDataSourceFactory
 			.createDataSource();
 	public static final String INSERT_SQL = "INSERT INTO STOCKPRICE (stockId, date, open, high, low, close, volume) VALUES (:stockId, :date, :open, :high, :low, :close, :volume)";
-	public static final String SELECT_BY_STOCKID_SQL = "SELECT * FROM STOCKPRICE WHERE stockId = :stockId";
+	public static final String SELECT_CLOSE_PRICE_SQL = "SELECT close FROM STOCKPRICE WHERE stockId = :stockId ORDER BY DATE";
+	public static final String QUERY_BY_STOCKID_SQL = "SELECT * FROM STOCKPRICE WHERE stockId = :stockId ORDER BY DATE";
 
 	// avg price, for example MA5, MA10, MA20, MA30
 	public static final String AVG_CLOSE_PRICE_SQL = "SELECT avg(ma) from (SELECT close AS ma FROM STOCKPRICE WHERE stockId = :stockId ORDER BY date DESC LIMIT :limit) AS myma";
@@ -66,7 +68,13 @@ public class StockPriceTableHelper {
 		}
 	}
 
-	private static final class QosPreparedStatementCallback implements
+	private static final class ClosePriceVOMapper implements RowMapper<Double> {
+		public Double mapRow(ResultSet rs, int rowNum) throws SQLException {
+			return rs.getDouble("close");
+		}
+	}
+
+	private static final class DefaultPreparedStatementCallback implements
 			PreparedStatementCallback<Integer> {
 		public Integer doInPreparedStatement(PreparedStatement ps)
 				throws SQLException, DataAccessException {
@@ -94,7 +102,7 @@ public class StockPriceTableHelper {
 			namedParameters.addValue("volume", vo.getVolume());
 
 			namedParameterJdbcTemplate.execute(INSERT_SQL, namedParameters,
-					new QosPreparedStatementCallback());
+					new DefaultPreparedStatementCallback());
 		} catch (Exception e) {
 			logger.error("exception meets for insert vo: " + vo, e);
 			throw e;
@@ -141,6 +149,38 @@ public class StockPriceTableHelper {
 			logger.error("exception meets for getAvgVolume stockId=" + stockId,
 					e);
 			return 0l;
+		}
+	}
+
+	public List<Double> getAllClosePrice(String stockId) {
+		try {
+			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+			namedParameters.addValue("stockId", stockId);
+
+			List<Double> closes = this.namedParameterJdbcTemplate.query(
+					SELECT_CLOSE_PRICE_SQL, namedParameters,
+					new ClosePriceVOMapper());
+
+			return closes;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ArrayList<Double>();
+		}
+	}
+
+	public List<StockPriceVO> getStockPriceById(String stockId) {
+		try {
+			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+			namedParameters.addValue("stockId", stockId);
+
+			List<StockPriceVO> list = this.namedParameterJdbcTemplate.query(
+					QUERY_BY_STOCKID_SQL, namedParameters,
+					new StockPriceVOMapper());
+
+			return list;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ArrayList<StockPriceVO>();
 		}
 	}
 
