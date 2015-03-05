@@ -172,9 +172,9 @@ public class HistoryAnalyseReport {
                     // print the high earn percent if larger than 25%
                     if ((reportVO.earnPercent[1] >= 50.0) && (reportVO.earnPercent[0] >= 25.0)) {
                         totalHighCount++;
-                        System.out.println(reportVO);
+                        //System.out.println(reportVO);
                         // save the high earnPercent case into DB
-                        //historyReportTableHelper.insert(reportVO.convertToHistoryReportVO(checkPoint.toString()));
+                        historyReportTableHelper.insert(reportVO.convertToHistoryReportVO(checkPoint.toString()));
                     }
                     totalCount++;
                     earnPercent[0] += reportVO.earnPercent[0];
@@ -209,7 +209,7 @@ public class HistoryAnalyseReport {
         vo.setAvgHoldDays(holdDays / totalCount);
         vo.setTotalHighEarn(totalHighCount);
 
-        cpHistoryAnalyse.insert(vo);
+        //cpHistoryAnalyse.insert(vo);
 
     }
 
@@ -220,12 +220,14 @@ public class HistoryAnalyseReport {
     public static void main(String[] args) {
         HistoryAnalyseReport reporter = new HistoryAnalyseReport();
 
-        //for (DailyCombineCheckPoint checkPoint : DailyCombineCheckPoint.values()) {
-        //    reporter.emptyTableByCheckPoint(checkPoint.toString());
-        //    reporter.searchAllStockIdAccordingToCheckPoint(checkPoint);
-        //}
+        for (DailyCombineCheckPoint checkPoint : DailyCombineCheckPoint.values()) {
+        	//if(checkPoint.getEarnPercent()>=7.5)
+        		//System.out.println(checkPoint);
+            reporter.emptyTableByCheckPoint(checkPoint.toString());
+            reporter.searchAllStockIdAccordingToCheckPoint(checkPoint);
+        }
 
-        reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.Week_Volume_Increase_Price_4_Plus);
+        //reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.Week_Volume_Increase_Price_4_Plus);
         //reporter.UnitTestForSpecifyStockId();
     }
 }

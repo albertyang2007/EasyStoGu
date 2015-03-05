@@ -38,7 +38,7 @@ public class DailySelectionRunner {
     private CheckPointDailySelectionTableHelper eventTable = CheckPointDailySelectionTableHelper.getInstance();
     private HistoryAnalyseReport historyReportHelper = new HistoryAnalyseReport();
     private CombineAnalyseHelper combineAnalyserHelper = new CombineAnalyseHelper();
-    private double minEarnPercent = 7.0;
+    private double minEarnPercent = 7.5;
     // StockPriceVO, CheckPoint list
     private Map<StockSuperVO, List<DailyCombineCheckPoint>> selectedMaps = new HashMap<StockSuperVO, List<DailyCombineCheckPoint>>();
 
