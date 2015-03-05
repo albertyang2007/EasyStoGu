@@ -1,0 +1,66 @@
+运行 org.easystogu.report.HistoryAnalyseReport
+格式：CheckPoint has Number earnPercent[close] earnPercent[high] earnPercent[low]
+解析：过滤策略   命中数目   按照死叉收盘价收益 按照最高价收益    按照最低价收益
+
+KDJ (min, max) = (25~65) MACD > 0 & DIF >= 0 
+=============Summary==============
+MACD_KDJ_Gordon_3_Days_Red has 541	 earnPercent[close]=-0.22628853477004893	 earnPercent[high]=6.6973263171416715	 earnPercent[low]=-4.624742834161608
+KDJ_Gordon_3_days_Red has 1454	 earnPercent[close]=-0.2758137378499147	 earnPercent[high]=6.133275197350317	 earnPercent[low]=-4.182050042704061
+KDJ_Gordon_Pre_3_Days_Green has 182	 earnPercent[close]=-0.5387779337553155	 earnPercent[high]=5.738351235516992	 earnPercent[low]=-5.507622773005557
+
+=============================================================================================================================================================
+
+KDJ (min, max) = (25~65) MACD > 0 & DIF < 0
+=============Summary==============
+MACD_KDJ_Gordon_3_Days_Red has 765	 earnPercent[close]=1.077265578251369	 earnPercent[high]=7.322706161492116	 earnPercent[low]=-4.185152942129337
+KDJ_Gordon_3_days_Red has 2562	 earnPercent[close]=0.8496961409652668	 earnPercent[high]=6.873927317064008	 earnPercent[low]=-4.003403986379551
+KDJ_Gordon_Pre_3_Days_Green has 907	 earnPercent[close]=0.4934679533747799	 earnPercent[high]=6.400694391843605	 earnPercent[low]=-4.820215654665953
+
+
+KDJ (min, max) = (30~65) MACD > 0 & DIF < 0
+=============Summary==============
+MACD_KDJ_Gordon_3_Days_Red has 613	 earnPercent[close]=1.2870114966809139	 earnPercent[high]=7.481650769435723	 earnPercent[low]=-4.1346669038462975
+KDJ_Gordon_3_days_Red has 2269	 earnPercent[close]=0.8816752293406923	 earnPercent[high]=6.863200640588892	 earnPercent[low]=-3.9641727982542045
+KDJ_Gordon_Pre_3_Days_Green has 736	 earnPercent[close]=0.5185493140813711	 earnPercent[high]=6.3151070864584025	 earnPercent[low]=-4.845115497589403
+
+
+KDJ (min, max) = (40~60) MACD > 0 & DIF < 0
+=============Summary==============
+MACD_KDJ_Gordon_3_Days_Red has 180	 earnPercent[close]=1.9536265907107901	 earnPercent[high]=8.194047222280052	 earnPercent[low]=-3.964591424585729
+KDJ_Gordon_3_days_Red has 877	 earnPercent[close]=1.2476792511142818	 earnPercent[high]=7.199806602917813	 earnPercent[low]=-3.8103674237545646
+KDJ_Gordon_Pre_3_Days_Green has 307	 earnPercent[close]=0.6808615278084491	 earnPercent[high]=6.333118023746891	 earnPercent[low]=-5.076317001586636
+
+
+KDJ (min, max) = (40~65) MACD > 0 & DIF < 0
+=============Summary==============
+MACD_KDJ_Gordon_3_Days_Red has 258	 earnPercent[close]=1.9837452311705237	 earnPercent[high]=8.19497375778983	 earnPercent[low]=-4.016918178740507
+KDJ_Gordon_3_days_Red has 1292	 earnPercent[close]=1.043326351124459	 earnPercent[high]=6.934374934945785	 earnPercent[low]=-3.848490989736083
+KDJ_Gordon_Pre_3_Days_Green has 447	 earnPercent[close]=0.47776820592862124	 earnPercent[high]=6.0396434938351895	 earnPercent[low]=-4.976529872267678
+
+
+KDJ (min, max) = (30~70) MACD > 0 & DIF < 0
+=============Summary==============
+MACD_KDJ_Gordon_3_Days_Red has 707	 earnPercent[close]=1.041810448320799	 earnPercent[high]=7.379553417655285	 earnPercent[low]=-4.281872049313977
+KDJ_Gordon_3_days_Red has 2762	 earnPercent[close]=0.7751898422842434	 earnPercent[high]=6.7822235247948655	 earnPercent[low]=-4.045918760468982
+KDJ_Gordon_Pre_3_Days_Green has 928	 earnPercent[close]=0.39024872412964656	 earnPercent[high]=6.249623195985143	 earnPercent[low]=-5.0548151581594105
+
+
+KDJ (min, max) = (40~70) MACD > 0 & DIF < 0
+=============Summary==============
+MACD_KDJ_Gordon_3_Days_Red has 317	 earnPercent[close]=1.5231836757024464	 earnPercent[high]=8.010915508367807	 earnPercent[low]=-4.2440124847728065
+KDJ_Gordon_3_days_Red has 1721	 earnPercent[close]=0.8473191109916147	 earnPercent[high]=6.78417491352215	 earnPercent[low]=-3.9783071488265414
+KDJ_Gordon_Pre_3_Days_Green has 620	 earnPercent[close]=0.22844637812636887	 earnPercent[high]=5.951334132654835	 earnPercent[low]=-5.2284262009059415
+
+
+KDJ (min, max) = (35~65) MACD > 0 & DIF < 0
+=============Summary==============
+MACD_KDJ_Gordon_3_Days_Red has 439	 earnPercent[close]=1.1034681680037564	 earnPercent[high]=7.294048403985423	 earnPercent[low]=-4.177526343296485
+KDJ_Gordon_3_days_Red has 1840	 earnPercent[close]=0.8561392442803986	 earnPercent[high]=6.830284322104338	 earnPercent[low]=-3.945423905083416
+KDJ_Gordon_Pre_3_Days_Green has 584	 earnPercent[close]=0.6165793409429596	 earnPercent[high]=6.314539515731476	 earnPercent[low]=-4.87857085816956
+
+
+KDJ (min, max) = (35~70) MACD > 0 & DIF < 0
+=============Summary==============
+MACD_KDJ_Gordon_3_Days_Red has 521	 earnPercent[close]=0.8697179529189271	 earnPercent[high]=7.251999083954634	 earnPercent[low]=-4.335080457788372
+KDJ_Gordon_3_days_Red has 2313	 earnPercent[close]=0.7323295672216605	 earnPercent[high]=6.742272845489177	 earnPercent[low]=-4.040018548581913
+KDJ_Gordon_Pre_3_Days_Green has 772	 earnPercent[close]=0.38053752289178516	 earnPercent[high]=6.187621358983272	 earnPercent[low]=-5.1191841000969385

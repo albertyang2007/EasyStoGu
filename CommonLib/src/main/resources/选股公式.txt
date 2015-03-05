@@ -1,0 +1,299 @@
+============================================================================================
+综合指标：
+参数区：N(2.0, 120.0, 13.0), M(1.0, 100.0, 2.0),M1(0.0, 999.0, 10.0), N1(2.0, 120.0, 20.0), N2(2.0, 240.0, 30.0)
+
+VAR2:=CLOSE*VOL;
+VAR3:=EMA((EXPMA(VAR2,3)/EXPMA(VOL,3)+EXPMA(VAR2,6)/EXPMA(VOL,6)+EXPMA(VAR2,12)/EXPMA(VOL,12)+EXPMA(VAR2,24)/EXPMA(VOL,24))/4,N);
+VAR4:=EXPMA(CLOSE,9);
+薛斯外上轨:EXPMA(VAR4*1.14,5);
+薛斯外下轨:EXPMA(VAR4*0.86,5);
+MA1:=MA(CLOSE,1);
+买:=MA1<=薛斯外下轨;
+DRAWTEXT(FILTER(买=1,0),LOW-0.03,'买'),COLORRED;
+成本线MA10:MA(CLOSE, M1);
+趋势线MA20:MA(CLOSE, N1);
+生命线MA30:MA(CLOSE, N2);
+布林压力线:BOLL+M*STD(CLOSE,N1);
+布林支撑线:BOLL-M*STD(CLOSE,N1);
+DRAWKLINE(HIGH,OPEN,LOW,CLOSE);
+
+==============================================================================================
+主力吸筹快慢线：
+N:=9;6;
+M1:=3;
+M2:=3;
+P:=9;
+RSV:=(CLOSE-LLV(LOW,N))/(HHV(HIGH,N)-LLV(LOW,N))*100;
+K:=SMA(RSV,M1,1);
+D:=SMA(K,M2,1);
+JJ:=P*(3*D-2*K);
+J:=((3 * K) - (2 * D));
+MAIRU:= CROSS(K,D) AND K<20;
+MAICHU:= CROSS(D,K) AND D>80;
+VAR2:=REF(LOW,1);
+VAR3:=SMA(ABS(LOW-VAR2),3,1)/SMA(MAX(LOW-VAR2,0),3,1)*100;
+VAR4:=EMA(IF(CLOSE*1.3,VAR3*10,VAR3/10),3);
+VAR5:=LLV(LOW,13);
+VAR6:=HHV(VAR4,13);
+VAR7:=IF(MA(CLOSE,34),1,0);
+VAR8:=EMA(IF(LOW<=VAR5,(VAR4+VAR6*2)/2,0),3)/618*VAR7;
+VAR9:=IF(VAR8>100,100,VAR8);
+吸筹:VAR9,LINETHICK2,COLORF00FF0;
+STICKLINE(VAR9>-120,0,VAR9,8,1),COLORF00FF0;
+快线:(CLOSE-LLV(LOW,N))/(HHV(HIGH,N)-LLV(LOW,N))*100,LINETHICK2,COLORRED;
+慢线:SMA(快线,M1,1),COLORCYAN;
+空:SMA(慢线,M2,1),COLOR00FF00;
+牛股:IF(BARSLAST(CROSS(慢线,空))<P AND BARSLAST(CROSS(空,慢线))<P AND CROSS(慢线,空) AND 慢线<20,90,0),STICK,COLORFF937F;
+STICKLINE(牛股,0,90,6,1),LINETHICK4,STICK,COLORFF937F;
+BB:=IF(BARSLAST(CROSS(慢线,快线))>=3 AND CROSS(快线,慢线) AND 慢线<30,20,0);
+买:STICKLINE(BB,0,20,7,1),COLORYELLOW;
+AA:=IF(BARSLAST(CROSS(快线,慢线))>=4 AND CROSS(慢线,快线) AND 快线>50,20,0);
+卖:STICKLINE(AA,80,100,7,1),COLOR00FF00;
+
+
+================================================================================
+薛氏通道2：
+参数区：N(2.0, 120.0, 13.0), M1(0.0, 999.0, 10.0), M2(0.0, 999.0, 20.0),
+
+VAR2:=CLOSE*VOL;
+VAR3:=EMA((EXPMA(VAR2,3)/EXPMA(VOL,3)+EXPMA(VAR2,6)/EXPMA(VOL,6)+EXPMA(VAR2,12)/EXPMA(VOL,12)+EXPMA(VAR2,24)/EXPMA(VOL,24))/4,N);
+内上轨:1.06*VAR3;
+内下轨:VAR3*0.94;
+VAR4:=EXPMA(CLOSE,9);
+外上轨:EXPMA(VAR4*1.14,5);
+外下轨:EXPMA(VAR4*0.86,5);
+MA1:=MA(CLOSE,1);
+买:=MA1<=外下轨;
+DRAWTEXT(FILTER(买=1,0),LOW-0.03,'买'),COLORRED;
+
+成本MA10:ma(CLOSE, M1);
+支撑MA20:ma(CLOSE, M2);
+
+STICKLINE(C>=O,H,L,0,1), COLORred;STICKLINE(C>=O,C,O,6,1), COLORred;STICKLINE(C< O,H,L,0,0), ColorFFFF00;STICKLINE(C< O,C,O,6,0),ColorFFFF00;
+
+
+==================================================================================================
+百战百胜：
+七天线:MA(C,7),COLORGRAY;
+工作线:(EMA(C,17)) ,POINTDOT,LINETHICK4,COLORYELLOW;
+生命线:(MA(C,25)) ,LINETHICK2,COLORMAGENTA;
+不惑线:=(MA(C,43)) ,COLORCYAN;
+姊妹线:=(EMA(C,50)) ,CIRCLEDOT,COLORWHITE;
+九号线:=(MA(C,99)) ,LINETHICK1,COLOR0099FF;
+卖线:EMA(SLOPE(C,21)*21+C,42),COLORRED,LINETHICK2;
+A3:=EMA((((SLOPE(C,21)) * 20) + C),68);
+A4:=EMA(C,10);
+A5:=REF(C,2);
+A6:=((SMA((MAX((C - A5),0)),6,1)) / (SMA(ABS((C - A5)),6,1))) * 100;
+A7:=IF(((A6 < (REF(A6,1))) AND (A6 > 79)),A6,0);
+DRAWTEXT((CROSS(A4,A3)),L,'△'),COLORYELLOW;
+DRAWTEXT(A7,H,'○'),LINETHICK3,COLORGREEN;
+A8:=LLV(L,21);
+A9:=HHV(H,21);
+A10:=EMA((((CLOSE - A8) / (A9 - A8)) * 100),5);
+A11:=EMA((((CLOSE - A8) / (A9 - A8)) * 50),13);
+A12:=EMA(((0.667 * (REF(A10,1))) + (0.333 * A10)),2);
+A13:=LLV(L,55);
+A14:=HHV(H,34);
+A15:=EMA((((C - A13) / (A14 - A13)) * 100),3);
+A16:=(A11 + A15) / 2;
+A17:=EMA(((0.667 * (REF(A15,1))) + (0.333 * A10)),2);
+A18:=EMA(A16,5);
+A19:=EMA(((0.667 * (REF(A18,1))) + (0.333 * A18)),2);
+A20:=CROSS(A10,A11);
+A21:=(CROSS(A10,A19)) AND (A19 < 30);
+A22:=A21 * 0.6;
+DRAWTEXT((A22 = 0.6),L,'◇'),COLORYELLOW;
+DRAWTEXT((A20 = 1),L,'◇'),COLORWHITE;
+A23:=((C + L) + H) / 3;
+A24:=EMA(A23,6);
+A25:=EMA(A24,5);
+A26:=CROSS(A24,A25);
+DRAWICON(A26,(LOW*0.98),5),COLORMAGENTA;
+DRAWICON(CROSS(卖线,C),(H*1.02),4);
+STICKLINE(((C >= 工作线) AND (C >= O)),O,C,3,1),COLORRED;
+STICKLINE(((C >= 工作线) AND (C <= O)),O,C,3,0),COLORRED;
+STICKLINE(((C < 工作线) AND (C >= O)),O,C,3,1),COLORGREEN;
+STICKLINE(((C < 工作线) AND (C <= O)),O,C,3,0),COLORGREEN;
+
+
+===================================================================================
+捕捞季节：
+WY1001:=(2*CLOSE+HIGH+LOW)/3;
+WY1002:=EMA(WY1001,3);
+WY1003:=EMA(WY1002,3);
+WY1004:=EMA(WY1003,3);
+XYS0:(WY1004-REF(WY1004,1))/REF(WY1004,1)*100;
+STICKLINE(XYS0>=0,XYS0,0,2,0),COLORRED;
+STICKLINE(XYS0<0,XYS0,0,2,0),COLORGREEN;
+PJGJ:=AMOUNT/VOL/100;
+SSRYDJX:=MA(PJGJ,13);
+SSRCJL:=EMA(VOL,13);
+SSRCJE:=EMA(AMOUNT,13);
+SSRCBJX:=SSRCJE/SSRCJL/100;
+CYS13:=(CLOSE-SSRCBJX)/SSRCBJX*100;
+XYSHSL:=EMA(VOL/CAPITAL*100,13);
+ZZX:0,COLORWHITE;
+STICKLINE(XYSHSL>6.1 AND CYS13>5 ,2 ,0 ,2,0 ),COLORGREEN;
+STICKLINE(XYSHSL>3.8 AND CYS13>5 ,1.5 ,0 ,2 ,0 ),COLORYELLOW;
+STICKLINE(XYSHSL>2.1 AND CYS13>5 ,1 ,0 ,2,0 ),COLORCYAN;
+STICKLINE(XYSHSL>1.8 AND CYS13>5 ,0.5 ,0 ,2,0 ),COLORBLUE;
+XYS1:EMA(XYS0,1);
+XYS2:EMA(XYS0,2);
+
+========================================================================================
+飞鱼出水：
+Var1:=REF(LOW,1);
+Var2:=SMA(ABS(LOW-Var1),3,1)/SMA(MAX(LOW-Var1,0),3,1)*100;
+Var3:=EMA(IF(CLOSE*1.2,Var2*10,Var2/10),3);
+Var4:=LLV(LOW,38);
+Var5:=HHV(Var3,38);
+Var6:=IF(LLV(LOW,90),1,0);
+Var7:=EMA(IF(LOW<=Var4,(Var3+Var5*2)/2,0),3)/618*Var6;
+底部吸筹: STICKLINE(Var7,0,Var7,6,1),colorwhite ;
+v1:=llv(h,240);
+飞鱼:100*(c-v1)/v1,COLORRED,linethick1;
+v2:=hhv(h,240);
+海洋:100*(v2-c)/c,COLORGREEN,linethick1;
+v3:=sum(VOL,5)/CAPITAL;
+cyf5:=100-(100/(1+v3));
+动力线:cyf5*3.21,COLORYELLOW,linethick1;
+
+
+
+=========================================================================================
+海洋寻底：
+P1:=5;
+P2:=4;
+SSRCJL:=EMA(VOL,13);
+SSRCJE:=EMA(AMOUNT,13);
+SSRCBJX:=((SSRCJE / SSRCJL) / 100);
+SSRGL:=(((CLOSE - SSRCBJX) / SSRCBJX) * 100);
+绝对底:=SSRGL<(0-18);
+大底:=SSRGL<(0-14);
+中底:=SSRGL<(0-10);
+短底:=SSRGL<(0-6);
+STICKLINE((SSRGL < (0 - 18)),60,80,3,0),COLORRED;
+STICKLINE((SSRGL < (0 - 14)),40,60,3,0),COLORBLUE;
+STICKLINE((SSRGL < (0 - 10)),20,40,3,0),COLORYELLOW;
+STICKLINE((SSRGL < (0 - 6)),0,20,3,0),COLORWHITE;
+高卖:80, POINTDOT,COLORRED;
+低吸:20, POINTDOT,COLORGREEN;
+VAR1:=LLV(LOW,P1);
+VAR2:=HHV(HIGH,P1);
+K: EMA((CLOSE-VAR1)/(VAR2-VAR1)*100,P2),COLORRED,LINETHICK2;
+D: EMA(0.667*REF(K,1)+0.333*K,2),COLORGREEN,LINETHICK2;
+
+============================================================================================
+海洋飞涨：
+HHJSJDA:=(3*CLOSE+OPEN+LOW+HIGH)/6;
+HHJSJDB:=(20*HHJSJDA+19*REF(HHJSJDA,1)+18*REF(HHJSJDA,2)+17*REF(HHJSJDA,3)+16*REF(HHJSJDA,4)+15*REF(HHJSJDA,5)+14*REF(HHJSJDA,6)
++13*REF(HHJSJDA,7)+12*REF(HHJSJDA,8)+11*REF(HHJSJDA,9)+10*REF(HHJSJDA,10)+9*REF(HHJSJDA,11)+8*REF(HHJSJDA,12)
++7*REF(HHJSJDA,13)+6*REF(HHJSJDA,14)+5*REF(HHJSJDA,15)+4*REF(HHJSJDA,16)+3*REF(HHJSJDA,17)+2*REF(HHJSJDA,18)+
+REF(HHJSJDA,20))/210;
+HHJSJDC:=MA(HHJSJDB,5);
+QQ1:=MA(MA(CLOSE,3),3);
+QQ2:=MA(MA(CLOSE,15),9);
+XYSQS1:=(QQ1-REF(QQ1,1))/REF(QQ1,1)*100;
+XYSQS2:=(QQ2-REF(QQ2,1))/REF(QQ2,1)*100;
+XYSHSL:=EMA(VOL/CAPITAL*100,13);
+STICKLINE(XYSQS2>=REF(XYSQS2,1)AND XYSHSL>1,0,40,2,0),COLORYELLOW;
+STICKLINE(XYSQS2>=REF(XYSQS2,1)AND XYSHSL>1 AND C>HHJSJDB AND
+HHJSJDB>HHJSJDC,41,88,2,0),COLORRED;
+IF(XYSQS2>=REF(XYSQS2,1) AND XYSHSL>1,XYSQS1*178,0);
+
+
+=============================================================================================
+潜龙飞天：
+VAR1:=SMA(AMOUNT,10,1)/10000;
+VAR2:=REF(VAR1,1);
+VAR3:=SMA(AMOUNT,10,1)/10000;
+STICKLINE(VAR1>VAR2,VAR1,VAR2,8,0),colorred;
+STICKLINE(VAR1< VAR2,VAR1,VAR2,8,0),colorgreen;
+潜龙:MA(VAR1,5),colorred;
+水面:MA(VAR1,30),coloryellow;
+选股:CROSS(潜龙,水面);
+
+
+================================================================================================
+趋势顶底：
+80,COLOR996699;
+20,COLORGREEN;
+底:10,COLORCC6633,LINETHICK2;
+90,COLOR9966FF,LINETHICK2;
+50,COLORRED;
+A:=MA(-100*(HHV(HIGH,34)-CLOSE)/(HHV(HIGH,34)-LLV(LOW,34)),19);
+B:=-100*(HHV(HIGH,14)-CLOSE)/(HHV(HIGH,14)-LLV(LOW,14));
+D:=EMA(-100*(HHV(HIGH,34)-CLOSE)/(HHV(HIGH,34)-LLV(LOW,34)),4);
+
+长期线:A+100,COLOR9900FF;
+短期线:B+100,COLOR888888;
+中期线:D+100,COLORYELLOW,LINETHICK2;
+见顶:=((REF(中期线,1)>85 AND  REF(短期线,1)>85 AND REF(长期线,1)>65) AND CROSS(长期线,短期线));
+顶部区域:(中期线<REF(中期线,1) AND REF(中期线,1)>80) AND (REF(短期线,1)>95 OR REF(短期线,2)>95 ) AND 长期线>60 AND 短期线<83.5
+AND 短期线<中期线 AND 短期线<长期线+4,COLORGREEN;
+顶部:=FILTER(顶部区域,4);
+STICKLINE( {见顶 OR} 顶部,99,103,20,1 ),COLORRED,LINETHICK2;
+底部区域:(长期线<12 AND 中期线<8 AND (短期线<7.2 OR REF(短期线,1)<5) AND (中期线>REF(中期线,1) OR 短期线>REF(短期线,1)))
+OR (长期线<8 AND 中期线<7 AND 短期线<15 AND 短期线>REF(短期线,1)) OR (长期线<10 AND 中期线<7 AND 短期线<1) ,COLORGREEN;
+STICKLINE( 底部区域,-4,0,22,0 ),COLORGREEN;
+低位金叉:50*(长期线<15 AND REF(长期线,1)<15 AND 中期线<18 AND 短期线>REF(短期线,1) AND CROSS(短期线,长期线) AND 短期线>中期线
+AND (REF(短期线,1)<5 OR REF(短期线,2)<5 )  AND (中期线>=长期线 OR REF( 短期线,1)<1 )),COLORRED;
+
+==================================================================================================
+水手突破：
+上趋势:MA(LOW,20)*1.2,COLORMAGENTA,CROSSDOT;
+次上趋势:MA(LOW,20)*1.1,COLORYELLOW;
+次下趋势:MA(HIGH,20)*0.9,COLORWHITE;
+下趋势:MA(HIGH,20)*0.8,COLORGREEN,CROSSDOT;
+ZD:=(C-REF(C,1))/REF(C,1)*100;
+HDZF:=(HHV(H,20)-C)/(HHV(H,20)-LLV(L,20));
+趋势强度:=IF(C>次上趋势,IF(C>上趋势,4,3),IF(C>次下趋势 AND C<次上趋势,2,IF(C<下趋势,0,1)));
+STICKLINE(趋势强度=0,H,L,6,1),COLORBLUE;
+STICKLINE(趋势强度=1,H,L,6,1),COLORGREEN;
+STICKLINE(趋势强度=2,H,L,6,1),COLORGRAY;
+STICKLINE(趋势强度=3,H,L,6,1),COLORYELLOW;
+STICKLINE(趋势强度=4,H,L,6,1),COLORMAGENTA;
+STICKLINE(趋势强度=0,C,O,5,0),COLORBLUE;
+STICKLINE(趋势强度=1,C,O,5,0),COLORGREEN;
+STICKLINE(趋势强度=2,C,O,5,0),COLORGRAY;
+STICKLINE(趋势强度=3,C,O,5,0),COLORYELLOW;
+STICKLINE(趋势强度=4,C,O,5,0),COLORMAGENTA;
+
+
+====================================================================================
+屠龙刀：
+飞天:MA(CLOSE,25)+MA(CLOSE,25)*20/100,COLORRED,LINETHICK2;
+强势线:MA(CLOSE,25)+MA(CLOSE,25)*6/100,COLORYELLOW,LINETHICK2;
+支撑线:(MA(CLOSE,3)+MA(CLOSE,6)+MA(CLOSE,12)+MA(CLOSE,24))/4,COLORFFCC00,LINETHICK2;
+压力线:MA(HIGH,5),COLORMAGENTA;
+MA10:MA(CLOSE,10),coloryellow,linethick0;
+MA54:MA(CLOSE,54),Colorffcccc,linethick0;
+PL1:=(((CLOSE - MA54) / MA54) < 0.1);
+PL2:=(((CLOSE - MA10) / MA10) < 0.3);
+偏离率:=(((PL1 = 1) AND (PL2 = 1)) * 0.2);
+平台突破:=((((偏离率 = 0) AND (REF(偏离率,1) = 0.2)) AND (REF((COUNT((偏离率 = 0.2),10) = 10),1) = 1)) * -0.1);
+DRAWTEXT(平台突破,l,'突破★牛股'),COLORFFCC00;
+
+STICKLINE(C>=O,H,L,0,1), COLORred;STICKLINE(C>=O,C,O,6,1), COLORred;STICKLINE(C< O,H,L,0,0), ColorFFFF00;STICKLINE(C< O,C,O,6,0),ColorFFFF00;
+
+{ 原文链接：http://www.88gs.com/soft/sort013/sort03/down-62334.html }
+
+====================================================================================
+综合指标：
+VAR2:=CLOSE*VOL;
+VAR3:=EMA((EXPMA(VAR2,3)/EXPMA(VOL,3)+EXPMA(VAR2,6)/EXPMA(VOL,6)+EXPMA(VAR2,12)/EXPMA(VOL,12)+EXPMA(VAR2,24)/EXPMA(VOL,24))/4,N);
+VAR4:=EXPMA(CLOSE,9);
+薛斯外上轨:EXPMA(VAR4*1.14,5);
+薛斯外下轨:EXPMA(VAR4*0.86,5);
+MA1:=MA(CLOSE,1);
+买:=MA1<=薛斯外下轨;
+DRAWTEXT(FILTER(买=1,0),LOW-0.03,'买'),COLORRED;
+成本线MA10:ma(CLOSE, M1);
+趋势线MA20:MA(CLOSE,N1);
+布林压力线:BOLL+M*STD(CLOSE,N1);
+布林支撑线:BOLL-M*STD(CLOSE,N1);
+DRAWKLINE(HIGH,OPEN,LOW,CLOSE);
+
+
+

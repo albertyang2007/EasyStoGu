@@ -1,0 +1,60 @@
+样本：2010至2014共5年数据，命中5775次
+最优结果：KDJ金叉，KD数值在35.0,60.0之间，不考虑MACD，三天为阳，成交量一天比一天大，金叉当日成交量大于5日均量
+当考虑MACD时候，macd < 0 更好
+
+======Summary=====
+KDJ_Gordon_3_days_Red KDJ Range:25.0,75.0
+KDJ_Gordon_3_days_Red hit 15097	 earnPercent[close]=0.12750368641786197	 earnPercent[high]=6.7380515381714705	 earnPercent[low]=-4.563667426101462
+======Summary=====
+KDJ_Gordon_3_days_Red KDJ Range:30.0,75.0
+KDJ_Gordon_3_days_Red hit 13512	 earnPercent[close]=0.1739291503884706	 earnPercent[high]=6.743447919326874	 earnPercent[low]=-4.540361844368493
+======Summary=====
+KDJ_Gordon_3_days_Red KDJ Range:35.0,75.0
+KDJ_Gordon_3_days_Red hit 11622	 earnPercent[close]=0.2152784759529793	 earnPercent[high]=6.729255456989418	 earnPercent[low]=-4.504494674773241
+======Summary=====
+KDJ_Gordon_3_days_Red KDJ Range:40.0,75.0
+KDJ_Gordon_3_days_Red hit 9625	 earnPercent[close]=0.20324629080238982	 earnPercent[high]=6.664872628087642	 earnPercent[low]=-4.5168060412376
+======Summary=====
+KDJ_Gordon_3_days_Red KDJ Range:25.0,70.0
+KDJ_Gordon_3_days_Red hit 13088	 earnPercent[close]=0.14950906197789798	 earnPercent[high]=6.815648503512484	 earnPercent[low]=-4.502537203379142
+======Summary=====
+KDJ_Gordon_3_days_Red KDJ Range:25.0,65.0
+KDJ_Gordon_3_days_Red hit 10947	 earnPercent[close]=0.10021584385898404	 earnPercent[high]=6.784318532358587	 earnPercent[low]=-4.4478423600943735
+======Summary=====
+KDJ_Gordon_3_days_Red KDJ Range:25.0,60.0
+KDJ_Gordon_3_days_Red hit 9005	 earnPercent[close]=0.13488359619688142	 earnPercent[high]=6.832777784380071	 earnPercent[low]=-4.407097047047132
+======Summary=====
+KDJ_Gordon_3_days_Red KDJ Range:25.0,55.0
+KDJ_Gordon_3_days_Red hit 7154	 earnPercent[close]=0.12603829106013317	 earnPercent[high]=6.8298409610554245	 earnPercent[low]=-4.36204661686858
+======Summary=====
+KDJ_Gordon_3_days_Red KDJ Range:30.0,70.0
+KDJ_Gordon_3_days_Red hit 11513	 earnPercent[close]=0.20859915693609318	 earnPercent[high]=6.83646374235479	 earnPercent[low]=-4.46909478753922
+======Summary=====
+KDJ_Gordon_3_days_Red KDJ Range:35.0,70.0
+KDJ_Gordon_3_days_Red hit 9658	 earnPercent[close]=0.277258115759941	 earnPercent[high]=6.861186923316732	 earnPercent[low]=-4.426792808731788
+======Summary=====
+KDJ_Gordon_3_days_Red KDJ Range:35.0,65.0
+KDJ_Gordon_3_days_Red hit 7589	 earnPercent[close]=0.2380121323199005	 earnPercent[high]=6.835130701367185	 earnPercent[low]=-4.346532576392682
+======Summary=====
+KDJ_Gordon_3_days_Red KDJ Range:35.0,60.0
+KDJ_Gordon_3_days_Red hit 5775	 earnPercent[close]=0.3449454858478082	 earnPercent[high]=6.944431500844307	 earnPercent[low]=-4.280339194381824
+======Summary=====
+KDJ_Gordon_3_days_Red KDJ Range:40.0,75.0
+KDJ_Gordon_3_days_Red hit 9625	 earnPercent[close]=0.20324629080238982	 earnPercent[high]=6.664872628087642	 earnPercent[low]=-4.5168060412376
+======Summary=====
+KDJ_Gordon_3_days_Red KDJ Range:40.0,65.0
+KDJ_Gordon_3_days_Red hit 5745	 earnPercent[close]=0.22427647669065903	 earnPercent[high]=6.789293999633261	 earnPercent[low]=-4.354921697554095
+======Summary=====
+KDJ_Gordon_3_days_Red KDJ Range:40.0,60.0
+KDJ_Gordon_3_days_Red hit 4065	 earnPercent[close]=0.36328963786586926	 earnPercent[high]=6.924930341835532	 earnPercent[low]=-4.273349753927727
+
+
+==========================考虑MACD=====================================================
+======Summary=====
+KDJ_Gordon_3_days_Red KDJ Range:35.0,60.0  MACD < 0
+KDJ_Gordon_3_days_Red hit 2657	 earnPercent[close]=0.32743980731705824	 earnPercent[high]=7.283187078079977	 earnPercent[low]=-4.4523848490922315
+
+
+======Summary=====
+KDJ_Gordon_3_days_Red KDJ Range:35.0,60.0 MACD > 0
+KDJ_Gordon_3_days_Red hit 2965	 earnPercent[close]=0.4043736914781661	 earnPercent[high]=6.641182835650881	 earnPercent[low]=-4.09356458375328
