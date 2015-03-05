@@ -9,869 +9,935 @@ import com.tictactec.ta.lib.RetCode;
 //https://code.google.com/p/quantitativeinvestment/source/browse/trunk/+quantitativeinvestment+--username+Huafeng.LOU@gmail.com/QuantitativeInvestment/Tools/TaLib.cs?spec=svn60&r=48
 //https://github.com/chartsy/chartsy/blob/624d54224615bda9ec55bbaca6e62653550e4be5/Chartsy/Stochastic%20Fast/src/org/chartsy/stochf/StochF.java
 public class TALIBWraper {
-    private Core core = new Core();
-
-    //¼òµ¥Æ½¾ùµÄ²ÎÊý
-    public double[] getSma(double[] prices, int ma) {
-
-        double[] tempOutPut = new double[prices.length];
-        double[] output = new double[prices.length];
-
-        MInteger begin = new MInteger();
-        MInteger length = new MInteger();
-        RetCode retCode = RetCode.InternalError;
-        begin.value = -1;
-        length.value = -1;
-
-        retCode = core.sma(0, prices.length - 1, prices, ma, begin, length, tempOutPut);
-
-        for (int i = 0; i < ma - 1; i++) {
-            output[i] = 0;
-        }
-        for (int i = ma - 1; 0 < i && i < (prices.length); i++) {
-            output[i] = tempOutPut[i - ma + 1];
-        }
-        return output;
-    }
-
-    //¼ÓÈ¨ÒÆ¶¯Æ½¾ùÖ¸±ê
-    public double[] getWma(double[] prices, int ma) {
-        double[] tempOutPut = new double[prices.length];
-        double[] output = new double[prices.length];
-
-        MInteger begin = new MInteger();
-        MInteger length = new MInteger();
-        RetCode retCode = RetCode.InternalError;
-        begin.value = -1;
-        length.value = -1;
-
-        retCode = core.wma(0, prices.length - 1, prices, ma, begin, length, tempOutPut);
-
-        for (int i = 0; i < ma - 1; i++) {
-            output[i] = 0;
-        }
-        for (int i = ma - 1; 0 < i && i < (prices.length); i++) {
-            output[i] = tempOutPut[i - ma + 1];
-        }
-        return output;
-    }
-
-    //Å×ÎïÏßÖ¸±ê
-    public double[] getSar(double[] highPrices, double[] lowPrices, double optInAcceleration/* ¼ÓËÙ¶È */,
-            double optInMaximum/* ×î´óÖµ */) {
-        /*
-         * SAR£¨n£©=SAR£¨n£­1£©+AF[EP£¨N-1£©£­SAR£¨N-1£©]£»
-         * ÆäÖÐ£¬SAR£¨n£©ÎªµÚnÈÕµÄSARÖµ£¬SAR£¨n£­1£©ÎªµÚ£¨n£­1£©ÈÕµÄÖµ£»
-         * AFÎª¼ÓËÙÒò×Ó£¨»ò½Ð¼ÓËÙÏµÊý£©£¬EPÎª¼«µã¼Û£¨×î¸ß¼Û»ò×îµÍ¼Û£©
-         */
-        double[] output = new double[lowPrices.length];
-        double[] tempoutput = new double[lowPrices.length];
-
-        MInteger begin = new MInteger();
-        MInteger length = new MInteger();
-        RetCode retCode = RetCode.InternalError;
-        begin.value = -1;
-        length.value = -1;
-
-        retCode = core.sar(0, lowPrices.length - 1, highPrices, lowPrices, optInAcceleration, optInMaximum, begin,
-                length, tempoutput);
-
-        for (int i = 1; i < lowPrices.length; i++) {
-            output[i] = tempoutput[i - 1];
-        }
-        return output;
-
-    }
-
-    //Ïà¶ÔÇ¿ÈõÖ¸±ê
-    public double[] getRsi(double[] prices, int period) {
-        /*
-         * ¼ÙÉèAÎªNÈÕÄÚÊÕÅÌ¼ÛµÄÕýÊýÖ®ºÍ£¬BÎªNÈÕÄÚÊÕÅÌ¼ÛµÄ¸ºÊýÖ®ºÍ³ËÒÔ£¨¡ª1£©
-         * ÕâÑù£¬AºÍB¾ùÎªÕý£¬½«A¡¢B´úÈëRSI¼ÆËã¹«Ê½£¬ÔòRSI£¨N£©=A¡Â£¨A£«B£©¡Á100
-         */
-        double[] output = new double[prices.length];
-        double[] tempOutPut = new double[prices.length];
-
-        MInteger begin = new MInteger();
-        MInteger length = new MInteger();
-        RetCode retCode = RetCode.InternalError;
-        begin.value = -1;
-        length.value = -1;
-
-        retCode = core.rsi(0, prices.length - 1, prices, period, begin, length, tempOutPut);
-
-        for (int i = 0; i < period; i++) {
-            output[i] = 0;
-        }
-        for (int i = period; 0 < i && i < (prices.length); i++) {
-            output[i] = tempOutPut[i - period];
-        }
-        return output;
-    }
-
-    //Æ½»¬ÒìÍ¬Æ½¾ùÖ¸±ê
-    public double[][] getMACD(double[] prices, int optInFastPeriod, int optInSlowPeriod, int optInSignalPeriod) {
-        /*
-         * optInFastPeriod(¶ÌÆÚ)¡¢optInSlowPeriod(³¤ÆÚ)¡¢optInSignalPeriod(ÐÅºÅÆÚ
-         * £© £Å£Í£Án=£Ðn*2/£¨n+1£©+£Å£Í£Án-1*£¨n-1£©/£¨n+1£© Ê½ÖÐ
-         * £Ðn:µ±ÈÕÊÕÅÌ¼Û;ÒÆ¶¯Æ½¾ùÏßÖÜÆÚ£Å£Í£Án:µÚnÈÕ£Å£Í£ÁÖµ
-         * ÔÚÒ»°ãÇé¿öÏÂ£¬¿ìËÙ£Å£Í£ÁÒ»°ãÑ¡£¶ÈÕ£¬ÂýËÙ£Å£Í£ÁÒ»°ãÑ¡12ÈÕ£¬´ËÊ±²îÀëÖµ£¨£Ä£É£Æ£©µÄ¼ÆËãÎª£º
-         * £Ä£É£Æ£½£Å£Í£Á6£­£Å£Í£Á12 ¡°²îÀëÆ½¾ùÖµ¡±ÓÃDEAÀ´±íÊ¾£¬Æä¼ÆËã¹«Ê½Îª£º
-         * £Ä£Å£Án£½£Ä£Å£Án-1*8/10+£Ä£É£Æn*2/10
-         * £Í£Á£Ã£Än£½£¨£Ä£É£Æn£­£Í£Á£Ã£Än-1£©£ª£²£¯£±£°£«£Í£Á£Ã£Än-1
-         */
-        double[] tempoutput1 = new double[prices.length];
-        double[] tempoutput2 = new double[prices.length];
-        double[] tempoutput3 = new double[prices.length];
-        double[][] output = { new double[prices.length], new double[prices.length], new double[prices.length] };
-
-        double[] result1 = new double[prices.length];
-        double[] result2 = new double[prices.length];
-        double[] result3 = new double[prices.length];
-
-        double[] temp = new double[60];
-
-        MInteger begin = new MInteger();
-        MInteger length = new MInteger();
-        RetCode retCode = RetCode.InternalError;
-        begin.value = -1;
-        length.value = -1;
-
-        retCode = core.macd(0, prices.length - 1, prices, optInFastPeriod, optInSlowPeriod, optInSignalPeriod, begin,
-                length, tempoutput1, tempoutput2, tempoutput3);
-
-        for (int i = 0; i < prices.length - optInSlowPeriod; i++) {
-            result1[i] = 0;
-            result2[i] = 0;
-            result3[i] = 0;
-        }
-        for (int i = prices.length - optInSlowPeriod; 0 < i && i < (prices.length); i++) {
-            result1[i] = tempoutput1[i - (prices.length - optInSlowPeriod)];
-            result2[i] = tempoutput2[i - (prices.length - optInSlowPeriod)];
-            result3[i] = tempoutput3[i - (prices.length - optInSlowPeriod)];
-        }
-
-        for (int i = 0; i < prices.length; i++) {
-            output[0][i] = result1[i];
-            output[1][i] = result2[i];
-            output[2][i] = result3[i];
-        }
-        return output;
-    }
-
-    //Æ½¾ù·½ÏòÐÔÔË¶¯Ö¸±ê
-    public double[] getAdx(double[] lowPrices, double[] highPrices, double[] closePrices, int optInTimePeriod) {
-        /*
-         * ADX = SUM[(+DI-(-DI))/(+DI+(-DI)), N]/N N ¡ª
-         * ÊÇÔÚ¼ÆËãÖÐËùÊ¹ÓÃµÄÊ±¼ä¶ÎµÄÊýÖµ¡£
-         */
-        double[] output = new double[lowPrices.length];
-        double[] tempOutPut = new double[lowPrices.length];
-
-        MInteger begin = new MInteger();
-        MInteger length = new MInteger();
-        RetCode retCode = RetCode.InternalError;
-        begin.value = -1;
-        length.value = -1;
-
-        retCode = core.adx(0, lowPrices.length - 1, highPrices, lowPrices, closePrices, optInTimePeriod, begin, length,
-                tempOutPut);
-        //Adx(int startIdx, int endIdx, double[] inHigh, double[] inLow, double[] inClose, int optInTimePeriod, out int outBegIdx, out int outNBElement, double[] outReal);
-
-        for (int i = 0; i < lowPrices.length - length.value; i++) {
-            output[i] = 0;
-        }
-        for (int i = lowPrices.length - length.value; 0 < i && i < (lowPrices.length); i++) {
-            output[i] = tempOutPut[i - (lowPrices.length - length.value)];
-        }
-
-        return output;
-
-    }
-
-    //Æ½¾ù·½ÏòÐÔÔË¶¯Ö¸±ê
-    public double[] getAdxr(double[] lowPrices, double[] highPrices, double[] closePrices, int optInTimePeriod) {
-        /*
-         * ADX = SUM[(+DI-(-DI))/(+DI+(-DI)), N]/N N ¡ª
-         * ÊÇÔÚ¼ÆËãÖÐËùÊ¹ÓÃµÄÊ±¼ä¶ÎµÄÊýÖµ¡£
-         */
-        double[] output = new double[lowPrices.length];
-        double[] tempOutPut = new double[lowPrices.length];
-
-        MInteger begin = new MInteger();
-        MInteger length = new MInteger();
-        RetCode retCode = RetCode.InternalError;
-        begin.value = -1;
-        length.value = -1;
-
-        retCode = core.adxr(0, lowPrices.length - 1, highPrices, lowPrices, closePrices, optInTimePeriod, begin,
-                length, tempOutPut);
-        //Adx(int startIdx, int endIdx, double[] inHigh, double[] inLow, double[] inClose, int optInTimePeriod, out int outBegIdx, out int outNBElement, double[] outReal);
-
-        for (int i = 0; i < lowPrices.length - length.value; i++) {
-            output[i] = 0;
-        }
-        for (int i = lowPrices.length - length.value; 0 < i && i < (lowPrices.length); i++) {
-            output[i] = tempOutPut[i - (lowPrices.length - length.value)];
-        }
-
-        return output;
-    }
-
-    //²¼ÁÖÍ¨µÀÖ¸±ê
-    public double[][] getBbands(double[] prices, int optInTimePeriod, double optInNbDevUp, double optInNbDevDn) {
-        /*
-         * optInTimePeriod:Ê±¼ä£¬optInNbDevUp£ºÉÏ¹ì£¨UPÏß£©,optInNbDevDn:ÏÂ¹ì£¨DownÏß
-         * £©
-         * ÖÐ¹ìÏß=N¸öµÄÒÆ¶¯Æ½¾ùÏß£¬ÉÏ¹ìÏß=ÖÐ¹ìÏß£«£¨D¡Á±ê×¼²î£©£¬ÏÂ¹ìÏß=ÖÐ¹ìÏß£­£¨D¡Á±ê×¼²î£©£¬ÆäÖÐÖÐ¹ìÏß=SMA£¨close
-         * £¬N£©£¬D=±ê×¼²îµÄ²ÎÊý£¬Ò»°ãÎªÄ¬ÈÏÖµ£¬Èç2£¬±ê×¼²î=SUM[(Close-a)2£¬N]¡Â(N-1)µÄÖµµÄÆ½·½¸ù.
-         */
-        double[] tempoutput1 = new double[prices.length];
-        double[] tempoutput2 = new double[prices.length];
-        double[] tempoutput3 = new double[prices.length];
-        double[][] output = { new double[prices.length], new double[prices.length], new double[prices.length] };
-
-        double[] result1 = new double[prices.length];
-        double[] result2 = new double[prices.length];
-        double[] result3 = new double[prices.length];
-
-        double[] temp = new double[60];
-        MInteger begin = new MInteger();
-        MInteger length = new MInteger();
-        RetCode retCode = RetCode.InternalError;
-        begin.value = -1;
-        length.value = -1;
-        MAType optInMAType = MAType.Ema;
-
-        retCode = core.bbands(0, prices.length - 1, prices, optInTimePeriod, optInNbDevUp, optInNbDevDn, optInMAType,
-                begin, length, tempoutput1, tempoutput2, tempoutput3);
-        //public static RetCode Bbands(int startIdx, int endIdx, float[] inReal, int optInTimePeriod, double optInNbDevUp, double optInNbDevDn, MAType optInMAType, out int outBegIdx, out int outNBElement, double[] outRealUpperBand, double[] outRealMiddleBand, double[] outRealLowerBand);
-
-        for (int i = 0; i < optInTimePeriod - 1; i++) {
-            result1[i] = 0;
-            result2[i] = 0;
-            result3[i] = 0;
-        }
-        for (int i = optInTimePeriod - 1; 0 < i && i < (prices.length); i++) {
-            result1[i] = tempoutput1[i - optInTimePeriod + 1];
-            result2[i] = tempoutput2[i - optInTimePeriod + 1];
-            result3[i] = tempoutput3[i - optInTimePeriod + 1];
-        }
-
-        for (int i = 0; i < prices.length; i++) {
-            output[0][i] = result1[i];
-            output[1][i] = result2[i];
-            output[2][i] = result3[i];
-        }
-        return output;
-    }
-
-    //ÉÌÆ·Í¨µÀÖ¸±ê
-    public double[] getCci(double[] highPrices, double[] lowPrices, double[] closePrices, int inTimePeriod) {
-        /*
-         * (1) TP=£¨×î¸ß¼Û+×îµÍ¼Û+ÊÕÅÌ¼Û£©¡Â3 ¡£ (2) SMA TP=SMA (TP, N)×¢½â£ºNÎª¼ÆËãÖÜÆÚ¡£
-         * £¨3£©MD£¨Mean Deviation£©Ò²¾ÍÊÇÆ½¾ù²îµÄÖµ MD=¡Æ¦ôTP-SMA TP¦ò¡ÂN×¢½â£º¡Æ´ú±íÎª×ÜºÍ
-         * £¨4£©¿ÉËã³öCCIµÄÖµ £¬CCI=£¨TP-SMA TP£©¡Â(0.015¡ÁMD)
-         */
-        double[] output = new double[lowPrices.length];
-        double[] tempOutPut = new double[lowPrices.length];
-
-        MInteger begin = new MInteger();
-        MInteger length = new MInteger();
-        RetCode retCode = RetCode.InternalError;
-        begin.value = -1;
-        length.value = -1;
-
-        retCode = core.cci(0, lowPrices.length - 1, highPrices, lowPrices, closePrices, inTimePeriod, begin, length,
-                tempOutPut);
-        // Cci(int startIdx, int endIdx, double[] inHigh, double[] inLow, double[] inClose, int optInTimePeriod, out int outBegIdx, out int outNBElement, double[] outReal);
-
-        for (int i = 0; i < inTimePeriod - 1; i++) {
-            output[i] = 0;
-        }
-        for (int i = inTimePeriod - 1; 0 < i && i < (lowPrices.length); i++) {
-            output[i] = tempOutPut[i - inTimePeriod + 1];
-        }
-
-        return output;
-    }
-
-    //EMA=Exponential Moving Average£ºÖ¸ÊýÆ½¾ùÊýÖ¸±ê
-    public double[] getEma(double[] prices, int optInTimePeriod) {
-        /*
-         * EXPMA£½(µ±ÈÕ»òµ±ÆÚÊÕÅÌ¼Û£­ÉÏÒ»ÈÕ»òÉÏÆÚEXPMA)/£Î+ÉÏÒ»ÈÕ»òÉÏÆÚEXPMA
-         */
-        double[] tempOutPut = new double[prices.length];
-        double[] output = new double[prices.length];
-
-        MInteger begin = new MInteger();
-        MInteger length = new MInteger();
-        RetCode retCode = RetCode.InternalError;
-        begin.value = -1;
-        length.value = -1;
-
-        retCode = core.ema(0, prices.length - 1, prices, optInTimePeriod, begin, length, tempOutPut);
-        //Ema(int startIdx, int endIdx, double[] inReal, int optInTimePeriod, out int outBegIdx, out int outNBElement, double[] outReal);
-        for (int i = 0; i < optInTimePeriod - 1; i++) {
-            output[i] = 0;
-        }
-        for (int i = optInTimePeriod - 1; 0 < i && i < (prices.length); i++) {
-            output[i] = tempOutPut[i - optInTimePeriod + 1];
-        }
-        return output;
-    }
-
-    // MACDEXT=MACD with controllable MA type£º¿É¿Ø¾ùÏßÆ½»¬ÒìÍ¬Æ½¾ùÖ¸±ê
-    public double[][] getMacdExt(double[] prices, int optInFastPeriod, int optInSlowPeriod, int optInSignalPeriod) {
-        /*
-         * DIFFÏß¡¡£¨Difference£©ÊÕÅÌ¼Û¶ÌÆÚ¡¢³¤ÆÚÖ¸ÊýÆ½»¬ÒÆ¶¯Æ½¾ùÏß¼äµÄ²î DEAÏß¡¡£¨Difference
-         * Exponential Average£©DIFFÏßµÄMÈÕÖ¸ÊýÆ½»¬ÒÆ¶¯Æ½¾ùÏß
-         * MACDÏß¡¡DIFFÏßÓëDEAÏßµÄ²î£¬²ÊÉ«Öù×´Ïß
-         * ²ÎÊý£ºSHORT(¶ÌÆÚ)¡¢LONG(³¤ÆÚ)¡¢MÌìÊý£¬Ò»°ãÎª12¡¢26¡¢9¹«Ê½ÈçÏÂËùÊ¾£º
-         * ¼ÓÈ¨Æ½¾ùÖ¸Êý£¨£Ä£É£©=£¨µ±ÈÕ×î¸ßÖ¸Êý+µ±ÈÕÊÕÅÌÖ¸Êý+2±¶µÄµ±ÈÕ×îµÍÖ¸Êý£©
-         * Ê®¶þÈÕÆ½»¬ÏµÊý£¨£Ì£±£²£©=2/£¨12+1£©=0.1538¶þÊ®ÁùÈÕÆ½»¬ÏµÊý£¨£Ì£²£¶£©=2/£¨26+1£©=0.0741
-         * Ê®¶þÈÕÖ¸ÊýÆ½¾ùÖµ£¨£±£²ÈÕ£Å£Í£Á£©=L12¡Áµ±ÈÕÊÕÅÌÖ¸Êý + 11/£¨12+1£©¡Á×òÈÕµÄ12ÈÕEMA
-         * ¶þÊ®ÁùÈÕÖ¸ÊýÆ½¾ùÖµ£¨£²£¶ÈÕ£Å£Í£Á£©=L26¡Áµ±ÈÕÊÕÅÌÖ¸Êý + 25/£¨26+1£©¡Á×òÈÕµÄ26ÈÕEMA
-         * EMA£¨Exponential Moving
-         * Average£©£¬Ö¸ÊýÆ½¾ùÊýÖ¸±ê¡£Ò²½ÐEXPMAÖ¸±ê£¬ËüÒ²ÊÇÒ»ÖÖÇ÷ÏòÀàÖ¸±ê
-         * £¬Ö¸ÊýÆ½¾ùÊýÖ¸±êÊÇÒÔÖ¸ÊýÊ½µÝ¼õ¼ÓÈ¨µÄÒÆ¶¯Æ½¾ù¡£
-         * ¸÷ÊýÖµµÄ¼ÓÈ¨ÊÇËæÊ±¼ä¶øÖ¸ÊýÊ½µÝ¼õ£¬Ô½½üÆÚµÄÊý¾Ý¼ÓÈ¨Ô½ÖØ£¬µ«½Ï¾ÉµÄÊý¾ÝÒ²¸øÓèÒ»¶¨µÄ¼ÓÈ¨¡£
-         * ²îÀëÂÊ£¨£Ä£É£Æ£©=12ÈÕEMA-26ÈÕEMA¾ÅÈÕDIFÆ½¾ùÖµ£¨DEA£©=×î½ü9ÈÕµÄDIFÖ®ºÍ/9
-         * £Í£Á£Ã£Ä=£¨µ±ÈÕµÄDIFF-µ±ÈÕµÄDEA£©¡Á2
-         */
-        double[] tempoutput1 = new double[prices.length];
-        double[] tempoutput2 = new double[prices.length];
-        double[] tempoutput3 = new double[prices.length];
-        double[][] output = { new double[prices.length], new double[prices.length], new double[prices.length] };
-
-        double[] result1 = new double[prices.length];
-        double[] result2 = new double[prices.length];
-        double[] result3 = new double[prices.length];
-
-        double[] temp = new double[60];
-        MInteger begin = new MInteger();
-        MInteger length = new MInteger();
-        RetCode retCode = RetCode.InternalError;
-        begin.value = -1;
-        length.value = -1;
-        MAType optInFastMAType = MAType.Ema;
-        MAType optInSlowMAType = MAType.Ema;
-        MAType optInSignalMAType = MAType.Ema;
-
-        retCode = core.macdExt(0, prices.length - 1, prices, optInFastPeriod, optInFastMAType, optInSlowPeriod,
-                optInSlowMAType, optInSignalPeriod, optInSignalMAType, begin, length, tempoutput1, tempoutput2,
-                tempoutput3);
-        //MacdExt(int startIdx, int endIdx, double[] inReal, int optInFastPeriod, MAType optInFastMAType, int optInSlowPeriod, MAType optInSlowMAType, int optInSignalPeriod, MAType optInSignalMAType, out int outBegIdx, out int outNBElement, double[] outMACD, double[] outMACDSignal, double[] outMACDHist);
-
-        for (int i = 0; i < begin.value; i++) {
-            result1[i] = 0;
-            result2[i] = 0;
-            result3[i] = 0;
-        }
-        for (int i = begin.value; 0 < i && i < (prices.length); i++) {
-            result1[i] = tempoutput1[i - begin.value];
-            result2[i] = tempoutput2[i - begin.value];
-            result3[i] = tempoutput3[i - begin.value];
-        }
-
-        for (int i = 0; i < prices.length; i++) {
-            output[0][i] = result1[i];
-            output[1][i] = result2[i];
-            output[2][i] = result3[i];
-        }
-        return output;
-    }
-
-    //MFI=Money Flow Index£º×Ê½ðÁ÷Á¿Ö¸±ê
-    public double[] getMfi(double[] highPrices, double[] lowPrices, double[] closePrices, double[] inVolume,
-            int optInTimePeriod) {
-        /*
-         * 1.µäÐÍ¼Û¸ñ£¨TP£©=NÈÕÄÚÊÕÅÌ¼ÛÖÐ×î¸ß¼Û¡¢×îµÍ¼ÛÓë×îºóÒ»ÌìÊÕÅÌ¼ÛµÄËãÊõÆ½¾ùÖµ
-         * 2.»õ±ÒÁ÷Á¿£¨MF£©£½µäÐÍ¼Û¸ñ£¨TP£©¡ÁNÈÕÄÚ³É½»½ð¶î
-         * 3.Èç¹ûµ±ÈÕMF£¾×òÈÕMF£¬Ôò½«µ±ÈÕµÄMFÖµÊÓÎªÕý»õ±ÒÁ÷Á¿£¨PMF£©
-         * 4.Èç¹ûµ±ÈÕMF£¼×òÈÕMF£¬Ôò½«µ±ÈÕµÄMFÖµÊÓÎª¸º»õ±ÒÁ÷Á¿£¨NMF£©
-         * 5.MFI£½100-£Û100/(1£«PMF/NMF)£Ý
-         */
-        double[] output = new double[lowPrices.length];
-        double[] tempOutPut = new double[lowPrices.length];
-
-        MInteger begin = new MInteger();
-        MInteger length = new MInteger();
-        RetCode retCode = RetCode.InternalError;
-        begin.value = -1;
-        length.value = -1;
-
-        retCode = core.mfi(0, lowPrices.length - 1, highPrices, lowPrices, closePrices, inVolume, optInTimePeriod,
-                begin, length, tempOutPut);
-
-        //Mfi(int startIdx, int endIdx, double[] inHigh, double[] inLow, double[] inClose, double[] inVolume, int optInTimePeriod, out int outBegIdx, out int outNBElement, double[] outReal);
-        for (int i = 0; i < optInTimePeriod; i++) {
-            output[i] = 0;
-        }
-        for (int i = optInTimePeriod; 0 < i && i < (lowPrices.length); i++) {
-            output[i] = tempOutPut[i - optInTimePeriod];
-        }
-
-        return output;
-    }
-
-    //ÄÜÁ¿³±Ö¸±ê
-    public double[] getObv(double[] prices, double[] volume) {
-        /*
-         * ½ñÈÕOBV=×òÌìOBV+sgn¡Á½ñÌìµÄ³É½»Á¿ÆäÖÐsgnÊÇ·ûºÅµÄÒâË¼£¬sgn¿ÉÄÜÊÇ+1£¬Ò²¿ÉÄÜÊÇ-1£¬ÕâÓÉÏÂÊ½¾ö¶¨¡£
-         * Sgn=+1 ½ñÊÕÅÌ¼Û¡Ý×òÊÕÅÌ¼ÛSgn=¨D1 ½ñÊÕÅÌ¼Û<×òÊÕÅÌ¼Û³É½»Á¿Ö¸µÄÊÇ³É½»¹ÉÆ±µÄÊÖÊý£¬²»ÊÇ³É½»½ð¶î¡£
-         */
-        double[] output = new double[prices.length];
-        MInteger begin = new MInteger();
-        MInteger length = new MInteger();
-        RetCode retCode = RetCode.InternalError;
-        begin.value = -1;
-        length.value = -1;
-
-        retCode = core.obv(0, prices.length - 1, prices, volume, begin, length, output);
-        //public static RetCode Obv(int startIdx, int endIdx, double[] inReal, double[] inVolume, out int outBegIdx, out int outNBElement, double[] outReal);
-        return output;
-
-    }
-
-    //±ä»¯ÂÊ
-    public double[] getRoc(double[] prices, int optInTimePeriod) {
-        /*
-         * ((price/prevPrice)-1)*100
-         */
-        double[] tempOutPut = new double[prices.length];
-        double[] output = new double[prices.length];
-
-        MInteger begin = new MInteger();
-        MInteger length = new MInteger();
-        RetCode retCode = RetCode.InternalError;
-        begin.value = -1;
-        length.value = -1;
-
-        retCode = core.roc(0, prices.length - 1, prices, optInTimePeriod, begin, length, tempOutPut);
-        //Roc(int startIdx, int endIdx, float[] inReal, int optInTimePeriod, out int outBegIdx, out int outNBElement, double[] outReal);
-        for (int i = 0; i < optInTimePeriod - 1; i++) {
-            output[i] = 0;
-        }
-        for (int i = optInTimePeriod - 1; 0 < i && i < (prices.length); i++) {
-            output[i] = tempOutPut[i - optInTimePeriod + 1];
-        }
-        return output;
-    }
-
-    //°Ù·ÖÊý¸Ä±ä±ÈÀý
-    public double[] getRocP(double[] prices, int optInTimePeriod) {
-        /*
-         * (price-prevPrice)/prevPrice
-         */
-        double[] tempOutPut = new double[prices.length];
-        double[] output = new double[prices.length];
-
-        MInteger begin = new MInteger();
-        MInteger length = new MInteger();
-        RetCode retCode = RetCode.InternalError;
-        begin.value = -1;
-        length.value = -1;
-
-        retCode = core.rocP(0, prices.length - 1, prices, optInTimePeriod, begin, length, tempOutPut);
-        //Roc(int startIdx, int endIdx, float[] inReal, int optInTimePeriod, out int outBegIdx, out int outNBElement, double[] outReal);
-        for (int i = 0; i < optInTimePeriod - 1; i++) {
-            output[i] = 0;
-        }
-        for (int i = optInTimePeriod - 1; 0 < i && i < (prices.length); i++) {
-            output[i] = tempOutPut[i - optInTimePeriod + 1];
-        }
-        return output;
-    }
-
-    //Ëæ»úÖ¸±êÖ¸±ê
-    public double[][] getStochF(double[] highPrices, double[] lowPrices, double[] closePrices, int optInFastK_Period,
-            int optInFastD_Period) {
-        /*
-         * optInFastK_Period:¿ìKÖÜÆÚ£¬optInSlowK_Period£ºÂýKÖÜÆÚ£¬optInSlowD_Period
-         * £ºÂýDÖÜÆÚ STOCH=Stochastic£ºËæ»úÖ¸±ê,KDJÖÐK %K = 100*
-         * (LOSE-LOW(%K))/(HIGH(%K)-LOW(%K)) CLOSE ¡ª µ±ÌìµÄÊÕÅÌ¼Û¸ñ£»LOW(%K) ¡ª
-         * %KµÄ×îµÍÖµ£»HIGH(%K) ¡ª %KµÄ×î¸ßÖµ %DµÄÒÆ¶¯Æ½¾ùÏß£º%D = SMA(%K£¬ N)
-         */
-
-        double[][] output = { new double[lowPrices.length], new double[lowPrices.length] };
-        double[] tempOutPut1 = new double[lowPrices.length];
-        double[] tempOutPut2 = new double[lowPrices.length];
-
-        MInteger begin = new MInteger();
-        MInteger length = new MInteger();
-        RetCode retCode = RetCode.InternalError;
-        begin.value = -1;
-        length.value = -1;
-
-        MAType optInFastD_MAType = MAType.Sma;
-
-        retCode = core.stochF(0, lowPrices.length - 1, highPrices, lowPrices, closePrices, optInFastK_Period,
-                optInFastD_Period, optInFastD_MAType, begin, length, tempOutPut1, tempOutPut2);
-        //StochF(int startIdx, int endIdx, double[] inHigh, double[] inLow, double[] inClose, int optInFastK_Period, int optInFastD_Period, MAType optInFastD_MAType, out int outBegIdx, out int outNBElement, double[] outFastK, double[] outFastD);
-
-        for (int i = 0; i < lowPrices.length - length.value; i++) {
-            output[0][i] = 0;
-            output[1][i] = 0;
-        }
-        for (int i = lowPrices.length - length.value; 0 < i && i < (lowPrices.length); i++) {
-            output[0][i] = tempOutPut1[i - (lowPrices.length - length.value)];
-            output[1][i] = tempOutPut2[i - (lowPrices.length - length.value)];
-        }
-
-        return output;
-
-    }
-
-    //¿ìËæ»úÖ¸±ê
-    public double[][] getStoch(double[] highPrices, double[] lowPrices, double[] closePrices, int optInFastK_Period,
-            int optInSlowK_Period, int optInSlowD_Period) {
-        /*
-         * optInFastK_Period:¿ìKÖÜÆÚ£¬optInSlowK_Period£ºÂýKÖÜÆÚ£¬optInSlowD_Period
-         * £ºÂýDÖÜÆÚ STOCH=Stochastic£ºËæ»úÖ¸±ê,KDJÖÐK %K = 100*
-         * (LOSE-LOW(%K))/(HIGH(%K)-LOW(%K)) CLOSE ¡ª µ±ÌìµÄÊÕÅÌ¼Û¸ñ£»LOW(%K) ¡ª
-         * %KµÄ×îµÍÖµ£»HIGH(%K) ¡ª %KµÄ×î¸ßÖµ MaxHigh(N) - N ¸öÖÜÆÚÇ°µÄ×î¸ßµã£» MinLow(N)
-         * - N ¸öÖÜÆÚÇ°µÄ×îµÍµã£» MA - ÒÆ¶¯Æ½¾ùÏß£»N - ¸ß/µÍ·¶Î§µÄ¼ÆËã³¤¶È£» P - %D(i)µÄÂË²¨ÖÜÆÚ¡£
-         */
-
-        double[][] output = { new double[lowPrices.length], new double[lowPrices.length] };
-        double[] tempOutPut1 = new double[lowPrices.length];
-        double[] tempOutPut2 = new double[lowPrices.length];
-
-        MInteger begin = new MInteger();
-        MInteger length = new MInteger();
-        RetCode retCode = RetCode.InternalError;
-        begin.value = -1;
-        length.value = -1;
-
-        MAType optInSlowK_MAType = MAType.Sma;
-        MAType optInSlowD_MAType = MAType.Sma;
-
-        retCode = core.stoch(0, lowPrices.length - 1, highPrices, lowPrices, closePrices, optInFastK_Period,
-                optInSlowK_Period, optInSlowK_MAType, optInSlowD_Period, optInSlowD_MAType, begin, length, tempOutPut1,
-                tempOutPut2);
-        //Stoch(int startIdx, int endIdx, double[] inHigh, double[] inLow, double[] inClose, int optInFastK_Period, int optInSlowK_Period, MAType optInSlowK_MAType, int optInSlowD_Period, MAType optInSlowD_MAType, out int outBegIdx, out int outNBElement, double[] outSlowK, double[] outSlowD);
-
-        for (int i = 0; i < lowPrices.length - length.value; i++) {
-            output[0][i] = 0;
-            output[1][i] = 0;
-        }
-        for (int i = lowPrices.length - length.value; 0 < i && i < (lowPrices.length); i++) {
-            output[0][i] = tempOutPut1[i - (lowPrices.length - length.value)];
-            output[1][i] = tempOutPut2[i - (lowPrices.length - length.value)];
-        }
-
-        return output;
-
-    }
-
-    //ÈýÖØÖ¸ÊýÆ½»¬ÒÆ¶¯Æ½¾ùÖ¸±ê
-    public double[] getTrix(double[] prices, int period) {
-        /*
-         * (1)¼ÆËãNÌìµÄÊÕÅÌ¼ÛµÄÖ¸ÊýÆ½¾ùAX AX = (IÈÕ) ÊÕÅÌ¼Û * 2 /(N+1) + (I-1)ÈÕ AX
-         * (N-1) *(N+1) (2)¼ÆËãNÌìµÄAXµÄÖ¸ÊýÆ½¾ùBX BX = (IÈÕ) AX * 2 /(N+1) +
-         * (I-1)ÈÕ BX (N-1) *(N+1) £¨3)¼ÆËãNÌìµÄBXµÄÖ¸ÊýÆ½¾ùTRIX TRIX = (IÈÕ) BX *
-         * 2 /(N+1) + (I-1)ÈÕ TRIX (N-1) *(N+1) (4)¼ÆËãTRIXµÄmÈÕÒÆ¶¯Æ½¾ùTMA TMA
-         * = ((I-M)ÈÕTRIXÀÛ¼Ó) /MÈÕ
-         */
-        double[] output = new double[prices.length];
-        double[] tempOutPut = new double[prices.length];
-        MInteger begin = new MInteger();
-        MInteger length = new MInteger();
-        RetCode retCode = RetCode.InternalError;
-        begin.value = -1;
-        length.value = -1;
-
-        retCode = core.trix(0, prices.length - 1, prices, period, begin, length, tempOutPut);
-
-        for (int i = 0; i < begin.value; i++) {
-            output[i] = 0;
-        }
-        for (int i = begin.value; 0 < i && i < (prices.length); i++) {
-            output[i] = tempOutPut[i - begin.value];
-        }
-        return output;
-    }
-
-    //ÉÌÆ·Í¨µÀÖ¸±ê
-    public double[] getWillR(double[] highPrices, double[] lowPrices, double[] closePrices, int inTimePeriod) {
-        /*
-         * nÈÕWMS£½£¨Hn£­Ct£©/(Hn£­Ln)¡Á100¡£CtÎªµ±ÌìµÄÊÕÅÌ¼Û£»HnºÍLnÊÇ×î½ünÈÕÄÚ£¨°üÀ¨µ±Ìì£©³öÏÖµÄ×î¸ß¼ÛºÍ×îµÍ¼Û
-         */
-        double[] output = new double[lowPrices.length];
-        double[] tempOutPut = new double[lowPrices.length];
-
-        MInteger begin = new MInteger();
-        MInteger length = new MInteger();
-        RetCode retCode = RetCode.InternalError;
-        begin.value = -1;
-        length.value = -1;
-
-        retCode = core.willR(0, lowPrices.length - 1, highPrices, lowPrices, closePrices, inTimePeriod, begin, length,
-                tempOutPut);
-        //WillR(int startIdx, int endIdx, double[] inHigh, double[] inLow, double[] inClose, int optInTimePeriod, out int outBegIdx, out int outNBElement, double[] outReal);
-
-        for (int i = 0; i < inTimePeriod - 1; i++) {
-            output[i] = 0;
-        }
-        for (int i = inTimePeriod - 1; 0 < i && i < (lowPrices.length); i++) {
-            output[i] = tempOutPut[i - inTimePeriod + 1];
-        }
-
-        return output;
-    }
-
-    //AD=Chaikin A/D Line£ºÀÛ»ýÅÉ·¢ÏßÖ¸±ê
-    public double[] getAd(double[] highPrices, double[] lowPrices, double[] closePrices, double[] inVolume,
-            int optInTimePeriod) {
-        /*
-         * AD=Chaikin A/D Line£ºÀÛ»ýÅÉ·¢ÏßÖ¸±ê CLV¼ÆËã¹«Ê½£º {[(C-L)-(H-C)]}/(H-L))
-         * = CLV C£ºÊÕÅÌ¼Û¡£L£ºµ±ÈÕµÍµãH£º¡£µ±ÈÕ¸ßµã¡£
-         * CLVµÄ±ä¶¯·¶Î§ÔÚ-1µ½1Ö®¼ä£¬ÖÐÐÄµãÎª0¡£CLVÔÙÓëÏàÓ¦µÄÊ±ÆÚÄÚµÄ³É½»Á¿Ïà³Ë£¬ÀÛ»ýµÄ×ÜºÍ¾Í×é³ÉÁËÀÛ»ý/ÅÉ·¢Ïß
-         */
-        double[] output = new double[lowPrices.length];
-        //double[] tempOutPut = new double[lowPrices.length];
-
-        MInteger begin = new MInteger();
-        MInteger length = new MInteger();
-        RetCode retCode = RetCode.InternalError;
-        begin.value = -1;
-        length.value = -1;
-
-        retCode = core.ad(0, lowPrices.length - 1, highPrices, lowPrices, closePrices, inVolume, begin, length, output);
-
-        //Ad(int startIdx, int endIdx, double[] inHigh, double[] inLow, double[] inClose, double[] inVolume, out int outBegIdx, out int outNBElement, double[] outReal);
-
-        return output;
-    }
-
-    //¼ÑÇìÖ¸±ê
-    public double[] getAdosc(double[] highPrices, double[] lowPrices, double[] closePrices, double[] inVolume,
-            int optInFastPeriod, int optInSlowPeriod) {
-        /*
-         * (1)ADOSC=Chaikin A/D Oscillator£º¼ÑÇìÖ¸±ê (2)
-         * CHAIKIN£½A/DµÄ£¨n£©expma - A/DµÄ£¨m£©expma¡£
-         */
-        double[] output = new double[lowPrices.length];
-        //double[] tempOutPut = new double[lowPrices.length];
-
-        MInteger begin = new MInteger();
-        MInteger length = new MInteger();
-        RetCode retCode = RetCode.InternalError;
-        begin.value = -1;
-        length.value = -1;
-
-        retCode = core.adOsc(0, lowPrices.length - 1, highPrices, lowPrices, closePrices, inVolume, optInFastPeriod,
-                optInSlowPeriod, begin, length, output);
-        //AdOsc(int startIdx, int endIdx, double[] inHigh, double[] inLow, double[] inClose, double[] inVolume, int optInFastPeriod, int optInSlowPeriod, out int outBegIdx, out int outNBElement, double[] outReal)
-
-        return output;
-    }
-
-    //Õðµ´¾ø¶Ô¼Û
-    public double[] getApo(double[] prices, int optInFastPeriod, int optInSlowPeriod) {
-        /*
-         * APO=Absolute Price Oscillator£ºÕðµ´¾ø¶Ô¼Û
-         */
-
-        double[] output = new double[prices.length];
-        double[] tempOutPut = new double[prices.length];
-
-        MAType optInMAType = null;
-        //MAType optInSlowD_MAType = new MAType();
-        MInteger begin = new MInteger();
-        MInteger length = new MInteger();
-        RetCode retCode = RetCode.InternalError;
-        begin.value = -1;
-        length.value = -1;
-
-        retCode = core.apo(0, prices.length - 1, prices, optInFastPeriod, optInSlowPeriod, optInMAType, begin, length,
-                tempOutPut);
-        //Apo(int startIdx, int endIdx, double[] inReal, int optInFastPeriod, int optInSlowPeriod, MAType optInMAType, out int outBegIdx, out int outNBElement, double[] outReal);
-
-        for (int i = 0; i < prices.length - length.value; i++) {
-            output[i] = 0;
-
-        }
-        for (int i = prices.length - length.value; 0 < i && i < (prices.length); i++) {
-            output[i] = tempOutPut[i - (prices.length - length.value)];
-        }
-
-        return output;
-
-    }
-
-    //°¢Â¡Ö¸±ê
-    public double[][] getAroon(double[] inHigh, double[] inLow, int optInTimePeriod) {
-        /*
-         * Aroon£º°¢Â¡Ö¸±ê Aroon(ÉÏÉý)=[(¼ÆËãÆÚÌìÊý-×î¸ß¼ÛºóµÄÌìÊý)/¼ÆËãÆÚÌìÊý]*100
-         * Aroon(ÏÂ½µ)=[(¼ÆËãÆÚÌìÊý-×îµÍ¼ÛºóµÄÌìÊý)/¼ÆËãÆÚÌìÊý]*100
-         */
-
-        double[][] output = { new double[inHigh.length], new double[inHigh.length] };
-        double[] tempOutPut1 = new double[inHigh.length];
-        double[] tempOutPut2 = new double[inHigh.length];
-
-        MInteger begin = new MInteger();
-        MInteger length = new MInteger();
-        RetCode retCode = RetCode.InternalError;
-        begin.value = -1;
-        length.value = -1;
-
-        //MAType optInMAType = new MAType();
-        //MAType optInSlowD_MAType = new MAType();
-
-        retCode = core.aroon(0, inHigh.length - 1, inHigh, inLow, optInTimePeriod, begin, length, tempOutPut1,
-                tempOutPut2);
-        //Aroon(int startIdx, int endIdx, double[] inHigh, double[] inLow, int optInTimePeriod, out int outBegIdx, out int outNBElement, double[] outAroonDown, double[] outAroonUp);
-
-        for (int i = 0; i < inHigh.length - length.value; i++) {
-            output[0][i] = 0;
-            output[1][i] = 0;
-        }
-        for (int i = inHigh.length - length.value; 0 < i && i < (inHigh.length); i++) {
-            output[0][i] = tempOutPut1[i - (inHigh.length - length.value)];
-            output[1][i] = tempOutPut1[i - (inHigh.length - length.value)];
-        }
-
-        return output;
-
-    }
-
-    //°¢Â¡Õðµ´
-    public double[] getAroonOsc(double[] inHigh, double[] inLow, int optInTimePeriod) {
-        /*
-         * AROONOSC=Aroon Oscillator£º°¢Â¡Õðµ´Ö¸±ê Í¨¹ý¼ÆËã°¢Â¡¶à¿ÕÏß(Aroon up and
-         * down)Ö®²îÖµ¶øÀ´
-         */
-
-        double[] output = new double[inHigh.length];
-        double[] tempOutPut = new double[inHigh.length];
-
-        MInteger begin = new MInteger();
-        MInteger length = new MInteger();
-        RetCode retCode = RetCode.InternalError;
-        begin.value = -1;
-        length.value = -1;
-
-        retCode = core.aroonOsc(0, inHigh.length - 1, inHigh, inLow, optInTimePeriod, begin, length, tempOutPut);
-        //AroonOsc(int startIdx, int endIdx, double[] inHigh, double[] inLow, int optInTimePeriod, out int outBegIdx, out int outNBElement, double[] outReal);
-
-        for (int i = 0; i < inHigh.length - length.value; i++) {
-            output[i] = 0;
-        }
-        for (int i = inHigh.length - length.value; 0 < i && i < (inHigh.length); i++) {
-            output[i] = tempOutPut[i - (inHigh.length - length.value)];
-        }
-
-        return output;
-
-    }
-
-    //Á¦Á¿Æ½ºâ¶È
-    public double[] getBop(double[] openPrices, double[] highPrices, double[] lowPrices, double[] closePrices) {
-        /*
-         * Á¦Á¿Æ½ºâ¶È
-         */
-        double[] output = new double[highPrices.length];
-
-        MInteger begin = new MInteger();
-        MInteger length = new MInteger();
-        RetCode retCode = RetCode.InternalError;
-        begin.value = -1;
-        length.value = -1;
-
-        retCode = core.bop(0, lowPrices.length - 1, openPrices, highPrices, lowPrices, closePrices, begin, length,
-                output);
-        //Bop(int startIdx, int endIdx, double[] inOpen, double[] inHigh, double[] inLow, double[] inClose, out int outBegIdx, out int outNBElement, double[] outReal);
-
-        return output;
-    }
-
-    //Ç®µÂ¶¯Á¿°Ú¶¯Ö¸±ê
-    public double[] getCmo(double[] closePrices, int period) {
-        /*
-         * CMO=Chande Momentum Oscillator£ºÇ®µÂ¶¯Á¿°Ú¶¯Ö¸±ê¡£ CMO =£¨Su-Sd) * 100
-         * / (Su +Sd)
-         * uÊÇ½ñÈÕÊÕÅÌ¼ÛÓë×òÈÕÊÕÅÌ¼Û£¨ÉÏÕÇÈÕ£©²îÖµ¼Ó×Ü¡£Èôµ±ÈÕÏÂµø£¬ÔòÔö¼ÓÖµÎª0£»SdÊÇ½ñÈÕÊÕÅÌ¼ÛÓë×öÈÕÊÕÅÌ¼Û
-         * £¨ÏÂµøÈÕ£©²îÖµµÄ¾ø¶ÔÖµ¼Ó×Ü¡£ Èôµ±ÈÕÉÏÕÇ£¬ÔòÔö¼ÓÖµÎª0
-         */
-        double[] output = new double[closePrices.length];
-        double[] tempOutPut = new double[closePrices.length];
-
-        MInteger begin = new MInteger();
-        MInteger length = new MInteger();
-        RetCode retCode = RetCode.InternalError;
-        begin.value = -1;
-        length.value = -1;
-
-        retCode = core.cmo(0, closePrices.length - 1, closePrices, period, begin, length, tempOutPut);
-        //Cmo(int startIdx, int endIdx, double[] inReal, int optInTimePeriod, out int outBegIdx, out int outNBElement, double[] outReal);
-
-        for (int i = 0; i < closePrices.length - length.value; i++) {
-            output[i] = 0;
-        }
-        for (int i = closePrices.length - length.value; 0 < i && i < (closePrices.length); i++) {
-            output[i] = tempOutPut[i - (closePrices.length - length.value)];
-        }
-        return output;
-    }
-
-    //¿¼·òÂü×ÔÊÊÓ¦Ôö¾ùÏß
-    public double[] getKama(double[] prices, int optInTimePeriod) {
-        /*
-         * KAMA=Kaufman Adaptive Moving Average£º¿¼·òÂü×ÔÊÊÓ¦Ôö¾ùÏß
-         */
-        double[] tempOutPut = new double[prices.length];
-        double[] output = new double[prices.length];
-
-        MInteger begin = new MInteger();
-        MInteger length = new MInteger();
-        RetCode retCode = RetCode.InternalError;
-        begin.value = -1;
-        length.value = -1;
-
-        retCode = core.kama(0, prices.length - 1, prices, optInTimePeriod, begin, length, tempOutPut);
-        //Kama(int startIdx, int endIdx, double[] inReal, int optInTimePeriod, out int outBegIdx, out int outNBElement, double[] outReal);
-        for (int i = 0; i < optInTimePeriod; i++) {
-            output[i] = 0;
-        }
-        for (int i = optInTimePeriod; 0 < i && i < (prices.length); i++) {
-            output[i] = tempOutPut[i - optInTimePeriod];
-        }
-        return output;
-    }
-
-    //µÝ¹éÒÆ¶¯Æ½¾ùÖ¸±ê
-    public double[] getTrima(double[] prices, int optInTimePeriod) {
-        /*
-         * TRIMA=Triangular Moving Average£ºµÝ¹éÒÆ¶¯Æ½¾ùÖ¸±ê SMA = (P1 + P2 +
-         * P3 + P4 + ... + Pn) / n TMA = (SMA1 + SMA2 + SMA3 + SMA4 +
-         * ... SMAn) / n PnÎªµÚnÌì¼Û¸ñ
-         */
-        double[] tempOutPut = new double[prices.length];
-        double[] output = new double[prices.length];
-
-        MInteger begin = new MInteger();
-        MInteger length = new MInteger();
-        RetCode retCode = RetCode.InternalError;
-        begin.value = -1;
-        length.value = -1;
-
-        retCode = core.trima(0, prices.length - 1, prices, optInTimePeriod, begin, length, tempOutPut);
-        //Kama(int startIdx, int endIdx, double[] inReal, int optInTimePeriod, out int outBegIdx, out int outNBElement, double[] outReal);
-        for (int i = 0; i < optInTimePeriod - 1; i++) {
-            output[i] = 0;
-        }
-        for (int i = optInTimePeriod - 1; 0 < i && i < (prices.length); i++) {
-            output[i] = tempOutPut[i - optInTimePeriod + 1];
-        }
-        return output;
-    }
-
-    public static void main(String[] args) {
-        // TODO Auto-generated method stub
-
-    }
+	private Core core = new Core();
+
+	// ï¿½ï¿½Æ½ï¿½ï¿½Ä²ï¿½ï¿½ï¿½
+	public double[] getSma(double[] prices, int ma) {
+
+		double[] tempOutPut = new double[prices.length];
+		double[] output = new double[prices.length];
+
+		MInteger begin = new MInteger();
+		MInteger length = new MInteger();
+		RetCode retCode = RetCode.InternalError;
+		begin.value = -1;
+		length.value = -1;
+
+		retCode = core.sma(0, prices.length - 1, prices, ma, begin, length, tempOutPut);
+
+		for (int i = 0; i < ma - 1; i++) {
+			output[i] = 0;
+		}
+		for (int i = ma - 1; 0 < i && i < (prices.length); i++) {
+			output[i] = tempOutPut[i - ma + 1];
+		}
+
+		return output;
+	}
+
+	// ï¿½ï¿½È¨ï¿½Æ¶ï¿½Æ½ï¿½ï¿½Ö¸ï¿½ï¿½
+	public double[] getWma(double[] prices, int ma) {
+		double[] tempOutPut = new double[prices.length];
+		double[] output = new double[prices.length];
+
+		MInteger begin = new MInteger();
+		MInteger length = new MInteger();
+		RetCode retCode = RetCode.InternalError;
+		begin.value = -1;
+		length.value = -1;
+
+		retCode = core.wma(0, prices.length - 1, prices, ma, begin, length, tempOutPut);
+
+		for (int i = 0; i < ma - 1; i++) {
+			output[i] = 0;
+		}
+		for (int i = ma - 1; 0 < i && i < (prices.length); i++) {
+			output[i] = tempOutPut[i - ma + 1];
+		}
+		return output;
+	}
+
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½
+	public double[] getSar(double[] highPrices, double[] lowPrices, double optInAcceleration/*
+																							 * ï¿½
+																							 * ï¿½
+																							 * ï¿½
+																							 * Ù¶
+																							 * ï¿½
+																							 */, double optInMaximum/*
+																													 * ï¿½
+																													 * ï¿½
+																													 * ï¿½
+																													 * Öµ
+																													 */) {
+		/*
+		 * SARï¿½ï¿½nï¿½ï¿½=SARï¿½ï¿½nï¿½ï¿½1ï¿½ï¿½+AF[EPï¿½ï¿½N-1ï¿½ï¿½ï¿½ï¿½SARï¿½ï¿½N-1ï¿½ï¿½]ï¿½ï¿½
+		 * ï¿½ï¿½ï¿½Ð£ï¿½SARï¿½ï¿½nï¿½ï¿½Îªï¿½ï¿½nï¿½Õµï¿½SARÖµï¿½ï¿½SARï¿½ï¿½nï¿½ï¿½1ï¿½ï¿½Îªï¿½Ú£ï¿½nï¿½ï¿½1ï¿½ï¿½ï¿½Õµï¿½Öµï¿½ï¿½
+		 * AFÎªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó£ï¿½ï¿½ï¿½Ð¼ï¿½ï¿½ï¿½Ïµï¿½ï¿½EPÎªï¿½ï¿½ï¿½ï¿½Û£ï¿½ï¿½ï¿½ß¼Û»ï¿½ï¿½ï¿½Í¼Û£ï¿½
+		 */
+		double[] output = new double[lowPrices.length];
+		double[] tempoutput = new double[lowPrices.length];
+
+		MInteger begin = new MInteger();
+		MInteger length = new MInteger();
+		RetCode retCode = RetCode.InternalError;
+		begin.value = -1;
+		length.value = -1;
+
+		retCode = core.sar(0, lowPrices.length - 1, highPrices, lowPrices, optInAcceleration, optInMaximum, begin,
+				length, tempoutput);
+
+		for (int i = 1; i < lowPrices.length; i++) {
+			output[i] = tempoutput[i - 1];
+		}
+		return output;
+
+	}
+
+	// ï¿½ï¿½ï¿½Ç¿ï¿½ï¿½Ö¸ï¿½ï¿½
+	public double[] getRsi(double[] prices, int period) {
+		/*
+		 * ï¿½ï¿½ï¿½ï¿½AÎªNï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì¼Ûµï¿½ï¿½ï¿½ï¿½ï¿½Ö®ï¿½Í£ï¿½BÎªNï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì¼ÛµÄ¸ï¿½ï¿½ï¿½Ö®ï¿½Í³ï¿½ï¿½Ô£ï¿½ï¿½ï¿½1ï¿½ï¿½
+		 * ï¿½ï¿½ï¿½ï¿½Aï¿½ï¿½Bï¿½ï¿½Îªï¿½ï¿½Aï¿½ï¿½Bï¿½ï¿½ï¿½ï¿½RSIï¿½ï¿½ï¿½ã¹«Ê½ï¿½ï¿½ï¿½ï¿½RSIï¿½ï¿½Nï¿½ï¿½=Aï¿½Â£ï¿½Aï¿½ï¿½Bï¿½ï¿½ï¿½ï¿½100
+		 */
+		double[] output = new double[prices.length];
+		double[] tempOutPut = new double[prices.length];
+
+		MInteger begin = new MInteger();
+		MInteger length = new MInteger();
+		RetCode retCode = RetCode.InternalError;
+		begin.value = -1;
+		length.value = -1;
+
+		retCode = core.rsi(0, prices.length - 1, prices, period, begin, length, tempOutPut);
+
+		for (int i = 0; i < period; i++) {
+			output[i] = 0;
+		}
+		for (int i = period; 0 < i && i < (prices.length); i++) {
+			output[i] = tempOutPut[i - period];
+		}
+		return output;
+	}
+
+	// Æ½ï¿½ï¿½ï¿½ï¿½Í¬Æ½ï¿½ï¿½Ö¸ï¿½ï¿½
+	public double[][] getMACD(double[] prices, int optInFastPeriod, int optInSlowPeriod, int optInSignalPeriod) {
+		/*
+		 * optInFastPeriod(ï¿½ï¿½ï¿½ï¿½)ï¿½ï¿½optInSlowPeriod(ï¿½ï¿½ï¿½ï¿½)ï¿½ï¿½optInSignalPeriod(ï¿½Åºï¿½ï¿½ï¿½
+		 * ï¿½ï¿½ ï¿½Å£Í£ï¿½n=ï¿½ï¿½n*2/ï¿½ï¿½n+1ï¿½ï¿½+ï¿½Å£Í£ï¿½n-1*ï¿½ï¿½n-1ï¿½ï¿½/ï¿½ï¿½n+1ï¿½ï¿½ Ê½ï¿½ï¿½
+		 * ï¿½ï¿½n:ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì¼ï¿½;ï¿½Æ¶ï¿½Æ½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú£Å£Í£ï¿½n:ï¿½ï¿½nï¿½Õ£Å£Í£ï¿½Öµ
+		 * ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â£ï¿½ï¿½ï¿½ï¿½Ù£Å£Í£ï¿½Ò»ï¿½ï¿½Ñ¡ï¿½ï¿½ï¿½Õ£ï¿½ï¿½ï¿½ï¿½Ù£Å£Í£ï¿½Ò»ï¿½ï¿½Ñ¡12ï¿½Õ£ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½ï¿½Ä£É£Æ£ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½Îªï¿½ï¿½
+		 * ï¿½Ä£É£Æ£ï¿½ï¿½Å£Í£ï¿½6ï¿½ï¿½ï¿½Å£Í£ï¿½12 ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ½ï¿½ï¿½Öµï¿½ï¿½ï¿½ï¿½DEAï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ã¹«Ê½Îªï¿½ï¿½
+		 * ï¿½Ä£Å£ï¿½nï¿½ï¿½ï¿½Ä£Å£ï¿½n-1*8/10+ï¿½Ä£É£ï¿½n*2/10
+		 * ï¿½Í£ï¿½ï¿½Ã£ï¿½nï¿½ï¿½ï¿½ï¿½ï¿½Ä£É£ï¿½nï¿½ï¿½ï¿½Í£ï¿½ï¿½Ã£ï¿½n-1ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í£ï¿½ï¿½Ã£ï¿½n-1
+		 */
+		double[] tempoutput1 = new double[prices.length];
+		double[] tempoutput2 = new double[prices.length];
+		double[] tempoutput3 = new double[prices.length];
+		double[][] output = { new double[prices.length], new double[prices.length], new double[prices.length] };
+
+		double[] result1 = new double[prices.length];
+		double[] result2 = new double[prices.length];
+		double[] result3 = new double[prices.length];
+
+		double[] temp = new double[60];
+
+		MInteger begin = new MInteger();
+		MInteger length = new MInteger();
+		RetCode retCode = RetCode.InternalError;
+		begin.value = -1;
+		length.value = -1;
+
+		retCode = core.macd(0, prices.length - 1, prices, optInFastPeriod, optInSlowPeriod, optInSignalPeriod, begin,
+				length, tempoutput1, tempoutput2, tempoutput3);
+
+		for (int i = 0; i < prices.length - optInSlowPeriod; i++) {
+			result1[i] = 0;
+			result2[i] = 0;
+			result3[i] = 0;
+		}
+		for (int i = prices.length - optInSlowPeriod; 0 < i && i < (prices.length); i++) {
+			result1[i] = tempoutput1[i - (prices.length - optInSlowPeriod)];
+			result2[i] = tempoutput2[i - (prices.length - optInSlowPeriod)];
+			result3[i] = tempoutput3[i - (prices.length - optInSlowPeriod)];
+		}
+
+		for (int i = 0; i < prices.length; i++) {
+			output[0][i] = result1[i];
+			output[1][i] = result2[i];
+			output[2][i] = result3[i];
+		}
+		return output;
+	}
+
+	// Æ½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë¶ï¿½Ö¸ï¿½ï¿½
+	public double[] getAdx(double[] lowPrices, double[] highPrices, double[] closePrices, int optInTimePeriod) {
+		/*
+		 * ADX = SUM[(+DI-(-DI))/(+DI+(-DI)), N]/N N ï¿½ï¿½
+		 * ï¿½ï¿½ï¿½Ú¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¹ï¿½Ãµï¿½Ê±ï¿½ï¿½Îµï¿½ï¿½ï¿½Öµï¿½ï¿½
+		 */
+		double[] output = new double[lowPrices.length];
+		double[] tempOutPut = new double[lowPrices.length];
+
+		MInteger begin = new MInteger();
+		MInteger length = new MInteger();
+		RetCode retCode = RetCode.InternalError;
+		begin.value = -1;
+		length.value = -1;
+
+		retCode = core.adx(0, lowPrices.length - 1, highPrices, lowPrices, closePrices, optInTimePeriod, begin, length,
+				tempOutPut);
+		// Adx(int startIdx, int endIdx, double[] inHigh, double[] inLow,
+		// double[] inClose, int optInTimePeriod, out int outBegIdx, out int
+		// outNBElement, double[] outReal);
+
+		for (int i = 0; i < lowPrices.length - length.value; i++) {
+			output[i] = 0;
+		}
+		for (int i = lowPrices.length - length.value; 0 < i && i < (lowPrices.length); i++) {
+			output[i] = tempOutPut[i - (lowPrices.length - length.value)];
+		}
+
+		return output;
+
+	}
+
+	// Æ½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë¶ï¿½Ö¸ï¿½ï¿½
+	public double[] getAdxr(double[] lowPrices, double[] highPrices, double[] closePrices, int optInTimePeriod) {
+		/*
+		 * ADX = SUM[(+DI-(-DI))/(+DI+(-DI)), N]/N N ï¿½ï¿½
+		 * ï¿½ï¿½ï¿½Ú¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¹ï¿½Ãµï¿½Ê±ï¿½ï¿½Îµï¿½ï¿½ï¿½Öµï¿½ï¿½
+		 */
+		double[] output = new double[lowPrices.length];
+		double[] tempOutPut = new double[lowPrices.length];
+
+		MInteger begin = new MInteger();
+		MInteger length = new MInteger();
+		RetCode retCode = RetCode.InternalError;
+		begin.value = -1;
+		length.value = -1;
+
+		retCode = core.adxr(0, lowPrices.length - 1, highPrices, lowPrices, closePrices, optInTimePeriod, begin,
+				length, tempOutPut);
+		// Adx(int startIdx, int endIdx, double[] inHigh, double[] inLow,
+		// double[] inClose, int optInTimePeriod, out int outBegIdx, out int
+		// outNBElement, double[] outReal);
+
+		for (int i = 0; i < lowPrices.length - length.value; i++) {
+			output[i] = 0;
+		}
+		for (int i = lowPrices.length - length.value; 0 < i && i < (lowPrices.length); i++) {
+			output[i] = tempOutPut[i - (lowPrices.length - length.value)];
+		}
+
+		return output;
+	}
+
+	// ï¿½ï¿½ï¿½ï¿½Í¨ï¿½ï¿½Ö¸ï¿½ï¿½
+	public double[][] getBbands(double[] prices, int optInTimePeriod, double optInNbDevUp, double optInNbDevDn) {
+		/*
+		 * optInTimePeriod:Ê±ï¿½ä£¬optInNbDevUpï¿½ï¿½ï¿½Ï¹ì£¨UPï¿½ß£ï¿½,optInNbDevDn:ï¿½Â¹ì£¨Downï¿½ï¿½ ï¿½ï¿½
+		 * ï¿½Ð¹
+		 * ï¿½ï¿½ï¿½=Nï¿½ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½Æ½ï¿½ï¿½ï¿½ß£ï¿½ï¿½Ï¹ï¿½ï¿½ï¿½=ï¿½Ð¹ï¿½ï¿½ß£ï¿½ï¿½ï¿½Dï¿½ï¿½ï¿½ï¿½×¼ï¿½î£©ï¿½ï¿½ï¿½Â¹ï¿½ï¿½ï¿½=ï¿½Ð¹ï¿½ï¿½ß£ï¿½ï¿½ï¿½Dï¿½ï¿½ï¿½ï¿½×¼ï¿½î£©ï¿½ï¿½ï¿½ï¿½
+		 * ï¿½ï¿½ï¿½Ð¹ï¿½ï¿½ï¿½=SMAï¿½ï¿½close
+		 * ï¿½ï¿½Nï¿½ï¿½ï¿½ï¿½D=ï¿½ï¿½×¼ï¿½ï¿½Ä²ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ÎªÄ¬ï¿½ï¿½Öµï¿½ï¿½ï¿½ï¿½2ï¿½ï¿½ï¿½ï¿½×¼ï¿½ï¿½=SUM[(Close-a
+		 * )2ï¿½ï¿½N]ï¿½ï¿½(N-1)ï¿½ï¿½Öµï¿½ï¿½Æ½ï¿½ï¿½ï¿½ï¿½.
+		 */
+		MAType optInMAType = MAType.Sma;
+
+		double[] tempoutput1 = new double[prices.length];
+		double[] tempoutput2 = new double[prices.length];
+		double[] tempoutput3 = new double[prices.length];
+		double[][] output = { new double[prices.length], new double[prices.length], new double[prices.length] };
+
+		double[] result1 = new double[prices.length];
+		double[] result2 = new double[prices.length];
+		double[] result3 = new double[prices.length];
+
+		double[] temp = new double[60];
+		MInteger begin = new MInteger();
+		MInteger length = new MInteger();
+		RetCode retCode = RetCode.InternalError;
+		begin.value = -1;
+		length.value = -1;
+
+		retCode = core.bbands(0, prices.length - 1, prices, optInTimePeriod, optInNbDevUp, optInNbDevDn, optInMAType,
+				begin, length, tempoutput1, tempoutput2, tempoutput3);
+		// public static RetCode Bbands(int startIdx, int endIdx, float[]
+		// inReal, int optInTimePeriod, double optInNbDevUp, double
+		// optInNbDevDn, MAType optInMAType, out int outBegIdx, out int
+		// outNBElement, double[] outRealUpperBand, double[] outRealMiddleBand,
+		// double[] outRealLowerBand);
+
+		for (int i = 0; i < optInTimePeriod - 1; i++) {
+			result1[i] = 0;
+			result2[i] = 0;
+			result3[i] = 0;
+		}
+		for (int i = optInTimePeriod - 1; 0 < i && i < (prices.length); i++) {
+			result1[i] = tempoutput1[i - optInTimePeriod + 1];
+			result2[i] = tempoutput2[i - optInTimePeriod + 1];
+			result3[i] = tempoutput3[i - optInTimePeriod + 1];
+		}
+
+		for (int i = 0; i < prices.length; i++) {
+			output[0][i] = result1[i];
+			output[1][i] = result2[i];
+			output[2][i] = result3[i];
+		}
+		return output;
+	}
+
+	// ï¿½ï¿½Æ·Í¨ï¿½ï¿½Ö¸ï¿½ï¿½
+	public double[] getCci(double[] highPrices, double[] lowPrices, double[] closePrices, int inTimePeriod) {
+		/*
+		 * (1) TP=ï¿½ï¿½ï¿½ï¿½ß¼ï¿½+ï¿½ï¿½Í¼ï¿½+ï¿½ï¿½ï¿½Ì¼Û£ï¿½ï¿½ï¿½3 ï¿½ï¿½ (2) SMA TP=SMA (TP, N)×¢ï¿½â£ºNÎªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú¡ï¿½
+		 * ï¿½ï¿½3ï¿½ï¿½MDï¿½ï¿½Mean Deviationï¿½ï¿½Ò²ï¿½ï¿½ï¿½ï¿½Æ½ï¿½ï¿½ï¿½ï¿½Öµ MD=ï¿½Æ¦ï¿½TP-SMA TPï¿½ï¿½ï¿½N×¢ï¿½â£ºï¿½Æ´ï¿½ï¿½Îªï¿½Üºï¿½
+		 * ï¿½ï¿½4ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½CCIï¿½ï¿½Öµ ï¿½ï¿½CCI=ï¿½ï¿½TP-SMA TPï¿½ï¿½ï¿½ï¿½(0.015ï¿½ï¿½MD)
+		 */
+		double[] output = new double[lowPrices.length];
+		double[] tempOutPut = new double[lowPrices.length];
+
+		MInteger begin = new MInteger();
+		MInteger length = new MInteger();
+		RetCode retCode = RetCode.InternalError;
+		begin.value = -1;
+		length.value = -1;
+
+		retCode = core.cci(0, lowPrices.length - 1, highPrices, lowPrices, closePrices, inTimePeriod, begin, length,
+				tempOutPut);
+		// Cci(int startIdx, int endIdx, double[] inHigh, double[] inLow,
+		// double[] inClose, int optInTimePeriod, out int outBegIdx, out int
+		// outNBElement, double[] outReal);
+
+		for (int i = 0; i < inTimePeriod - 1; i++) {
+			output[i] = 0;
+		}
+		for (int i = inTimePeriod - 1; 0 < i && i < (lowPrices.length); i++) {
+			output[i] = tempOutPut[i - inTimePeriod + 1];
+		}
+
+		return output;
+	}
+
+	// EMA=Exponential Moving Averageï¿½ï¿½Ö¸ï¿½ï¿½Æ½ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½
+	public double[] getEma(double[] prices, int optInTimePeriod) {
+		/*
+		 * EXPMAï¿½ï¿½(ï¿½ï¿½ï¿½Õ»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì¼Û£ï¿½ï¿½ï¿½Ò»ï¿½Õ»ï¿½ï¿½ï¿½ï¿½ï¿½EXPMA)/ï¿½ï¿½+ï¿½ï¿½Ò»ï¿½Õ»ï¿½ï¿½ï¿½ï¿½ï¿½EXPMA
+		 */
+		double[] tempOutPut = new double[prices.length];
+		double[] output = new double[prices.length];
+
+		MInteger begin = new MInteger();
+		MInteger length = new MInteger();
+		RetCode retCode = RetCode.InternalError;
+		begin.value = -1;
+		length.value = -1;
+
+		retCode = core.ema(0, prices.length - 1, prices, optInTimePeriod, begin, length, tempOutPut);
+		// Ema(int startIdx, int endIdx, double[] inReal, int optInTimePeriod,
+		// out int outBegIdx, out int outNBElement, double[] outReal);
+		for (int i = 0; i < optInTimePeriod - 1; i++) {
+			output[i] = 0;
+		}
+		for (int i = optInTimePeriod - 1; 0 < i && i < (prices.length); i++) {
+			output[i] = tempOutPut[i - optInTimePeriod + 1];
+		}
+		return output;
+	}
+
+	// MACDEXT=MACD with controllable MA typeï¿½ï¿½ï¿½É¿Ø¾ï¿½ï¿½ï¿½Æ½ï¿½ï¿½ï¿½ï¿½Í¬Æ½ï¿½ï¿½Ö¸ï¿½ï¿½
+	public double[][] getMacdExt(double[] prices, int optInFastPeriod, int optInSlowPeriod, int optInSignalPeriod) {
+		/*
+		 * DIFFï¿½ß¡ï¿½ï¿½ï¿½Differenceï¿½ï¿½ï¿½ï¿½ï¿½Ì¼Û¶ï¿½ï¿½Ú¡ï¿½ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½Æ½ï¿½ï¿½ï¿½Æ¶ï¿½Æ½ï¿½ï¿½ï¿½ß¼ï¿½Ä²ï¿½
+		 * DEAï¿½ß¡ï¿½ï¿½ï¿½Difference Exponential Averageï¿½ï¿½DIFFï¿½ßµï¿½Mï¿½ï¿½Ö¸ï¿½ï¿½Æ½ï¿½ï¿½ï¿½Æ¶ï¿½Æ½ï¿½ï¿½ï¿½ï¿½
+		 * MACDï¿½ß¡ï¿½DIFFï¿½ï¿½ï¿½ï¿½DEAï¿½ßµÄ²î£¬ï¿½ï¿½É«ï¿½ï¿½×´ï¿½ï¿½
+		 * ï¿½ï¿½ï¿½ï¿½SHORT(ï¿½ï¿½ï¿½ï¿½)ï¿½ï¿½LONG(ï¿½ï¿½ï¿½ï¿½)ï¿½ï¿½Mï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½Îª12ï¿½ï¿½26ï¿½ï¿½9ï¿½ï¿½Ê½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½
+		 * ï¿½ï¿½È¨Æ½ï¿½ï¿½Ö¸ï¿½ï¿½Ä£É£ï¿½=ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½+ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½+2ï¿½ï¿½ï¿½Äµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½
+		 * Ê®ï¿½ï¿½ï¿½ï¿½Æ½ï¿½ï¿½Ïµï¿½ï¿½Ì£ï¿½ï¿½ï¿½ï¿½ï¿½
+		 * =2/ï¿½ï¿½12+1ï¿½ï¿½=0.1538ï¿½ï¿½Ê®ï¿½ï¿½ï¿½ï¿½Æ½ï¿½ï¿½Ïµï¿½ï¿½Ì£ï¿½ï¿½ï¿½ï¿½ï¿½=2/ï¿½ï¿½26+1ï¿½ï¿½=0.0741
+		 * Ê®ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½Æ½ï¿½ï¿½Öµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õ£Å£Í£ï¿½ï¿½ï¿½=L12ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½ +
+		 * 11/ï¿½ï¿½12+1ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õµï¿½12ï¿½ï¿½EMA
+		 * ï¿½ï¿½Ê®ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½Æ½ï¿½ï¿½Öµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õ£Å£Í£ï¿½ï¿½ï¿½=L26ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½ +
+		 * 25/ï¿½ï¿½26+1ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õµï¿½26ï¿½ï¿½EMA EMAï¿½ï¿½Exponential Moving
+		 * Averageï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½Æ½ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ê¡£Ò²ï¿½ï¿½EXPMAÖ¸ï¿½ê£¬ï¿½ï¿½Ò²ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½
+		 * ï¿½ï¿½Ö¸ï¿½ï¿½Æ½ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½Ê½ï¿½Ý¼ï¿½ï¿½ï¿½È¨ï¿½ï¿½ï¿½Æ¶ï¿½Æ½ï¿½ï¿½
+		 * ï¿½ï¿½ï¿½ï¿½Öµï¿½Ä¼ï¿½È¨ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½Ê½ï¿½Ý¼ï¿½ï¿½ï¿½Ô½ï¿½ï¿½ï¿½Úµï¿½ï¿½ï¿½Ý¼ï¿½È¨Ô½ï¿½Ø£ï¿½ï¿½ï¿½ï¿½Ï¾Éµï¿½ï¿½ï¿½ï¿½Ò²ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Ä¼ï¿½È¨ï¿½ï¿½
+		 * ï¿½ï¿½ï¿½ï¿½ï¿½Ê£ï¿½ï¿½Ä£É£Æ£ï¿½=12ï¿½ï¿½EMA-26ï¿½ï¿½EMAï¿½ï¿½ï¿½ï¿½DIFÆ½ï¿½ï¿½Öµï¿½ï¿½DEAï¿½ï¿½=ï¿½ï¿½ï¿½9ï¿½Õµï¿½DIFÖ®ï¿½ï¿½/9
+		 * ï¿½Í£ï¿½ï¿½Ã£ï¿½=ï¿½ï¿½ï¿½ï¿½ï¿½Õµï¿½DIFF-ï¿½ï¿½ï¿½Õµï¿½DEAï¿½ï¿½ï¿½ï¿½2
+		 */
+		double[] tempoutput1 = new double[prices.length];
+		double[] tempoutput2 = new double[prices.length];
+		double[] tempoutput3 = new double[prices.length];
+		double[][] output = { new double[prices.length], new double[prices.length], new double[prices.length] };
+
+		double[] result1 = new double[prices.length];
+		double[] result2 = new double[prices.length];
+		double[] result3 = new double[prices.length];
+
+		double[] temp = new double[60];
+		MInteger begin = new MInteger();
+		MInteger length = new MInteger();
+		RetCode retCode = RetCode.InternalError;
+		begin.value = -1;
+		length.value = -1;
+		MAType optInFastMAType = MAType.Ema;
+		MAType optInSlowMAType = MAType.Ema;
+		MAType optInSignalMAType = MAType.Ema;
+
+		retCode = core.macdExt(0, prices.length - 1, prices, optInFastPeriod, optInFastMAType, optInSlowPeriod,
+				optInSlowMAType, optInSignalPeriod, optInSignalMAType, begin, length, tempoutput1, tempoutput2,
+				tempoutput3);
+		// MacdExt(int startIdx, int endIdx, double[] inReal, int
+		// optInFastPeriod, MAType optInFastMAType, int optInSlowPeriod, MAType
+		// optInSlowMAType, int optInSignalPeriod, MAType optInSignalMAType, out
+		// int outBegIdx, out int outNBElement, double[] outMACD, double[]
+		// outMACDSignal, double[] outMACDHist);
+
+		for (int i = 0; i < begin.value; i++) {
+			result1[i] = 0;
+			result2[i] = 0;
+			result3[i] = 0;
+		}
+		for (int i = begin.value; 0 < i && i < (prices.length); i++) {
+			result1[i] = tempoutput1[i - begin.value];
+			result2[i] = tempoutput2[i - begin.value];
+			result3[i] = tempoutput3[i - begin.value];
+		}
+
+		for (int i = 0; i < prices.length; i++) {
+			output[0][i] = result1[i];
+			output[1][i] = result2[i];
+			output[2][i] = result3[i];
+		}
+		return output;
+	}
+
+	// MFI=Money Flow Indexï¿½ï¿½ï¿½Ê½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½
+	public double[] getMfi(double[] highPrices, double[] lowPrices, double[] closePrices, double[] inVolume,
+			int optInTimePeriod) {
+		/*
+		 * 1.ï¿½ï¿½ï¿½Í¼Û¸ï¿½TPï¿½ï¿½=Nï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì¼ï¿½ï¿½ï¿½ï¿½ï¿½ß¼Û¡ï¿½ï¿½ï¿½Í¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½Ì¼Ûµï¿½ï¿½ï¿½ï¿½ï¿½Æ½ï¿½ï¿½Öµ
+		 * 2.ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½MFï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¼Û¸ï¿½TPï¿½ï¿½ï¿½ï¿½Nï¿½ï¿½ï¿½Ú³É½ï¿½ï¿½ï¿½ï¿½
+		 * 3.ï¿½ï¿½ï¿½ï¿½ï¿½MFï¿½ï¿½ï¿½ï¿½ï¿½ï¿½MFï¿½ï¿½ï¿½ò½«µï¿½ï¿½Õµï¿½MFÖµï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½PMFï¿½ï¿½
+		 * 4.ï¿½ï¿½ï¿½ï¿½ï¿½MFï¿½ï¿½ï¿½ï¿½ï¿½ï¿½MFï¿½ï¿½ï¿½ò½«µï¿½ï¿½Õµï¿½MFÖµï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½NMFï¿½ï¿½
+		 * 5.MFIï¿½ï¿½100-ï¿½ï¿½100/(1ï¿½ï¿½PMF/NMF)ï¿½ï¿½
+		 */
+		double[] output = new double[lowPrices.length];
+		double[] tempOutPut = new double[lowPrices.length];
+
+		MInteger begin = new MInteger();
+		MInteger length = new MInteger();
+		RetCode retCode = RetCode.InternalError;
+		begin.value = -1;
+		length.value = -1;
+
+		retCode = core.mfi(0, lowPrices.length - 1, highPrices, lowPrices, closePrices, inVolume, optInTimePeriod,
+				begin, length, tempOutPut);
+
+		// Mfi(int startIdx, int endIdx, double[] inHigh, double[] inLow,
+		// double[] inClose, double[] inVolume, int optInTimePeriod, out int
+		// outBegIdx, out int outNBElement, double[] outReal);
+		for (int i = 0; i < optInTimePeriod; i++) {
+			output[i] = 0;
+		}
+		for (int i = optInTimePeriod; 0 < i && i < (lowPrices.length); i++) {
+			output[i] = tempOutPut[i - optInTimePeriod];
+		}
+
+		return output;
+	}
+
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½
+	public double[] getObv(double[] prices, double[] volume) {
+		/*
+		 * ï¿½ï¿½ï¿½ï¿½OBV=ï¿½ï¿½ï¿½ï¿½OBV+sgnï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä³É½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½sgnï¿½Ç·ï¿½Åµï¿½ï¿½ï¿½Ë¼ï¿½ï¿½sgnï¿½ï¿½ï¿½ï¿½ï¿½ï¿½+1ï¿½ï¿½Ò²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½-1ï¿½
+		 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Sgn=+1 ï¿½ï¿½ï¿½ï¿½ï¿½Ì¼Û¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì¼ï¿½Sgn=ï¿½D1
+		 * ï¿½ï¿½ï¿½ï¿½ï¿½Ì¼ï¿½<ï¿½ï¿½ï¿½ï¿½ï¿½Ì¼Û³É½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½Ç³É½ï¿½ï¿½ï¿½Æ±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç³É½ï¿½ï¿½ï¿½î¡£
+		 */
+		double[] output = new double[prices.length];
+		MInteger begin = new MInteger();
+		MInteger length = new MInteger();
+		RetCode retCode = RetCode.InternalError;
+		begin.value = -1;
+		length.value = -1;
+
+		retCode = core.obv(0, prices.length - 1, prices, volume, begin, length, output);
+		// public static RetCode Obv(int startIdx, int endIdx, double[] inReal,
+		// double[] inVolume, out int outBegIdx, out int outNBElement, double[]
+		// outReal);
+		return output;
+
+	}
+
+	// ï¿½ä»¯ï¿½ï¿½
+	public double[] getRoc(double[] prices, int optInTimePeriod) {
+		/*
+		 * ((price/prevPrice)-1)*100
+		 */
+		double[] tempOutPut = new double[prices.length];
+		double[] output = new double[prices.length];
+
+		MInteger begin = new MInteger();
+		MInteger length = new MInteger();
+		RetCode retCode = RetCode.InternalError;
+		begin.value = -1;
+		length.value = -1;
+
+		retCode = core.roc(0, prices.length - 1, prices, optInTimePeriod, begin, length, tempOutPut);
+		// Roc(int startIdx, int endIdx, float[] inReal, int optInTimePeriod,
+		// out int outBegIdx, out int outNBElement, double[] outReal);
+		for (int i = 0; i < optInTimePeriod - 1; i++) {
+			output[i] = 0;
+		}
+		for (int i = optInTimePeriod - 1; 0 < i && i < (prices.length); i++) {
+			output[i] = tempOutPut[i - optInTimePeriod + 1];
+		}
+		return output;
+	}
+
+	// ï¿½Ù·ï¿½ï¿½ï¿½Ä±ï¿½ï¿½ï¿½ï¿½
+	public double[] getRocP(double[] prices, int optInTimePeriod) {
+		/*
+		 * (price-prevPrice)/prevPrice
+		 */
+		double[] tempOutPut = new double[prices.length];
+		double[] output = new double[prices.length];
+
+		MInteger begin = new MInteger();
+		MInteger length = new MInteger();
+		RetCode retCode = RetCode.InternalError;
+		begin.value = -1;
+		length.value = -1;
+
+		retCode = core.rocP(0, prices.length - 1, prices, optInTimePeriod, begin, length, tempOutPut);
+		// Roc(int startIdx, int endIdx, float[] inReal, int optInTimePeriod,
+		// out int outBegIdx, out int outNBElement, double[] outReal);
+		for (int i = 0; i < optInTimePeriod - 1; i++) {
+			output[i] = 0;
+		}
+		for (int i = optInTimePeriod - 1; 0 < i && i < (prices.length); i++) {
+			output[i] = tempOutPut[i - optInTimePeriod + 1];
+		}
+		return output;
+	}
+
+	// ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½Ö¸ï¿½ï¿½
+	public double[][] getStochF(double[] highPrices, double[] lowPrices, double[] closePrices, int optInFastK_Period,
+			int optInFastD_Period) {
+		/*
+		 * optInFastK_Period:ï¿½ï¿½Kï¿½ï¿½ï¿½Ú£ï¿½optInSlowK_Periodï¿½ï¿½ï¿½ï¿½Kï¿½ï¿½ï¿½Ú£ï¿½optInSlowD_Period
+		 * ï¿½ï¿½ï¿½ï¿½Dï¿½ï¿½ï¿½ï¿½ STOCH=Stochasticï¿½ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½,KDJï¿½ï¿½K %K = 100*
+		 * (LOSE-LOW(%K))/(HIGH(%K)-LOW(%K)) CLOSE ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì¼Û¸ï¿½LOW(%K) ï¿½ï¿½
+		 * %Kï¿½ï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½HIGH(%K) ï¿½ï¿½ %Kï¿½ï¿½ï¿½ï¿½ï¿½Öµ %Dï¿½ï¿½ï¿½Æ¶ï¿½Æ½ï¿½ï¿½ï¿½ß£ï¿½%D = SMA(%Kï¿½ï¿½ N)
+		 */
+
+		double[][] output = { new double[lowPrices.length], new double[lowPrices.length] };
+		double[] tempOutPut1 = new double[lowPrices.length];
+		double[] tempOutPut2 = new double[lowPrices.length];
+
+		MInteger begin = new MInteger();
+		MInteger length = new MInteger();
+		RetCode retCode = RetCode.InternalError;
+		begin.value = -1;
+		length.value = -1;
+
+		MAType optInFastD_MAType = MAType.Sma;
+
+		retCode = core.stochF(0, lowPrices.length - 1, highPrices, lowPrices, closePrices, optInFastK_Period,
+				optInFastD_Period, optInFastD_MAType, begin, length, tempOutPut1, tempOutPut2);
+		// StochF(int startIdx, int endIdx, double[] inHigh, double[] inLow,
+		// double[] inClose, int optInFastK_Period, int optInFastD_Period,
+		// MAType optInFastD_MAType, out int outBegIdx, out int outNBElement,
+		// double[] outFastK, double[] outFastD);
+
+		for (int i = 0; i < lowPrices.length - length.value; i++) {
+			output[0][i] = 0;
+			output[1][i] = 0;
+		}
+		for (int i = lowPrices.length - length.value; 0 < i && i < (lowPrices.length); i++) {
+			output[0][i] = tempOutPut1[i - (lowPrices.length - length.value)];
+			output[1][i] = tempOutPut2[i - (lowPrices.length - length.value)];
+		}
+
+		return output;
+
+	}
+
+	// ï¿½ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½
+	public double[][] getStoch(double[] highPrices, double[] lowPrices, double[] closePrices, int optInFastK_Period,
+			int optInSlowK_Period, int optInSlowD_Period) {
+		/*
+		 * optInFastK_Period:ï¿½ï¿½Kï¿½ï¿½ï¿½Ú£ï¿½optInSlowK_Periodï¿½ï¿½ï¿½ï¿½Kï¿½ï¿½ï¿½Ú£ï¿½optInSlowD_Period
+		 * ï¿½ï¿½ï¿½ï¿½Dï¿½ï¿½ï¿½ï¿½ STOCH=Stochasticï¿½ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½,KDJï¿½ï¿½K %K = 100*
+		 * (LOSE-LOW(%K))/(HIGH(%K)-LOW(%K)) CLOSE ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì¼Û¸ï¿½LOW(%K) ï¿½ï¿½
+		 * %Kï¿½ï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½HIGH(%K) ï¿½ï¿½ %Kï¿½ï¿½ï¿½ï¿½ï¿½Öµ MaxHigh(N) - N ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½ßµã£» MinLow(N)
+		 * - N ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½Íµã£» MA - ï¿½Æ¶ï¿½Æ½ï¿½ï¿½ï¿½ß£ï¿½N - ï¿½ï¿½/ï¿½Í·ï¿½Î§ï¿½Ä¼ï¿½ï¿½ã³¤ï¿½È£ï¿½ P -
+		 * %D(i)ï¿½ï¿½ï¿½Ë²ï¿½ï¿½ï¿½ï¿½Ú¡ï¿½
+		 */
+
+		double[][] output = { new double[lowPrices.length], new double[lowPrices.length] };
+		double[] tempOutPut1 = new double[lowPrices.length];
+		double[] tempOutPut2 = new double[lowPrices.length];
+
+		MInteger begin = new MInteger();
+		MInteger length = new MInteger();
+		RetCode retCode = RetCode.InternalError;
+		begin.value = -1;
+		length.value = -1;
+
+		MAType optInSlowK_MAType = MAType.Sma;
+		MAType optInSlowD_MAType = MAType.Sma;
+
+		retCode = core.stoch(0, lowPrices.length - 1, highPrices, lowPrices, closePrices, optInFastK_Period,
+				optInSlowK_Period, optInSlowK_MAType, optInSlowD_Period, optInSlowD_MAType, begin, length, tempOutPut1,
+				tempOutPut2);
+		// Stoch(int startIdx, int endIdx, double[] inHigh, double[] inLow,
+		// double[] inClose, int optInFastK_Period, int optInSlowK_Period,
+		// MAType optInSlowK_MAType, int optInSlowD_Period, MAType
+		// optInSlowD_MAType, out int outBegIdx, out int outNBElement, double[]
+		// outSlowK, double[] outSlowD);
+
+		for (int i = 0; i < lowPrices.length - length.value; i++) {
+			output[0][i] = 0;
+			output[1][i] = 0;
+		}
+		for (int i = lowPrices.length - length.value; 0 < i && i < (lowPrices.length); i++) {
+			output[0][i] = tempOutPut1[i - (lowPrices.length - length.value)];
+			output[1][i] = tempOutPut2[i - (lowPrices.length - length.value)];
+		}
+
+		return output;
+
+	}
+
+	// ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½Æ½ï¿½ï¿½ï¿½Æ¶ï¿½Æ½ï¿½ï¿½Ö¸ï¿½ï¿½
+	public double[] getTrix(double[] prices, int period) {
+		/*
+		 * (1)ï¿½ï¿½ï¿½ï¿½Nï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì¼Ûµï¿½Ö¸ï¿½ï¿½Æ½ï¿½ï¿½AX AX = (Iï¿½ï¿½) ï¿½ï¿½ï¿½Ì¼ï¿½ * 2 /(N+1) + (I-1)ï¿½ï¿½ AX
+		 * (N-1) *(N+1) (2)ï¿½ï¿½ï¿½ï¿½Nï¿½ï¿½ï¿½AXï¿½ï¿½Ö¸ï¿½ï¿½Æ½ï¿½ï¿½BX BX = (Iï¿½ï¿½) AX * 2 /(N+1) +
+		 * (I-1)ï¿½ï¿½ BX (N-1) *(N+1) ï¿½ï¿½3)ï¿½ï¿½ï¿½ï¿½Nï¿½ï¿½ï¿½BXï¿½ï¿½Ö¸ï¿½ï¿½Æ½ï¿½ï¿½TRIX TRIX = (Iï¿½ï¿½) BX *
+		 * 2 /(N+1) + (I-1)ï¿½ï¿½ TRIX (N-1) *(N+1) (4)ï¿½ï¿½ï¿½ï¿½TRIXï¿½ï¿½mï¿½ï¿½ï¿½Æ¶ï¿½Æ½ï¿½ï¿½TMA TMA =
+		 * ((I-M)ï¿½ï¿½TRIXï¿½Û¼ï¿½) /Mï¿½ï¿½
+		 */
+		double[] output = new double[prices.length];
+		double[] tempOutPut = new double[prices.length];
+		MInteger begin = new MInteger();
+		MInteger length = new MInteger();
+		RetCode retCode = RetCode.InternalError;
+		begin.value = -1;
+		length.value = -1;
+
+		retCode = core.trix(0, prices.length - 1, prices, period, begin, length, tempOutPut);
+
+		for (int i = 0; i < begin.value; i++) {
+			output[i] = 0;
+		}
+		for (int i = begin.value; 0 < i && i < (prices.length); i++) {
+			output[i] = tempOutPut[i - begin.value];
+		}
+		return output;
+	}
+
+	// ï¿½ï¿½Æ·Í¨ï¿½ï¿½Ö¸ï¿½ï¿½
+	public double[] getWillR(double[] highPrices, double[] lowPrices, double[] closePrices, int inTimePeriod) {
+		/*
+		 * nï¿½ï¿½WMSï¿½ï¿½ï¿½ï¿½Hnï¿½ï¿½Ctï¿½ï¿½/(Hnï¿½ï¿½Ln)ï¿½ï¿½100ï¿½ï¿½CtÎªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì¼Û£ï¿½Hnï¿½ï¿½Lnï¿½ï¿½ï¿½ï¿½ï¿½nï¿½ï¿½ï¿½Ú£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		 * ï¿½ï¿½ì£©ï¿½ï¿½ï¿½Öµï¿½ï¿½ï¿½ß¼Ûºï¿½ï¿½ï¿½Í¼ï¿½
+		 */
+		double[] output = new double[lowPrices.length];
+		double[] tempOutPut = new double[lowPrices.length];
+
+		MInteger begin = new MInteger();
+		MInteger length = new MInteger();
+		RetCode retCode = RetCode.InternalError;
+		begin.value = -1;
+		length.value = -1;
+
+		retCode = core.willR(0, lowPrices.length - 1, highPrices, lowPrices, closePrices, inTimePeriod, begin, length,
+				tempOutPut);
+		// WillR(int startIdx, int endIdx, double[] inHigh, double[] inLow,
+		// double[] inClose, int optInTimePeriod, out int outBegIdx, out int
+		// outNBElement, double[] outReal);
+
+		for (int i = 0; i < inTimePeriod - 1; i++) {
+			output[i] = 0;
+		}
+		for (int i = inTimePeriod - 1; 0 < i && i < (lowPrices.length); i++) {
+			output[i] = tempOutPut[i - inTimePeriod + 1];
+		}
+
+		return output;
+	}
+
+	// AD=Chaikin A/D Lineï¿½ï¿½ï¿½Û»ï¿½ï¿½É·ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½
+	public double[] getAd(double[] highPrices, double[] lowPrices, double[] closePrices, double[] inVolume,
+			int optInTimePeriod) {
+		/*
+		 * AD=Chaikin A/D Lineï¿½ï¿½ï¿½Û»ï¿½ï¿½É·ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½ CLVï¿½ï¿½ï¿½ã¹«Ê½ï¿½ï¿½ {[(C-L)-(H-C)]}/(H-L)) =
+		 * CLV Cï¿½ï¿½ï¿½ï¿½ï¿½Ì¼Û¡ï¿½Lï¿½ï¿½ï¿½ï¿½ï¿½ÕµÍµï¿½Hï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õ¸ßµã¡£
+		 * CLVï¿½Ä±ä¶¯ï¿½ï¿½Î§ï¿½ï¿½-1ï¿½ï¿½1Ö®ï¿½ä£¬ï¿½ï¿½ï¿½Äµï¿½Îª0ï¿½ï¿½CLVï¿½ï¿½ï¿½ï¿½ï¿½
+		 * ï¿½Ó¦ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ÚµÄ³É½ï¿½ï¿½ï¿½ï¿½ï¿½Ë£ï¿½ï¿½Û»ï¿½ï¿½ï¿½ÜºÍ¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Û»ï¿½/ï¿½É·ï¿½ï¿½ï¿½
+		 */
+		double[] output = new double[lowPrices.length];
+		// double[] tempOutPut = new double[lowPrices.length];
+
+		MInteger begin = new MInteger();
+		MInteger length = new MInteger();
+		RetCode retCode = RetCode.InternalError;
+		begin.value = -1;
+		length.value = -1;
+
+		retCode = core.ad(0, lowPrices.length - 1, highPrices, lowPrices, closePrices, inVolume, begin, length, output);
+
+		// Ad(int startIdx, int endIdx, double[] inHigh, double[] inLow,
+		// double[] inClose, double[] inVolume, out int outBegIdx, out int
+		// outNBElement, double[] outReal);
+
+		return output;
+	}
+
+	// ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½
+	public double[] getAdosc(double[] highPrices, double[] lowPrices, double[] closePrices, double[] inVolume,
+			int optInFastPeriod, int optInSlowPeriod) {
+		/*
+		 * (1)ADOSC=Chaikin A/D Oscillatorï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½ (2) CHAIKINï¿½ï¿½A/Dï¿½Ä£ï¿½nï¿½ï¿½expma
+		 * - A/Dï¿½Ä£ï¿½mï¿½ï¿½expmaï¿½ï¿½
+		 */
+		double[] output = new double[lowPrices.length];
+		// double[] tempOutPut = new double[lowPrices.length];
+
+		MInteger begin = new MInteger();
+		MInteger length = new MInteger();
+		RetCode retCode = RetCode.InternalError;
+		begin.value = -1;
+		length.value = -1;
+
+		retCode = core.adOsc(0, lowPrices.length - 1, highPrices, lowPrices, closePrices, inVolume, optInFastPeriod,
+				optInSlowPeriod, begin, length, output);
+		// AdOsc(int startIdx, int endIdx, double[] inHigh, double[] inLow,
+		// double[] inClose, double[] inVolume, int optInFastPeriod, int
+		// optInSlowPeriod, out int outBegIdx, out int outNBElement, double[]
+		// outReal)
+
+		return output;
+	}
+
+	// ï¿½ðµ´¾ï¿½Ô¼ï¿½
+	public double[] getApo(double[] prices, int optInFastPeriod, int optInSlowPeriod) {
+		/*
+		 * APO=Absolute Price Oscillatorï¿½ï¿½ï¿½ðµ´¾ï¿½Ô¼ï¿½
+		 */
+
+		double[] output = new double[prices.length];
+		double[] tempOutPut = new double[prices.length];
+
+		MAType optInMAType = null;
+		// MAType optInSlowD_MAType = new MAType();
+		MInteger begin = new MInteger();
+		MInteger length = new MInteger();
+		RetCode retCode = RetCode.InternalError;
+		begin.value = -1;
+		length.value = -1;
+
+		retCode = core.apo(0, prices.length - 1, prices, optInFastPeriod, optInSlowPeriod, optInMAType, begin, length,
+				tempOutPut);
+		// Apo(int startIdx, int endIdx, double[] inReal, int optInFastPeriod,
+		// int optInSlowPeriod, MAType optInMAType, out int outBegIdx, out int
+		// outNBElement, double[] outReal);
+
+		for (int i = 0; i < prices.length - length.value; i++) {
+			output[i] = 0;
+
+		}
+		for (int i = prices.length - length.value; 0 < i && i < (prices.length); i++) {
+			output[i] = tempOutPut[i - (prices.length - length.value)];
+		}
+
+		return output;
+
+	}
+
+	// ï¿½ï¿½Â¡Ö¸ï¿½ï¿½
+	public double[][] getAroon(double[] inHigh, double[] inLow, int optInTimePeriod) {
+		/*
+		 * Aroonï¿½ï¿½ï¿½ï¿½Â¡Ö¸ï¿½ï¿½ Aroon(ï¿½ï¿½ï¿½ï¿½)=[(ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½-ï¿½ï¿½ß¼Ûºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)/ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½]*100
+		 * Aroon(ï¿½Â½ï¿½)=[(ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½-ï¿½ï¿½Í¼Ûºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)/ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½]*100
+		 */
+
+		double[][] output = { new double[inHigh.length], new double[inHigh.length] };
+		double[] tempOutPut1 = new double[inHigh.length];
+		double[] tempOutPut2 = new double[inHigh.length];
+
+		MInteger begin = new MInteger();
+		MInteger length = new MInteger();
+		RetCode retCode = RetCode.InternalError;
+		begin.value = -1;
+		length.value = -1;
+
+		// MAType optInMAType = new MAType();
+		// MAType optInSlowD_MAType = new MAType();
+
+		retCode = core.aroon(0, inHigh.length - 1, inHigh, inLow, optInTimePeriod, begin, length, tempOutPut1,
+				tempOutPut2);
+		// Aroon(int startIdx, int endIdx, double[] inHigh, double[] inLow, int
+		// optInTimePeriod, out int outBegIdx, out int outNBElement, double[]
+		// outAroonDown, double[] outAroonUp);
+
+		for (int i = 0; i < inHigh.length - length.value; i++) {
+			output[0][i] = 0;
+			output[1][i] = 0;
+		}
+		for (int i = inHigh.length - length.value; 0 < i && i < (inHigh.length); i++) {
+			output[0][i] = tempOutPut1[i - (inHigh.length - length.value)];
+			output[1][i] = tempOutPut1[i - (inHigh.length - length.value)];
+		}
+
+		return output;
+
+	}
+
+	// ï¿½ï¿½Â¡ï¿½ï¿½
+	public double[] getAroonOsc(double[] inHigh, double[] inLow, int optInTimePeriod) {
+		/*
+		 * AROONOSC=Aroon Oscillatorï¿½ï¿½ï¿½ï¿½Â¡ï¿½ï¿½Ö¸ï¿½ï¿½ Í¨ï¿½ï¿½ï¿½ï¿½ã°¢Â¡ï¿½ï¿½ï¿½ï¿½ï¿½(Aroon up and
+		 * down)Ö®ï¿½ï¿½Öµï¿½ï¿½ï¿½ï¿½
+		 */
+
+		double[] output = new double[inHigh.length];
+		double[] tempOutPut = new double[inHigh.length];
+
+		MInteger begin = new MInteger();
+		MInteger length = new MInteger();
+		RetCode retCode = RetCode.InternalError;
+		begin.value = -1;
+		length.value = -1;
+
+		retCode = core.aroonOsc(0, inHigh.length - 1, inHigh, inLow, optInTimePeriod, begin, length, tempOutPut);
+		// AroonOsc(int startIdx, int endIdx, double[] inHigh, double[] inLow,
+		// int optInTimePeriod, out int outBegIdx, out int outNBElement,
+		// double[] outReal);
+
+		for (int i = 0; i < inHigh.length - length.value; i++) {
+			output[i] = 0;
+		}
+		for (int i = inHigh.length - length.value; 0 < i && i < (inHigh.length); i++) {
+			output[i] = tempOutPut[i - (inHigh.length - length.value)];
+		}
+
+		return output;
+
+	}
+
+	// ï¿½ï¿½ï¿½ï¿½Æ½ï¿½ï¿½ï¿½
+	public double[] getBop(double[] openPrices, double[] highPrices, double[] lowPrices, double[] closePrices) {
+		/*
+		 * ï¿½ï¿½ï¿½ï¿½Æ½ï¿½ï¿½ï¿½
+		 */
+		double[] output = new double[highPrices.length];
+
+		MInteger begin = new MInteger();
+		MInteger length = new MInteger();
+		RetCode retCode = RetCode.InternalError;
+		begin.value = -1;
+		length.value = -1;
+
+		retCode = core.bop(0, lowPrices.length - 1, openPrices, highPrices, lowPrices, closePrices, begin, length,
+				output);
+		// Bop(int startIdx, int endIdx, double[] inOpen, double[] inHigh,
+		// double[] inLow, double[] inClose, out int outBegIdx, out int
+		// outNBElement, double[] outReal);
+
+		return output;
+	}
+
+	// Ç®ï¿½Â¶ï¿½ï¿½ï¿½ï¿½Ú¶ï¿½Ö¸ï¿½ï¿½
+	public double[] getCmo(double[] closePrices, int period) {
+		/*
+		 * CMO=Chande Momentum Oscillatorï¿½ï¿½Ç®ï¿½Â¶ï¿½ï¿½ï¿½ï¿½Ú¶ï¿½Ö¸ï¿½ê¡£ CMO =ï¿½ï¿½Su-Sd) * 100 /
+		 * (Su +Sd)
+		 * uï¿½Ç½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì¼Û£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õ£ï¿½ï¿½ï¿½Öµï¿½ï¿½ï¿½Ü¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Âµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÖµÎª0ï¿½ï¿½Sdï¿½
+		 * Ç½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì¼ï¿½ ï¿½ï¿½ï¿½Âµï¿½ï¿½Õ£ï¿½ï¿½ï¿½Öµï¿½Ä¾ï¿½ï¿½Öµï¿½ï¿½ï¿½Ü¡ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÖµÎª0
+		 */
+		double[] output = new double[closePrices.length];
+		double[] tempOutPut = new double[closePrices.length];
+
+		MInteger begin = new MInteger();
+		MInteger length = new MInteger();
+		RetCode retCode = RetCode.InternalError;
+		begin.value = -1;
+		length.value = -1;
+
+		retCode = core.cmo(0, closePrices.length - 1, closePrices, period, begin, length, tempOutPut);
+		// Cmo(int startIdx, int endIdx, double[] inReal, int optInTimePeriod,
+		// out int outBegIdx, out int outNBElement, double[] outReal);
+
+		for (int i = 0; i < closePrices.length - length.value; i++) {
+			output[i] = 0;
+		}
+		for (int i = closePrices.length - length.value; 0 < i && i < (closePrices.length); i++) {
+			output[i] = tempOutPut[i - (closePrices.length - length.value)];
+		}
+		return output;
+	}
+
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	public double[] getKama(double[] prices, int optInTimePeriod) {
+		/*
+		 * KAMA=Kaufman Adaptive Moving Averageï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		 */
+		double[] tempOutPut = new double[prices.length];
+		double[] output = new double[prices.length];
+
+		MInteger begin = new MInteger();
+		MInteger length = new MInteger();
+		RetCode retCode = RetCode.InternalError;
+		begin.value = -1;
+		length.value = -1;
+
+		retCode = core.kama(0, prices.length - 1, prices, optInTimePeriod, begin, length, tempOutPut);
+		// Kama(int startIdx, int endIdx, double[] inReal, int optInTimePeriod,
+		// out int outBegIdx, out int outNBElement, double[] outReal);
+		for (int i = 0; i < optInTimePeriod; i++) {
+			output[i] = 0;
+		}
+		for (int i = optInTimePeriod; 0 < i && i < (prices.length); i++) {
+			output[i] = tempOutPut[i - optInTimePeriod];
+		}
+		return output;
+	}
+
+	// ï¿½Ý¹ï¿½ï¿½Æ¶ï¿½Æ½ï¿½ï¿½Ö¸ï¿½ï¿½
+	public double[] getTrima(double[] prices, int optInTimePeriod) {
+		/*
+		 * TRIMA=Triangular Moving Averageï¿½ï¿½ï¿½Ý¹ï¿½ï¿½Æ¶ï¿½Æ½ï¿½ï¿½Ö¸ï¿½ï¿½ SMA = (P1 + P2 + P3 +
+		 * P4 + ... + Pn) / n TMA = (SMA1 + SMA2 + SMA3 + SMA4 + ... SMAn) / n
+		 * PnÎªï¿½ï¿½nï¿½ï¿½Û¸ï¿½
+		 */
+		double[] tempOutPut = new double[prices.length];
+		double[] output = new double[prices.length];
+
+		MInteger begin = new MInteger();
+		MInteger length = new MInteger();
+		RetCode retCode = RetCode.InternalError;
+		begin.value = -1;
+		length.value = -1;
+
+		retCode = core.trima(0, prices.length - 1, prices, optInTimePeriod, begin, length, tempOutPut);
+		// Kama(int startIdx, int endIdx, double[] inReal, int optInTimePeriod,
+		// out int outBegIdx, out int outNBElement, double[] outReal);
+		for (int i = 0; i < optInTimePeriod - 1; i++) {
+			output[i] = 0;
+		}
+		for (int i = optInTimePeriod - 1; 0 < i && i < (prices.length); i++) {
+			output[i] = tempOutPut[i - optInTimePeriod + 1];
+		}
+		return output;
+	}
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+	}
 
 }

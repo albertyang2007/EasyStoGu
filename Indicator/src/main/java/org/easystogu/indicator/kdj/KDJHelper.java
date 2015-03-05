@@ -2,73 +2,94 @@ package org.easystogu.indicator.kdj;
 
 import java.util.List;
 
-import org.easystogu.indicator.TALIBWraper;
-import org.easystogu.yahoo.csv.CSVReader;
-
-import com.tictactec.ta.lib.Core;
-import com.tictactec.ta.lib.MAType;
-import com.tictactec.ta.lib.MInteger;
+import org.easystogu.db.access.StockPriceTableHelper;
 
 public class KDJHelper {
 
-	public static void main(String[] args) {
-		Core core = new Core();
-		TALIBWraper talib = new TALIBWraper();
-		String csvFilePath = "I:/Stock/EasyStoGuProject/CSVData/000333.csv";
-		CSVReader reader = new CSVReader(csvFilePath);
-		List<Double> hightL = reader.getAllHightPrice();
-		List<Double> lowL = reader.getAllLowPrice();
-		List<Double> closeL = reader.getAllClosedPrice();
+    public double RSV(double close, double lown, double highn) {
+        return 100.0 * (close - lown) / (highn - lown);
+    }
 
-		// revert list
-		int length = closeL.size();
-		double[] close = new double[length];
-		double[] hight = new double[length];
-		double[] low = new double[length];
-		int index = 0;
-		for (Double d : closeL) {
-			close[length - ++index] = d;
-		}
-		index = 0;
-		for (Double d : hightL) {
-			hight[length - ++index] = d;
-		}
-		index = 0;
-		for (Double d : lowL) {
-			low[length - ++index] = d;
-		}
+    public double lown(Double[] low, int start, int end) {
+        double lown = low[start];
 
-		int optInFastK_Period = 9;
-		int optInFastD_Period = 9;
-		int optInSlowK_Period = 3;
-		int optInSlowD_Period = 3;
-		double[][] kdj = talib.getStoch(hight, low, close, optInFastK_Period,
-				optInSlowK_Period, optInSlowD_Period);
+        for (int i = start + 1; i <= end; i++) {
+            if (lown > low[i]) {
+                lown = low[i];
+            }
+        }
 
-		System.out.println("=" + kdj[0][length - 1]);
-		System.out.println("=" + kdj[1][length - 1]);
+        return lown;
+    }
 
-		kdj = talib.getStochF(hight, low, close, optInFastK_Period,
-				optInFastD_Period);
+    public double highn(Double[] high, int start, int end) {
+        double highn = high[start];
 
-		System.out.println("=" + kdj[0][length - 1]);
-		System.out.println("=" + kdj[1][length - 1]);
+        for (int i = start + 1; i <= end; i++) {
+            if (highn < high[i]) {
+                highn = high[i];
+            }
+        }
 
-		int periodK = 9;
-		int periodD = 3;// 3?
-		double[] outputFastD = new double[length];
-		double[] outputFastK = new double[length];
-		MInteger outBegIdx = new MInteger();
-		MInteger outNbElement = new MInteger();
-		int lookback = core.stochFLookback(periodK, periodD, MAType.Sma);
-		core.stochF(0, length - 1, hight, low, close, periodK, periodD,
-				MAType.Sma, outBegIdx, outNbElement, outputFastK, outputFastD);
-		
-		System.out.println("=" + outputFastK[0]);
-		System.out.println("=" + outputFastD[0]);
-		
-		// 2015-01-22 000333
-		// ref:KDJ(9,3,3)=(50.94, 56.43, 39.96)
-	}
+        return highn;
+    }
 
+    // 从第一个开始计算JDK,往后计算
+    public double[][] getKDJList(Double[] close, Double[] low, Double[] high) {
+        int length = close.length;
+
+        double[][] KDJ = new double[4][length];// KDJ数组:0是K数组,1是D数组,2是J数组, RSV是最后
+
+        int start = 8;// start from index 8
+        // 前面8个 KDJ值均为0,从第9个开始计算
+        for (int index = 0; index < start; index++) {
+            KDJ[0][index] = 50.0;
+            KDJ[1][index] = 50.0;
+            KDJ[2][index] = 50.0;
+            KDJ[3][index] = 50.0;
+        }
+
+        for (int index = start; index < length; index++) {
+
+            double lown = this.lown(low, index - 8, index);
+            double highn = this.highn(high, index - 8, index);
+            double RSV = this.RSV(close[index], lown, highn);
+
+            KDJ[0][index] = (2.0 / 3.0) * KDJ[0][index - 1] + (1.0 / 3.0) * RSV;// K
+            KDJ[1][index] = (2.0 / 3.0) * KDJ[1][index - 1] + (1.0 / 3.0) * KDJ[0][index];// D
+            KDJ[2][index] = 3.0 * KDJ[0][index] - 2.0 * KDJ[1][index];// J	
+            KDJ[3][index] = RSV;
+        }
+
+        return KDJ;
+    }
+
+    // 计算一个KDJ
+    public double[] getKDJ(double[] preKDJ, double close, double lown, double highn) {
+        double[] KDJ = new double[4];// KDJ数组:0是K数组,1是D数组,2是J数组
+
+        double RSV = this.RSV(close, lown, highn);
+        KDJ[0] = (2.0 / 3.0) * preKDJ[0] + (1.0 / 3.0) * RSV;// K
+        KDJ[1] = (2.0 / 3.0) * preKDJ[1] + (1.0 / 3.0) * KDJ[0];// D
+        KDJ[2] = 3.0 * KDJ[0] - 2.0 * KDJ[1];// J  
+        KDJ[3] = RSV;
+
+        return KDJ;
+    }
+
+    public static void main(String[] args) {
+        StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
+        KDJHelper ins = new KDJHelper();
+        String stockId = "002194";
+        List<Double> close = stockPriceTable.getAllClosePrice(stockId);
+        List<Double> low = stockPriceTable.getAllLowPrice(stockId);
+        List<Double> high = stockPriceTable.getAllHighPrice(stockId);
+        double[][] KDJ = ins.getKDJList((Double[]) close.toArray(new Double[0]), (Double[]) low.toArray(new Double[0]),
+                (Double[]) high.toArray(new Double[0]));
+
+        System.out.println(KDJ[0][close.size() - 1]);
+        System.out.println(KDJ[1][close.size() - 1]);
+        System.out.println(KDJ[2][close.size() - 1]);
+        System.out.println(KDJ[3][close.size() - 1]);
+    }
 }

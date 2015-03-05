@@ -91,12 +91,12 @@ public class RealTimePriceVO {
 	}
 
 	public String toPercent(double d1, double d2) {
-		double p = (d1 - d2) * 100 / d2;
+		double p = ((d1 - d2) * 100) / d2;
 		return String.format("%.2f", p) + "%";
 	}
 
 	public String diffRange(double d1, double d2, double d3) {
-		double r = (d1 - d3) * 100 / d3 - (d2 - d3) * 100 / d3;
+		double r = (((d1 - d3) * 100) / d3) - (((d2 - d3) * 100) / d3);
 		return String.format("%.2f", Math.abs(r)) + "%";
 	}
 
@@ -109,6 +109,8 @@ public class RealTimePriceVO {
 		vo.setLow(low);
 		vo.setDate(date);
 		vo.setVolume(volume);
+
+		vo.lastClose = this.lastClose;
 		return vo;
 	}
 }

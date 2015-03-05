@@ -2,11 +2,17 @@ package org.easystogu.utils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
 public class WeekdayUtil {
+
+	public static String currentDate() {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		return sdf.format(new Date()).toString();
+	}
 
 	/**
 	 * @title 判断两个日期是否在指定工作日内
@@ -20,8 +26,7 @@ public class WeekdayUtil {
 	 *            最多相隔时间
 	 * @return 是的话，返回true，否则返回false
 	 */
-	public static boolean compareWeekday(String beforeDate, String afterDate,
-			int deadline) {
+	public static boolean compareWeekday(String beforeDate, String afterDate, int deadline) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		try {
 			Date d1 = sdf.parse(beforeDate);
@@ -33,7 +38,7 @@ public class WeekdayUtil {
 			gc.setTime(d1);
 			// 两个日期相差的天数
 			long time = d2.getTime() - d1.getTime();
-			long day = time / 3600000 / 24 + 1;
+			long day = (time / 3600000 / 24) + 1;
 			if (day < 0) {
 				// 如果前日期大于后日期，将返回false
 				return false;
@@ -44,7 +49,7 @@ public class WeekdayUtil {
 					// System.out.println(gc.getTime());
 				}
 				// 往后加1天
-				gc.add(GregorianCalendar.DATE, 1);
+				gc.add(Calendar.DATE, 1);
 			}
 			return workDay <= deadline;
 		} catch (Exception e) {
@@ -63,15 +68,13 @@ public class WeekdayUtil {
 	 */
 	public static boolean isWeekday(GregorianCalendar calendar) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		if (calendar.get(GregorianCalendar.DAY_OF_WEEK) != GregorianCalendar.SATURDAY
-				&& calendar.get(GregorianCalendar.DAY_OF_WEEK) != GregorianCalendar.SUNDAY) {
+		if ((calendar.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY)
+				&& (calendar.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY)) {
 			// 平时
-			return !getWeekdayIsHolidayList().contains(
-					sdf.format(calendar.getTime()));
+			return !getWeekdayIsHolidayList().contains(sdf.format(calendar.getTime()));
 		} else {
 			// 周末
-			return getWeekendIsWorkDateList().contains(
-					sdf.format(calendar.getTime()));
+			return getWeekendIsWorkDateList().contains(sdf.format(calendar.getTime()));
 		}
 	}
 
@@ -99,16 +102,75 @@ public class WeekdayUtil {
 
 	public static boolean isCurrentTimeWorkingDayInDealTime() {
 		GregorianCalendar cal = new GregorianCalendar();
-		return (cal.getTime().getHours() >= 9 && cal.getTime().getHours() <= 15)
+		return ((cal.getTime().getHours() >= 9) && (cal.getTime().getHours() <= 15))
 				&& WeekdayUtil.isWeekday(new GregorianCalendar());
+	}
+
+	// 返回某年第几周的所有工作日，年底交叉的分开，一年最多53周，
+	public static List<String> getWorkingDaysOfWeek(int year, int week) {
+		List<String> dates = new ArrayList<String>();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Calendar cal = Calendar.getInstance();
+		cal.clear();
+		cal.set(Calendar.YEAR, year);
+		cal.set(Calendar.WEEK_OF_YEAR, week);
+		cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+		String date = sdf.format(cal.getTime());
+		if (date.startsWith(year + "")) {
+			dates.add(sdf.format(cal.getTime()));
+		}
+		cal.set(Calendar.DAY_OF_WEEK, Calendar.TUESDAY);
+		date = sdf.format(cal.getTime());
+		if (date.startsWith(year + "")) {
+			dates.add(sdf.format(cal.getTime()));
+		}
+		cal.set(Calendar.DAY_OF_WEEK, Calendar.WEDNESDAY);
+		date = sdf.format(cal.getTime());
+		if (date.startsWith(year + "")) {
+			dates.add(sdf.format(cal.getTime()));
+		}
+		cal.set(Calendar.DAY_OF_WEEK, Calendar.THURSDAY);
+		date = sdf.format(cal.getTime());
+		if (date.startsWith(year + "")) {
+			dates.add(sdf.format(cal.getTime()));
+		}
+		cal.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY);
+		date = sdf.format(cal.getTime());
+		if (date.startsWith(year + "")) {
+			dates.add(sdf.format(cal.getTime()));
+		}
+
+		return dates;
+	}
+
+	public static List<String> getCurrentWeekDates() {
+		Calendar cal = Calendar.getInstance();
+		int weekNumber = cal.get(Calendar.WEEK_OF_YEAR);
+		return getWorkingDaysOfWeek(new Date().getYear() + 1900, weekNumber);
+	}
+
+	// date is like: 2015-02-27
+	// 返回某一日所在周的所有工作日
+	public static List<String> getWeekWorkingDates(String date) {
+		Calendar cal = Calendar.getInstance();
+		String[] ymd = date.split("-");
+		cal.set(Calendar.YEAR, Integer.parseInt(ymd[0]));
+		cal.set(Calendar.MONTH, Integer.parseInt(ymd[1]) - 1);
+		cal.set(Calendar.DATE, Integer.parseInt(ymd[2]));
+		int weekNumber = cal.get(Calendar.WEEK_OF_YEAR);
+
+		if (Integer.parseInt(ymd[1]) == 12 && weekNumber == 1) {
+			weekNumber = 53;
+		}
+
+		return getWorkingDaysOfWeek(Integer.parseInt(ymd[0]), weekNumber);
 	}
 
 	public static void main(String[] args) {
 
-		boolean ok = WeekdayUtil.compareWeekday("2009-10-1", "2009-10-15", 5);
-		System.out.println("是否在五个工作日内：" + ok);
-
-		System.out.println("Today is working day and in deal time: "
-				+ WeekdayUtil.isCurrentTimeWorkingDayInDealTime());
+		List<String> dates = WeekdayUtil.getWeekWorkingDates("2016-12-30");
+		for (String date : dates) {
+			System.out.println(date);
+		}
 	}
 }

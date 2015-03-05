@@ -23,7 +23,7 @@ public class CSVReader {
 		allDataList = new ArrayList<StockPriceVO>();
 		try {
 			CSVParser parser = CSVParser.parse(
-					ResourceLoaderHelper.loadAsFile(file),
+					ResourceLoaderHelper.loadResourceAsFile(file),
 					Charset.defaultCharset(), CSVFormat.EXCEL);
 			for (CSVRecord record : parser) {
 				if (record.getRecordNumber() > 1) {

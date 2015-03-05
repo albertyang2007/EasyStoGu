@@ -14,6 +14,8 @@ public class YahooDataDownloadHelper {
 
 	private static final String yahooBaseUrl = "http://ichart.yahoo.com/table.csv?s=";
 	private int totalError = 0;
+	private int totalSkip = 0;
+	private int totalSuccess = 0;
 
 	public void downloadHistoryData(String stockId, String area,
 			String[] startDate, String[] endDate) {
@@ -27,7 +29,9 @@ public class YahooDataDownloadHelper {
 			File file = new File(saveFile);
 			if (!file.exists() || file.length() == 0) {
 				HttpUtil.downloadFile(saveFile, url);
+				this.totalSuccess++;
 			} else {
+				totalSkip++;
 				System.out.println("File " + stockId + " already exist, skip");
 			}
 		} catch (IOException e) {
@@ -52,8 +56,16 @@ public class YahooDataDownloadHelper {
 		return this.totalError;
 	}
 
+	public int getTotalSkip() {
+		return this.totalSkip;
+	}
+
+	public int getTotalSuccess() {
+		return this.totalSuccess;
+	}
+
 	public static void main(String[] args) {
-		
+
 	}
 
 }

@@ -7,9 +7,9 @@ public class ManualDownloadRunner {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		// 一次性获取yahoo的历史数据，这个函数可能要运行很多次才能将所有数据下载
+		// 涓�鎬ц幏鍙杫ahoo鐨勫巻鍙叉暟鎹紝杩欎釜鍑芥暟鍙兘瑕佽繍琛屽緢澶氭鎵嶈兘灏嗘墍鏈夋暟鎹笅杞�
 		// run this main many time unti the total error is 0
-		String[] startDate = { "2010", "0", "01" };// 2010-01-01
+		String[] startDate = { "2015", "0", "1" };// 2010-01-01
 		String[] endDate = { "2015", "0", "23" };// 2015-01-23
 
 		StockListConfigurationService config = StockListConfigurationService
@@ -19,6 +19,8 @@ public class ManualDownloadRunner {
 				startDate, endDate);
 		helper.downloadAllHistoryData(config.getAllSHStockId(), "ss",
 				startDate, endDate);
+		System.out.println("TotalSuccess=" + helper.getTotalSuccess());		
+		System.out.println("TotalSkip=" + helper.getTotalSkip());
 		System.out.println("TotalError=" + helper.getTotalError());
 	}
 

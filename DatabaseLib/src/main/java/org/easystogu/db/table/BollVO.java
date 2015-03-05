@@ -1,27 +1,27 @@
 package org.easystogu.db.table;
 
-//table name = "ind_macd"
-public class IndMacdVO {
+//table name = "ind_boll"
+public class BollVO {
 	public String stockId;
 	public String name;
 	public String date;
-	public double dif;
-	public double dea;
-	public double macd;
+	public double mb;
+	public double up;
+	public double dn;
 
-	public IndMacdVO() {
+	public BollVO() {
 
 	}
 
 	@Override
 	public String toString() {
-		StringBuffer sb = new StringBuffer("IndMacdVO: {");
+		StringBuffer sb = new StringBuffer("BollVO: {");
 		sb.append("stockId:" + stockId);
 		sb.append(", name:" + name);
 		sb.append(", date:" + date);
-		sb.append(", dif:" + dif);
-		sb.append(", dea:" + dea);
-		sb.append(", macd:" + macd);
+		sb.append(", mb:" + mb);
+		sb.append(", up:" + up);
+		sb.append(", dn:" + dn);
 		sb.append("}");
 		return sb.toString();
 	}
@@ -50,27 +50,27 @@ public class IndMacdVO {
 		this.date = date;
 	}
 
-	public double getDif() {
-		return dif;
+	public double getMb() {
+		return mb;
 	}
 
-	public void setDif(double dif) {
-		this.dif = dif;
+	public void setMb(double mb) {
+		this.mb = mb;
 	}
 
-	public double getDea() {
-		return dea;
+	public double getUp() {
+		return up;
 	}
 
-	public void setDea(double dea) {
-		this.dea = dea;
+	public void setUp(double up) {
+		this.up = up;
 	}
 
-	public double getMacd() {
-		return macd;
+	public double getDn() {
+		return dn;
 	}
 
-	public void setMacd(double macd) {
-		this.macd = macd;
+	public void setDn(double dn) {
+		this.dn = dn;
 	}
 }
