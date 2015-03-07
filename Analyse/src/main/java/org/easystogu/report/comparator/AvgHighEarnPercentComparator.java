@@ -1,6 +1,8 @@
-package org.easystogu.report;
+package org.easystogu.report.comparator;
 
 import java.util.Comparator;
+
+import org.easystogu.report.RangeHistoryReportVO;
 
 @SuppressWarnings("rawtypes")
 public class AvgHighEarnPercentComparator implements Comparator {
@@ -9,7 +11,7 @@ public class AvgHighEarnPercentComparator implements Comparator {
 		RangeHistoryReportVO vo1 = (RangeHistoryReportVO) arg0;
 		RangeHistoryReportVO vo2 = (RangeHistoryReportVO) arg1;
 
-		// ±È½ÏavgHighEarnPercent
+		// ï¿½È½ï¿½avgHighEarnPercent
 		return (vo1.avgEarnPercent[1] >= vo2.avgEarnPercent[1]) ? 0 : 1;
 	}
 }

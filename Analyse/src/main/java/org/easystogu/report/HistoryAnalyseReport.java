@@ -23,7 +23,7 @@ public class HistoryAnalyseReport {
     private CheckPointHistorySelectionTableHelper historyReportTableHelper = CheckPointHistorySelectionTableHelper
             .getInstance();
     private WeekStockSuperVOHelper weekStockOverAllHelper = new WeekStockSuperVOHelper();
-    private CombineAnalyseHelper combineAanalyserHelper = new CombineAnalyseHelper();
+    protected CombineAnalyseHelper combineAanalyserHelper = new CombineAnalyseHelper();
     private StockSuperVOHelper stockOverAllHelper = new StockSuperVOHelper();
     private CheckPointHistoryAnalyseTableHelper cpHistoryAnalyse = CheckPointHistoryAnalyseTableHelper.getInstance();
 
@@ -172,7 +172,7 @@ public class HistoryAnalyseReport {
                     // print the high earn percent if larger than 25%
                     if ((reportVO.earnPercent[1] >= 50.0) && (reportVO.earnPercent[0] >= 25.0)) {
                         totalHighCount++;
-                        //System.out.println(reportVO);
+                        System.out.println("High earn: " + reportVO);
                         // save the high earnPercent case into DB
                         historyReportTableHelper.insert(reportVO.convertToHistoryReportVO(checkPoint.toString()));
                     }
@@ -221,13 +221,17 @@ public class HistoryAnalyseReport {
         HistoryAnalyseReport reporter = new HistoryAnalyseReport();
 
         for (DailyCombineCheckPoint checkPoint : DailyCombineCheckPoint.values()) {
-        	//if(checkPoint.getEarnPercent()>=7.5)
-        		//System.out.println(checkPoint);
-            reporter.emptyTableByCheckPoint(checkPoint.toString());
-            reporter.searchAllStockIdAccordingToCheckPoint(checkPoint);
+            //if(checkPoint.getEarnPercent()>=7.5)
+            //System.out.println(checkPoint);
+            //reporter.emptyTableByCheckPoint(checkPoint.toString());
+            //reporter.searchAllStockIdAccordingToCheckPoint(checkPoint);
         }
 
-        //reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.Week_Volume_Increase_Price_4_Plus);
+        reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.DuoTou_MA5_Wait_MA10_RSV_KDJ_Gordon_Break_Platform);
+        //reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.Phase2_Previous_Under_Zero_MACD_Gordon_Now_MACD_Dead_RSV_Gordon);
+        //reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.Phase3_Previous_Under_Zero_MACD_Gordon_Now_MACD_Dead_KDJ_Gordon);
+        //reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.Phase4_Previous_Under_Zero_MACD_Gordon_Now_MACD_Gordon_Volume_Bigger);
+
         //reporter.UnitTestForSpecifyStockId();
     }
 }

@@ -23,11 +23,11 @@ import org.easystogu.db.access.StockSuperVOHelper;
 import org.easystogu.db.access.WeekStockSuperVOHelper;
 import org.easystogu.db.table.CheckPointDailySelectionVO;
 import org.easystogu.db.table.StockSuperVO;
-import org.easystogu.report.AvgHighEarnPercentComparator;
 import org.easystogu.report.HistoryAnalyseReport;
 import org.easystogu.report.HistoryReportDetailsVO;
 import org.easystogu.report.RangeHistoryReportVO;
 import org.easystogu.report.ReportTemplate;
+import org.easystogu.report.comparator.CheckPointEarnPercentComparator;
 
 public class DailySelectionRunner {
     private FileConfigurationService config = FileConfigurationService.getInstance();
@@ -45,7 +45,7 @@ public class DailySelectionRunner {
     public void doAnalyse(String stockId) {
         // LatestN is reverse in date order desc
         List<StockSuperVO> overDayList = stockOverAllHelper.getLatestNStockSuperVO(stockId, 120);
-        List<StockSuperVO> overWeekList = weekStockOverAllHelper.getLatestNStockSuperVO(stockId, 2);
+        List<StockSuperVO> overWeekList = weekStockOverAllHelper.getLatestNStockSuperVO(stockId, 24);
 
         if (overDayList.size() == 0) {
             System.out.println("No stockprice data for " + stockId);
@@ -80,9 +80,6 @@ public class DailySelectionRunner {
 
         // check all combine check point
         for (DailyCombineCheckPoint checkPoint : DailyCombineCheckPoint.values()) {
-            if (checkPoint.getEarnPercent() < this.minEarnPercent) {
-                continue;
-            }
             if (combineAnalyserHelper.isConditionSatisfy(checkPoint, overDayList, overWeekList)) {
                 this.addToConditionMap(superVO, checkPoint);
                 this.saveToEventDB(superVO, checkPoint);
@@ -121,18 +118,21 @@ public class DailySelectionRunner {
     public void reportSelectedStockIds() {
         Set<StockSuperVO> keys = this.selectedMaps.keySet();
         Iterator<StockSuperVO> keysIt = keys.iterator();
+        StringBuffer recommandStr = new StringBuffer();
         while (keysIt.hasNext()) {
             StockSuperVO superVO = keysIt.next();
             List<DailyCombineCheckPoint> checkPointList = this.selectedMaps.get(superVO);
+            for (DailyCombineCheckPoint checkPoint : checkPointList) {
+                if (checkPoint.getEarnPercent() >= this.minEarnPercent) {
+                    recommandStr.append(superVO.priceVO.stockId + " select :" + checkPointList.toString() + "\n");
+                    break;
+                }
+            }
             System.out.println(superVO.priceVO.stockId + " select :" + checkPointList.toString());
         }
 
-        System.out.println("\nRecommand to select earnPercent >" + minEarnPercent);
-        for (DailyCombineCheckPoint checkPoint : DailyCombineCheckPoint.values()) {
-            if (checkPoint.getEarnPercent() >= 7.0) {
-                System.out.println(checkPoint.toStringWithDetails());
-            }
-        }
+        System.out.println("\nRecommand to select below checkPoint that earnPercent >=" + minEarnPercent);
+        System.out.println(recommandStr.toString());
     }
 
     public void reportSelectedHistoryReport() {
@@ -214,7 +214,7 @@ public class DailySelectionRunner {
     // sort by avgHighEarnPercent
     @SuppressWarnings("unchecked")
     public void sortRangeHistoryReport(List<RangeHistoryReportVO> rangeList) {
-        Collections.sort(rangeList, new AvgHighEarnPercentComparator());
+        Collections.sort(rangeList, new CheckPointEarnPercentComparator());
     }
 
     public static void main(String[] args) {
