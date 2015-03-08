@@ -1,31 +1,3 @@
-Huge_Volume_Increase_Price_Higher_MA120_Previous_Lower_MA120(114, 9.29)
-Huge_Volume_Increase_3X3_Price_Higher_All_MA120(98, 9.22)
-KDJ_Green_Gordon_Pre_2_Days_Red_High_MA5_MA10_BOLL(6, 8.89)
-MACD_KDJ_Gordon_Pre_3_Days_Green(142, 8.5)
-MACD_KDJ_Gordon_3_Days_Red_High_MA5_MA10_BOLL(133, 8.4)
-DuoTou_Pre_2_Days_Green_Red_KDJ_Zero_MA30_Support(1105, 8.1)
-MACD_Gordon_Volume_And_Price_Highest_In_MA120(912, 8.01)
-KDJ_Green_Gordon_Pre_2_Days_Red(624, 8.0)
-
-MACD_KDJ_Gordon_High_MA5_MA10_BOLL(1042, 7.7)
-MACD_KDJ_Gordon_3_Days_Red(2184, 7.7)
-KDJ_Gordon_High_MA5_MA10_BOLL(6743, 7.6)
-KDJ_Near_Gordon_High_MA5_MA10_BOLL(1446, 7.6)
-RSV_Gordon_High_MA5_MA10_BOLL(13955, 7.6)
-Previous_Under_Zero_MACD_Gordon_Now_MACD_Dead_RSV_Gordon(10870, 7.5)
-DuoTou_Pre_2_Days_Green_Red_KDJ_Zero_MA20_Support(751, 7.5)
-DuoTou_Pre_2_Days_Green_Red_MA30_Support(2997, 7.2)
-
-Day_MACD_KDJ_Gordon_Week_KDJ_Gordon(5259, 6.9)
-Day_MACD_KDJ_Gordon_Week_MACD_Gordon(458, 6.9)
-KDJ_Gordon_3_days_Red(15187, 6.8)
-KDJ_Gordon_Pre_3_Days_Green(2048, 6.6)
-DuoTou_Pre_2_Days_Green_Red_MA20_Support(7340, 6.5)
-Previous_Under_Zero_MACD_Gordon_Now_MACD_Dead_KDJ_Gordon(8631, 6.4)
-
-Previous_Under_Zeron_Current_Uper_Zero_MACD_Gordons_Volume_Bigger(3505, 5.9)
-
-
 ===================MACD_KDJ_Gordon_3_Days_Red  earn between (25, 50)%====================
 Total satisfy: 3035  earnPercent[close]=0.8418237228579617   earnPercent[high]=7.5739862474565784    earnPercent[low]=-3.687356328595649
 Avg hold stock days: 7
@@ -121,10 +93,10 @@ Total satisfy: 1600  earnPercent[close]=0.21826294512928482  earnPercent[high]=7
 Avg hold stock days: 9
 Total high earn between (25, 50): 8
 
-===================DuoTou_MA5_Wait_MA10_RSV_Gordon_Break_Platform  earn between (25, 50)%====================
-Total satisfy: 110   earnPercent[close]=-0.24429111686705987     earnPercent[high]=7.580734157522498     earnPercent[low]=-4.450044013464325
+===================DuoTou_MA5_Wait_MA10_RSV_KDJ_Gordon_Break_Platform  earn between (25, 50)%====================
+Total satisfy: 102	 earnPercent[close]=-0.3023530621856959	 earnPercent[high]=7.865277525059248	 earnPercent[low]=-4.558602866039273
 Avg hold stock days: 6
-Total high earn between (25, 50): 0
+Total high earn between (25, 50): 1
 
 ===================Huge_Volume_Increase_3X3_Price_Higher_All_MA120  earn between (25, 50)%====================
 Total satisfy: 168   earnPercent[close]=-0.6216760587232968  earnPercent[high]=8.137159794794218     earnPercent[low]=-6.288466866928491
