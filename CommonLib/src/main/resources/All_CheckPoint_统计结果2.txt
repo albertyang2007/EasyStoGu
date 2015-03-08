@@ -69,16 +69,11 @@ Avg hold stock days: 0
 Total high earn between (25, 50): 0
 
 ===================Phase2_Previous_Under_Zero_MACD_Gordon_Now_MACD_Dead_RSV_Gordon  earn between (25, 50)%====================
-Total satisfy: 14972     earnPercent[close]=0.5875154477192429   earnPercent[high]=7.410567337099442     earnPercent[low]=-3.6881271993410896
-Avg hold stock days: 8
-Total high earn between (25, 50): 59
-
-===================Phase3_Previous_Under_Zero_MACD_Gordon_Now_MACD_Dead_KDJ_Gordon  earn between (25, 50)%====================
-Total satisfy: 11891     earnPercent[close]=-0.2026924880841363  earnPercent[high]=6.157443186240842     earnPercent[low]=-3.8822814856971717
+Total satisfy: 515	 earnPercent[close]=1.0727767865151696	 earnPercent[high]=8.156072426573804	 earnPercent[low]=-3.605883159997381
 Avg hold stock days: 7
-Total high earn between (25, 50): 41
+Total high earn between (25, 50): 6
 
-===================Phase4_Previous_Under_Zero_MACD_Gordon_Now_MACD_Gordon_Volume_Bigger  earn between (25, 50)%====================
+===================Phase3_Previous_Under_Zero_MACD_Gordon_Now_MACD_Gordon_Volume_Bigger  earn between (25, 50)%====================
 Total satisfy: 1615  earnPercent[close]=-0.8686072241711431  earnPercent[high]=5.288015024366327     earnPercent[low]=-4.22820831863094
 Avg hold stock days: 5
 Total high earn between (25, 50): 1
