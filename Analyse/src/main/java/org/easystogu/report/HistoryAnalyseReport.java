@@ -161,6 +161,7 @@ public class HistoryAnalyseReport {
         long holdDays = 0;
         long totalCount = 0;
         int totalHighCount = 0;
+        int totalLowCount = 0;
         List<String> stockIds = stockConfig.getAllStockId();
 
         System.out.println("\n===================" + checkPoint + "  earn between (25, 50)%====================");
@@ -172,10 +173,11 @@ public class HistoryAnalyseReport {
                     // print the high earn percent if larger than 25%
                     if ((reportVO.earnPercent[1] >= 50.0) && (reportVO.earnPercent[0] >= 25.0)) {
                         totalHighCount++;
-                        System.out.println("High earn: " + reportVO);
+                        //System.out.println("High earn: " + reportVO);
                         // save the high earnPercent case into DB
                         //historyReportTableHelper.insert(reportVO.convertToHistoryReportVO(checkPoint.toString()));
-                    }else if((reportVO.earnPercent[1] <= -5.0) || (reportVO.earnPercent[0] <= -5.0)){
+                    }else if((reportVO.earnPercent[1] <= -10.0) || (reportVO.earnPercent[0] <= -10.0)){
+                    	totalLowCount++;
                     	//System.out.println("Low  earn: " + reportVO);
                     }
                     totalCount++;
@@ -201,6 +203,7 @@ public class HistoryAnalyseReport {
                 + (earnPercent[2] / totalCount));
         System.out.println("Avg hold stock days: " + (holdDays / totalCount));
         System.out.println("Total high earn between (25, 50): " + totalHighCount);
+        System.out.println("Total low  earn between (10, 10): " + totalLowCount);
 
         CheckPointHistoryAnalyseVO vo = new CheckPointHistoryAnalyseVO();
         vo.setCheckPoint(checkPoint.toString());
@@ -225,11 +228,11 @@ public class HistoryAnalyseReport {
         for (DailyCombineCheckPoint checkPoint : DailyCombineCheckPoint.values()) {
             //if(checkPoint.getEarnPercent()>=7.5)
             //System.out.println(checkPoint);
-            //reporter.emptyTableByCheckPoint(checkPoint.toString());
-            //reporter.searchAllStockIdAccordingToCheckPoint(checkPoint);
+            reporter.emptyTableByCheckPoint(checkPoint.toString());
+            reporter.searchAllStockIdAccordingToCheckPoint(checkPoint);
         }
 
-        reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.Phase2_Previous_Under_Zero_MACD_Gordon_Now_MACD_Dead_RSV_KDJ_Gordon);
+        //reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.Phase2_Previous_Under_Zero_MACD_Gordon_Now_MACD_Dead_RSV_KDJ_Gordon);
         //reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.Phase2_Previous_Under_Zero_MACD_Gordon_Now_MACD_Dead_RSV_Gordon);
         //reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.Phase3_Previous_Under_Zero_MACD_Gordon_Now_MACD_Dead_KDJ_Gordon);
         //reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.Phase4_Previous_Under_Zero_MACD_Gordon_Now_MACD_Gordon_Volume_Bigger);
