@@ -23,7 +23,7 @@ public enum DailyCombineCheckPoint {
             "Duo Tou, MA5<=MA10, MA10>=MA20>=MA30, pre2 pre3 two days green, pre1 and today red, pre1 low < ma20, pre1 close > ma20, pre 1 KDJ J is low 10, now RSV gordon",
             1600, 7.78), DuoTou_MA5_Wait_MA10_RSV_KDJ_Gordon_Break_Platform(
             "DuoTou, MA5 wait MA10, RSV Gordon, Pre1 is red, pre2 and pre3 is green, MACD is near 0, Close than MA5 & MA10 and between UP and MB, near MB",
-            110, 7.58), Huge_Volume_Increase_3X3_Price_Higher_All_MA120(
+            102, 7.86), Huge_Volume_Increase_3X3_Price_Higher_All_MA120(
             "Huge Volume Increase in days and price higher than MA30", 168, 8.13), MACD_Gordon_Volume_And_Price_Highest_In_MA90(
             "Volume and Price is the highest in half year(ma120)", 1622, 7.82), KDJ_Gordon_Volume_And_Price_Highest_In_MA90(
             "Volume and Price is the highest in half year(ma120)", 1928, 6.83), Huge_Volume_Increase_Price_Higher_MA120_Previous_Lower_MA120(
