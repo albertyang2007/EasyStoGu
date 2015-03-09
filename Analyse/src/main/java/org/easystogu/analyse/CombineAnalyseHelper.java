@@ -21,15 +21,6 @@ public class CombineAnalyseHelper {
 		StockSuperVO curSuperWeekVO = overWeekList.get(overWeekList.size() - 1);
 		StockSuperVO pre1SuperWeekVO = overWeekList.get(overWeekList.size() - 2);
 
-		if (curSuperWeekVO.kdjVO.k < curSuperWeekVO.kdjVO.d) {
-			// over all week KDJ must after Gordon
-			return false;
-		}
-
-		if (!this.isLatestWeekKDJCrossGordon(overWeekList)) {
-			return false;
-		}
-
 		int dayLength = overDayList.size();
 		StockSuperVO curSuperDayVO = overDayList.get(overDayList.size() - 1);
 		StockSuperVO pre1SuperDayVO = overDayList.get(overDayList.size() - 2);
@@ -38,6 +29,11 @@ public class CombineAnalyseHelper {
 
 		switch (checkPoint) {
 		case MACD_KDJ_Gordon_3_Days_Red:
+
+			if (curSuperWeekVO.kdjVO.k < curSuperWeekVO.kdjVO.d || !this.isLatestWeekKDJCrossGordon(overWeekList)) {
+				// over all week KDJ must after Gordon
+				return false;
+			}
 			// Macd & KDJ Gordon, 3 days red, volume bigger then bigger, last
 			// vol bigger than avg5
 			if (overDayList.size() >= 3) {
@@ -53,6 +49,11 @@ public class CombineAnalyseHelper {
 			}
 			break;
 		case MACD_KDJ_Gordon_Pre_3_Days_Green:
+
+			if (curSuperWeekVO.kdjVO.k < curSuperWeekVO.kdjVO.d || !this.isLatestWeekKDJCrossGordon(overWeekList)) {
+				// over all week KDJ must after Gordon
+				return false;
+			}
 			if (overDayList.size() >= 4) {
 				if ((curSuperDayVO.kdjCorssType == CrossType.GORDON)
 						&& (curSuperDayVO.macdCorssType == CrossType.GORDON)) {
@@ -69,6 +70,11 @@ public class CombineAnalyseHelper {
 			}
 			break;
 		case KDJ_Gordon_3_days_Red:
+
+			if (curSuperWeekVO.kdjVO.k < curSuperWeekVO.kdjVO.d || !this.isLatestWeekKDJCrossGordon(overWeekList)) {
+				// over all week KDJ must after Gordon
+				return false;
+			}
 			// 3 days red, volume bigger then bigger
 			if (overDayList.size() >= 3) {
 				if ((curSuperDayVO.kdjCorssType == CrossType.GORDON)) {
@@ -82,6 +88,11 @@ public class CombineAnalyseHelper {
 			}
 			break;
 		case KDJ_Gordon_Pre_3_Days_Green:
+
+			if (curSuperWeekVO.kdjVO.k < curSuperWeekVO.kdjVO.d || !this.isLatestWeekKDJCrossGordon(overWeekList)) {
+				// over all week KDJ must after Gordon
+				return false;
+			}
 			// KDJ Red Gordon and Previous 3 days Green, 缂╅噺涓嬭穼鐒跺悗kdj绾�
 			if (overDayList.size() >= 4) {
 				if (curSuperDayVO.kdjCorssType == CrossType.GORDON) {
@@ -98,6 +109,11 @@ public class CombineAnalyseHelper {
 			}
 			break;
 		case KDJ_Green_Gordon_Pre_2_Days_Red:
+
+			if (curSuperWeekVO.kdjVO.k < curSuperWeekVO.kdjVO.d || !this.isLatestWeekKDJCrossGordon(overWeekList)) {
+				// over all week KDJ must after Gordon
+				return false;
+			}
 			// KDJ Gordon but Green, close price higher than previous day,
 			// previous 2 days red
 			if (overDayList.size() >= 3) {
@@ -114,6 +130,11 @@ public class CombineAnalyseHelper {
 			}
 			break;
 		case KDJ_Gordon_High_MA5_MA10_BOLL:
+
+			if (curSuperWeekVO.kdjVO.k < curSuperWeekVO.kdjVO.d || !this.isLatestWeekKDJCrossGordon(overWeekList)) {
+				// over all week KDJ must after Gordon
+				return false;
+			}
 			// KDJ Red Gordon, close > MA5 & MA10; Previous close < MA5 & MA10;
 			// Close between UP and MB
 			if (overDayList.size() >= 20) {
@@ -134,6 +155,11 @@ public class CombineAnalyseHelper {
 			}
 			break;
 		case MACD_KDJ_Gordon_High_MA5_MA10_BOLL:
+
+			if (curSuperWeekVO.kdjVO.k < curSuperWeekVO.kdjVO.d || !this.isLatestWeekKDJCrossGordon(overWeekList)) {
+				// over all week KDJ must after Gordon
+				return false;
+			}
 			// MACD & KDJ Red Gordon, close > MA5 & MA10; Previous close < MA5 &
 			// MA10; Close between UP and MB
 			if (overDayList.size() >= 20) {
@@ -155,6 +181,11 @@ public class CombineAnalyseHelper {
 			}
 			break;
 		case KDJ_Near_Gordon_High_MA5_MA10_BOLL:
+
+			if (curSuperWeekVO.kdjVO.k < curSuperWeekVO.kdjVO.d || !this.isLatestWeekKDJCrossGordon(overWeekList)) {
+				// over all week KDJ must after Gordon
+				return false;
+			}
 			// KDJ Red Near Gordon, close > MA5 & MA10; Previous close < MA5 &
 			// MA10; Close between UP and MB
 			if (overDayList.size() >= 20) {
@@ -175,6 +206,11 @@ public class CombineAnalyseHelper {
 			}
 			break;
 		case RSV_Gordon_High_MA5_MA10_BOLL:
+
+			if (curSuperWeekVO.kdjVO.k < curSuperWeekVO.kdjVO.d || !this.isLatestWeekKDJCrossGordon(overWeekList)) {
+				// over all week KDJ must after Gordon
+				return false;
+			}
 			// RSV Gordon, close > MA5 & MA10; Previous close < MA5 &
 			// MA10; Close between UP and MB
 			if (overDayList.size() >= 20) {
@@ -195,6 +231,11 @@ public class CombineAnalyseHelper {
 			}
 			break;
 		case MACD_KDJ_Gordon_3_Days_Red_High_MA5_MA10_BOLL:
+
+			if (curSuperWeekVO.kdjVO.k < curSuperWeekVO.kdjVO.d || !this.isLatestWeekKDJCrossGordon(overWeekList)) {
+				// over all week KDJ must after Gordon
+				return false;
+			}
 			if (overDayList.size() >= 20) {
 				if ((curSuperDayVO.kdjCorssType == CrossType.GORDON)
 						&& ((curSuperDayVO.macdCorssType == CrossType.GORDON))) {
@@ -216,6 +257,11 @@ public class CombineAnalyseHelper {
 			}
 			break;
 		case KDJ_Green_Gordon_Pre_2_Days_Red_High_MA5_MA10_BOLL:
+
+			if (curSuperWeekVO.kdjVO.k < curSuperWeekVO.kdjVO.d || !this.isLatestWeekKDJCrossGordon(overWeekList)) {
+				// over all week KDJ must after Gordon
+				return false;
+			}
 			if (overDayList.size() >= 20) {
 				if ((curSuperDayVO.kdjCorssType == CrossType.GORDON) && curSuperDayVO.priceVO.isKLineGreen()) {
 					if (curSuperDayVO.volumeIncreasePercent >= 1.0) {
@@ -238,6 +284,11 @@ public class CombineAnalyseHelper {
 			}
 			break;
 		case Day_MACD_KDJ_Gordon_Week_KDJ_Gordon:
+
+			if (curSuperWeekVO.kdjVO.k < curSuperWeekVO.kdjVO.d || !this.isLatestWeekKDJCrossGordon(overWeekList)) {
+				// over all week KDJ must after Gordon
+				return false;
+			}
 			// if today or yesterday is macd gordon
 			if ((curSuperDayVO.macdCorssType == CrossType.GORDON) || (pre1SuperDayVO.macdCorssType == CrossType.GORDON)) {
 				// if today or yesterday is kdj gordon
@@ -252,6 +303,11 @@ public class CombineAnalyseHelper {
 
 			break;
 		case Day_MACD_KDJ_Gordon_Week_MACD_Gordon:
+
+			if (curSuperWeekVO.kdjVO.k < curSuperWeekVO.kdjVO.d || !this.isLatestWeekKDJCrossGordon(overWeekList)) {
+				// over all week KDJ must after Gordon
+				return false;
+			}
 			// if today or yesterday is macd gordon
 			if ((curSuperDayVO.macdCorssType == CrossType.GORDON) || (pre1SuperDayVO.macdCorssType == CrossType.GORDON)) {
 				// if today or yesterday is kdj gordon
@@ -265,6 +321,11 @@ public class CombineAnalyseHelper {
 			}
 			break;
 		case Phase2_Previous_Under_Zero_MACD_Gordon_Now_MACD_Dead_RSV_KDJ_Gordon: {
+
+			if (curSuperWeekVO.kdjVO.k < curSuperWeekVO.kdjVO.d || !this.isLatestWeekKDJCrossGordon(overWeekList)) {
+				// over all week KDJ must after Gordon
+				return false;
+			}
 			// first macd gordon is under zero, now macd is dead or near dead,
 			// looking for the second above zero macd gordon
 			if (overDayList.size() < 40) {
@@ -311,7 +372,7 @@ public class CombineAnalyseHelper {
 				}
 
 				// 当找到零下macd金叉和零附近的死叉，如果kdj很低，等待kdj金叉或者rsv金叉
-				//一下类似多头回调，前一天低于ma5和ma10，当天高于ma5和ma10
+				// 一下类似多头回调，前一天低于ma5和ma10，当天高于ma5和ma10
 				if (findAboveZeroDead) {
 					if (curSuperDayVO.avgMA5 >= curSuperDayVO.avgMA20 && curSuperDayVO.avgMA10 >= curSuperDayVO.avgMA20) {
 						if ((curSuperDayVO.kdjVO.j <= 10.0) || (pre1SuperDayVO.kdjVO.j <= 10.0)
@@ -339,6 +400,11 @@ public class CombineAnalyseHelper {
 			break;
 		}
 		case Phase3_Previous_Under_Zero_MACD_Gordon_Now_MACD_Gordon_Volume_Bigger: {
+
+			if (curSuperWeekVO.kdjVO.k < curSuperWeekVO.kdjVO.d || !this.isLatestWeekKDJCrossGordon(overWeekList)) {
+				// over all week KDJ must after Gordon
+				return false;
+			}
 			if (overDayList.size() < 40) {
 				return false;
 			}
@@ -404,6 +470,11 @@ public class CombineAnalyseHelper {
 			break;
 		}
 		case DuoTou_Pre_2_Days_Green_Red_KDJ_Zero_MA20_Support:
+
+			if (curSuperWeekVO.kdjVO.k < curSuperWeekVO.kdjVO.d || !this.isLatestWeekKDJCrossGordon(overWeekList)) {
+				// over all week KDJ must after Gordon
+				return false;
+			}
 			// duo tou, ma5 <= ma10, ma10 >= ma20 >= ma30
 			// low <= ma20, close >=ma20, KDJ J is zero
 			// pre 2 days green, today red (or close higher than pre1)
@@ -427,6 +498,11 @@ public class CombineAnalyseHelper {
 			}
 			break;
 		case DuoTou_Pre_2_Days_Green_Red_KDJ_Zero_MA30_Support:
+
+			if (curSuperWeekVO.kdjVO.k < curSuperWeekVO.kdjVO.d || !this.isLatestWeekKDJCrossGordon(overWeekList)) {
+				// over all week KDJ must after Gordon
+				return false;
+			}
 			// duo tou, ma5 <= ma10, ma10 >= ma20 >= ma30
 			// low <= ma30, close >=ma30, KDJ J is zero
 			// pre 2 days green, today red (or close higher than pre1)
@@ -450,6 +526,11 @@ public class CombineAnalyseHelper {
 			}
 			break;
 		case DuoTou_MA5_Wait_MA10_RSV_KDJ_Gordon_Break_Platform:
+
+			if (curSuperWeekVO.kdjVO.k < curSuperWeekVO.kdjVO.d || !this.isLatestWeekKDJCrossGordon(overWeekList)) {
+				// over all week KDJ must after Gordon
+				return false;
+			}
 			// is much like XX_Gordon_High_MA5_MA10_BOLL
 			// example: 000062 2015-02-27
 
@@ -501,6 +582,11 @@ public class CombineAnalyseHelper {
 			}
 			break;
 		case Huge_Volume_Increase_3X3_Price_Higher_All_MA120:
+
+			if (curSuperWeekVO.kdjVO.k < curSuperWeekVO.kdjVO.d || !this.isLatestWeekKDJCrossGordon(overWeekList)) {
+				// over all week KDJ must after Gordon
+				return false;
+			}
 			// today close higher than ma5,ma10,ma20,ma30,ma60,ma120
 			// today volume is 3 times of pre1 day
 			// pre1 day volume is 3 times of pre2 day avgVol5
@@ -518,6 +604,11 @@ public class CombineAnalyseHelper {
 			}
 			break;
 		case MACD_Gordon_Volume_And_Price_Highest_In_MA90: {
+
+			if (curSuperWeekVO.kdjVO.k < curSuperWeekVO.kdjVO.d || !this.isLatestWeekKDJCrossGordon(overWeekList)) {
+				// over all week KDJ must after Gordon
+				return false;
+			}
 			// volume and price is the highest in half year
 			if (overDayList.size() < 120) {
 				return false;
@@ -548,6 +639,11 @@ public class CombineAnalyseHelper {
 			break;
 		}
 		case KDJ_Gordon_Volume_And_Price_Highest_In_MA90: {
+
+			if (curSuperWeekVO.kdjVO.k < curSuperWeekVO.kdjVO.d || !this.isLatestWeekKDJCrossGordon(overWeekList)) {
+				// over all week KDJ must after Gordon
+				return false;
+			}
 			// volume and price is the highest in half year
 			if (overDayList.size() < 120) {
 				return false;
@@ -578,6 +674,11 @@ public class CombineAnalyseHelper {
 			break;
 		}
 		case Huge_Volume_Increase_Price_Higher_MA120_Previous_Lower_MA120: {
+
+			if (curSuperWeekVO.kdjVO.k < curSuperWeekVO.kdjVO.d || !this.isLatestWeekKDJCrossGordon(overWeekList)) {
+				// over all week KDJ must after Gordon
+				return false;
+			}
 			// volume and price is the highest in half year
 			if (overDayList.size() < 120) {
 				return false;
@@ -608,8 +709,12 @@ public class CombineAnalyseHelper {
 			}
 			break;
 		}
-		case Volume_Increase_Higher_MA120: {// volume and price is the highest
-											// in half year
+		case Volume_Increase_Higher_MA120: {
+			// volume and price is the highest in half year
+			if (curSuperWeekVO.kdjVO.k < curSuperWeekVO.kdjVO.d || !this.isLatestWeekKDJCrossGordon(overWeekList)) {
+				// over all week KDJ must after Gordon
+				return false;
+			}
 			if (overDayList.size() < 120) {
 				return false;
 			}
@@ -634,6 +739,25 @@ public class CombineAnalyseHelper {
 				return true;
 			}
 		}
+			break;
+		case KongTou_Day_KDJ_Pre3_Days_Dead_Week_KDJ_Dead:
+			// example: 601318 20150309
+			if (curSuperWeekVO.kdjVO.k > curSuperWeekVO.kdjVO.d) {
+				// over all week KDJ must after Dead
+				return false;
+			}
+
+			if (curSuperWeekVO.kdjVO.j <= 0.0 && pre1SuperWeekVO.kdjVO.j <= 0.0) {
+				if (pre1SuperDayVO.kdjVO.j <= 0.0 && pre2SuperDayVO.kdjVO.j <= 0.0 && pre3SuperDayVO.kdjVO.j <= 0.0) {
+					if (curSuperDayVO.macdVO.macd <= 0.0 && curSuperDayVO.macdVO.dif <= 0.0
+							&& curSuperDayVO.macdVO.dea <= 0.0) {
+						if (curSuperDayVO.rsvCorssType == CrossType.GORDON) {
+							return true;
+						}
+					}
+				}
+			}
+
 			break;
 		default:
 			return false;
