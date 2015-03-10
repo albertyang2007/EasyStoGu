@@ -60,7 +60,7 @@ public class HistoryAnalyseReport {
 		IndCrossCheckingHelper.macdCross(overWeekList);
 		IndCrossCheckingHelper.kdjCross(overWeekList);
 		IndCrossCheckingHelper.rsvCross(overWeekList);
-		
+
 		HistoryReportDetailsVO reportVO = null;
 		for (int index = 120; index < (overDayList.size() - 1); index++) {
 			StockSuperVO superVO = overDayList.get(index);
@@ -73,7 +73,7 @@ public class HistoryAnalyseReport {
 			}
 
 			// sell point (MACD dead or KDJ dead point)
-			if ((superVO.macdCorssType == CrossType.DEAD)) {
+			if ((superVO.kdjCorssType == CrossType.DEAD) || (superVO.macdCorssType == CrossType.DEAD)) {
 				if ((reportVO != null) && (reportVO.buyPriceVO != null) && (reportVO.sellPriceVO == null)) {
 					reportVO.setSelPriceVO(superVO.priceVO);
 					historyReportList.add(reportVO);
@@ -184,12 +184,12 @@ public class HistoryAnalyseReport {
 					// print the high earn percent if larger than 25%
 					if ((reportVO.earnPercent[1] >= 50.0) && (reportVO.earnPercent[0] >= 25.0)) {
 						totalHighCount++;
-						//System.out.println("High earn: " + reportVO);
+						// System.out.println("High earn: " + reportVO);
 						// save the high earnPercent case into DB
 						// historyReportTableHelper.insert(reportVO.convertToHistoryReportVO(checkPoint.toString()));
 					} else if ((reportVO.earnPercent[1] <= -10.0) || (reportVO.earnPercent[0] <= -10.0)) {
 						totalLowCount++;
-						//System.out.println("Low  earn: " + reportVO);
+						// System.out.println("Low  earn: " + reportVO);
 					}
 					totalCount++;
 					earnPercent[0] += reportVO.earnPercent[0];
@@ -239,7 +239,7 @@ public class HistoryAnalyseReport {
 			reporter.searchAllStockIdAccordingToCheckPoint(checkPoint);
 		}
 
-		//reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.Previous_KDJ_MACD_Gordon_Now_Boll_Gordon_Week_RSV_Gordon_Boll_Gordon);
+		// reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.Previous_KDJ_MACD_Gordon_Now_Boll_Gordon_Week_RSV_Gordon_Boll_Gordon);
 		// reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.Phase2_Previous_Under_Zero_MACD_Gordon_Now_MACD_Dead_RSV_Gordon);
 		// reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.Phase3_Previous_Under_Zero_MACD_Gordon_Now_MACD_Dead_KDJ_Gordon);
 		// reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.Phase4_Previous_Under_Zero_MACD_Gordon_Now_MACD_Gordon_Volume_Bigger);
