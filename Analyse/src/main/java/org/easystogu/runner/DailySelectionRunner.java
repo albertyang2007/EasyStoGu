@@ -70,6 +70,7 @@ public class DailySelectionRunner {
 		// week
 		IndCrossCheckingHelper.macdCross(overWeekList);
 		IndCrossCheckingHelper.kdjCross(overWeekList);
+		IndCrossCheckingHelper.rsvCross(overWeekList);
 
 		int index = overDayList.size() - 1;
 		StockSuperVO superVO = overDayList.get(index);

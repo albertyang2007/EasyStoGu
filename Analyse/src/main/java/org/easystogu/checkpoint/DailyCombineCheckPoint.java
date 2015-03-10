@@ -27,7 +27,8 @@ public enum DailyCombineCheckPoint {
 			"Volume and Price is the highest in half year(ma120)", 1622, 7.89), KDJ_Gordon_Volume_And_Price_Highest_In_MA90(
 			"Volume and Price is the highest in half year(ma120)", 1928, 6.70), Huge_Volume_Increase_Price_Higher_MA120_Previous_Lower_MA120(
 			"Volume is biggest in 120 days and price higher than ma120, pre1 day low ma120", 221, 8.76), Volume_Increase_Higher_MA120(
-			"The biggest volume in 120 days", 6859, 4.51), KongTou_Day_KDJ_Pre3_Days_Dead_Week_KDJ_Dead(
+			"The biggest volume in 120 days", 6859, 4.51), Previous_KDJ_MACD_Gordon_Now_Boll_Gordon_Week_RSV_Gordon_Boll_Gordon(
+			"???Two low, do not select it!", 410, 2.9), KongTou_Day_KDJ_Pre3_Days_Dead_Week_KDJ_Dead(
 			"Day KDJ Pre 3 days J 0, Week KDJ J 0", 44, 6.37);
 
 	private String condition;
