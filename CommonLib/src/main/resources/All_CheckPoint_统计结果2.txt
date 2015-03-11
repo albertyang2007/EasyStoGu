@@ -100,6 +100,12 @@ Avg hold stock days: 8
 Total high earn between (25, 50): 6
 Total low  earn between (10, 10): 62
 
+===================DuoTou_Pre_2_Days_Green_Red_MA20_MA30_Support  earn between (25, 50)%====================
+Total satisfy: 415	 earnPercent[close]=0.15244567729363762	 earnPercent[high]=5.727278527673507	 earnPercent[low]=-3.2236904793590977
+Avg hold stock days: 5
+Total high earn between (25, 50): 1
+Total low  earn between (10, 10): 6
+
 ===================DuoTou_Pre_2_Days_Green_Red_KDJ_Zero_MA30_Support  earn between (25, 50)%====================
 Total satisfy: 1650	 earnPercent[close]=0.30775750990086165	 earnPercent[high]=7.762445983043093	 earnPercent[low]=-4.5927637708692055
 Avg hold stock days: 9
