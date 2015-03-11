@@ -235,11 +235,11 @@ public class HistoryAnalyseReport {
 		for (DailyCombineCheckPoint checkPoint : DailyCombineCheckPoint.values()) {
 			// if(checkPoint.getEarnPercent()>=7.5)
 			// System.out.println(checkPoint);
-			reporter.emptyTableByCheckPoint(checkPoint.toString());
-			reporter.searchAllStockIdAccordingToCheckPoint(checkPoint);
+			//reporter.emptyTableByCheckPoint(checkPoint.toString());
+			//reporter.searchAllStockIdAccordingToCheckPoint(checkPoint);
 		}
 
-		// reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.Previous_KDJ_MACD_Gordon_Now_Boll_Gordon_Week_RSV_Gordon_Boll_Gordon);
+		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.DuoTou_Pre_2_Days_Green_Red_MA20_MA30_Support);
 		// reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.Phase2_Previous_Under_Zero_MACD_Gordon_Now_MACD_Dead_RSV_Gordon);
 		// reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.Phase3_Previous_Under_Zero_MACD_Gordon_Now_MACD_Dead_KDJ_Gordon);
 		// reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.Phase4_Previous_Under_Zero_MACD_Gordon_Now_MACD_Gordon_Volume_Bigger);

@@ -497,6 +497,32 @@ public class CombineAnalyseHelper {
 				}
 			}
 			break;
+		case DuoTou_Pre_2_Days_Green_Red_MA20_MA30_Support:
+			// Duo Tou, MA5>MA10>MA20>MA30, Low <=MA30, MA10 > Close> MA20
+			// Boll: Low <= MB Close > MB
+			// example: 002115 20150210
+			if (curSuperWeekVO.kdjVO.k < curSuperWeekVO.kdjVO.d || !this.isLatestKDJCrossGordon(overWeekList)) {
+				// over all week KDJ must after Gordon
+				return false;
+			}
+			if (curSuperDayVO.avgMA5 > curSuperDayVO.avgMA10 && curSuperDayVO.avgMA10 > curSuperDayVO.avgMA20
+					&& curSuperDayVO.avgMA20 > curSuperDayVO.avgMA30) {
+				if (pre1SuperDayVO.priceVO.isKLineGreen() && pre2SuperDayVO.priceVO.isKLineGreen()) {
+					if (curSuperDayVO.priceVO.close > pre1SuperDayVO.priceVO.close) {
+						if (curSuperDayVO.priceVO.low <= curSuperDayVO.avgMA30
+								&& curSuperDayVO.priceVO.close >= curSuperDayVO.avgMA20
+								&& curSuperDayVO.priceVO.low <= curSuperDayVO.bollVO.mb
+								&& curSuperDayVO.priceVO.close >= curSuperDayVO.bollVO.mb) {
+							if (curSuperDayVO.kdjVO.kValueBetween(40, 60) && curSuperDayVO.kdjVO.dValueBetween(40, 60)) {
+								if (curSuperDayVO.macdVO.macd >= 0.0 && curSuperDayVO.macdVO.dif >= 0.0) {
+									return true;
+								}
+							}
+						}
+					}
+				}
+			}
+			break;
 		case DuoTou_Pre_2_Days_Green_Red_KDJ_Zero_MA30_Support:
 
 			if (curSuperWeekVO.kdjVO.k < curSuperWeekVO.kdjVO.d || !this.isLatestKDJCrossGordon(overWeekList)) {

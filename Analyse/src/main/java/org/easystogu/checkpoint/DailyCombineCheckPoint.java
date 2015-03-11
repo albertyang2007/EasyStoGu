@@ -18,7 +18,8 @@ public enum DailyCombineCheckPoint {
 			"First MACD Gordon is under zero, now MACD is Dead above zero, but RSV/KDJ is Gordon", 515, 8.30), Phase3_Previous_Under_Zero_MACD_Gordon_Now_MACD_Gordon_Volume_Bigger(
 			"Previous MACD Gordon is under 0 and current MACD Gordon is uper 0, Volume is much bigger", 1615, 5.22), DuoTou_Pre_2_Days_Green_Red_KDJ_Zero_MA20_Support(
 			"Duo Tou, MA5<=MA10, MA10>=MA20>=MA30, pre2 pre3 two days green, pre1 and today red, pre1 low < ma20, pre1 close > ma20, pre 1 KDJ J is low 10, now RSV gordon",
-			1048, 7.27), DuoTou_Pre_2_Days_Green_Red_KDJ_Zero_MA30_Support(
+			1048, 7.27), DuoTou_Pre_2_Days_Green_Red_MA20_MA30_Support(
+			"Duo Tou, MA5>MA10>MA20>MA30, Low <=MA30, Close>=MA20, near MA10", 415, 5.72), DuoTou_Pre_2_Days_Green_Red_KDJ_Zero_MA30_Support(
 			"Duo Tou, MA5<=MA10, MA10>=MA20>=MA30, pre2 pre3 two days green, pre1 and today red, pre1 low < ma20, pre1 close > ma20, pre 1 KDJ J is low 10, now RSV gordon",
 			1600, 7.76), DuoTou_MA5_Wait_MA10_RSV_KDJ_Gordon_Break_Platform(
 			"DuoTou, MA5 wait MA10, RSV Gordon, Pre1 is red, pre2 and pre3 is green, MACD is near 0, Close than MA5 & MA10 and between UP and MB, near MB, Why latest analyse only 6.92???",
