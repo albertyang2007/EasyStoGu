@@ -184,12 +184,12 @@ public class HistoryAnalyseReport {
 					// print the high earn percent if larger than 25%
 					if ((reportVO.earnPercent[1] >= 50.0) && (reportVO.earnPercent[0] >= 25.0)) {
 						totalHighCount++;
-						// System.out.println("High earn: " + reportVO);
+						System.out.println("High earn: " + reportVO);
 						// save the high earnPercent case into DB
 						// historyReportTableHelper.insert(reportVO.convertToHistoryReportVO(checkPoint.toString()));
 					} else if ((reportVO.earnPercent[1] <= -10.0) || (reportVO.earnPercent[0] <= -10.0)) {
 						totalLowCount++;
-						// System.out.println("Low  earn: " + reportVO);
+						System.out.println("Low  earn: " + reportVO);
 					}
 					totalCount++;
 					earnPercent[0] += reportVO.earnPercent[0];
@@ -239,13 +239,7 @@ public class HistoryAnalyseReport {
 			//reporter.searchAllStockIdAccordingToCheckPoint(checkPoint);
 		}
 
-		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.DuoTou_Pre_2_Days_Green_Red_KDJ_Zero_MA20_Support);
-		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.DuoTou_Pre_2_Days_Green_Red_MA20_MA30_Support);
-		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.DuoTou_Pre_2_Days_Green_Red_KDJ_Zero_MA30_Support);
-		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.DuoTou_MA5_Wait_MA10_RSV_KDJ_Gordon_Break_Platform);
-		// reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.Phase2_Previous_Under_Zero_MACD_Gordon_Now_MACD_Dead_RSV_Gordon);
-		// reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.Phase3_Previous_Under_Zero_MACD_Gordon_Now_MACD_Dead_KDJ_Gordon);
-		// reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.Phase4_Previous_Under_Zero_MACD_Gordon_Now_MACD_Gordon_Volume_Bigger);
+		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.DuoTou_MA5_Wait_MA10_RongHe);
 
 		// reporter.UnitTestForSpecifyStockId();
 	}

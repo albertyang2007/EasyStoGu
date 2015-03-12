@@ -26,6 +26,8 @@ public class CombineAnalyseHelper {
 		StockSuperVO pre1SuperDayVO = overDayList.get(overDayList.size() - 2);
 		StockSuperVO pre2SuperDayVO = overDayList.get(overDayList.size() - 3);
 		StockSuperVO pre3SuperDayVO = overDayList.get(overDayList.size() - 4);
+		StockSuperVO pre4SuperDayVO = overDayList.get(overDayList.size() - 5);
+		StockSuperVO pre5SuperDayVO = overDayList.get(overDayList.size() - 6);
 
 		switch (checkPoint) {
 		case MACD_KDJ_Gordon_3_Days_Red:
@@ -606,6 +608,60 @@ public class CombineAnalyseHelper {
 					}
 				}
 			}
+			break;
+		case DuoTou_MA5_Wait_MA10_RongHe:
+			// example: 002194 2015-03-11
+			if (curSuperWeekVO.kdjVO.k < curSuperWeekVO.kdjVO.d || !this.isLatestKDJCrossGordon(overWeekList)) {
+				// over all week KDJ must after Gordon
+				return false;
+			}
+
+			double[] dif = new double[6];
+			dif[0] = pre5SuperDayVO.avgMA5 - pre5SuperDayVO.avgMA10;
+			dif[1] = pre4SuperDayVO.avgMA5 - pre4SuperDayVO.avgMA10;
+			dif[2] = pre3SuperDayVO.avgMA5 - pre3SuperDayVO.avgMA10;
+			dif[3] = pre2SuperDayVO.avgMA5 - pre2SuperDayVO.avgMA10;
+			dif[4] = pre1SuperDayVO.avgMA5 - pre1SuperDayVO.avgMA10;
+			dif[5] = curSuperDayVO.avgMA5 - curSuperDayVO.avgMA10;
+
+			if (dif[0] > dif[1] && dif[1] > dif[2] && dif[2] > dif[3] && dif[3] > dif[4] && dif[4] > dif[5]) {
+				if (Math.abs(dif[5]) / curSuperDayVO.avgMA5 * 100 <= 0.1) {
+					if ((curSuperDayVO.avgMA5 <= curSuperDayVO.avgMA10)
+							&& (curSuperDayVO.avgMA10 > curSuperDayVO.avgMA20)
+							&& (curSuperDayVO.avgMA20 > curSuperDayVO.avgMA30)) {
+						if (pre1SuperDayVO.avgMA5 > pre1SuperDayVO.avgMA10
+								&& pre1SuperDayVO.avgMA10 > pre1SuperDayVO.avgMA20
+								&& pre1SuperDayVO.avgMA20 > pre1SuperDayVO.avgMA30) {
+							if (pre2SuperDayVO.avgMA5 > pre2SuperDayVO.avgMA10
+									&& pre2SuperDayVO.avgMA10 > pre2SuperDayVO.avgMA20
+									&& pre2SuperDayVO.avgMA20 > pre2SuperDayVO.avgMA30) {
+								if (pre3SuperDayVO.avgMA5 > pre3SuperDayVO.avgMA10
+										&& pre3SuperDayVO.avgMA10 > pre3SuperDayVO.avgMA20
+										&& pre3SuperDayVO.avgMA20 > pre3SuperDayVO.avgMA30) {
+									if (pre4SuperDayVO.avgMA5 > pre4SuperDayVO.avgMA10
+											&& pre4SuperDayVO.avgMA10 > pre4SuperDayVO.avgMA20
+											&& pre4SuperDayVO.avgMA20 > pre4SuperDayVO.avgMA30) {
+										if (pre5SuperDayVO.avgMA5 > pre5SuperDayVO.avgMA10
+												&& pre5SuperDayVO.avgMA10 > pre5SuperDayVO.avgMA20
+												&& pre5SuperDayVO.avgMA20 > pre5SuperDayVO.avgMA30) {
+											if (pre1SuperDayVO.avgMA10 > pre2SuperDayVO.avgMA10
+													&& pre2SuperDayVO.avgMA10 > pre3SuperDayVO.avgMA10
+													&& pre3SuperDayVO.avgMA10 > pre4SuperDayVO.avgMA10
+													&& pre4SuperDayVO.avgMA10 > pre5SuperDayVO.avgMA10) {
+												if ((curSuperDayVO.priceVO.isKLineRed() && curSuperDayVO.priceVO.close > pre1SuperDayVO.priceVO.close)
+														&& (pre1SuperDayVO.priceVO.isKLineRed() && pre1SuperDayVO.priceVO.close > pre2SuperDayVO.priceVO.close)) {
+													return true;
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+
 			break;
 		case Huge_Volume_Increase_3X3_Price_Higher_All_MA120:
 
