@@ -118,6 +118,12 @@ Avg hold stock days: 6
 Total high earn between (25, 50): 0
 Total low  earn between (10, 10): 5
 
+===================DuoTou_MA5_Wait_MA10_RongHe  earn between (25, 50)%====================
+Total satisfy: 315	 earnPercent[close]=0.20975244258312198	 earnPercent[high]=5.862333059892349	 earnPercent[low]=-3.5720011527218753
+Avg hold stock days: 5
+Total high earn between (25, 50): 1
+Total low  earn between (10, 10): 6
+
 ===================Huge_Volume_Increase_3X3_Price_Higher_All_MA120  earn between (25, 50)%====================
 Total satisfy: 170	 earnPercent[close]=-0.8152660658714341	 earnPercent[high]=7.818130123540895	 earnPercent[low]=-6.331766408702505
 Avg hold stock days: 5
