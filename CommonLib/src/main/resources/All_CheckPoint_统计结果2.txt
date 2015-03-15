@@ -1,8 +1,22 @@
-===================MACD_KDJ_Gordon_3_Days_Red  earn between (25, 50)%====================
-Total satisfy: 3122	 earnPercent[close]=0.9384507329019335	 earnPercent[high]=7.614839422843502	 earnPercent[low]=-3.6405446885636343
-Avg hold stock days: 7
-Total high earn between (25, 50): 13
-Total low  earn between (10, 10): 61
+KDJ dead point as sell point:
+
+===================MACD_Gordon  earn between (25, 50)%====================
+Total satisfy: 108072	 earnPercent[close]=0.09431415733131412	 earnPercent[high]=6.258521726843456	 earnPercent[low]=-3.785398039166774
+Avg hold stock days: 6
+Total high earn between (25, 50): 407
+Total low  earn between (10, 10): 2117
+
+===================KDJ_Gordon  earn between (25, 50)%====================
+Total satisfy: 244054	 earnPercent[close]=0.1676856421446981	 earnPercent[high]=6.211326429065542	 earnPercent[low]=-3.4635697582367553
+Avg hold stock days: 6
+Total high earn between (25, 50): 866
+Total low  earn between (10, 10): 4017
+
+===================MACD_KDJ_Gordon_3_Days_Red_MA_Ronghe_XiangShang  earn between (25, 50)%====================
+Total satisfy: 1854	 earnPercent[close]=0.933172714624512	 earnPercent[high]=7.8319452474741285	 earnPercent[low]=-3.760364433114963
+Avg hold stock days: 6
+Total high earn between (25, 50): 10
+Total low  earn between (10, 10): 37
 
 ===================MACD_KDJ_Gordon_Pre_3_Days_Green  earn between (25, 50)%====================
 Total satisfy: 230	 earnPercent[close]=0.6164416474276492	 earnPercent[high]=7.004976497200588	 earnPercent[low]=-3.382851399753147
@@ -34,11 +48,11 @@ Avg hold stock days: 6
 Total high earn between (25, 50): 39
 Total low  earn between (10, 10): 137
 
-===================MACD_KDJ_Gordon_High_MA5_MA10_BOLL  earn between (25, 50)%====================
-Total satisfy: 1578	 earnPercent[close]=0.7574292207245692	 earnPercent[high]=7.261909078428094	 earnPercent[low]=-3.4279866290635694
-Avg hold stock days: 7
-Total high earn between (25, 50): 6
-Total low  earn between (10, 10): 18
+===================MACD_KDJ_Gordon_High_MA5_MA10_BOLL_MA_RongHe_XiangShang  earn between (25, 50)%====================
+Total satisfy: 715	 earnPercent[close]=0.7966042620538903	 earnPercent[high]=7.56249764170332	 earnPercent[low]=-3.426210790117609
+Avg hold stock days: 6
+Total high earn between (25, 50): 3
+Total low  earn between (10, 10): 6
 
 ===================KDJ_Near_Gordon_High_MA5_MA10_BOLL  earn between (25, 50)%====================
 Total satisfy: 2138	 earnPercent[close]=0.6838843751322822	 earnPercent[high]=7.193519262333037	 earnPercent[low]=-3.6207070425852756
@@ -100,6 +114,12 @@ Avg hold stock days: 8
 Total high earn between (25, 50): 6
 Total low  earn between (10, 10): 62
 
+===================DuoTou_Pre_2_Days_Green_Red_KDJ_Zero_MA20_Support_MA_RongHe_XiangShang  earn between (25, 50)%====================
+Total satisfy: 283	 earnPercent[close]=0.8185372521103228	 earnPercent[high]=8.010033438029005	 earnPercent[low]=-3.6830182740942563
+Avg hold stock days: 7
+Total high earn between (25, 50): 2
+Total low  earn between (10, 10): 7
+
 ===================DuoTou_Pre_2_Days_Green_Red_MA20_MA30_Support  earn between (25, 50)%====================
 Total satisfy: 415	 earnPercent[close]=0.15244567729363762	 earnPercent[high]=5.727278527673507	 earnPercent[low]=-3.2236904793590977
 Avg hold stock days: 5
@@ -112,11 +132,29 @@ Avg hold stock days: 9
 Total high earn between (25, 50): 8
 Total low  earn between (10, 10): 92
 
+===================DuoTou_Pre_2_Days_Green_Red_KDJ_Zero_MA30_Support_MA_RongHe_XiangShang  earn between (25, 50)%====================
+Total satisfy: 154	 earnPercent[close]=1.1707256767103293	 earnPercent[high]=8.026436659156595	 earnPercent[low]=-3.2697213359370987
+Avg hold stock days: 8
+Total high earn between (25, 50): 0
+Total low  earn between (10, 10): 2
+
 ===================DuoTou_MA5_Wait_MA10_RSV_KDJ_Gordon_Break_Platform  earn between (25, 50)%====================??
 Total satisfy: 105	 earnPercent[close]=-1.0885000791682584	 earnPercent[high]=6.921250532860111	 earnPercent[low]=-4.7803392066787795
 Avg hold stock days: 6
 Total high earn between (25, 50): 0
 Total low  earn between (10, 10): 5
+
+===================DuoTou_HuiTiao_Boll_Lower_Support_MA30_Support_MA_RongHe_XiangShang  earn between (25, 50)%====================
+Total satisfy: 121	 earnPercent[close]=-1.5653975501969104	 earnPercent[high]=7.858383895840368	 earnPercent[low]=-6.045857933157071
+Avg hold stock days: 6
+Total high earn between (25, 50): 1
+Total low  earn between (10, 10): 7
+
+===================DuoTou_HuiTiao_Boll_MB_Support_MA20_Support_MA_RongHe_XiangShang  earn between (25, 50)%====================
+Total satisfy: 761	 earnPercent[close]=-2.2173562171365218	 earnPercent[high]=6.836591672446485	 earnPercent[low]=-6.48733925244726
+Avg hold stock days: 5
+Total high earn between (25, 50): 7
+Total low  earn between (10, 10): 64
 
 ===================DuoTou_MA5_Wait_MA10_RongHe  earn between (25, 50)%====================
 Total satisfy: 315	 earnPercent[close]=0.20975244258312198	 earnPercent[high]=5.862333059892349	 earnPercent[low]=-3.5720011527218753
