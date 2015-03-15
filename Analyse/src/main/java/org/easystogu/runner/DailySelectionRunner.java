@@ -39,6 +39,7 @@ public class DailySelectionRunner {
 	private HistoryAnalyseReport historyReportHelper = new HistoryAnalyseReport();
 	private CombineAnalyseHelper combineAnalyserHelper = new CombineAnalyseHelper();
 	private double minEarnPercent = config.getDouble("minEarnPercent_Select_CheckPoint");
+	private StringBuffer recommandStr = new StringBuffer();
 	// StockPriceVO, CheckPoint list
 	private Map<StockSuperVO, List<DailyCombineCheckPoint>> selectedMaps = new HashMap<StockSuperVO, List<DailyCombineCheckPoint>>();
 
@@ -48,7 +49,7 @@ public class DailySelectionRunner {
 		List<StockSuperVO> overWeekList = weekStockOverAllHelper.getLatestNStockSuperVO(stockId, 24);
 
 		if (overDayList.size() == 0) {
-			//System.out.println("No stockprice data for " + stockId);
+			// System.out.println("No stockprice data for " + stockId);
 			return;
 		}
 
@@ -119,14 +120,12 @@ public class DailySelectionRunner {
 	public void reportSelectedStockIds() {
 		Set<StockSuperVO> keys = this.selectedMaps.keySet();
 		Iterator<StockSuperVO> keysIt = keys.iterator();
-		StringBuffer recommandStr = new StringBuffer();
 		while (keysIt.hasNext()) {
 			StockSuperVO superVO = keysIt.next();
 			List<DailyCombineCheckPoint> checkPointList = this.selectedMaps.get(superVO);
 			for (DailyCombineCheckPoint checkPoint : checkPointList) {
 				if (checkPoint.getEarnPercent() >= this.minEarnPercent) {
 					recommandStr.append(superVO.priceVO.stockId + " select :" + checkPointList.toString() + "\n");
-					break;
 				}
 			}
 			System.out.println(superVO.priceVO.stockId + " select :" + checkPointList.toString());
@@ -145,11 +144,12 @@ public class DailySelectionRunner {
 			List<DailyCombineCheckPoint> checkPointList = this.selectedMaps.get(superVO);
 
 			for (DailyCombineCheckPoint checkPoint : checkPointList) {
-				List<HistoryReportDetailsVO> hisReport = historyReportHelper.doAnalyseReport(superVO.priceVO.stockId,
-						checkPoint);
-
-				RangeHistoryReportVO rangeVO = new RangeHistoryReportVO(superVO, hisReport, checkPoint);
-				rangeList.add(rangeVO);
+				if (checkPoint.getEarnPercent() >= this.minEarnPercent) {
+					List<HistoryReportDetailsVO> hisReport = historyReportHelper.doAnalyseReport(
+							superVO.priceVO.stockId, checkPoint);
+					RangeHistoryReportVO rangeVO = new RangeHistoryReportVO(superVO, hisReport, checkPoint);
+					rangeList.add(rangeVO);
+				}
 			}
 		}
 
@@ -172,6 +172,9 @@ public class DailySelectionRunner {
 			fout.write(ReportTemplate.htmlStart);
 			fout.newLine();
 			fout.write(ReportTemplate.tableStart);
+			fout.newLine();
+
+			fout.write(recommandStr.toString().replaceAll("\n", "<br>"));
 			fout.newLine();
 
 			for (RangeHistoryReportVO rangeVO : rangeList) {

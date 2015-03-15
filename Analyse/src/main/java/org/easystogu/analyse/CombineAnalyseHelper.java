@@ -700,7 +700,7 @@ public class CombineAnalyseHelper {
 			// first find macd dead point, dif >0
 			for (int i = 0; i < overDaySubList.size(); i++) {
 				StockSuperVO vo = overDaySubList.get(i);
-				if (vo.macdCorssType == CrossType.DEAD && vo.macdVO.dif > 2.0) {
+				if (vo.macdCorssType == CrossType.DEAD && vo.macdVO.dif > 1.0) {
 					macdDeadPointIndex = i;
 					if (i - 1 >= 0) {
 						StockSuperVO pre1vo = overDaySubList.get(i - 1);

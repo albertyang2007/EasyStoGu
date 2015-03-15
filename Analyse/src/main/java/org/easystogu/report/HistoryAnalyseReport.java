@@ -244,7 +244,7 @@ public class HistoryAnalyseReport {
 			// reporter.searchAllStockIdAccordingToCheckPoint(checkPoint);
 		}
 
-		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.MACD_KDJ_Gordon_High_MA5_MA10_BOLL_MA_RongHe_XiangShang);
+		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.DuoTou_HuiTiao_Boll_Lower_Support_MA30_Support_MA_RongHe_XiangShang);
 		// reporter.UnitTestForSpecifyStockId();
 	}
 }
