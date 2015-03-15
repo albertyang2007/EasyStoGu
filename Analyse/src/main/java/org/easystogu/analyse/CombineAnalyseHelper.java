@@ -30,7 +30,17 @@ public class CombineAnalyseHelper {
 		StockSuperVO pre5SuperDayVO = overDayList.get(overDayList.size() - 6);
 
 		switch (checkPoint) {
-		case MACD_KDJ_Gordon_3_Days_Red:
+		case MACD_Gordon:
+			if (curSuperDayVO.macdCorssType == CrossType.GORDON) {
+				return true;
+			}
+			break;
+		case KDJ_Gordon:
+			if (curSuperDayVO.kdjCorssType == CrossType.GORDON) {
+				return true;
+			}
+			break;
+		case MACD_KDJ_Gordon_3_Days_Red_MA_Ronghe_XiangShang:
 
 			if (curSuperWeekVO.kdjVO.k < curSuperWeekVO.kdjVO.d || !this.isLatestKDJCrossGordon(overWeekList)) {
 				// over all week KDJ must after Gordon
@@ -44,7 +54,7 @@ public class CombineAnalyseHelper {
 					if (curSuperDayVO.priceVO.isKLineRed() && (curSuperDayVO.volumeIncreasePercent >= 1.0)) {
 						if (pre1SuperDayVO.priceVO.isKLineRed() && (pre1SuperDayVO.volumeIncreasePercent >= 1.0)
 								&& pre2SuperDayVO.priceVO.isKLineRed()) {
-							return true;
+							return MA5_MA10_MA20_Ronghe_XiangShang(curSuperDayVO, pre1SuperDayVO);
 						}
 					}
 				}
@@ -156,7 +166,7 @@ public class CombineAnalyseHelper {
 				}
 			}
 			break;
-		case MACD_KDJ_Gordon_High_MA5_MA10_BOLL:
+		case MACD_KDJ_Gordon_High_MA5_MA10_BOLL_MA_RongHe_XiangShang:
 
 			if (curSuperWeekVO.kdjVO.k < curSuperWeekVO.kdjVO.d || !this.isLatestKDJCrossGordon(overWeekList)) {
 				// over all week KDJ must after Gordon
@@ -175,7 +185,7 @@ public class CombineAnalyseHelper {
 								&& (pre1SuperDayVO.priceVO.close < pre1SuperDayVO.avgMA10)) {
 							if ((curSuperDayVO.bollVO.up > curSuperDayVO.priceVO.close)
 									&& (curSuperDayVO.priceVO.close > curSuperDayVO.bollVO.mb)) {
-								return true;
+								return this.MA5_MA10_MA20_Ronghe_XiangShang(curSuperDayVO, pre1SuperDayVO);
 							}
 						}
 					}
@@ -499,6 +509,34 @@ public class CombineAnalyseHelper {
 				}
 			}
 			break;
+		case DuoTou_Pre_2_Days_Green_Red_KDJ_Zero_MA20_Support_MA_RongHe_XiangShang:
+
+			if (curSuperWeekVO.kdjVO.k < curSuperWeekVO.kdjVO.d || !this.isLatestKDJCrossGordon(overWeekList)) {
+				// over all week KDJ must after Gordon
+				return false;
+			}
+			// duo tou, ma5 <= ma10, ma10 >= ma20 >= ma30
+			// low <= ma20, close >=ma20, KDJ J is zero
+			// pre 2 days green, today red (or close higher than pre1)
+			// example: 300226 2015-02-26
+			// this is not a buy point, waiting next day if RSV/KDJ is gordon,
+			// then
+			// buy it
+			if ((pre1SuperDayVO.avgMA5 <= pre1SuperDayVO.avgMA10) && (pre1SuperDayVO.avgMA10 >= pre1SuperDayVO.avgMA20)
+					&& (pre1SuperDayVO.avgMA20 >= pre1SuperDayVO.avgMA30)) {
+				if ((pre1SuperDayVO.priceVO.low <= pre1SuperDayVO.avgMA20)
+						&& (pre1SuperDayVO.priceVO.close > pre1SuperDayVO.avgMA20)) {
+					if (pre2SuperDayVO.priceVO.isKLineGreen() && pre3SuperDayVO.priceVO.isKLineGreen()) {
+						if ((pre1SuperDayVO.priceVO.close > pre2SuperDayVO.priceVO.close)
+								|| pre1SuperDayVO.priceVO.isKLineRed()) {
+							if ((pre1SuperDayVO.kdjVO.j <= 10.0) && (curSuperDayVO.rsvCorssType == CrossType.GORDON)) {
+								return MA5_MA10_MA20_Ronghe_XiangShang(curSuperDayVO, pre1SuperDayVO);
+							}
+						}
+					}
+				}
+			}
+			break;
 		case DuoTou_Pre_2_Days_Green_Red_MA20_MA30_Support:
 			// Duo Tou, MA5>MA10>MA20>MA30, Low <=MA30, MA10 > Close> MA20
 			// Boll: Low <= MB Close > MB
@@ -553,6 +591,165 @@ public class CombineAnalyseHelper {
 				}
 			}
 			break;
+
+		case DuoTou_Pre_2_Days_Green_Red_KDJ_Zero_MA30_Support_MA_RongHe_XiangShang:
+			// same as DuoTou_Pre_2_Days_Green_Red_KDJ_Zero_MA30_Support
+			// with MA5_MA10_MA20_MA30_Ronghe_XiangShang
+			if (curSuperWeekVO.kdjVO.k < curSuperWeekVO.kdjVO.d || !this.isLatestKDJCrossGordon(overWeekList)) {
+				// over all week KDJ must after Gordon
+				return false;
+			}
+			// duo tou, ma5 <= ma10, ma10 >= ma20 >= ma30
+			// low <= ma30, close >=ma30, KDJ J is zero
+			// pre 2 days green, today red (or close higher than pre1)
+			// example: 002657 2015-02-26
+			// this is not a buy point, waiting next day if RSV/KDJ is gordon,
+			// then
+			// buy it
+			if ((pre1SuperDayVO.avgMA5 <= pre1SuperDayVO.avgMA10) && (pre1SuperDayVO.avgMA10 >= pre1SuperDayVO.avgMA20)
+					&& (pre1SuperDayVO.avgMA20 >= pre1SuperDayVO.avgMA30)) {
+				if ((pre1SuperDayVO.priceVO.low <= pre1SuperDayVO.avgMA30)
+						&& (pre1SuperDayVO.priceVO.close > pre1SuperDayVO.avgMA30)) {
+					if (pre2SuperDayVO.priceVO.isKLineGreen() && pre3SuperDayVO.priceVO.isKLineGreen()) {
+						if ((pre1SuperDayVO.priceVO.close > pre2SuperDayVO.priceVO.close)
+								|| pre1SuperDayVO.priceVO.isKLineRed()) {
+							if ((pre1SuperDayVO.kdjVO.j <= 10.0) && (curSuperDayVO.rsvCorssType == CrossType.GORDON)) {
+								// check MA rongHe and xiangShang
+								return this.MA5_MA10_MA20_MA30_Ronghe_XiangShang(curSuperDayVO, pre1SuperDayVO);
+							}
+						}
+					}
+				}
+			}
+			break;
+		case DuoTou_HuiTiao_Boll_Lower_Support_MA30_Support_MA_RongHe_XiangShang: {
+			// DuoTou huitiao, KDJ J zero, boll lower support, ma30 support,
+			// MA5,10,20,30 ronghe, MB support
+			// macd<0, dif > 0 ,near gordon, xichou > 4
+			// example: 600436 20150310. 300226 20150313
+
+			// limit two macd gordon and dead point to about 30 working days
+			List<StockSuperVO> overDaySubList = overDayList.subList(overDayList.size() - 30, overDayList.size());
+
+			boolean findDuoTouHuiTiaoMacdDeadPoint = false;
+			int macdDeadPointIndex = 0;
+			// first find macd dead point, dif >0
+			for (int i = 0; i < overDaySubList.size(); i++) {
+				StockSuperVO vo = overDaySubList.get(i);
+				if (vo.macdCorssType == CrossType.DEAD && vo.macdVO.dif > 2.0) {
+					macdDeadPointIndex = i;
+					if (i - 1 >= 0) {
+						StockSuperVO pre1vo = overDaySubList.get(i - 1);
+						if (pre1vo.avgMA5 >= pre1vo.avgMA10 && pre1vo.avgMA10 >= pre1vo.avgMA20
+								&& pre1vo.avgMA20 >= pre1vo.avgMA30) {
+							findDuoTouHuiTiaoMacdDeadPoint = true;
+							break;
+						}
+					}
+
+					if (i - 2 >= 0) {
+						StockSuperVO pre2vo = overDaySubList.get(i - 2);
+						if (pre2vo.avgMA5 >= pre2vo.avgMA10 && pre2vo.avgMA10 >= pre2vo.avgMA20
+								&& pre2vo.avgMA20 >= pre2vo.avgMA30) {
+							findDuoTouHuiTiaoMacdDeadPoint = true;
+							break;
+						}
+					}
+				}
+			}
+
+			if (!findDuoTouHuiTiaoMacdDeadPoint)
+				return false;
+
+			// find MA30 support and BOll lower support
+			boolean findMA30Support = false;
+			boolean findBollLowerSupport = false;
+			for (int i = macdDeadPointIndex; i < overDaySubList.size(); i++) {
+				StockSuperVO vo = overDaySubList.get(i);
+				if (vo.priceVO.low <= vo.avgMA30 && vo.priceVO.close > vo.avgMA30) {
+					findMA30Support = true;
+				}
+
+				if (vo.priceVO.low <= vo.bollVO.dn && vo.priceVO.close > vo.bollVO.dn) {
+					findBollLowerSupport = true;
+				}
+			}
+
+			if (!findMA30Support || !findBollLowerSupport)
+				return false;
+
+			// check close is higher Boll MB and MA5,10,20,30 Ronghe xiangShang
+			if (curSuperDayVO.macdVO.macd <= 0.0 && curSuperDayVO.macdVO.dif > 0.0)
+				if (curSuperDayVO.priceVO.close > curSuperDayVO.bollVO.mb && curSuperDayVO.priceVO.isKLineRed()) {
+					// check MA rongHe and xiangShang
+					return this.MA5_MA10_MA20_MA30_Ronghe_XiangShang(curSuperDayVO, pre1SuperDayVO);
+				}
+			break;
+		}
+		case DuoTou_HuiTiao_Boll_MB_Support_MA20_Support_MA_RongHe_XiangShang: {
+			// DuoTou huitiao, boll mb support, ma30 support,
+			// MA5,10,20,30 ronghe, MB support
+			// macd<0, dif > 0 ,near gordon, xichou > 4
+			// example: 600436 20150310. 300226 20150313
+
+			// limit two macd gordon and dead point to about 30 working days
+			List<StockSuperVO> overDaySubList = overDayList.subList(overDayList.size() - 30, overDayList.size());
+
+			boolean findDuoTouHuiTiaoMacdDeadPoint = false;
+			int macdDeadPointIndex = 0;
+			// first find macd dead point, dif >0
+			for (int i = 0; i < overDaySubList.size(); i++) {
+				StockSuperVO vo = overDaySubList.get(i);
+				if (vo.macdCorssType == CrossType.DEAD && vo.macdVO.dif > 2.0) {
+					macdDeadPointIndex = i;
+					if (i - 1 >= 0) {
+						StockSuperVO pre1vo = overDaySubList.get(i - 1);
+						if (pre1vo.avgMA5 >= pre1vo.avgMA10 && pre1vo.avgMA10 >= pre1vo.avgMA20
+								&& pre1vo.avgMA20 >= pre1vo.avgMA30) {
+							findDuoTouHuiTiaoMacdDeadPoint = true;
+							break;
+						}
+					}
+
+					if (i - 2 >= 0) {
+						StockSuperVO pre2vo = overDaySubList.get(i - 2);
+						if (pre2vo.avgMA5 >= pre2vo.avgMA10 && pre2vo.avgMA10 >= pre2vo.avgMA20
+								&& pre2vo.avgMA20 >= pre2vo.avgMA30) {
+							findDuoTouHuiTiaoMacdDeadPoint = true;
+							break;
+						}
+					}
+				}
+			}
+
+			if (!findDuoTouHuiTiaoMacdDeadPoint)
+				return false;
+
+			// find MA30 support and BOll lower support
+			boolean findMA20Support = false;
+			boolean findBollMBSupport = false;
+			for (int i = macdDeadPointIndex; i < overDaySubList.size(); i++) {
+				StockSuperVO vo = overDaySubList.get(i);
+				if (vo.priceVO.low <= vo.avgMA20 && vo.priceVO.close > vo.avgMA20) {
+					findMA20Support = true;
+				}
+
+				if (vo.priceVO.low <= vo.bollVO.mb && vo.priceVO.close > vo.bollVO.mb) {
+					findBollMBSupport = true;
+				}
+			}
+
+			if (!findMA20Support || !findBollMBSupport)
+				return false;
+
+			// check close is higher Boll MB and MA5,10,20,30 Ronghe xiangShang
+			if (curSuperDayVO.macdVO.macd <= 0.0 && curSuperDayVO.macdVO.dif > 0.0)
+				if (curSuperDayVO.priceVO.close > curSuperDayVO.bollVO.mb && curSuperDayVO.priceVO.isKLineRed()) {
+					// check MA rongHe and xiangShang
+					return this.MA5_MA10_MA20_Ronghe_XiangShang(curSuperDayVO, pre1SuperDayVO);
+				}
+			break;
+		}
 		case DuoTou_MA5_Wait_MA10_RSV_KDJ_Gordon_Break_Platform:
 
 			if (curSuperWeekVO.kdjVO.k < curSuperWeekVO.kdjVO.d || !this.isLatestKDJCrossGordon(overWeekList)) {
@@ -933,5 +1130,64 @@ public class CombineAnalyseHelper {
 			}
 		}
 		return false;
+	}
+
+	private boolean MA5_MA10_MA20_MA30_Ronghe_XiangShang(StockSuperVO curSuperDayVO, StockSuperVO pre1SuperDayVO) {
+		// rongHe and xiangShang
+		double min = this.findMinValue(curSuperDayVO.avgMA5, curSuperDayVO.avgMA10, curSuperDayVO.avgMA20,
+				curSuperDayVO.avgMA30);
+		double max = this.findMaxValue(curSuperDayVO.avgMA5, curSuperDayVO.avgMA10, curSuperDayVO.avgMA20,
+				curSuperDayVO.avgMA30);
+		double dif = Math.abs(max - min);
+		// MA rongHe
+		if (dif / curSuperDayVO.priceVO.close * 100 < 5.0) {
+			// xiangShang
+			if (curSuperDayVO.avgMA5 >= pre1SuperDayVO.avgMA5 && curSuperDayVO.avgMA10 >= pre1SuperDayVO.avgMA10
+					&& curSuperDayVO.avgMA20 >= pre1SuperDayVO.avgMA20
+					&& curSuperDayVO.avgMA30 >= pre1SuperDayVO.avgMA30) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private boolean MA5_MA10_MA20_Ronghe_XiangShang(StockSuperVO curSuperDayVO, StockSuperVO pre1SuperDayVO) {
+		// rongHe and xiangShang
+		double min = this.findMinValue(curSuperDayVO.avgMA5, curSuperDayVO.avgMA10, curSuperDayVO.avgMA20);
+		double max = this.findMaxValue(curSuperDayVO.avgMA5, curSuperDayVO.avgMA10, curSuperDayVO.avgMA20);
+		double dif = Math.abs(max - min);
+		// MA rongHe
+		if (dif / curSuperDayVO.priceVO.close * 100 < 5.0) {
+			// xiangShang
+			if (curSuperDayVO.avgMA5 >= pre1SuperDayVO.avgMA5 && curSuperDayVO.avgMA10 >= pre1SuperDayVO.avgMA10
+					&& curSuperDayVO.avgMA20 >= pre1SuperDayVO.avgMA20) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private double findMinValue(double v1, double v2, double v3, double v4) {
+		double min1 = Math.min(v1, v2);
+		double min2 = Math.min(v3, v4);
+		return Math.min(min1, min2);
+	}
+
+	private double findMaxValue(double v1, double v2, double v3, double v4) {
+		double max1 = Math.max(v1, v2);
+		double max2 = Math.max(v3, v4);
+		return Math.max(max1, max2);
+	}
+
+	private double findMinValue(double v1, double v2, double v3) {
+		double min1 = Math.min(v1, v2);
+		double min2 = Math.min(min1, v3);
+		return Math.min(min1, min2);
+	}
+
+	private double findMaxValue(double v1, double v2, double v3) {
+		double max1 = Math.max(v1, v2);
+		double max2 = Math.max(max1, v3);
+		return Math.max(max1, max2);
 	}
 }

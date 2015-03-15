@@ -75,7 +75,7 @@ public class HistoryAnalyseReport {
 			// sell point (MACD dead or KDJ dead point)
 			if ((superVO.macdCorssType == CrossType.DEAD) || (superVO.kdjCorssType == CrossType.DEAD)) {
 				if ((reportVO != null) && (reportVO.buyPriceVO != null) && (reportVO.sellPriceVO == null)) {
-					reportVO.setSelPriceVO(superVO.priceVO);
+					reportVO.setSellPriceVO(superVO.priceVO);
 					historyReportList.add(reportVO);
 					reportVO = null;
 				}
@@ -86,7 +86,7 @@ public class HistoryAnalyseReport {
 		// point
 		if ((reportVO != null) && (reportVO.buyPriceVO != null) && (reportVO.sellPriceVO == null)) {
 			StockSuperVO superVO = overDayList.get(overDayList.size() - 1);
-			reportVO.setSelPriceVO(superVO.priceVO);
+			reportVO.setSelPriceVO(superVO.priceVO, false);
 			historyReportList.add(reportVO);
 			reportVO = null;
 		}
@@ -129,10 +129,10 @@ public class HistoryAnalyseReport {
 	public void UnitTest3() {
 		// kdj，macd双金叉，kdj值均在50左右。三日均为红k线，成交量一日比一日大，收盘价逐步提高。例子美尔雅20150122
 		List<DailyCombineCheckPoint> checkPointList = new ArrayList<DailyCombineCheckPoint>();
-		checkPointList.add(DailyCombineCheckPoint.MACD_KDJ_Gordon_3_Days_Red);
+		checkPointList.add(DailyCombineCheckPoint.MACD_KDJ_Gordon_3_Days_Red_MA_Ronghe_XiangShang);
 		String stockId = "600107";
 		List<HistoryReportDetailsVO> historyReportList = this.doAnalyseReport(stockId, checkPointList);
-		System.out.println("\nUnit3 history report for " + DailyCombineCheckPoint.MACD_KDJ_Gordon_3_Days_Red + " size="
+		System.out.println("\nUnit3 history report for " + DailyCombineCheckPoint.MACD_KDJ_Gordon_3_Days_Red_MA_Ronghe_XiangShang + " size="
 				+ historyReportList.size());
 		for (HistoryReportDetailsVO reportVO : historyReportList) {
 			if (reportVO.sellPriceVO != null) {
@@ -184,13 +184,18 @@ public class HistoryAnalyseReport {
 					// print the high earn percent if larger than 25%
 					if ((reportVO.earnPercent[1] >= 50.0) && (reportVO.earnPercent[0] >= 25.0)) {
 						totalHighCount++;
-						System.out.println("High earn: " + reportVO);
+						//System.out.println("High earn: " + reportVO);
 						// save the high earnPercent case into DB
 						// historyReportTableHelper.insert(reportVO.convertToHistoryReportVO(checkPoint.toString()));
 					} else if ((reportVO.earnPercent[1] <= -10.0) || (reportVO.earnPercent[0] <= -10.0)) {
 						totalLowCount++;
-						System.out.println("Low  earn: " + reportVO);
+						//System.out.println("Low  earn: " + reportVO);
 					}
+
+					if (!reportVO.completed) {
+						System.out.println("Not Completed: " + reportVO);
+					}
+
 					totalCount++;
 					earnPercent[0] += reportVO.earnPercent[0];
 					earnPercent[1] += reportVO.earnPercent[1];
@@ -235,12 +240,11 @@ public class HistoryAnalyseReport {
 		for (DailyCombineCheckPoint checkPoint : DailyCombineCheckPoint.values()) {
 			// if(checkPoint.getEarnPercent()>=7.5)
 			// System.out.println(checkPoint);
-			//reporter.emptyTableByCheckPoint(checkPoint.toString());
-			//reporter.searchAllStockIdAccordingToCheckPoint(checkPoint);
+			// reporter.emptyTableByCheckPoint(checkPoint.toString());
+			// reporter.searchAllStockIdAccordingToCheckPoint(checkPoint);
 		}
 
-		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.DuoTou_MA5_Wait_MA10_RongHe);
-
+		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.MACD_KDJ_Gordon_High_MA5_MA10_BOLL_MA_RongHe_XiangShang);
 		// reporter.UnitTestForSpecifyStockId();
 	}
 }

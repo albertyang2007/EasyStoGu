@@ -1,13 +1,14 @@
 package org.easystogu.checkpoint;
 
 public enum DailyCombineCheckPoint {
-	MACD_KDJ_Gordon_3_Days_Red("Macd & KDJ Gordon, 3 days Red, Volume bigger", 3035, 7.61), MACD_KDJ_Gordon_Pre_3_Days_Green(
+	MACD_Gordon("Simple MACD Gordon Buy Point", 0, 0), KDJ_Gordon("Simple KDJ Gordon Buy Point", 0, 0), MACD_KDJ_Gordon_3_Days_Red_MA_Ronghe_XiangShang(
+			"Macd & KDJ Gordon, 3 days Red, Volume bigger, MA rongHe xiangShang", 1854, 7.83), MACD_KDJ_Gordon_Pre_3_Days_Green(
 			"Macd & KDJ Gordon, Previous 3 days Green, Volume smaller", 218, 7.00), KDJ_Gordon_3_days_Red(
 			"KDJ Gordon, 3 days Red, Volume bigger", 21585, 6.52), KDJ_Gordon_Pre_3_Days_Green(
 			"KDJ Gordon and Previous 3 days Green", 3025, 6.12), KDJ_Green_Gordon_Pre_2_Days_Red(
 			"KDJ Green Gordon and Previous 2 days Red", 861, 6.76), KDJ_Gordon_High_MA5_MA10_BOLL(
-			"KDJ Gordon, Close than MA5 & MA10 and between UP and MB, near MB", 9575, 7.25), MACD_KDJ_Gordon_High_MA5_MA10_BOLL(
-			"MACD & KDJ Gordon, Close than MA5 & MA10 and between UP and MB, near MB", 1535, 7.26), KDJ_Near_Gordon_High_MA5_MA10_BOLL(
+			"KDJ Gordon, Close than MA5 & MA10 and between UP and MB, near MB", 9575, 7.25), MACD_KDJ_Gordon_High_MA5_MA10_BOLL_MA_RongHe_XiangShang(
+			"MACD & KDJ Gordon, Close than MA5 & MA10 and between UP and MB, near MB, MA rongHe XiangShang", 715, 7.56), KDJ_Near_Gordon_High_MA5_MA10_BOLL(
 			"KDJ Near Gordon, Close than MA5 & MA10 and between UP and MB, near MB", 2091, 7.19), RSV_Gordon_High_MA5_MA10_BOLL(
 			"RSV Gordon, Close than MA5 & MA10 and between UP and MB, near MB", 19635, 7.17), MACD_KDJ_Gordon_3_Days_Red_High_MA5_MA10_BOLL(
 			"Macd & KDJ Gordon, 3 days Red, Volume bigger, Close than MA5 & MA10 and between UP and MB, near MB", 182,
@@ -21,9 +22,13 @@ public enum DailyCombineCheckPoint {
 			1048, 7.27), DuoTou_Pre_2_Days_Green_Red_MA20_MA30_Support(
 			"Duo Tou, MA5>MA10>MA20>MA30, Low <=MA30, Close>=MA20, near MA10", 415, 5.72), DuoTou_Pre_2_Days_Green_Red_KDJ_Zero_MA30_Support(
 			"Duo Tou, MA5<=MA10, MA10>=MA20>=MA30, pre2 pre3 two days green, pre1 and today red, pre1 low < ma20, pre1 close > ma20, pre 1 KDJ J is low 10, now RSV gordon",
-			1600, 7.76), DuoTou_MA5_Wait_MA10_RSV_KDJ_Gordon_Break_Platform(
+			1600, 7.76), DuoTou_Pre_2_Days_Green_Red_KDJ_Zero_MA30_Support_MA_RongHe_XiangShang(
+			"same as above with MA ronghe XiangShang", 154, 8.02), DuoTou_Pre_2_Days_Green_Red_KDJ_Zero_MA20_Support_MA_RongHe_XiangShang(
+			"same as above with MA ronghe XiangShang", 283, 8.01), DuoTou_HuiTiao_Boll_Lower_Support_MA30_Support_MA_RongHe_XiangShang(
+			"DuoTou huitiao, KDJ J zero, boll lower support, ma30 support, MA5,10,20,30 ronghe, MB support", 121, 7.85), DuoTou_HuiTiao_Boll_MB_Support_MA20_Support_MA_RongHe_XiangShang(
+			"DuoTou huitiao, boll mb support, ma20 support, MA5,10,20 ronghe, MB support", 761, 6.83), DuoTou_MA5_Wait_MA10_RSV_KDJ_Gordon_Break_Platform(
 			"DuoTou, MA5 wait MA10, RSV Gordon, Pre1 is red, pre2 and pre3 is green, MACD is near 0, Close than MA5 & MA10 and between UP and MB, near MB, Why latest analyse only 6.92???",
-			102, 7.81), DuoTou_MA5_Wait_MA10_RongHe(
+			102, 6.92), DuoTou_MA5_Wait_MA10_RongHe(
 			"MA5>MA10>MA20>MA30, Dif of MA5 and MA10 is little than little til MA10>MA5", 315, 5.86), Huge_Volume_Increase_3X3_Price_Higher_All_MA120(
 			"Huge Volume Increase in days and price higher than MA30", 168, 7.81), MACD_Gordon_Volume_And_Price_Highest_In_MA90(
 			"Volume and Price is the highest in half year(ma120)", 1622, 7.89), KDJ_Gordon_Volume_And_Price_Highest_In_MA90(
@@ -45,6 +50,12 @@ public enum DailyCombineCheckPoint {
 
 	private DailyCombineCheckPoint(String condition, int sampleMeet, double earnPercent) {
 		this.condition = condition;
+		this.sampleMeet = sampleMeet;
+		this.earnPercent = earnPercent;
+	}
+
+	private DailyCombineCheckPoint(int sampleMeet, double earnPercent) {
+		this.condition = "N/A";
 		this.sampleMeet = sampleMeet;
 		this.earnPercent = earnPercent;
 	}
