@@ -34,14 +34,14 @@ public class KDJHelper {
         return highn;
     }
 
-    // ä»ç¬¬ä¸€ä¸ªå¼€å§‹è®¡ç®—JDK,å¾€åè®¡ç®—
+    // ´ÓµÚÒ»¸ö¿ªÊ¼¼ÆËãJDK,Íùºó¼ÆËã
     public double[][] getKDJList(Double[] close, Double[] low, Double[] high) {
         int length = close.length;
 
-        double[][] KDJ = new double[4][length];// KDJæ•°ç»„:0æ˜¯Kæ•°ç»„,1æ˜¯Dæ•°ç»„,2æ˜¯Jæ•°ç»„, RSVæ˜¯æœ€å
+        double[][] KDJ = new double[4][length];// KDJÊı×é:0ÊÇKÊı×é,1ÊÇDÊı×é,2ÊÇJÊı×é, RSVÊÇ×îºó
 
         int start = 8;// start from index 8
-        // å‰é¢8ä¸ª KDJå€¼å‡ä¸º0,ä»ç¬¬9ä¸ªå¼€å§‹è®¡ç®—
+        // Ç°Ãæ8¸ö KDJÖµ¾ùÎª0,´ÓµÚ9¸ö¿ªÊ¼¼ÆËã
         for (int index = 0; index < start; index++) {
             KDJ[0][index] = 50.0;
             KDJ[1][index] = 50.0;
@@ -64,9 +64,9 @@ public class KDJHelper {
         return KDJ;
     }
 
-    // è®¡ç®—ä¸€ä¸ªKDJ
+    // ¼ÆËãÒ»¸öKDJ
     public double[] getKDJ(double[] preKDJ, double close, double lown, double highn) {
-        double[] KDJ = new double[4];// KDJæ•°ç»„:0æ˜¯Kæ•°ç»„,1æ˜¯Dæ•°ç»„,2æ˜¯Jæ•°ç»„
+        double[] KDJ = new double[4];// KDJÊı×é:0ÊÇKÊı×é,1ÊÇDÊı×é,2ÊÇJÊı×é
 
         double RSV = this.RSV(close, lown, highn);
         KDJ[0] = (2.0 / 3.0) * preKDJ[0] + (1.0 / 3.0) * RSV;// K
