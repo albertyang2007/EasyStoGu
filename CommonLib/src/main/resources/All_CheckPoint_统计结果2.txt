@@ -120,6 +120,12 @@ Avg hold stock days: 7
 Total high earn between (25, 50): 2
 Total low  earn between (10, 10): 7
 
+===================DuoTou_HuiTiao_RSV_Gordon_MA10_Support_MA_RongHe_XiangShang  earn between (25, 50)%====================
+Total satisfy: 293	 earnPercent[close]=-0.9614266693995422	 earnPercent[high]=5.45657631878378	 earnPercent[low]=-4.231882174844248
+Avg hold stock days: 4
+Total high earn between (25, 50): 1
+Total low  earn between (10, 10): 9
+
 ===================DuoTou_Pre_2_Days_Green_Red_MA20_MA30_Support  earn between (25, 50)%====================
 Total satisfy: 415	 earnPercent[close]=0.15244567729363762	 earnPercent[high]=5.727278527673507	 earnPercent[low]=-3.2236904793590977
 Avg hold stock days: 5

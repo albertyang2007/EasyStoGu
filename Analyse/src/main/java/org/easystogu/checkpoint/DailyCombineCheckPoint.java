@@ -41,7 +41,7 @@ public enum DailyCombineCheckPoint {
 			"DuoTou huitiao, boll mb support, ma20 support, MA5,10,20 ronghe, MB support",
 			761, 6.83), DuoTou_HuiTiao_RSV_Gordon_MA10_Support_MA_RongHe_XiangShang(
 			"DuoTou Huitiao, MA10 support, KDJ Dead, KDJ Gordon, MA5,MA10 ronghe xiangShang",
-			0, 99), DuoTou_MA5_Wait_MA10_RSV_KDJ_Gordon_Break_Platform(
+			293, 99.545), DuoTou_MA5_Wait_MA10_RSV_KDJ_Gordon_Break_Platform(
 			"DuoTou, MA5 wait MA10, RSV Gordon, Pre1 is red, pre2 and pre3 is green, MACD is near 0, Close than MA5 & MA10 and between UP and MB, near MB, Why latest analyse only 6.92???",
 			102, 6.92), DuoTou_MA5_Wait_MA10_RongHe(
 			"MA5>MA10>MA20>MA30, Dif of MA5 and MA10 is little than little til MA10>MA5",
