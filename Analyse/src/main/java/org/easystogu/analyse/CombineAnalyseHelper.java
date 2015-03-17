@@ -691,7 +691,7 @@ public class CombineAnalyseHelper {
 			// DuoTou huitiao, boll mb support, ma30 support,
 			// MA5,10,20,30 ronghe, MB support
 			// macd<0, dif > 0 ,near gordon, xichou > 4
-			// example: 600436 20150310. 300226 20150313
+			// example: ??
 
 			// limit two macd gordon and dead point to about 30 working days
 			List<StockSuperVO> overDaySubList = overDayList.subList(overDayList.size() - 30, overDayList.size());
@@ -726,7 +726,7 @@ public class CombineAnalyseHelper {
 			if (!findDuoTouHuiTiaoMacdDeadPoint)
 				return false;
 
-			// find MA30 support and BOll lower support
+			// find MA20 support and BOll lower support
 			boolean findMA20Support = false;
 			boolean findBollMBSupport = false;
 			for (int i = macdDeadPointIndex; i < overDaySubList.size(); i++) {
