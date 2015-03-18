@@ -16,6 +16,7 @@ import org.easystogu.db.access.WeekStockSuperVOHelper;
 import org.easystogu.db.table.CheckPointHistoryAnalyseVO;
 import org.easystogu.db.table.StockSuperVO;
 import org.easystogu.utils.CrossType;
+import org.easystogu.utils.SellPointType;
 
 public class HistoryAnalyseReport {
 
@@ -72,9 +73,21 @@ public class HistoryAnalyseReport {
 				continue;
 			}
 
-			// sell point (MACD dead or KDJ dead point)
-			if ((superVO.macdCorssType == CrossType.DEAD) || (superVO.kdjCorssType == CrossType.DEAD)) {
-				if ((reportVO != null) && (reportVO.buyPriceVO != null) && (reportVO.sellPriceVO == null)) {
+			// sell point (MACD dead or KDJ dead point or next day)
+			if ((reportVO != null) && (reportVO.buyPriceVO != null) && (reportVO.sellPriceVO == null)) {
+				if (checkPoint.getSellPointType().equals(SellPointType.KDJ_Dead)) {
+					if (superVO.kdjCorssType == CrossType.DEAD) {
+						reportVO.setSellPriceVO(superVO.priceVO);
+						historyReportList.add(reportVO);
+						reportVO = null;
+					}
+				} else if (checkPoint.getSellPointType().equals(SellPointType.MACD_Dead)) {
+					if (superVO.macdCorssType == CrossType.DEAD) {
+						reportVO.setSellPriceVO(superVO.priceVO);
+						historyReportList.add(reportVO);
+						reportVO = null;
+					}
+				} else if (checkPoint.getSellPointType().equals(SellPointType.Next_Day)) {
 					reportVO.setSellPriceVO(superVO.priceVO);
 					historyReportList.add(reportVO);
 					reportVO = null;
@@ -132,7 +145,8 @@ public class HistoryAnalyseReport {
 		checkPointList.add(DailyCombineCheckPoint.MACD_KDJ_Gordon_3_Days_Red_MA_Ronghe_XiangShang);
 		String stockId = "600107";
 		List<HistoryReportDetailsVO> historyReportList = this.doAnalyseReport(stockId, checkPointList);
-		System.out.println("\nUnit3 history report for " + DailyCombineCheckPoint.MACD_KDJ_Gordon_3_Days_Red_MA_Ronghe_XiangShang + " size="
+		System.out.println("\nUnit3 history report for "
+				+ DailyCombineCheckPoint.MACD_KDJ_Gordon_3_Days_Red_MA_Ronghe_XiangShang + " size="
 				+ historyReportList.size());
 		for (HistoryReportDetailsVO reportVO : historyReportList) {
 			if (reportVO.sellPriceVO != null) {
@@ -184,12 +198,12 @@ public class HistoryAnalyseReport {
 					// print the high earn percent if larger than 25%
 					if ((reportVO.earnPercent[1] >= 50.0) && (reportVO.earnPercent[0] >= 25.0)) {
 						totalHighCount++;
-						//System.out.println("High earn: " + reportVO);
+						// System.out.println("High earn: " + reportVO);
 						// save the high earnPercent case into DB
 						// historyReportTableHelper.insert(reportVO.convertToHistoryReportVO(checkPoint.toString()));
 					} else if ((reportVO.earnPercent[1] <= -10.0) || (reportVO.earnPercent[0] <= -10.0)) {
 						totalLowCount++;
-						//System.out.println("Low  earn: " + reportVO);
+						// System.out.println("Low  earn: " + reportVO);
 					}
 
 					if (!reportVO.completed) {
@@ -244,7 +258,7 @@ public class HistoryAnalyseReport {
 			// reporter.searchAllStockIdAccordingToCheckPoint(checkPoint);
 		}
 
-		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.DuoTou_HuiTiao_RSV_Gordon_MA10_Support_MA_RongHe_XiangShang);
+		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.LaoYaZhui_TuPo_MA60_Day_Under_Zero_MACD_Gordon_KDJ_Gordon_Week_KDJ_Gordon);
 		// reporter.UnitTestForSpecifyStockId();
 	}
 }

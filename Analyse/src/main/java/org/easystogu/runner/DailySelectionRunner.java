@@ -46,7 +46,7 @@ public class DailySelectionRunner {
 	public void doAnalyse(String stockId) {
 		// LatestN is reverse in date order desc
 		List<StockSuperVO> overDayList = stockOverAllHelper.getLatestNStockSuperVO(stockId, 120);
-		List<StockSuperVO> overWeekList = weekStockOverAllHelper.getLatestNStockSuperVO(stockId, 24);
+		List<StockSuperVO> overWeekList = weekStockOverAllHelper.getLatestNStockSuperVO(stockId, 30);
 
 		if (overDayList.size() == 0) {
 			// System.out.println("No stockprice data for " + stockId);

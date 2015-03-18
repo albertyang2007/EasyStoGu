@@ -848,7 +848,8 @@ public class CombineAnalyseHelper {
 			// current is RSV gordon Ronghe xiangShang
 			if ((curSuperDayVO.rsvCorssType == CrossType.GORDON)) {
 				if (curSuperDayVO.volumeIncreasePercent >= 1.0 && pre1SuperDayVO.volumeIncreasePercent >= 1.0) {
-					if (curSuperDayVO.priceVO.isKLineRed() && pre1SuperDayVO.priceVO.isKLineRed()) {
+					if ((curSuperDayVO.priceVO.isKLineRed() && curSuperDayVO.priceVO.close > curSuperDayVO.priceVO.lastClose)
+							&& pre1SuperDayVO.priceVO.close > pre1SuperDayVO.priceVO.lastClose) {
 						return this.MA5_MA10_Ronghe_XiangShang(curSuperDayVO, pre1SuperDayVO);
 					}
 				}
@@ -1164,6 +1165,43 @@ public class CombineAnalyseHelper {
 			}
 
 			break;
+		case LaoYaZhui_TuPo_MA60_Day_Under_Zero_MACD_Gordon_KDJ_Gordon_Week_KDJ_Gordon: {
+			// week macd < 0 && dif > 0
+			if (curSuperWeekVO.macdVO.macd < 0 && curSuperWeekVO.macdVO.dif > 0) {
+				// week kdj gordon or rsv gordon
+				if (curSuperWeekVO.kdjCorssType == CrossType.GORDON
+						|| curSuperWeekVO.kdjCorssType == CrossType.NEAR_GORDON
+						|| curSuperWeekVO.rsvCorssType == CrossType.GORDON) {
+					// week close price > week ma5, ma10
+					if (curSuperWeekVO.priceVO.close >= curSuperWeekVO.avgMA5
+							&& curSuperWeekVO.priceVO.close >= curSuperWeekVO.avgMA10) {
+						// week is duo tou
+						if (curSuperWeekVO.avgMA5 >= curSuperWeekVO.avgMA20
+								&& curSuperWeekVO.avgMA10 >= curSuperWeekVO.avgMA20
+								&& curSuperWeekVO.avgMA20 >= curSuperWeekVO.avgMA30) {
+							// day macd is after gordon and macd > 0 && dif <=0
+							if (curSuperDayVO.macdVO.macd > 0 && curSuperDayVO.macdVO.dif < 0) {
+								// day kdj is after gordon and k > D
+								if (curSuperDayVO.kdjVO.k > curSuperDayVO.kdjVO.d) {
+									// day ma60 > ma5, ma10, ma20, ma30
+									if (curSuperDayVO.avgMA60 >= curSuperDayVO.avgMA5
+											&& curSuperDayVO.avgMA60 >= curSuperDayVO.avgMA10
+											&& curSuperDayVO.avgMA60 >= curSuperDayVO.avgMA20
+											&& curSuperDayVO.avgMA60 >= curSuperDayVO.avgMA30) {
+										// TuPo !!! day close price > ma60
+										if (curSuperDayVO.priceVO.close >= curSuperDayVO.avgMA60) {
+											return true;
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+
+			break;
+		}
 		default:
 			return false;
 		}
