@@ -207,3 +207,9 @@ Total satisfy: 26    earnPercent[close]=-0.9182460156508182  earnPercent[high]=7
 Avg hold stock days: 11
 Total high earn between (25, 50): 0
 Total low  earn between (10, 10): 2
+
+===================LaoYaZhui_TuPo_MA60_Day_Under_Zero_MACD_Gordon_KDJ_Gordon_Week_KDJ_Gordon  earn between (25, 50)%====================
+Total satisfy: 1661	 earnPercent[close]=0.5844161379916514	 earnPercent[high]=8.95631533074967	 earnPercent[low]=-4.607701418870378
+Avg hold stock days: 13
+Total high earn between (25, 50): 24
+Total low  earn between (10, 10): 84
