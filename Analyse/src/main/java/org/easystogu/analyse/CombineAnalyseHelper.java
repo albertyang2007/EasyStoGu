@@ -1179,8 +1179,8 @@ public class CombineAnalyseHelper {
 						if (curSuperWeekVO.avgMA5 >= curSuperWeekVO.avgMA20
 								&& curSuperWeekVO.avgMA10 >= curSuperWeekVO.avgMA20
 								&& curSuperWeekVO.avgMA20 >= curSuperWeekVO.avgMA30) {
-							// day macd is after gordon and macd > 0 && dif <=0
-							if (curSuperDayVO.macdVO.macd > 0 && curSuperDayVO.macdVO.dif < 0) {
+							// day macd is after gordon and macd > 0
+							if (curSuperDayVO.macdVO.macd > 0) {
 								// day kdj is after gordon and k > D
 								if (curSuperDayVO.kdjVO.k > curSuperDayVO.kdjVO.d) {
 									// day ma60 > ma5, ma10, ma20, ma30
