@@ -63,10 +63,10 @@ public class HistoryAnalyseReport {
 		IndCrossCheckingHelper.rsvCross(overWeekList);
 
 		HistoryReportDetailsVO reportVO = null;
-		for (int index = 120; index < overDayList.size(); index++) {
+		for (int index = 120; index < (overDayList.size() - 1); index++) {
 			StockSuperVO superVO = overDayList.get(index);
 			// buy point
-			if (combineAanalyserHelper.isConditionSatisfy(checkPoint, overDayList.subList(index - 120, index + 1),
+			if (combineAanalyserHelper.isConditionSatisfy(checkPoint, overDayList.subList(index - 120, index),
 					overWeekList)) {
 				reportVO = new HistoryReportDetailsVO();
 				reportVO.setBuyPriceVO(superVO.priceVO);
@@ -258,7 +258,7 @@ public class HistoryAnalyseReport {
 			 //reporter.searchAllStockIdAccordingToCheckPoint(checkPoint);
 		}
 
-		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.LaoYaZhui_TuPo_MA60_Day_Under_Zero_MACD_Gordon_KDJ_Gordon_Week_KDJ_Gordon);
+		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.TiXing_SuoLiang_LaSheng_Close_Price_Higher_Volume_Lower);
 		// reporter.UnitTestForSpecifyStockId();
 	}
 }
