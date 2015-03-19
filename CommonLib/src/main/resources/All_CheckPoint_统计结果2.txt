@@ -213,3 +213,9 @@ Total satisfy: 1661	 earnPercent[close]=0.5844161379916514	 earnPercent[high]=8.
 Avg hold stock days: 13
 Total high earn between (25, 50): 24
 Total low  earn between (10, 10): 84
+
+===================TiXing_SuoLiang_LaSheng_Close_Price_Higher_Volume_Lower  earn between (25, 50)%====================
+Total satisfy: 225   earnPercent[close]=0.6152297659070299   earnPercent[high]=7.152404341713151     earnPercent[low]=-4.357735168106571
+Avg hold stock days: 5
+Total high earn between (25, 50): 1
+Total low  earn between (10, 10): 8
