@@ -1,56 +1,56 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-   <parent>
+	<parent>
 		<groupId>org.albertyang2007.easystogu</groupId>
 		<artifactId>easystogu-parent</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 		<relativePath>Parent/</relativePath>
 	</parent>
 
-    <artifactId>easystogu-project</artifactId>
-    <packaging>pom</packaging>
-    <name>easystogu-project</name>
-    <description>root pom of easystogu project</description>  
-	
+	<artifactId>easystogu-project</artifactId>
+	<packaging>pom</packaging>
+	<name>easystogu-project</name>
+	<description>root pom of easystogu project</description>
+
 	<modules>
-       <module>Parent</module>
-    </modules>
-	
+		<module>Parent</module>
+	</modules>
+
 	<profiles>
-        <profile>
-            <id>default</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <modules>
+		<profile>
+			<id>default</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<modules>
 				<module>CommonLib</module>
 				<module>DatabaseLib</module>
 				<module>SinaDataCollect</module>
 				<module>YahooDataCollect</module>
-				<module>Indicator</module>				
-				<module>Analyse</module>		
-            </modules>
-        </profile>
-    </profiles>
+				<module>Indicator</module>
+				<module>Analyse</module>
+			</modules>
+		</profile>
+	</profiles>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-release-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>default</id>
-                        <goals>
-                            <goal>perform</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <autoVersionSubmodules>true</autoVersionSubmodules>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>default</id>
+						<goals>
+							<goal>perform</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<autoVersionSubmodules>true</autoVersionSubmodules>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>

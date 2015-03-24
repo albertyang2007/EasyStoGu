@@ -108,7 +108,7 @@ public class HistoryAnalyseReport {
 	}
 
 	public void UnitTest1() {
-		// kdj金叉，三值均在40-50之间。macd已经为正。其他条件跟2一样。例子格力电器20141124
+		// kdj閲戝弶锛屼笁鍊煎潎鍦�0-50涔嬮棿銆俶acd宸茬粡涓烘銆傚叾浠栨潯浠惰窡2涓�牱銆備緥瀛愭牸鍔涚數鍣�0141124
 		List<DailyCombineCheckPoint> checkPointList = new ArrayList<DailyCombineCheckPoint>();
 		checkPointList.add(DailyCombineCheckPoint.KDJ_Gordon_3_days_Red);
 		String stockId = "000651";
@@ -124,7 +124,7 @@ public class HistoryAnalyseReport {
 	}
 
 	public void UnitTest2() {
-		// kdj金叉，三值在70-80之间，macd三值为正，k线大阳，成交量大于前一日。之前三日均绿，是洗盘结束。例子格力地产20150129
+		// kdj閲戝弶锛屼笁鍊煎湪70-80涔嬮棿锛宮acd涓夊�涓烘锛宬绾垮ぇ闃筹紝鎴愪氦閲忓ぇ浜庡墠涓�棩銆備箣鍓嶄笁鏃ュ潎缁匡紝鏄礂鐩樼粨鏉熴�渚嬪瓙鏍煎姏鍦颁骇20150129
 		List<DailyCombineCheckPoint> checkPointList = new ArrayList<DailyCombineCheckPoint>();
 		checkPointList.add(DailyCombineCheckPoint.KDJ_Gordon_Pre_3_Days_Green);
 		String stockId = "600185";
@@ -140,7 +140,7 @@ public class HistoryAnalyseReport {
 	}
 
 	public void UnitTest3() {
-		// kdj，macd双金叉，kdj值均在50左右。三日均为红k线，成交量一日比一日大，收盘价逐步提高。例子美尔雅20150122
+		// kdj锛宮acd鍙岄噾鍙夛紝kdj鍊煎潎鍦�0宸﹀彸銆備笁鏃ュ潎涓虹孩k绾匡紝鎴愪氦閲忎竴鏃ユ瘮涓�棩澶э紝鏀剁洏浠烽�姝ユ彁楂樸�渚嬪瓙缇庡皵闆�0150122
 		List<DailyCombineCheckPoint> checkPointList = new ArrayList<DailyCombineCheckPoint>();
 		checkPointList.add(DailyCombineCheckPoint.MACD_KDJ_Gordon_3_Days_Red_MA_Ronghe_XiangShang);
 		String stockId = "600107";
@@ -157,8 +157,8 @@ public class HistoryAnalyseReport {
 	}
 
 	public void UnitTest4() {
-		// kdj金叉，成交量一日比一日大，金叉前两日红，当日绿，但是收盘价并不低于前一日，说明金叉当日是洗盘继续上行 .
-		// 例子石基信息20150204
+		// kdj閲戝弶锛屾垚浜ら噺涓�棩姣斾竴鏃ュぇ锛岄噾鍙夊墠涓ゆ棩绾紝褰撴棩缁匡紝浣嗘槸鏀剁洏浠峰苟涓嶄綆浜庡墠涓�棩锛岃鏄庨噾鍙夊綋鏃ユ槸娲楃洏缁х画涓婅 .
+		// 渚嬪瓙鐭冲熀淇℃伅20150204
 		List<DailyCombineCheckPoint> checkPointList = new ArrayList<DailyCombineCheckPoint>();
 		checkPointList.add(DailyCombineCheckPoint.KDJ_Green_Gordon_Pre_2_Days_Red);
 		String stockId = "002153";
@@ -258,7 +258,7 @@ public class HistoryAnalyseReport {
 			 //reporter.searchAllStockIdAccordingToCheckPoint(checkPoint);
 		}
 
-		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.TiXing_SuoLiang_LaSheng_Close_Price_Higher_Volume_Lower);
+		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.DuoTou_Close_And_MA5_Higher_MA120);
 		// reporter.UnitTestForSpecifyStockId();
 	}
 }

@@ -30,7 +30,7 @@ public class ZhuLiXiChouHelper {
 		int length = list.size();
 		StockPriceVO curVO = list.get(length - 1);
 
-		int displayIndex = length - 2;
+		int displayIndex = length - 1;
 
 		double[] var2 = new double[length];
 		for (int i = 1; i < length; i++) {
@@ -100,7 +100,7 @@ public class ZhuLiXiChouHelper {
 		// TODO Auto-generated method stub
 		ZhuLiXiChouHelper helper = new ZhuLiXiChouHelper();
 		StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
-		List<StockPriceVO> spList = stockPriceTable.getStockPriceById("603799");
+		List<StockPriceVO> spList = stockPriceTable.getStockPriceById("601088");//603799
 		// Collections.reverse(spList);
 		helper.getChouMa(spList);
 	}
