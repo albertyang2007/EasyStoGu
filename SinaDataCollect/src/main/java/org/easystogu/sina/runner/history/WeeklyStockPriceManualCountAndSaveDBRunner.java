@@ -34,7 +34,7 @@ public class WeeklyStockPriceManualCountAndSaveDBRunner {
     }
 
     public void countAndSave(String stockId) {
-        for (int year = 2009; year <= 2015; year++) {
+        for (int year = 2015; year <= 2015; year++) {
             for (int week = 1; week <= 53; week++) {
                 List<String> dates = WeekdayUtil.getWorkingDaysOfWeek(year, week);
                 if ((dates != null) && (dates.size() >= 1)) {

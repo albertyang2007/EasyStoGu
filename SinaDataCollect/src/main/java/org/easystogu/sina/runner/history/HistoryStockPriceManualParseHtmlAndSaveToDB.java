@@ -22,10 +22,12 @@ public class HistoryStockPriceManualParseHtmlAndSaveToDB {
     private List<String> errorParseList = new ArrayList<String>();
     private List<String> errorDBList = new ArrayList<String>();
 
-    public void parseDataAndSaveToDB(File file) {
+    public void parseDataAndSaveToDB(File file, String startDay) {
         List<StockPriceVO> list = this.parseStockPriceFromFile(file);
         for (StockPriceVO vo : list) {
-            this.saveIntoDB(vo);
+            if (vo.date.compareTo(startDay) >= 0) {
+                this.saveIntoDB(vo);
+            }
         }
     }
 
@@ -86,15 +88,16 @@ public class HistoryStockPriceManualParseHtmlAndSaveToDB {
         // ��ĳĿ¼�µ��ļ�����������⣬ֻ����һ��
         FileConfigurationService fileConfile = FileConfigurationService.getInstance();
         HistoryStockPriceManualParseHtmlAndSaveToDB runner = new HistoryStockPriceManualParseHtmlAndSaveToDB();
-
         String htmlPath = fileConfile.getString("sina.history.file.path");
         File path = new File(htmlPath);
         File[] files = path.listFiles();
         int index = 0;
+        String startDay = "2015-03-30";
         for (File file : files) {
             System.out.println("Processing " + file.getName() + " " + ++index + " / " + files.length);
+            //please fliter the data that save into DB
             if ((file.length() > 0) && (file.getName().indexOf("2015_1") > 0)) {
-                runner.parseDataAndSaveToDB(file);
+                runner.parseDataAndSaveToDB(file, startDay);
             }
         }
 
