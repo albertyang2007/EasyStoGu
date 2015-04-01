@@ -32,9 +32,9 @@ public class RealtimeDisplayStockPriceRunner {
 				// System.out.println(vo);
 				out.append(vo + "\t" + bollVO.toSimpleString() + "\n");
 				if (vo.current >= bollVO.up) {
-					alarm.append(vo.stockId + " Sell!!!");
+					alarm.append(vo.stockId + " Sell!!!\n");
 				} else if (vo.current <= bollVO.dn) {
-					alarm.append(vo.stockId + " Buy!!!!");
+					alarm.append(vo.stockId + " Buy!!!!\n");
 				}
 			} else {
 				out.append(vo + "\n");
