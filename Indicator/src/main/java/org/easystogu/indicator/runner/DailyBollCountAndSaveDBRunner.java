@@ -20,7 +20,7 @@ public class DailyBollCountAndSaveDBRunner {
         bollTable.delete(stockId, date);
     }
 
-    public void countAndSaved(String stockId) {
+    public BollVO countAndSaved(String stockId) {
 
         // List<StockPriceVO> list =
         // stockPriceTable.getStockPriceById(stockId);
@@ -32,7 +32,7 @@ public class DailyBollCountAndSaveDBRunner {
         if (length < 20) {
             System.out.println(stockId
                     + " price data is not enough to count Boll, please wait until it has at least 20 days. Skip");
-            return;
+            return null;
         }
 
         double[] close = new double[length];
@@ -60,6 +60,7 @@ public class DailyBollCountAndSaveDBRunner {
 
         this.deleteBoll(stockId, vo.date);
         bollTable.insert(vo);
+        return vo;
     }
 
     public void countAndSaved(List<String> stockIds) {

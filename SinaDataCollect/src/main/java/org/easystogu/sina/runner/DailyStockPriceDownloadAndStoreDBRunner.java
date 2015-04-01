@@ -49,7 +49,7 @@ public class DailyStockPriceDownloadAndStoreDBRunner {
         }
     }
 
-    private void saveIntoDB(StockPriceVO vo) {
+    public void saveIntoDB(StockPriceVO vo) {
         try {
             if (vo.isValidated()) {
                 System.out.println("saving into DB, vo=" + vo);

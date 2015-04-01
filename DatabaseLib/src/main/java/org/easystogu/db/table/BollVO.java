@@ -26,6 +26,15 @@ public class BollVO {
 		return sb.toString();
 	}
 
+	public String toSimpleString() {
+		StringBuffer sb = new StringBuffer("BollVO: {");
+		sb.append("mb:" + String.format("%.2f", mb));
+		sb.append(", up:" + String.format("%.2f", up));
+		sb.append(", dn:" + String.format("%.2f", dn));
+		sb.append("}");
+		return sb.toString();
+	}
+
 	public String getStockId() {
 		return stockId;
 	}
