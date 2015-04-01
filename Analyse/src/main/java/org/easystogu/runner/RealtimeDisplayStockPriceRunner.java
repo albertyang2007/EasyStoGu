@@ -14,6 +14,7 @@ public class RealtimeDisplayStockPriceRunner {
 		// TODO Auto-generated method stub
 		// 显示实时数据(指定的stockIds)
 		StringBuffer out = new StringBuffer();
+		StringBuffer alarm = new StringBuffer();
 		FileConfigurationService configure = FileConfigurationService.getInstance();
 		SinaDataDownloadHelper ins = new SinaDataDownloadHelper();
 		DailyStockPriceDownloadAndStoreDBRunner dailyStockRunner = new DailyStockPriceDownloadAndStoreDBRunner();
@@ -26,11 +27,21 @@ public class RealtimeDisplayStockPriceRunner {
 		List<RealTimePriceVO> list = ins.fetchDataFromWeb(strList);
 		for (RealTimePriceVO vo : list) {
 			dailyStockRunner.saveIntoDB(vo.convertToStockPriceVO());
-			BollVO bollVO = dailyBollRunner.countAndSaved(vo.stockId);
-			// System.out.println(vo);
-			out.append(vo + "\t" + bollVO.toSimpleString() + "\n");
+			if (!vo.stockId.equals("000001")) {
+				BollVO bollVO = dailyBollRunner.countAndSaved(vo.stockId);
+				// System.out.println(vo);
+				out.append(vo + "\t" + bollVO.toSimpleString() + "\n");
+				if (vo.current >= bollVO.up) {
+					alarm.append(vo.stockId + " Sell!!!");
+				} else if (vo.current <= bollVO.dn) {
+					alarm.append(vo.stockId + " Buy!!!!");
+				}
+			} else {
+				out.append(vo + "\n");
+			}
 		}
 
 		System.out.println(out.toString());
+		System.out.println(alarm.toString());
 	}
 }
