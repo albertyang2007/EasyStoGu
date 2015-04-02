@@ -258,7 +258,7 @@ public class HistoryAnalyseReport {
 			 //reporter.searchAllStockIdAccordingToCheckPoint(checkPoint);
 		}
 
-		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.DuoTou_Close_And_MA5_Higher_MA120);
+		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.DuoTou_HuiTiao_MA20_Support_KDJ_0_YangBaoYin);
 		// reporter.UnitTestForSpecifyStockId();
 	}
 }

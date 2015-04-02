@@ -968,6 +968,27 @@ public class CombineAnalyseHelper {
 			}
 
 			break;
+		case DuoTou_HuiTiao_MA20_Support_KDJ_0_YangBaoYin:
+			// example: 002363 20150331
+			if ((curSuperWeekVO.macdVO.macd > 0) && curSuperWeekVO.macdVO.dif > 0) {
+				// over all week macd
+				return false;
+			}
+			if (curSuperDayVO.kdjVO.j <= 0.0 && pre1SuperDayVO.priceVO.isKLineGreen()
+					&& pre2SuperDayVO.priceVO.isKLineGreen()) {
+				// yang bao yin
+				if (curSuperDayVO.priceVO.isKLineRed() && curSuperDayVO.priceVO.close > pre1SuperDayVO.priceVO.close
+						&& curSuperDayVO.priceVO.high > pre1SuperDayVO.priceVO.high
+						&& curSuperDayVO.priceVO.low > pre1SuperDayVO.priceVO.low) {
+					// ma20 support
+					if (curSuperDayVO.priceVO.low > curSuperDayVO.avgMA20
+							&& pre1SuperDayVO.priceVO.low > pre1SuperDayVO.avgMA20
+							&& pre2SuperDayVO.priceVO.low > pre2SuperDayVO.avgMA20) {
+						return true;
+					}
+				}
+			}
+			break;
 		case Huge_Volume_Increase_3X3_Price_Higher_All_MA120:
 
 			if ((curSuperWeekVO.kdjVO.k < curSuperWeekVO.kdjVO.d) || !this.isLatestKDJCrossGordon(overWeekList)) {
@@ -1236,10 +1257,9 @@ public class CombineAnalyseHelper {
 			if (curSuperDayVO.avgMA5 >= curSuperDayVO.avgMA10 && curSuperDayVO.avgMA10 >= curSuperDayVO.avgMA20
 					&& curSuperDayVO.avgMA10 >= curSuperDayVO.avgMA30) {
 				// ma10, ma20, ma30,am60 xiangShang
-				if (curSuperDayVO.avgMA10 >= pre1SuperDayVO.avgMA10
-						&&curSuperDayVO.avgMA20 >= pre1SuperDayVO.avgMA20
-						&&curSuperDayVO.avgMA30 >= pre1SuperDayVO.avgMA30
-						&&curSuperDayVO.avgMA60 >= pre1SuperDayVO.avgMA60) {
+				if (curSuperDayVO.avgMA10 >= pre1SuperDayVO.avgMA10 && curSuperDayVO.avgMA20 >= pre1SuperDayVO.avgMA20
+						&& curSuperDayVO.avgMA30 >= pre1SuperDayVO.avgMA30
+						&& curSuperDayVO.avgMA60 >= pre1SuperDayVO.avgMA60) {
 					// pre day close and ma5 < ma120
 					if (pre1SuperDayVO.priceVO.close < pre1SuperDayVO.avgMA120
 							&& pre1SuperDayVO.avgMA5 < pre1SuperDayVO.avgMA120) {
