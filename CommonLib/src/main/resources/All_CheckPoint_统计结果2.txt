@@ -453,3 +453,9 @@ Total satisfy: 1012	 earnPercent[close]=-0.14673924820460996	 earnPercent[high]=
 Avg hold stock days: 6
 Total high earn between (25, 50): 5
 Total low  earn between (10, 10): 21
+
+===================DuoTou_HuiTiao_MA20_Support_KDJ_0_YangBaoYin  earn between (25, 50)%====================
+Total satisfy: 12	 earnPercent[close]=-3.1601559966098307	 earnPercent[high]=9.285221188742016	 earnPercent[low]=-8.485773864760914
+Avg hold stock days: 11
+Total high earn between (25, 50): 0
+Total low  earn between (10, 10): 4
