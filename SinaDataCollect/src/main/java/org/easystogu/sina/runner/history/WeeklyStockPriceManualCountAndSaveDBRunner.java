@@ -35,7 +35,7 @@ public class WeeklyStockPriceManualCountAndSaveDBRunner {
 
     public void countAndSave(String stockId) {
         for (int year = 2015; year <= 2015; year++) {
-            for (int week = 1; week <= 53; week++) {
+            for (int week = 14; week <= 15; week++) {
                 List<String> dates = WeekdayUtil.getWorkingDaysOfWeek(year, week);
                 if ((dates != null) && (dates.size() >= 1)) {
                     String firstDate = dates.get(0);
@@ -74,7 +74,6 @@ public class WeeklyStockPriceManualCountAndSaveDBRunner {
         StockListConfigurationService stockConfig = StockListConfigurationService.getInstance();
         WeeklyStockPriceManualCountAndSaveDBRunner runner = new WeeklyStockPriceManualCountAndSaveDBRunner();
         runner.countAndSave(stockConfig.getAllStockId());
-        // runner.countAndSave("002194");
     }
 
 }

@@ -168,7 +168,7 @@ public class WeekdayUtil {
 
 	public static void main(String[] args) {
 
-		List<String> dates = WeekdayUtil.getWeekWorkingDates("2016-12-30");
+		List<String> dates = WeekdayUtil.getWorkingDaysOfWeek(2015, 15);
 		for (String date : dates) {
 			System.out.println(date);
 		}
