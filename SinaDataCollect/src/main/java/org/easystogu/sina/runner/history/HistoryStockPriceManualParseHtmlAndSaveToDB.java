@@ -92,11 +92,11 @@ public class HistoryStockPriceManualParseHtmlAndSaveToDB {
         File path = new File(htmlPath);
         File[] files = path.listFiles();
         int index = 0;
-        String startDay = "2015-03-30";
+        String startDay = "2015-04-01";
         for (File file : files) {
             System.out.println("Processing " + file.getName() + " " + ++index + " / " + files.length);
             //please fliter the data that save into DB
-            if ((file.length() > 0) && (file.getName().indexOf("2015_1") > 0)) {
+            if ((file.length() > 0) && (file.getName().indexOf("2015_2") > 0)) {
                 runner.parseDataAndSaveToDB(file, startDay);
             }
         }
