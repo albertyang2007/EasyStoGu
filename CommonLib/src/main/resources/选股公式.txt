@@ -296,4 +296,15 @@ DRAWTEXT(FILTER(买=1,0),LOW-0.03,'买'),COLORRED;
 DRAWKLINE(HIGH,OPEN,LOW,CLOSE);
 
 
+======================================================================================
+名称:神仙大趋势
+公式描述:神仙大趋势
+公式类型:其它类型
+画图方法:主图叠加
 
+公式内容: 
+神仙大趋势H1:EMA(CLOSE,6);
+H2:EMA(神仙大趋势H1,18);
+H3: EMA (CLOSE,108),COLORYELLOW;
+STICKLINE(神仙大趋势H1>H2,神仙大趋势H1,H2,1,1),COLORRED;
+STICKLINE(神仙大趋势H1<H2,神仙大趋势H1,H2,1,1),COLORBLUE;
