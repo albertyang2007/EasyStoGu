@@ -110,6 +110,48 @@ ALTER TABLE ind_boll
 GRANT ALL ON TABLE ind_boll TO public;
 GRANT ALL ON TABLE ind_boll TO postgres;
 
+-- Table: ind_shenxian
+
+-- DROP TABLE ind_shenxian;
+
+CREATE TABLE ind_shenxian
+(
+  stockid text NOT NULL,
+  date text NOT NULL,
+  h1 numeric,
+  h2 numeric,
+  h3 numeric,
+  CONSTRAINT shenxian_primary_key PRIMARY KEY (stockid, date)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE ind_shenxian
+  OWNER TO postgres;
+GRANT ALL ON TABLE ind_shenxian TO public;
+GRANT ALL ON TABLE ind_shenxian TO postgres;
+
+-- Table: ind_week_shenxian
+
+-- DROP TABLE ind_week_shenxian;
+
+CREATE TABLE ind_week_shenxian
+(
+  stockid text NOT NULL,
+  date text NOT NULL,
+  h1 numeric,
+  h2 numeric,
+  h3 numeric,
+  CONSTRAINT week_shenxian_primary_key PRIMARY KEY (stockid, date)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE ind_week_shenxian
+  OWNER TO postgres;
+GRANT ALL ON TABLE ind_week_shenxian TO public;
+GRANT ALL ON TABLE ind_week_shenxian TO postgres;
+
 -- Table: ind_event
 
 -- DROP TABLE ind_event;
@@ -280,5 +322,4 @@ ALTER TABLE checkpoint_history_selection
 GRANT ALL ON TABLE checkpoint_history_selection TO public;
 GRANT ALL ON TABLE checkpoint_history_selection TO postgres;
 COMMENT ON TABLE checkpoint_history_selection
-  IS 'Store history checkpoint high earn percent  (>50) reports';
-  
+  IS 'Store history checkpoint high earn percent  (>50) reports';  
