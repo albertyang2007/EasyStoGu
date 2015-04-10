@@ -9,10 +9,12 @@ public class HistortOverAllRunner {
         HistoryMacdCountAndSaveDBRunner.main(args);
         HistoryKDJCountAndSaveDBRunner.main(args);
         HistoryBollCountAndSaveDBRunner.main(args);
+        HistoryShenXianCountAndSaveDBRunner.main(args);
         //week
         WeeklyMacdCountAndSaveDBRunner.main(args);
         WeeklyKDJCountAndSaveDBRunner.main(args);
         WeeklyBollCountAndSaveDBRunner.main(args);
+        WeeklyShenXianCountAndSaveDBRunner.main(args);
     }
 
 }
