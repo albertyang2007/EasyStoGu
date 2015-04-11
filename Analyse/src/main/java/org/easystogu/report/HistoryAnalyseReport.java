@@ -197,7 +197,8 @@ public class HistoryAnalyseReport {
 		int totalLowCount = 0;
 		List<String> stockIds = stockConfig.getAllStockId();
 
-		//System.out.println("\n===================" + checkPoint + "  earn between (25, 50)%====================");
+		System.out.println("===============================" + checkPoint + " (sellPoint:"
+				+ checkPoint.getSellPointType() + ")==========================");
 		for (String stockId : stockIds) {
 			List<HistoryReportDetailsVO> historyReportList = this.doAnalyseReport(stockId, checkPoint);
 			for (HistoryReportDetailsVO reportVO : historyReportList) {
@@ -233,8 +234,6 @@ public class HistoryAnalyseReport {
 			totalCount = 1;
 		}
 
-		System.out.println("===============================" + checkPoint + " (sellPoint:"
-				+ checkPoint.getSellPointType() + ")==========================");
 		System.out.println("Total satisfy: " + totalCount + "\t earnPercent[close]=" + (earnPercent[0] / totalCount)
 				+ "\t earnPercent[high]=" + (earnPercent[1] / totalCount) + "\t earnPercent[low]="
 				+ (earnPercent[2] / totalCount));
