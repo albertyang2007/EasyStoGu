@@ -145,7 +145,7 @@ public class IndShenXianTableHelper {
 		return null;
 	}
 
-	public List<ShenXianVO> getAllShenXianVO(String stockId) {
+	public List<ShenXianVO> getAllShenXian(String stockId) {
 		try {
 
 			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
@@ -163,7 +163,7 @@ public class IndShenXianTableHelper {
 	}
 
 	// 最近几天的，必须使用时间倒序的SQL
-	public List<ShenXianVO> getNDateShenXianVO(String stockId, int day) {
+	public List<ShenXianVO> getNDateShenXian(String stockId, int day) {
 		try {
 
 			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
@@ -185,8 +185,7 @@ public class IndShenXianTableHelper {
 		// TODO Auto-generated method stub
 		IndShenXianTableHelper ins = new IndShenXianTableHelper();
 		try {
-
-			System.out.println(ins.getNDateShenXianVO("600589", 40).size());
+			System.out.println(ins.getAllShenXian("002194").size());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

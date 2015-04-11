@@ -62,6 +62,7 @@ public class DailySelectionRunner {
 		IndCrossCheckingHelper.macdCross(overDayList);
 		IndCrossCheckingHelper.kdjCross(overDayList);
 		IndCrossCheckingHelper.rsvCross(overDayList);
+		IndCrossCheckingHelper.shenXianCross(overDayList);
 		VolumeCheckingHelper.volumeIncreasePuls(overDayList);
 		VolumeCheckingHelper.avgVolume5(overDayList);
 		PriceCheckingHelper.priceHigherThanNday(overDayList, 15);

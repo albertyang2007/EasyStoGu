@@ -28,4 +28,15 @@ public class IndWeekShenXianTableHelper extends IndShenXianTableHelper {
 
 		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
 	}
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		IndWeekShenXianTableHelper ins = new IndWeekShenXianTableHelper();
+		try {
+			System.out.println(ins.getAllShenXian("002194").size());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }

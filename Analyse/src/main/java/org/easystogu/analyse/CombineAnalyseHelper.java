@@ -17,7 +17,6 @@ public class CombineAnalyseHelper {
 		if ((overWeekList == null) || (overWeekList.size() <= 1)) {
 			return false;
 		}
-
 		StockSuperVO curSuperWeekVO = overWeekList.get(overWeekList.size() - 1);
 		StockSuperVO pre1SuperWeekVO = overWeekList.get(overWeekList.size() - 2);
 
@@ -37,6 +36,12 @@ public class CombineAnalyseHelper {
 			break;
 		case KDJ_Gordon:
 			if (curSuperDayVO.kdjCorssType == CrossType.GORDON) {
+				return true;
+			}
+			break;
+
+		case ShenXian_Gordon:
+			if (curSuperDayVO.shenXianCorssType == CrossType.GORDON) {
 				return true;
 			}
 			break;
@@ -1273,7 +1278,6 @@ public class CombineAnalyseHelper {
 			}
 			break;
 		}
-
 		default:
 			return false;
 		}

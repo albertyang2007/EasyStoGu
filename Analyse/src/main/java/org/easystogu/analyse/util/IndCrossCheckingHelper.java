@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.easystogu.db.table.KDJVO;
 import org.easystogu.db.table.MacdVO;
+import org.easystogu.db.table.ShenXianVO;
 import org.easystogu.db.table.StockSuperVO;
 import org.easystogu.utils.CrossType;
 
@@ -73,6 +74,30 @@ public class IndCrossCheckingHelper {
 
 			if ((vo.rsv >= vo.k) && (nextvo.rsv < nextvo.k)) {
 				superNextVO.rsvCorssType = CrossType.DEAD;
+				continue;
+			}
+		}
+	}
+
+	public static void shenXianCross(List<StockSuperVO> overList) {
+
+		for (int index = 0; index < (overList.size() - 1); index++) {
+			StockSuperVO superVO = overList.get(index);
+			StockSuperVO superNextVO = overList.get(index + 1);
+			ShenXianVO vo = superVO.shenXianVO;
+			ShenXianVO nextvo = superNextVO.shenXianVO;
+			// check cross
+			if ((vo.h1 <= vo.h2) && (nextvo.h1 > nextvo.h2)) {
+				superNextVO.shenXianCorssType = CrossType.GORDON;
+				// System.out.println("crossType shanXian Gordon:" + vo.stockId
+				// + " " + vo.date);
+				continue;
+			}
+
+			if ((vo.h1 >= vo.h2) && (nextvo.h1 < nextvo.h2)) {
+				superNextVO.shenXianCorssType = CrossType.DEAD;
+				// System.out.println("crossType shanXian Dead:" + vo.stockId +
+				// " " + vo.date);
 				continue;
 			}
 		}

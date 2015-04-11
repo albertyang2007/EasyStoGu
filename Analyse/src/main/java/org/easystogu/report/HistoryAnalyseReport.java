@@ -52,6 +52,7 @@ public class HistoryAnalyseReport {
 		IndCrossCheckingHelper.macdCross(overDayList);
 		IndCrossCheckingHelper.kdjCross(overDayList);
 		IndCrossCheckingHelper.rsvCross(overDayList);
+		IndCrossCheckingHelper.shenXianCross(overDayList);
 		VolumeCheckingHelper.volumeIncreasePuls(overDayList);
 		VolumeCheckingHelper.avgVolume5(overDayList);
 		PriceCheckingHelper.priceHigherThanNday(overDayList, 15);
@@ -83,6 +84,12 @@ public class HistoryAnalyseReport {
 					}
 				} else if (checkPoint.getSellPointType().equals(SellPointType.MACD_Dead)) {
 					if (superVO.macdCorssType == CrossType.DEAD) {
+						reportVO.setSellPriceVO(superVO.priceVO);
+						historyReportList.add(reportVO);
+						reportVO = null;
+					}
+				} else if (checkPoint.getSellPointType().equals(SellPointType.ShenXian_Dead)) {
+					if (superVO.shenXianCorssType == CrossType.DEAD) {
 						reportVO.setSellPriceVO(superVO.priceVO);
 						historyReportList.add(reportVO);
 						reportVO = null;
@@ -157,7 +164,8 @@ public class HistoryAnalyseReport {
 	}
 
 	public void UnitTest4() {
-		// kdj閲戝弶锛屾垚浜ら噺涓�棩姣斾竴鏃ュぇ锛岄噾鍙夊墠涓ゆ棩绾紝褰撴棩缁匡紝浣嗘槸鏀剁洏浠峰苟涓嶄綆浜庡墠涓�棩锛岃鏄庨噾鍙夊綋鏃ユ槸娲楃洏缁х画涓婅 .
+		// kdj閲戝弶锛屾垚浜ら噺涓�棩姣斾竴鏃ュぇ锛岄噾鍙夊墠涓ゆ棩绾紝褰撴棩缁匡紝浣嗘槸鏀剁洏浠峰苟涓嶄綆浜庡墠涓�棩锛岃鏄庨噾鍙夊綋鏃ユ槸娲楃洏缁х画涓婅
+		// .
 		// 渚嬪瓙鐭冲熀淇℃伅20150204
 		List<DailyCombineCheckPoint> checkPointList = new ArrayList<DailyCombineCheckPoint>();
 		checkPointList.add(DailyCombineCheckPoint.KDJ_Green_Gordon_Pre_2_Days_Red);
@@ -189,7 +197,7 @@ public class HistoryAnalyseReport {
 		int totalLowCount = 0;
 		List<String> stockIds = stockConfig.getAllStockId();
 
-		System.out.println("\n===================" + checkPoint + "  earn between (25, 50)%====================");
+		//System.out.println("\n===================" + checkPoint + "  earn between (25, 50)%====================");
 		for (String stockId : stockIds) {
 			List<HistoryReportDetailsVO> historyReportList = this.doAnalyseReport(stockId, checkPoint);
 			for (HistoryReportDetailsVO reportVO : historyReportList) {
@@ -206,16 +214,17 @@ public class HistoryAnalyseReport {
 						// System.out.println("Low  earn: " + reportVO);
 					}
 
-					if (!reportVO.completed) {
-						System.out.println("Not Completed: " + reportVO);
+					if (reportVO.completed) {
+						// only count the complete ones!! to exclude the not
+						// completed
+						totalCount++;
+						earnPercent[0] += reportVO.earnPercent[0];
+						earnPercent[1] += reportVO.earnPercent[1];
+						earnPercent[2] += reportVO.earnPercent[2];
+						holdDays += reportVO.holdDays;
+					} else {
+						//System.out.println("Not Completed: " + reportVO);
 					}
-
-					totalCount++;
-					earnPercent[0] += reportVO.earnPercent[0];
-					earnPercent[1] += reportVO.earnPercent[1];
-					earnPercent[2] += reportVO.earnPercent[2];
-
-					holdDays += reportVO.holdDays;
 				}
 			}
 		}
@@ -224,6 +233,8 @@ public class HistoryAnalyseReport {
 			totalCount = 1;
 		}
 
+		System.out.println("===============================" + checkPoint + " (sellPoint:"
+				+ checkPoint.getSellPointType() + ")==========================");
 		System.out.println("Total satisfy: " + totalCount + "\t earnPercent[close]=" + (earnPercent[0] / totalCount)
 				+ "\t earnPercent[high]=" + (earnPercent[1] / totalCount) + "\t earnPercent[low]="
 				+ (earnPercent[2] / totalCount));
@@ -254,11 +265,13 @@ public class HistoryAnalyseReport {
 		for (DailyCombineCheckPoint checkPoint : DailyCombineCheckPoint.values()) {
 			// if(checkPoint.getEarnPercent()>=7.5)
 			// System.out.println(checkPoint);
-			 //reporter.emptyTableByCheckPoint(checkPoint.toString());
-			 //reporter.searchAllStockIdAccordingToCheckPoint(checkPoint);
+			// reporter.emptyTableByCheckPoint(checkPoint.toString());
+			// reporter.searchAllStockIdAccordingToCheckPoint(checkPoint);
 		}
 
-		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.DuoTou_HuiTiao_MA20_Support_KDJ_0_YangBaoYin);
+		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.MACD_Gordon);
+		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.KDJ_Gordon);
+		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.ShenXian_Gordon);
 		// reporter.UnitTestForSpecifyStockId();
 	}
 }
