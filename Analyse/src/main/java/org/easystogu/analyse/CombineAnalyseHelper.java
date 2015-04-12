@@ -41,7 +41,7 @@ public class CombineAnalyseHelper {
 			break;
 
 		case ShenXian_Gordon:
-			if (curSuperDayVO.shenXianCorssType == CrossType.GORDON) {
+			if (curSuperDayVO.shenXianCorssType12 == CrossType.GORDON) {
 				return true;
 			}
 			break;
@@ -1278,6 +1278,16 @@ public class CombineAnalyseHelper {
 			}
 			break;
 		}
+
+		case ShenXian_Two_Gordons:
+			// after H1 corss H2 and then H1 corss H3
+			if (curSuperDayVO.shenXianVO.h1 > curSuperDayVO.shenXianVO.h2) {
+				if (curSuperDayVO.shenXianCorssType13 == CrossType.GORDON) {
+					return true;
+				}
+			}
+			break;
+
 		default:
 			return false;
 		}

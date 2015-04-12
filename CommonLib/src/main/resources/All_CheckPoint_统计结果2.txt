@@ -3,18 +3,22 @@ Total satisfy: 99400	 earnPercent[close]=0.6527812268309142	 earnPercent[high]=1
 Avg hold stock days: 14
 Total high earn between (25, 50): 2233
 Total low  earn between (10, 10): 5879
-
 ===============================KDJ_Gordon (sellPoint:KDJ_Dead)==========================
 Total satisfy: 210114	 earnPercent[close]=-0.03422464638754511	 earnPercent[high]=6.010304980338276	 earnPercent[low]=-3.709430391013259
 Avg hold stock days: 6
 Total high earn between (25, 50): 753
 Total low  earn between (10, 10): 4112
-
-===================ShenXian_Gordon (sellPoint:ShenXian_Dead)====================
-Total satisfy: 72577    earnPercent[close]=0.25  earnPercent[high]=12.75     earnPercent[low]=-5.4
+===============================ShenXian_Gordon (sellPoint:ShenXian_Dead)==========================
+Total satisfy: 72577	 earnPercent[close]=0.25113692802244986	 earnPercent[high]=12.755922206943245	 earnPercent[low]=-5.463255318780264
 Avg hold stock days: 18
-Total high earn between (25, 50): 3000
-Total low  earn between (10, 10): 4200
+Total high earn between (25, 50): 3406
+Total low  earn between (10, 10): 4220
+
+===============================ShenXian_Two_Gordons (sellPoint:ShenXian_Dead)==========================
+Total satisfy: 23155	 earnPercent[close]=-0.18941148248194922	 earnPercent[high]=13.355168910672386	 earnPercent[low]=-6.483729538719982
+Avg hold stock days: 20
+Total high earn between (25, 50): 1324
+Total low  earn between (10, 10): 2329
 
 ===================MACD_KDJ_Gordon_3_Days_Red_MA_Ronghe_XiangShang  earn between (25, 50)%====================
 Total satisfy: 1972  earnPercent[close]=0.9711407669996148   earnPercent[high]=7.813664416361749     earnPercent[low]=-3.7266450475448365
@@ -462,3 +466,5 @@ Total satisfy: 12	 earnPercent[close]=-3.1601559966098307	 earnPercent[high]=9.2
 Avg hold stock days: 11
 Total high earn between (25, 50): 0
 Total low  earn between (10, 10): 4
+
+

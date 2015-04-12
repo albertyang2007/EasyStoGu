@@ -79,7 +79,7 @@ public class IndCrossCheckingHelper {
 		}
 	}
 
-	public static void shenXianCross(List<StockSuperVO> overList) {
+	public static void shenXianCross12(List<StockSuperVO> overList) {
 
 		for (int index = 0; index < (overList.size() - 1); index++) {
 			StockSuperVO superVO = overList.get(index);
@@ -88,16 +88,32 @@ public class IndCrossCheckingHelper {
 			ShenXianVO nextvo = superNextVO.shenXianVO;
 			// check cross
 			if ((vo.h1 <= vo.h2) && (nextvo.h1 > nextvo.h2)) {
-				superNextVO.shenXianCorssType = CrossType.GORDON;
-				// System.out.println("crossType shanXian Gordon:" + vo.stockId
-				// + " " + vo.date);
+				superNextVO.shenXianCorssType12 = CrossType.GORDON;
 				continue;
 			}
 
 			if ((vo.h1 >= vo.h2) && (nextvo.h1 < nextvo.h2)) {
-				superNextVO.shenXianCorssType = CrossType.DEAD;
-				// System.out.println("crossType shanXian Dead:" + vo.stockId +
-				// " " + vo.date);
+				superNextVO.shenXianCorssType12 = CrossType.DEAD;
+				continue;
+			}
+		}
+	}
+
+	public static void shenXianCross13(List<StockSuperVO> overList) {
+
+		for (int index = 0; index < (overList.size() - 1); index++) {
+			StockSuperVO superVO = overList.get(index);
+			StockSuperVO superNextVO = overList.get(index + 1);
+			ShenXianVO vo = superVO.shenXianVO;
+			ShenXianVO nextvo = superNextVO.shenXianVO;
+			// check cross
+			if ((vo.h1 <= vo.h3) && (nextvo.h1 > nextvo.h3)) {
+				superNextVO.shenXianCorssType13 = CrossType.GORDON;
+				continue;
+			}
+
+			if ((vo.h1 >= vo.h3) && (nextvo.h1 < nextvo.h3)) {
+				superNextVO.shenXianCorssType13 = CrossType.DEAD;
 				continue;
 			}
 		}

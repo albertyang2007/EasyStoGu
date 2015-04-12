@@ -62,7 +62,8 @@ public class DailySelectionRunner {
 		IndCrossCheckingHelper.macdCross(overDayList);
 		IndCrossCheckingHelper.kdjCross(overDayList);
 		IndCrossCheckingHelper.rsvCross(overDayList);
-		IndCrossCheckingHelper.shenXianCross(overDayList);
+		IndCrossCheckingHelper.shenXianCross12(overDayList);
+		IndCrossCheckingHelper.shenXianCross13(overDayList);
 		VolumeCheckingHelper.volumeIncreasePuls(overDayList);
 		VolumeCheckingHelper.avgVolume5(overDayList);
 		PriceCheckingHelper.priceHigherThanNday(overDayList, 15);
@@ -85,7 +86,7 @@ public class DailySelectionRunner {
 		for (DailyCombineCheckPoint checkPoint : DailyCombineCheckPoint.values()) {
 			if (combineAnalyserHelper.isConditionSatisfy(checkPoint, overDayList, overWeekList)) {
 				this.addToConditionMap(superVO, checkPoint);
-				this.saveToEventDB(superVO, checkPoint);
+				//this.saveToEventDB(superVO, checkPoint);
 			}
 		}
 	}
@@ -231,8 +232,8 @@ public class DailySelectionRunner {
 		// TODO Auto-generated method stub
 		DailySelectionRunner runner = new DailySelectionRunner();
 		CheckPointDailySelectionTableHelper eventTable = CheckPointDailySelectionTableHelper.getInstance();
-		System.out.println("Delete latest's Select Event");
-		eventTable.deleteByDate(runner.latestDate);
+		//System.out.println("Delete latest's Select Event");
+		//eventTable.deleteByDate(runner.latestDate);
 
 		StockListConfigurationService stockConfig = StockListConfigurationService.getInstance();
 		List<String> stockIds = stockConfig.getAllStockId();

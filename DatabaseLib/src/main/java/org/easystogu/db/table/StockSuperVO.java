@@ -13,7 +13,8 @@ public class StockSuperVO {
 	public CrossType macdCorssType;
 	public CrossType kdjCorssType;
 	public CrossType rsvCorssType;
-	public CrossType shenXianCorssType;
+	public CrossType shenXianCorssType12;// H1 corss H2
+	public CrossType shenXianCorssType13;// H1 corss H3
 	public boolean[] KLineStatus = new boolean[4];// big/small red, big/small
 													// green
 	public boolean priceHigherThanNday = false;// 当前价格是否突破平台,比如15天的价格
@@ -39,7 +40,8 @@ public class StockSuperVO {
 	public String toString() {
 		return priceVO.toString() + ";" + macdVO.toString() + ";" + kdjVO.toString() + ";" + bollVO.toString() + ";"
 				+ shenXianVO.toString() + "; macdCross:" + macdCorssType + "; kdjCross:" + kdjCorssType
-				+ "; shenXianCross:" + shenXianCorssType + "; volumeIncFactor=" + volumeIncreasePercent;
+				+ "; shenXianCross:" + shenXianCorssType12 + "; shenXianCross2:" + shenXianCorssType13
+				+ "; volumeIncFactor=" + volumeIncreasePercent;
 	}
 
 	@Override

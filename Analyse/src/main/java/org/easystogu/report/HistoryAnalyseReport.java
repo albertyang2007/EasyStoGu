@@ -52,7 +52,8 @@ public class HistoryAnalyseReport {
 		IndCrossCheckingHelper.macdCross(overDayList);
 		IndCrossCheckingHelper.kdjCross(overDayList);
 		IndCrossCheckingHelper.rsvCross(overDayList);
-		IndCrossCheckingHelper.shenXianCross(overDayList);
+		IndCrossCheckingHelper.shenXianCross12(overDayList);
+		IndCrossCheckingHelper.shenXianCross13(overDayList);
 		VolumeCheckingHelper.volumeIncreasePuls(overDayList);
 		VolumeCheckingHelper.avgVolume5(overDayList);
 		PriceCheckingHelper.priceHigherThanNday(overDayList, 15);
@@ -89,7 +90,7 @@ public class HistoryAnalyseReport {
 						reportVO = null;
 					}
 				} else if (checkPoint.getSellPointType().equals(SellPointType.ShenXian_Dead)) {
-					if (superVO.shenXianCorssType == CrossType.DEAD) {
+					if (superVO.shenXianCorssType12 == CrossType.DEAD) {
 						reportVO.setSellPriceVO(superVO.priceVO);
 						historyReportList.add(reportVO);
 						reportVO = null;
@@ -224,7 +225,7 @@ public class HistoryAnalyseReport {
 						earnPercent[2] += reportVO.earnPercent[2];
 						holdDays += reportVO.holdDays;
 					} else {
-						//System.out.println("Not Completed: " + reportVO);
+						System.out.println("Not Completed: " + reportVO);
 					}
 				}
 			}
@@ -268,9 +269,7 @@ public class HistoryAnalyseReport {
 			// reporter.searchAllStockIdAccordingToCheckPoint(checkPoint);
 		}
 
-		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.MACD_Gordon);
-		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.KDJ_Gordon);
-		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.ShenXian_Gordon);
+		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.ShenXian_Two_Gordons);
 		// reporter.UnitTestForSpecifyStockId();
 	}
 }
