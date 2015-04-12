@@ -65,11 +65,12 @@ public class HistoryAnalyseReport {
 		IndCrossCheckingHelper.rsvCross(overWeekList);
 
 		HistoryReportDetailsVO reportVO = null;
-		for (int index = 120; index < (overDayList.size() - 1); index++) {
+		for (int index = 120; index < overDayList.size() - 1; index++) {
 			StockSuperVO superVO = overDayList.get(index);
 			// buy point
-			if (combineAanalyserHelper.isConditionSatisfy(checkPoint, overDayList.subList(index - 120, index),
-					overWeekList)) {
+			if (reportVO == null
+					&& combineAanalyserHelper.isConditionSatisfy(checkPoint,
+							overDayList.subList(index - 120, index + 1), overWeekList)) {
 				reportVO = new HistoryReportDetailsVO();
 				reportVO.setBuyPriceVO(superVO.priceVO);
 				continue;
@@ -198,7 +199,7 @@ public class HistoryAnalyseReport {
 		int totalLowCount = 0;
 		List<String> stockIds = stockConfig.getAllStockId();
 
-		System.out.println("===============================" + checkPoint + " (sellPoint:"
+		System.out.println("\n===============================" + checkPoint + " (sellPoint:"
 				+ checkPoint.getSellPointType() + ")==========================");
 		for (String stockId : stockIds) {
 			List<HistoryReportDetailsVO> historyReportList = this.doAnalyseReport(stockId, checkPoint);
@@ -225,7 +226,7 @@ public class HistoryAnalyseReport {
 						earnPercent[2] += reportVO.earnPercent[2];
 						holdDays += reportVO.holdDays;
 					} else {
-						System.out.println("Not Completed: " + reportVO);
+						//System.out.println("Not Completed: " + reportVO);
 					}
 				}
 			}
@@ -269,7 +270,14 @@ public class HistoryAnalyseReport {
 			// reporter.searchAllStockIdAccordingToCheckPoint(checkPoint);
 		}
 
-		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.ShenXian_Two_Gordons);
+		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.MACD_KDJ_Gordon_3_Days_Red_MA_Ronghe_XiangShang);
+		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.MACD_KDJ_Gordon_High_MA5_MA10_BOLL_MA_RongHe_XiangShang);
+		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.DuoTou_Pre_2_Days_Green_Red_KDJ_Zero_MA20_Support_MA_RongHe_XiangShang);
+		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.DuoTou_Pre_2_Days_Green_Red_KDJ_Zero_MA30_Support_MA_RongHe_XiangShang);
+		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.DuoTou_HuiTiao_Boll_Lower_Support_MA30_Support_MA_RongHe_XiangShang);
+		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.DuoTou_HuiTiao_Boll_MB_Support_MA20_Support_MA_RongHe_XiangShang);
+		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.DuoTou_HuiTiao_RSV_Gordon_MA10_Support_MA_RongHe_XiangShang);
+		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.DuoTou_MA5_Wait_MA10_RongHe_Break_Platform);
 		// reporter.UnitTestForSpecifyStockId();
 	}
 }
