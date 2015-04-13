@@ -28,9 +28,9 @@ public class ShenXianHelper {
 		shenXian[1] = talib.getEma(shenXian[0], 18);
 		shenXian[2] = talib.getEma(myClose, 108);
 
-		System.out.println(shenXian[0][length - 1]);
-		System.out.println(shenXian[1][length - 1]);
-		System.out.println(shenXian[2][length - 1]);
+		//System.out.println(shenXian[0][length - 1]);
+		//System.out.println(shenXian[1][length - 1]);
+		//System.out.println(shenXian[2][length - 1]);
 		return shenXian;
 	}
 
