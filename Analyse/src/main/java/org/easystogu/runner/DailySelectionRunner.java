@@ -49,7 +49,7 @@ public class DailySelectionRunner {
 		List<StockSuperVO> overWeekList = weekStockOverAllHelper.getLatestNStockSuperVO(stockId, 30);
 
 		if (overDayList.size() == 0) {
-			// System.out.println("No stockprice data for " + stockId);
+			 //System.out.println("No stockprice data for " + stockId);
 			return;
 		}
 

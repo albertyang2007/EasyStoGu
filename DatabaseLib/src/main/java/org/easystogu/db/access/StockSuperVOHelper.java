@@ -30,11 +30,11 @@ public class StockSuperVOHelper {
 
 		if ((spList.size() != day) || (macdList.size() != day) || (kdjList.size() != day) || (bollList.size() != day)
 				|| (shenXianList.size() != day)) {
-			// System.out.println(stockId + " size of spList(" + spList.size() +
-			// "), macdList(" + macdList.size()
-			// + ") and kdjList(" + kdjList.size() + ") and shenXianList(" +
-			// shenXianList.size()
-			// + ") is not equal, the database must meet fatel error!");
+			 //System.out.println(stockId + " size of spList(" + spList.size() +
+			 //"), macdList(" + macdList.size()
+			 //+ ") and kdjList(" + kdjList.size() + ") and shenXianList(" +
+			 //shenXianList.size()
+			 //+ ") is not equal, the database must meet fatel error!");
 			return overList;
 		}
 
