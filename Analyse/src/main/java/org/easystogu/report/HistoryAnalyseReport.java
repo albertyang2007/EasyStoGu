@@ -201,7 +201,7 @@ public class HistoryAnalyseReport {
 
 		System.out.println("\n===============================" + checkPoint + " (sellPoint:"
 				+ checkPoint.getSellPointType() + ")==========================");
-		for (String stockId : stockIds) {
+		for (String stockId : stockIds) {				
 			List<HistoryReportDetailsVO> historyReportList = this.doAnalyseReport(stockId, checkPoint);
 			for (HistoryReportDetailsVO reportVO : historyReportList) {
 				if (reportVO.sellPriceVO != null) {
@@ -226,7 +226,7 @@ public class HistoryAnalyseReport {
 						earnPercent[2] += reportVO.earnPercent[2];
 						holdDays += reportVO.holdDays;
 					} else {
-						//System.out.println("Not Completed: " + reportVO);
+						System.out.println("Not Completed: " + reportVO);
 					}
 				}
 			}
@@ -270,14 +270,7 @@ public class HistoryAnalyseReport {
 			// reporter.searchAllStockIdAccordingToCheckPoint(checkPoint);
 		}
 
-		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.MACD_KDJ_Gordon_3_Days_Red_MA_Ronghe_XiangShang);
-		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.MACD_KDJ_Gordon_High_MA5_MA10_BOLL_MA_RongHe_XiangShang);
-		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.DuoTou_Pre_2_Days_Green_Red_KDJ_Zero_MA20_Support_MA_RongHe_XiangShang);
-		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.DuoTou_Pre_2_Days_Green_Red_KDJ_Zero_MA30_Support_MA_RongHe_XiangShang);
-		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.DuoTou_HuiTiao_Boll_Lower_Support_MA30_Support_MA_RongHe_XiangShang);
-		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.DuoTou_HuiTiao_Boll_MB_Support_MA20_Support_MA_RongHe_XiangShang);
-		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.DuoTou_HuiTiao_RSV_Gordon_MA10_Support_MA_RongHe_XiangShang);
-		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.DuoTou_MA5_Wait_MA10_RongHe_Break_Platform);
+		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.HengPan_2_Weeks_2_Days_Green_RSV_KDJ_Gordon_RongHe_XiangShang_Break_Platform);
 		// reporter.UnitTestForSpecifyStockId();
 	}
 }

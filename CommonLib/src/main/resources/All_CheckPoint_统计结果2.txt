@@ -473,4 +473,10 @@ Avg hold stock days: 6
 Total high earn between (25, 50): 44
 Total low  earn between (10, 10): 317
 
+===============================HengPan_2_Weeks_2_Days_Green_RSV_KDJ_Gordon_RongHe_XiangShang_Break_Platform (sellPoint:KDJ_Dead)==========================
+Total satisfy: 196	 earnPercent[close]=-0.3722565203056183	 earnPercent[high]=6.69785232591126	 earnPercent[low]=-4.493108583790766
+Avg hold stock days: 7
+Total high earn between (25, 50): 0
+Total low  earn between (10, 10): 13
+
 

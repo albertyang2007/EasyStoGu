@@ -951,6 +951,47 @@ public class CombineAnalyseHelper {
 			}
 			return false;
 		}
+		case HengPan_2_Weeks_2_Days_Green_RSV_KDJ_Gordon_RongHe_XiangShang_Break_Platform: {
+			// example: 600021 000875 at 2015-04-13,
+			if ((curSuperWeekVO.kdjVO.k < curSuperWeekVO.kdjVO.d) || !this.isLatestKDJCrossGordon(overWeekList)) {
+				// over all week KDJ must after Gordon
+				return false;
+			}
+
+			// find the first big red K line that index is at the first half
+			// days
+			boolean hasFlatformStartVO = false;
+			int minPlatformLen = 10;
+			int maxPlatformLen = 17;
+			for (int length = minPlatformLen; length <= maxPlatformLen; length++) {
+				if (findPlatformStartVO(overDayList.subList(overDayList.size() - length, overDayList.size()))) {
+					hasFlatformStartVO = true;
+					break;
+				}
+			}
+
+			if (!hasFlatformStartVO) {
+				return false;
+			}
+
+			// RSV or KDJ gordon
+			if (curSuperDayVO.rsvCorssType == CrossType.GORDON || curSuperDayVO.kdjCorssType == CrossType.NEAR_GORDON
+					|| curSuperDayVO.kdjCorssType == CrossType.GORDON) {
+				// two days green and volume smaller than smaller
+				if (curSuperDayVO.priceVO.isKLineRed() && pre1SuperDayVO.priceVO.isKLineRed()
+						&& pre2SuperDayVO.priceVO.isKLineGreen() && pre3SuperDayVO.priceVO.isKLineGreen()) {
+					if (curSuperDayVO.volumeIncreasePercent > 1 && pre2SuperDayVO.volumeIncreasePercent < 1) {
+						// close higher ma5 ma10
+						if (curSuperDayVO.priceVO.close >= curSuperDayVO.avgMA5
+								&& curSuperDayVO.priceVO.close >= curSuperDayVO.avgMA10) {
+							return this.MA5_MA10_Ronghe_XiangShang(curSuperDayVO, pre1SuperDayVO);
+						}
+					}
+				}
+			}
+
+			break;
+		}
 		case DuoTou_MA5_Wait_MA10_RongHe:
 			// example: 002194 2015-03-11
 			if ((curSuperWeekVO.kdjVO.k < curSuperWeekVO.kdjVO.d) || !this.isLatestKDJCrossGordon(overWeekList)) {
@@ -1345,7 +1386,7 @@ public class CombineAnalyseHelper {
 
 				// if next day find one high is greater then 10% since platform
 				// startVO.hight, then not the platform
-				if ((((vo.priceVO.high - startVO.priceVO.high) * 100) / startVO.priceVO.high) >= 10) {
+				if ((((vo.priceVO.high - startVO.priceVO.high) * 100) / startVO.priceVO.high) >= 15) {
 					return false;
 				}
 
@@ -1367,7 +1408,7 @@ public class CombineAnalyseHelper {
 
 			// after all condiction is satisfy
 			return true;
-		}
+		}		
 
 		return false;
 	}
