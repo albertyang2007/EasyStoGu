@@ -16,7 +16,7 @@ public class CombineAnalyseHelper {
 
 		if ((overWeekList == null) || (overWeekList.size() <= 1)) {
 			return false;
-		}
+		} 
 		StockSuperVO curSuperWeekVO = overWeekList.get(overWeekList.size() - 1);
 		StockSuperVO pre1SuperWeekVO = overWeekList.get(overWeekList.size() - 2);
 
