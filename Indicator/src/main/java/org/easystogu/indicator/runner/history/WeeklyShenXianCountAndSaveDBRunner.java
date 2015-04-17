@@ -18,6 +18,5 @@ public class WeeklyShenXianCountAndSaveDBRunner extends HistoryShenXianCountAndS
         WeeklyShenXianCountAndSaveDBRunner runner = new WeeklyShenXianCountAndSaveDBRunner();
         List<String> stockIds = stockConfig.getAllStockId();
         runner.countAndSaved(stockIds);
-        //runner.countAndSaved("002194");
     }
 }
