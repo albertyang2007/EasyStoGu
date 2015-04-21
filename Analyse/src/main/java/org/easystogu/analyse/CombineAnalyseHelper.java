@@ -862,95 +862,6 @@ public class CombineAnalyseHelper {
 
 			break;
 		}
-
-		case DuoTou_MA5_Wait_MA10_RSV_KDJ_Gordon_Break_Platform: {
-
-			if ((curSuperWeekVO.kdjVO.k < curSuperWeekVO.kdjVO.d) || !this.isLatestKDJCrossGordon(overWeekList)) {
-				// over all week KDJ must after Gordon
-				return false;
-			}
-			// is much like XX_Gordon_High_MA5_MA10_BOLL
-			// example: 000062 2015-02-27
-
-			// find the first big red K line that index is at the first half
-			// days
-			boolean hasFlatformStartVO = false;
-			int minPlatformLen = 5;
-			int maxPlatformLen = 30;
-			for (int length = minPlatformLen; length <= maxPlatformLen; length++) {
-				if (findPlatformStartVO(overDayList.subList(overDayList.size() - length, overDayList.size()))) {
-					hasFlatformStartVO = true;
-					break;
-				}
-			}
-
-			if (!hasFlatformStartVO) {
-				return false;
-			}
-
-			if ((curSuperDayVO.kdjCorssType == CrossType.GORDON)
-					|| (curSuperDayVO.kdjCorssType == CrossType.NEAR_GORDON)
-					|| (curSuperDayVO.rsvCorssType == CrossType.GORDON)) {
-				if ((curSuperDayVO.avgMA5 > curSuperDayVO.avgMA10) && (curSuperDayVO.avgMA10 > curSuperDayVO.avgMA20)
-						&& (curSuperDayVO.avgMA20 > curSuperDayVO.avgMA30)) {
-					if ((curSuperDayVO.volumeIncreasePercent >= 1.0)) {
-						if ((curSuperDayVO.priceVO.close > pre1SuperDayVO.priceVO.close)
-								&& (pre1SuperDayVO.priceVO.close > pre2SuperDayVO.priceVO.close)
-								&& (pre3SuperDayVO.priceVO.close > pre2SuperDayVO.priceVO.close)) {
-							if (pre1SuperDayVO.priceVO.isKLineRed() && pre2SuperDayVO.priceVO.isKLineGreen()
-									&& pre3SuperDayVO.priceVO.isKLineGreen()) {
-								if ((curSuperDayVO.avgMA5 > curSuperDayVO.avgMA10)
-										&& (pre1SuperDayVO.avgMA5 >= pre1SuperDayVO.avgMA10)// ??
-										&& (pre2SuperDayVO.avgMA5 >= pre2SuperDayVO.avgMA10)// ??
-										&& (pre3SuperDayVO.avgMA5 >= pre3SuperDayVO.avgMA10)) {
-									if ((curSuperDayVO.priceVO.close >= curSuperDayVO.avgMA5)
-											&& (curSuperDayVO.priceVO.close >= curSuperDayVO.avgMA10)
-											&& (pre1SuperDayVO.priceVO.close <= pre1SuperDayVO.avgMA5)
-											&& (pre1SuperDayVO.priceVO.close <= pre1SuperDayVO.avgMA10)) {
-										if ((curSuperDayVO.bollVO.up > curSuperDayVO.priceVO.close)
-												&& (curSuperDayVO.priceVO.close > curSuperDayVO.bollVO.mb)) {
-											return true;
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-			break;
-		}
-		case DuoTou_MA5_Wait_MA10_RongHe_Break_Platform: {
-			if ((curSuperWeekVO.kdjVO.k < curSuperWeekVO.kdjVO.d) || !this.isLatestKDJCrossGordon(overWeekList)) {
-				// over all week KDJ must after Gordon
-				return false;
-			}
-			// is much like XX_Gordon_High_MA5_MA10_BOLL
-			// example: 000062 2015-02-27
-
-			// find the first big red K line that index is at the first half
-			// days
-			boolean hasFlatformStartVO = false;
-			int minPlatformLen = 5;
-			int maxPlatformLen = 30;
-			for (int length = minPlatformLen; length <= maxPlatformLen; length++) {
-				if (findPlatformStartVO(overDayList.subList(overDayList.size() - length, overDayList.size()))) {
-					hasFlatformStartVO = true;
-					break;
-				}
-			}
-
-			if (!hasFlatformStartVO) {
-				return false;
-			}
-
-			if (curSuperDayVO.priceVO.close > pre1SuperDayVO.priceVO.close
-					&& curSuperDayVO.priceVO.close >= curSuperDayVO.avgMA5
-					&& curSuperDayVO.priceVO.close >= curSuperDayVO.avgMA10) {
-				return this.MA5_MA10_Ronghe_XiangShang(curSuperDayVO, pre1SuperDayVO);
-			}
-			return false;
-		}
 		case HengPan_2_Weeks_2_Days_Green_RSV_KDJ_Gordon_RongHe_XiangShang_Break_Platform: {
 			// example: 600021 000875 at 2015-04-13,
 			if ((curSuperWeekVO.kdjVO.k < curSuperWeekVO.kdjVO.d) || !this.isLatestKDJCrossGordon(overWeekList)) {
@@ -978,7 +889,7 @@ public class CombineAnalyseHelper {
 			if (curSuperDayVO.rsvCorssType == CrossType.GORDON || curSuperDayVO.kdjCorssType == CrossType.NEAR_GORDON
 					|| curSuperDayVO.kdjCorssType == CrossType.GORDON) {
 				// pre3 and pre2 green, pre1 and cur red
-				// example: 600021 000875 at 2015-04-13,
+				// example: 600021 000875 at 2015-04-13, 000062 at 2015-02-27
 				if (curSuperDayVO.priceVO.isKLineRed() && pre1SuperDayVO.priceVO.isKLineRed()
 						&& pre2SuperDayVO.priceVO.isKLineGreen() && pre3SuperDayVO.priceVO.isKLineGreen()) {
 					if (curSuperDayVO.volumeIncreasePercent > 1 && pre2SuperDayVO.volumeIncreasePercent < 1) {
@@ -991,7 +902,7 @@ public class CombineAnalyseHelper {
 				}
 				// pre3, pre2 and pre1 green, cur red
 				// example: 002260 2015-04-17
-				else if (curSuperDayVO.priceVO.isKLineRed() && pre1SuperDayVO.priceVO.isKLineGreen()
+				if (curSuperDayVO.priceVO.isKLineRed() && pre1SuperDayVO.priceVO.isKLineGreen()
 						&& pre2SuperDayVO.priceVO.isKLineGreen() && pre3SuperDayVO.priceVO.isKLineGreen()) {
 					if (curSuperDayVO.volumeIncreasePercent > 1 && pre1SuperDayVO.volumeIncreasePercent < 1
 							&& pre2SuperDayVO.volumeIncreasePercent < 1) {

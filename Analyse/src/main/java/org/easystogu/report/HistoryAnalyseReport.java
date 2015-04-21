@@ -201,7 +201,7 @@ public class HistoryAnalyseReport {
 
 		System.out.println("\n===============================" + checkPoint + " (sellPoint:"
 				+ checkPoint.getSellPointType() + ")==========================");
-		for (String stockId : stockIds) {
+		for (String stockId : stockIds) {			
 			List<HistoryReportDetailsVO> historyReportList = this.doAnalyseReport(stockId, checkPoint);
 			for (HistoryReportDetailsVO reportVO : historyReportList) {
 				if (reportVO.sellPriceVO != null) {
