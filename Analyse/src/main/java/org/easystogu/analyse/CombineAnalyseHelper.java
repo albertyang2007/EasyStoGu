@@ -16,7 +16,7 @@ public class CombineAnalyseHelper {
 
 		if ((overWeekList == null) || (overWeekList.size() <= 1)) {
 			return false;
-		} 
+		}
 		StockSuperVO curSuperWeekVO = overWeekList.get(overWeekList.size() - 1);
 		StockSuperVO pre1SuperWeekVO = overWeekList.get(overWeekList.size() - 2);
 
@@ -977,10 +977,24 @@ public class CombineAnalyseHelper {
 			// RSV or KDJ gordon
 			if (curSuperDayVO.rsvCorssType == CrossType.GORDON || curSuperDayVO.kdjCorssType == CrossType.NEAR_GORDON
 					|| curSuperDayVO.kdjCorssType == CrossType.GORDON) {
-				// two days green and volume smaller than smaller
+				// pre3 and pre2 green, pre1 and cur red
+				// example: 600021 000875 at 2015-04-13,
 				if (curSuperDayVO.priceVO.isKLineRed() && pre1SuperDayVO.priceVO.isKLineRed()
 						&& pre2SuperDayVO.priceVO.isKLineGreen() && pre3SuperDayVO.priceVO.isKLineGreen()) {
 					if (curSuperDayVO.volumeIncreasePercent > 1 && pre2SuperDayVO.volumeIncreasePercent < 1) {
+						// close higher ma5 ma10
+						if (curSuperDayVO.priceVO.close >= curSuperDayVO.avgMA5
+								&& curSuperDayVO.priceVO.close >= curSuperDayVO.avgMA10) {
+							return this.MA5_MA10_Ronghe_XiangShang(curSuperDayVO, pre1SuperDayVO);
+						}
+					}
+				}
+				// pre3, pre2 and pre1 green, cur red
+				// example: 002260 2015-04-17
+				else if (curSuperDayVO.priceVO.isKLineRed() && pre1SuperDayVO.priceVO.isKLineGreen()
+						&& pre2SuperDayVO.priceVO.isKLineGreen() && pre3SuperDayVO.priceVO.isKLineGreen()) {
+					if (curSuperDayVO.volumeIncreasePercent > 1 && pre1SuperDayVO.volumeIncreasePercent < 1
+							&& pre2SuperDayVO.volumeIncreasePercent < 1) {
 						// close higher ma5 ma10
 						if (curSuperDayVO.priceVO.close >= curSuperDayVO.avgMA5
 								&& curSuperDayVO.priceVO.close >= curSuperDayVO.avgMA10) {
@@ -1408,7 +1422,7 @@ public class CombineAnalyseHelper {
 
 			// after all condiction is satisfy
 			return true;
-		}		
+		}
 
 		return false;
 	}
