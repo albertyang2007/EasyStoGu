@@ -201,7 +201,7 @@ public class HistoryAnalyseReport {
 
 		System.out.println("\n===============================" + checkPoint + " (sellPoint:"
 				+ checkPoint.getSellPointType() + ")==========================");
-		for (String stockId : stockIds) {				
+		for (String stockId : stockIds) {
 			List<HistoryReportDetailsVO> historyReportList = this.doAnalyseReport(stockId, checkPoint);
 			for (HistoryReportDetailsVO reportVO : historyReportList) {
 				if (reportVO.sellPriceVO != null) {
@@ -217,17 +217,15 @@ public class HistoryAnalyseReport {
 						// System.out.println("Low  earn: " + reportVO);
 					}
 
-					if (reportVO.completed) {
-						// only count the complete ones!! to exclude the not
-						// completed
-						totalCount++;
-						earnPercent[0] += reportVO.earnPercent[0];
-						earnPercent[1] += reportVO.earnPercent[1];
-						earnPercent[2] += reportVO.earnPercent[2];
-						holdDays += reportVO.holdDays;
-					} else {
+					if (!reportVO.completed) {
 						System.out.println("Not Completed: " + reportVO);
 					}
+
+					totalCount++;
+					earnPercent[0] += reportVO.earnPercent[0];
+					earnPercent[1] += reportVO.earnPercent[1];
+					earnPercent[2] += reportVO.earnPercent[2];
+					holdDays += reportVO.holdDays;
 				}
 			}
 		}
