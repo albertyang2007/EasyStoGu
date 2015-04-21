@@ -4,7 +4,7 @@ import org.easystogu.utils.SellPointType;
 
 public enum DailyCombineCheckPoint {
 	MACD_Gordon(SellPointType.MACD_Dead, 99400, 10.6 - 10.6), KDJ_Gordon(SellPointType.KDJ_Dead, 210114, 6.0), ShenXian_Gordon(
-			SellPointType.ShenXian_Dead, 72577, 12.75), MACD_KDJ_Gordon_3_Days_Red_MA_Ronghe_XiangShang(
+			SellPointType.ShenXian_Dead, 72577, 12.75 - 12.75), MACD_KDJ_Gordon_3_Days_Red_MA_Ronghe_XiangShang(
 			SellPointType.KDJ_Dead, 1064, 7.95), MACD_KDJ_Gordon_Pre_3_Days_Green(SellPointType.KDJ_Dead, 218, 7.00), KDJ_Gordon_3_days_Red(
 			SellPointType.KDJ_Dead, 21585, 6.52), KDJ_Gordon_Pre_3_Days_Green(SellPointType.KDJ_Dead, 3025, 6.12), KDJ_Green_Gordon_Pre_2_Days_Red(
 			SellPointType.KDJ_Dead, 861, 6.76), KDJ_Gordon_High_MA5_MA10_BOLL(SellPointType.KDJ_Dead, 9575, 7.25), MACD_KDJ_Gordon_High_MA5_MA10_BOLL_MA_RongHe_XiangShang(
