@@ -243,7 +243,7 @@ public class DailySelectionRunner {
 		}
 
 		runner.reportSelectedStockIds();
-		runner.reportSelectedHistoryReport();
+		//runner.reportSelectedHistoryReport();
 	}
 
 }

@@ -961,8 +961,8 @@ public class CombineAnalyseHelper {
 			// find the first big red K line that index is at the first half
 			// days
 			boolean hasFlatformStartVO = false;
-			int minPlatformLen = 10;
-			int maxPlatformLen = 17;
+			int minPlatformLen = 9;
+			int maxPlatformLen = 30;
 			for (int length = minPlatformLen; length <= maxPlatformLen; length++) {
 				if (findPlatformStartVO(overDayList.subList(overDayList.size() - length, overDayList.size()))) {
 					hasFlatformStartVO = true;
