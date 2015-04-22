@@ -64,6 +64,9 @@ public class StockPriceTableHelper {
     // query the high price between date1(not include) and date2(include)
     protected String QUERY_HIGH_PRICE_BETWEEN_DATE_SQL = "SELECT max(high) AS rtn from (SELECT high from " + tableName
             + " WHERE stockId = :stockId AND date > :startDate AND date <= :endDate) AS myHighQuery";
+    //query the high price date between date1(not include) and date2(include)
+    protected String QUERY_HIGH_PRICE_DATE_BETWEEN_DATE_SQL = "SELECT date AS rtn from " + tableName
+            + " WHERE stockId = :stockId AND high = :high AND date > :startDate AND date <= :endDate";
     protected String DELETE_BY_STOCKID_SQL = "DELETE FROM " + tableName + " WHERE stockId = :stockId";
     protected String DELETE_BY_STOCKID_AND_DATE_SQL = "DELETE FROM " + tableName
             + " WHERE stockId = :stockId AND date = :date";
@@ -425,14 +428,34 @@ public class StockPriceTableHelper {
         return 0.0;
     }
 
+    public String getHighPriceDateBetweenDate(String stockId, double high, String startDate, String endDate) {
+        try {
+
+            MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+            namedParameters.addValue("stockId", stockId);
+            namedParameters.addValue("high", high);
+            namedParameters.addValue("startDate", startDate);
+            namedParameters.addValue("endDate", endDate);
+
+            List<String> dates = this.namedParameterJdbcTemplate.query(QUERY_HIGH_PRICE_DATE_BETWEEN_DATE_SQL,
+                    namedParameters, new StringVOMapper());
+
+            if (dates != null && dates.size() > 0)
+                return dates.get(0);
+        } catch (EmptyResultDataAccessException ee) {
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "9999-99-99";
+    }
+
     public static void main(String[] args) {
         // TODO Auto-generated method stub
         StockPriceTableHelper ins = new StockPriceTableHelper();
         try {
-            System.out.println(ins.getAvgClosePrice("000333", 5));
-            System.out.println(ins.getAvgVolume("000333", 10));
-            System.out.println(ins.getLowPrice("000333", 9));
-            System.out.println(ins.getHighPrice("000333", 9));
+            String date = ins.getHighPriceDateBetweenDate("002336", 17.17, "2015-04-01", "2015-04-22");
+            System.out.println(date);
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

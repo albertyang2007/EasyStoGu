@@ -51,6 +51,8 @@ public class WeekStockPriceTableHelper extends StockPriceTableHelper {
         // query the high price between date1 and date2
         QUERY_HIGH_PRICE_BETWEEN_DATE_SQL = "SELECT max(high) AS rtn from (SELECT high from " + tableName
                 + " WHERE stockId = :stockId AND date >= :startDate AND date <= :endDate) AS myHighQuery";
+        QUERY_HIGH_PRICE_DATE_BETWEEN_DATE_SQL = "SELECT date AS rtn from " + tableName
+                + " WHERE stockId = :stockId AND high = :high AND date > :startDate AND date <= :endDate";
         DELETE_BY_STOCKID_SQL = "DELETE FROM " + tableName + " WHERE stockId = :stockId";
         DELETE_BY_STOCKID_AND_DATE_SQL = "DELETE FROM " + tableName + " WHERE stockId = :stockId AND date = :date";
         COUNT_DAYS_BETWEEN_DATE1_DATE2 = "SELECT COUNT(*) FROM " + tableName

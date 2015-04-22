@@ -194,6 +194,7 @@ public class HistoryAnalyseReport {
 	public void searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint checkPoint) {
 		double[] earnPercent = new double[3];
 		long holdDays = 0;
+		long holdDaysWhenHighPrice = 0;
 		long totalCount = 0;
 		int totalHighCount = 0;
 		int totalLowCount = 0;
@@ -226,6 +227,7 @@ public class HistoryAnalyseReport {
 					earnPercent[1] += reportVO.earnPercent[1];
 					earnPercent[2] += reportVO.earnPercent[2];
 					holdDays += reportVO.holdDays;
+					holdDaysWhenHighPrice += reportVO.holdDaysWhenHighPrice;
 				}
 			}
 		}
@@ -237,7 +239,8 @@ public class HistoryAnalyseReport {
 		System.out.println("Total satisfy: " + totalCount + "\t earnPercent[close]=" + (earnPercent[0] / totalCount)
 				+ "\t earnPercent[high]=" + (earnPercent[1] / totalCount) + "\t earnPercent[low]="
 				+ (earnPercent[2] / totalCount));
-		System.out.println("Avg hold stock days: " + (holdDays / totalCount));
+		System.out.println("Avg hold stock days when sell point: " + (holdDays / totalCount));
+		System.out.println("Avg hold stock days when high price: " + (holdDaysWhenHighPrice / totalCount));
 		System.out.println("Total high earn between (25, 50): " + totalHighCount);
 		System.out.println("Total low  earn between (10, 10): " + totalLowCount);
 

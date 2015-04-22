@@ -913,18 +913,6 @@ public class CombineAnalyseHelper {
                         }
                     }
                 }
-                // pre2 and pre1 green, cur red
-                // example: 000888 2015-04-21
-                if (curSuperDayVO.priceVO.isKLineRed() && pre1SuperDayVO.priceVO.isKLineGreen()
-                        && pre2SuperDayVO.priceVO.isKLineGreen()) {
-                    if (curSuperDayVO.volumeIncreasePercent > 1 && pre1SuperDayVO.volumeIncreasePercent < 1) {
-                        // close higher ma5 ma10
-                        if (curSuperDayVO.priceVO.close >= curSuperDayVO.avgMA5
-                                && curSuperDayVO.priceVO.close >= curSuperDayVO.avgMA10) {
-                            return this.MA5_MA10_Ronghe_XiangShang(curSuperDayVO, pre1SuperDayVO);
-                        }
-                    }
-                }
             }
             break;
         }
