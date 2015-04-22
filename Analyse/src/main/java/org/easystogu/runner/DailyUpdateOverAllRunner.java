@@ -19,13 +19,13 @@ public class DailyUpdateOverAllRunner {
         DailyMacdCountAndSaveDBRunner.main(args);
         DailyKDJCountAndSaveDBRunner.main(args);
         DailyBollCountAndSaveDBRunner.main(args);
-        DailyShenXianCountAndSaveDBRunner.main(args);
+        //DailyShenXianCountAndSaveDBRunner.main(args);
         // week
         DailyWeeklyStockPriceCountAndSaveDBRunner.main(args);
         DailyWeekMacdCountAndSaveDBRunner.main(args);
         DailyWeekKDJCountAndSaveDBRunner.main(args);
         DailyWeekBollCountAndSaveDBRunner.main(args);
-        DailyWeekShenXianCountAndSaveDBRunner.main(args);
+        //DailyWeekShenXianCountAndSaveDBRunner.main(args);
         // analyse
         DailySelectionRunner.main(args);
     }
