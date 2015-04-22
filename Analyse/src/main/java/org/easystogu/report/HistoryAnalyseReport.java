@@ -116,81 +116,6 @@ public class HistoryAnalyseReport {
 		return historyReportList;
 	}
 
-	public void UnitTest1() {
-		// kdj閲戝弶锛屼笁鍊煎潎鍦�0-50涔嬮棿銆俶acd宸茬粡涓烘銆傚叾浠栨潯浠惰窡2涓�牱銆備緥瀛愭牸鍔涚數鍣�0141124
-		List<DailyCombineCheckPoint> checkPointList = new ArrayList<DailyCombineCheckPoint>();
-		checkPointList.add(DailyCombineCheckPoint.KDJ_Gordon_3_days_Red);
-		String stockId = "000651";
-		List<HistoryReportDetailsVO> historyReportList = this.doAnalyseReport(stockId, checkPointList);
-		System.out.println("\nUnit1 history report for " + DailyCombineCheckPoint.KDJ_Gordon_3_days_Red + " size="
-				+ historyReportList.size());
-		for (HistoryReportDetailsVO reportVO : historyReportList) {
-			if (reportVO.sellPriceVO != null) {
-				reportVO.countData();
-				System.out.println(reportVO);
-			}
-		}
-	}
-
-	public void UnitTest2() {
-		// kdj閲戝弶锛屼笁鍊煎湪70-80涔嬮棿锛宮acd涓夊�涓烘锛宬绾垮ぇ闃筹紝鎴愪氦閲忓ぇ浜庡墠涓�棩銆備箣鍓嶄笁鏃ュ潎缁匡紝鏄礂鐩樼粨鏉熴�渚嬪瓙鏍煎姏鍦颁骇20150129
-		List<DailyCombineCheckPoint> checkPointList = new ArrayList<DailyCombineCheckPoint>();
-		checkPointList.add(DailyCombineCheckPoint.KDJ_Gordon_Pre_3_Days_Green);
-		String stockId = "600185";
-		List<HistoryReportDetailsVO> historyReportList = this.doAnalyseReport(stockId, checkPointList);
-		System.out.println("\nUnit2 history report for " + DailyCombineCheckPoint.KDJ_Gordon_Pre_3_Days_Green
-				+ " size=" + historyReportList.size());
-		for (HistoryReportDetailsVO reportVO : historyReportList) {
-			if (reportVO.sellPriceVO != null) {
-				reportVO.countData();
-				System.out.println(reportVO);
-			}
-		}
-	}
-
-	public void UnitTest3() {
-		// kdj锛宮acd鍙岄噾鍙夛紝kdj鍊煎潎鍦�0宸﹀彸銆備笁鏃ュ潎涓虹孩k绾匡紝鎴愪氦閲忎竴鏃ユ瘮涓�棩澶э紝鏀剁洏浠烽�姝ユ彁楂樸�渚嬪瓙缇庡皵闆�0150122
-		List<DailyCombineCheckPoint> checkPointList = new ArrayList<DailyCombineCheckPoint>();
-		checkPointList.add(DailyCombineCheckPoint.MACD_KDJ_Gordon_3_Days_Red_MA_Ronghe_XiangShang);
-		String stockId = "600107";
-		List<HistoryReportDetailsVO> historyReportList = this.doAnalyseReport(stockId, checkPointList);
-		System.out.println("\nUnit3 history report for "
-				+ DailyCombineCheckPoint.MACD_KDJ_Gordon_3_Days_Red_MA_Ronghe_XiangShang + " size="
-				+ historyReportList.size());
-		for (HistoryReportDetailsVO reportVO : historyReportList) {
-			if (reportVO.sellPriceVO != null) {
-				reportVO.countData();
-				System.out.println(reportVO);
-			}
-		}
-	}
-
-	public void UnitTest4() {
-		// kdj閲戝弶锛屾垚浜ら噺涓�棩姣斾竴鏃ュぇ锛岄噾鍙夊墠涓ゆ棩绾紝褰撴棩缁匡紝浣嗘槸鏀剁洏浠峰苟涓嶄綆浜庡墠涓�棩锛岃鏄庨噾鍙夊綋鏃ユ槸娲楃洏缁х画涓婅
-		// .
-		// 渚嬪瓙鐭冲熀淇℃伅20150204
-		List<DailyCombineCheckPoint> checkPointList = new ArrayList<DailyCombineCheckPoint>();
-		checkPointList.add(DailyCombineCheckPoint.KDJ_Green_Gordon_Pre_2_Days_Red);
-		String stockId = "002153";
-		List<HistoryReportDetailsVO> historyReportList = this.doAnalyseReport(stockId, checkPointList);
-		System.out.println("\nUnit4 history report for " + DailyCombineCheckPoint.KDJ_Green_Gordon_Pre_2_Days_Red
-				+ " size=" + historyReportList.size());
-		for (HistoryReportDetailsVO reportVO : historyReportList) {
-			if (reportVO.sellPriceVO != null) {
-				reportVO.countData();
-				System.out.println(reportVO);
-			}
-		}
-	}
-
-	public void UnitTestForSpecifyStockId() {
-		// make sure UnitTest1~4 are correct, can select the stockId
-		this.UnitTest1();
-		this.UnitTest2();
-		this.UnitTest3();
-		this.UnitTest4();
-	}
-
 	public void searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint checkPoint) {
 		double[] earnPercent = new double[3];
 		long holdDays = 0;
@@ -202,7 +127,7 @@ public class HistoryAnalyseReport {
 
 		System.out.println("\n===============================" + checkPoint + " (sellPoint:"
 				+ checkPoint.getSellPointType() + ")==========================");
-		for (String stockId : stockIds) {			
+		for (String stockId : stockIds) {
 			List<HistoryReportDetailsVO> historyReportList = this.doAnalyseReport(stockId, checkPoint);
 			for (HistoryReportDetailsVO reportVO : historyReportList) {
 				if (reportVO.sellPriceVO != null) {
@@ -219,7 +144,7 @@ public class HistoryAnalyseReport {
 					}
 
 					if (!reportVO.completed) {
-						System.out.println("Not Completed: " + reportVO);
+						//System.out.println("Not Completed: " + reportVO);
 					}
 
 					totalCount++;
@@ -265,13 +190,14 @@ public class HistoryAnalyseReport {
 		HistoryAnalyseReport reporter = new HistoryAnalyseReport();
 
 		for (DailyCombineCheckPoint checkPoint : DailyCombineCheckPoint.values()) {
-			// if(checkPoint.getEarnPercent()>=7.5)
-			// System.out.println(checkPoint);
-			// reporter.emptyTableByCheckPoint(checkPoint.toString());
-			// reporter.searchAllStockIdAccordingToCheckPoint(checkPoint);
+			if (checkPoint.getEarnPercent() <= 0.0) {
+				continue;
+			}
+			reporter.emptyTableByCheckPoint(checkPoint.toString());
+			reporter.searchAllStockIdAccordingToCheckPoint(checkPoint);
 		}
 
-		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.HengPan_2_Weeks_2_Days_Green_RSV_KDJ_Gordon_RongHe_XiangShang_Break_Platform);
+		// reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.HengPan_2_Weeks_2_Days_Green_RSV_KDJ_Gordon_RongHe_XiangShang_Break_Platform);
 		// reporter.UnitTestForSpecifyStockId();
 	}
 }

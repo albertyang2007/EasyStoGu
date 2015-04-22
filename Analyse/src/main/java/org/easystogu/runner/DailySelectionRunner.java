@@ -147,7 +147,6 @@ public class DailySelectionRunner {
                     recommandStr.append(superVO.priceVO.stockId + " select :" + checkPointList.toString() + "\n");
                 }
             }
-            System.out.println(superVO.priceVO.stockId + " select :" + checkPointList.toString());
         }
 
         System.out.println("\nRecommand to select below checkPoint that earnPercent >=" + minEarnPercent);
