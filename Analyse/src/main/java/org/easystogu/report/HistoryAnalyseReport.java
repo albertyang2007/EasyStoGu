@@ -43,6 +43,9 @@ public class HistoryAnalyseReport {
 		List<StockSuperVO> overDayList = stockOverAllHelper.getAllStockSuperVO(stockId);
 		List<StockSuperVO> overWeekList = weekStockOverAllHelper.getAllStockSuperVO(stockId);
 
+		// fliter the history data, set the startDate and endDate
+		//overDayList = this.getSubDayVOList(overDayList, "2014-04-01", "9999-99-99");
+
 		if (overDayList.size() == 0) {
 			return historyReportList;
 		}
@@ -63,17 +66,24 @@ public class HistoryAnalyseReport {
 		IndCrossCheckingHelper.macdCross(overWeekList);
 		IndCrossCheckingHelper.kdjCross(overWeekList);
 		IndCrossCheckingHelper.rsvCross(overWeekList);
+		PriceCheckingHelper.setLastClosePrice(overWeekList);
 
 		HistoryReportDetailsVO reportVO = null;
 		for (int index = 120; index < overDayList.size() - 1; index++) {
 			StockSuperVO superVO = overDayList.get(index);
+
 			// buy point
-			if (reportVO == null
-					&& combineAanalyserHelper.isConditionSatisfy(checkPoint,
-							overDayList.subList(index - 120, index + 1), overWeekList)) {
-				reportVO = new HistoryReportDetailsVO();
-				reportVO.setBuyPriceVO(superVO.priceVO);
-				continue;
+			if (reportVO == null) {
+				String startDate = overDayList.get(index - 120).priceVO.date;
+				String endDate = overDayList.get(index + 1).priceVO.date;
+				// include the startDate, not include the endDate
+				List<StockSuperVO> subOverWeekList = this.getSubWeekVOList(overWeekList, startDate, endDate);
+				if (combineAanalyserHelper.isConditionSatisfy(checkPoint, overDayList.subList(index - 120, index + 1),
+						subOverWeekList)) {
+					reportVO = new HistoryReportDetailsVO();
+					reportVO.setBuyPriceVO(superVO.priceVO);
+					continue;
+				}
 			}
 
 			// sell point (MACD dead or KDJ dead point or next day)
@@ -128,6 +138,10 @@ public class HistoryAnalyseReport {
 		System.out.println("\n===============================" + checkPoint + " (sellPoint:"
 				+ checkPoint.getSellPointType() + ")==========================");
 		for (String stockId : stockIds) {
+
+			 //if (!stockId.equals("002040"))
+			 //continue;
+
 			List<HistoryReportDetailsVO> historyReportList = this.doAnalyseReport(stockId, checkPoint);
 			for (HistoryReportDetailsVO reportVO : historyReportList) {
 				if (reportVO.sellPriceVO != null) {
@@ -144,7 +158,9 @@ public class HistoryAnalyseReport {
 					}
 
 					if (!reportVO.completed) {
-						//System.out.println("Not Completed: " + reportVO);
+						System.out.println("Not Completed: " + reportVO);
+					}else{
+						//System.out.println("Completed: " + reportVO);
 					}
 
 					totalCount++;
@@ -182,6 +198,32 @@ public class HistoryAnalyseReport {
 
 	}
 
+	public List<StockSuperVO> getSubWeekVOList(List<StockSuperVO> overWeekList, String startDate, String endDate) {
+		List<StockSuperVO> subList = new ArrayList<StockSuperVO>();
+
+		for (StockSuperVO vo : overWeekList) {
+			// include the startDate, not include the endDate
+			if (vo.priceVO.date.compareTo(startDate) >= 0 && vo.priceVO.date.compareTo(endDate) < 0) {
+				subList.add(vo);
+			}
+		}
+
+		return subList;
+	}
+
+	public List<StockSuperVO> getSubDayVOList(List<StockSuperVO> overDayList, String startDate, String endDate) {
+		List<StockSuperVO> subList = new ArrayList<StockSuperVO>();
+
+		for (StockSuperVO vo : overDayList) {
+			// include the startDate, not include the endDate
+			if (vo.priceVO.date.compareTo(startDate) >= 0 && vo.priceVO.date.compareTo(endDate) < 0) {
+				subList.add(vo);
+			}
+		}
+
+		return subList;
+	}
+
 	public void emptyTableByCheckPoint(String checkPoint) {
 		this.historyReportTableHelper.deleteByCheckPoint(checkPoint);
 	}
@@ -193,11 +235,12 @@ public class HistoryAnalyseReport {
 			if (checkPoint.getEarnPercent() <= 0.0) {
 				continue;
 			}
-			reporter.emptyTableByCheckPoint(checkPoint.toString());
-			reporter.searchAllStockIdAccordingToCheckPoint(checkPoint);
+			// reporter.emptyTableByCheckPoint(checkPoint.toString());
+			// reporter.searchAllStockIdAccordingToCheckPoint(checkPoint);
 		}
 
-		// reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.HengPan_2_Weeks_2_Days_Green_RSV_KDJ_Gordon_RongHe_XiangShang_Break_Platform);
+		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.HengPan_3_Weeks_MA5_MA10_MA20_MA30_RongHe_Break_Platform);
+		//reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.HengPan_2_Weeks_2_Days_Green_RSV_KDJ_Gordon_RongHe_XiangShang_Break_Platform);
 		// reporter.UnitTestForSpecifyStockId();
 	}
 }

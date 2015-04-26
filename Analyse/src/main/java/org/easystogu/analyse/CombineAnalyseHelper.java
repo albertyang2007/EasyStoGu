@@ -19,6 +19,10 @@ public class CombineAnalyseHelper {
 		}
 		StockSuperVO curSuperWeekVO = overWeekList.get(overWeekList.size() - 1);
 		StockSuperVO pre1SuperWeekVO = overWeekList.get(overWeekList.size() - 2);
+		StockSuperVO pre2SuperWeekVO = overWeekList.get(overWeekList.size() - 3);
+		StockSuperVO pre3SuperWeekVO = overWeekList.get(overWeekList.size() - 4);
+		StockSuperVO pre4SuperWeekVO = overWeekList.get(overWeekList.size() - 5);
+		StockSuperVO pre5SuperWeekVO = overWeekList.get(overWeekList.size() - 6);
 
 		int dayLength = overDayList.size();
 		StockSuperVO curSuperDayVO = overDayList.get(overDayList.size() - 1);
@@ -60,33 +64,6 @@ public class CombineAnalyseHelper {
 						if (pre1SuperDayVO.priceVO.isKLineRed() && (pre1SuperDayVO.volumeIncreasePercent >= 1.0)
 								&& pre2SuperDayVO.priceVO.isKLineRed()) {
 							return MA5_MA10_MA20_Ronghe_XiangShang(curSuperDayVO, pre1SuperDayVO);
-						}
-					}
-				}
-			}
-			break;
-
-		case MACD_KDJ_Gordon_High_MA5_MA10_BOLL_MA_RongHe_XiangShang:
-
-			if ((curSuperWeekVO.kdjVO.k < curSuperWeekVO.kdjVO.d) || !this.isLatestKDJCrossGordon(overWeekList)) {
-				// over all week KDJ must after Gordon
-				return false;
-			}
-			// MACD & KDJ Red Gordon, close > MA5 & MA10; Previous close < MA5 &
-			// MA10; Close between UP and MB
-			if (overDayList.size() >= 20) {
-				if ((curSuperDayVO.kdjCorssType == CrossType.GORDON)
-						&& (curSuperDayVO.macdCorssType == CrossType.GORDON)
-						&& (curSuperDayVO.volumeIncreasePercent >= 1.0) && curSuperDayVO.priceVO.isKLineRed()) {
-					if (pre1SuperDayVO.priceVO.isKLineRed()) {
-						if ((curSuperDayVO.priceVO.close >= curSuperDayVO.avgMA5)
-								&& (curSuperDayVO.priceVO.close >= curSuperDayVO.avgMA10)
-								&& (pre1SuperDayVO.priceVO.close < pre1SuperDayVO.avgMA5)
-								&& (pre1SuperDayVO.priceVO.close < pre1SuperDayVO.avgMA10)) {
-							if ((curSuperDayVO.bollVO.up > curSuperDayVO.priceVO.close)
-									&& (curSuperDayVO.priceVO.close > curSuperDayVO.bollVO.mb)) {
-								return this.MA5_MA10_MA20_Ronghe_XiangShang(curSuperDayVO, pre1SuperDayVO);
-							}
 						}
 					}
 				}
@@ -424,6 +401,42 @@ public class CombineAnalyseHelper {
 			break;
 		}
 
+		case HengPan_3_Weeks_MA5_MA10_MA20_MA30_RongHe_Break_Platform: {
+			// example: 300216 @ 20150421; 002040 @ 20150421
+
+			// week platform
+			boolean hasWeekFlatformStartVO = false;
+			int minPlatformLen = 3;
+			int maxPlatformLen = 10;
+			for (int length = minPlatformLen; length <= maxPlatformLen; length++) {
+				if (findLongPlatformBasedOnWeekDate(overWeekList.subList(overWeekList.size() - length,
+						overWeekList.size()))) {
+					hasWeekFlatformStartVO = true;
+					break;
+				}
+			}
+
+			if (!hasWeekFlatformStartVO) {
+				return false;
+			}
+
+			// RSV or KDJ gordon
+			if (curSuperDayVO.rsvCorssType == CrossType.GORDON || curSuperDayVO.kdjCorssType == CrossType.NEAR_GORDON
+					|| curSuperDayVO.kdjCorssType == CrossType.GORDON) {
+				if (curSuperDayVO.priceVO.isKLineRed()) {
+					// check MA5, MA10,MA20,MA30 RongHe
+					if (MA5_MA10_MA20_MA30_Ronghe(pre1SuperDayVO)) {
+						if (MA5_MA10_MA20_MA30_Ronghe(pre2SuperDayVO)) {
+							if (MA5_MA10_MA20_MA30_Ronghe(curSuperDayVO)) {
+								return true;
+							}
+						}
+					}
+				}
+			}
+			break;
+		}
+
 		case HengPan_2_Weeks_2_Days_Green_RSV_KDJ_Gordon_RongHe_XiangShang_Break_Platform: {
 			// example: 600021 000875 at 2015-04-13,
 			if ((curSuperWeekVO.kdjVO.k < curSuperWeekVO.kdjVO.d) || !this.isLatestKDJCrossGordon(overWeekList)) {
@@ -458,7 +471,12 @@ public class CombineAnalyseHelper {
 						// close higher ma5 ma10
 						if (curSuperDayVO.priceVO.close >= curSuperDayVO.avgMA5
 								&& curSuperDayVO.priceVO.close >= curSuperDayVO.avgMA10) {
-							return this.MA5_MA10_Ronghe_XiangShang(curSuperDayVO, pre1SuperDayVO);
+							// pre2, pre1, cur rongHe; cur xiangShang
+							if (this.MA5_MA10_Ronghe(pre1SuperDayVO) && this.MA5_MA10_Ronghe(pre2SuperDayVO)) {
+								if (this.MA5_MA10_Ronghe_XiangShang(curSuperDayVO, pre1SuperDayVO)) {
+									return true;
+								}
+							}
 						}
 					}
 				}
@@ -471,7 +489,12 @@ public class CombineAnalyseHelper {
 						// close higher ma5 ma10
 						if (curSuperDayVO.priceVO.close >= curSuperDayVO.avgMA5
 								&& curSuperDayVO.priceVO.close >= curSuperDayVO.avgMA10) {
-							return this.MA5_MA10_Ronghe_XiangShang(curSuperDayVO, pre1SuperDayVO);
+							// pre2, pre1, cur rongHe; cur xiangShang
+							if (this.MA5_MA10_Ronghe(pre1SuperDayVO) && this.MA5_MA10_Ronghe(pre2SuperDayVO)) {
+								if (this.MA5_MA10_Ronghe_XiangShang(curSuperDayVO, pre1SuperDayVO)) {
+									return true;
+								}
+							}
 						}
 					}
 				}
@@ -674,6 +697,106 @@ public class CombineAnalyseHelper {
 		return false;
 	}
 
+	// to check if the list is a platform
+	public boolean findLongPlatformBasedOnWeekDate(List<StockSuperVO> overWeekList) {
+		// example: 300216 @ 20150421; 002040 @ 20150421
+		// at least 5 weeks data
+		// the first week is a big red K line,
+		// J is much higher (>80), MACD bigger 0;
+		// then ~5 week hengPan; KDJ dead find;
+		// the continue high and low is between the first K line
+		StockSuperVO startVO = overWeekList.get(0);
+		StockSuperVO endVO = overWeekList.get(overWeekList.size() - 1);
+
+		String Sdate = startVO.priceVO.date;
+		String Edate = endVO.priceVO.date;
+		// System.out.println("debug 1 " + Sdate + " ~ " + Edate + " " +
+		// startVO.kdjVO);
+
+		if (startVO.kdjVO.j < 80)
+			return false;
+
+		// System.out.println("debug 2 " + Sdate + " ~ " + Edate);
+
+		if (startVO.macdVO.macd < 0)
+			return false;
+
+		// System.out.println("debug 3 " + Sdate + " ~ " + Edate);
+
+		double startPriceIncrease = ((startVO.priceVO.close - startVO.priceVO.lastClose) * 100.0)
+				/ startVO.priceVO.lastClose;
+
+		double avgClose = 0;
+		boolean findKDJDead = false;
+		double maxKDJ_K = 0;
+		double minKDJ_K = 100;
+
+		if (startPriceIncrease < 12) {
+			// System.out.println("debug 4 " + Sdate + " ~ " + Edate);
+			return false;
+		}
+
+		for (int i = 1; i < overWeekList.size(); i++) {
+			StockSuperVO vo = overWeekList.get(i);
+			double priceIncrease = ((vo.priceVO.close - vo.priceVO.lastClose) * 100.0) / vo.priceVO.lastClose;
+
+			// if next week find one priceIncrease is bigger then startVO,
+			// then not the platform
+			if (priceIncrease > startPriceIncrease) {
+				// System.out.println("debug 4 " + Sdate + " ~ " + Edate);
+				return false;
+			}
+
+			// if next week find one high is greater since platform
+			// startVO.hight, then not the platform
+			if (vo.priceVO.high > startVO.priceVO.high) {
+				// System.out.println("debug 5 " + Sdate + " ~ " + Edate);
+				return false;
+			}
+
+			// if next week find one low is less than the platform
+			// startVO.open or less then ma20
+			if (vo.priceVO.low < startVO.priceVO.low) {
+				// System.out.println("debug 6 " + Sdate + " ~ " + Edate);
+				return false;
+			}
+
+			if (vo.kdjCorssType == CrossType.DEAD) {
+				// System.out.println("debug 7 " + Sdate + " ~ " + Edate);
+				findKDJDead = true;
+			}
+
+			avgClose += vo.priceVO.close;
+
+			if (maxKDJ_K < vo.kdjVO.k)
+				maxKDJ_K = vo.kdjVO.k;
+			if (minKDJ_K > vo.kdjVO.k)
+				minKDJ_K = vo.kdjVO.k;
+		}
+
+		// if no found KDJ dead, not the long platform
+		if (!findKDJDead) {
+			// System.out.println("debug 8 " + Sdate + " ~ " + Edate);
+			return false;
+		}
+
+		// max KDJ_K and min KDJ_K must between 15%
+		if ((maxKDJ_K - minKDJ_K) / minKDJ_K * 100 >= 15) {
+			// System.out.println("debug 9 " + Sdate + " ~ " + Edate);
+			return false;
+		}
+
+		avgClose = avgClose / (overWeekList.size() - 1);
+		// next avg close is greater than the middle platform startVO.open +
+		// close / 2
+		if (avgClose < ((startVO.priceVO.open + startVO.priceVO.close) / 2)) {
+			// System.out.println("debug 10 " + Sdate + " ~ " + Edate);
+			return false;
+		}
+		// System.out.println("debug 11 " + Sdate + " ~ " + Edate);
+		return true;
+	}
+
 	private boolean isLatestKDJCrossGordon(List<StockSuperVO> overList) {
 		for (int i = overList.size() - 1; i >= 0; i--) {
 			StockSuperVO svo = overList.get(i);
@@ -698,7 +821,7 @@ public class CombineAnalyseHelper {
 		return false;
 	}
 
-	private boolean MA5_MA10_MA20_MA30_Ronghe_XiangShang(StockSuperVO curSuperDayVO, StockSuperVO pre1SuperDayVO) {
+	private boolean MA5_MA10_MA20_MA30_Ronghe(StockSuperVO curSuperDayVO) {
 		// rongHe and xiangShang
 		double min = this.findMinValue(curSuperDayVO.avgMA5, curSuperDayVO.avgMA10, curSuperDayVO.avgMA20,
 				curSuperDayVO.avgMA30);
@@ -707,13 +830,24 @@ public class CombineAnalyseHelper {
 		double dif = Math.abs(max - min);
 		// MA rongHe
 		if (((dif / min) * 100) < 4.0) {
-			// xiangShang
-			if ((curSuperDayVO.avgMA5 >= pre1SuperDayVO.avgMA5) && (curSuperDayVO.avgMA10 >= pre1SuperDayVO.avgMA10)
-					&& (curSuperDayVO.avgMA20 >= pre1SuperDayVO.avgMA20)
-					&& (curSuperDayVO.avgMA30 >= pre1SuperDayVO.avgMA30)) {
-				return true;
-			}
+			return true;
 		}
+		return false;
+	}
+
+	private boolean MA5_MA10_MA20_MA30_Ronghe_XiangShang(StockSuperVO curSuperDayVO, StockSuperVO pre1SuperDayVO) {
+
+		// rongHe
+		if (!MA5_MA10_MA20_MA30_Ronghe(curSuperDayVO))
+			return false;
+
+		// xiangShang
+		if ((curSuperDayVO.avgMA5 >= pre1SuperDayVO.avgMA5) && (curSuperDayVO.avgMA10 >= pre1SuperDayVO.avgMA10)
+				&& (curSuperDayVO.avgMA20 >= pre1SuperDayVO.avgMA20)
+				&& (curSuperDayVO.avgMA30 >= pre1SuperDayVO.avgMA30)) {
+			return true;
+		}
+
 		return false;
 	}
 
@@ -733,12 +867,23 @@ public class CombineAnalyseHelper {
 		return false;
 	}
 
-	private boolean MA5_MA10_Ronghe_XiangShang(StockSuperVO curSuperDayVO, StockSuperVO pre1SuperDayVO) {
+	private boolean MA5_MA10_Ronghe(StockSuperVO curSuperDayVO) {
 		// rongHe and xiangShang
 		double dif = Math.abs(curSuperDayVO.avgMA5 - curSuperDayVO.avgMA10);
 		double min = Math.min(curSuperDayVO.avgMA5, curSuperDayVO.avgMA10);
 		// MA rongHe
 		if (((dif / min) * 100) < 2.0) {
+			return true;
+		}
+		return false;
+	}
+
+	private boolean MA5_MA10_Ronghe_XiangShang(StockSuperVO curSuperDayVO, StockSuperVO pre1SuperDayVO) {
+		// rongHe and xiangShang
+		double dif = Math.abs(curSuperDayVO.avgMA5 - curSuperDayVO.avgMA10);
+		double min = Math.min(curSuperDayVO.avgMA5, curSuperDayVO.avgMA10);
+		// MA rongHe
+		if (this.MA5_MA10_Ronghe(curSuperDayVO)) {
 			// xiangShang
 			if ((curSuperDayVO.avgMA5 >= pre1SuperDayVO.avgMA5) && (curSuperDayVO.avgMA10 >= pre1SuperDayVO.avgMA10)
 					&& (curSuperDayVO.avgMA20 >= pre1SuperDayVO.avgMA20)

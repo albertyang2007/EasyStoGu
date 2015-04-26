@@ -1,124 +1,110 @@
 ===============================MACD_KDJ_Gordon_3_Days_Red_MA_Ronghe_XiangShang (sellPoint:KDJ_Dead)==========================
-Total satisfy: 955	 earnPercent[close]=1.2340485158435137	 earnPercent[high]=8.063185998533177	 earnPercent[low]=-3.625076192858623
+Total satisfy: 1009	 earnPercent[close]=1.6192889845466185	 earnPercent[high]=8.364408630000842	 earnPercent[low]=-3.542780854761721
 Avg hold stock days when sell point: 7
 Avg hold stock days when high price: 5
-Total high earn between (25, 50): 7
+Total high earn between (25, 50): 8
 Total low  earn between (10, 10): 18
 
 ===============================MACD_KDJ_Gordon_High_MA5_MA10_BOLL_MA_RongHe_XiangShang (sellPoint:KDJ_Dead)==========================
-Total satisfy: 375	 earnPercent[close]=0.7485885899171165	 earnPercent[high]=7.306284040670927	 earnPercent[low]=-3.3796462319794296
+Total satisfy: 341	 earnPercent[close]=0.8657252027784293	 earnPercent[high]=7.324671586287748	 earnPercent[low]=-3.236410755165825
 Avg hold stock days when sell point: 7
 Avg hold stock days when high price: 5
 Total high earn between (25, 50): 0
 Total low  earn between (10, 10): 2
 
 ===============================MACD_KDJ_Gordon_3_Days_Red_High_MA5_MA10_BOLL (sellPoint:KDJ_Dead)==========================
-Total satisfy: 84	 earnPercent[close]=3.4771050368249443	 earnPercent[high]=10.769113937049962	 earnPercent[low]=-3.865442079008228
-Avg hold stock days when sell point: 8
-Avg hold stock days when high price: 6
-Total high earn between (25, 50): 2
-Total low  earn between (10, 10): 1
-
-===============================KDJ_Green_Gordon_Pre_2_Days_Red_High_MA5_MA10_BOLL (sellPoint:KDJ_Dead)==========================
-Total satisfy: 1	 earnPercent[close]=0.0	 earnPercent[high]=0.0	 earnPercent[low]=0.0
-Avg hold stock days when sell point: 0
-Avg hold stock days when high price: 0
+Total satisfy: 47	 earnPercent[close]=2.761050557582074	 earnPercent[high]=9.079968113024695	 earnPercent[low]=-3.5237671338504146
+Avg hold stock days when sell point: 7
+Avg hold stock days when high price: 5
 Total high earn between (25, 50): 0
 Total low  earn between (10, 10): 0
 
 ===============================Phase2_Previous_Under_Zero_MACD_Gordon_Now_MACD_Dead_RSV_KDJ_Gordon (sellPoint:KDJ_Dead)==========================
-Total satisfy: 352	 earnPercent[close]=0.9271174101613642	 earnPercent[high]=8.414662014652373	 earnPercent[low]=-4.085264830023167
+Total satisfy: 515	 earnPercent[close]=1.0203417537736788	 earnPercent[high]=8.359582013990307	 earnPercent[low]=-3.927465000090122
 Avg hold stock days when sell point: 8
 Avg hold stock days when high price: 5
 Total high earn between (25, 50): 5
-Total low  earn between (10, 10): 12
-
-===============================Phase3_Previous_Under_Zero_MACD_Gordon_Now_MACD_Gordon_Volume_Bigger (sellPoint:KDJ_Dead)==========================
-Total satisfy: 1330	 earnPercent[close]=-0.3740078587838418	 earnPercent[high]=5.726372982870611	 earnPercent[low]=-4.045317947896223
-Avg hold stock days when sell point: 5
-Avg hold stock days when high price: 4
-Total high earn between (25, 50): 3
-Total low  earn between (10, 10): 23
+Total low  earn between (10, 10): 16
 
 ===============================DuoTou_Pre_2_Days_Green_Red_KDJ_Zero_MA30_Support (sellPoint:KDJ_Dead)==========================
-Total satisfy: 1056	 earnPercent[close]=0.39234111572741054	 earnPercent[high]=8.068075161190391	 earnPercent[low]=-4.642158510605961
+Total satisfy: 1166	 earnPercent[close]=0.9951420520833045	 earnPercent[high]=8.398323878830487	 earnPercent[low]=-4.430962313891357
 Avg hold stock days when sell point: 10
 Avg hold stock days when high price: 6
-Total high earn between (25, 50): 3
-Total low  earn between (10, 10): 52
+Total high earn between (25, 50): 6
+Total low  earn between (10, 10): 61
 
 ===============================DuoTou_Pre_2_Days_Green_Red_KDJ_Zero_MA30_Support_MA_RongHe_XiangShang (sellPoint:KDJ_Dead)==========================
-Total satisfy: 64	 earnPercent[close]=2.6591237763908233	 earnPercent[high]=9.656229733937396	 earnPercent[low]=-3.0685444245489073
-Avg hold stock days when sell point: 9
+Total satisfy: 75	 earnPercent[close]=2.089206448668409	 earnPercent[high]=9.23734357530933	 earnPercent[low]=-3.170374941289756
+Avg hold stock days when sell point: 8
 Avg hold stock days when high price: 6
 Total high earn between (25, 50): 0
-Total low  earn between (10, 10): 0
+Total low  earn between (10, 10): 2
 
 ===============================DuoTou_Pre_2_Days_Green_Red_KDJ_Zero_MA20_Support_MA_RongHe_XiangShang (sellPoint:KDJ_Dead)==========================
-Total satisfy: 128	 earnPercent[close]=1.2932746327718692	 earnPercent[high]=8.693240809513934	 earnPercent[low]=-3.760347739699278
+Total satisfy: 171	 earnPercent[close]=1.2104026004718045	 earnPercent[high]=8.707377975920991	 earnPercent[low]=-3.8209850201831883
 Avg hold stock days when sell point: 8
 Avg hold stock days when high price: 5
-Total high earn between (25, 50): 1
-Total low  earn between (10, 10): 3
+Total high earn between (25, 50): 2
+Total low  earn between (10, 10): 7
 
 ===============================DuoTou_HuiTiao_Boll_Lower_Support_MA30_Support_MA_RongHe_XiangShang (sellPoint:KDJ_Dead)==========================
-Total satisfy: 105	 earnPercent[close]=-0.9172119706264892	 earnPercent[high]=9.035049034651736	 earnPercent[low]=-5.967031360830018
+Total satisfy: 113	 earnPercent[close]=-0.5258038533756124	 earnPercent[high]=8.96063920171869	 earnPercent[low]=-5.736168735607007
 Avg hold stock days when sell point: 6
 Avg hold stock days when high price: 4
 Total high earn between (25, 50): 1
 Total low  earn between (10, 10): 6
 
 ===============================DuoTou_HuiTiao_Boll_MB_Support_MA20_Support_MA_RongHe_XiangShang (sellPoint:KDJ_Dead)==========================
-Total satisfy: 2431	 earnPercent[close]=-0.41173900690136306	 earnPercent[high]=8.284428443137537	 earnPercent[low]=-5.431691367634883
+Total satisfy: 2562	 earnPercent[close]=-0.32152718398643726	 earnPercent[high]=8.14784212367753	 earnPercent[low]=-5.348641423692922
 Avg hold stock days when sell point: 6
 Avg hold stock days when high price: 4
 Total high earn between (25, 50): 23
-Total low  earn between (10, 10): 137
+Total low  earn between (10, 10): 139
+
+===============================HengPan_5_Weeks_MA5_MA10_MA20_MA30_RongHe_Break_Platform (sellPoint:KDJ_Dead)==========================
+Total satisfy: 121	 earnPercent[close]=1.5362053082150848	 earnPercent[high]=9.335421576501103	 earnPercent[low]=-3.899181929422889
+Avg hold stock days when sell point: 7
+Avg hold stock days when high price: 5
+Total high earn between (25, 50): 1
+Total low  earn between (10, 10): 5
 
 ===============================HengPan_2_Weeks_2_Days_Green_RSV_KDJ_Gordon_RongHe_XiangShang_Break_Platform (sellPoint:KDJ_Dead)==========================
-Total satisfy: 500	 earnPercent[close]=0.8239783757307659	 earnPercent[high]=7.823410357913448	 earnPercent[low]=-4.514760860184834
+Total satisfy: 559	 earnPercent[close]=0.7242122419187264	 earnPercent[high]=8.076080144193282	 earnPercent[low]=-4.425987129659844
 Avg hold stock days when sell point: 7
 Avg hold stock days when high price: 4
-Total high earn between (25, 50): 3
-Total low  earn between (10, 10): 22
+Total high earn between (25, 50): 4
+Total low  earn between (10, 10): 27
 
 ===============================Huge_Volume_Increase_3X3_Price_Higher_All_MA120 (sellPoint:KDJ_Dead)==========================
-Total satisfy: 143	 earnPercent[close]=-0.44478463554902153	 earnPercent[high]=8.044331754417193	 earnPercent[low]=-6.247770745570872
+Total satisfy: 146	 earnPercent[close]=-0.543193016531201	 earnPercent[high]=7.709608998517297	 earnPercent[low]=-6.171966866682288
 Avg hold stock days when sell point: 5
 Avg hold stock days when high price: 3
 Total high earn between (25, 50): 2
-Total low  earn between (10, 10): 15
-
-===============================DuoTou_HuiTiao_MA20_Support_KDJ_0_YangBaoYin (sellPoint:KDJ_Dead)==========================
-Total satisfy: 5	 earnPercent[close]=-8.25051746958645	 earnPercent[high]=7.298609926863373	 earnPercent[low]=-14.872890392830621
-Avg hold stock days when sell point: 13
-Avg hold stock days when high price: 6
-Total high earn between (25, 50): 0
-Total low  earn between (10, 10): 3
+Total low  earn between (10, 10): 14
 
 ===============================MACD_Gordon_Volume_And_Price_Highest_In_MA90 (sellPoint:KDJ_Dead)==========================
-Total satisfy: 1587	 earnPercent[close]=0.7474449157382788	 earnPercent[high]=8.586867727387755	 earnPercent[low]=-4.590784163277569
+Total satisfy: 1617	 earnPercent[close]=0.8383022751812224	 earnPercent[high]=8.644248333595815	 earnPercent[low]=-4.546752735001539
 Avg hold stock days when sell point: 6
 Avg hold stock days when high price: 4
-Total high earn between (25, 50): 16
-Total low  earn between (10, 10): 59
+Total high earn between (25, 50): 15
+Total low  earn between (10, 10): 56
 
 ===============================Huge_Volume_Increase_Price_Higher_MA120_Previous_Lower_MA120 (sellPoint:KDJ_Dead)==========================
-Total satisfy: 217	 earnPercent[close]=1.0190448261727543	 earnPercent[high]=8.847349304987974	 earnPercent[low]=-3.7143714311899645
+Total satisfy: 211	 earnPercent[close]=0.6761457422670326	 earnPercent[high]=8.313253429789853	 earnPercent[low]=-3.5866859404003995
 Avg hold stock days when sell point: 6
 Avg hold stock days when high price: 4
-Total high earn between (25, 50): 3
+Total high earn between (25, 50): 2
 Total low  earn between (10, 10): 5
 
 ===============================LaoYaZhui_TuPo_MA60_Day_Under_Zero_MACD_Gordon_KDJ_Gordon_Week_KDJ_Gordon (sellPoint:KDJ_Dead)==========================
-Total satisfy: 365	 earnPercent[close]=0.22473314167328096	 earnPercent[high]=5.851105827506628	 earnPercent[low]=-3.3041246245067053
+Total satisfy: 5408	 earnPercent[close]=0.5391779172253366	 earnPercent[high]=6.4878917479434595	 earnPercent[low]=-3.3981993598336984
 Avg hold stock days when sell point: 5
 Avg hold stock days when high price: 4
-Total high earn between (25, 50): 1
-Total low  earn between (10, 10): 7
+Total high earn between (25, 50): 29
+Total low  earn between (10, 10): 94
 
 ===============================ShenXian_Two_Gordons (sellPoint:KDJ_Dead)==========================
-Total satisfy: 25835	 earnPercent[close]=-0.01614806899953888	 earnPercent[high]=5.62314376179881	 earnPercent[low]=-3.5127637834964585
+Total satisfy: 25838	 earnPercent[close]=-0.012875184807580762	 earnPercent[high]=5.626941715207446	 earnPercent[low]=-3.5116549024338926
 Avg hold stock days when sell point: 5
 Avg hold stock days when high price: 4
 Total high earn between (25, 50): 102

@@ -1,5 +1,6 @@
 package org.easystogu.utils;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -166,11 +167,44 @@ public class WeekdayUtil {
 		return getWorkingDaysOfWeek(Integer.parseInt(ymd[0]), weekNumber);
 	}
 
+	public static String nextWorkingDate(String today) {
+		try {
+			long minSecondsPerDay = 24 * 60 * 60 * 1000;
+			// System.out.println("today is " + today);
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			Calendar calT = Calendar.getInstance();
+			Date todayD = sdf.parse(today);
+			Date nextWorkingD = null;
+			// check if today is working day or weeken
+			calT.setTime(todayD);
+			int dayOfWeek = calT.get(Calendar.DAY_OF_WEEK);
+			// System.out.println("dayOfWeek is " + dayOfWeek);
+
+			// 周日~周四
+			if (dayOfWeek >= 1 && dayOfWeek <= 5) {
+				nextWorkingD = new Date(todayD.getTime() + 1 * minSecondsPerDay);
+			} else if (dayOfWeek == 6) {
+				// if friday
+				nextWorkingD = new Date(todayD.getTime() + 3 * minSecondsPerDay);
+			} else if (dayOfWeek == 7) {
+				// if friday
+				nextWorkingD = new Date(todayD.getTime() + 2 * minSecondsPerDay);
+			}
+
+			// System.out.println("todayD is " + todayD);
+			// System.out.println("nextWorkingD is " + nextWorkingD);
+			// System.out.println(sdf.format(nextWorkingD));
+			return sdf.format(nextWorkingD);
+
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return "";
+	}
+
 	public static void main(String[] args) {
 
-		List<String> dates = WeekdayUtil.getWorkingDaysOfWeek(2015, 15);
-		for (String date : dates) {
-			System.out.println(date);
-		}
+		WeekdayUtil.nextWorkingDate("2015-05-03");
 	}
 }
