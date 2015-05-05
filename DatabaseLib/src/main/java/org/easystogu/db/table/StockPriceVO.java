@@ -194,7 +194,7 @@ public class StockPriceVO {
 	}
 
 	public boolean isKLineRed() {
-		if ((this.close > this.lastClose) && (this.high >= this.close) && (this.close >= this.open)
+		if ((this.close >= this.lastClose) && (this.high >= this.close) && (this.close >= this.open)
 				&& (this.open >= this.low)) {
 			return true;
 		}
@@ -240,5 +240,24 @@ public class StockPriceVO {
 			return true;
 		}
 		return false;
+	}
+
+	public boolean isKLineRedCross() {
+		if ((this.high >= this.close) && (this.close >= this.open) && (this.open >= this.low)) {
+			double r1 = this.open - this.close;
+			double r2 = this.high - this.low;
+			if ((r1 / r2) <= 0.30) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public boolean isKLineOpenEqualLower() {
+		return (this.open == this.low) ? true : false;
+	}
+
+	public boolean isKLineCloseEqualHigh() {
+		return (this.close == this.high) ? true : false;
 	}
 }

@@ -13,8 +13,9 @@ public enum DailyCombineCheckPoint {
             SellPointType.KDJ_Dead, 113, 8.9), DuoTou_HuiTiao_Boll_MB_Support_MA20_Support_MA_RongHe_XiangShang(
             SellPointType.KDJ_Dead, 2562, 8.14), HengPan_3_Weeks_MA5_MA10_MA20_MA30_RongHe_Break_Platform(
             SellPointType.KDJ_Dead, 121, 9.33), HengPan_2_Weeks_2_Days_Green_RSV_KDJ_Gordon_RongHe_XiangShang_Break_Platform(
-            SellPointType.KDJ_Dead, 559, 8.07), Huge_Volume_Increase_3X3_Price_Higher_All_MA120(SellPointType.KDJ_Dead,
-            146, 7.7), MACD_Gordon_Volume_And_Price_Highest_In_MA90(SellPointType.KDJ_Dead, 1617, 8.6), Huge_Volume_Increase_Price_Higher_MA120_Previous_Lower_MA120(
+            SellPointType.KDJ_Dead, 559, 8.07), HengPan_1_Weeks_4_Days_JiBu_Break_Platform(SellPointType.KDJ_Dead, 0,
+            99), Huge_Volume_Increase_3X3_Price_Higher_All_MA120(SellPointType.KDJ_Dead, 146, 7.7), MACD_Gordon_Volume_And_Price_Highest_In_MA90(
+            SellPointType.KDJ_Dead, 1617, 8.6), Huge_Volume_Increase_Price_Higher_MA120_Previous_Lower_MA120(
             SellPointType.KDJ_Dead, 211, 8.31), LaoYaZhui_TuPo_MA60_Day_Under_Zero_MACD_Gordon_KDJ_Gordon_Week_KDJ_Gordon(
             SellPointType.KDJ_Dead, 5408, 6.48), ShenXian_Two_Gordons(SellPointType.KDJ_Dead, 25835, 5.6), HengPang_2_Weeks_Platform(
             SellPointType.KDJ_Dead, 0, 99.8), HengPang_3_Weeks_Platform(SellPointType.KDJ_Dead, 0, 99.9);

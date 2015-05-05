@@ -502,6 +502,46 @@ public class CombineAnalyseHelper {
             break;
         }
 
+        case HengPan_1_Weeks_4_Days_JiBu_Break_Platform: {
+            // example 600175 @ 2015-04-21
+            if ((curSuperWeekVO.kdjVO.k < curSuperWeekVO.kdjVO.d) || !this.isLatestKDJCrossGordon(overWeekList)) {
+                // over all week KDJ must after Gordon
+                return false;
+            }
+
+            String date = pre3SuperDayVO.priceVO.date;
+
+            // startVO price increase at least 3%
+            if (pre3SuperDayVO.priceVO.isKLineRed() && pre3SuperDayVO.priceVO.isKLineRed(3.0, 10.5)) {
+                // System.out.println("debug 1 " + date);
+                // pre2,pre1,cur is red cross
+                if (pre2SuperDayVO.priceVO.isKLineRedCross() && pre1SuperDayVO.priceVO.isKLineRedCross()
+                        && curSuperDayVO.priceVO.isKLineRedCross()) {
+                    // System.out.println("debug 2 " + date);
+                    // close is higher than higher
+                    if (pre2SuperDayVO.priceVO.close <= pre1SuperDayVO.priceVO.close
+                            && pre1SuperDayVO.priceVO.close <= curSuperDayVO.priceVO.close) {
+                        // System.out.println("debug 4 " + date);
+                        // open is higher than higher
+                        if (pre2SuperDayVO.priceVO.open < pre1SuperDayVO.priceVO.open
+                                && pre1SuperDayVO.priceVO.open < curSuperDayVO.priceVO.open) {
+                            // pre2, pre1 low is higher ma5, cur low is
+                            // lower ma5
+                            if (pre2SuperDayVO.priceVO.low > pre2SuperDayVO.avgMA5
+                                    && pre1SuperDayVO.priceVO.low > pre1SuperDayVO.avgMA5
+                                    && curSuperDayVO.priceVO.low <= curSuperDayVO.avgMA5) {
+                                // System.out.println("debug 6 " +
+                                // date);
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+
+            break;
+        }
+
         case HengPang_2_Weeks_Platform: {
             //return true if is a hengPan platform
             //day platform
@@ -662,7 +702,6 @@ public class CombineAnalyseHelper {
 
             break;
         }
-
         case ShenXian_Two_Gordons:
             // after H1 corss H2 and then H1 corss H3
             if (curSuperDayVO.shenXianVO.h1 > curSuperDayVO.shenXianVO.h2) {
@@ -848,6 +887,29 @@ public class CombineAnalyseHelper {
         return false;
     }
 
+    private boolean MA5_MA10_Ronghe(StockSuperVO curSuperDayVO) {
+        // rongHe and xiangShang
+        double dif = Math.abs(curSuperDayVO.avgMA5 - curSuperDayVO.avgMA10);
+        double min = Math.min(curSuperDayVO.avgMA5, curSuperDayVO.avgMA10);
+        // MA rongHe
+        if (((dif / min) * 100) < 2.0) {
+            return true;
+        }
+        return false;
+    }
+
+    private boolean MA5_MA10_MA20_Ronghe(StockSuperVO curSuperDayVO) {
+        // rongHe and xiangShang
+        double min = this.findMinValue(curSuperDayVO.avgMA5, curSuperDayVO.avgMA10, curSuperDayVO.avgMA20);
+        double max = this.findMaxValue(curSuperDayVO.avgMA5, curSuperDayVO.avgMA10, curSuperDayVO.avgMA20);
+        double dif = Math.abs(max - min);
+        // MA rongHe
+        if (((dif / min) * 100) < 3.0) {
+            return true;
+        }
+        return false;
+    }
+
     private boolean MA5_MA10_MA20_MA30_Ronghe(StockSuperVO curSuperDayVO) {
         // rongHe and xiangShang
         double min = this.findMinValue(curSuperDayVO.avgMA5, curSuperDayVO.avgMA10, curSuperDayVO.avgMA20,
@@ -859,6 +921,34 @@ public class CombineAnalyseHelper {
         if (((dif / min) * 100) < 4.0) {
             return true;
         }
+        return false;
+    }
+
+    private boolean MA5_MA10_Ronghe_XiangShang(StockSuperVO curSuperDayVO, StockSuperVO pre1SuperDayVO) {
+        // rongHe
+        if (!MA5_MA10_Ronghe(curSuperDayVO))
+            return false;
+        // xiangShang
+        if ((curSuperDayVO.avgMA5 >= pre1SuperDayVO.avgMA5) && (curSuperDayVO.avgMA10 >= pre1SuperDayVO.avgMA10)
+                && (curSuperDayVO.avgMA20 >= pre1SuperDayVO.avgMA20)
+                && (curSuperDayVO.avgMA30 >= pre1SuperDayVO.avgMA30)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    private boolean MA5_MA10_MA20_Ronghe_XiangShang(StockSuperVO curSuperDayVO, StockSuperVO pre1SuperDayVO) {
+        // rongHe
+        if (!MA5_MA10_MA20_Ronghe(curSuperDayVO))
+            return false;
+
+        // xiangShang
+        if ((curSuperDayVO.avgMA5 >= pre1SuperDayVO.avgMA5) && (curSuperDayVO.avgMA10 >= pre1SuperDayVO.avgMA10)
+                && (curSuperDayVO.avgMA20 >= pre1SuperDayVO.avgMA20)) {
+            return true;
+        }
+
         return false;
     }
 
@@ -878,61 +968,33 @@ public class CombineAnalyseHelper {
         return false;
     }
 
-    private boolean MA5_MA10_MA20_Ronghe_XiangShang(StockSuperVO curSuperDayVO, StockSuperVO pre1SuperDayVO) {
-        // rongHe and xiangShang
-        double min = this.findMinValue(curSuperDayVO.avgMA5, curSuperDayVO.avgMA10, curSuperDayVO.avgMA20);
-        double max = this.findMaxValue(curSuperDayVO.avgMA5, curSuperDayVO.avgMA10, curSuperDayVO.avgMA20);
-        double dif = Math.abs(max - min);
-        // MA rongHe
-        if (((dif / min) * 100) < 3.0) {
-            // xiangShang
-            if ((curSuperDayVO.avgMA5 >= pre1SuperDayVO.avgMA5) && (curSuperDayVO.avgMA10 >= pre1SuperDayVO.avgMA10)
-                    && (curSuperDayVO.avgMA20 >= pre1SuperDayVO.avgMA20)) {
-                return true;
-            }
-        }
-        return false;
-    }
+    private boolean close_Higher_MA5_MA10(StockSuperVO curSuperDayVO, StockSuperVO pre1SuperDayVO) {
 
-    private boolean MA5_MA10_Ronghe(StockSuperVO curSuperDayVO) {
-        // rongHe and xiangShang
-        double dif = Math.abs(curSuperDayVO.avgMA5 - curSuperDayVO.avgMA10);
-        double min = Math.min(curSuperDayVO.avgMA5, curSuperDayVO.avgMA10);
-        // MA rongHe
-        if (((dif / min) * 100) < 2.0) {
+        // close higher than ma5 and ma10
+        if (curSuperDayVO.priceVO.close >= curSuperDayVO.avgMA5 && curSuperDayVO.priceVO.close >= curSuperDayVO.avgMA10) {
             return true;
         }
+
         return false;
     }
 
-    private boolean MA5_MA10_Ronghe_XiangShang(StockSuperVO curSuperDayVO, StockSuperVO pre1SuperDayVO) {
-        // rongHe and xiangShang
-        double dif = Math.abs(curSuperDayVO.avgMA5 - curSuperDayVO.avgMA10);
-        double min = Math.min(curSuperDayVO.avgMA5, curSuperDayVO.avgMA10);
-        // MA rongHe
-        if (this.MA5_MA10_Ronghe(curSuperDayVO)) {
-            // xiangShang
-            if ((curSuperDayVO.avgMA5 >= pre1SuperDayVO.avgMA5) && (curSuperDayVO.avgMA10 >= pre1SuperDayVO.avgMA10)
-                    && (curSuperDayVO.avgMA20 >= pre1SuperDayVO.avgMA20)
-                    && (curSuperDayVO.avgMA30 >= pre1SuperDayVO.avgMA30)) {
-                return true;
-            }
+    private boolean close_Higher_N_Percent_Than_LastClose(StockSuperVO curSuperDayVO, double increasePercent) {
+
+        // close higher N% than lastClose
+        if ((curSuperDayVO.priceVO.close - curSuperDayVO.priceVO.lastClose) * 100 / curSuperDayVO.priceVO.lastClose >= increasePercent) {
+            return true;
         }
+
         return false;
     }
 
-    private boolean MA5_MA10_Ronghe_Close_Higher(StockSuperVO curSuperDayVO, StockSuperVO pre1SuperDayVO) {
-        // rongHe and xiangShang
-        double dif = Math.abs(curSuperDayVO.avgMA5 - curSuperDayVO.avgMA10);
-        double min = Math.min(curSuperDayVO.avgMA5, curSuperDayVO.avgMA10);
-        // MA rongHe
-        if (((dif / min) * 100) < 1.0) {
-            // close higher than ma5 and ma10
-            if (curSuperDayVO.priceVO.close >= curSuperDayVO.avgMA5
-                    && curSuperDayVO.priceVO.close >= curSuperDayVO.avgMA10) {
-                return true;
-            }
+    private boolean close_Lower_N_Percent_Than_LastClose(StockSuperVO curSuperDayVO, double increasePercent) {
+
+        // close higher N% than lastClose
+        if ((curSuperDayVO.priceVO.close - curSuperDayVO.priceVO.lastClose) * 100 / curSuperDayVO.priceVO.lastClose < increasePercent) {
+            return true;
         }
+
         return false;
     }
 

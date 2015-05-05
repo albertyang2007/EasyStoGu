@@ -139,7 +139,7 @@ public class HistoryAnalyseReport {
 				+ checkPoint.getSellPointType() + ")==========================");
 		for (String stockId : stockIds) {
 
-			 //if (!stockId.equals("002040"))
+			 //if (!stockId.equals("600175"))
 			 //continue;
 
 			List<HistoryReportDetailsVO> historyReportList = this.doAnalyseReport(stockId, checkPoint);
@@ -239,8 +239,7 @@ public class HistoryAnalyseReport {
 			// reporter.searchAllStockIdAccordingToCheckPoint(checkPoint);
 		}
 
-		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.HengPan_3_Weeks_MA5_MA10_MA20_MA30_RongHe_Break_Platform);
-		//reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.HengPan_2_Weeks_2_Days_Green_RSV_KDJ_Gordon_RongHe_XiangShang_Break_Platform);
+		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.HengPan_1_Weeks_4_Days_JiBu_Break_Platform);
 		// reporter.UnitTestForSpecifyStockId();
 	}
 }
