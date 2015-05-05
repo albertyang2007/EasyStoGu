@@ -79,7 +79,7 @@ public class RealTimePriceVO {
 
 	@Override
 	public String toString() {
-		return this.stockId + this.name + "\t:[open:" + this.open + "("
+		return this.stockId + this.name +"\t[lastClose:" + this.lastClose + "\t:open:" + this.open + "("
 				+ toPercent(this.open, this.lastClose) + ")" + ",\thigh:"
 				+ this.high + "(" + toPercent(this.high, this.lastClose) + ")"
 				+ ",\tcur:" + this.current + "("
