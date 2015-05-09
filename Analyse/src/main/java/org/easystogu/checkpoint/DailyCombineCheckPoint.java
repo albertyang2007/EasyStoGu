@@ -18,7 +18,7 @@ public enum DailyCombineCheckPoint {
 			SellPointType.KDJ_Dead, 1617, 8.6), Huge_Volume_Increase_Price_Higher_MA120_Previous_Lower_MA120(
 			SellPointType.KDJ_Dead, 211, 8.31), LaoYaZhui_TuPo_MA60_Day_Under_Zero_MACD_Gordon_KDJ_Gordon_Week_KDJ_Gordon(
 			SellPointType.KDJ_Dead, 5408, 6.48), ShenXian_Two_Gordons(SellPointType.KDJ_Dead, 25835, 5.6), HengPang_To_Break_Platform(
-			SellPointType.KDJ_Dead, 0, 99);
+			SellPointType.KDJ_Dead, 4816, 9.07);
 
 	private String condition;
 	// history summary that meet the condiction

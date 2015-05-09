@@ -573,7 +573,7 @@ public class CombineAnalyseHelper {
 			if (curSuperDayVO.priceVO.isKLineRed() && pre1SuperDayVO.priceVO.isKLineGreen()
 					&& pre2SuperDayVO.priceVO.isKLineGreen()) {
 				if (pre1SuperDayVO.volumeIncreasePercent < 1) {
-					return true;
+						return true;
 				}
 			}
 			return false;
