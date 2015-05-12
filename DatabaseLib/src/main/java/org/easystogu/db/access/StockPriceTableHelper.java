@@ -27,7 +27,7 @@ public class StockPriceTableHelper {
 	// please modify this SQL in all subClass
 	protected String INSERT_SQL = "INSERT INTO "
 			+ tableName
-			+ " (stockId, date, open, high, low, close, volume) VALUES (:stockId, :date, :open, :high, :low, :close, :volume)";
+			+ " (stockId, date, open, high, low, close, volume, lastclose) VALUES (:stockId, :date, :open, :high, :low, :close, :volume, :lastclose)";
 	protected String SELECT_CLOSE_PRICE_SQL = "SELECT close AS rtn FROM " + tableName
 			+ " WHERE stockId = :stockId ORDER BY DATE";
 	protected String SELECT_LOW_PRICE_SQL = "SELECT low AS rtn FROM " + tableName
@@ -100,6 +100,7 @@ public class StockPriceTableHelper {
 			vo.setLow(rs.getDouble("low"));
 			vo.setOpen(rs.getDouble("open"));
 			vo.setVolume(rs.getLong("volume"));
+			vo.setLastClose(rs.getDouble("lastclose"));
 			return vo;
 		}
 	}
@@ -139,6 +140,7 @@ public class StockPriceTableHelper {
 			namedParameters.addValue("low", vo.getLow());
 			namedParameters.addValue("close", vo.getClose());
 			namedParameters.addValue("volume", vo.getVolume());
+			namedParameters.addValue("lastclose", vo.getLastClose());
 
 			namedParameterJdbcTemplate.execute(INSERT_SQL, namedParameters, new DefaultPreparedStatementCallback());
 		} catch (Exception e) {

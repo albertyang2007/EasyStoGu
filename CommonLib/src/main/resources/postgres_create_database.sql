@@ -35,6 +35,7 @@ CREATE TABLE stockprice
   low numeric NOT NULL,
   close numeric NOT NULL,
   volume bigint NOT NULL,
+  lastclose numeric,
   CONSTRAINT stockprice_primary_key PRIMARY KEY (stockid, date)
 )
 WITH (
@@ -248,6 +249,7 @@ CREATE TABLE week_stockprice
   low numeric NOT NULL,
   close numeric NOT NULL,
   volume bigint NOT NULL,
+  lastclose numeric,
   CONSTRAINT week_stockprice_primary_key PRIMARY KEY (stockid, date)
 )
 WITH (
