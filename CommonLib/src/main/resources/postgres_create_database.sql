@@ -327,24 +327,24 @@ COMMENT ON TABLE checkpoint_history_selection
   IS 'Store history checkpoint high earn percent  (>50) reports';  
 
   
--- Table: event_gaosongzhuan
+-- Table: event_chuquanchuxi
 
--- DROP TABLE event_gaosongzhuan;
+-- DROP TABLE event_chuquanchuxi;
 
-CREATE TABLE event_gaosongzhuan
+CREATE TABLE event_chuquanchuxi
 (
   stockid text NOT NULL,
   date text NOT NULL,
   rate numeric NOT NULL,
   alreadyupdateprice boolean,
-  CONSTRAINT gaosongzhuan_primary PRIMARY KEY (stockid, date)
+  CONSTRAINT chuquanchuxi_primary PRIMARY KEY (stockid, date)
 )
 WITH (
   OIDS=FALSE
 );
-ALTER TABLE event_gaosongzhuan
+ALTER TABLE event_chuquanchuxi
   OWNER TO postgres;
-GRANT ALL ON TABLE event_gaosongzhuan TO public;
-GRANT ALL ON TABLE event_gaosongzhuan TO postgres;
-COMMENT ON TABLE event_gaosongzhuan
-  IS 'GaoSongZhuan event for stock';
+GRANT ALL ON TABLE event_chuquanchuxi TO public;
+GRANT ALL ON TABLE event_chuquanchuxi TO postgres;
+COMMENT ON TABLE event_chuquanchuxi
+  IS 'ChuQuan ChuXi event for stock';

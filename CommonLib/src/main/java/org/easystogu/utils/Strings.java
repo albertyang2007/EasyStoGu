@@ -21,7 +21,7 @@ public class Strings {
         return true;
     }
 
-    public static double getDecimal(double num) {
+    public static double getDecimalWith2Scale(double num) {
         if (Double.isNaN(num)) {
             return 0;
         }
