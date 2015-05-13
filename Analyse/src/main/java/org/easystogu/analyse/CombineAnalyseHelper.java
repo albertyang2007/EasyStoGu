@@ -726,14 +726,6 @@ public class CombineAnalyseHelper {
 				return true;
 			}
 
-			// or if 填权已经开始
-			if (curSuperDayVO.priceVO.close < curSuperDayVO.avgMA20
-					&& curSuperDayVO.priceVO.close < curSuperDayVO.avgMA30
-					&& curSuperDayVO.priceVO.close < curSuperDayVO.avgMA60
-					&& curSuperDayVO.priceVO.close < curSuperDayVO.avgMA120) {
-				return true;
-			}
-
 		default:
 			return false;
 		}

@@ -108,7 +108,6 @@ public class RealTimePriceVO {
 		vo.setLow(low);
 		vo.setDate(date);
 		vo.setVolume(volume);
-
 		vo.lastClose = this.lastClose;
 		return vo;
 	}
