@@ -720,6 +720,20 @@ public class CombineAnalyseHelper {
 			}
 			break;
 
+		case GaoSongZhuan_TianQuan:
+			// 高送转，填权
+			if (curSuperDayVO.priceVO.lastClose != 0 && curSuperDayVO.priceVO.lastClose != pre1SuperDayVO.priceVO.close) {
+				return true;
+			}
+
+			// or if 填权已经开始
+			if (curSuperDayVO.priceVO.close < curSuperDayVO.avgMA20
+					&& curSuperDayVO.priceVO.close < curSuperDayVO.avgMA30
+					&& curSuperDayVO.priceVO.close < curSuperDayVO.avgMA60
+					&& curSuperDayVO.priceVO.close < curSuperDayVO.avgMA120) {
+				return true;
+			}
+
 		default:
 			return false;
 		}

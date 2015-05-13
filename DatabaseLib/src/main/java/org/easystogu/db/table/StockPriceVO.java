@@ -13,8 +13,6 @@ public class StockPriceVO {
 	public double low;
 	public double close;
 	public long volume;
-
-	// not save this to db, just use in real time analyse
 	public double lastClose;
 
 	public StockPriceVO() {
@@ -74,6 +72,7 @@ public class StockPriceVO {
 		sb.append(", low:" + low);
 		sb.append(", close:" + close);
 		sb.append(", volume:" + volume);
+		sb.append(", lastClose:" + lastClose);
 		sb.append("}");
 		return sb.toString();
 	}
@@ -178,6 +177,14 @@ public class StockPriceVO {
 
 	public void setVolume(long volume) {
 		this.volume = volume;
+	}
+
+	public double getLastClose() {
+		return lastClose;
+	}
+
+	public void setLastClose(double lastClose) {
+		this.lastClose = lastClose;
 	}
 
 	// check the K line of stock: big/small red, or big/small green
