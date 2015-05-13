@@ -66,6 +66,13 @@ public class EventGaoSongZhuanTableHelper {
         }
     }
 
+    public void insertIfNotExist(GaoSongZhuanVO vo) {
+        GaoSongZhuanVO avo = this.getGaoSongZhuanVO(vo.stockId, vo.date);
+        if (avo != null)
+            return;
+        this.insert(vo);
+    }
+
     public void insert(GaoSongZhuanVO vo) {
         logger.debug("insert for {}", vo);
 
@@ -154,7 +161,7 @@ public class EventGaoSongZhuanTableHelper {
             e.printStackTrace();
         }
     }
-    
+
     public void updateGaoSongZhuanVO(GaoSongZhuanVO vo) {
         try {
             MapSqlParameterSource namedParameters = new MapSqlParameterSource();

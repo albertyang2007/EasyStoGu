@@ -1,5 +1,7 @@
 package org.easystogu.utils;
 
+import java.math.BigDecimal;
+
 public class Strings {
 
     public static boolean isEmpty(String string) {
@@ -17,5 +19,14 @@ public class Strings {
             }
         }
         return true;
+    }
+
+    public static double getDecimal(double num) {
+        if (Double.isNaN(num)) {
+            return 0;
+        }
+        BigDecimal bd = new BigDecimal(num);
+        num = bd.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+        return num;
     }
 }
