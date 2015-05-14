@@ -239,7 +239,7 @@ public class HistoryAnalyseReport {
 			// reporter.searchAllStockIdAccordingToCheckPoint(checkPoint);
 		}
 
-		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.HengPang_To_Break_Platform);
+		//reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.HengPan_Weeks_MA_RongHe_Break_Platform);
 		// reporter.UnitTestForSpecifyStockId();
 	}
 }

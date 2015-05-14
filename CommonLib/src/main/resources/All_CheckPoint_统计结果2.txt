@@ -61,19 +61,19 @@ Avg hold stock days when high price: 4
 Total high earn between (25, 50): 23
 Total low  earn between (10, 10): 139
 
-===============================HengPan_5_Weeks_MA5_MA10_MA20_MA30_RongHe_Break_Platform (sellPoint:KDJ_Dead)==========================
-Total satisfy: 121	 earnPercent[close]=1.5362053082150848	 earnPercent[high]=9.335421576501103	 earnPercent[low]=-3.899181929422889
+===============================HengPan_3_Weeks_MA5_MA10_MA20_MA30_RongHe_Break_Platform (sellPoint:KDJ_Dead)==========================
+Total satisfy: 128	 earnPercent[close]=1.6993857166710369	 earnPercent[high]=10.195358681980437	 earnPercent[low]=-4.061989079037509
 Avg hold stock days when sell point: 7
 Avg hold stock days when high price: 5
-Total high earn between (25, 50): 1
-Total low  earn between (10, 10): 5
+Total high earn between (25, 50): 2
+Total low  earn between (10, 10): 6
 
 ===============================HengPan_2_Weeks_2_Days_Green_RSV_KDJ_Gordon_RongHe_XiangShang_Break_Platform (sellPoint:KDJ_Dead)==========================
-Total satisfy: 559	 earnPercent[close]=0.7242122419187264	 earnPercent[high]=8.076080144193282	 earnPercent[low]=-4.425987129659844
+Total satisfy: 571	 earnPercent[close]=0.6732617191795184	 earnPercent[high]=8.208467598487323	 earnPercent[low]=-4.547532202051868
 Avg hold stock days when sell point: 7
 Avg hold stock days when high price: 4
-Total high earn between (25, 50): 4
-Total low  earn between (10, 10): 27
+Total high earn between (25, 50): 5
+Total low  earn between (10, 10): 30
 
 ===============================Huge_Volume_Increase_3X3_Price_Higher_All_MA120 (sellPoint:KDJ_Dead)==========================
 Total satisfy: 146	 earnPercent[close]=-0.543193016531201	 earnPercent[high]=7.709608998517297	 earnPercent[low]=-6.171966866682288
@@ -110,9 +110,9 @@ Avg hold stock days when high price: 4
 Total high earn between (25, 50): 102
 Total low  earn between (10, 10): 489
 
-===============================HengPang_To_Break_Platform (sellPoint:KDJ_Dead)==========================
-Total satisfy: 4816	 earnPercent[close]=0.39094217500057266	 earnPercent[high]=9.073801180663724	 earnPercent[low]=-5.836895509516071
+===============================HengPang_Ready_To_Break_Platform (sellPoint:KDJ_Dead)==========================
+Total satisfy: 4835	 earnPercent[close]=0.5484833135775065	 earnPercent[high]=9.228621823449188	 earnPercent[low]=-5.8240085613997925
 Avg hold stock days when sell point: 10
 Avg hold stock days when high price: 6
-Total high earn between (25, 50): 36
-Total low  earn between (10, 10): 450
+Total high earn between (25, 50): 39
+Total low  earn between (10, 10): 442
