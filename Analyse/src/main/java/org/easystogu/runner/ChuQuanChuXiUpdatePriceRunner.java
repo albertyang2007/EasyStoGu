@@ -91,7 +91,7 @@ public class ChuQuanChuXiUpdatePriceRunner {
 		ChuQuanChuXiUpdatePriceRunner runner = new ChuQuanChuXiUpdatePriceRunner();
 
 		runner.checkIfGaoSongZhuanExist(stockIds);
-		runner.updatePriceBasedOnChuQuanChuXi(stockIds);
+		//runner.updatePriceBasedOnChuQuanChuXi(stockIds);
 	}
 
 }
