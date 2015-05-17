@@ -247,6 +247,6 @@ public class HistoryAnalyseReport {
 			// reporter.searchAllStockIdAccordingToCheckPoint(checkPoint);
 		}
 
-		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.DuoTou_Pre_2_Days_Green_Red_KDJ_Zero_MA30_Support);
+		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.HengPan_3_Weeks_MA5_MA10_MA20_MA30_RongHe_Break_Platform);
 	}
 }

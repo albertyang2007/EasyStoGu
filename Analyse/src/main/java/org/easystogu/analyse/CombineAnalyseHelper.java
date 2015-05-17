@@ -739,14 +739,14 @@ public class CombineAnalyseHelper {
 
 			// if next week find one high is greater since platform
 			// startVO.hight, then not the platform
-			if (vo.priceVO.high > startVO.priceVO.high) {
+			if (vo.priceVO.high > startVO.priceVO.high * 1.02) {
 				// System.out.println("debug 5 " + Sdate + " ~ " + Edate);
 				return false;
 			}
 
 			// if next week find one low is less than the platform
 			// startVO.open or less then ma20
-			if (vo.priceVO.low < startVO.priceVO.low) {
+			if (vo.priceVO.low < startVO.priceVO.low * 0.98) {
 				// System.out.println("debug 6 " + Sdate + " ~ " + Edate);
 				return false;
 			}
