@@ -473,7 +473,9 @@ public class CombineAnalyseHelper {
 							// pre2, pre1, cur rongHe; cur xiangShang
 							if (this.MA5_MA10_Ronghe(pre1SuperDayVO) && this.MA5_MA10_Ronghe(pre2SuperDayVO)) {
 								if (this.MA5_MA10_Ronghe_XiangShang(curSuperDayVO, pre1SuperDayVO)) {
-									return true;
+									// cur close higher than pre2 close???
+									if (curSuperDayVO.priceVO.close >= pre2SuperDayVO.priceVO.close)
+										return true;
 								}
 							}
 						}
@@ -491,6 +493,8 @@ public class CombineAnalyseHelper {
 							// pre2, pre1, cur rongHe; cur xiangShang
 							if (this.MA5_MA10_Ronghe(pre1SuperDayVO) && this.MA5_MA10_Ronghe(pre2SuperDayVO)) {
 								if (this.MA5_MA10_Ronghe_XiangShang(curSuperDayVO, pre1SuperDayVO)) {
+									// cur close higher than pre2 close???
+									if (curSuperDayVO.priceVO.close >= pre2SuperDayVO.priceVO.close)
 									return true;
 								}
 							}
@@ -775,6 +779,7 @@ public class CombineAnalyseHelper {
 	// to check if the list is a platform
 	public boolean findLongPlatformBasedOnWeekDate(List<StockSuperVO> overWeekList) {
 		// example: 300216 @ 20150421; 002040 @ 20150421
+		// pls also consider: 000901, 600818, 300177 ,000768
 		// at least 5 weeks data
 		// the first week is a big red K line,
 		// J is much higher (>80), MACD bigger 0;

@@ -67,7 +67,7 @@ public class EventChuQuanChuXiTableHelper {
     }
 
     public void insertIfNotExist(ChuQuanChuXiVO vo) {
-        ChuQuanChuXiVO avo = this.getChuQuanChuXIVO(vo.stockId, vo.date);
+        ChuQuanChuXiVO avo = this.getChuQuanChuXiVO(vo.stockId, vo.date);
         if (avo != null)
             return;
         this.insert(vo);
@@ -96,7 +96,7 @@ public class EventChuQuanChuXiTableHelper {
         }
     }
 
-    public ChuQuanChuXiVO getChuQuanChuXIVO(String stockId, String date) {
+    public ChuQuanChuXiVO getChuQuanChuXiVO(String stockId, String date) {
         try {
 
             MapSqlParameterSource namedParameters = new MapSqlParameterSource();
@@ -115,7 +115,7 @@ public class EventChuQuanChuXiTableHelper {
         return null;
     }
 
-    public List<ChuQuanChuXiVO> getAllGaoSongZhuanVO(String stockId) {
+    public List<ChuQuanChuXiVO> getAllChuQuanChuXiVO(String stockId) {
         try {
 
             MapSqlParameterSource namedParameters = new MapSqlParameterSource();
@@ -132,7 +132,7 @@ public class EventChuQuanChuXiTableHelper {
         }
     }
 
-    public List<ChuQuanChuXiVO> getNDateGaoSongZhuanVO(String stockId, int day) {
+    public List<ChuQuanChuXiVO> getNDateChuQuanChuXiVO(String stockId, int day) {
         try {
 
             MapSqlParameterSource namedParameters = new MapSqlParameterSource();
@@ -162,7 +162,7 @@ public class EventChuQuanChuXiTableHelper {
         }
     }
 
-    public void updateGaoSongZhuanVO(ChuQuanChuXiVO vo) {
+    public void updateChuQuanChuXiVO(ChuQuanChuXiVO vo) {
         try {
             MapSqlParameterSource namedParameters = new MapSqlParameterSource();
             namedParameters.addValue("stockId", vo.stockId);

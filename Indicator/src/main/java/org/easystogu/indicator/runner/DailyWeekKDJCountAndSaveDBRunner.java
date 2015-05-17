@@ -28,6 +28,6 @@ public class DailyWeekKDJCountAndSaveDBRunner extends DailyKDJCountAndSaveDBRunn
         StockListConfigurationService stockConfig = StockListConfigurationService.getInstance();
         DailyWeekKDJCountAndSaveDBRunner runner = new DailyWeekKDJCountAndSaveDBRunner();
         runner.countAndSaved(stockConfig.getAllStockId());
-        //runner.countAndSaved("600825");
+        //runner.countAndSaved("002327");
     }
 }

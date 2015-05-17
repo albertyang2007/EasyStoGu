@@ -16,7 +16,7 @@ public class DailyUpdateOverAllRunner {
     public static void main(String[] args) {
         // day
         DailyStockPriceDownloadAndStoreDBRunner.main(args);
-        ChuQuanChuXiUpdatePriceRunner.main(args);
+        ChuQuanChuXiCheckerRunner.main(args);
         DailyMacdCountAndSaveDBRunner.main(args);
         DailyKDJCountAndSaveDBRunner.main(args);
         DailyBollCountAndSaveDBRunner.main(args);
