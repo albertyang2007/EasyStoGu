@@ -87,7 +87,7 @@ public class HistoryAnalyseReport {
 				List<StockSuperVO> subOverWeekList = this.getSubWeekVOList(overWeekList, startDate, endDate);
 				if (combineAanalyserHelper.isConditionSatisfy(checkPoint, overDayList.subList(index - 120, index + 1),
 						subOverWeekList)) {
-					reportVO = new HistoryReportDetailsVO();
+					reportVO = new HistoryReportDetailsVO(overDayList);
 					reportVO.setBuyPriceVO(superVO.priceVO);
 					continue;
 				}
@@ -125,7 +125,7 @@ public class HistoryAnalyseReport {
 		// point
 		if ((reportVO != null) && (reportVO.buyPriceVO != null) && (reportVO.sellPriceVO == null)) {
 			StockSuperVO superVO = overDayList.get(overDayList.size() - 1);
-			reportVO.setSelPriceVO(superVO.priceVO, false);
+			reportVO.setSellPriceVO(superVO.priceVO, false);
 			historyReportList.add(reportVO);
 			reportVO = null;
 		}
@@ -166,7 +166,7 @@ public class HistoryAnalyseReport {
 					historyReportTableHelper.insert(reportVO.convertToHistoryReportVO(checkPoint.toString()));
 
 					if (!reportVO.completed) {
-						System.out.println("Not Completed: " + reportVO);
+						// System.out.println("Not Completed: " + reportVO);
 					} else {
 						// System.out.println("Completed: " + reportVO);
 					}
@@ -247,13 +247,6 @@ public class HistoryAnalyseReport {
 			// reporter.searchAllStockIdAccordingToCheckPoint(checkPoint);
 		}
 
-		reporter.emptyTableByCheckPoint(DailyCombineCheckPoint.HengPan_3_Weeks_MA5_MA10_MA20_MA30_RongHe_Break_Platform
-				.toString());
-		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.HengPan_3_Weeks_MA5_MA10_MA20_MA30_RongHe_Break_Platform);
-
-		reporter.emptyTableByCheckPoint(DailyCombineCheckPoint.HengPan_2_Weeks_2_Days_Green_RSV_KDJ_Gordon_RongHe_XiangShang_Break_Platform
-				.toString());
-		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.HengPan_2_Weeks_2_Days_Green_RSV_KDJ_Gordon_RongHe_XiangShang_Break_Platform);
-		// reporter.UnitTestForSpecifyStockId();
+		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.DuoTou_Pre_2_Days_Green_Red_KDJ_Zero_MA30_Support);
 	}
 }

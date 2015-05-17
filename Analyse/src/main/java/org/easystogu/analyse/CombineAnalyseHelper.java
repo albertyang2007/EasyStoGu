@@ -227,8 +227,12 @@ public class CombineAnalyseHelper {
 					if (pre2SuperDayVO.priceVO.isKLineGreen() && pre3SuperDayVO.priceVO.isKLineGreen()) {
 						if ((pre1SuperDayVO.priceVO.close > pre2SuperDayVO.priceVO.close)
 								|| pre1SuperDayVO.priceVO.isKLineRed()) {
-							if ((pre1SuperDayVO.kdjVO.j <= 10.0) && (curSuperDayVO.rsvCorssType == CrossType.GORDON)) {
-								return true;
+							if (pre1SuperDayVO.kdjVO.j <= 10.0) {
+								if (curSuperDayVO.rsvCorssType == CrossType.GORDON
+										|| curSuperDayVO.kdjCorssType == CrossType.NEAR_GORDON
+										|| curSuperDayVO.kdjCorssType == CrossType.GORDON) {
+									return true;
+								}
 							}
 						}
 					}
@@ -495,7 +499,7 @@ public class CombineAnalyseHelper {
 								if (this.MA5_MA10_Ronghe_XiangShang(curSuperDayVO, pre1SuperDayVO)) {
 									// cur close higher than pre2 close???
 									if (curSuperDayVO.priceVO.close >= pre2SuperDayVO.priceVO.close)
-									return true;
+										return true;
 								}
 							}
 						}
@@ -581,100 +585,6 @@ public class CombineAnalyseHelper {
 				}
 			}
 			return false;
-		}
-		case Huge_Volume_Increase_3X3_Price_Higher_All_MA120:
-
-			if ((curSuperWeekVO.kdjVO.k < curSuperWeekVO.kdjVO.d) || !this.isLatestKDJCrossGordon(overWeekList)) {
-				// over all week KDJ must after Gordon
-				return false;
-			}
-			// today close higher than ma5,ma10,ma20,ma30,ma60,ma120
-			// today volume is 3 times of pre1 day
-			// pre1 day volume is 3 times of pre2 day avgVol5
-			if ((curSuperDayVO.volumeIncreasePercent >= 3.0) && (pre1SuperDayVO.volumeIncreasePercent >= 3.0)) {
-				if ((pre1SuperDayVO.priceVO.volume / pre2SuperDayVO.avgVol5) >= 3.0) {
-					if ((curSuperDayVO.priceVO.close > curSuperDayVO.avgMA5)
-							&& (curSuperDayVO.priceVO.close > curSuperDayVO.avgMA10)
-							&& (curSuperDayVO.priceVO.close > curSuperDayVO.avgMA20)
-							&& (curSuperDayVO.priceVO.close > curSuperDayVO.avgMA30)
-							&& (curSuperDayVO.priceVO.close > curSuperDayVO.avgMA60)
-							&& (curSuperDayVO.priceVO.close > curSuperDayVO.avgMA120)) {
-						return true;
-					}
-				}
-			}
-			break;
-		case MACD_Gordon_Volume_And_Price_Highest_In_MA90: {
-
-			if ((curSuperWeekVO.kdjVO.k < curSuperWeekVO.kdjVO.d) || !this.isLatestKDJCrossGordon(overWeekList)) {
-				// over all week KDJ must after Gordon
-				return false;
-			}
-			// volume and price is the highest in half year
-			if (overDayList.size() < 120) {
-				return false;
-			}
-
-			if (curSuperDayVO.macdCorssType != CrossType.GORDON) {
-				return false;
-			}
-
-			// limit two macd gordon and dead point to about 30 working days
-			List<StockSuperVO> overDaySubList = overDayList.subList(overDayList.size() - 90, overDayList.size());
-
-			double price = curSuperDayVO.priceVO.close;
-			long volume = curSuperDayVO.priceVO.volume;
-			for (int index = 0; index < (overDaySubList.size() - 1); index++) {
-				StockSuperVO svo = overDaySubList.get(index);
-				if (svo.priceVO.close > price) {
-					return false;
-				}
-				if (svo.priceVO.volume > volume) {
-					return false;
-				}
-			}
-
-			if (curSuperDayVO.priceVO.isKLineRed() || (curSuperDayVO.priceVO.close > pre1SuperDayVO.priceVO.close)) {
-				return true;
-			}
-			break;
-		}
-
-		case Huge_Volume_Increase_Price_Higher_MA120_Previous_Lower_MA120: {
-
-			if ((curSuperWeekVO.kdjVO.k < curSuperWeekVO.kdjVO.d) || !this.isLatestKDJCrossGordon(overWeekList)) {
-				// over all week KDJ must after Gordon
-				return false;
-			}
-			// volume and price is the highest in half year
-			if (overDayList.size() < 120) {
-				return false;
-			}
-
-			// limit two macd gordon and dead point to about 30 working days
-			List<StockSuperVO> overDaySubList = overDayList.subList(overDayList.size() - 90, overDayList.size());
-
-			// the current volume is the biggest one in 90 days
-			double price = curSuperDayVO.priceVO.close;
-			long volume = curSuperDayVO.priceVO.volume;
-			for (int index = 0; index < (overDaySubList.size() - 1); index++) {
-				StockSuperVO svo = overDaySubList.get(index);
-				if (svo.priceVO.close > price) {
-					return false;
-				}
-				if (svo.priceVO.volume > volume) {
-					return false;
-				}
-			}
-
-			// in two days, close is low then ma120 and higer than ma120
-			if ((curSuperDayVO.priceVO.close >= curSuperDayVO.avgMA120)
-					&& (pre1SuperDayVO.priceVO.close <= pre1SuperDayVO.avgMA120)) {
-				if (curSuperDayVO.priceVO.isKLineRed() || (curSuperDayVO.priceVO.close > pre1SuperDayVO.priceVO.close)) {
-					return true;
-				}
-			}
-			break;
 		}
 
 		case LaoYaZhui_TuPo_MA60_Day_Under_Zero_MACD_Gordon_KDJ_Gordon_Week_KDJ_Gordon: {
