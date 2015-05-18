@@ -15,7 +15,7 @@ public enum DailyCombineCheckPoint {
 			SellPointType.KDJ_Dead, 1829, 8.16), HengPan_2_Weeks_2_Days_Green_RSV_KDJ_Gordon_RongHe_XiangShang_Break_Platform(
 			SellPointType.KDJ_Dead, 518, 8.62), ShenXian_Two_Gordons(SellPointType.KDJ_Dead, 25835, 5.6), HengPang_Ready_To_Break_Platform(
 			SellPointType.KDJ_Dead, 4252, 9.57), LaoYaZhui_TuPo_MA60_Day_Under_Zero_MACD_Gordon_KDJ_Gordon_Week_KDJ_Gordon(
-			SellPointType.KDJ_Dead, 3597, 6.9);
+			SellPointType.KDJ_Dead, 3597, 6.9); 
 
 	private String condition;
 	// history summary that meet the condiction
