@@ -405,6 +405,93 @@ public class CombineAnalyseHelper {
 			break;
 		}
 
+		case HengPan_3_Weeks_MA5_MA10_MA20_MA30_RongHe_Break_Platform_Orig: {
+			// example: 300216 @ 20150421; 002040 @ 20150421
+			// week platform
+			boolean hasWeekFlatformStartVO = false;
+			int minPlatformLen = 3;
+			int maxPlatformLen = 10;
+			for (int length = minPlatformLen; length <= maxPlatformLen; length++) {
+				if (findLongPlatformBasedOnWeekDateOrig(
+						overWeekList.subList(overWeekList.size() - length, overWeekList.size()), overDayList)) {
+					hasWeekFlatformStartVO = true;
+					break;
+				}
+			}
+
+			if (!hasWeekFlatformStartVO) {
+				return false;
+			}
+
+			// original week checking
+			// RSV or KDJ gordon
+			if (curSuperDayVO.rsvCorssType == CrossType.GORDON || curSuperDayVO.kdjCorssType == CrossType.NEAR_GORDON
+					|| curSuperDayVO.kdjCorssType == CrossType.GORDON) {
+				if (curSuperDayVO.priceVO.isKLineRed()) {
+					// check MA5, MA10,MA20,MA30 RongHe
+					if (MA5_MA10_MA20_MA30_Ronghe(pre2SuperDayVO)) {
+						if (MA5_MA10_MA20_MA30_Ronghe(pre1SuperDayVO)) {
+							if (MA5_MA10_MA20_MA30_Ronghe(curSuperDayVO)) {
+								if (MA5_MA10_XiangShang(curSuperDayVO, pre1SuperDayVO)
+										|| MA10_MA20_XiangShang(curSuperDayVO, pre1SuperDayVO)) {
+									if (close_Higher_MA5_MA10(curSuperDayVO) || close_Higher_MA10_MA20(curSuperDayVO)
+											|| close_Higher_MA20_MA30(curSuperDayVO)) {
+										if (curSuperDayVO.priceVO.close > curSuperDayVO.avgMA30) {
+											return true;
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+
+			// oritinal day checking
+			// RSV or KDJ gordon
+			if (curSuperDayVO.rsvCorssType == CrossType.GORDON || curSuperDayVO.kdjCorssType == CrossType.NEAR_GORDON
+					|| curSuperDayVO.kdjCorssType == CrossType.GORDON) {
+				// pre3 and pre2 green, pre1 and cur red
+				// example: 600021 000875 at 2015-04-13, 000062 at 2015-02-27
+				if (curSuperDayVO.priceVO.isKLineRed() && pre1SuperDayVO.priceVO.isKLineRed()
+						&& pre2SuperDayVO.priceVO.isKLineGreen() && pre3SuperDayVO.priceVO.isKLineGreen()) {
+					if (curSuperDayVO.volumeIncreasePercent > 1 && pre2SuperDayVO.volumeIncreasePercent < 1) {
+						// close higher ma5 ma10
+						if (curSuperDayVO.priceVO.close >= curSuperDayVO.avgMA5
+								&& curSuperDayVO.priceVO.close >= curSuperDayVO.avgMA10) {
+							// pre2, pre1, cur rongHe; cur xiangShang
+							if (this.MA5_MA10_Ronghe(pre1SuperDayVO) && this.MA5_MA10_Ronghe(pre2SuperDayVO)) {
+								if (this.MA5_MA10_Ronghe_XiangShang(curSuperDayVO, pre1SuperDayVO)) {
+									if (curSuperDayVO.priceVO.close >= pre2SuperDayVO.priceVO.close)
+										return true;
+								}
+							}
+						}
+					}
+				}
+				// pre3, pre2 and pre1 green, cur red
+				// example: 002260 2015-04-17
+				if (curSuperDayVO.priceVO.isKLineRed() && pre1SuperDayVO.priceVO.isKLineGreen()
+						&& pre2SuperDayVO.priceVO.isKLineGreen() && pre3SuperDayVO.priceVO.isKLineGreen()) {
+					if (curSuperDayVO.volumeIncreasePercent > 1 && pre1SuperDayVO.volumeIncreasePercent < 1
+							&& pre2SuperDayVO.volumeIncreasePercent < 1) {
+						// close higher ma5 ma10
+						if (curSuperDayVO.priceVO.close >= curSuperDayVO.avgMA5
+								&& curSuperDayVO.priceVO.close >= curSuperDayVO.avgMA10) {
+							// pre2, pre1, cur rongHe; cur xiangShang
+							if (this.MA5_MA10_Ronghe(pre1SuperDayVO) && this.MA5_MA10_Ronghe(pre2SuperDayVO)) {
+								if (this.MA5_MA10_Ronghe_XiangShang(curSuperDayVO, pre1SuperDayVO)) {
+									if (curSuperDayVO.priceVO.close >= pre2SuperDayVO.priceVO.close)
+										return true;
+								}
+							}
+						}
+					}
+				}
+			}
+			break;
+		}
+
 		case HengPan_3_Weeks_MA5_MA10_MA20_MA30_RongHe_Break_Platform: {
 			// example: 300216 @ 20150421; 002040 @ 20150421
 			// week platform
@@ -696,6 +783,110 @@ public class CombineAnalyseHelper {
 		return false;
 	}
 
+	// original checker, only use week data
+	// to check if the list is a platform
+	public boolean findLongPlatformBasedOnWeekDateOrig(List<StockSuperVO> overWeekList, List<StockSuperVO> overDayList) {
+		// example: 300216 @ 20150421; 002040 @ 20150421
+		// pls also consider: 000901, 600818, 300177 ,000768
+		// at least 5 weeks data
+		// the first week is a big red K line,
+		// J is much higher (>80), MACD bigger 0;
+		// then ~5 week hengPan; KDJ dead find;
+		// the continue high and low is between the first K line
+		StockSuperVO startVO = overWeekList.get(0);
+		StockSuperVO endVO = overWeekList.get(overWeekList.size() - 1);
+
+		String Sdate = startVO.priceVO.date;
+		String Edate = endVO.priceVO.date;
+		// System.out.println("debug 1 " + Sdate + " ~ " + Edate + " " +
+		// startVO.kdjVO);
+
+		if (startVO.kdjVO.j < 75)
+			return false;
+
+		// System.out.println("debug 2 " + Sdate + " ~ " + Edate);
+
+		if (startVO.macdVO.macd < 0)
+			return false;
+
+		// System.out.println("debug 3 " + Sdate + " ~ " + Edate);
+
+		double startPriceIncrease = ((startVO.priceVO.close - startVO.priceVO.lastClose) * 100.0)
+				/ startVO.priceVO.lastClose;
+
+		double avgClose = 0;
+		boolean findKDJDead = false;
+		double maxKDJ_K = 0;
+		double minKDJ_K = 100;
+
+		if (startPriceIncrease < 12) {
+			// System.out.println("debug 4 " + Sdate + " ~ " + Edate);
+			return false;
+		}
+
+		for (int i = 1; i < overWeekList.size(); i++) {
+			StockSuperVO vo = overWeekList.get(i);
+			double priceIncrease = ((vo.priceVO.close - vo.priceVO.lastClose) * 100.0) / vo.priceVO.lastClose;
+
+			// if next week find one priceIncrease is bigger then startVO,
+			// then not the platform
+			if (priceIncrease > startPriceIncrease) {
+				// System.out.println("debug 4 " + Sdate + " ~ " + Edate);
+				return false;
+			}
+
+			// if next week find one high is greater since platform
+			// startVO.hight, then not the platform
+			if (vo.priceVO.high > startVO.priceVO.high * 1.025) {
+				// System.out.println("debug 5 " + Sdate + " ~ " + Edate);
+				return false;
+			}
+
+			// if next week find one low is less than the platform
+			// startVO.open or less then ma20
+			if (vo.priceVO.low < startVO.priceVO.low * 0.975) {
+				// System.out.println("debug 6 " + Sdate + " ~ " + Edate);
+				return false;
+			}
+
+			if (vo.kdjCorssType == CrossType.DEAD) {
+				// System.out.println("debug 7 " + Sdate + " ~ " + Edate);
+				findKDJDead = true;
+			}
+
+			avgClose += vo.priceVO.close;
+
+			if (maxKDJ_K < vo.kdjVO.k)
+				maxKDJ_K = vo.kdjVO.k;
+			if (minKDJ_K > vo.kdjVO.k)
+				minKDJ_K = vo.kdjVO.k;
+		}
+
+		// if no found KDJ dead, not the long platform
+		if (!findKDJDead) {
+			// System.out.println("debug 8 " + Sdate + " ~ " + Edate);
+			return false;
+		}
+
+		// max KDJ_K and min KDJ_K must between 15%
+		if ((maxKDJ_K - minKDJ_K) / minKDJ_K * 100 >= 20) {
+			// System.out.println("debug 9 " + Sdate + " ~ " + Edate);
+			return false;
+		}
+
+		avgClose = avgClose / (overWeekList.size() - 1);
+		// next avg close is greater than the middle platform startVO.open +
+		// close / 2
+		if (avgClose < ((startVO.priceVO.open + startVO.priceVO.close) / 2)) {
+			// System.out.println("debug 10 " + Sdate + " ~ " + Edate);
+			return false;
+		}
+		// System.out.println("debug 11 " + Sdate + " ~ " + Edate);
+
+		return true;
+	}
+
+	// new checker, use both week and day data
 	// to check if the list is a platform
 	public boolean findLongPlatformBasedOnWeekDate(List<StockSuperVO> overWeekList, List<StockSuperVO> overDayList) {
 		// example: 300216 @ 20150421; 002040 @ 20150421
