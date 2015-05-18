@@ -3,10 +3,12 @@ package org.easystogu.indicator.runner.history;
 import java.util.List;
 
 import org.easystogu.config.StockListConfigurationService;
+import org.easystogu.db.access.ChuQuanChuXiPriceHelper;
 import org.easystogu.db.access.IndShenXianTableHelper;
 import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.table.ShenXianVO;
 import org.easystogu.db.table.StockPriceVO;
+import org.easystogu.indicator.runner.utils.StockPriceFetcher;
 import org.easystogu.indicator.shenxian.ShenXianHelper;
 
 public class HistoryShenXianCountAndSaveDBRunner {
@@ -14,6 +16,7 @@ public class HistoryShenXianCountAndSaveDBRunner {
 	protected StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
 	protected IndShenXianTableHelper shenXianTable = IndShenXianTableHelper.getInstance();
 	private ShenXianHelper shenXianHelper = new ShenXianHelper();
+	protected ChuQuanChuXiPriceHelper chuQuanChuXiPriceHelper = new ChuQuanChuXiPriceHelper();
 
 	public void deleteShenXian(String stockId) {
 		shenXianTable.delete(stockId);
@@ -28,14 +31,17 @@ public class HistoryShenXianCountAndSaveDBRunner {
 	}
 
 	public void countAndSaved(String stockId) {
-		List<StockPriceVO> spVO = stockPriceTable.getStockPriceById(stockId);
+		List<StockPriceVO> priceList = stockPriceTable.getStockPriceById(stockId);
 
-		if (spVO.size() <= 108) {
+		if (priceList.size() <= 108) {
 			System.out.println("StockPrice data is less than 108, skip " + stockId);
 			return;
 		}
 
-		List<Double> close = stockPriceTable.getAllClosePrice(stockId);
+		// update price based on chuQuanChuXi event
+		chuQuanChuXiPriceHelper.updatePrice(stockId, priceList);
+
+		List<Double> close = StockPriceFetcher.getClosePrice(priceList);
 
 		double[][] shenXian = shenXianHelper.getShenXianList(close.toArray(new Double[0]));
 
@@ -45,7 +51,7 @@ public class HistoryShenXianCountAndSaveDBRunner {
 			vo.setH2(shenXian[1][i]);
 			vo.setH3(shenXian[2][i]);
 			vo.setStockId(stockId);
-			vo.setDate(spVO.get(i).date);
+			vo.setDate(priceList.get(i).date);
 
 			try {
 				if (shenXianTable.getShenXian(vo.stockId, vo.date) == null) {
@@ -73,7 +79,7 @@ public class HistoryShenXianCountAndSaveDBRunner {
 		List<String> stockIds = stockConfig.getAllStockId();
 		HistoryShenXianCountAndSaveDBRunner runner = new HistoryShenXianCountAndSaveDBRunner();
 		runner.countAndSaved(stockIds);
-		//runner.countAndSaved("002194");
+		// runner.countAndSaved("002194");
 	}
 
 }

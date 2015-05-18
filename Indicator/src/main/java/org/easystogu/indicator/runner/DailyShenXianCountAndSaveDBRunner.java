@@ -3,10 +3,12 @@ package org.easystogu.indicator.runner;
 import java.util.List;
 
 import org.easystogu.config.StockListConfigurationService;
+import org.easystogu.db.access.ChuQuanChuXiPriceHelper;
 import org.easystogu.db.access.IndShenXianTableHelper;
 import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.table.ShenXianVO;
 import org.easystogu.db.table.StockPriceVO;
+import org.easystogu.indicator.runner.utils.StockPriceFetcher;
 import org.easystogu.indicator.shenxian.ShenXianHelper;
 
 public class DailyShenXianCountAndSaveDBRunner {
@@ -14,6 +16,7 @@ public class DailyShenXianCountAndSaveDBRunner {
 	protected StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
 	protected IndShenXianTableHelper shenXianTable = IndShenXianTableHelper.getInstance();
 	private ShenXianHelper shenXianHelper = new ShenXianHelper();
+	protected ChuQuanChuXiPriceHelper chuQuanChuXiPriceHelper = new ChuQuanChuXiPriceHelper();
 
 	public void deleteShenXian(String stockId, String date) {
 		shenXianTable.delete(stockId, date);
@@ -32,14 +35,17 @@ public class DailyShenXianCountAndSaveDBRunner {
 	}
 
 	public void countAndSaved(String stockId) {
-		List<StockPriceVO> spVO = stockPriceTable.getStockPriceById(stockId);
+		List<StockPriceVO> priceList = stockPriceTable.getStockPriceById(stockId);
 
-		if (spVO.size() <= 108) {
+		if (priceList.size() <= 108) {
 			System.out.println("StockPrice data is less than 108, skip " + stockId);
 			return;
 		}
+		
+		// update price based on chuQuanChuXi event
+		chuQuanChuXiPriceHelper.updatePrice(stockId, priceList);
 
-		List<Double> close = stockPriceTable.getAllClosePrice(stockId);
+		List<Double> close = StockPriceFetcher.getClosePrice(priceList);
 
 		double[][] shenXian = shenXianHelper.getShenXianList(close.toArray(new Double[0]));
 
@@ -50,7 +56,7 @@ public class DailyShenXianCountAndSaveDBRunner {
 		vo.setH2(shenXian[1][length - 1]);
 		vo.setH3(shenXian[2][length - 1]);
 		vo.setStockId(stockId);
-		vo.setDate(spVO.get(length - 1).date);
+		vo.setDate(priceList.get(length - 1).date);
 
 		this.deleteShenXian(stockId, vo.date);
 		shenXianTable.insert(vo);

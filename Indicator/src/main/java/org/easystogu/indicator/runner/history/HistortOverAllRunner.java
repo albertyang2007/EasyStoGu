@@ -16,5 +16,4 @@ public class HistortOverAllRunner {
         WeeklyBollCountAndSaveDBRunner.main(args);
         WeeklyShenXianCountAndSaveDBRunner.main(args);
     }
-
 }
