@@ -8,12 +8,12 @@ public enum DailyCombineCheckPoint {
 			SellPointType.KDJ_Dead, 895, 8.55), MACD_KDJ_Gordon_3_Days_Red_High_MA5_MA10_BOLL(SellPointType.KDJ_Dead,
 			43, 8.9), Phase2_Previous_Under_Zero_MACD_Gordon_Now_MACD_Dead_RSV_KDJ_Gordon(SellPointType.KDJ_Dead, 452,
 			8.27), DuoTou_Pre_2_Days_Green_Red_KDJ_Zero_MA30_Support(SellPointType.KDJ_Dead, 1058, 8.56), DuoTou_Pre_2_Days_Green_Red_KDJ_Zero_MA30_Support_MA_RongHe_XiangShang(
-			SellPointType.KDJ_Dead, 61, 9.7), DuoTou_Pre_2_Days_Green_Red_KDJ_Zero_MA20_Support_MA_RongHe_XiangShang(
+			SellPointType.KDJ_Dead, 77, 9.13), DuoTou_Pre_2_Days_Green_Red_KDJ_Zero_MA20_Support_MA_RongHe_XiangShang(
 			SellPointType.KDJ_Dead, 146, 8.8), DuoTou_HuiTiao_Boll_Lower_Support_MA30_Support_MA_RongHe_XiangShang(
-			SellPointType.KDJ_Dead, 129, 11.15), DuoTou_HuiTiao_Boll_MB_Support_MA20_Support_MA_RongHe_XiangShang(
+			SellPointType.KDJ_Dead, 142, 11.46), DuoTou_HuiTiao_Boll_MB_Support_MA20_Support_MA_RongHe_XiangShang(
 			SellPointType.KDJ_Dead, 2561, 9.46), HengPan_3_Weeks_MA5_MA10_MA20_MA30_RongHe_Break_Platform_Orig(
-			SellPointType.KDJ_Dead, 442, 9.77), HengPan_3_Weeks_MA5_MA10_MA20_MA30_RongHe_Break_Platform(
-			SellPointType.KDJ_Dead, 2643, 8.28), HengPan_2_Weeks_2_Days_Green_RSV_KDJ_Gordon_RongHe_XiangShang_Break_Platform(
+			SellPointType.KDJ_Dead, 492, 9.68), HengPan_3_Weeks_MA5_MA10_MA20_MA30_RongHe_Break_Platform(
+			SellPointType.KDJ_Dead, 2227, 8.40), HengPan_2_Weeks_2_Days_Green_RSV_KDJ_Gordon_RongHe_XiangShang_Break_Platform(
 			SellPointType.KDJ_Dead, 518, 8.62), ShenXian_Two_Gordons(SellPointType.KDJ_Dead, 25835, 5.6), HengPang_Ready_To_Break_Platform(
 			SellPointType.KDJ_Dead, 4252, 9.57), LaoYaZhui_TuPo_MA60_Day_Under_Zero_MACD_Gordon_KDJ_Gordon_Week_KDJ_Gordon(
 			SellPointType.KDJ_Dead, 3597, 6.9);

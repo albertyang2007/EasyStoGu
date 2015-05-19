@@ -249,7 +249,7 @@ public class HistoryAnalyseReport {
             // reporter.searchAllStockIdAccordingToCheckPoint(checkPoint);
         }
 
-        reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.HengPan_3_Weeks_MA5_MA10_MA20_MA30_RongHe_Break_Platform_Orig);
-        reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.HengPan_3_Weeks_MA5_MA10_MA20_MA30_RongHe_Break_Platform);
+        reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.DuoTou_Pre_2_Days_Green_Red_KDJ_Zero_MA30_Support_MA_RongHe_XiangShang);
+        reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.DuoTou_HuiTiao_Boll_Lower_Support_MA30_Support_MA_RongHe_XiangShang);
     }
 }

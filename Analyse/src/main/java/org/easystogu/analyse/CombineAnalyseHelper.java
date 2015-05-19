@@ -412,8 +412,8 @@ public class CombineAnalyseHelper {
             int minPlatformLen = 3;
             int maxPlatformLen = 10;
             for (int length = minPlatformLen; length <= maxPlatformLen; length++) {
-                if (findLongPlatformBasedOnWeekDateOrig(
-                        overWeekList.subList(overWeekList.size() - length, overWeekList.size()), overDayList)) {
+                if (findLongPlatformBasedOnWeekDateOrig(overWeekList.subList(overWeekList.size() - length,
+                        overWeekList.size()))) {
                     hasWeekFlatformStartVO = true;
                     break;
                 }
@@ -787,7 +787,7 @@ public class CombineAnalyseHelper {
 
     // original checker, only use week data
     // to check if the list is a platform
-    public boolean findLongPlatformBasedOnWeekDateOrig(List<StockSuperVO> overWeekList, List<StockSuperVO> overDayList) {
+    public boolean findLongPlatformBasedOnWeekDateOrig(List<StockSuperVO> overWeekList) {
         // example: 300216 @ 20150421; 002040 @ 20150421
         // pls also consider: 000901, 600818, 300177 ,000768
         // at least 5 weeks data
@@ -803,7 +803,7 @@ public class CombineAnalyseHelper {
         // System.out.println("debug 1 " + Sdate + " ~ " + Edate + " " +
         // startVO.kdjVO);
 
-        if (startVO.kdjVO.j < 80)
+        if (startVO.kdjVO.j < 75)
             return false;
 
         // System.out.println("debug 2 " + Sdate + " ~ " + Edate);
@@ -908,7 +908,7 @@ public class CombineAnalyseHelper {
         // System.out.println("debug 1 " + Sdate + " ~ " + Edate + " " +
         // startVO.kdjVO);
 
-        if (startVO.kdjVO.j < 60)
+        if (startVO.kdjVO.j < 75)
             return false;
 
         // System.out.println("debug 2 " + Sdate + " ~ " + Edate);
