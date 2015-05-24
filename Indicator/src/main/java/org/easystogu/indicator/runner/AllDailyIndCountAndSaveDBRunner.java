@@ -8,12 +8,12 @@ public class AllDailyIndCountAndSaveDBRunner {
 		DailyMacdCountAndSaveDBRunner.main(args);
 		DailyKDJCountAndSaveDBRunner.main(args);
 		DailyBollCountAndSaveDBRunner.main(args);
-		DailyShenXianCountAndSaveDBRunner.main(args);
+		DailyXueShi2CountAndSaveDBRunner.main(args);
 		// week
 		DailyWeekMacdCountAndSaveDBRunner.main(args);
 		DailyWeekKDJCountAndSaveDBRunner.main(args);
 		DailyWeekBollCountAndSaveDBRunner.main(args);
-		DailyWeekShenXianCountAndSaveDBRunner.main(args);
+		DailyWeekXueShi2CountAndSaveDBRunner.main(args);
 	}
 
 }

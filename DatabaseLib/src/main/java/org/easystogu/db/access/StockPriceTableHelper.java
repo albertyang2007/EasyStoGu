@@ -56,8 +56,8 @@ public class StockPriceTableHelper {
 			+ " WHERE stockId = :stockId AND date = :date";
 	// query the last date
 	protected String GET_LATEST_STOCK_DATE = "SELECT date as rtn FROM " + tableName + " ORDER BY DATE DESC limit 1";
-	// query the latest N date
-	protected String QUERY_LATEST_N_DATE_STOCKID_SQL = "SELECT * FROM " + tableName
+	// query the latest N date price
+	protected String QUERY_LATEST_PRICE_N_DATE_STOCKID_SQL = "SELECT * FROM " + tableName
 			+ " WHERE stockId = :stockId ORDER BY date DESC LIMIT :limit";
 	// query the low price between date1(not include) and date2(include)
 	protected String QUERY_LOW_PRICE_BETWEEN_DATE_SQL = "SELECT min(low) AS rtn from (SELECT low from " + tableName
@@ -87,6 +87,9 @@ public class StockPriceTableHelper {
 	protected String UPDATE_PRICE_BASED_ON_CHUQUAN_AND_DATE = "UPDATE " + tableName
 			+ " SET open = :open, high = :high, low = :low, close = :close "
 			+ " WHERE stockId = :stockId AND DATE = :date";
+	// query the latest N date
+	protected String QUERY_LATEST_N_DATE_STOCKID_SQL = "SELECT date AS rtn FROM " + tableName
+			+ " WHERE stockId = :stockId ORDER BY date DESC LIMIT :limit";
 
 	protected NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
@@ -328,7 +331,7 @@ public class StockPriceTableHelper {
 			namedParameters.addValue("stockId", stockId);
 			namedParameters.addValue("limit", day);
 
-			List<StockPriceVO> list = this.namedParameterJdbcTemplate.query(QUERY_LATEST_N_DATE_STOCKID_SQL,
+			List<StockPriceVO> list = this.namedParameterJdbcTemplate.query(QUERY_LATEST_PRICE_N_DATE_STOCKID_SQL,
 					namedParameters, new StockPriceVOMapper());
 
 			return list;
@@ -489,6 +492,26 @@ public class StockPriceTableHelper {
 
 			if (dates != null && dates.size() > 0)
 				return dates.get(0);
+		} catch (EmptyResultDataAccessException ee) {
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "9999-99-99";
+	}
+
+	public String getLastNDate(String stockId, int limitDays) {
+		try {
+
+			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+			namedParameters.addValue("stockId", stockId);
+			namedParameters.addValue("limit", limitDays);
+
+			List<String> dates = this.namedParameterJdbcTemplate.query(QUERY_LATEST_N_DATE_STOCKID_SQL,
+					namedParameters, new StringVOMapper());
+
+			if (dates != null && dates.size() > 0)
+				return dates.get(dates.size() - 1);
 		} catch (EmptyResultDataAccessException ee) {
 
 		} catch (Exception e) {

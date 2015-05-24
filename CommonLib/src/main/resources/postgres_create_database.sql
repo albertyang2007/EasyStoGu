@@ -268,18 +268,18 @@ COMMENT ON TABLE week_stockprice
 
 CREATE TABLE checkpoint_daily_selection
 (
+  stockid text NOT NULL,
   date text NOT NULL,
   checkpoint text NOT NULL,
-  stockidlist text NOT NULL,
-  CONSTRAINT event_primary_key PRIMARY KEY (date, checkpoint)
+  CONSTRAINT checkpoint_daily_selection_primary_key PRIMARY KEY (stockid, date, checkpoint)
 )
 WITH (
   OIDS=FALSE
 );
 ALTER TABLE checkpoint_daily_selection
   OWNER TO postgres;
-GRANT ALL ON TABLE checkpoint_daily_selection TO postgres;
 GRANT ALL ON TABLE checkpoint_daily_selection TO public;
+GRANT ALL ON TABLE checkpoint_daily_selection TO postgres;
 COMMENT ON TABLE checkpoint_daily_selection
   IS 'Store daily checkpoint analyse report, selecting stock based on checkpoint.';
   
@@ -348,3 +348,44 @@ GRANT ALL ON TABLE event_chuquanchuxi TO public;
 GRANT ALL ON TABLE event_chuquanchuxi TO postgres;
 COMMENT ON TABLE event_chuquanchuxi
   IS 'ChuQuan ChuXi event for stock';
+
+  
+-- Table: ind_xueshi2
+
+-- DROP TABLE ind_xueshi2;
+
+CREATE TABLE ind_xueshi2
+(
+  stockid text NOT NULL,
+  date text NOT NULL,
+  up numeric,
+  dn numeric,
+  CONSTRAINT xueshi2_primary_key PRIMARY KEY (stockid, date)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE ind_xueshi2
+  OWNER TO postgres;
+GRANT ALL ON TABLE ind_xueshi2 TO public;
+GRANT ALL ON TABLE ind_xueshi2 TO postgres;
+
+-- Table: ind_week_xueshi2
+
+-- DROP TABLE ind_week_xueshi2;
+
+CREATE TABLE ind_week_xueshi2
+(
+  stockid text NOT NULL,
+  date text NOT NULL,
+  up numeric,
+  dn numeric,
+  CONSTRAINT week_xueshi2_primary_key PRIMARY KEY (stockid, date)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE ind_week_xueshi2
+  OWNER TO postgres;
+GRANT ALL ON TABLE ind_week_xueshi2 TO public;
+GRANT ALL ON TABLE ind_week_xueshi2 TO postgres;

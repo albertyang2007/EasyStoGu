@@ -4,16 +4,15 @@ import java.util.List;
 
 import org.easystogu.config.StockListConfigurationService;
 import org.easystogu.db.access.ChuQuanChuXiPriceHelper;
-import org.easystogu.db.access.IndBollTableHelper;
+import org.easystogu.db.access.IndXueShi2TableHelper;
 import org.easystogu.db.access.StockPriceTableHelper;
-import org.easystogu.db.table.BollVO;
 import org.easystogu.db.table.StockPriceVO;
+import org.easystogu.db.table.XueShi2VO;
 import org.easystogu.indicator.TALIBWraper;
 
-//计算数据库中所有boll值，包括最新和历史的，一次性运行
-public class HistoryBollCountAndSaveDBRunner {
+public class HistoryXueShi2CountAndSaveDBRunner {
 
-	protected IndBollTableHelper bollTable = IndBollTableHelper.getInstance();
+	protected IndXueShi2TableHelper xueShi2Table = IndXueShi2TableHelper.getInstance();
 	protected StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
 	private TALIBWraper talib = new TALIBWraper();
 	protected ChuQuanChuXiPriceHelper chuQuanChuXiPriceHelper = new ChuQuanChuXiPriceHelper();
@@ -24,9 +23,9 @@ public class HistoryBollCountAndSaveDBRunner {
 
 			int length = priceList.size();
 
-			if (length < 20) {
+			if (length < 60) {
 				System.out.println(stockId
-						+ " price data is not enough to count Boll, please wait until it has at least 20 days. Skip");
+						+ " price data is not enough to count XueShi2, please wait until it has at least 60 days. Skip");
 				return;
 			}
 
@@ -39,25 +38,35 @@ public class HistoryBollCountAndSaveDBRunner {
 				close[index++] = vo.close;
 			}
 
-			double[][] boll = talib.getBbands(close, 20, 2, 2);
+			double[] var = talib.getEma(close, 9);
+
+			double[] varUpper = new double[var.length];
+			for (int i = 0; i < var.length; i++) {
+				varUpper[i] = var[i] * 1.14;
+			}
+
+			double[] varLower = new double[var.length];
+			for (int i = 0; i < var.length; i++) {
+				varLower[i] = var[i] * 0.86;
+			}
+
+			double[] xueShi2Upper = talib.getEma(varUpper, 5);
+			double[] xueShi2Low = talib.getEma(varLower, 5);
 
 			for (index = priceList.size() - 1; index >= 0; index--) {
-				double up = boll[0][index];
-				double mb = boll[1][index];
-				double dn = boll[2][index];
-				// System.out.println("MB=" + mb);
+				double up = xueShi2Upper[index];
+				double dn = xueShi2Low[index];
 				// System.out.println("UP=" + up);
 				// System.out.println("DN=" + dn);
 
-				BollVO bollVO = new BollVO();
-				bollVO.setStockId(stockId);
-				bollVO.setDate(priceList.get(index).date);
-				bollVO.setMb(mb);
-				bollVO.setUp(up);
-				bollVO.setDn(dn);
+				XueShi2VO xueShi2VO = new XueShi2VO();
+				xueShi2VO.setStockId(stockId);
+				xueShi2VO.setDate(priceList.get(index).date);
+				xueShi2VO.setUp(up);
+				xueShi2VO.setDn(dn);
 
-				if (bollTable.getBoll(bollVO.stockId, bollVO.date) == null) {
-					bollTable.insert(bollVO);
+				if (xueShi2Table.getXueShi2(xueShi2VO.stockId, xueShi2VO.date) == null) {
+					xueShi2Table.insert(xueShi2VO);
 				}
 			}
 		} catch (Exception e) {
@@ -68,7 +77,7 @@ public class HistoryBollCountAndSaveDBRunner {
 	public void countAndSaved(List<String> stockIds) {
 		int index = 0;
 		for (String stockId : stockIds) {
-			System.out.println("Boll countAndSaved: " + stockId + " " + (++index) + "/" + stockIds.size());
+			System.out.println("XueShi2 countAndSaved: " + stockId + " " + (++index) + "/" + stockIds.size());
 			this.countAndSaved(stockId);
 		}
 	}
@@ -76,9 +85,8 @@ public class HistoryBollCountAndSaveDBRunner {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		StockListConfigurationService stockConfig = StockListConfigurationService.getInstance();
-		HistoryBollCountAndSaveDBRunner runner = new HistoryBollCountAndSaveDBRunner();
+		HistoryXueShi2CountAndSaveDBRunner runner = new HistoryXueShi2CountAndSaveDBRunner();
 		runner.countAndSaved(stockConfig.getAllStockId());
-		// runner.countAndSaved("300400");
+		//runner.countAndSaved("000979");
 	}
-
 }

@@ -1,20 +1,28 @@
 package org.easystogu.db.table;
 
 public class CheckPointDailySelectionVO {
+	public String stockId;
 	public String date;
 	public String checkPoint;
-	public String stockIdList;// stockIds split by ;
 
 	public String toString() {
-		return "Date=" + this.date + ", CheckPoint=" + this.checkPoint + ", stockIds=" + this.stockIdList;
+		return stockId + " Date=" + this.date + ", CheckPoint=" + this.checkPoint;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
 	}
 
 	public String getDate() {
 		return date;
 	}
 
-	public void setDate(String date) {
-		this.date = date;
+	public String getStockId() {
+		return stockId;
+	}
+
+	public void setStockId(String stockId) {
+		this.stockId = stockId;
 	}
 
 	public String getCheckPoint() {
@@ -23,13 +31,5 @@ public class CheckPointDailySelectionVO {
 
 	public void setCheckPoint(String checkPoint) {
 		this.checkPoint = checkPoint;
-	}
-
-	public String getStockIdList() {
-		return stockIdList;
-	}
-
-	public void setStockIdList(String stockIdList) {
-		this.stockIdList = stockIdList;
 	}
 }

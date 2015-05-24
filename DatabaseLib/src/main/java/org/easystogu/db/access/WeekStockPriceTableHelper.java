@@ -46,7 +46,7 @@ public class WeekStockPriceTableHelper extends StockPriceTableHelper {
 		// query the last date
 		GET_LATEST_STOCK_DATE = "SELECT date as rtn FROM " + tableName + " ORDER BY DATE DESC limit 1";
 		// query the latest N date
-		QUERY_LATEST_N_DATE_STOCKID_SQL = "SELECT * FROM " + tableName
+		QUERY_LATEST_PRICE_N_DATE_STOCKID_SQL = "SELECT * FROM " + tableName
 				+ " WHERE stockId = :stockId ORDER BY date DESC LIMIT :limit";
 		// query the low price between date1 and date2
 		QUERY_LOW_PRICE_BETWEEN_DATE_SQL = "SELECT min(low) AS rtn from (SELECT low from " + tableName
@@ -63,6 +63,8 @@ public class WeekStockPriceTableHelper extends StockPriceTableHelper {
 		// only use for weekPrice, query the weekPrice based on date
 		QUERY_BY_STOCKID_AND_BETWEEN_DATE = "SELECT * FROM " + tableName
 				+ " WHERE stockId = :stockId AND DATE >= :date1 AND DATE < :date2 ORDER BY DATE";
+		QUERY_LATEST_N_DATE_STOCKID_SQL = "SELECT date AS rtn FROM " + tableName
+				+ " WHERE stockId = :stockId ORDER BY date DESC LIMIT :limit";
 
 		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
 	}

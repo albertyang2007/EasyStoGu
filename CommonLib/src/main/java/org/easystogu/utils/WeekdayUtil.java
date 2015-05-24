@@ -203,8 +203,29 @@ public class WeekdayUtil {
 		return "";
 	}
 
+	// 判断date1和date2之间的时间跨距, 如果是10日之内，返回true
+	public static boolean isDateBetweenNumberofDays(String date1, String date2, int len) {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		try {
+			Date date1D = sdf.parse(date1);
+			Date date2D = sdf.parse(date2);
+			long date1L = date1D.getTime();
+			long date2L = date2D.getTime();
+			long lenDaysMilSecs = len * 24 * 60 * 60 * 1000;
+			
+			if ((Math.abs(date1L - date2L)) <= lenDaysMilSecs) {
+				return true;
+			}
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+	}
+
 	public static void main(String[] args) {
 
-		WeekdayUtil.nextWorkingDate("2015-05-03");
+		boolean rtn = WeekdayUtil.isDateBetweenNumberofDays("2015-05-03", "2015-05-13", 9);
+		System.out.println(rtn);
 	}
 }
