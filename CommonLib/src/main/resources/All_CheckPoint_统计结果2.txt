@@ -2,6 +2,20 @@ SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
 SLF4J: Defaulting to no-operation (NOP) logger implementation
 SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
 
+===============================MACD_Gordon (sellPoint:MACD_Dead)==========================
+Total satisfy: 98085	 earnPercent[close]=1.7308690486139717	 earnPercent[high]=11.639213341730928	 earnPercent[low]=-5.869942759454566
+Avg hold stock days when sell point: 14
+Avg hold stock days when high price: 9
+Total high earn between (25, 50): 2639
+Total low  earn between (10, 10): 4769
+
+===============================KDJ_Gordon (sellPoint:KDJ_Dead)==========================
+Total satisfy: 223778	 earnPercent[close]=0.48895750067380783	 earnPercent[high]=6.777314275685917	 earnPercent[low]=-4.592483400440678
+Avg hold stock days when sell point: 6
+Avg hold stock days when high price: 4
+Total high earn between (25, 50): 1181
+Total low  earn between (10, 10): 3451
+
 ===============================BollXueShi2_Dn_Gordon (sellPoint:KDJ_Dead)==========================
 Total satisfy: 21993	 earnPercent[close]=0.9841728237688908	 earnPercent[high]=8.411465432682403	 earnPercent[low]=-5.529303221508404
 Avg hold stock days when sell point: 5
@@ -51,35 +65,35 @@ Avg hold stock days when high price: 5
 Total high earn between (25, 50): 2
 Total low  earn between (10, 10): 7
 
-===============================DuoTou_HuiTiao_Boll_Lower_Support_MA30_Support_MA_RongHe_XiangShang (sellPoint:KDJ_Dead)==========================
+===============================DuoTou_HuiTiao_MA30_Support_MA_RongHe_XiangShang (sellPoint:KDJ_Dead)==========================
 Total satisfy: 151	 earnPercent[close]=2.1338438255640377	 earnPercent[high]=12.819798876938535	 earnPercent[low]=-7.418904649756147
 Avg hold stock days when sell point: 6
 Avg hold stock days when high price: 4
 Total high earn between (25, 50): 4
 Total low  earn between (10, 10): 9
 
-===============================DuoTou_HuiTiao_Boll_MB_Support_MA20_Support_MA_RongHe_XiangShang (sellPoint:KDJ_Dead)==========================
+===============================DuoTou_HuiTiao_MA20_Support_MA_RongHe_XiangShang (sellPoint:KDJ_Dead)==========================
 Total satisfy: 2717	 earnPercent[close]=1.5883084057691401	 earnPercent[high]=10.920009357730605	 earnPercent[low]=-6.968729975787316
 Avg hold stock days when sell point: 6
 Avg hold stock days when high price: 4
 Total high earn between (25, 50): 56
 Total low  earn between (10, 10): 151
 
-===============================HengPan_3_Weeks_MA5_MA10_MA20_MA30_RongHe_Break_Platform_Orig (sellPoint:KDJ_Dead)==========================
+===============================HengPan_3_Weeks_MA_RongHe_Break_Platform_Orig (sellPoint:KDJ_Dead)==========================
 Total satisfy: 519	 earnPercent[close]=1.8697920062284221	 earnPercent[high]=9.975823595312155	 earnPercent[low]=-6.020916147557287
 Avg hold stock days when sell point: 6
 Avg hold stock days when high price: 4
 Total high earn between (25, 50): 12
 Total low  earn between (10, 10): 23
 
-===============================HengPan_3_Weeks_MA5_MA10_MA20_MA30_RongHe_Break_Platform (sellPoint:KDJ_Dead)==========================
+===============================HengPan_3_Weeks_MA_RongHe_Break_Platform (sellPoint:KDJ_Dead)==========================
 Total satisfy: 1417	 earnPercent[close]=1.150303737847588	 earnPercent[high]=8.729287722985847	 earnPercent[low]=-5.5375054666861665
 Avg hold stock days when sell point: 6
 Avg hold stock days when high price: 4
 Total high earn between (25, 50): 16
 Total low  earn between (10, 10): 50
 
-===============================HengPan_2_Weeks_2_Days_Green_RSV_KDJ_Gordon_RongHe_XiangShang_Break_Platform (sellPoint:KDJ_Dead)==========================
+===============================HengPan_2_Weeks_MA_RongHe_XiangShang_Break_Platform (sellPoint:KDJ_Dead)==========================
 Total satisfy: 672	 earnPercent[close]=1.0939488930984764	 earnPercent[high]=8.65294629099366	 earnPercent[low]=-5.527599603117146
 Avg hold stock days when sell point: 7
 Avg hold stock days when high price: 4

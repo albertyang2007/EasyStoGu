@@ -270,7 +270,7 @@ public class CombineAnalyseHelper {
 				}
 			}
 			break;
-		case DuoTou_HuiTiao_Boll_Lower_Support_MA30_Support_MA_RongHe_XiangShang: {
+		case DuoTou_HuiTiao_MA30_Support_MA_RongHe_XiangShang: {
 			// DuoTou huitiao, KDJ J zero, boll lower support, ma30 support,
 			// MA5,10,20,30 ronghe, MB support
 			// macd<0, dif > 0 ,near gordon, xichou > 4
@@ -337,7 +337,7 @@ public class CombineAnalyseHelper {
 			}
 			break;
 		}
-		case DuoTou_HuiTiao_Boll_MB_Support_MA20_Support_MA_RongHe_XiangShang: {
+		case DuoTou_HuiTiao_MA20_Support_MA_RongHe_XiangShang: {
 			// DuoTou huitiao, boll mb support, ma30 support,
 			// MA5,10,20,30 ronghe, MB support
 			// macd<0, dif > 0 ,near gordon, xichou > 4
@@ -701,44 +701,6 @@ public class CombineAnalyseHelper {
 			return false;
 		}
 
-		case LaoYaZhui_TuPo_MA60_Day_Under_Zero_MACD_Gordon_KDJ_Gordon_Week_KDJ_Gordon: {
-			// example: 601088 20150318, 601318 20150313
-			// week macd < 0 && dif > 0
-			if ((curSuperWeekVO.macdVO.macd < 0) && (curSuperWeekVO.macdVO.dif > 0)) {
-				// week kdj gordon or rsv gordon
-				if ((curSuperWeekVO.kdjCorssType == CrossType.GORDON)
-						|| (curSuperWeekVO.kdjCorssType == CrossType.NEAR_GORDON)
-						|| (curSuperWeekVO.rsvCorssType == CrossType.GORDON)) {
-					// week close price > week ma5, ma10
-					if ((curSuperWeekVO.priceVO.close >= curSuperWeekVO.avgMA5)
-							&& (curSuperWeekVO.priceVO.close >= curSuperWeekVO.avgMA10)) {
-						// week is duo tou
-						if ((curSuperWeekVO.avgMA5 >= curSuperWeekVO.avgMA20)
-								&& (curSuperWeekVO.avgMA10 >= curSuperWeekVO.avgMA20)
-								&& (curSuperWeekVO.avgMA20 >= curSuperWeekVO.avgMA30)) {
-							// day macd is after gordon and macd > 0
-							if (curSuperDayVO.macdVO.macd > 0) {
-								// day kdj is after gordon and k > D
-								if (curSuperDayVO.kdjVO.k > curSuperDayVO.kdjVO.d) {
-									// day ma60 > ma5 ma10, ma20, ma30
-									if ((curSuperDayVO.avgMA60 >= curSuperDayVO.avgMA5)
-											&& (curSuperDayVO.avgMA60 >= curSuperDayVO.avgMA10)
-											&& (curSuperDayVO.avgMA60 >= curSuperDayVO.avgMA20)
-											&& (curSuperDayVO.avgMA60 >= curSuperDayVO.avgMA30)) {
-										// TuPo !!! day close price > ma60
-										if (curSuperDayVO.priceVO.close >= curSuperDayVO.avgMA60) {
-											return true;
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-
-			break;
-		}
 		case ShenXian_Two_Gordons:
 			// after H1 corss H2 and then H1 corss H3
 			if (curSuperDayVO.shenXianVO.h1 > curSuperDayVO.shenXianVO.h2) {
@@ -764,11 +726,11 @@ public class CombineAnalyseHelper {
 
 		case Close_Higher_BollUp_BollXueShi2_Dn_Gordon: {
 			// close price higher boll upper and
-			// boll xueShie2 dn gordon corss						
+			// boll xueShie2 dn gordon corss
 			if ((curSuperWeekVO.kdjVO.k < curSuperWeekVO.kdjVO.d) || !this.isLatestKDJCrossGordon(overWeekList)) {
 				// over all week KDJ must after Gordon
 				return false;
-			}			
+			}
 
 			// cur close over boll up
 			if (curSuperDayVO.priceVO.close >= curSuperDayVO.bollVO.up) {

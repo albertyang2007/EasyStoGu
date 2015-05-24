@@ -108,10 +108,9 @@ public class DailySelectionRunner {
 							.getDifferentLatestCheckPointSelection(stockId, checkPoint.toString());
 					if (latestCheckPointSelection != null
 							&& !latestCheckPointSelection.checkPoint.equals(checkPoint.toString())) {
-						// check if day is between 15 days
-						boolean isRecent = WeekdayUtil.isDateBetweenNumberofDays(superVO.priceVO.date,
-								latestCheckPointSelection.getDate(), 15);
-						if (isRecent) {
+						// check if day is between 10 days
+						String lastNDate = stockPriceTable.getLastNDate(stockId, 10);
+						if (latestCheckPointSelection.date.compareTo(lastNDate) >= 0) {
 							this.saveToCheckPointSelectionDB(superVO, checkPoint);
 							this.addToConditionMapForReportDisplay(superVO, checkPoint);
 						}
@@ -214,8 +213,8 @@ public class DailySelectionRunner {
 			fout.write(ReportTemplate.tableStart);
 			fout.newLine();
 
-			//fout.write(recommandStr.toString().replaceAll("\n", "<br>"));
-			//fout.newLine();
+			// fout.write(recommandStr.toString().replaceAll("\n", "<br>"));
+			// fout.newLine();
 
 			for (RangeHistoryReportVO rangeVO : rangeList) {
 

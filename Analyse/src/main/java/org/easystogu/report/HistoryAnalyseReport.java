@@ -174,7 +174,7 @@ public class HistoryAnalyseReport {
 					}
 
 					if (!reportVO.completed) {
-						System.out.println("Not Completed: " + reportVO);
+						// System.out.println("Not Completed: " + reportVO);
 						// save to checkpint daily selection table
 						if (isCheckPointSelected(checkPoint)) {
 							this.saveToCheckPointDailySelectionDB(reportVO.stockId, reportVO.buyPriceVO.date,
@@ -219,7 +219,7 @@ public class HistoryAnalyseReport {
 		vo.setLowEarnPercent(earnPercent[2] / totalCount);
 		vo.setAvgHoldDays(holdDays / totalCount);
 		vo.setTotalHighEarn(totalHighCount);
-		// cpHistoryAnalyse.insert(vo);
+		cpHistoryAnalyse.insert(vo);
 
 	}
 
@@ -277,12 +277,12 @@ public class HistoryAnalyseReport {
 			if (checkPoint.getEarnPercent() <= 0.0) {
 				continue;
 			}
-			// reporter.searchAllStockIdAccordingToCheckPoint(checkPoint);
+			reporter.searchAllStockIdAccordingToCheckPoint(checkPoint);
 		}
 
-		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.Close_Higher_BollUp_BollXueShi2_Dn_Gordon);
-		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.HengPan_3_Weeks_MA_RongHe_Break_Platform_Orig);
-		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.HengPan_3_Weeks_MA_RongHe_Break_Platform);
-		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.HengPan_2_Weeks_MA_RongHe_XiangShang_Break_Platform);
+		// reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.Close_Higher_BollUp_BollXueShi2_Dn_Gordon);
+		// reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.HengPan_3_Weeks_MA_RongHe_Break_Platform_Orig);
+		// reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.HengPan_3_Weeks_MA_RongHe_Break_Platform);
+		// reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.HengPan_2_Weeks_MA_RongHe_XiangShang_Break_Platform);
 	}
 }
