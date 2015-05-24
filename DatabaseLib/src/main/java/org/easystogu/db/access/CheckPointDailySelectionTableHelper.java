@@ -3,6 +3,7 @@ package org.easystogu.db.access;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -19,162 +20,175 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 public class CheckPointDailySelectionTableHelper {
-    private static Logger logger = LogHelper.getLogger(CheckPointDailySelectionTableHelper.class);
-    private DataSource dataSource = PostgreSqlDataSourceFactory.createDataSource();
-    private static CheckPointDailySelectionTableHelper instance = null;
-    private String tableName = "CHECKPOINT_DAILY_SELECTION";
-    public String INSERT_SQL = "INSERT INTO " + tableName
-            + " (date, checkpoint, stockidlist) VALUES (:date, :checkpoint, :stockidlist)";
-    public String UPDATE_SQL = "UPDATE " + tableName
-            + " SET stockidlist = :stockidlist WHERE date = :date AND checkpoint = :checkpoint";
-    public String DELETE_SQL = "DELETE FROM " + tableName + " WHERE date = :date AND checkpoint = :checkpoint";
-    public String DELETE_BY_DATE_SQL = "DELETE FROM " + tableName + " WHERE date = :date";
-    public String QUERY_BY_DATE_AND_CHECKPOINT_SQL = "SELECT * FROM " + tableName
-            + " WHERE date = :date AND checkpoint = :checkpoint";
-    public String QUERY_BY_DATE_AND_CHECKPOINT_AND_ID_SQL = "SELECT * FROM " + tableName
-            + " WHERE date = :date AND checkpoint = :checkpoint AND stockidlist LIKE :stockidlist";
+	private static Logger logger = LogHelper.getLogger(CheckPointDailySelectionTableHelper.class);
+	private DataSource dataSource = PostgreSqlDataSourceFactory.createDataSource();
+	private static CheckPointDailySelectionTableHelper instance = null;
+	private String tableName = "CHECKPOINT_DAILY_SELECTION";
+	public String INSERT_SQL = "INSERT INTO " + tableName
+			+ " (stockid, date, checkpoint) VALUES (:stockid, :date, :checkpoint)";
+	public String DELETE_SQL = "DELETE FROM " + tableName
+			+ " WHERE stockid = :stockid AND date = :date AND checkpoint = :checkpoint";
+	public String QUERY_BY_STOCKID_AND_DATE_AND_CHECKPOINT_SQL = "SELECT * FROM " + tableName
+			+ " WHERE stockid = :stockid AND date = :date AND checkpoint = :checkpoint";
+	public String QUERY_LATEST_BY_STOCKID_AND_NOT_CHECKPOINT_SQL = "SELECT * FROM " + tableName
+			+ " WHERE stockid = :stockid AND checkpoint != :checkpoint ORDER BY DATE DESC LIMIT 1";
 
-    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    public static CheckPointDailySelectionTableHelper getInstance() {
-        if (instance == null) {
-            instance = new CheckPointDailySelectionTableHelper();
-        }
-        return instance;
-    }
+	public static CheckPointDailySelectionTableHelper getInstance() {
+		if (instance == null) {
+			instance = new CheckPointDailySelectionTableHelper();
+		}
+		return instance;
+	}
 
-    private CheckPointDailySelectionTableHelper() {
-        this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
-    }
+	private CheckPointDailySelectionTableHelper() {
+		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+	}
 
-    private static final class IndEventVOMapper implements RowMapper<CheckPointDailySelectionVO> {
-        public CheckPointDailySelectionVO mapRow(ResultSet rs, int rowNum) throws SQLException {
-            CheckPointDailySelectionVO vo = new CheckPointDailySelectionVO();
-            vo.setDate(rs.getString("date"));
-            vo.setCheckPoint(rs.getString("checkpoint"));
-            vo.setStockIdList(rs.getString("stockidlist"));
-            return vo;
-        }
-    }
+	private static final class IndEventVOMapper implements RowMapper<CheckPointDailySelectionVO> {
+		public CheckPointDailySelectionVO mapRow(ResultSet rs, int rowNum) throws SQLException {
+			CheckPointDailySelectionVO vo = new CheckPointDailySelectionVO();
+			vo.setStockId(rs.getString("stockid"));
+			vo.setDate(rs.getString("date"));
+			vo.setCheckPoint(rs.getString("checkpoint"));
+			return vo;
+		}
+	}
 
-    private static final class DefaultPreparedStatementCallback implements PreparedStatementCallback<Integer> {
-        public Integer doInPreparedStatement(PreparedStatement ps) throws SQLException, DataAccessException {
-            return ps.executeUpdate();
-        }
-    }
+	private static final class DefaultPreparedStatementCallback implements PreparedStatementCallback<Integer> {
+		public Integer doInPreparedStatement(PreparedStatement ps) throws SQLException, DataAccessException {
+			return ps.executeUpdate();
+		}
+	}
 
-    public void insert(CheckPointDailySelectionVO vo) {
-        logger.debug("insert for {}", vo);
+	public void insert(CheckPointDailySelectionVO vo) {
+		try {
+			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+			namedParameters.addValue("stockid", vo.getStockId());
+			namedParameters.addValue("date", vo.getDate());
+			namedParameters.addValue("checkpoint", vo.getCheckPoint());
 
-        try {
-            MapSqlParameterSource namedParameters = new MapSqlParameterSource();
-            namedParameters.addValue("date", vo.getDate());
-            namedParameters.addValue("checkpoint", vo.getCheckPoint());
-            namedParameters.addValue("stockidlist", vo.getStockIdList());
+			namedParameterJdbcTemplate.execute(INSERT_SQL, namedParameters, new DefaultPreparedStatementCallback());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
-            namedParameterJdbcTemplate.execute(INSERT_SQL, namedParameters, new DefaultPreparedStatementCallback());
-        } catch (Exception e) {
-            logger.error("exception meets for insert vo: " + vo, e);
-            e.printStackTrace();
-        }
-    }
+	public void insertIfNotExist(CheckPointDailySelectionVO vo) {
 
-    public void insert(List<CheckPointDailySelectionVO> list) throws Exception {
-        for (CheckPointDailySelectionVO vo : list) {
-            this.insert(vo);
-        }
-    }
+		if (isEventExist(vo.stockId, vo.date, vo.checkPoint)) {
+			return;
+		}
 
-    public CheckPointDailySelectionVO getEvent(String date, String checkpoint) {
-        try {
+		try {
+			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+			namedParameters.addValue("stockid", vo.getStockId());
+			namedParameters.addValue("date", vo.getDate());
+			namedParameters.addValue("checkpoint", vo.getCheckPoint());
 
-            MapSqlParameterSource namedParameters = new MapSqlParameterSource();
-            namedParameters.addValue("date", date);
-            namedParameters.addValue("checkpoint", checkpoint);
+			namedParameterJdbcTemplate.execute(INSERT_SQL, namedParameters, new DefaultPreparedStatementCallback());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
-            CheckPointDailySelectionVO vo = this.namedParameterJdbcTemplate.queryForObject(QUERY_BY_DATE_AND_CHECKPOINT_SQL,
-                    namedParameters, new IndEventVOMapper());
+	public void insert(List<CheckPointDailySelectionVO> list) throws Exception {
+		for (CheckPointDailySelectionVO vo : list) {
+			this.insert(vo);
+		}
+	}
 
-            return vo;
-        } catch (EmptyResultDataAccessException ee) {
-            return null;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
+	public CheckPointDailySelectionVO getCheckPointSelection(String stockId, String date, String checkpoint) {
+		try {
 
-    public void update(CheckPointDailySelectionVO vo) {
-        logger.debug("update for {}", vo);
-        try {
-            MapSqlParameterSource namedParameters = new MapSqlParameterSource();
-            namedParameters.addValue("date", vo.getDate());
-            namedParameters.addValue("checkpoint", vo.getCheckPoint());
-            namedParameters.addValue("stockidlist", vo.getStockIdList());
+			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+			namedParameters.addValue("stockid", stockId);
+			namedParameters.addValue("date", date);
+			namedParameters.addValue("checkpoint", checkpoint);
 
-            namedParameterJdbcTemplate.execute(UPDATE_SQL, namedParameters, new DefaultPreparedStatementCallback());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+			CheckPointDailySelectionVO vo = this.namedParameterJdbcTemplate.queryForObject(
+					QUERY_BY_STOCKID_AND_DATE_AND_CHECKPOINT_SQL, namedParameters, new IndEventVOMapper());
 
-    public void delete(String date, String checkpoint) {
-        try {
-            MapSqlParameterSource namedParameters = new MapSqlParameterSource();
-            namedParameters.addValue("date", date);
-            namedParameters.addValue("checkpoint", checkpoint);
+			return vo;
+		} catch (EmptyResultDataAccessException ee) {
+			return null;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 
-            namedParameterJdbcTemplate.execute(DELETE_SQL, namedParameters, new DefaultPreparedStatementCallback());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+	public CheckPointDailySelectionVO getDifferentLatestCheckPointSelection(String stockId, String checkPoint) {
+		try {
 
-    public void deleteByDate(String date) {
-        try {
-            MapSqlParameterSource namedParameters = new MapSqlParameterSource();
-            namedParameters.addValue("date", date);
+			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+			namedParameters.addValue("stockid", stockId);
+			namedParameters.addValue("checkpoint", checkPoint);
 
-            namedParameterJdbcTemplate.execute(DELETE_BY_DATE_SQL, namedParameters,
-                    new DefaultPreparedStatementCallback());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+			CheckPointDailySelectionVO vo = this.namedParameterJdbcTemplate.queryForObject(
+					QUERY_LATEST_BY_STOCKID_AND_NOT_CHECKPOINT_SQL, namedParameters, new IndEventVOMapper());
 
-    public boolean isEventExist(String date, String checkpoint, String stockId) {
-        try {
+			return vo;
+		} catch (EmptyResultDataAccessException ee) {
+			return null;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 
-            MapSqlParameterSource namedParameters = new MapSqlParameterSource();
-            namedParameters.addValue("date", date);
-            namedParameters.addValue("checkpoint", checkpoint);
-            namedParameters.addValue("stockidlist", "%" + stockId + "%");
+	public void delete(String stockId, String date, String checkpoint) {
+		try {
+			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+			namedParameters.addValue("stockid", stockId);
+			namedParameters.addValue("date", date);
+			namedParameters.addValue("checkpoint", checkpoint);
 
-            CheckPointDailySelectionVO vo = this.namedParameterJdbcTemplate.queryForObject(QUERY_BY_DATE_AND_CHECKPOINT_AND_ID_SQL,
-                    namedParameters, new IndEventVOMapper());
+			namedParameterJdbcTemplate.execute(DELETE_SQL, namedParameters, new DefaultPreparedStatementCallback());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
-            if (vo != null) {
-                return true;
-            }
-        } catch (EmptyResultDataAccessException ee) {
-            return false;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
+	public boolean isEventExist(String stockId, String date, String checkpoint) {
+		try {
 
-    public static void main(String[] args) {
-        // TODO Auto-generated method stub
-        CheckPointDailySelectionTableHelper ins = new CheckPointDailySelectionTableHelper();
-        try {
-            boolean exist = ins.isEventExist("2015-02-17", "Volume_Big_1", "600050");
-            System.out.println(exist);
+			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+			namedParameters.addValue("stockid", stockId);
+			namedParameters.addValue("date", date);
+			namedParameters.addValue("checkpoint", checkpoint);
 
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
+			CheckPointDailySelectionVO vo = this.namedParameterJdbcTemplate.queryForObject(
+					QUERY_BY_STOCKID_AND_DATE_AND_CHECKPOINT_SQL, namedParameters, new IndEventVOMapper());
+
+			if (vo != null) {
+				return true;
+			}
+		} catch (EmptyResultDataAccessException ee) {
+			return false;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		CheckPointDailySelectionTableHelper ins = new CheckPointDailySelectionTableHelper();
+		try {
+			CheckPointDailySelectionVO vo = new CheckPointDailySelectionVO();
+			vo.stockId = "601311";
+			vo.date = "2015-05-18";
+			vo.checkPoint = "HengPan_3_Weeks_MA5_MA10_MA20_MA30_RongHe_Break_Platform";
+			ins.insertIfNotExist(vo);
+			boolean exist = ins.isEventExist(vo.stockId, vo.date, vo.checkPoint);
+			System.out.println(exist);
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 }

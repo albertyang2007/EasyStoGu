@@ -15,7 +15,8 @@ public class RangeHistoryReportVO {
 
 	public StockSuperVO currentSuperVO;
 
-	public RangeHistoryReportVO(StockSuperVO superVO, List<HistoryReportDetailsVO> list, DailyCombineCheckPoint checkPoint) {
+	public RangeHistoryReportVO(StockSuperVO superVO, List<HistoryReportDetailsVO> list,
+			DailyCombineCheckPoint checkPoint) {
 		this.currentSuperVO = superVO;
 		this.stockId = superVO.priceVO.stockId;
 		this.historyReporList = list;
@@ -54,6 +55,14 @@ public class RangeHistoryReportVO {
 				+ this.currentSuperVO.priceHigherThanNday + ", history size=" + historyReporList.size() + ", avgClose="
 				+ format(avgEarnPercent[0]) + ", avgHigh=" + format(avgEarnPercent[1]) + ", avgLow="
 				+ format(avgEarnPercent[2]);
+	}
+
+	public String toSimpleString() {
+		double priceIncreaseToday = ((this.currentSuperVO.priceVO.close - this.currentSuperVO.priceVO.lastClose) * 100.0)
+				/ this.currentSuperVO.priceVO.lastClose;
+		return stockId + " " + getStockName(this.currentSuperVO.priceVO.stockId) + " "
+				+ this.currentSuperVO.priceVO.close + " (" + format(priceIncreaseToday) + ") "
+				+ checkPoint.toStringWithDetails();
 	}
 
 	public String getStockName(String stockId) {

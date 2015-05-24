@@ -29,7 +29,7 @@ import org.easystogu.report.HistoryReportDetailsVO;
 import org.easystogu.report.RangeHistoryReportVO;
 import org.easystogu.report.ReportTemplate;
 import org.easystogu.report.comparator.CheckPointEarnPercentComparator;
-import org.easystogu.utils.Strings;
+import org.easystogu.utils.WeekdayUtil;
 
 public class DailySelectionRunner {
 	private FileConfigurationService config = FileConfigurationService.getInstance();
@@ -37,11 +37,13 @@ public class DailySelectionRunner {
 	private StockSuperVOHelper stockOverAllHelper = new StockSuperVOHelper();
 	private WeekStockSuperVOHelper weekStockOverAllHelper = new WeekStockSuperVOHelper();
 	private String latestDate = stockPriceTable.getLatestStockDate();
-	private CheckPointDailySelectionTableHelper eventTable = CheckPointDailySelectionTableHelper.getInstance();
+	private CheckPointDailySelectionTableHelper checkPointDailySelectionTable = CheckPointDailySelectionTableHelper
+			.getInstance();
 	private HistoryAnalyseReport historyReportHelper = new HistoryAnalyseReport();
 	private CombineAnalyseHelper combineAnalyserHelper = new CombineAnalyseHelper();
 	private double minEarnPercent = config.getDouble("minEarnPercent_Select_CheckPoint");
-	private String specifySelectCheckPoint = config.getString("specify_Select_CheckPoint");
+	private String[] specifySelectCheckPoints = config.getString("specify_Select_CheckPoint", "").split(";");
+	private String[] specifyDependCheckPoints = config.getString("specify_Depend_CheckPoint", "").split(";");
 	private StringBuffer recommandStr = new StringBuffer();
 	// StockPriceVO, CheckPoint list
 	private Map<StockSuperVO, List<DailyCombineCheckPoint>> selectedMaps = new HashMap<StockSuperVO, List<DailyCombineCheckPoint>>();
@@ -70,8 +72,9 @@ public class DailySelectionRunner {
 		IndCrossCheckingHelper.macdCross(overDayList);
 		IndCrossCheckingHelper.kdjCross(overDayList);
 		IndCrossCheckingHelper.rsvCross(overDayList);
-		IndCrossCheckingHelper.shenXianCross12(overDayList);
-		IndCrossCheckingHelper.shenXianCross13(overDayList);
+		IndCrossCheckingHelper.bollXueShi2DnCross(overDayList);
+		// IndCrossCheckingHelper.shenXianCross12(overDayList);
+		// IndCrossCheckingHelper.shenXianCross13(overDayList);
 		VolumeCheckingHelper.volumeIncreasePuls(overDayList);
 		VolumeCheckingHelper.avgVolume5(overDayList);
 		PriceCheckingHelper.priceHigherThanNday(overDayList, 15);
@@ -93,33 +96,40 @@ public class DailySelectionRunner {
 
 		// check all combine check point
 		for (DailyCombineCheckPoint checkPoint : DailyCombineCheckPoint.values()) {
-			if (this.isCheckPointSelected(checkPoint)) {
+			if (this.isSelectedCheckPoint(checkPoint)) {
 				if (combineAnalyserHelper.isConditionSatisfy(checkPoint, overDayList, overWeekList)) {
-					this.addToConditionMap(superVO, checkPoint);
-					// this.saveToEventDB(superVO, checkPoint);
+					this.saveToCheckPointSelectionDB(superVO, checkPoint);
+					this.addToConditionMapForReportDisplay(superVO, checkPoint);
+				}
+			} else if (this.isDependCheckPoint(checkPoint)) {
+				if (combineAnalyserHelper.isConditionSatisfy(checkPoint, overDayList, overWeekList)) {
+					// search if other checkpoint already happen in recent days
+					CheckPointDailySelectionVO latestCheckPointSelection = checkPointDailySelectionTable
+							.getDifferentLatestCheckPointSelection(stockId, checkPoint.toString());
+					if (latestCheckPointSelection != null
+							&& !latestCheckPointSelection.checkPoint.equals(checkPoint.toString())) {
+						// check if day is between 15 days
+						boolean isRecent = WeekdayUtil.isDateBetweenNumberofDays(superVO.priceVO.date,
+								latestCheckPointSelection.getDate(), 15);
+						if (isRecent) {
+							this.saveToCheckPointSelectionDB(superVO, checkPoint);
+							this.addToConditionMapForReportDisplay(superVO, checkPoint);
+						}
+					}
 				}
 			}
 		}
 	}
 
-	private void saveToEventDB(StockSuperVO superVO, DailyCombineCheckPoint checkPoint) {
-		CheckPointDailySelectionVO vo = this.eventTable.getEvent(superVO.priceVO.date, checkPoint.toString());
-
-		if (vo == null) {
-			vo = new CheckPointDailySelectionVO();
-			vo.setDate(superVO.priceVO.date);
-			vo.setCheckPoint(checkPoint.toString());
-			vo.setStockIdList(superVO.priceVO.stockId + ";");
-			this.eventTable.insert(vo);
-		} else {
-			String stockIdList = vo.getStockIdList() + superVO.priceVO.stockId + ";";
-			vo.setStockIdList(stockIdList);
-			this.eventTable.update(vo);
-		}
-
+	private void saveToCheckPointSelectionDB(StockSuperVO superVO, DailyCombineCheckPoint checkPoint) {
+		CheckPointDailySelectionVO vo = new CheckPointDailySelectionVO();
+		vo.setStockId(superVO.priceVO.stockId);
+		vo.setDate(superVO.priceVO.date);
+		vo.setCheckPoint(checkPoint.toString());
+		this.checkPointDailySelectionTable.insertIfNotExist(vo);
 	}
 
-	private void addToConditionMap(StockSuperVO superVO, DailyCombineCheckPoint checkPoint) {
+	private void addToConditionMapForReportDisplay(StockSuperVO superVO, DailyCombineCheckPoint checkPoint) {
 		List<DailyCombineCheckPoint> checkPointList = selectedMaps.get(superVO);
 		if (checkPointList == null) {
 			checkPointList = new ArrayList<DailyCombineCheckPoint>();
@@ -130,13 +140,18 @@ public class DailySelectionRunner {
 		}
 	}
 
-	private boolean isCheckPointSelected(DailyCombineCheckPoint checkPoint) {
-		if (Strings.isNotEmpty(specifySelectCheckPoint)) {
-			if (specifySelectCheckPoint.contains(checkPoint.toString() + ";")) {
+	private boolean isSelectedCheckPoint(DailyCombineCheckPoint checkPoint) {
+		for (String cp : specifySelectCheckPoints) {
+			if (cp.equals(checkPoint.toString())) {
 				return true;
 			}
-		} else {
-			if (checkPoint.getEarnPercent() >= minEarnPercent) {
+		}
+		return false;
+	}
+
+	private boolean isDependCheckPoint(DailyCombineCheckPoint checkPoint) {
+		for (String cp : specifyDependCheckPoints) {
+			if (cp.equals(checkPoint.toString())) {
 				return true;
 			}
 		}
@@ -199,8 +214,8 @@ public class DailySelectionRunner {
 			fout.write(ReportTemplate.tableStart);
 			fout.newLine();
 
-			fout.write(recommandStr.toString().replaceAll("\n", "<br>"));
-			fout.newLine();
+			//fout.write(recommandStr.toString().replaceAll("\n", "<br>"));
+			//fout.newLine();
 
 			for (RangeHistoryReportVO rangeVO : rangeList) {
 
@@ -215,7 +230,7 @@ public class DailySelectionRunner {
 				fout.newLine();
 
 				fout.write(ReportTemplate.tableTdStart);
-				fout.write(rangeVO.toString());
+				fout.write(rangeVO.toSimpleString());
 				fout.write(ReportTemplate.tableTdEnd);
 				fout.newLine();
 
@@ -262,6 +277,7 @@ public class DailySelectionRunner {
 		List<String> stockIds = stockConfig.getAllStockId();
 
 		for (String stockId : stockIds) {
+			// if (stockId.equals("000979"))
 			runner.doAnalyse(stockId);
 		}
 

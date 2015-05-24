@@ -1,5 +1,7 @@
 package org.easystogu.indicator;
 
+import java.util.List;
+
 public class SimpleMovingAverages {
 	/**
 	 * Calculate the Simple Moving Average value, summing up the previous
@@ -34,6 +36,17 @@ public class SimpleMovingAverages {
 		}
 
 		return rtn;
+	}
+
+	public Double getEXPMA(final List<Double> list, final int number) {
+		// 开始计算EMA值，
+		Double k = 2.0 / (number + 1.0);// 计算出序数
+		Double ema = list.get(0);// 第一天ema等于当天收盘价
+		for (int i = 1; i < list.size(); i++) {
+			// 第二天以后，当天收盘 收盘价乘以系数再加上昨天EMA乘以系数-1
+			ema = list.get(i) * k + ema * (1 - k);
+		}
+		return ema;
 	}
 
 	public static void main(String[] args) {

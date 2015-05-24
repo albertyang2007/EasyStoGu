@@ -7,12 +7,14 @@ public class StockSuperVO {
 	public MacdVO macdVO;
 	public KDJVO kdjVO;
 	public BollVO bollVO;
+	public XueShi2VO xueShi2VO;
 	public ShenXianVO shenXianVO;
 	public double volumeIncreasePercent;// äº¤æ˜“çš„volumeè¾ƒå‰�ä¸€æ—¥çš„å¢žé‡�ç™¾åˆ†æ¯”
 	public long avgVol5;// avg of 5 days volume
 	public CrossType macdCorssType;
 	public CrossType kdjCorssType;
 	public CrossType rsvCorssType;
+	public CrossType bullXueShi2DnCrossType;
 	public CrossType shenXianCorssType12;// H1 corss H2
 	public CrossType shenXianCorssType13;// H1 corss H3
 	public boolean[] KLineStatus = new boolean[4];// big/small red, big/small
@@ -25,23 +27,30 @@ public class StockSuperVO {
 	public double avgMA60;// 60日均价
 	public double avgMA120;// 120日均价
 
-	public StockSuperVO(StockPriceVO priceVO, MacdVO macdVO, KDJVO kdjVO, BollVO bollVO, ShenXianVO shenXianVO) {
+	public StockSuperVO(StockPriceVO priceVO, MacdVO macdVO, KDJVO kdjVO, BollVO bollVO) {
 		this.priceVO = priceVO;
 		this.macdVO = macdVO;
 		this.kdjVO = kdjVO;
 		this.bollVO = bollVO;
-		this.shenXianVO = shenXianVO;
 		this.macdCorssType = CrossType.UNKNOWN;
 		this.kdjCorssType = CrossType.UNKNOWN;
 		this.volumeIncreasePercent = 1.0;
 	}
 
+	public void setShenXianVO(ShenXianVO vo) {
+		this.shenXianVO = vo;
+	}
+
+	public void setXueShi2VO(XueShi2VO vo) {
+		this.xueShi2VO = vo;
+	}
+
 	@Override
 	public String toString() {
 		return priceVO.toString() + ";" + macdVO.toString() + ";" + kdjVO.toString() + ";" + bollVO.toString() + ";"
-				+ shenXianVO.toString() + "; macdCross:" + macdCorssType + "; kdjCross:" + kdjCorssType
-				+ "; shenXianCross:" + shenXianCorssType12 + "; shenXianCross2:" + shenXianCorssType13
-				+ "; volumeIncFactor=" + volumeIncreasePercent;
+				+ "; macdCross:" + macdCorssType + "; kdjCross:" + kdjCorssType + "; shenXianCross:"
+				+ shenXianCorssType12 + "; shenXianCross2:" + shenXianCorssType13 + "; volumeIncFactor="
+				+ volumeIncreasePercent;
 	}
 
 	@Override
