@@ -477,6 +477,77 @@ public class CombineAnalyseHelper {
 			break;
 		}
 
+		case HengPang_Ready_To_Break_Platform_MA20_Support_MA_RongHe_XiangShang: {
+			// merged by HengPang_Ready_To_Break_Platform and
+			// DuoTou_HuiTiao_MA20_Support_MA_RongHe_XiangShang
+			boolean isPlatform = this.isPlatform(overDayList, overWeekList);
+			if (!isPlatform)
+				return false;
+
+			// below is completely copy from
+			// DuoTou_HuiTiao_MA20_Support_MA_RongHe_XiangShang
+			// limit two macd gordon and dead point to about 30 working days
+			List<StockSuperVO> overDaySubList = overDayList.subList(overDayList.size() - 30, overDayList.size());
+
+			boolean findDuoTouHuiTiaoMacdDeadPoint = false;
+			int macdDeadPointIndex = 0;
+			// first find macd dead point, dif >0
+			for (int i = 0; i < overDaySubList.size(); i++) {
+				StockSuperVO vo = overDaySubList.get(i);
+				if ((vo.macdCorssType == CrossType.DEAD) && (vo.macdVO.dif > 1.0)) {
+					macdDeadPointIndex = i;
+					if ((i - 1) >= 0) {
+						StockSuperVO pre1vo = overDaySubList.get(i - 1);
+						if ((pre1vo.avgMA5 >= pre1vo.avgMA10) && (pre1vo.avgMA10 >= pre1vo.avgMA20)
+								&& (pre1vo.avgMA20 >= pre1vo.avgMA30)) {
+							findDuoTouHuiTiaoMacdDeadPoint = true;
+							break;
+						}
+					}
+
+					if ((i - 2) >= 0) {
+						StockSuperVO pre2vo = overDaySubList.get(i - 2);
+						if ((pre2vo.avgMA5 >= pre2vo.avgMA10) && (pre2vo.avgMA10 >= pre2vo.avgMA20)
+								&& (pre2vo.avgMA20 >= pre2vo.avgMA30)) {
+							findDuoTouHuiTiaoMacdDeadPoint = true;
+							break;
+						}
+					}
+				}
+			}
+
+			if (!findDuoTouHuiTiaoMacdDeadPoint) {
+				return false;
+			}
+
+			// find MA20 support and BOll lower support
+			boolean findMA20Support = false;
+			boolean findBollMBSupport = false;
+			for (int i = macdDeadPointIndex; i < overDaySubList.size(); i++) {
+				StockSuperVO vo = overDaySubList.get(i);
+				if ((vo.priceVO.low <= vo.avgMA20) && (vo.priceVO.close > vo.avgMA20)) {
+					findMA20Support = true;
+				}
+
+				if ((vo.priceVO.low <= vo.bollVO.mb) && (vo.priceVO.close > vo.bollVO.mb)) {
+					findBollMBSupport = true;
+				}
+			}
+
+			if (!findMA20Support || !findBollMBSupport) {
+				return false;
+			}
+
+			// check close is higher Boll MB and MA5,10,20,30 Ronghe xiangShang
+			if ((curSuperDayVO.macdVO.macd <= 0.0) && (curSuperDayVO.macdVO.dif > 0.0)) {
+				if ((curSuperDayVO.priceVO.close > curSuperDayVO.bollVO.mb) && curSuperDayVO.priceVO.isKLineRed()) {
+					// check MA rongHe and xiangShang
+					return this.MA5_MA10_MA20_Ronghe_XiangShang(curSuperDayVO, pre1SuperDayVO);
+				}
+			}
+			break;
+		}
+
 		case HengPan_3_Weeks_MA_RongHe_Break_Platform_Orig: {
 			// example: 300216 @ 20150421; 002040 @ 20150421
 			// week platform

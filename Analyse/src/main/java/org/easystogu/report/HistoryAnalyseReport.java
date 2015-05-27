@@ -279,7 +279,7 @@ public class HistoryAnalyseReport {
 			}
 			// reporter.searchAllStockIdAccordingToCheckPoint(checkPoint);
 		}
-		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.HengPang_Ready_To_Break_Platform_BollUp_BollXueShi2_Dn_Gordon);
-		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.HengPang_Ready_To_Break_Platform_MA30_Support_MA_RongHe_XiangShang);
+		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.HengPan_3_Weeks_MA_RongHe_Break_Platform_Orig);
+		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.HengPan_3_Weeks_MA_RongHe_Break_Platform);
 	}
 }
