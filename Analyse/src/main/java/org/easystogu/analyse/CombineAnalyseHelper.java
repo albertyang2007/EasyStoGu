@@ -7,7 +7,6 @@ import org.easystogu.db.table.StockSuperVO;
 import org.easystogu.utils.CrossType;
 
 public class CombineAnalyseHelper {
-
 	public int[] tempInputArgs = new int[2];// just for temp history analyse
 
 	// overList is order by date, it is daily price and ind
@@ -337,6 +336,79 @@ public class CombineAnalyseHelper {
 			}
 			break;
 		}
+
+		case HengPang_Ready_To_Break_Platform_MA30_Support_MA_RongHe_XiangShang: {
+			// combined with DuoTou_HuiTiao_MA30_Support_MA_RongHe_XiangShang
+			// and HengPang_Ready_To_Break_Platform
+			boolean isPlatform = this.isPlatform(overDayList, overWeekList);
+			if (!isPlatform)
+				return false;
+
+			// below is completely copy from
+			// DuoTou_HuiTiao_MA30_Support_MA_RongHe_XiangShang
+			//
+			// limit two macd gordon and dead point to about 30 working days
+			List<StockSuperVO> overDaySubList = overDayList.subList(overDayList.size() - 30, overDayList.size());
+
+			boolean findDuoTouHuiTiaoMacdDeadPoint = false;
+			int macdDeadPointIndex = 0;
+			// first find macd dead point, dif >0
+			for (int i = 0; i < overDaySubList.size(); i++) {
+				StockSuperVO vo = overDaySubList.get(i);
+				if ((vo.macdCorssType == CrossType.DEAD) && (vo.macdVO.dif > 2.0)) {
+					macdDeadPointIndex = i;
+					if ((i - 1) >= 0) {
+						StockSuperVO pre1vo = overDaySubList.get(i - 1);
+						if ((pre1vo.avgMA5 >= pre1vo.avgMA10) && (pre1vo.avgMA10 >= pre1vo.avgMA20)
+								&& (pre1vo.avgMA20 >= pre1vo.avgMA30)) {
+							findDuoTouHuiTiaoMacdDeadPoint = true;
+							break;
+						}
+					}
+
+					if ((i - 2) >= 0) {
+						StockSuperVO pre2vo = overDaySubList.get(i - 2);
+						if ((pre2vo.avgMA5 >= pre2vo.avgMA10) && (pre2vo.avgMA10 >= pre2vo.avgMA20)
+								&& (pre2vo.avgMA20 >= pre2vo.avgMA30)) {
+							findDuoTouHuiTiaoMacdDeadPoint = true;
+							break;
+						}
+					}
+				}
+			}
+
+			if (!findDuoTouHuiTiaoMacdDeadPoint) {
+				return false;
+			}
+
+			// find MA30 support and BOll lower support
+			boolean findMA30Support = false;
+			boolean findBollLowerSupport = false;
+			for (int i = macdDeadPointIndex; i < overDaySubList.size(); i++) {
+				StockSuperVO vo = overDaySubList.get(i);
+				if ((vo.priceVO.low <= vo.avgMA30) && (vo.priceVO.close > vo.avgMA30)) {
+					findMA30Support = true;
+				}
+
+				if ((vo.priceVO.low <= vo.bollVO.dn) && (vo.priceVO.close > vo.bollVO.dn)) {
+					findBollLowerSupport = true;
+				}
+			}
+
+			if (!findMA30Support || !findBollLowerSupport) {
+				return false;
+			}
+
+			// check close is higher Boll MB and MA5,10,20,30 Ronghe xiangShang
+			if ((curSuperDayVO.macdVO.macd <= 0.0) && (curSuperDayVO.macdVO.dif > 0.0)) {
+				if ((curSuperDayVO.priceVO.close > curSuperDayVO.bollVO.mb) && curSuperDayVO.priceVO.isKLineRed()) {
+					// check MA rongHe and xiangShang
+					return this.MA5_MA10_MA20_MA30_Ronghe_XiangShang(curSuperDayVO, pre1SuperDayVO);
+				}
+			}
+
+			break;
+		}
 		case DuoTou_HuiTiao_MA20_Support_MA_RongHe_XiangShang: {
 			// DuoTou huitiao, boll mb support, ma30 support,
 			// MA5,10,20,30 ronghe, MB support
@@ -417,7 +489,7 @@ public class CombineAnalyseHelper {
 					hasWeekFlatformStartVO = true;
 					break;
 				}
-			}		
+			}
 
 			if (!hasWeekFlatformStartVO) {
 				return false;
@@ -664,41 +736,7 @@ public class CombineAnalyseHelper {
 		}
 
 		case HengPang_Ready_To_Break_Platform: {
-			// return true if is a hengPan platform
-			// day platform
-			int minPlatformLen = 9;
-			int maxPlatformLen = 30;
-			boolean findPlatform = false;
-			for (int length = minPlatformLen; length <= maxPlatformLen; length++) {
-				if (findPlatformStartVO(overDayList.subList(overDayList.size() - length, overDayList.size()))) {
-					findPlatform = true;
-					break;
-				}
-			}
-
-			// week platform
-			minPlatformLen = 3;
-			maxPlatformLen = 10;
-			for (int length = minPlatformLen; length <= maxPlatformLen; length++) {
-				if (findLongPlatformBasedOnWeekDate(
-						overWeekList.subList(overWeekList.size() - length, overWeekList.size()), overDayList)) {
-					findPlatform = true;
-					break;
-				}
-			}
-
-			if (!findPlatform)
-				return false;
-
-			// pre2, pre1 green, cur red
-			if (curSuperDayVO.priceVO.isKLineRed() && pre1SuperDayVO.priceVO.isKLineGreen()
-					&& pre2SuperDayVO.priceVO.isKLineGreen()) {
-				if (pre1SuperDayVO.volumeIncreasePercent < 1) {
-					// if boll is ready to entry qiangQu
-					return true;
-				}
-			}
-			return false;
+			return this.isPlatform(overDayList, overWeekList);
 		}
 
 		case ShenXian_Two_Gordons:
@@ -743,10 +781,66 @@ public class CombineAnalyseHelper {
 			break;
 		}
 
+		case HengPang_Ready_To_Break_Platform_BollUp_BollXueShi2_Dn_Gordon: {
+			// combined with HengPang_Ready_To_Break_Platform and
+			// Close_Higher_BollUp_BollXueShi2_Dn_Gordon
+			boolean isPlatform = this.isPlatform(overDayList, overWeekList);
+			if (!isPlatform)
+				return false;
+
+			// below is completely copy from
+			// Close_Higher_BollUp_BollXueShi2_Dn_Gordon
+			// close price higher boll upper and
+			// boll xueShie2 dn gordon corss
+			if ((curSuperWeekVO.kdjVO.k < curSuperWeekVO.kdjVO.d) || !this.isLatestKDJCrossGordon(overWeekList)) {
+				// over all week KDJ must after Gordon
+				return false;
+			}
+
+			// cur close over boll up
+			if (curSuperDayVO.priceVO.close >= curSuperDayVO.bollVO.up) {
+				// bollXueShi2 gordon or near gordon
+				if (curSuperDayVO.bullXueShi2DnCrossType == CrossType.GORDON
+						|| curSuperDayVO.bullXueShi2DnCrossType == CrossType.NEAR_GORDON) {
+					return true;
+				}
+			}
+			break;
+		}
+
 		default:
 			return false;
 		}
 		return false;
+	}
+
+	public boolean isPlatform(List<StockSuperVO> overDayList, List<StockSuperVO> overWeekList) {
+		// merge with findPlatformStartVO and
+		// findLongPlatformBasedOnWeekDateOrig
+		// return true if is a hengPan platform
+		// day platform
+		int minPlatformLen = 9;
+		int maxPlatformLen = 30;
+		boolean findPlatform = false;
+		for (int length = minPlatformLen; length <= maxPlatformLen; length++) {
+			if (findPlatformStartVO(overDayList.subList(overDayList.size() - length, overDayList.size()))) {
+				findPlatform = true;
+				break;
+			}
+		}
+
+		// week platform
+		minPlatformLen = 3;
+		maxPlatformLen = 10;
+		for (int length = minPlatformLen; length <= maxPlatformLen; length++) {
+			if (findLongPlatformBasedOnWeekDate(
+					overWeekList.subList(overWeekList.size() - length, overWeekList.size()), overDayList)) {
+				findPlatform = true;
+				break;
+			}
+		}
+
+		return findPlatform;
 	}
 
 	// to check if the list is a platform
