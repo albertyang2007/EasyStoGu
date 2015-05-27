@@ -417,7 +417,7 @@ public class CombineAnalyseHelper {
 					hasWeekFlatformStartVO = true;
 					break;
 				}
-			}
+			}		
 
 			if (!hasWeekFlatformStartVO) {
 				return false;
