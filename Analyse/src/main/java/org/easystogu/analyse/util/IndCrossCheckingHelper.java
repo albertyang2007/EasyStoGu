@@ -95,28 +95,12 @@ public class IndCrossCheckingHelper {
 			if ((bullVo.dn > xueShi2Vo.dn) && (nextBullVo.dn < nextXueShi2Vo.dn)) {
 				superNextVO.bullXueShi2DnCrossType = CrossType.GORDON;
 				continue;
-			}
-			
-			if(superVO.priceVO.date.equals("2015-05-20")){
-				//System.out.println("bullVo "+bullVo);
-				//System.out.println("xueShi2Vo "+xueShi2Vo);
-				//System.out.println("nextBullVo "+nextBullVo);
-				//System.out.println("nextXueShi2Vo "+nextXueShi2Vo);
-			}
+			}			
 
 			if ((xueShi2Vo.dn / bullVo.dn) < 0.98) {
-				if(superVO.priceVO.date.equals("2015-05-20")){
-					//System.out.println("1");					
-				}
 				if ((nextXueShi2Vo.dn / nextBullVo.dn) > 0.98) {
-					if(superVO.priceVO.date.equals("2015-05-20")){
-						//System.out.println("2");					
-					}
 					// boll is lower and lower, xueShi2 is bigger and bigger
 					if (bullVo.dn > nextBullVo.dn && xueShi2Vo.dn < nextXueShi2Vo.dn) {
-						if(superVO.priceVO.date.equals("2015-05-20")){
-							//System.out.println("3");					
-						}
 						superNextVO.bullXueShi2DnCrossType = CrossType.NEAR_GORDON;
 						continue;
 					}
