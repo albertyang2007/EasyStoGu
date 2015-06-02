@@ -12,7 +12,7 @@ import org.easystogu.sina.helper.SinaDataDownloadHelper;
 import org.slf4j.Logger;
 
 public class DailyStockPriceDownloadAndStoreDBRunner {
-    private static Logger logger = LogHelper.getLogger(DailyStockPriceDownloadAndStoreDBRunner.class);
+    //private static Logger logger = LogHelper.getLogger(DailyStockPriceDownloadAndStoreDBRunner.class);
     private StockListConfigurationService stockConfig = StockListConfigurationService.getInstance();
     private StockPriceTableHelper tableHelper = StockPriceTableHelper.getInstance();
     private SinaDataDownloadHelper sinaHelper = new SinaDataDownloadHelper();
@@ -61,7 +61,7 @@ public class DailyStockPriceDownloadAndStoreDBRunner {
             System.out.println("Can't save to DB, vo=" + vo + ", error=" + e.getMessage());
             e.printStackTrace();
             totalError++;
-            logger.error("Can not save stock price to DB " + vo.toString(), e);
+            //logger.error("Can not save stock price to DB " + vo.toString(), e);
         }
     }
 
