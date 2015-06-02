@@ -35,7 +35,7 @@ public class RealtimeDisplayStockPriceWithBollDataRunner {
                     alarm.append(vo.stockId + " Hit Bull Upper, Sell!!!\n");
                 } else if (vo.current <= bollVO.dn) {
                     alarm.append(vo.stockId + " Hit Bull Down, Buy!!!!\n");
-                } else if (vo.current * 1.1 >= bollVO.up) {
+                } else if (vo.current * 1.05 >= bollVO.up) {
                     alarm.append(vo.stockId + " Close to Bull Upper!!!!\n");
                 }
             } else {
