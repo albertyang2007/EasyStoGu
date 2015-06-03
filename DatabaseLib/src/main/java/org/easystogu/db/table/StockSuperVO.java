@@ -1,6 +1,7 @@
 package org.easystogu.db.table;
 
 import org.easystogu.utils.CrossType;
+import org.easystogu.vo.RealTimeZiJinLiuVO;
 
 public class StockSuperVO {
 	public StockPriceVO priceVO;
@@ -9,6 +10,7 @@ public class StockSuperVO {
 	public BollVO bollVO;
 	public XueShi2VO xueShi2VO;
 	public ShenXianVO shenXianVO;
+	public RealTimeZiJinLiuVO ziJinLiuVO;
 	public double volumeIncreasePercent;// äº¤æ˜“çš„volumeè¾ƒå‰�ä¸€æ—¥çš„å¢žé‡�ç™¾åˆ†æ¯”
 	public long avgVol5;// avg of 5 days volume
 	public CrossType macdCorssType;
@@ -26,6 +28,8 @@ public class StockSuperVO {
 	public double avgMA30;// 30日均价
 	public double avgMA60;// 60日均价
 	public double avgMA120;// 120日均价
+
+	public int hengPanWeekLen;// hengPan week length
 
 	public StockSuperVO(StockPriceVO priceVO, MacdVO macdVO, KDJVO kdjVO, BollVO bollVO) {
 		this.priceVO = priceVO;
@@ -82,4 +86,13 @@ public class StockSuperVO {
 		}
 		return true;
 	}
+
+	public RealTimeZiJinLiuVO getZiJinLiuVO() {
+		return ziJinLiuVO;
+	}
+
+	public void setZiJinLiuVO(RealTimeZiJinLiuVO ziJinLiuVO) {
+		this.ziJinLiuVO = ziJinLiuVO;
+	}
+
 }

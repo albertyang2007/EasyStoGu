@@ -9,8 +9,8 @@ import java.util.List;
 
 import org.easystogu.config.Constants;
 import org.easystogu.config.FileConfigurationService;
-import org.easystogu.easymoney.common.RealTimeZiJinLiuVO;
 import org.easystogu.utils.Strings;
+import org.easystogu.vo.RealTimeZiJinLiuVO;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -48,33 +48,58 @@ public class ReamTimeZiJinLiuXiangHelper {
 			requestFactory.setProxy(proxy);
 		}
 
-		RestTemplate restTemplate = new RestTemplate(requestFactory);
+		try {
+			RestTemplate restTemplate = new RestTemplate(requestFactory);
 
-		String contents = restTemplate.getForObject(urlStr.toString(), String.class);
+			String contents = restTemplate.getForObject(urlStr.toString(), String.class);
 
-		if (Strings.isEmpty(contents)) {
-			System.out.println("Contents is empty");
-			return vo;
-		}
-
-		String[] lines = contents.split("\n");
-		for (int index = 0; index < lines.length; index++) {
-			String line = lines[index];
-			if (Strings.isNotEmpty(line)) {
-				if (line.contains("今日主力净流入")) {
-					System.out.println(lines[index + 1]);
-				} else if (line.contains("主力净比")) {
-					System.out.println(lines[index]);
-				} else if (line.contains("今日超大单净流入")) {
-					System.out.println(lines[index + 1]);
-				} else if (line.contains("超大单净比")) {
-					System.out.println(lines[index]);
-				}
+			if (Strings.isEmpty(contents)) {
+				System.out.println("Contents of zijinliu for " + stockId + " is empty");
+				return vo;
 			}
-		}
 
-		// set date field
-		System.out.println(vo);
+			ByteArrayInputStream is = new ByteArrayInputStream(contents.getBytes("gb2312"));
+			Document doc = Jsoup.parse(is, "gb2312", "");
+			Elements elements = doc.select("div.flash-data-cont");
+			for (Element element : elements) {
+				Element jlr = element.getElementById("data_jlr");
+				vo.majorNetIn = Double.parseDouble(jlr.text());
+
+				Element jzb = element.getElementById("data_jzb");
+				vo.majorNetPer = Double.parseDouble(jzb.text().substring(0, jzb.text().length() - 1));
+
+				Element superjlr = element.getElementById("data_superjlr");
+				vo.biggestNetIn = Double.parseDouble(superjlr.text());
+
+				Element superjzb = element.getElementById("data_superjzb");
+				vo.biggestNetPer = Double.parseDouble(superjzb.text().substring(0, superjzb.text().length() - 1));
+
+				Element ddjlr = element.getElementById("data_ddjlr");
+				vo.bigNetIn = Double.parseDouble(ddjlr.text());
+
+				Element ddjzb = element.getElementById("data_ddjzb");
+				vo.bigNetPer = Double.parseDouble(ddjzb.text().substring(0, ddjzb.text().length() - 1));
+
+				Element zdjlr = element.getElementById("data_zdjlr");
+				vo.midNetIn = Double.parseDouble(zdjlr.text());
+
+				Element zdjzb = element.getElementById("data_zdjzb");
+				vo.midNetPer = Double.parseDouble(zdjzb.text().substring(0, zdjzb.text().length() - 1));
+
+				Element xdjlr = element.getElementById("data_xdjlr");
+				vo.smallNetIn = Double.parseDouble(xdjlr.text());
+
+				Element xdjzb = element.getElementById("data_xdjzb");
+				vo.smallNetPer = Double.parseDouble(xdjzb.text().substring(0, xdjzb.text().length() - 1));
+
+			}
+
+			// System.out.println(vo.toNetInString());
+			// System.out.println(vo.toNetPerString());
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return vo;
 	}
 

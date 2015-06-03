@@ -807,7 +807,20 @@ public class CombineAnalyseHelper {
 		}
 
 		case HengPang_Ready_To_Break_Platform: {
-			return this.isPlatform(overDayList, overWeekList);
+			// week KDJ gordon and day near kdj gordon
+			if ((curSuperWeekVO.kdjVO.k < curSuperWeekVO.kdjVO.d) || !this.isLatestKDJCrossGordon(overWeekList)) {
+				// over all week KDJ must after Gordon
+				return false;
+			}
+
+			if (this.isPlatform(overDayList, overWeekList)) {
+				if (curSuperDayVO.rsvCorssType == CrossType.GORDON
+						|| curSuperDayVO.kdjCorssType == CrossType.NEAR_GORDON
+						|| curSuperDayVO.kdjCorssType == CrossType.GORDON) {
+					return true;
+				}
+			}
+			return false;
 		}
 
 		case ShenXian_Two_Gordons:
@@ -886,6 +899,8 @@ public class CombineAnalyseHelper {
 	}
 
 	public boolean isPlatform(List<StockSuperVO> overDayList, List<StockSuperVO> overWeekList) {
+
+		StockSuperVO curSuperDayVO = overDayList.get(overDayList.size() - 1);
 		// merge with findPlatformStartVO and
 		// findLongPlatformBasedOnWeekDateOrig
 		// return true if is a hengPan platform
@@ -896,6 +911,7 @@ public class CombineAnalyseHelper {
 		for (int length = minPlatformLen; length <= maxPlatformLen; length++) {
 			if (findPlatformStartVO(overDayList.subList(overDayList.size() - length, overDayList.size()))) {
 				findPlatform = true;
+				curSuperDayVO.hengPanWeekLen = length / 5;
 				break;
 			}
 		}
@@ -907,6 +923,7 @@ public class CombineAnalyseHelper {
 			if (findLongPlatformBasedOnWeekDate(
 					overWeekList.subList(overWeekList.size() - length, overWeekList.size()), overDayList)) {
 				findPlatform = true;
+				curSuperDayVO.hengPanWeekLen = length;
 				break;
 			}
 		}
