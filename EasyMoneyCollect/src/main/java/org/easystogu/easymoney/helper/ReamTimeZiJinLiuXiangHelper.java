@@ -39,8 +39,8 @@ public class ReamTimeZiJinLiuXiangHelper {
 		RealTimeZiJinLiuVO vo = new RealTimeZiJinLiuVO(stockId);
 		StringBuffer urlStr = new StringBuffer(baseUrl + stockId + ".html");
 		SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
-		requestFactory.setConnectTimeout(10000);
-		requestFactory.setReadTimeout(10000);
+		requestFactory.setConnectTimeout(20000);
+		requestFactory.setReadTimeout(20000);
 
 		if (Strings.isNotEmpty(configure.getString(Constants.httpProxyServer))) {
 			Proxy proxy = new Proxy(Type.HTTP, new InetSocketAddress(configure.getString(Constants.httpProxyServer),
