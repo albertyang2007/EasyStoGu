@@ -30,13 +30,15 @@ public class RealtimeDisplayStockPriceWithBollDataRunner {
             if (!vo.stockId.equals("000001")) {
                 BollVO bollVO = dailyBollRunner.countAndSaved(vo.stockId);
                 // System.out.println(vo);
-                out.append(vo + "\t" + bollVO.toSimpleString() + "\n");
-                if (vo.current >= bollVO.up || vo.high >= bollVO.up) {
-                    alarm.append(vo.stockId + " Hit Bull Upper, Sell!!!\n");
-                } else if (vo.current <= bollVO.dn || vo.low <= bollVO.dn) {
-                    alarm.append(vo.stockId + " Hit Bull Down, Buy!!!!\n");
-                } else if (vo.current * 1.05 >= bollVO.up) {
-                    alarm.append(vo.stockId + " Close to Bull Upper!!!!\n");
+                if (bollVO != null) {
+                    out.append(vo + "\t" + bollVO.toSimpleString() + "\n");
+                    if (vo.current >= bollVO.up || vo.high >= bollVO.up) {
+                        alarm.append(vo.stockId + " Hit Bull Upper, Sell!!!\n");
+                    } else if (vo.current <= bollVO.dn || vo.low <= bollVO.dn) {
+                        alarm.append(vo.stockId + " Hit Bull Down, Buy!!!!\n");
+                    } else if (vo.current * 1.05 >= bollVO.up) {
+                        alarm.append(vo.stockId + " Close to Bull Upper!!!!\n");
+                    }
                 }
             } else {
                 out.append(vo + "\n");
