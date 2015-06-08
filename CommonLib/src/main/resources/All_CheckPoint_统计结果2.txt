@@ -100,12 +100,20 @@ Avg hold stock days when high price: 4
 Total high earn between (25, 50): 6
 Total low  earn between (10, 10): 29
 
-===============================HengPang_Ready_To_Break_Platform (sellPoint:KDJ_Dead)==========================
-Total satisfy: 5948	 earnPercent[close]=1.1034992782722506	 earnPercent[high]=9.720770967595485	 earnPercent[low]=-6.36201278321524
-Avg hold stock days when sell point: 10
-Avg hold stock days when high price: 6
-Total high earn between (25, 50): 65
-Total low  earn between (10, 10): 478
+===============================HengPang_Ready_To_Break_Platform_KDJ_Gordon (sellPoint:KDJ_Dead)==========================
+Total satisfy: 12442	 earnPercent[close]=0.7365557818537081	 earnPercent[high]=8.451316886063342	 earnPercent[low]=-5.946535076860677
+Avg hold stock days when sell point: 7
+Avg hold stock days when high price: 4
+Total high earn between (25, 50): 132
+Total low  earn between (10, 10): 595
+
+===============================HengPang_Ready_To_Break_Platform_MACD_Gordon_Week_KDJ_Gordon (sellPoint:KDJ_Dead)==========================
+Total satisfy: 326	 earnPercent[close]=1.6971432547159697	 earnPercent[high]=10.454206560305241	 earnPercent[low]=-6.036946535924063
+Avg hold stock days when sell point: 5
+Avg hold stock days when high price: 3
+Total high earn between (25, 50): 11
+Total low  earn between (10, 10): 9
+
 
 ===============================Close_Higher_BollUp_BollXueShi2_Dn_Gordon (sellPoint:KDJ_Dead)==========================
 Total satisfy: 17026	 earnPercent[close]=1.177179042673598	 earnPercent[high]=8.87463807751704	 earnPercent[low]=-6.207538119787833
@@ -113,10 +121,6 @@ Avg hold stock days when sell point: 4
 Avg hold stock days when high price: 3
 Total high earn between (25, 50): 246
 Total low  earn between (10, 10): 387
-
-SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
-SLF4J: Defaulting to no-operation (NOP) logger implementation
-SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
 
 ===============================HengPang_Ready_To_Break_Platform_BollUp_BollXueShi2_Dn_Gordon (sellPoint:KDJ_Dead)==========================
 Total satisfy: 452	 earnPercent[close]=2.2279340598191917	 earnPercent[high]=10.345493938401441	 earnPercent[low]=-6.338824097141317
