@@ -226,9 +226,11 @@ public class DailySelectionRunner {
     public void reportToConsole(List<RangeHistoryReportVO> rangeList) {
         System.out.println("\nHistory range report: ");
         for (RangeHistoryReportVO rangeVO : rangeList) {
-            System.out.println(rangeVO.toSimpleString() + " WeekLen(" + rangeVO.currentSuperVO.hengPanWeekLen
-                    + ") KDJ(" + (int) rangeVO.currentSuperVO.kdjVO.k + ") "
-                    + rangeVO.currentSuperVO.ziJinLiuVO.toNetPerString());
+            if (rangeVO.currentSuperVO.ziJinLiuVO.majorNetPer >= 0) {
+                System.out.println(rangeVO.toSimpleString() + " WeekLen(" + rangeVO.currentSuperVO.hengPanWeekLen
+                        + ") KDJ(" + (int) rangeVO.currentSuperVO.kdjVO.k + ") "
+                        + rangeVO.currentSuperVO.ziJinLiuVO.toNetPerString());
+            }
         }
     }
 
@@ -248,6 +250,10 @@ public class DailySelectionRunner {
             for (RangeHistoryReportVO rangeVO : rangeList) {
 
                 if (rangeVO.checkPoint.getEarnPercent() < this.minEarnPercent) {
+                    continue;
+                }
+
+                if (rangeVO.currentSuperVO.ziJinLiuVO.majorNetPer < 0) {
                     continue;
                 }
 
