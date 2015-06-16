@@ -18,17 +18,17 @@ public class ChaoJingZhunTongDaoHelper {
 		List<StockPriceVO> list = stockPriceTable.getStockPriceById("002673");
 
 		DoublesArray vvs = new DoublesArray();
-		for (StockPriceVO vo : list) {
+		for (int i = list.size() - 30; i < list.size(); i++) {
+			StockPriceVO vo = list.get(i);
 			vvs.add(new Double((vo.close + vo.low + vo.high) / 3.0));
 		}
 
-		Doubles xma = DoublesFunctions.xma(vvs, vvs.size());
+		Doubles xma = DoublesFunctions.xma(vvs, 3);
 
 		System.out.println("xma len=" + xma.size());
 
-		for (int i = 0; i < vvs.size(); i++) {
-			System.out.println("i=" + xma.get(i));
-		}
+		System.out.println("i=" + xma.get(0));
+		// System.out.println("i=" + xma.get(1));
 	}
 
 }
