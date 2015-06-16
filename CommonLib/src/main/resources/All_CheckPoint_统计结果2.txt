@@ -135,3 +135,10 @@ Avg hold stock days when sell point: 7
 Avg hold stock days when high price: 5
 Total high earn between (25, 50): 1
 Total low  earn between (10, 10): 2
+
+===============================HengPang_7_Days_Ready_To_Break_Platform (sellPoint:KDJ_Dead)==========================
+Total satisfy: 1132	 earnPercent[close]=1.4880260860253391	 earnPercent[high]=8.07553430784382	 earnPercent[low]=-4.433587274344551
+Avg hold stock days when sell point: 8
+Avg hold stock days when high price: 5
+Total high earn between (25, 50): 7
+Total low  earn between (10, 10): 46
