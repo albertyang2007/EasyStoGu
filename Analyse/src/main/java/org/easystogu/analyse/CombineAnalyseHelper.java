@@ -340,12 +340,6 @@ public class CombineAnalyseHelper {
         }
 
         case HengPang_Ready_To_Break_Platform_MA30_Support_MA_RongHe_XiangShang: {
-
-            //for safety, macd dif is less than 1.0
-            if (curSuperDayVO.macdVO.dif > 1.0) {
-                return false;
-            }
-
             // combined with DuoTou_HuiTiao_MA30_Support_MA_RongHe_XiangShang
             // and HengPang_Ready_To_Break_Platform
             boolean isPlatform = this.isPlatform(overDayList, overWeekList);
@@ -485,13 +479,7 @@ public class CombineAnalyseHelper {
             break;
         }
 
-        case HengPang_Ready_To_Break_Platform_MA20_Support_MA_RongHe_XiangShang: {
-            
-            //for safety, macd dif is less than 1.0
-            if (curSuperDayVO.macdVO.dif > 1.0) {
-                return false;
-            }
-            
+        case HengPang_Ready_To_Break_Platform_MA20_Support_MA_RongHe_XiangShang: {           
             // merged by HengPang_Ready_To_Break_Platform and
             // DuoTou_HuiTiao_MA20_Support_MA_RongHe_XiangShang
             boolean isPlatform = this.isPlatform(overDayList, overWeekList);
@@ -820,13 +808,7 @@ public class CombineAnalyseHelper {
             break;
         }
 
-        case HengPang_Ready_To_Break_Platform_KDJ_Gordon: {
-            
-            //for safety, macd dif is less than 1.0
-            if (curSuperDayVO.macdVO.dif > 1.0) {
-                return false;
-            }
-            
+        case HengPang_Ready_To_Break_Platform_KDJ_Gordon: {         
             // week KDJ gordon and day near kdj gordon
             if ((curSuperWeekVO.kdjVO.k < curSuperWeekVO.kdjVO.d) || !this.isLatestKDJCrossGordon(overWeekList)) {
                 // over all week KDJ must after Gordon
@@ -844,12 +826,6 @@ public class CombineAnalyseHelper {
         }
 
         case HengPang_Ready_To_Break_Platform_MACD_Gordon_Week_KDJ_Gordon: {
-            
-            //for safety, macd dif is less than 1.0
-            if (curSuperDayVO.macdVO.dif > 1.0) {
-                return false;
-            }
-            
             // example 002673 @ 2015-06-08
             // day macd gordon, week kdj gordon
             if (curSuperDayVO.macdCorssType == CrossType.GORDON && curSuperWeekVO.kdjCorssType == CrossType.GORDON) {
@@ -936,13 +912,7 @@ public class CombineAnalyseHelper {
             break;
         }
 
-        case HengPang_Ready_To_Break_Platform_BollUp_BollXueShi2_Dn_Gordon: {
-            
-            //for safety, macd dif is less than 1.0
-            if (curSuperDayVO.macdVO.dif > 1.0) {
-                return false;
-            }
-            
+        case HengPang_Ready_To_Break_Platform_BollUp_BollXueShi2_Dn_Gordon: {          
             // combined with HengPang_Ready_To_Break_Platform and
             // Close_Higher_BollUp_BollXueShi2_Dn_Gordon
             boolean isPlatform = this.isPlatform(overDayList, overWeekList);
