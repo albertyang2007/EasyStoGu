@@ -142,3 +142,34 @@ Avg hold stock days when sell point: 8
 Avg hold stock days when high price: 5
 Total high earn between (25, 50): 7
 Total low  earn between (10, 10): 46
+
+===============================Day_Week_Mai1Mai2_Grodon (sellPoint:KDJ_Dead)==========================
+Not Completed: HistoryReportVO: { stockId=601003; BuyDate=2015-06-03; SellDate=2015-06-15; minPrice=5.49; highPrice=7.45; duration=0; buyPrice=5.81; closePercent=23.924268502581768; highPercent=28.227194492254746; lowPercent=-5.507745266781401}
+Not Completed: HistoryReportVO: { stockId=300161; BuyDate=2015-05-19; SellDate=2015-05-21; minPrice=31.85; highPrice=39.6; duration=0; buyPrice=36.0; closePercent=6.166666666666663; highPercent=10.000000000000004; lowPercent=-11.527777777777775}
+Not Completed: HistoryReportVO: { stockId=600595; BuyDate=2015-05-20; SellDate=2015-05-21; minPrice=8.4; highPrice=10.19; duration=0; buyPrice=9.26; closePercent=10.043196544276455; highPercent=10.043196544276455; lowPercent=-9.287257019438439}
+Not Completed: HistoryReportVO: { stockId=300142; BuyDate=2015-06-11; SellDate=2015-06-12; minPrice=45.0; highPrice=49.25; duration=0; buyPrice=46.99; closePercent=3.6390721430091526; highPercent=4.809533943392207; lowPercent=-4.234943605022349}
+Not Completed: HistoryReportVO: { stockId=002552; BuyDate=2015-06-18; SellDate=2015-06-29; minPrice=14.64; highPrice=21.43; duration=0; buyPrice=14.64; closePercent=27.3224043715847; highPercent=46.37978142076502; lowPercent=0.0}
+Not Completed: HistoryReportVO: { stockId=603169; BuyDate=2015-06-10; SellDate=2015-06-29; minPrice=17.78; highPrice=31.48; duration=0; buyPrice=29.98; closePercent=-40.69379586390927; highPercent=5.003335557038025; lowPercent=-40.69379586390927}
+Not Completed: HistoryReportVO: { stockId=300093; BuyDate=2015-05-15; SellDate=2015-05-18; minPrice=21.21; highPrice=25.86; duration=0; buyPrice=23.51; closePercent=9.995746490854945; highPercent=9.995746490854945; lowPercent=-9.783071033602724}
+Not Completed: HistoryReportVO: { stockId=600408; BuyDate=2015-04-22; SellDate=2015-04-23; minPrice=5.08; highPrice=6.16; duration=0; buyPrice=5.6; closePercent=10.000000000000009; highPercent=10.000000000000009; lowPercent=-9.28571428571428}
+Not Completed: HistoryReportVO: { stockId=000882; BuyDate=2015-06-02; SellDate=2015-06-03; minPrice=7.46; highPrice=8.97; duration=0; buyPrice=8.21; closePercent=6.942752740560273; highPercent=9.257003654080386; lowPercent=-9.135200974421446}
+Not Completed: HistoryReportVO: { stockId=000863; BuyDate=2015-02-11; SellDate=2015-02-12; minPrice=7.3; highPrice=7.54; duration=0; buyPrice=7.47; closePercent=0.6693440428380164; highPercent=0.9370816599732301; lowPercent=-2.2757697456492627}
+Not Completed: HistoryReportVO: { stockId=002306; BuyDate=2015-06-01; SellDate=2015-06-02; minPrice=8.25; highPrice=9.22; duration=0; buyPrice=8.78; closePercent=5.011389521640106; highPercent=5.011389521640106; lowPercent=-6.036446469248284}
+Not Completed: HistoryReportVO: { stockId=000716; BuyDate=2015-06-02; SellDate=2015-06-05; minPrice=22.43; highPrice=24.99; duration=0; buyPrice=24.73; closePercent=-3.962798220784474; highPercent=1.0513546300040355; lowPercent=-9.300444803881927}
+Not Completed: HistoryReportVO: { stockId=601998; BuyDate=2015-06-17; SellDate=2015-06-29; minPrice=6.59; highPrice=8.98; duration=0; buyPrice=8.54; closePercent=-14.988290398126459; highPercent=5.152224824355987; lowPercent=-22.83372365339578}
+Not Completed: HistoryReportVO: { stockId=000669; BuyDate=2015-04-23; SellDate=2015-04-30; minPrice=34.3; highPrice=37.98; duration=0; buyPrice=35.7; closePercent=6.21848739495798; highPercent=6.386554621848722; lowPercent=-3.921568627450996}
+Not Completed: HistoryReportVO: { stockId=600191; BuyDate=2015-02-04; SellDate=2015-03-05; minPrice=9.0; highPrice=11.6; duration=0; buyPrice=9.77; closePercent=18.526100307062443; highPercent=18.730808597748208; lowPercent=-7.8812691914022475}
+Not Completed: HistoryReportVO: { stockId=300368; BuyDate=2015-03-17; SellDate=2015-06-29; minPrice=24.140888933682717; highPrice=32.98; duration=0; buyPrice=24.47042330175367; closePercent=21.207547716897977; highPercent=34.77494685446038; lowPercent=-1.3466639461334373}
+Not Completed: HistoryReportVO: { stockId=601872; BuyDate=2015-06-26; SellDate=2015-06-29; minPrice=9.78; highPrice=11.19; duration=0; buyPrice=10.17; closePercent=10.029498525073743; highPercent=10.029498525073743; lowPercent=-3.8348082595870263}
+Not Completed: HistoryReportVO: { stockId=000539; BuyDate=2015-06-02; SellDate=2015-06-05; minPrice=12.3; highPrice=14.53; duration=0; buyPrice=13.06; closePercent=11.255742725880543; highPercent=11.255742725880543; lowPercent=-5.81929555895865}
+Not Completed: HistoryReportVO: { stockId=000518; BuyDate=2015-02-16; SellDate=2015-03-06; minPrice=5.6; highPrice=6.57; duration=0; buyPrice=5.66; closePercent=11.130742049469962; highPercent=16.07773851590106; lowPercent=-1.0600706713781007}
+Not Completed: HistoryReportVO: { stockId=002097; BuyDate=2015-05-11; SellDate=2015-05-20; minPrice=16.65; highPrice=20.5; duration=0; buyPrice=17.37; closePercent=13.98963730569948; highPercent=18.019573978123194; lowPercent=-4.145077720207268}
+Not Completed: HistoryReportVO: { stockId=600064; BuyDate=2015-06-11; SellDate=2015-06-29; minPrice=17.83; highPrice=28.2; duration=0; buyPrice=27.57; closePercent=-35.11062749365252; highPercent=2.285092491838952; lowPercent=-35.328255350018146}
+Not Completed: HistoryReportVO: { stockId=600649; BuyDate=2014-10-31; SellDate=2015-06-29; minPrice=6.923042876901801; highPrice=8.5; duration=0; buyPrice=7.030000000000003; closePercent=20.910384068278756; highPercent=20.910384068278756; lowPercent=-1.521438450899036}
+Not Completed: HistoryReportVO: { stockId=600641; BuyDate=2015-06-02; SellDate=2015-06-11; minPrice=9.46; highPrice=11.36; duration=0; buyPrice=10.42; closePercent=7.773512476007683; highPercent=9.021113243761992; lowPercent=-9.213051823416498}
+Total satisfy: 15902	 earnPercent[close]=0.8701788371090788	 earnPercent[high]=7.247904872403862	 earnPercent[low]=-4.7301538486967685
+Avg hold stock days when sell point: 5
+Avg hold stock days when high price: 3
+Total high earn between (25, 50): 126
+Total low  earn between (10, 10): 318
+

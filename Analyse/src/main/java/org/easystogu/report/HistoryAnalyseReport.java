@@ -57,6 +57,7 @@ public class HistoryAnalyseReport {
 		// "9999-99-99");
 
 		if (overDayList.size() == 0) {
+			//System.out.println("0");
 			return historyReportList;
 		}
 
@@ -70,7 +71,8 @@ public class HistoryAnalyseReport {
 		IndCrossCheckingHelper.kdjCross(overDayList);
 		IndCrossCheckingHelper.rsvCross(overDayList);
 		IndCrossCheckingHelper.bollXueShi2DnCross(overDayList);
-		// IndCrossCheckingHelper.shenXianCross12(overDayList);
+		IndCrossCheckingHelper.mai1Mai2Cross(overDayList);
+		IndCrossCheckingHelper.shenXianCross12(overDayList);
 		// IndCrossCheckingHelper.shenXianCross13(overDayList);
 		VolumeCheckingHelper.volumeIncreasePuls(overDayList);
 		VolumeCheckingHelper.avgVolume5(overDayList);
@@ -81,6 +83,7 @@ public class HistoryAnalyseReport {
 		IndCrossCheckingHelper.macdCross(overWeekList);
 		IndCrossCheckingHelper.kdjCross(overWeekList);
 		IndCrossCheckingHelper.rsvCross(overWeekList);
+		IndCrossCheckingHelper.mai1Mai2Cross(overWeekList);
 		PriceCheckingHelper.setLastClosePrice(overWeekList);
 
 		HistoryReportDetailsVO reportVO = null;
@@ -157,7 +160,7 @@ public class HistoryAnalyseReport {
 				+ checkPoint.getSellPointType() + ")==========================");
 		for (String stockId : stockIds) {
 
-			//if (!stockId.equals("001696"))
+			//if (!stockId.equals("600084"))
 			//	continue;
 
 			List<HistoryReportDetailsVO> historyReportList = this.doAnalyseReport(stockId, checkPoint);
@@ -279,6 +282,6 @@ public class HistoryAnalyseReport {
 			}
 			// reporter.searchAllStockIdAccordingToCheckPoint(checkPoint);
 		}
-		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.HengPang_7_Days_Ready_To_Break_Platform);
+		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.Day_Week_Mai1Mai2_Grodon);
 	}
 }

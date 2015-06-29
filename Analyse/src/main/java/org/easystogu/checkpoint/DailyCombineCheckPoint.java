@@ -21,7 +21,7 @@ public enum DailyCombineCheckPoint {
 			8.27), DuoTou_Pre_2_Days_Green_Red_KDJ_Zero_MA30_Support(SellPointType.KDJ_Dead, 1058, 8.56), DuoTou_Pre_2_Days_Green_Red_KDJ_Zero_MA30_Support_MA_RongHe_XiangShang(
 			SellPointType.KDJ_Dead, 77, 9.13), DuoTou_Pre_2_Days_Green_Red_KDJ_Zero_MA20_Support_MA_RongHe_XiangShang(
 			SellPointType.KDJ_Dead, 146, 8.8), HengPang_7_Days_Ready_To_Break_Platform(SellPointType.KDJ_Dead, 1132,
-			8.07 );
+			8.07), Day_Week_Mai1Mai2_Grodon(SellPointType.KDJ_Dead, 15902, 7.24*10);
 
 	private String condition;
 	// history summary that meet the condiction
