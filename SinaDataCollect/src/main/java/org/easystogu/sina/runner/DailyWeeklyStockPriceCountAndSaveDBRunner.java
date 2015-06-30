@@ -24,7 +24,8 @@ public class DailyWeeklyStockPriceCountAndSaveDBRunner implements Runnable {
     public void countAndSave(List<String> stockIds) {
         int index = 0;
         for (String stockId : stockIds) {
-            System.out.println("Process weekly price for " + stockId + " " + (++index) + " of " + stockIds.size());
+            if (index % 100 == 0)
+                System.out.println("Process weekly price for " + stockId + " " + (++index) + " of " + stockIds.size());
             this.countAndSaved(stockId);
         }
     }
