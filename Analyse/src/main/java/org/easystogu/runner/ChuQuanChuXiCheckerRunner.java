@@ -13,9 +13,10 @@ import org.easystogu.db.table.StockPriceVO;
 //manually to update gaoSongZhuan table, pls refer to 
 //http://www.cninfo.com.cn/search/memo.jsp?datePara=2015-05-13
 
-public class ChuQuanChuXiCheckerRunner {
+public class ChuQuanChuXiCheckerRunner implements Runnable{
 	protected StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
 	protected EventChuQuanChuXiTableHelper chuQuanChuXiTable = EventChuQuanChuXiTableHelper.getInstance();
+	protected StockListConfigurationService stockConfig = StockListConfigurationService.getInstance();
 
 	private void checkIfGaoSongZhuanExist(String stockId) {
 		// get latest two day vo
@@ -48,15 +49,15 @@ public class ChuQuanChuXiCheckerRunner {
 			this.checkIfGaoSongZhuanExist(stockId);
 		}
 	}
+	
+    public void run() {
+        checkIfChuQuanChuXiExist(stockConfig.getAllStockId());
+    }
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		StockListConfigurationService stockConfig = StockListConfigurationService.getInstance();
-
-		List<String> stockIds = stockConfig.getAllStockId();
 		ChuQuanChuXiCheckerRunner runner = new ChuQuanChuXiCheckerRunner();
-
-		runner.checkIfChuQuanChuXiExist(stockIds);
+		runner.checkIfChuQuanChuXiExist(stockConfig.getAllStockId());
 	}
-
 }

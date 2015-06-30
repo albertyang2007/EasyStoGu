@@ -5,9 +5,13 @@ import java.util.List;
 import org.easystogu.config.StockListConfigurationService;
 import org.easystogu.db.access.IndWeekMacdTableHelper;
 import org.easystogu.db.access.WeekStockPriceTableHelper;
+import org.easystogu.multirunner.DayMultThreadRunner;
 import org.easystogu.utils.WeekdayUtil;
 
 public class DailyWeekMacdCountAndSaveDBRunner extends DailyMacdCountAndSaveDBRunner {
+    public DailyWeekMacdCountAndSaveDBRunner(DayMultThreadRunner parentRunner) {
+        super(parentRunner);
+    }
 
     public DailyWeekMacdCountAndSaveDBRunner() {
         macdTable = IndWeekMacdTableHelper.getInstance();

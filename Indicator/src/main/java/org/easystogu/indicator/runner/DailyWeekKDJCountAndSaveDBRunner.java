@@ -5,9 +5,14 @@ import java.util.List;
 import org.easystogu.config.StockListConfigurationService;
 import org.easystogu.db.access.IndWeekKDJTableHelper;
 import org.easystogu.db.access.WeekStockPriceTableHelper;
+import org.easystogu.multirunner.DayMultThreadRunner;
 import org.easystogu.utils.WeekdayUtil;
 
 public class DailyWeekKDJCountAndSaveDBRunner extends DailyKDJCountAndSaveDBRunner {
+    public DailyWeekKDJCountAndSaveDBRunner(DayMultThreadRunner parentRunner) {
+        super(parentRunner);
+    }
+    
     public DailyWeekKDJCountAndSaveDBRunner() {
         stockPriceTable = WeekStockPriceTableHelper.getInstance();
         kdjTable = IndWeekKDJTableHelper.getInstance();

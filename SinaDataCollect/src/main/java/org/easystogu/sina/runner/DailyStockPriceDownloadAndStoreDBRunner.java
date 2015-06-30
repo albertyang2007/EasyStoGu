@@ -6,12 +6,10 @@ import java.util.List;
 import org.easystogu.config.StockListConfigurationService;
 import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.table.StockPriceVO;
-import org.easystogu.log.LogHelper;
 import org.easystogu.sina.common.RealTimePriceVO;
 import org.easystogu.sina.helper.SinaDataDownloadHelper;
-import org.slf4j.Logger;
 
-public class DailyStockPriceDownloadAndStoreDBRunner {
+public class DailyStockPriceDownloadAndStoreDBRunner implements Runnable {
     //private static Logger logger = LogHelper.getLogger(DailyStockPriceDownloadAndStoreDBRunner.class);
     private StockListConfigurationService stockConfig = StockListConfigurationService.getInstance();
     private StockPriceTableHelper tableHelper = StockPriceTableHelper.getInstance();
@@ -52,7 +50,7 @@ public class DailyStockPriceDownloadAndStoreDBRunner {
     public void saveIntoDB(StockPriceVO vo) {
         try {
             if (vo.isValidated()) {
-                System.out.println("saving into DB, vo=" + vo);
+                //System.out.println("saving into DB, vo=" + vo);
                 tableHelper.delete(vo.stockId, vo.date);
                 tableHelper.insert(vo);
             }
@@ -70,9 +68,13 @@ public class DailyStockPriceDownloadAndStoreDBRunner {
         System.out.println("totalError=" + this.totalError);
     }
 
+    public void run() {
+        downloadDataAndSaveIntoDB();
+        printResult();
+    }
+
     public static void main(String[] args) {
         // TODO Auto-generated method stub
-
         DailyStockPriceDownloadAndStoreDBRunner runner = new DailyStockPriceDownloadAndStoreDBRunner();
         runner.downloadDataAndSaveIntoDB();
         runner.printResult();
