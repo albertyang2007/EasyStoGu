@@ -5,9 +5,14 @@ import java.util.List;
 import org.easystogu.config.StockListConfigurationService;
 import org.easystogu.db.access.IndWeekBollTableHelper;
 import org.easystogu.db.access.WeekStockPriceTableHelper;
+import org.easystogu.multirunner.DayMultThreadRunner;
 import org.easystogu.utils.WeekdayUtil;
 
 public class DailyWeekBollCountAndSaveDBRunner extends DailyBollCountAndSaveDBRunner {
+    public DailyWeekBollCountAndSaveDBRunner(DayMultThreadRunner parentRunner) {
+        super(parentRunner);
+    }
+    
     public DailyWeekBollCountAndSaveDBRunner() {
         bollTable = IndWeekBollTableHelper.getInstance();
         stockPriceTable = WeekStockPriceTableHelper.getInstance();

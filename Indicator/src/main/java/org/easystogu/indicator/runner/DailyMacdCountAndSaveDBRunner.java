@@ -9,79 +9,98 @@ import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.table.MacdVO;
 import org.easystogu.db.table.StockPriceVO;
 import org.easystogu.indicator.TALIBWraper;
+import org.easystogu.multirunner.DayMultThreadRunner;
 
 //每日根据最新数据计算当天的macd值，每天运行一次
-public class DailyMacdCountAndSaveDBRunner {
-	protected IndMacdTableHelper macdTable = IndMacdTableHelper.getInstance();
-	protected StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
-	protected TALIBWraper talib = new TALIBWraper();
-	protected ChuQuanChuXiPriceHelper chuQuanChuXiPriceHelper = new ChuQuanChuXiPriceHelper();
+public class DailyMacdCountAndSaveDBRunner implements Runnable {
+    protected IndMacdTableHelper macdTable = IndMacdTableHelper.getInstance();
+    protected StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
+    protected TALIBWraper talib = new TALIBWraper();
+    protected ChuQuanChuXiPriceHelper chuQuanChuXiPriceHelper = new ChuQuanChuXiPriceHelper();
+    protected StockListConfigurationService stockConfig = StockListConfigurationService.getInstance();
+    protected DayMultThreadRunner parentRunner;
 
-	public void deleteMacd(String stockId, String date) {
-		macdTable.delete(stockId, date);
-	}
+    public DailyMacdCountAndSaveDBRunner() {
 
-	public void countAndSaved(String stockId) {
+    }
 
-		List<StockPriceVO> priceList = stockPriceTable.getStockPriceById(stockId);
-		// List<StockPriceVO> list =
-		// stockPriceTable.getNdateStockPriceById(stockId, minLength);
-		// Collections.reverse(list);
+    public DailyMacdCountAndSaveDBRunner(DayMultThreadRunner parentRunner) {
+        this.parentRunner = parentRunner;
+        this.parentRunner.newTaskInfo(this.getClass().getSimpleName());
+    }
 
-		int length = priceList.size();
+    public void deleteMacd(String stockId, String date) {
+        macdTable.delete(stockId, date);
+    }
 
-		if (length < 26) {
-			System.out.println(stockId
-					+ " price data is not enough to count MACD, please wait until it has at least 26 days. Skip");
-			return;
-		}
+    public void countAndSaved(String stockId) {
 
-		// update price based on chuQuanChuXi event
-		chuQuanChuXiPriceHelper.updatePrice(stockId, priceList);
+        List<StockPriceVO> priceList = stockPriceTable.getStockPriceById(stockId);
+        // List<StockPriceVO> list =
+        // stockPriceTable.getNdateStockPriceById(stockId, minLength);
+        // Collections.reverse(list);
 
-		double[] close = new double[length];
-		int index = 0;
-		for (StockPriceVO vo : priceList) {
-			close[index++] = vo.close;
-		}
+        int length = priceList.size();
 
-		double[][] macd = talib.getMacdExt(close, 12, 26, 9);
+        if (length < 26) {
+            //System.out.println(stockId
+            //        + " price data is not enough to count MACD, please wait until it has at least 26 days. Skip");
+            return;
+        }
 
-		index = priceList.size() - 1;
-		double dif = macd[0][index];
-		double dea = macd[1][index];
-		double macdRtn = (dif - dea) * 2;
-		// System.out.println("date=" + list.get(index).date);
-		// System.out.println("DIF=" + dif);
-		// System.out.println("DEA=" + dea);
-		// System.out.println("MACD=" + macdRtn);
+        // update price based on chuQuanChuXi event
+        chuQuanChuXiPriceHelper.updatePrice(stockId, priceList);
 
-		MacdVO vo = new MacdVO();
-		vo.setStockId(stockId);
-		vo.setDate(priceList.get(index).date);
-		vo.setDif(dif);
-		vo.setDea(dea);
-		vo.setMacd(macdRtn);
+        double[] close = new double[length];
+        int index = 0;
+        for (StockPriceVO vo : priceList) {
+            close[index++] = vo.close;
+        }
 
-		//System.out.println(vo);
-		this.deleteMacd(stockId, vo.date);
-		macdTable.insert(vo);
+        double[][] macd = talib.getMacdExt(close, 12, 26, 9);
 
-	}
+        index = priceList.size() - 1;
+        double dif = macd[0][index];
+        double dea = macd[1][index];
+        double macdRtn = (dif - dea) * 2;
+        // System.out.println("date=" + list.get(index).date);
+        // System.out.println("DIF=" + dif);
+        // System.out.println("DEA=" + dea);
+        // System.out.println("MACD=" + macdRtn);
 
-	public void countAndSaved(List<String> stockIds) {
-		int index = 0;
-		for (String stockId : stockIds) {
-			System.out.println("MACD countAndSaved: " + stockId + " " + (++index) + "/" + stockIds.size());
-			this.countAndSaved(stockId);
-		}
-	}
+        MacdVO vo = new MacdVO();
+        vo.setStockId(stockId);
+        vo.setDate(priceList.get(index).date);
+        vo.setDif(dif);
+        vo.setDea(dea);
+        vo.setMacd(macdRtn);
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		StockListConfigurationService stockConfig = StockListConfigurationService.getInstance();
-		DailyMacdCountAndSaveDBRunner runner = new DailyMacdCountAndSaveDBRunner();
-		runner.countAndSaved(stockConfig.getAllStockId());
-		// runner.countAndSaved("002214");
-	}
+        //System.out.println(vo);
+        this.deleteMacd(stockId, vo.date);
+        macdTable.insert(vo);
+
+    }
+
+    public void countAndSaved(List<String> stockIds) {
+        int index = 0;
+        for (String stockId : stockIds) {
+            if (index % 100 == 0)
+                System.out.println("MACD countAndSaved: " + stockId + " " + (++index) + "/" + stockIds.size());
+            this.countAndSaved(stockId);
+        }
+    }
+
+    public void run() {
+        this.parentRunner.startTaskInfo(this.getClass().getSimpleName());
+        countAndSaved(stockConfig.getAllStockId());
+        this.parentRunner.stopTaskInfo(this.getClass().getSimpleName());
+    }
+
+    public static void main(String[] args) {
+        // TODO Auto-generated method stub
+        StockListConfigurationService stockConfig = StockListConfigurationService.getInstance();
+        DailyMacdCountAndSaveDBRunner runner = new DailyMacdCountAndSaveDBRunner();
+        runner.countAndSaved(stockConfig.getAllStockId());
+        // runner.countAndSaved("002214");
+    }
 }
