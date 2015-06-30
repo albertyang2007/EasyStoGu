@@ -389,3 +389,43 @@ ALTER TABLE ind_week_xueshi2
   OWNER TO postgres;
 GRANT ALL ON TABLE ind_week_xueshi2 TO public;
 GRANT ALL ON TABLE ind_week_xueshi2 TO postgres;
+
+-- Table: ind_mai1mai2
+
+-- DROP TABLE ind_mai1mai2;
+
+CREATE TABLE ind_mai1mai2
+(
+  stockid text NOT NULL,
+  date text NOT NULL,
+  sd numeric,
+  sk numeric,
+  CONSTRAINT ind_mai1mai2_primary_key PRIMARY KEY (stockid, date)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE ind_mai1mai2
+  OWNER TO postgres;
+GRANT ALL ON TABLE ind_mai1mai2 TO public;
+GRANT ALL ON TABLE ind_mai1mai2 TO postgres;
+
+-- Table: ind_week_mai1mai2
+
+-- DROP TABLE ind_week_mai1mai2;
+
+CREATE TABLE ind_week_mai1mai2
+(
+  stockid text NOT NULL,
+  date text NOT NULL,
+  sd numeric,
+  sk numeric,
+  CONSTRAINT ind_week_mai1mai2_primary_key PRIMARY KEY (stockid, date)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE ind_week_mai1mai2
+  OWNER TO postgres;
+GRANT ALL ON TABLE ind_week_mai1mai2 TO public;
+GRANT ALL ON TABLE ind_week_mai1mai2 TO postgres;

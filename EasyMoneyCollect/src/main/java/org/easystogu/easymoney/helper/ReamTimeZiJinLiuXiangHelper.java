@@ -19,92 +19,100 @@ import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
 public class ReamTimeZiJinLiuXiangHelper {
-	private static final String baseUrl = "http://data.eastmoney.com/zjlx/";
-	private static FileConfigurationService configure = FileConfigurationService.getInstance();
+    private static final String baseUrl = "http://data.eastmoney.com/zjlx/";
+    private static FileConfigurationService configure = FileConfigurationService.getInstance();
+    private RestTemplate restTemplate = null;
 
-	// stockList is like: sh000001,sh601318
-	// has prefix
-	public List<RealTimeZiJinLiuVO> fetchDataFromWeb(List<String> stockIds) {
-		List<RealTimeZiJinLiuVO> list = new ArrayList<RealTimeZiJinLiuVO>();
-		for (String stockId : stockIds) {
-			RealTimeZiJinLiuVO vo = this.fetchDataFromWeb(stockId);
-			if (vo.isValidated()) {
-				list.add(vo);
-			}
-		}
-		return list;
-	}
+    public ReamTimeZiJinLiuXiangHelper() {
+        this.initRestTemplate();
+    }
 
-	public RealTimeZiJinLiuVO fetchDataFromWeb(String stockId) {
-		RealTimeZiJinLiuVO vo = new RealTimeZiJinLiuVO(stockId);
-		StringBuffer urlStr = new StringBuffer(baseUrl + stockId + ".html");
-		SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
-		requestFactory.setConnectTimeout(10000);
-		requestFactory.setReadTimeout(10000);
+    private void initRestTemplate() {
+        SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
+        requestFactory.setConnectTimeout(10000);
+        requestFactory.setReadTimeout(10000);
 
-		if (Strings.isNotEmpty(configure.getString(Constants.httpProxyServer))) {
-			Proxy proxy = new Proxy(Type.HTTP, new InetSocketAddress(configure.getString(Constants.httpProxyServer),
-					configure.getInt(Constants.httpProxyPort)));
-			requestFactory.setProxy(proxy);
-		}
+        if (Strings.isNotEmpty(configure.getString(Constants.httpProxyServer))) {
+            Proxy proxy = new Proxy(Type.HTTP, new InetSocketAddress(configure.getString(Constants.httpProxyServer),
+                    configure.getInt(Constants.httpProxyPort)));
+            requestFactory.setProxy(proxy);
+        }
 
-		try {
-			RestTemplate restTemplate = new RestTemplate(requestFactory);
+        restTemplate = new RestTemplate(requestFactory);
+    }
 
-			String contents = restTemplate.getForObject(urlStr.toString(), String.class);
+    // stockList is like: sh000001,sh601318
+    // has prefix
+    public List<RealTimeZiJinLiuVO> fetchDataFromWeb(List<String> stockIds) {
+        List<RealTimeZiJinLiuVO> list = new ArrayList<RealTimeZiJinLiuVO>();
+        for (String stockId : stockIds) {
+            RealTimeZiJinLiuVO vo = this.fetchDataFromWeb(stockId);
+            if (vo.isValidated()) {
+                list.add(vo);
+            }
+        }
+        return list;
+    }
 
-			if (Strings.isEmpty(contents)) {
-				System.out.println("Contents of zijinliu for " + stockId + " is empty");
-				return vo;
-			}
+    public RealTimeZiJinLiuVO fetchDataFromWeb(String stockId) {
+        RealTimeZiJinLiuVO vo = new RealTimeZiJinLiuVO(stockId);
+        StringBuffer urlStr = new StringBuffer(baseUrl + stockId + ".html");
 
-			ByteArrayInputStream is = new ByteArrayInputStream(contents.getBytes("gb2312"));
-			Document doc = Jsoup.parse(is, "gb2312", "");
-			Elements elements = doc.select("div.flash-data-cont");
-			for (Element element : elements) {
-				Element jlr = element.getElementById("data_jlr");
-				vo.majorNetIn = Double.parseDouble(jlr.text());
+        try {
+            String contents = restTemplate.getForObject(urlStr.toString(), String.class);
 
-				Element jzb = element.getElementById("data_jzb");
-				vo.majorNetPer = Double.parseDouble(jzb.text().substring(0, jzb.text().length() - 1));
+            if (Strings.isEmpty(contents)) {
+                System.out.println("Contents of zijinliu for " + stockId + " is empty");
+                return vo;
+            }
 
-				Element superjlr = element.getElementById("data_superjlr");
-				vo.biggestNetIn = Double.parseDouble(superjlr.text());
+            ByteArrayInputStream is = new ByteArrayInputStream(contents.getBytes("gb2312"));
+            Document doc = Jsoup.parse(is, "gb2312", "");
+            Elements elements = doc.select("div.flash-data-cont");
+            for (Element element : elements) {
+                Element jlr = element.getElementById("data_jlr");
+                vo.majorNetIn = Double.parseDouble(jlr.text());
 
-				Element superjzb = element.getElementById("data_superjzb");
-				vo.biggestNetPer = Double.parseDouble(superjzb.text().substring(0, superjzb.text().length() - 1));
+                Element jzb = element.getElementById("data_jzb");
+                vo.majorNetPer = Double.parseDouble(jzb.text().substring(0, jzb.text().length() - 1));
 
-				Element ddjlr = element.getElementById("data_ddjlr");
-				vo.bigNetIn = Double.parseDouble(ddjlr.text());
+                Element superjlr = element.getElementById("data_superjlr");
+                vo.biggestNetIn = Double.parseDouble(superjlr.text());
 
-				Element ddjzb = element.getElementById("data_ddjzb");
-				vo.bigNetPer = Double.parseDouble(ddjzb.text().substring(0, ddjzb.text().length() - 1));
+                Element superjzb = element.getElementById("data_superjzb");
+                vo.biggestNetPer = Double.parseDouble(superjzb.text().substring(0, superjzb.text().length() - 1));
 
-				Element zdjlr = element.getElementById("data_zdjlr");
-				vo.midNetIn = Double.parseDouble(zdjlr.text());
+                Element ddjlr = element.getElementById("data_ddjlr");
+                vo.bigNetIn = Double.parseDouble(ddjlr.text());
 
-				Element zdjzb = element.getElementById("data_zdjzb");
-				vo.midNetPer = Double.parseDouble(zdjzb.text().substring(0, zdjzb.text().length() - 1));
+                Element ddjzb = element.getElementById("data_ddjzb");
+                vo.bigNetPer = Double.parseDouble(ddjzb.text().substring(0, ddjzb.text().length() - 1));
 
-				Element xdjlr = element.getElementById("data_xdjlr");
-				vo.smallNetIn = Double.parseDouble(xdjlr.text());
+                Element zdjlr = element.getElementById("data_zdjlr");
+                vo.midNetIn = Double.parseDouble(zdjlr.text());
 
-				Element xdjzb = element.getElementById("data_xdjzb");
-				vo.smallNetPer = Double.parseDouble(xdjzb.text().substring(0, xdjzb.text().length() - 1));
+                Element zdjzb = element.getElementById("data_zdjzb");
+                vo.midNetPer = Double.parseDouble(zdjzb.text().substring(0, zdjzb.text().length() - 1));
 
-			}
+                Element xdjlr = element.getElementById("data_xdjlr");
+                vo.smallNetIn = Double.parseDouble(xdjlr.text());
 
-			// System.out.println(vo.toNetInString());
-			// System.out.println(vo.toNetPerString());
+                Element xdjzb = element.getElementById("data_xdjzb");
+                vo.smallNetPer = Double.parseDouble(xdjzb.text().substring(0, xdjzb.text().length() - 1));
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return vo;
-	}
+            }
 
-	public static void main(String[] args) {
-		ReamTimeZiJinLiuXiangHelper ins = new ReamTimeZiJinLiuXiangHelper();
-		ins.fetchDataFromWeb("300186");
-	}
+            // System.out.println(vo.toNetInString());
+            // System.out.println(vo.toNetPerString());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return vo;
+    }
+
+    public static void main(String[] args) {
+        ReamTimeZiJinLiuXiangHelper ins = new ReamTimeZiJinLiuXiangHelper();
+        ins.fetchDataFromWeb("300186");
+    }
 }
