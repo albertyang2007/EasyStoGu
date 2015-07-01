@@ -5,11 +5,11 @@ import java.util.List;
 import org.easystogu.config.StockListConfigurationService;
 import org.easystogu.db.access.IndWeekMai1Mai2TableHelper;
 import org.easystogu.db.access.WeekStockPriceTableHelper;
-import org.easystogu.multirunner.DayMultThreadRunner;
+import org.easystogu.multirunner.MultThreadRunner;
 import org.easystogu.utils.WeekdayUtil;
 
 public class DailyWeekMai1Mai2CountAndSaveDBRunner extends DailyMai1Mai2CountAndSaveDBRunner {
-    public DailyWeekMai1Mai2CountAndSaveDBRunner(DayMultThreadRunner parentRunner) {
+    public DailyWeekMai1Mai2CountAndSaveDBRunner(MultThreadRunner parentRunner) {
         super(parentRunner);
     }
     

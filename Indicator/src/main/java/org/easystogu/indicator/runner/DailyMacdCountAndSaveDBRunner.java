@@ -9,7 +9,7 @@ import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.table.MacdVO;
 import org.easystogu.db.table.StockPriceVO;
 import org.easystogu.indicator.TALIBWraper;
-import org.easystogu.multirunner.DayMultThreadRunner;
+import org.easystogu.multirunner.MultThreadRunner;
 
 //每日根据最新数据计算当天的macd值，每天运行一次
 public class DailyMacdCountAndSaveDBRunner implements Runnable {
@@ -18,13 +18,13 @@ public class DailyMacdCountAndSaveDBRunner implements Runnable {
 	protected TALIBWraper talib = new TALIBWraper();
 	protected ChuQuanChuXiPriceHelper chuQuanChuXiPriceHelper = new ChuQuanChuXiPriceHelper();
 	protected StockListConfigurationService stockConfig = StockListConfigurationService.getInstance();
-	protected DayMultThreadRunner parentRunner;
+	protected MultThreadRunner parentRunner;
 
 	public DailyMacdCountAndSaveDBRunner() {
 
 	}
 
-	public DailyMacdCountAndSaveDBRunner(DayMultThreadRunner parentRunner) {
+	public DailyMacdCountAndSaveDBRunner(MultThreadRunner parentRunner) {
 		this.parentRunner = parentRunner;
 		this.parentRunner.newTaskInfo(this.getClass().getSimpleName());
 	}

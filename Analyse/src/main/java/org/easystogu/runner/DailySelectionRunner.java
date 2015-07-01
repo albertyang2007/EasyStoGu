@@ -312,9 +312,12 @@ public class DailySelectionRunner implements Runnable {
 
         StockListConfigurationService stockConfig = StockListConfigurationService.getInstance();
         List<String> stockIds = stockConfig.getAllStockId();
-
+        int index = 0;
         for (String stockId : stockIds) {
             // if (stockId.equals("000979"))
+            if (index++ % 500 == 0) {
+                System.out.println("Analyse of " + index + "/" + stockIds.size());
+            }
             doAnalyse(stockId);
         }
 

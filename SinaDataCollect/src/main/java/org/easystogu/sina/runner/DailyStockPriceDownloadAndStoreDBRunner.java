@@ -33,6 +33,7 @@ public class DailyStockPriceDownloadAndStoreDBRunner implements Runnable {
         // 分批取数据
         int index = 0;
         for (; index < batchs; index++) {
+            System.out.println("Process daily price " + index + "/" + batchs);
             List<RealTimePriceVO> list = sinaHelper.fetchDataFromWeb(totalStockIds.subList(index * batchSize,
                     (index + 1) * batchSize));
             for (RealTimePriceVO vo : list) {
@@ -40,6 +41,7 @@ public class DailyStockPriceDownloadAndStoreDBRunner implements Runnable {
             }
         }
         // 去剩余数据
+        System.out.println("Process daily price " + index + "/" + batchs);
         List<RealTimePriceVO> list = sinaHelper.fetchDataFromWeb(totalStockIds.subList(index * batchSize,
                 totalStockIds.size()));
         for (RealTimePriceVO vo : list) {

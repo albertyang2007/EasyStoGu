@@ -9,7 +9,7 @@ import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.table.Mai1Mai2VO;
 import org.easystogu.db.table.StockPriceVO;
 import org.easystogu.indicator.mai1mai2.Mai1Mai2Helper;
-import org.easystogu.multirunner.DayMultThreadRunner;
+import org.easystogu.multirunner.MultThreadRunner;
 
 public class DailyMai1Mai2CountAndSaveDBRunner implements Runnable {
 
@@ -18,13 +18,13 @@ public class DailyMai1Mai2CountAndSaveDBRunner implements Runnable {
 	private Mai1Mai2Helper mai1mai2Helper = new Mai1Mai2Helper();
 	protected ChuQuanChuXiPriceHelper chuQuanChuXiPriceHelper = new ChuQuanChuXiPriceHelper();
 	protected StockListConfigurationService stockConfig = StockListConfigurationService.getInstance();
-	protected DayMultThreadRunner parentRunner;
+	protected MultThreadRunner parentRunner;
 
 	public DailyMai1Mai2CountAndSaveDBRunner() {
 
 	}
 
-	public DailyMai1Mai2CountAndSaveDBRunner(DayMultThreadRunner parentRunner) {
+	public DailyMai1Mai2CountAndSaveDBRunner(MultThreadRunner parentRunner) {
 		this.parentRunner = parentRunner;
 		this.parentRunner.newTaskInfo(this.getClass().getSimpleName());
 	}
@@ -40,7 +40,7 @@ public class DailyMai1Mai2CountAndSaveDBRunner implements Runnable {
 	public void deleteMai1Mai2(List<String> stockIds) {
 		int index = 0;
 		for (String stockId : stockIds) {
-			System.out.println("Delete Mai1Mai2 for " + stockId + " " + (++index) + " of " + stockIds.size());
+			System.out.println("Delete Mai1Mai2 for " + stockId + " " + (++index) + "/" + stockIds.size());
 			this.deleteMai1Mai2(stockId);
 		}
 	}
@@ -82,7 +82,7 @@ public class DailyMai1Mai2CountAndSaveDBRunner implements Runnable {
 		int index = 0;
 		for (String stockId : stockIds) {
 			if (index++ % 500 == 0) {
-				System.out.println("Mai1Mai2 countAndSaved: " + stockId + " " + (index) + " of " + stockIds.size());
+				System.out.println("Mai1Mai2 countAndSaved: " + stockId + " " + (index) + "/" + stockIds.size());
 			}
 			this.countAndSaved(stockId);
 		}

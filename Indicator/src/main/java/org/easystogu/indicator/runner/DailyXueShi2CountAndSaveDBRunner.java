@@ -10,7 +10,7 @@ import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.table.StockPriceVO;
 import org.easystogu.db.table.XueShi2VO;
 import org.easystogu.indicator.TALIBWraper;
-import org.easystogu.multirunner.DayMultThreadRunner;
+import org.easystogu.multirunner.MultThreadRunner;
 
 public class DailyXueShi2CountAndSaveDBRunner implements Runnable {
 	protected IndXueShi2TableHelper xueShi2Table = IndXueShi2TableHelper.getInstance();
@@ -18,13 +18,13 @@ public class DailyXueShi2CountAndSaveDBRunner implements Runnable {
 	private TALIBWraper talib = new TALIBWraper();
 	protected ChuQuanChuXiPriceHelper chuQuanChuXiPriceHelper = new ChuQuanChuXiPriceHelper();
 	protected StockListConfigurationService stockConfig = StockListConfigurationService.getInstance();
-	protected DayMultThreadRunner parentRunner;
+	protected MultThreadRunner parentRunner;
 
 	public DailyXueShi2CountAndSaveDBRunner() {
 
 	}
 
-	public DailyXueShi2CountAndSaveDBRunner(DayMultThreadRunner parentRunner) {
+	public DailyXueShi2CountAndSaveDBRunner(MultThreadRunner parentRunner) {
 		this.parentRunner = parentRunner;
 		this.parentRunner.newTaskInfo(this.getClass().getSimpleName());
 	}

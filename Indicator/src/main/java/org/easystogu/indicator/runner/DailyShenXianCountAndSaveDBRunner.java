@@ -10,7 +10,7 @@ import org.easystogu.db.table.ShenXianVO;
 import org.easystogu.db.table.StockPriceVO;
 import org.easystogu.indicator.runner.utils.StockPriceFetcher;
 import org.easystogu.indicator.shenxian.ShenXianHelper;
-import org.easystogu.multirunner.DayMultThreadRunner;
+import org.easystogu.multirunner.MultThreadRunner;
 
 public class DailyShenXianCountAndSaveDBRunner implements Runnable {
 	protected StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
@@ -18,13 +18,13 @@ public class DailyShenXianCountAndSaveDBRunner implements Runnable {
 	private ShenXianHelper shenXianHelper = new ShenXianHelper();
 	protected ChuQuanChuXiPriceHelper chuQuanChuXiPriceHelper = new ChuQuanChuXiPriceHelper();
 	protected StockListConfigurationService stockConfig = StockListConfigurationService.getInstance();
-	protected DayMultThreadRunner parentRunner;
+	protected MultThreadRunner parentRunner;
 
 	public DailyShenXianCountAndSaveDBRunner() {
 
 	}
 
-	public DailyShenXianCountAndSaveDBRunner(DayMultThreadRunner parentRunner) {
+	public DailyShenXianCountAndSaveDBRunner(MultThreadRunner parentRunner) {
 		this.parentRunner = parentRunner;
 		this.parentRunner.newTaskInfo(this.getClass().getSimpleName());
 	}
@@ -40,7 +40,7 @@ public class DailyShenXianCountAndSaveDBRunner implements Runnable {
 	public void deleteShenXian(List<String> stockIds) {
 		int index = 0;
 		for (String stockId : stockIds) {
-			System.out.println("Delete ShenXian for " + stockId + " " + (++index) + " of " + stockIds.size());
+			System.out.println("Delete ShenXian for " + stockId + " " + (++index) + "/" + stockIds.size());
 			this.deleteShenXian(stockId);
 		}
 	}
@@ -79,7 +79,7 @@ public class DailyShenXianCountAndSaveDBRunner implements Runnable {
 		int index = 0;
 		for (String stockId : stockIds) {
 			if (index++ % 500 == 0) {
-				System.out.println("ShenXian countAndSaved: " + stockId + " " + (index) + " of " + stockIds.size());
+				System.out.println("ShenXian countAndSaved: " + stockId + " " + (index) + "/" + stockIds.size());
 			}
 			this.countAndSaved(stockId);
 		}

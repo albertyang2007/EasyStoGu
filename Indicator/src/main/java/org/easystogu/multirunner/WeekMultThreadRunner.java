@@ -6,7 +6,7 @@ import org.easystogu.indicator.runner.DailyWeekMacdCountAndSaveDBRunner;
 import org.easystogu.indicator.runner.DailyWeekMai1Mai2CountAndSaveDBRunner;
 import org.easystogu.indicator.runner.DailyWeekShenXianCountAndSaveDBRunner;
 
-public class WeekMultThreadRunner extends DayMultThreadRunner {
+public class WeekMultThreadRunner extends MultThreadRunner {
     @Override
     public void run() {
         //start thread to run ind

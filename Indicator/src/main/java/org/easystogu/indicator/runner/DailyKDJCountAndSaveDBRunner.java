@@ -10,7 +10,7 @@ import org.easystogu.db.table.KDJVO;
 import org.easystogu.db.table.StockPriceVO;
 import org.easystogu.indicator.kdj.KDJHelper;
 import org.easystogu.indicator.runner.utils.StockPriceFetcher;
-import org.easystogu.multirunner.DayMultThreadRunner;
+import org.easystogu.multirunner.MultThreadRunner;
 
 public class DailyKDJCountAndSaveDBRunner implements Runnable {
 	private KDJHelper kdjHelper = new KDJHelper();
@@ -18,13 +18,13 @@ public class DailyKDJCountAndSaveDBRunner implements Runnable {
 	protected IndKDJTableHelper kdjTable = IndKDJTableHelper.getInstance();
 	protected ChuQuanChuXiPriceHelper chuQuanChuXiPriceHelper = new ChuQuanChuXiPriceHelper();
 	protected StockListConfigurationService stockConfig = StockListConfigurationService.getInstance();
-	protected DayMultThreadRunner parentRunner;
+	protected MultThreadRunner parentRunner;
 
 	public DailyKDJCountAndSaveDBRunner() {
 
 	}
 
-	public DailyKDJCountAndSaveDBRunner(DayMultThreadRunner parentRunner) {
+	public DailyKDJCountAndSaveDBRunner(MultThreadRunner parentRunner) {
 		this.parentRunner = parentRunner;
 		this.parentRunner.newTaskInfo(this.getClass().getSimpleName());
 	}

@@ -21,7 +21,7 @@ public enum DailyCombineCheckPoint {
             8.27), DuoTou_Pre_2_Days_Green_Red_KDJ_Zero_MA30_Support(SellPointType.KDJ_Dead, 1058, 8.56), DuoTou_Pre_2_Days_Green_Red_KDJ_Zero_MA30_Support_MA_RongHe_XiangShang(
             SellPointType.KDJ_Dead, 77, 9.13), DuoTou_Pre_2_Days_Green_Red_KDJ_Zero_MA20_Support_MA_RongHe_XiangShang(
             SellPointType.KDJ_Dead, 146, 8.8), HengPang_7_Days_Ready_To_Break_Platform(SellPointType.KDJ_Dead, 1132,
-            8.07), Day_Week_Mai1Mai2_Mai2_Grodon(SellPointType.KDJ_Dead, 15902, 7.24), Day_Week_Mai1Mai2_Mai2_Day_ShenXian_Grodon(
+            8.07), Day_Week_Mai1Mai2_Mai2_Grodon(SellPointType.KDJ_Dead, 15902, 7.24*10), Day_Week_Mai1Mai2_Mai2_Day_ShenXian_Grodon(
             SellPointType.KDJ_Dead, 719, 11.34), Day_Mai1Mai2_Mai1_ShenXian_Grodon(SellPointType.KDJ_Dead, 7603, 9.11), Day_Mai1Mai2_Mai2_ShenXian_Grodon(
             SellPointType.KDJ_Dead, 19446, 7.7), Day_Week_Mai1Mai2_Mai1_Day_ShenXian_Grodon(SellPointType.KDJ_Dead, 320, 7.56);
 
