@@ -36,7 +36,7 @@ public class ChuQuanChuXiCheckerRunner implements Runnable{
 					vo.setRate(cur.lastClose / pre.close);
 					vo.setAlreadyUpdatePrice(false);
 
-					System.out.println("ChuQuan happen for " + vo);
+					//System.out.println("ChuQuan happen for " + vo);
 					chuQuanChuXiTable.insert(vo);
 				}
 			}
