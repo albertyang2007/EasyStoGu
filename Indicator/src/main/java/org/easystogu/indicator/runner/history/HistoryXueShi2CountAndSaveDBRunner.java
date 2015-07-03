@@ -65,6 +65,7 @@ public class HistoryXueShi2CountAndSaveDBRunner {
 				xueShi2VO.setUp(up);
 				xueShi2VO.setDn(dn);
 
+				//if (xueShi2VO.date.compareTo("2015-06-29") >= 0)
 				if (xueShi2Table.getXueShi2(xueShi2VO.stockId, xueShi2VO.date) == null) {
 					xueShi2Table.insert(xueShi2VO);
 				}

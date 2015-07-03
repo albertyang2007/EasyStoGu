@@ -58,6 +58,7 @@ public class HistoryMai1Mai2CountAndSaveDBRunner {
 			vo.setDate(priceList.get(i).date);
 
 			try {
+				//if (vo.date.compareTo("2015-06-29") >= 0)
 				if (mai1mai2Table.getMai1Mai2(vo.stockId, vo.date) == null) {
 					mai1mai2Table.insert(vo);
 				}

@@ -56,6 +56,7 @@ public class HistoryBollCountAndSaveDBRunner {
 				bollVO.setUp(up);
 				bollVO.setDn(dn);
 
+				//if (bollVO.date.compareTo("2015-06-29") >= 0)
 				if (bollTable.getBoll(bollVO.stockId, bollVO.date) == null) {
 					bollTable.insert(bollVO);
 				}

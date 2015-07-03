@@ -282,6 +282,6 @@ public class HistoryAnalyseReport {
 			}
 			// reporter.searchAllStockIdAccordingToCheckPoint(checkPoint);
 		}
-		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.Day_Week_Mai1Mai2_Mai2_Day_ShenXian_Grodon);
+		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.Day_Week_Mai1Mai2_Mai2_Grodon);
 	}
 }

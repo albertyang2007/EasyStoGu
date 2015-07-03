@@ -68,9 +68,10 @@ public class HistoryMacdCountAndSaveDBRunner {
 				macdVo.setDea(dea);
 				macdVo.setMacd(macdRtn);
 
-				if (macdTable.getMacd(macdVo.stockId, macdVo.date) == null) {
-					macdTable.insert(macdVo);
-				}
+				//if (macdVo.date.compareTo("2015-06-29") >= 0)
+					if (macdTable.getMacd(macdVo.stockId, macdVo.date) == null) {
+						macdTable.insert(macdVo);
+					}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

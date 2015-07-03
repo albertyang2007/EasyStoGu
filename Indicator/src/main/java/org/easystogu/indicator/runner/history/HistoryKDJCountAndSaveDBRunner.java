@@ -57,6 +57,7 @@ public class HistoryKDJCountAndSaveDBRunner {
 			vo.setDate(priceList.get(i).date);
 
 			try {
+				//if (vo.date.compareTo("2015-06-29") >= 0)
 				if (kdjTable.getKDJ(vo.stockId, vo.date) == null) {
 					kdjTable.insert(vo);
 				}
