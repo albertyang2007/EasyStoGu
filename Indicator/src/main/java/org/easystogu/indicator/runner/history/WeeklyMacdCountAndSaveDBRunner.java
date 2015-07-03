@@ -16,6 +16,6 @@ public class WeeklyMacdCountAndSaveDBRunner extends HistoryMacdCountAndSaveDBRun
         StockListConfigurationService stockConfig = StockListConfigurationService.getInstance();
         WeeklyMacdCountAndSaveDBRunner runner = new WeeklyMacdCountAndSaveDBRunner();
         runner.countAndSaved(stockConfig.getAllStockId());
-        //runner.countAndSaved("002709");
+        //runner.countAndSaved("600750");
     }
 }

@@ -79,9 +79,8 @@ public class HistoryKDJCountAndSaveDBRunner {
 	// 一次性计算数据库中所有KDJ数据，入库
 	public static void main(String[] args) {
 		StockListConfigurationService stockConfig = StockListConfigurationService.getInstance();
-		List<String> stockIds = stockConfig.getAllStockId();
 		HistoryKDJCountAndSaveDBRunner runner = new HistoryKDJCountAndSaveDBRunner();
-		runner.countAndSaved(stockIds);
-		// runner.countAndSaved("002194");
+		runner.countAndSaved(stockConfig.getAllStockId());
+		//runner.countAndSaved("600750");
 	}
 }

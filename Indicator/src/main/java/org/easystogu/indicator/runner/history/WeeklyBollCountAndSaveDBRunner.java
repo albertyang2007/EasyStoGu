@@ -15,6 +15,6 @@ public class WeeklyBollCountAndSaveDBRunner extends HistoryBollCountAndSaveDBRun
         StockListConfigurationService stockConfig = StockListConfigurationService.getInstance();
         WeeklyBollCountAndSaveDBRunner runner = new WeeklyBollCountAndSaveDBRunner();
         runner.countAndSaved(stockConfig.getAllStockId());
-        //runner.countAndSaved("002194");
+        //runner.countAndSaved("600750");
     }
 }
