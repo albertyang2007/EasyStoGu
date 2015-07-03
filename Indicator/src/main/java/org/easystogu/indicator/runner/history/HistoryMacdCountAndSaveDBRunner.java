@@ -91,5 +91,6 @@ public class HistoryMacdCountAndSaveDBRunner {
 		StockListConfigurationService stockConfig = StockListConfigurationService.getInstance();
 		HistoryMacdCountAndSaveDBRunner runner = new HistoryMacdCountAndSaveDBRunner();
 		runner.countAndSaved(stockConfig.getAllStockId());
+		//runner.countAndSaved("600750");
 	}
 }

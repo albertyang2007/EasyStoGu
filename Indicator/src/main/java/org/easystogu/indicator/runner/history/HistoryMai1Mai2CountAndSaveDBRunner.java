@@ -81,9 +81,8 @@ public class HistoryMai1Mai2CountAndSaveDBRunner {
 	// 一次性计算数据库中所有ShenXian数据，入库
 	public static void main(String[] args) {
 		StockListConfigurationService stockConfig = StockListConfigurationService.getInstance();
-		List<String> stockIds = stockConfig.getAllStockId();
 		HistoryMai1Mai2CountAndSaveDBRunner runner = new HistoryMai1Mai2CountAndSaveDBRunner();
-		runner.countAndSaved(stockIds);
-		// runner.countAndSaved("600359");
+		runner.countAndSaved(stockConfig.getAllStockId());
+        //runner.countAndSaved("600750");
 	}
 }

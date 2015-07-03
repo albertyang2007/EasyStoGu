@@ -16,7 +16,7 @@ public class WeeklyShenXianCountAndSaveDBRunner extends HistoryShenXianCountAndS
         // TODO Auto-generated method stub
         StockListConfigurationService stockConfig = StockListConfigurationService.getInstance();
         WeeklyShenXianCountAndSaveDBRunner runner = new WeeklyShenXianCountAndSaveDBRunner();
-        List<String> stockIds = stockConfig.getAllStockId();
-        runner.countAndSaved(stockIds);
+        runner.countAndSaved(stockConfig.getAllStockId());
+        //runner.countAndSaved("600750");
     }
 }

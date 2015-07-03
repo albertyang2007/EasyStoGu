@@ -57,7 +57,7 @@ public class HistoryAnalyseReport {
 		// "9999-99-99");
 
 		if (overDayList.size() == 0) {
-			//System.out.println("0");
+			// System.out.println("0");
 			return historyReportList;
 		}
 
@@ -160,8 +160,8 @@ public class HistoryAnalyseReport {
 				+ checkPoint.getSellPointType() + ")==========================");
 		for (String stockId : stockIds) {
 
-			//if (!stockId.equals("600084"))
-			//	continue;
+			if (!stockId.equals("600750"))
+				continue;
 
 			List<HistoryReportDetailsVO> historyReportList = this.doAnalyseReport(stockId, checkPoint);
 			for (HistoryReportDetailsVO reportVO : historyReportList) {
@@ -282,6 +282,6 @@ public class HistoryAnalyseReport {
 			}
 			// reporter.searchAllStockIdAccordingToCheckPoint(checkPoint);
 		}
-		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.Day_Week_Mai1Mai2_Mai2_Grodon);
+		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.DaDie_KDJ_Gordon_Twice_DiWei_Gordon);
 	}
 }

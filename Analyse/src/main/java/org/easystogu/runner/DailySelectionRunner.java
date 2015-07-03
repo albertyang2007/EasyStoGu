@@ -306,7 +306,7 @@ public class DailySelectionRunner implements Runnable {
     }
 
     public void run() {
-        CheckPointDailySelectionTableHelper eventTable = CheckPointDailySelectionTableHelper.getInstance();
+        //CheckPointDailySelectionTableHelper eventTable = CheckPointDailySelectionTableHelper.getInstance();
         // System.out.println("Delete latest's Select Event");
         // eventTable.deleteByDate(runner.latestDate);
 

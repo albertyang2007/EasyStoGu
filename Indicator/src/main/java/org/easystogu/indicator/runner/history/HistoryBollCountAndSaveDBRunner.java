@@ -79,7 +79,7 @@ public class HistoryBollCountAndSaveDBRunner {
 		StockListConfigurationService stockConfig = StockListConfigurationService.getInstance();
 		HistoryBollCountAndSaveDBRunner runner = new HistoryBollCountAndSaveDBRunner();
 		runner.countAndSaved(stockConfig.getAllStockId());
-		// runner.countAndSaved("300400");
+		//runner.countAndSaved("600750");
 	}
 
 }

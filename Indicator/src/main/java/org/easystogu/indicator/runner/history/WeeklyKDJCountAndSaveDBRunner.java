@@ -16,8 +16,7 @@ public class WeeklyKDJCountAndSaveDBRunner extends HistoryKDJCountAndSaveDBRunne
         // TODO Auto-generated method stub
         StockListConfigurationService stockConfig = StockListConfigurationService.getInstance();
         WeeklyKDJCountAndSaveDBRunner runner = new WeeklyKDJCountAndSaveDBRunner();
-        List<String> stockIds = stockConfig.getAllStockId();
-        runner.countAndSaved(stockIds);
-        //runner.countAndSaved("002194");
+        runner.countAndSaved(stockConfig.getAllStockId());
+        //runner.countAndSaved("600750");
     }
 }

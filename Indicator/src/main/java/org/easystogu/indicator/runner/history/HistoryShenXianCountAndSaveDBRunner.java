@@ -78,8 +78,8 @@ public class HistoryShenXianCountAndSaveDBRunner {
 		StockListConfigurationService stockConfig = StockListConfigurationService.getInstance();
 		List<String> stockIds = stockConfig.getAllStockId();
 		HistoryShenXianCountAndSaveDBRunner runner = new HistoryShenXianCountAndSaveDBRunner();
-		runner.countAndSaved(stockIds);
-		// runner.countAndSaved("002194");
+		runner.countAndSaved(stockConfig.getAllStockId());
+		//runner.countAndSaved("600750");
 	}
 
 }
