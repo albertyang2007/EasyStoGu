@@ -10,6 +10,11 @@ import org.easystogu.sina.runner.DailyWeeklyStockPriceCountAndSaveDBRunner;
 public class MultiThreadDailyUpdateOverAllRunner {
 
     public static void main(String[] args) {
+
+        System.out.println("Some problem in multi thread, will missing some ind and week data, so just return");
+        if (true)
+            return;
+
         System.out.println("start at " + new Date());
         // day
         DailyStockPriceDownloadAndStoreDBRunner.main(args);
