@@ -13,6 +13,7 @@ import org.easystogu.indicator.runner.DailyWeekMacdCountAndSaveDBRunner;
 import org.easystogu.indicator.runner.DailyWeekMai1Mai2CountAndSaveDBRunner;
 import org.easystogu.indicator.runner.DailyWeekShenXianCountAndSaveDBRunner;
 import org.easystogu.indicator.runner.DailyXueShi2CountAndSaveDBRunner;
+import org.easystogu.indicator.runner.DailyZhuliJinChuCountAndSaveDBRunner;
 import org.easystogu.sina.runner.DailyStockPriceDownloadAndStoreDBRunner;
 import org.easystogu.sina.runner.DailyWeeklyStockPriceCountAndSaveDBRunner;
 
@@ -30,7 +31,7 @@ public class DailyUpdateOverAllRunner {
 		DailyMai1Mai2CountAndSaveDBRunner.main(args);
 		DailyShenXianCountAndSaveDBRunner.main(args);
 		DailyXueShi2CountAndSaveDBRunner.main(args);
-
+		DailyZhuliJinChuCountAndSaveDBRunner.main(args);
 		// week
 		DailyWeeklyStockPriceCountAndSaveDBRunner.main(args);
 		// week ind

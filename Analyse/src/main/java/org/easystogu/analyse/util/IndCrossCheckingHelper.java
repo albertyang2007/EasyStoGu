@@ -9,6 +9,7 @@ import org.easystogu.db.table.Mai1Mai2VO;
 import org.easystogu.db.table.ShenXianVO;
 import org.easystogu.db.table.StockSuperVO;
 import org.easystogu.db.table.XueShi2VO;
+import org.easystogu.db.table.ZhuliJinChuVO;
 import org.easystogu.utils.CrossType;
 
 public class IndCrossCheckingHelper {
@@ -162,6 +163,26 @@ public class IndCrossCheckingHelper {
 			if ((vo.sd <= vo.sk) && (nextvo.sd > nextvo.sk)) {
 				superNextVO.mai1mai2CrossTypeMai1 = CrossType.DEAD;
 				superNextVO.mai1mai2CrossTypeMai2 = CrossType.DEAD;
+				continue;
+			}
+		}
+	}
+
+	public static void zhuliJinChuCross(List<StockSuperVO> overList) {
+		for (int index = 0; index < (overList.size() - 1); index++) {
+			StockSuperVO superVO = overList.get(index);
+			StockSuperVO superNextVO = overList.get(index + 1);
+			ZhuliJinChuVO vo = superVO.zhuliJinChuVO;
+			ZhuliJinChuVO nextvo = superNextVO.zhuliJinChuVO;
+
+			// check cross
+			if ((vo.duofang <= vo.kongfang) && (nextvo.duofang > nextvo.kongfang)) {
+				superNextVO.zhuliJinChuCrossType = CrossType.GORDON;
+				continue;
+			}
+
+			if ((vo.duofang >= vo.kongfang) && (nextvo.duofang < nextvo.kongfang)) {
+				superNextVO.zhuliJinChuCrossType = CrossType.DEAD;
 				continue;
 			}
 		}

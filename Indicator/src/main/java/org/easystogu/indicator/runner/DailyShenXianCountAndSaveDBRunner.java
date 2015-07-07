@@ -8,8 +8,8 @@ import org.easystogu.db.access.IndShenXianTableHelper;
 import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.table.ShenXianVO;
 import org.easystogu.db.table.StockPriceVO;
+import org.easystogu.indicator.ShenXianHelper;
 import org.easystogu.indicator.runner.utils.StockPriceFetcher;
-import org.easystogu.indicator.shenxian.ShenXianHelper;
 import org.easystogu.multirunner.MultThreadRunner;
 
 public class DailyShenXianCountAndSaveDBRunner implements Runnable {

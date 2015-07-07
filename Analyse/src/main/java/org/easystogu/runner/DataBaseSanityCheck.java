@@ -76,7 +76,7 @@ public class DataBaseSanityCheck {
         int index = 0;
         for (String stockId : stockIds) {
             if (index++ % 100 == 0) {
-                System.out.println("Processing " + index + "/" + stockIds.size());
+                System.out.println("Processing week " + index + "/" + stockIds.size());
             }
             this.sanityWeekCheck(stockId);
         }
@@ -110,7 +110,7 @@ public class DataBaseSanityCheck {
     public static void main(String[] args) {
         StockListConfigurationService stockConfig = StockListConfigurationService.getInstance();
         DataBaseSanityCheck check = new DataBaseSanityCheck();
-        //check.sanityDailyCheck(stockConfig.getAllStockId());
-        check.sanityWeekCheck(stockConfig.getAllStockId());
+        check.sanityDailyCheck(stockConfig.getAllStockId());
+        //check.sanityWeekCheck(stockConfig.getAllStockId());
     }
 }

@@ -11,6 +11,7 @@ public class StockSuperVO {
 	public XueShi2VO xueShi2VO;
 	public ShenXianVO shenXianVO;
 	public Mai1Mai2VO mai1mai2VO;
+	public ZhuliJinChuVO zhuliJinChuVO;
 	public RealTimeZiJinLiuVO ziJinLiuVO = new RealTimeZiJinLiuVO("");
 	public double volumeIncreasePercent;// äº¤æ˜“çš„volumeè¾ƒå‰�ä¸€æ—¥çš„å¢žé‡�ç™¾åˆ†æ¯”
 	public long avgVol5;// avg of 5 days volume
@@ -22,6 +23,7 @@ public class StockSuperVO {
 	public CrossType shenXianCorssType13;// H1 corss H3
 	public CrossType mai1mai2CrossTypeMai1;// SK cross SD and sk < 0. buy point
 	public CrossType mai1mai2CrossTypeMai2;// SK cross SD and sk > 0. buy point
+	public CrossType zhuliJinChuCrossType;// duoFang kongFang
 	public boolean[] KLineStatus = new boolean[4];// big/small red, big/small
 													// green
 	public boolean priceHigherThanNday = false;// 当前价格是否突破平台,比如15天的价格
@@ -54,6 +56,10 @@ public class StockSuperVO {
 
 	public void setMai1Mai2VO(Mai1Mai2VO vo) {
 		this.mai1mai2VO = vo;
+	}
+
+	public void setZhuliJinChuVO(ZhuliJinChuVO vo) {
+		this.zhuliJinChuVO = vo;
 	}
 
 	@Override

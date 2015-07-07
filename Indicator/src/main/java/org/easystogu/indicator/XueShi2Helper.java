@@ -1,10 +1,9 @@
-package org.easystogu.indicator.xueshi;
+package org.easystogu.indicator;
 
 import java.util.List;
 
 import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.table.StockPriceVO;
-import org.easystogu.indicator.TALIBWraper;
 
 /*
  VAR4:=EXPMA(CLOSE,9);

@@ -4,52 +4,52 @@ import java.util.List;
 
 import org.easystogu.config.StockListConfigurationService;
 import org.easystogu.db.access.ChuQuanChuXiPriceHelper;
-import org.easystogu.db.access.IndMai1Mai2TableHelper;
+import org.easystogu.db.access.IndZhuliJinChuTableHelper;
 import org.easystogu.db.access.StockPriceTableHelper;
-import org.easystogu.db.table.Mai1Mai2VO;
 import org.easystogu.db.table.StockPriceVO;
-import org.easystogu.indicator.Mai1Mai2Helper;
+import org.easystogu.db.table.ZhuliJinChuVO;
+import org.easystogu.indicator.ZhuliJinChuHelper;
 import org.easystogu.multirunner.MultThreadRunner;
 
-public class DailyMai1Mai2CountAndSaveDBRunner implements Runnable {
+public class DailyZhuliJinChuCountAndSaveDBRunner implements Runnable {
 
 	protected StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
-	protected IndMai1Mai2TableHelper mai1mai2Table = IndMai1Mai2TableHelper.getInstance();
-	private Mai1Mai2Helper mai1mai2Helper = new Mai1Mai2Helper();
+	protected IndZhuliJinChuTableHelper zhuliJinChuTable = IndZhuliJinChuTableHelper.getInstance();
+	private ZhuliJinChuHelper zhuliJinChuHelper = new ZhuliJinChuHelper();
 	protected ChuQuanChuXiPriceHelper chuQuanChuXiPriceHelper = new ChuQuanChuXiPriceHelper();
 	protected StockListConfigurationService stockConfig = StockListConfigurationService.getInstance();
 	protected MultThreadRunner parentRunner;
 
-	public DailyMai1Mai2CountAndSaveDBRunner() {
+	public DailyZhuliJinChuCountAndSaveDBRunner() {
 
 	}
 
-	public DailyMai1Mai2CountAndSaveDBRunner(MultThreadRunner parentRunner) {
+	public DailyZhuliJinChuCountAndSaveDBRunner(MultThreadRunner parentRunner) {
 		this.parentRunner = parentRunner;
 		this.parentRunner.newTaskInfo(this.getClass().getSimpleName());
 	}
 
-	public void deleteMai1Mai2(String stockId, String date) {
-		mai1mai2Table.delete(stockId, date);
+	public void deleteZhuliJinChu(String stockId, String date) {
+		zhuliJinChuTable.delete(stockId, date);
 	}
 
-	public void deleteMai1Mai2(String stockId) {
-		mai1mai2Table.delete(stockId);
+	public void deleteZhuliJinChu(String stockId) {
+		zhuliJinChuTable.delete(stockId);
 	}
 
 	public void deleteMai1Mai2(List<String> stockIds) {
 		int index = 0;
 		for (String stockId : stockIds) {
-			System.out.println("Delete Mai1Mai2 for " + stockId + " " + (++index) + "/" + stockIds.size());
-			this.deleteMai1Mai2(stockId);
+			System.out.println("Delete ZhuliJinChu for " + stockId + " " + (++index) + "/" + stockIds.size());
+			this.deleteZhuliJinChu(stockId);
 		}
 	}
 
 	public void countAndSaved(String stockId) {
 		List<StockPriceVO> priceList = stockPriceTable.getStockPriceById(stockId);
 
-		if (priceList.size() <= 20) {
-			// System.out.println("StockPrice data is less than 20, skip " +
+		if (priceList.size() <= 34) {
+			// System.out.println("StockPrice data is less than 34, skip " +
 			// stockId);
 			return;
 		}
@@ -62,19 +62,19 @@ public class DailyMai1Mai2CountAndSaveDBRunner implements Runnable {
 		double[] var1 = new double[length];
 		int index = 0;
 		for (StockPriceVO vo : priceList) {
-			var1[index++] = (2 * vo.close + vo.open + vo.high + vo.low) / 5;
+			var1[index++] = (2 * vo.close + vo.high + vo.low) / 4;
 		}
 
-		double[][] mai1mai2 = mai1mai2Helper.getMai1Mai2List(var1);
+		double[][] zhuliJinChu = zhuliJinChuHelper.getZhuliJinChuList(var1);
 
-		Mai1Mai2VO vo = new Mai1Mai2VO();
-		vo.setSd(mai1mai2[0][length - 1]);
-		vo.setSk(mai1mai2[1][length - 1]);
+		ZhuliJinChuVO vo = new ZhuliJinChuVO();
+		vo.setDuofang(zhuliJinChu[0][length - 1]);
+		vo.setKongfang(zhuliJinChu[1][length - 1]);
 		vo.setStockId(stockId);
 		vo.setDate(priceList.get(length - 1).date);
 
-		this.deleteMai1Mai2(stockId, vo.date);
-		mai1mai2Table.insert(vo);
+		this.deleteZhuliJinChu(stockId, vo.date);
+		zhuliJinChuTable.insert(vo);
 
 	}
 
@@ -82,7 +82,7 @@ public class DailyMai1Mai2CountAndSaveDBRunner implements Runnable {
 		int index = 0;
 		for (String stockId : stockIds) {
 			if (index++ % 500 == 0) {
-				System.out.println("Mai1Mai2 countAndSaved: " + stockId + " " + (index) + "/" + stockIds.size());
+				System.out.println("ZhuliJinChu countAndSaved: " + stockId + " " + (index) + "/" + stockIds.size());
 			}
 			this.countAndSaved(stockId);
 		}
@@ -97,8 +97,9 @@ public class DailyMai1Mai2CountAndSaveDBRunner implements Runnable {
 	// TODO Auto-generated method stub
 	public static void main(String[] args) {
 		StockListConfigurationService stockConfig = StockListConfigurationService.getInstance();
-		DailyMai1Mai2CountAndSaveDBRunner runner = new DailyMai1Mai2CountAndSaveDBRunner();
+		DailyZhuliJinChuCountAndSaveDBRunner runner = new DailyZhuliJinChuCountAndSaveDBRunner();
 		runner.countAndSaved(stockConfig.getAllStockId());
-		// runner.countAndSaved("600084");
+		// runner.countAndSaved("600000");
 	}
+
 }

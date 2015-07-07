@@ -1,12 +1,13 @@
 package org.easystogu.db.table;
-//table name = "ind_mai1mai2"
-public class Mai1Mai2VO {
+
+//table name = "ind_zhulijinchu"
+public class ZhuliJinChuVO {
 
 	public String stockId;
 	public String name;
 	public String date;
-	public double sd;
-	public double sk;
+	public double duofang;
+	public double kongfang;
 
 	public String getStockId() {
 		return stockId;
@@ -32,44 +33,44 @@ public class Mai1Mai2VO {
 		this.date = date;
 	}
 
-	public Mai1Mai2VO() {
+	public ZhuliJinChuVO() {
 
 	}
 
-	public double[] getMai1Mai2VO() {
-		double[] sdsk = new double[2];
-		sdsk[0] = this.sd;
-		sdsk[1] = this.sk;
+	public double[] getZhuliJinChuVO() {
+		double[] duokong = new double[2];
+		duokong[0] = this.duofang;
+		duokong[1] = this.kongfang;
 
-		return sdsk;
+		return duokong;
 	}
 
 	@Override
 	public String toString() {
-		StringBuffer sb = new StringBuffer("Mai1Mai2VO: {");
+		StringBuffer sb = new StringBuffer("ZhuliJinChuVO: {");
 		sb.append("stockId:" + stockId);
 		sb.append(", name:" + name);
 		sb.append(", date:" + date);
-		sb.append(", sd:" + sd);
-		sb.append(", sk:" + sk);
+		sb.append(", duofang:" + duofang);
+		sb.append(", kongfang:" + kongfang);
 		sb.append("}");
 		return sb.toString();
 	}
 
-	public double getSd() {
-		return sd;
+	public double getDuofang() {
+		return duofang;
 	}
 
-	public void setSd(double sd) {
-		this.sd = sd;
+	public void setDuofang(double duofang) {
+		this.duofang = duofang;
 	}
 
-	public double getSk() {
-		return sk;
+	public double getKongfang() {
+		return kongfang;
 	}
 
-	public void setSk(double sk) {
-		this.sk = sk;
+	public void setKongfang(double kongfang) {
+		this.kongfang = kongfang;
 	}
 
 }

@@ -1,12 +1,11 @@
-package org.easystogu.indicator.mai1mai2;
+package org.easystogu.indicator;
 
 import java.util.List;
 
 import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.table.StockPriceVO;
-import org.easystogu.indicator.TALIBWraper;
 
-/*
+/*买1买2 指标
  * Var1:=(2*CLOSE+HIGH+LOW+OPEN)/5;
  Var2:= EMA(EMA(EMA(Var1,4),4),4);
  SJ:= (Var2-REF(Var2,1))/REF(Var2,1)*100;

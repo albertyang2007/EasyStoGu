@@ -8,7 +8,7 @@ import org.easystogu.db.access.IndKDJTableHelper;
 import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.table.KDJVO;
 import org.easystogu.db.table.StockPriceVO;
-import org.easystogu.indicator.kdj.KDJHelper;
+import org.easystogu.indicator.KDJHelper;
 import org.easystogu.indicator.runner.utils.StockPriceFetcher;
 
 public class HistoryKDJCountAndSaveDBRunner {
@@ -57,7 +57,7 @@ public class HistoryKDJCountAndSaveDBRunner {
 			vo.setDate(priceList.get(i).date);
 
 			try {
-				//if (vo.date.compareTo("2015-06-29") >= 0)
+				// if (vo.date.compareTo("2015-06-29") >= 0)
 				if (kdjTable.getKDJ(vo.stockId, vo.date) == null) {
 					kdjTable.insert(vo);
 				}
@@ -71,7 +71,8 @@ public class HistoryKDJCountAndSaveDBRunner {
 	public void countAndSaved(List<String> stockIds) {
 		int index = 0;
 		for (String stockId : stockIds) {
-			System.out.println("KDJ countAndSaved: " + stockId + " " + (++index) + " of " + stockIds.size());
+			if (index++ % 100 == 0)
+				System.out.println("KDJ countAndSaved: " + stockId + " " + (index) + " of " + stockIds.size());
 			this.countAndSaved(stockId);
 		}
 	}
@@ -82,6 +83,6 @@ public class HistoryKDJCountAndSaveDBRunner {
 		StockListConfigurationService stockConfig = StockListConfigurationService.getInstance();
 		HistoryKDJCountAndSaveDBRunner runner = new HistoryKDJCountAndSaveDBRunner();
 		runner.countAndSaved(stockConfig.getAllStockId());
-		//runner.countAndSaved("600750");
+		// runner.countAndSaved("600750");
 	}
 }

@@ -80,6 +80,7 @@ public class DailySelectionRunner implements Runnable {
         IndCrossCheckingHelper.bollXueShi2DnCross(overDayList);
         IndCrossCheckingHelper.mai1Mai2Cross(overDayList);
         IndCrossCheckingHelper.shenXianCross12(overDayList);
+        IndCrossCheckingHelper.zhuliJinChuCross(overDayList);
         // IndCrossCheckingHelper.shenXianCross13(overDayList);
         VolumeCheckingHelper.volumeIncreasePuls(overDayList);
         VolumeCheckingHelper.avgVolume5(overDayList);

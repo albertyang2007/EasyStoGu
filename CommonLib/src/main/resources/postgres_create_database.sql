@@ -429,3 +429,43 @@ ALTER TABLE ind_week_mai1mai2
   OWNER TO postgres;
 GRANT ALL ON TABLE ind_week_mai1mai2 TO public;
 GRANT ALL ON TABLE ind_week_mai1mai2 TO postgres;
+
+-- Table: ind_zhulijinchu
+
+-- DROP TABLE ind_zhulijinchu;
+
+CREATE TABLE ind_zhulijinchu
+(
+  stockid text NOT NULL,
+  date text NOT NULL,
+  duofang numeric,
+  kongfang numeric,
+  CONSTRAINT ind_zhulijinchu_primary_key PRIMARY KEY (stockid, date)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE ind_zhulijinchu
+  OWNER TO postgres;
+GRANT ALL ON TABLE ind_zhulijinchu TO public;
+GRANT ALL ON TABLE ind_zhulijinchu TO postgres;
+
+-- Table: ind_week_zhulijinchu
+
+-- DROP TABLE ind_week_zhulijinchu;
+
+CREATE TABLE ind_week_zhulijinchu
+(
+  stockid text NOT NULL,
+  date text NOT NULL,
+  duofang numeric,
+  kongfang numeric,
+  CONSTRAINT ind_week_zhulijinchu_primary_key PRIMARY KEY (stockid, date)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE ind_week_zhulijinchu
+  OWNER TO postgres;
+GRANT ALL ON TABLE ind_week_zhulijinchu TO public;
+GRANT ALL ON TABLE ind_week_zhulijinchu TO postgres;

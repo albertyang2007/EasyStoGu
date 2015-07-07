@@ -1,11 +1,9 @@
-package org.easystogu.indicator.zhulixichou;
+package org.easystogu.indicator;
 
 import java.util.List;
 
 import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.table.StockPriceVO;
-import org.easystogu.indicator.SimpleMovingAverages;
-import org.easystogu.indicator.TALIBWraper;
 
 //主力吸筹
 public class ZhuLiXiChouHelper {
