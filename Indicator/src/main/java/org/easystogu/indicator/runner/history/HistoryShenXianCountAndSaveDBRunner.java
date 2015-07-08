@@ -8,8 +8,8 @@ import org.easystogu.db.access.IndShenXianTableHelper;
 import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.table.ShenXianVO;
 import org.easystogu.db.table.StockPriceVO;
+import org.easystogu.indicator.ShenXianHelper;
 import org.easystogu.indicator.runner.utils.StockPriceFetcher;
-import org.easystogu.indicator.shenxian.ShenXianHelper;
 
 public class HistoryShenXianCountAndSaveDBRunner {
 
@@ -67,7 +67,8 @@ public class HistoryShenXianCountAndSaveDBRunner {
 	public void countAndSaved(List<String> stockIds) {
 		int index = 0;
 		for (String stockId : stockIds) {
-			System.out.println("ShenXian countAndSaved: " + stockId + " " + (++index) + " of " + stockIds.size());
+			if (index++ % 100 == 0)
+				System.out.println("ShenXian countAndSaved: " + stockId + " " + (index) + " of " + stockIds.size());
 			this.countAndSaved(stockId);
 		}
 	}
@@ -79,7 +80,7 @@ public class HistoryShenXianCountAndSaveDBRunner {
 		List<String> stockIds = stockConfig.getAllStockId();
 		HistoryShenXianCountAndSaveDBRunner runner = new HistoryShenXianCountAndSaveDBRunner();
 		runner.countAndSaved(stockConfig.getAllStockId());
-		//runner.countAndSaved("600750");
+		// runner.countAndSaved("600750");
 	}
 
 }

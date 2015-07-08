@@ -79,9 +79,8 @@ public class HistoryStockPriceDownloadRunner {
 		int count = 0;
 		for (String stockId : stockIds) {
 			System.out.println("Process " + ++count + " of " + stockIds.size());
-			for (int year = 2010; year <= 2015; year++) {
+			for (int year = 2015; year <= 2015; year++) {
 				if (year == 2015) {
-					runner.getFromWebAndSaveToFile(stockId, year, 1);
 					runner.getFromWebAndSaveToFile(stockId, year, 2);
 				} else {
 					runner.getFromWebAndSaveToFile(stockId, year, 1);

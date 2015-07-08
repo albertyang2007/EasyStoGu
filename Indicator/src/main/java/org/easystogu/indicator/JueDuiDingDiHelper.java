@@ -1,10 +1,9 @@
-package org.easystogu.indicator.jueduidingdi;
+package org.easystogu.indicator;
 
 import java.util.List;
 
 import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.table.StockPriceVO;
-import org.easystogu.indicator.SimpleMovingAverages;
 
 //绝对顶底
 public class JueDuiDingDiHelper {

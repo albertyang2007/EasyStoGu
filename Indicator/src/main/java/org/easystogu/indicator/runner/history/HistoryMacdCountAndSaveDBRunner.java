@@ -68,6 +68,7 @@ public class HistoryMacdCountAndSaveDBRunner {
 				macdVo.setDea(dea);
 				macdVo.setMacd(macdRtn);
 
+				// if (macdVo.date.compareTo("2015-06-29") >= 0)
 				if (macdTable.getMacd(macdVo.stockId, macdVo.date) == null) {
 					macdTable.insert(macdVo);
 				}
@@ -80,7 +81,8 @@ public class HistoryMacdCountAndSaveDBRunner {
 	public void countAndSaved(List<String> stockIds) {
 		int index = 0;
 		for (String stockId : stockIds) {
-			System.out.println("MACD countAndSaved: " + stockId + " " + (++index) + "/" + stockIds.size());
+			if (index++ % 100 == 0)
+				System.out.println("MACD countAndSaved: " + stockId + " " + (index) + "/" + stockIds.size());
 			this.countAndSaved(stockId);
 		}
 	}
@@ -90,6 +92,6 @@ public class HistoryMacdCountAndSaveDBRunner {
 		StockListConfigurationService stockConfig = StockListConfigurationService.getInstance();
 		HistoryMacdCountAndSaveDBRunner runner = new HistoryMacdCountAndSaveDBRunner();
 		runner.countAndSaved(stockConfig.getAllStockId());
-		//runner.countAndSaved("600750");
+		// runner.countAndSaved("600750");
 	}
 }

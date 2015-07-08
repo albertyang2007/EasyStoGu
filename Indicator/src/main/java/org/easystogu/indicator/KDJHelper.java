@@ -1,4 +1,4 @@
-package org.easystogu.indicator.kdj;
+package org.easystogu.indicator;
 
 import java.util.List;
 
@@ -34,14 +34,14 @@ public class KDJHelper {
         return highn;
     }
 
-    // ´ÓµÚÒ»¸ö¿ªÊ¼¼ÆËãJDK,Íùºó¼ÆËã
+    // ï¿½Óµï¿½Ò»ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½JDK,ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     public double[][] getKDJList(Double[] close, Double[] low, Double[] high) {
         int length = close.length;
 
-        double[][] KDJ = new double[4][length];// KDJÊý×é:0ÊÇKÊý×é,1ÊÇDÊý×é,2ÊÇJÊý×é, RSVÊÇ×îºó
+        double[][] KDJ = new double[4][length];// KDJï¿½ï¿½ï¿½ï¿½:0ï¿½ï¿½Kï¿½ï¿½ï¿½ï¿½,1ï¿½ï¿½Dï¿½ï¿½ï¿½ï¿½,2ï¿½ï¿½Jï¿½ï¿½ï¿½ï¿½, RSVï¿½ï¿½ï¿½ï¿½ï¿½
 
         int start = 8;// start from index 8
-        // Ç°Ãæ8¸ö KDJÖµ¾ùÎª0,´ÓµÚ9¸ö¿ªÊ¼¼ÆËã
+        // Ç°ï¿½ï¿½8ï¿½ï¿½ KDJÖµï¿½ï¿½Îª0,ï¿½Óµï¿½9ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½
         for (int index = 0; index < start; index++) {
             KDJ[0][index] = 50.0;
             KDJ[1][index] = 50.0;
@@ -64,9 +64,9 @@ public class KDJHelper {
         return KDJ;
     }
 
-    // ¼ÆËãÒ»¸öKDJ
+    // ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½KDJ
     public double[] getKDJ(double[] preKDJ, double close, double lown, double highn) {
-        double[] KDJ = new double[4];// KDJÊý×é:0ÊÇKÊý×é,1ÊÇDÊý×é,2ÊÇJÊý×é
+        double[] KDJ = new double[4];// KDJï¿½ï¿½ï¿½ï¿½:0ï¿½ï¿½Kï¿½ï¿½ï¿½ï¿½,1ï¿½ï¿½Dï¿½ï¿½ï¿½ï¿½,2ï¿½ï¿½Jï¿½ï¿½ï¿½ï¿½
 
         double RSV = this.RSV(close, lown, highn);
         KDJ[0] = (2.0 / 3.0) * preKDJ[0] + (1.0 / 3.0) * RSV;// K

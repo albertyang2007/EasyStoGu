@@ -1,4 +1,4 @@
-package org.easystogu.indicator.chaojingzhunTD;
+package org.easystogu.indicator;
 
 import java.util.List;
 
@@ -8,7 +8,7 @@ import org.easystogu.db.table.StockPriceVO;
 import bitzguild.jcollection.Doubles;
 import bitzguild.jcollection.DoublesFunctions;
 import bitzguild.jcollection.mutable.DoublesArray;
-
+//
 public class ChaoJingZhunTongDaoHelper {
 
 	public static void main(String[] args) {

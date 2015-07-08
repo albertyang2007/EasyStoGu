@@ -1,11 +1,10 @@
-package org.easystogu.indicator.anquandai;
+package org.easystogu.indicator;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.table.StockPriceVO;
-import org.easystogu.indicator.SimpleMovingAverages;
 
 //安全带 (黑马通道)
 public class AnQuanDaiHelper {

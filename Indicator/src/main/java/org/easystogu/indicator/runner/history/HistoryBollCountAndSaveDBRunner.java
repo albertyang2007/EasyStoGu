@@ -56,6 +56,7 @@ public class HistoryBollCountAndSaveDBRunner {
 				bollVO.setUp(up);
 				bollVO.setDn(dn);
 
+				// if (bollVO.date.compareTo("2015-06-29") >= 0)
 				if (bollTable.getBoll(bollVO.stockId, bollVO.date) == null) {
 					bollTable.insert(bollVO);
 				}
@@ -68,7 +69,8 @@ public class HistoryBollCountAndSaveDBRunner {
 	public void countAndSaved(List<String> stockIds) {
 		int index = 0;
 		for (String stockId : stockIds) {
-			System.out.println("Boll countAndSaved: " + stockId + " " + (++index) + "/" + stockIds.size());
+			if (index++ % 100 == 0)
+				System.out.println("Boll countAndSaved: " + stockId + " " + (index) + "/" + stockIds.size());
 			this.countAndSaved(stockId);
 		}
 	}
@@ -78,7 +80,7 @@ public class HistoryBollCountAndSaveDBRunner {
 		StockListConfigurationService stockConfig = StockListConfigurationService.getInstance();
 		HistoryBollCountAndSaveDBRunner runner = new HistoryBollCountAndSaveDBRunner();
 		runner.countAndSaved(stockConfig.getAllStockId());
-		//runner.countAndSaved("600750");
+		// runner.countAndSaved("600750");
 	}
 
 }

@@ -8,7 +8,7 @@ import org.easystogu.db.access.IndKDJTableHelper;
 import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.table.KDJVO;
 import org.easystogu.db.table.StockPriceVO;
-import org.easystogu.indicator.kdj.KDJHelper;
+import org.easystogu.indicator.KDJHelper;
 import org.easystogu.indicator.runner.utils.StockPriceFetcher;
 import org.easystogu.multirunner.MultThreadRunner;
 

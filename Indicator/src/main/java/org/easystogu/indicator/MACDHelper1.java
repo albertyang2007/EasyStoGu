@@ -1,4 +1,4 @@
-package org.easystogu.indicator.macd;
+package org.easystogu.indicator;
 
 import java.util.ArrayList;
 import java.util.HashMap;

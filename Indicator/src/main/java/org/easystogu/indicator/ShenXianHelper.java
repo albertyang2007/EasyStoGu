@@ -1,10 +1,9 @@
-package org.easystogu.indicator.shenxian;
+package org.easystogu.indicator;
 
 import java.util.List;
 
 import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.table.StockPriceVO;
-import org.easystogu.indicator.TALIBWraper;
 
 // shenXian indicator
 // 神仙大趋势H1:EMA(CLOSE,6);

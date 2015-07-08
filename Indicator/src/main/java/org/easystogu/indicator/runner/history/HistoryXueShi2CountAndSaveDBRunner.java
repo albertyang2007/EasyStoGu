@@ -24,8 +24,9 @@ public class HistoryXueShi2CountAndSaveDBRunner {
 			int length = priceList.size();
 
 			if (length < 60) {
-				System.out.println(stockId
-						+ " price data is not enough to count XueShi2, please wait until it has at least 60 days. Skip");
+				System.out
+						.println(stockId
+								+ " price data is not enough to count XueShi2, please wait until it has at least 60 days. Skip");
 				return;
 			}
 
@@ -65,6 +66,7 @@ public class HistoryXueShi2CountAndSaveDBRunner {
 				xueShi2VO.setUp(up);
 				xueShi2VO.setDn(dn);
 
+				// if (xueShi2VO.date.compareTo("2015-06-29") >= 0)
 				if (xueShi2Table.getXueShi2(xueShi2VO.stockId, xueShi2VO.date) == null) {
 					xueShi2Table.insert(xueShi2VO);
 				}
@@ -77,7 +79,8 @@ public class HistoryXueShi2CountAndSaveDBRunner {
 	public void countAndSaved(List<String> stockIds) {
 		int index = 0;
 		for (String stockId : stockIds) {
-			System.out.println("XueShi2 countAndSaved: " + stockId + " " + (++index) + "/" + stockIds.size());
+			if (index++ % 100 == 0)
+				System.out.println("XueShi2 countAndSaved: " + stockId + " " + (index) + "/" + stockIds.size());
 			this.countAndSaved(stockId);
 		}
 	}
@@ -87,6 +90,6 @@ public class HistoryXueShi2CountAndSaveDBRunner {
 		StockListConfigurationService stockConfig = StockListConfigurationService.getInstance();
 		HistoryXueShi2CountAndSaveDBRunner runner = new HistoryXueShi2CountAndSaveDBRunner();
 		runner.countAndSaved(stockConfig.getAllStockId());
-        //runner.countAndSaved("600750");
+		// runner.countAndSaved("600750");
 	}
 }
