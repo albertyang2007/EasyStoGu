@@ -1,6 +1,8 @@
 package org.easystogu.multirunner;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -13,9 +15,10 @@ import org.easystogu.indicator.runner.DailyShenXianCountAndSaveDBRunner;
 import org.easystogu.indicator.runner.DailyXueShi2CountAndSaveDBRunner;
 import org.easystogu.indicator.runner.DailyZhuliJinChuCountAndSaveDBRunner;
 
-public class MultThreadRunner {
+public class MultThreadRunner extends Thread {
 
 	private Map<String, TaskInfo> taskInfoMap = new ConcurrentHashMap<String, TaskInfo>();
+	private List<Thread> threadList = new ArrayList<Thread>();
 
 	public void run() {
 		// day ind
@@ -28,7 +31,20 @@ public class MultThreadRunner {
 		this.startRunner(new DailyZhuliJinChuCountAndSaveDBRunner(this));
 
 		// check all thread completed
-		this.checkAllTaskCompleted();
+		// this.checkAllTaskCompleted();
+		this.checkAllThreadCompleted();
+		System.out.println("All day task completed.");
+	}
+
+	public void checkAllThreadCompleted() {
+		for (Thread t : this.threadList) {
+			try {
+				t.join();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 
 	public void checkAllTaskCompleted() {
@@ -62,6 +78,7 @@ public class MultThreadRunner {
 	public void startRunner(Runnable runner) {
 		Thread t = new Thread(runner);
 		t.start();
+		this.threadList.add(t);
 	}
 
 	public void startTaskInfo(String taskName) {
