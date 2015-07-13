@@ -37,13 +37,13 @@ public class MultThreadRunner extends Thread {
 	}
 
 	public void checkAllThreadCompleted() {
-		for (Thread t : this.threadList) {
-			try {
+		try {
+			for (Thread t : this.threadList) {
 				t.join();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 

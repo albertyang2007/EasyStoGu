@@ -18,10 +18,20 @@ public class MultiThreadDailyUpdateOverAllRunner {
 		// week
 		DailyWeeklyStockPriceCountAndSaveDBRunner.main(args);
 		// day ind
-		new MultThreadRunner().run();
+		Thread t_day = new MultThreadRunner();
+		t_day.start();
 
 		// week ind
-		new WeekMultThreadRunner().run();
+		Thread t_week = new WeekMultThreadRunner();
+		t_week.start();
+
+		try {
+			t_day.join();
+			t_week.join();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		// analyse
 		DailySelectionRunner.main(args);
