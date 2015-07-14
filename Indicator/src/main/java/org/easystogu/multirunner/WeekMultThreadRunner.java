@@ -7,21 +7,23 @@ import org.easystogu.indicator.runner.DailyWeekMai1Mai2CountAndSaveDBRunner;
 import org.easystogu.indicator.runner.DailyWeekShenXianCountAndSaveDBRunner;
 
 public class WeekMultThreadRunner extends MultThreadRunner {
-    @Override
-    public void run() {
-        //start thread to run ind
-        this.startRunner(new DailyWeekMacdCountAndSaveDBRunner(this));
-        this.startRunner(new DailyWeekKDJCountAndSaveDBRunner(this));
-        this.startRunner(new DailyWeekBollCountAndSaveDBRunner(this));
-        this.startRunner(new DailyWeekMai1Mai2CountAndSaveDBRunner(this));
-        this.startRunner(new DailyWeekShenXianCountAndSaveDBRunner(this));
-        //check all thread completed
-        this.checkAllTaskCompleted();
-    }
+	@Override
+	public void run() {
+		// start thread to run ind
+		this.startRunner(new DailyWeekMacdCountAndSaveDBRunner(this));
+		this.startRunner(new DailyWeekKDJCountAndSaveDBRunner(this));
+		this.startRunner(new DailyWeekBollCountAndSaveDBRunner(this));
+		this.startRunner(new DailyWeekMai1Mai2CountAndSaveDBRunner(this));
+		this.startRunner(new DailyWeekShenXianCountAndSaveDBRunner(this));
+		// check all thread completed
+		// this.checkAllTaskCompleted();
+		this.checkAllThreadCompleted();
+		System.out.println("All week task completed.");
+	}
 
-    public static void main(String[] args) {
-        WeekMultThreadRunner runner = new WeekMultThreadRunner();
-        runner.run();
-    }
+	public static void main(String[] args) {
+		WeekMultThreadRunner runner = new WeekMultThreadRunner();
+		runner.run();
+	}
 
 }

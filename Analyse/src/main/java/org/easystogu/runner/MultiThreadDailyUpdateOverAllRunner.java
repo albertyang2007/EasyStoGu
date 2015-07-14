@@ -9,42 +9,33 @@ import org.easystogu.sina.runner.DailyWeeklyStockPriceCountAndSaveDBRunner;
 
 public class MultiThreadDailyUpdateOverAllRunner {
 
-    public static void main(String[] args) {
+	public static void main(String[] args) {
+		System.out.println("start at " + new Date());
+		// day
+		DailyStockPriceDownloadAndStoreDBRunner.main(args);
+		// chuquan
+		ChuQuanChuXiCheckerRunner.main(args);
+		// week
+		DailyWeeklyStockPriceCountAndSaveDBRunner.main(args);
+		// day ind
+		Thread t_day = new MultThreadRunner();
+		t_day.start();
 
-        System.out.println("Some problem in multi thread, will missing some ind and week data, so just return");
-        if (true)
-            return;
+		// week ind
+		Thread t_week = new WeekMultThreadRunner();
+		t_week.start();
 
-        System.out.println("start at " + new Date());
-        // day
-        DailyStockPriceDownloadAndStoreDBRunner.main(args);
-        //chuquan
-        ChuQuanChuXiCheckerRunner.main(args);
-        //week
-        DailyWeeklyStockPriceCountAndSaveDBRunner.main(args);
-        // day ind
-        new MultThreadRunner().run();
-        //DailyMacdCountAndSaveDBRunner.main(args);
-        //DailyKDJCountAndSaveDBRunner.main(args);
-        //DailyBollCountAndSaveDBRunner.main(args);
-        //DailyMai1Mai2CountAndSaveDBRunner.main(args);
-        //DailyShenXianCountAndSaveDBRunner.main(args);
-        //DailyXueShi2CountAndSaveDBRunner.main(args);
+		try {
+			t_day.join();
+			t_week.join();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
-        // week
-        //DailyWeeklyStockPriceCountAndSaveDBRunner.main(args);
-        // week ind
-        new WeekMultThreadRunner().run();
-        //DailyWeekMacdCountAndSaveDBRunner.main(args);
-        //DailyWeekKDJCountAndSaveDBRunner.main(args);
-        //DailyWeekBollCountAndSaveDBRunner.main(args);
-        //DailyWeekMai1Mai2CountAndSaveDBRunner.main(args);
-        //DailyWeekShenXianCountAndSaveDBRunner.main(args);
-        // DailyWeekXueShi2CountAndSaveDBRunner.main(args);
+		// analyse
+		DailySelectionRunner.main(args);
 
-        // analyse
-        DailySelectionRunner.main(args);
-
-        System.out.println("stop at " + new Date());
-    }
+		System.out.println("stop at " + new Date());
+	}
 }

@@ -13,7 +13,7 @@ import org.easystogu.db.table.StockPriceVO;
 //manually to update gaoSongZhuan table, pls refer to 
 //http://www.cninfo.com.cn/search/memo.jsp?datePara=2015-05-13
 
-public class ChuQuanChuXiCheckerRunner implements Runnable{
+public class ChuQuanChuXiCheckerRunner implements Runnable {
 	protected StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
 	protected EventChuQuanChuXiTableHelper chuQuanChuXiTable = EventChuQuanChuXiTableHelper.getInstance();
 	protected StockListConfigurationService stockConfig = StockListConfigurationService.getInstance();
@@ -36,7 +36,7 @@ public class ChuQuanChuXiCheckerRunner implements Runnable{
 					vo.setRate(cur.lastClose / pre.close);
 					vo.setAlreadyUpdatePrice(false);
 
-					//System.out.println("ChuQuan happen for " + vo);
+					// System.out.println("ChuQuan happen for " + vo);
 					chuQuanChuXiTable.insert(vo);
 				}
 			}
@@ -45,14 +45,15 @@ public class ChuQuanChuXiCheckerRunner implements Runnable{
 	}
 
 	private void checkIfChuQuanChuXiExist(List<String> stockIds) {
+		System.out.println("Run chuQuan for all stocks.");
 		for (String stockId : stockIds) {
 			this.checkIfGaoSongZhuanExist(stockId);
 		}
 	}
-	
-    public void run() {
-        checkIfChuQuanChuXiExist(stockConfig.getAllStockId());
-    }
+
+	public void run() {
+		checkIfChuQuanChuXiExist(stockConfig.getAllStockId());
+	}
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
