@@ -17,8 +17,9 @@ import org.easystogu.indicator.runner.DailyZhuliJinChuCountAndSaveDBRunner;
 import org.easystogu.sina.runner.DailyStockPriceDownloadAndStoreDBRunner;
 import org.easystogu.sina.runner.DailyWeeklyStockPriceCountAndSaveDBRunner;
 
-public class DailyUpdateOverAllRunner {
-	public static void main(String[] args) {
+public class DailyUpdateOverAllRunner implements Runnable {
+	public void run() {
+		String[] args = null;
 		System.out.println("start at " + new Date());
 		// day
 		DailyStockPriceDownloadAndStoreDBRunner.main(args);
@@ -46,5 +47,11 @@ public class DailyUpdateOverAllRunner {
 		DailySelectionRunner.main(args);
 
 		System.out.println("stop at " + new Date());
+
+	}
+
+	public static void main(String[] args) {
+		DailyUpdateOverAllRunner runner = new DailyUpdateOverAllRunner();
+		runner.run();
 	}
 }

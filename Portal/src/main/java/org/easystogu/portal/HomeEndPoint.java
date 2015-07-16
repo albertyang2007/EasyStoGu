@@ -19,21 +19,22 @@ public class HomeEndPoint {
 	@GET
 	@Path("/DailyUpdateOverAllRunner")
 	public String dailyUpdateOverAllRunner() {
-		DailyUpdateOverAllRunner.main(null);
+		Thread t = new Thread(new DailyUpdateOverAllRunner());
+		t.start();
 		return "DailyUpdateOverAllRunner already running, please check folder result.";
 	}
-	
+
 	@GET
 	@Path("/DailySelectionRunner")
 	public String dailySelectionRunner() {
-		DailySelectionRunner.main(null);
+		Thread t = new Thread(new DailySelectionRunner());
+		t.start();
 		return "DailySelectionRunner already running, please check folder result.";
 	}
-	
+
 	@GET
 	@Path("/RealtimeDisplayStockPriceRunner")
 	public String realtimeDisplayStockPriceRunner() {
-		RealtimeDisplayStockPriceRunner.main(null);
-		return "RealtimeDisplayStockPriceRunner already running, please check console result.";
+		return new RealtimeDisplayStockPriceRunner().printRealTimeOutput();
 	}
 }

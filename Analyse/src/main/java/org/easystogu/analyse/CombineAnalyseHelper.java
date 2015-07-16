@@ -10,18 +10,23 @@ public class CombineAnalyseHelper {
 	public int[] tempInputArgs = new int[2];// just for temp history analyse
 
 	// overList is order by date, it is daily price and ind
-	public boolean isConditionSatisfy(DailyCombineCheckPoint checkPoint, List<StockSuperVO> overDayList,
-			List<StockSuperVO> overWeekList) {
+	public boolean isConditionSatisfy(DailyCombineCheckPoint checkPoint,
+			List<StockSuperVO> overDayList, List<StockSuperVO> overWeekList) {
 
 		if ((overWeekList == null) || (overWeekList.size() <= 1)) {
 			return false;
 		}
 		StockSuperVO curSuperWeekVO = overWeekList.get(overWeekList.size() - 1);
-		StockSuperVO pre1SuperWeekVO = overWeekList.get(overWeekList.size() - 2);
-		StockSuperVO pre2SuperWeekVO = overWeekList.get(overWeekList.size() - 3);
-		StockSuperVO pre3SuperWeekVO = overWeekList.get(overWeekList.size() - 4);
-		StockSuperVO pre4SuperWeekVO = overWeekList.get(overWeekList.size() - 5);
-		StockSuperVO pre5SuperWeekVO = overWeekList.get(overWeekList.size() - 6);
+		StockSuperVO pre1SuperWeekVO = overWeekList
+				.get(overWeekList.size() - 2);
+		StockSuperVO pre2SuperWeekVO = overWeekList
+				.get(overWeekList.size() - 3);
+		StockSuperVO pre3SuperWeekVO = overWeekList
+				.get(overWeekList.size() - 4);
+		StockSuperVO pre4SuperWeekVO = overWeekList
+				.get(overWeekList.size() - 5);
+		StockSuperVO pre5SuperWeekVO = overWeekList
+				.get(overWeekList.size() - 6);
 
 		int dayLength = overDayList.size();
 		StockSuperVO curSuperDayVO = overDayList.get(overDayList.size() - 1);
@@ -52,7 +57,8 @@ public class CombineAnalyseHelper {
 			break;
 		case MACD_KDJ_Gordon_3_Days_Red_MA_Ronghe_XiangShang:
 
-			if ((curSuperWeekVO.kdjVO.k < curSuperWeekVO.kdjVO.d) || !this.isLatestKDJCrossGordon(overWeekList)) {
+			if ((curSuperWeekVO.kdjVO.k < curSuperWeekVO.kdjVO.d)
+					|| !this.isLatestKDJCrossGordon(overWeekList)) {
 				// over all week KDJ must after Gordon
 				return false;
 			}
@@ -61,10 +67,13 @@ public class CombineAnalyseHelper {
 			if (overDayList.size() >= 3) {
 				if ((curSuperDayVO.kdjCorssType == CrossType.GORDON)
 						&& ((curSuperDayVO.macdCorssType == CrossType.GORDON))) {
-					if (curSuperDayVO.priceVO.isKLineRed() && (curSuperDayVO.volumeIncreasePercent >= 1.0)) {
-						if (pre1SuperDayVO.priceVO.isKLineRed() && (pre1SuperDayVO.volumeIncreasePercent >= 1.0)
+					if (curSuperDayVO.priceVO.isKLineRed()
+							&& (curSuperDayVO.volumeIncreasePercent >= 1.0)) {
+						if (pre1SuperDayVO.priceVO.isKLineRed()
+								&& (pre1SuperDayVO.volumeIncreasePercent >= 1.0)
 								&& pre2SuperDayVO.priceVO.isKLineRed()) {
-							return MA5_MA10_MA20_Ronghe_XiangShang(curSuperDayVO, pre1SuperDayVO);
+							return MA5_MA10_MA20_Ronghe_XiangShang(
+									curSuperDayVO, pre1SuperDayVO);
 						}
 					}
 				}
@@ -73,15 +82,18 @@ public class CombineAnalyseHelper {
 
 		case MACD_KDJ_Gordon_3_Days_Red_High_MA5_MA10_BOLL:
 
-			if ((curSuperWeekVO.kdjVO.k < curSuperWeekVO.kdjVO.d) || !this.isLatestKDJCrossGordon(overWeekList)) {
+			if ((curSuperWeekVO.kdjVO.k < curSuperWeekVO.kdjVO.d)
+					|| !this.isLatestKDJCrossGordon(overWeekList)) {
 				// over all week KDJ must after Gordon
 				return false;
 			}
 			if (overDayList.size() >= 20) {
 				if ((curSuperDayVO.kdjCorssType == CrossType.GORDON)
 						&& ((curSuperDayVO.macdCorssType == CrossType.GORDON))) {
-					if (curSuperDayVO.priceVO.isKLineRed() && (curSuperDayVO.volumeIncreasePercent >= 1.0)) {
-						if (pre1SuperDayVO.priceVO.isKLineRed() && (pre1SuperDayVO.volumeIncreasePercent >= 1.0)
+					if (curSuperDayVO.priceVO.isKLineRed()
+							&& (curSuperDayVO.volumeIncreasePercent >= 1.0)) {
+						if (pre1SuperDayVO.priceVO.isKLineRed()
+								&& (pre1SuperDayVO.volumeIncreasePercent >= 1.0)
 								&& pre2SuperDayVO.priceVO.isKLineRed()) {
 							if ((curSuperDayVO.priceVO.close >= curSuperDayVO.avgMA5)
 									&& (curSuperDayVO.priceVO.close >= curSuperDayVO.avgMA10)
@@ -100,7 +112,8 @@ public class CombineAnalyseHelper {
 
 		case Phase2_Previous_Under_Zero_MACD_Gordon_Now_MACD_Dead_RSV_KDJ_Gordon: {
 
-			if ((curSuperWeekVO.kdjVO.k < curSuperWeekVO.kdjVO.d) || !this.isLatestKDJCrossGordon(overWeekList)) {
+			if ((curSuperWeekVO.kdjVO.k < curSuperWeekVO.kdjVO.d)
+					|| !this.isLatestKDJCrossGordon(overWeekList)) {
 				// over all week KDJ must after Gordon
 				return false;
 			}
@@ -111,7 +124,8 @@ public class CombineAnalyseHelper {
 			}
 
 			// limit two macd gordon and dead point to about 30 working days
-			List<StockSuperVO> overDaySubList = overDayList.subList(overDayList.size() - 30, overDayList.size());
+			List<StockSuperVO> overDaySubList = overDayList.subList(
+					overDayList.size() - 30, overDayList.size());
 			dayLength = overDaySubList.size();
 
 			boolean findUnderZeroGordon = false;
@@ -121,7 +135,8 @@ public class CombineAnalyseHelper {
 			double firstDif = 0.0;
 			for (int i = 0; i < overDaySubList.size(); i++) {
 				StockSuperVO vo = overDaySubList.get(i);
-				if ((vo.macdCorssType == CrossType.GORDON) && (vo.macdVO.dif < -0.10)) {
+				if ((vo.macdCorssType == CrossType.GORDON)
+						&& (vo.macdVO.dif < -0.10)) {
 					// 闆朵笅MACD鍙戠敓鍦ㄥ墠鍗婃椂闂�
 					if (i <= (dayLength / 1.50)) {
 						findUnderZeroGordon = true;
@@ -144,7 +159,8 @@ public class CombineAnalyseHelper {
 
 					// 闆朵笂鍜岄浂涓嬬殑macd閲戝弶锛宒if鍊间笉涓�牱锛屼竴浣庝竴楂�
 					// 闆朵笂macd涔熷彲浠ユ槸闆堕檮杩�
-					if (macdDead && (firstDif < vo.macdVO.dif) && (vo.macdVO.dif > -0.10)) {
+					if (macdDead && (firstDif < vo.macdVO.dif)
+							&& (vo.macdVO.dif > -0.10)) {
 						findAboveZeroDead = true;
 					}
 				}
@@ -154,8 +170,10 @@ public class CombineAnalyseHelper {
 				if (findAboveZeroDead) {
 					if ((curSuperDayVO.avgMA5 >= curSuperDayVO.avgMA20)
 							&& (curSuperDayVO.avgMA10 >= curSuperDayVO.avgMA20)) {
-						if ((curSuperDayVO.kdjVO.j <= 10.0) || (pre1SuperDayVO.kdjVO.j <= 10.0)
-								|| (pre2SuperDayVO.kdjVO.j <= 10.0) || (pre3SuperDayVO.kdjVO.j <= 10.0)) {
+						if ((curSuperDayVO.kdjVO.j <= 10.0)
+								|| (pre1SuperDayVO.kdjVO.j <= 10.0)
+								|| (pre2SuperDayVO.kdjVO.j <= 10.0)
+								|| (pre3SuperDayVO.kdjVO.j <= 10.0)) {
 							if ((curSuperDayVO.rsvCorssType == CrossType.GORDON)
 									|| (curSuperDayVO.kdjCorssType == CrossType.GORDON)
 									|| (curSuperDayVO.kdjCorssType == CrossType.NEAR_GORDON)) {
@@ -165,8 +183,10 @@ public class CombineAnalyseHelper {
 										&& (pre1SuperDayVO.priceVO.close < curSuperDayVO.avgMA10)) {
 									if (curSuperDayVO.volumeIncreasePercent >= 1.0) {
 										if ((curSuperDayVO.priceVO.isKLineRed() || (curSuperDayVO.priceVO.close > pre1SuperDayVO.priceVO.close))
-												&& (pre1SuperDayVO.priceVO.isKLineRed() || (pre1SuperDayVO.priceVO.close > pre2SuperDayVO.priceVO.close))
-												&& (pre2SuperDayVO.priceVO.isKLineGreen() || (pre2SuperDayVO.priceVO.close < pre3SuperDayVO.priceVO.close))) {
+												&& (pre1SuperDayVO.priceVO
+														.isKLineRed() || (pre1SuperDayVO.priceVO.close > pre2SuperDayVO.priceVO.close))
+												&& (pre2SuperDayVO.priceVO
+														.isKLineGreen() || (pre2SuperDayVO.priceVO.close < pre3SuperDayVO.priceVO.close))) {
 											return true;
 										}
 									}
@@ -181,7 +201,8 @@ public class CombineAnalyseHelper {
 
 		case DuoTou_Pre_2_Days_Green_Red_KDJ_Zero_MA20_Support_MA_RongHe_XiangShang:
 
-			if ((curSuperWeekVO.kdjVO.k < curSuperWeekVO.kdjVO.d) || !this.isLatestKDJCrossGordon(overWeekList)) {
+			if ((curSuperWeekVO.kdjVO.k < curSuperWeekVO.kdjVO.d)
+					|| !this.isLatestKDJCrossGordon(overWeekList)) {
 				// over all week KDJ must after Gordon
 				return false;
 			}
@@ -192,15 +213,19 @@ public class CombineAnalyseHelper {
 			// this is not a buy point, waiting next day if RSV/KDJ is gordon,
 			// then
 			// buy it
-			if ((pre1SuperDayVO.avgMA5 <= pre1SuperDayVO.avgMA10) && (pre1SuperDayVO.avgMA10 >= pre1SuperDayVO.avgMA20)
+			if ((pre1SuperDayVO.avgMA5 <= pre1SuperDayVO.avgMA10)
+					&& (pre1SuperDayVO.avgMA10 >= pre1SuperDayVO.avgMA20)
 					&& (pre1SuperDayVO.avgMA20 >= pre1SuperDayVO.avgMA30)) {
 				if ((pre1SuperDayVO.priceVO.low <= pre1SuperDayVO.avgMA20)
 						&& (pre1SuperDayVO.priceVO.close > pre1SuperDayVO.avgMA20)) {
-					if (pre2SuperDayVO.priceVO.isKLineGreen() && pre3SuperDayVO.priceVO.isKLineGreen()) {
+					if (pre2SuperDayVO.priceVO.isKLineGreen()
+							&& pre3SuperDayVO.priceVO.isKLineGreen()) {
 						if ((pre1SuperDayVO.priceVO.close > pre2SuperDayVO.priceVO.close)
 								|| pre1SuperDayVO.priceVO.isKLineRed()) {
-							if ((pre1SuperDayVO.kdjVO.j <= 10.0) && (curSuperDayVO.rsvCorssType == CrossType.GORDON)) {
-								return MA5_MA10_MA20_Ronghe_XiangShang(curSuperDayVO, pre1SuperDayVO);
+							if ((pre1SuperDayVO.kdjVO.j <= 10.0)
+									&& (curSuperDayVO.rsvCorssType == CrossType.GORDON)) {
+								return MA5_MA10_MA20_Ronghe_XiangShang(
+										curSuperDayVO, pre1SuperDayVO);
 							}
 						}
 					}
@@ -210,7 +235,8 @@ public class CombineAnalyseHelper {
 
 		case DuoTou_Pre_2_Days_Green_Red_KDJ_Zero_MA30_Support:
 
-			if ((curSuperWeekVO.kdjVO.k < curSuperWeekVO.kdjVO.d) || !this.isLatestKDJCrossGordon(overWeekList)) {
+			if ((curSuperWeekVO.kdjVO.k < curSuperWeekVO.kdjVO.d)
+					|| !this.isLatestKDJCrossGordon(overWeekList)) {
 				// over all week KDJ must after Gordon
 				return false;
 			}
@@ -221,11 +247,13 @@ public class CombineAnalyseHelper {
 			// this is not a buy point, waiting next day if RSV/KDJ is gordon,
 			// then
 			// buy it
-			if ((pre1SuperDayVO.avgMA5 <= pre1SuperDayVO.avgMA10) && (pre1SuperDayVO.avgMA10 >= pre1SuperDayVO.avgMA20)
+			if ((pre1SuperDayVO.avgMA5 <= pre1SuperDayVO.avgMA10)
+					&& (pre1SuperDayVO.avgMA10 >= pre1SuperDayVO.avgMA20)
 					&& (pre1SuperDayVO.avgMA20 >= pre1SuperDayVO.avgMA30)) {
 				if ((pre1SuperDayVO.priceVO.low <= pre1SuperDayVO.avgMA30)
 						&& (pre1SuperDayVO.priceVO.close > pre1SuperDayVO.avgMA30)) {
-					if (pre2SuperDayVO.priceVO.isKLineGreen() && pre3SuperDayVO.priceVO.isKLineGreen()) {
+					if (pre2SuperDayVO.priceVO.isKLineGreen()
+							&& pre3SuperDayVO.priceVO.isKLineGreen()) {
 						if ((pre1SuperDayVO.priceVO.close > pre2SuperDayVO.priceVO.close)
 								|| pre1SuperDayVO.priceVO.isKLineRed()) {
 							if (pre1SuperDayVO.kdjVO.j <= 10.0) {
@@ -244,7 +272,8 @@ public class CombineAnalyseHelper {
 		case DuoTou_Pre_2_Days_Green_Red_KDJ_Zero_MA30_Support_MA_RongHe_XiangShang:
 			// same as DuoTou_Pre_2_Days_Green_Red_KDJ_Zero_MA30_Support
 			// with MA5_MA10_MA20_MA30_Ronghe_XiangShang
-			if ((curSuperWeekVO.kdjVO.k < curSuperWeekVO.kdjVO.d) || !this.isLatestKDJCrossGordon(overWeekList)) {
+			if ((curSuperWeekVO.kdjVO.k < curSuperWeekVO.kdjVO.d)
+					|| !this.isLatestKDJCrossGordon(overWeekList)) {
 				// over all week KDJ must after Gordon
 				return false;
 			}
@@ -255,16 +284,21 @@ public class CombineAnalyseHelper {
 			// this is not a buy point, waiting next day if RSV/KDJ is gordon,
 			// then
 			// buy it
-			if ((pre1SuperDayVO.avgMA5 <= pre1SuperDayVO.avgMA10) && (pre1SuperDayVO.avgMA10 >= pre1SuperDayVO.avgMA20)
+			if ((pre1SuperDayVO.avgMA5 <= pre1SuperDayVO.avgMA10)
+					&& (pre1SuperDayVO.avgMA10 >= pre1SuperDayVO.avgMA20)
 					&& (pre1SuperDayVO.avgMA20 >= pre1SuperDayVO.avgMA30)) {
 				if ((pre1SuperDayVO.priceVO.low <= pre1SuperDayVO.avgMA30)
 						&& (pre1SuperDayVO.priceVO.close > pre1SuperDayVO.avgMA30)) {
-					if (pre2SuperDayVO.priceVO.isKLineGreen() && pre3SuperDayVO.priceVO.isKLineGreen()) {
+					if (pre2SuperDayVO.priceVO.isKLineGreen()
+							&& pre3SuperDayVO.priceVO.isKLineGreen()) {
 						if ((pre1SuperDayVO.priceVO.close > pre2SuperDayVO.priceVO.close)
 								|| pre1SuperDayVO.priceVO.isKLineRed()) {
-							if ((pre1SuperDayVO.kdjVO.j <= 10.0) && (curSuperDayVO.rsvCorssType == CrossType.GORDON)) {
+							if ((pre1SuperDayVO.kdjVO.j <= 10.0)
+									&& (curSuperDayVO.rsvCorssType == CrossType.GORDON)) {
 								// check MA rongHe and xiangShang
-								return this.MA5_MA10_MA20_MA30_Ronghe_XiangShang(curSuperDayVO, pre1SuperDayVO);
+								return this
+										.MA5_MA10_MA20_MA30_Ronghe_XiangShang(
+												curSuperDayVO, pre1SuperDayVO);
 							}
 						}
 					}
@@ -278,18 +312,21 @@ public class CombineAnalyseHelper {
 			// example: 600436 20150310. 300226 20150313
 
 			// limit two macd gordon and dead point to about 30 working days
-			List<StockSuperVO> overDaySubList = overDayList.subList(overDayList.size() - 30, overDayList.size());
+			List<StockSuperVO> overDaySubList = overDayList.subList(
+					overDayList.size() - 30, overDayList.size());
 
 			boolean findDuoTouHuiTiaoMacdDeadPoint = false;
 			int macdDeadPointIndex = 0;
 			// first find macd dead point, dif >0
 			for (int i = 0; i < overDaySubList.size(); i++) {
 				StockSuperVO vo = overDaySubList.get(i);
-				if ((vo.macdCorssType == CrossType.DEAD) && (vo.macdVO.dif > 2.0)) {
+				if ((vo.macdCorssType == CrossType.DEAD)
+						&& (vo.macdVO.dif > 2.0)) {
 					macdDeadPointIndex = i;
 					if ((i - 1) >= 0) {
 						StockSuperVO pre1vo = overDaySubList.get(i - 1);
-						if ((pre1vo.avgMA5 >= pre1vo.avgMA10) && (pre1vo.avgMA10 >= pre1vo.avgMA20)
+						if ((pre1vo.avgMA5 >= pre1vo.avgMA10)
+								&& (pre1vo.avgMA10 >= pre1vo.avgMA20)
 								&& (pre1vo.avgMA20 >= pre1vo.avgMA30)) {
 							findDuoTouHuiTiaoMacdDeadPoint = true;
 							break;
@@ -298,7 +335,8 @@ public class CombineAnalyseHelper {
 
 					if ((i - 2) >= 0) {
 						StockSuperVO pre2vo = overDaySubList.get(i - 2);
-						if ((pre2vo.avgMA5 >= pre2vo.avgMA10) && (pre2vo.avgMA10 >= pre2vo.avgMA20)
+						if ((pre2vo.avgMA5 >= pre2vo.avgMA10)
+								&& (pre2vo.avgMA10 >= pre2vo.avgMA20)
 								&& (pre2vo.avgMA20 >= pre2vo.avgMA30)) {
 							findDuoTouHuiTiaoMacdDeadPoint = true;
 							break;
@@ -316,11 +354,13 @@ public class CombineAnalyseHelper {
 			boolean findBollLowerSupport = false;
 			for (int i = macdDeadPointIndex; i < overDaySubList.size(); i++) {
 				StockSuperVO vo = overDaySubList.get(i);
-				if ((vo.priceVO.low <= vo.avgMA30) && (vo.priceVO.close > vo.avgMA30)) {
+				if ((vo.priceVO.low <= vo.avgMA30)
+						&& (vo.priceVO.close > vo.avgMA30)) {
 					findMA30Support = true;
 				}
 
-				if ((vo.priceVO.low <= vo.bollVO.dn) && (vo.priceVO.close > vo.bollVO.dn)) {
+				if ((vo.priceVO.low <= vo.bollVO.dn)
+						&& (vo.priceVO.close > vo.bollVO.dn)) {
 					findBollLowerSupport = true;
 				}
 			}
@@ -330,10 +370,13 @@ public class CombineAnalyseHelper {
 			}
 
 			// check close is higher Boll MB and MA5,10,20,30 Ronghe xiangShang
-			if ((curSuperDayVO.macdVO.macd <= 0.0) && (curSuperDayVO.macdVO.dif > 0.0)) {
-				if ((curSuperDayVO.priceVO.close > curSuperDayVO.bollVO.mb) && curSuperDayVO.priceVO.isKLineRed()) {
+			if ((curSuperDayVO.macdVO.macd <= 0.0)
+					&& (curSuperDayVO.macdVO.dif > 0.0)) {
+				if ((curSuperDayVO.priceVO.close > curSuperDayVO.bollVO.mb)
+						&& curSuperDayVO.priceVO.isKLineRed()) {
 					// check MA rongHe and xiangShang
-					return this.MA5_MA10_MA20_MA30_Ronghe_XiangShang(curSuperDayVO, pre1SuperDayVO);
+					return this.MA5_MA10_MA20_MA30_Ronghe_XiangShang(
+							curSuperDayVO, pre1SuperDayVO);
 				}
 			}
 			break;
@@ -350,18 +393,21 @@ public class CombineAnalyseHelper {
 			// DuoTou_HuiTiao_MA30_Support_MA_RongHe_XiangShang
 			//
 			// limit two macd gordon and dead point to about 30 working days
-			List<StockSuperVO> overDaySubList = overDayList.subList(overDayList.size() - 30, overDayList.size());
+			List<StockSuperVO> overDaySubList = overDayList.subList(
+					overDayList.size() - 30, overDayList.size());
 
 			boolean findDuoTouHuiTiaoMacdDeadPoint = false;
 			int macdDeadPointIndex = 0;
 			// first find macd dead point, dif >0
 			for (int i = 0; i < overDaySubList.size(); i++) {
 				StockSuperVO vo = overDaySubList.get(i);
-				if ((vo.macdCorssType == CrossType.DEAD) && (vo.macdVO.dif > 2.0)) {
+				if ((vo.macdCorssType == CrossType.DEAD)
+						&& (vo.macdVO.dif > 2.0)) {
 					macdDeadPointIndex = i;
 					if ((i - 1) >= 0) {
 						StockSuperVO pre1vo = overDaySubList.get(i - 1);
-						if ((pre1vo.avgMA5 >= pre1vo.avgMA10) && (pre1vo.avgMA10 >= pre1vo.avgMA20)
+						if ((pre1vo.avgMA5 >= pre1vo.avgMA10)
+								&& (pre1vo.avgMA10 >= pre1vo.avgMA20)
 								&& (pre1vo.avgMA20 >= pre1vo.avgMA30)) {
 							findDuoTouHuiTiaoMacdDeadPoint = true;
 							break;
@@ -370,7 +416,8 @@ public class CombineAnalyseHelper {
 
 					if ((i - 2) >= 0) {
 						StockSuperVO pre2vo = overDaySubList.get(i - 2);
-						if ((pre2vo.avgMA5 >= pre2vo.avgMA10) && (pre2vo.avgMA10 >= pre2vo.avgMA20)
+						if ((pre2vo.avgMA5 >= pre2vo.avgMA10)
+								&& (pre2vo.avgMA10 >= pre2vo.avgMA20)
 								&& (pre2vo.avgMA20 >= pre2vo.avgMA30)) {
 							findDuoTouHuiTiaoMacdDeadPoint = true;
 							break;
@@ -388,11 +435,13 @@ public class CombineAnalyseHelper {
 			boolean findBollLowerSupport = false;
 			for (int i = macdDeadPointIndex; i < overDaySubList.size(); i++) {
 				StockSuperVO vo = overDaySubList.get(i);
-				if ((vo.priceVO.low <= vo.avgMA30) && (vo.priceVO.close > vo.avgMA30)) {
+				if ((vo.priceVO.low <= vo.avgMA30)
+						&& (vo.priceVO.close > vo.avgMA30)) {
 					findMA30Support = true;
 				}
 
-				if ((vo.priceVO.low <= vo.bollVO.dn) && (vo.priceVO.close > vo.bollVO.dn)) {
+				if ((vo.priceVO.low <= vo.bollVO.dn)
+						&& (vo.priceVO.close > vo.bollVO.dn)) {
 					findBollLowerSupport = true;
 				}
 			}
@@ -402,10 +451,13 @@ public class CombineAnalyseHelper {
 			}
 
 			// check close is higher Boll MB and MA5,10,20,30 Ronghe xiangShang
-			if ((curSuperDayVO.macdVO.macd <= 0.0) && (curSuperDayVO.macdVO.dif > 0.0)) {
-				if ((curSuperDayVO.priceVO.close > curSuperDayVO.bollVO.mb) && curSuperDayVO.priceVO.isKLineRed()) {
+			if ((curSuperDayVO.macdVO.macd <= 0.0)
+					&& (curSuperDayVO.macdVO.dif > 0.0)) {
+				if ((curSuperDayVO.priceVO.close > curSuperDayVO.bollVO.mb)
+						&& curSuperDayVO.priceVO.isKLineRed()) {
 					// check MA rongHe and xiangShang
-					return this.MA5_MA10_MA20_MA30_Ronghe_XiangShang(curSuperDayVO, pre1SuperDayVO);
+					return this.MA5_MA10_MA20_MA30_Ronghe_XiangShang(
+							curSuperDayVO, pre1SuperDayVO);
 				}
 			}
 
@@ -418,18 +470,21 @@ public class CombineAnalyseHelper {
 			// example: ??
 
 			// limit two macd gordon and dead point to about 30 working days
-			List<StockSuperVO> overDaySubList = overDayList.subList(overDayList.size() - 30, overDayList.size());
+			List<StockSuperVO> overDaySubList = overDayList.subList(
+					overDayList.size() - 30, overDayList.size());
 
 			boolean findDuoTouHuiTiaoMacdDeadPoint = false;
 			int macdDeadPointIndex = 0;
 			// first find macd dead point, dif >0
 			for (int i = 0; i < overDaySubList.size(); i++) {
 				StockSuperVO vo = overDaySubList.get(i);
-				if ((vo.macdCorssType == CrossType.DEAD) && (vo.macdVO.dif > 1.0)) {
+				if ((vo.macdCorssType == CrossType.DEAD)
+						&& (vo.macdVO.dif > 1.0)) {
 					macdDeadPointIndex = i;
 					if ((i - 1) >= 0) {
 						StockSuperVO pre1vo = overDaySubList.get(i - 1);
-						if ((pre1vo.avgMA5 >= pre1vo.avgMA10) && (pre1vo.avgMA10 >= pre1vo.avgMA20)
+						if ((pre1vo.avgMA5 >= pre1vo.avgMA10)
+								&& (pre1vo.avgMA10 >= pre1vo.avgMA20)
 								&& (pre1vo.avgMA20 >= pre1vo.avgMA30)) {
 							findDuoTouHuiTiaoMacdDeadPoint = true;
 							break;
@@ -438,7 +493,8 @@ public class CombineAnalyseHelper {
 
 					if ((i - 2) >= 0) {
 						StockSuperVO pre2vo = overDaySubList.get(i - 2);
-						if ((pre2vo.avgMA5 >= pre2vo.avgMA10) && (pre2vo.avgMA10 >= pre2vo.avgMA20)
+						if ((pre2vo.avgMA5 >= pre2vo.avgMA10)
+								&& (pre2vo.avgMA10 >= pre2vo.avgMA20)
 								&& (pre2vo.avgMA20 >= pre2vo.avgMA30)) {
 							findDuoTouHuiTiaoMacdDeadPoint = true;
 							break;
@@ -456,11 +512,13 @@ public class CombineAnalyseHelper {
 			boolean findBollMBSupport = false;
 			for (int i = macdDeadPointIndex; i < overDaySubList.size(); i++) {
 				StockSuperVO vo = overDaySubList.get(i);
-				if ((vo.priceVO.low <= vo.avgMA20) && (vo.priceVO.close > vo.avgMA20)) {
+				if ((vo.priceVO.low <= vo.avgMA20)
+						&& (vo.priceVO.close > vo.avgMA20)) {
 					findMA20Support = true;
 				}
 
-				if ((vo.priceVO.low <= vo.bollVO.mb) && (vo.priceVO.close > vo.bollVO.mb)) {
+				if ((vo.priceVO.low <= vo.bollVO.mb)
+						&& (vo.priceVO.close > vo.bollVO.mb)) {
 					findBollMBSupport = true;
 				}
 			}
@@ -470,10 +528,13 @@ public class CombineAnalyseHelper {
 			}
 
 			// check close is higher Boll MB and MA5,10,20,30 Ronghe xiangShang
-			if ((curSuperDayVO.macdVO.macd <= 0.0) && (curSuperDayVO.macdVO.dif > 0.0)) {
-				if ((curSuperDayVO.priceVO.close > curSuperDayVO.bollVO.mb) && curSuperDayVO.priceVO.isKLineRed()) {
+			if ((curSuperDayVO.macdVO.macd <= 0.0)
+					&& (curSuperDayVO.macdVO.dif > 0.0)) {
+				if ((curSuperDayVO.priceVO.close > curSuperDayVO.bollVO.mb)
+						&& curSuperDayVO.priceVO.isKLineRed()) {
 					// check MA rongHe and xiangShang
-					return this.MA5_MA10_MA20_Ronghe_XiangShang(curSuperDayVO, pre1SuperDayVO);
+					return this.MA5_MA10_MA20_Ronghe_XiangShang(curSuperDayVO,
+							pre1SuperDayVO);
 				}
 			}
 			break;
@@ -489,18 +550,21 @@ public class CombineAnalyseHelper {
 			// below is completely copy from
 			// DuoTou_HuiTiao_MA20_Support_MA_RongHe_XiangShang
 			// limit two macd gordon and dead point to about 30 working days
-			List<StockSuperVO> overDaySubList = overDayList.subList(overDayList.size() - 30, overDayList.size());
+			List<StockSuperVO> overDaySubList = overDayList.subList(
+					overDayList.size() - 30, overDayList.size());
 
 			boolean findDuoTouHuiTiaoMacdDeadPoint = false;
 			int macdDeadPointIndex = 0;
 			// first find macd dead point, dif >0
 			for (int i = 0; i < overDaySubList.size(); i++) {
 				StockSuperVO vo = overDaySubList.get(i);
-				if ((vo.macdCorssType == CrossType.DEAD) && (vo.macdVO.dif > 1.0)) {
+				if ((vo.macdCorssType == CrossType.DEAD)
+						&& (vo.macdVO.dif > 1.0)) {
 					macdDeadPointIndex = i;
 					if ((i - 1) >= 0) {
 						StockSuperVO pre1vo = overDaySubList.get(i - 1);
-						if ((pre1vo.avgMA5 >= pre1vo.avgMA10) && (pre1vo.avgMA10 >= pre1vo.avgMA20)
+						if ((pre1vo.avgMA5 >= pre1vo.avgMA10)
+								&& (pre1vo.avgMA10 >= pre1vo.avgMA20)
 								&& (pre1vo.avgMA20 >= pre1vo.avgMA30)) {
 							findDuoTouHuiTiaoMacdDeadPoint = true;
 							break;
@@ -509,7 +573,8 @@ public class CombineAnalyseHelper {
 
 					if ((i - 2) >= 0) {
 						StockSuperVO pre2vo = overDaySubList.get(i - 2);
-						if ((pre2vo.avgMA5 >= pre2vo.avgMA10) && (pre2vo.avgMA10 >= pre2vo.avgMA20)
+						if ((pre2vo.avgMA5 >= pre2vo.avgMA10)
+								&& (pre2vo.avgMA10 >= pre2vo.avgMA20)
 								&& (pre2vo.avgMA20 >= pre2vo.avgMA30)) {
 							findDuoTouHuiTiaoMacdDeadPoint = true;
 							break;
@@ -527,11 +592,13 @@ public class CombineAnalyseHelper {
 			boolean findBollMBSupport = false;
 			for (int i = macdDeadPointIndex; i < overDaySubList.size(); i++) {
 				StockSuperVO vo = overDaySubList.get(i);
-				if ((vo.priceVO.low <= vo.avgMA20) && (vo.priceVO.close > vo.avgMA20)) {
+				if ((vo.priceVO.low <= vo.avgMA20)
+						&& (vo.priceVO.close > vo.avgMA20)) {
 					findMA20Support = true;
 				}
 
-				if ((vo.priceVO.low <= vo.bollVO.mb) && (vo.priceVO.close > vo.bollVO.mb)) {
+				if ((vo.priceVO.low <= vo.bollVO.mb)
+						&& (vo.priceVO.close > vo.bollVO.mb)) {
 					findBollMBSupport = true;
 				}
 			}
@@ -541,10 +608,13 @@ public class CombineAnalyseHelper {
 			}
 
 			// check close is higher Boll MB and MA5,10,20,30 Ronghe xiangShang
-			if ((curSuperDayVO.macdVO.macd <= 0.0) && (curSuperDayVO.macdVO.dif > 0.0)) {
-				if ((curSuperDayVO.priceVO.close > curSuperDayVO.bollVO.mb) && curSuperDayVO.priceVO.isKLineRed()) {
+			if ((curSuperDayVO.macdVO.macd <= 0.0)
+					&& (curSuperDayVO.macdVO.dif > 0.0)) {
+				if ((curSuperDayVO.priceVO.close > curSuperDayVO.bollVO.mb)
+						&& curSuperDayVO.priceVO.isKLineRed()) {
 					// check MA rongHe and xiangShang
-					return this.MA5_MA10_MA20_Ronghe_XiangShang(curSuperDayVO, pre1SuperDayVO);
+					return this.MA5_MA10_MA20_Ronghe_XiangShang(curSuperDayVO,
+							pre1SuperDayVO);
 				}
 			}
 			break;
@@ -557,8 +627,8 @@ public class CombineAnalyseHelper {
 			int minPlatformLen = 3;
 			int maxPlatformLen = 10;
 			for (int length = minPlatformLen; length <= maxPlatformLen; length++) {
-				if (findLongPlatformBasedOnWeekDateOrig(overWeekList.subList(overWeekList.size() - length,
-						overWeekList.size()))) {
+				if (findLongPlatformBasedOnWeekDateOrig(overWeekList.subList(
+						overWeekList.size() - length, overWeekList.size()))) {
 					hasWeekFlatformStartVO = true;
 					break;
 				}
@@ -570,19 +640,23 @@ public class CombineAnalyseHelper {
 
 			// original week checking
 			// RSV or KDJ gordon
-			if (curSuperDayVO.rsvCorssType == CrossType.GORDON || curSuperDayVO.kdjCorssType == CrossType.NEAR_GORDON
+			if (curSuperDayVO.rsvCorssType == CrossType.GORDON
+					|| curSuperDayVO.kdjCorssType == CrossType.NEAR_GORDON
 					|| curSuperDayVO.kdjCorssType == CrossType.GORDON) {
 				if (curSuperDayVO.priceVO.isKLineRed()) {
 					// check MA5, MA10,MA20,MA30 RongHe
 					boolean ma5_10_20_30_rongHe = MA5_MA10_MA20_MA30_Ronghe(pre2SuperDayVO)
-							&& MA5_MA10_MA20_MA30_Ronghe(pre1SuperDayVO) && MA5_MA10_MA20_MA30_Ronghe(curSuperDayVO);
+							&& MA5_MA10_MA20_MA30_Ronghe(pre1SuperDayVO)
+							&& MA5_MA10_MA20_MA30_Ronghe(curSuperDayVO);
 					boolean ma5_10_20_rongHe = MA5_MA10_MA20_Ronghe(pre1SuperDayVO)
 							&& MA5_MA10_MA20_Ronghe(curSuperDayVO);
 
 					if (ma5_10_20_30_rongHe || ma5_10_20_rongHe) {
 						if (MA5_MA10_XiangShang(curSuperDayVO, pre1SuperDayVO)
-								|| MA10_MA20_XiangShang(curSuperDayVO, pre1SuperDayVO)) {
-							if (close_Higher_MA5_MA10(curSuperDayVO) || close_Higher_MA10_MA20(curSuperDayVO)
+								|| MA10_MA20_XiangShang(curSuperDayVO,
+										pre1SuperDayVO)) {
+							if (close_Higher_MA5_MA10(curSuperDayVO)
+									|| close_Higher_MA10_MA20(curSuperDayVO)
 									|| close_Higher_MA20_MA30(curSuperDayVO)) {
 								if (curSuperDayVO.priceVO.close > curSuperDayVO.avgMA20) {
 									return true;
@@ -595,12 +669,15 @@ public class CombineAnalyseHelper {
 
 			// oritinal day checking
 			// RSV or KDJ gordon
-			if (curSuperDayVO.rsvCorssType == CrossType.GORDON || curSuperDayVO.kdjCorssType == CrossType.NEAR_GORDON
+			if (curSuperDayVO.rsvCorssType == CrossType.GORDON
+					|| curSuperDayVO.kdjCorssType == CrossType.NEAR_GORDON
 					|| curSuperDayVO.kdjCorssType == CrossType.GORDON) {
 				// pre3 and pre2 green, pre1 and cur red
 				// example: 600021 000875 at 2015-04-13, 000062 at 2015-02-27
-				if (curSuperDayVO.priceVO.isKLineRed() && pre1SuperDayVO.priceVO.isKLineRed()
-						&& pre2SuperDayVO.priceVO.isKLineGreen() && pre3SuperDayVO.priceVO.isKLineGreen()) {
+				if (curSuperDayVO.priceVO.isKLineRed()
+						&& pre1SuperDayVO.priceVO.isKLineRed()
+						&& pre2SuperDayVO.priceVO.isKLineGreen()
+						&& pre3SuperDayVO.priceVO.isKLineGreen()) {
 					if (curSuperDayVO.volumeIncreasePercent > 1) {
 						if ((pre2SuperDayVO.volumeIncreasePercent < 1)
 								|| (pre2SuperDayVO.priceVO.volume < pre2SuperDayVO.avgVol5 && pre3SuperDayVO.priceVO.volume < pre3SuperDayVO.avgVol5)) {
@@ -608,8 +685,10 @@ public class CombineAnalyseHelper {
 							if (curSuperDayVO.priceVO.close >= curSuperDayVO.avgMA5
 									&& curSuperDayVO.priceVO.close >= curSuperDayVO.avgMA10) {
 								// pre2, pre1, cur rongHe; cur xiangShang
-								if (this.MA5_MA10_Ronghe(pre1SuperDayVO) && this.MA5_MA10_Ronghe(pre2SuperDayVO)) {
-									if (this.MA5_MA10_Ronghe_XiangShang(curSuperDayVO, pre1SuperDayVO)) {
+								if (this.MA5_MA10_Ronghe(pre1SuperDayVO)
+										&& this.MA5_MA10_Ronghe(pre2SuperDayVO)) {
+									if (this.MA5_MA10_Ronghe_XiangShang(
+											curSuperDayVO, pre1SuperDayVO)) {
 										if (curSuperDayVO.priceVO.close >= pre2SuperDayVO.priceVO.close)
 											return true;
 									}
@@ -620,8 +699,10 @@ public class CombineAnalyseHelper {
 				}
 				// pre3, pre2 and pre1 green, cur red
 				// example: 002260 2015-04-17
-				if (curSuperDayVO.priceVO.isKLineRed() && pre1SuperDayVO.priceVO.isKLineGreen()
-						&& pre2SuperDayVO.priceVO.isKLineGreen() && pre3SuperDayVO.priceVO.isKLineGreen()) {
+				if (curSuperDayVO.priceVO.isKLineRed()
+						&& pre1SuperDayVO.priceVO.isKLineGreen()
+						&& pre2SuperDayVO.priceVO.isKLineGreen()
+						&& pre3SuperDayVO.priceVO.isKLineGreen()) {
 					if (curSuperDayVO.volumeIncreasePercent > 1) {
 						if ((pre1SuperDayVO.volumeIncreasePercent < 1 && pre2SuperDayVO.volumeIncreasePercent < 1)
 								|| (pre1SuperDayVO.priceVO.volume < pre1SuperDayVO.avgVol5 && pre2SuperDayVO.priceVO.volume < pre2SuperDayVO.avgVol5)) {
@@ -629,8 +710,10 @@ public class CombineAnalyseHelper {
 							if (curSuperDayVO.priceVO.close >= curSuperDayVO.avgMA5
 									&& curSuperDayVO.priceVO.close >= curSuperDayVO.avgMA10) {
 								// pre2, pre1, cur rongHe; cur xiangShang
-								if (this.MA5_MA10_Ronghe(pre1SuperDayVO) && this.MA5_MA10_Ronghe(pre2SuperDayVO)) {
-									if (this.MA5_MA10_Ronghe_XiangShang(curSuperDayVO, pre1SuperDayVO)) {
+								if (this.MA5_MA10_Ronghe(pre1SuperDayVO)
+										&& this.MA5_MA10_Ronghe(pre2SuperDayVO)) {
+									if (this.MA5_MA10_Ronghe_XiangShang(
+											curSuperDayVO, pre1SuperDayVO)) {
 										if (curSuperDayVO.priceVO.close >= pre2SuperDayVO.priceVO.close)
 											return true;
 									}
@@ -650,8 +733,9 @@ public class CombineAnalyseHelper {
 			int minPlatformLen = 3;
 			int maxPlatformLen = 10;
 			for (int length = minPlatformLen; length <= maxPlatformLen; length++) {
-				if (findLongPlatformBasedOnWeekDate(
-						overWeekList.subList(overWeekList.size() - length, overWeekList.size()), overDayList)) {
+				if (findLongPlatformBasedOnWeekDate(overWeekList.subList(
+						overWeekList.size() - length, overWeekList.size()),
+						overDayList)) {
 					hasWeekFlatformStartVO = true;
 					break;
 				}
@@ -663,19 +747,23 @@ public class CombineAnalyseHelper {
 
 			// original week checking
 			// RSV or KDJ gordon
-			if (curSuperDayVO.rsvCorssType == CrossType.GORDON || curSuperDayVO.kdjCorssType == CrossType.NEAR_GORDON
+			if (curSuperDayVO.rsvCorssType == CrossType.GORDON
+					|| curSuperDayVO.kdjCorssType == CrossType.NEAR_GORDON
 					|| curSuperDayVO.kdjCorssType == CrossType.GORDON) {
 				if (curSuperDayVO.priceVO.isKLineRed()) {
 					// check MA5, MA10,MA20,MA30 RongHe
 					boolean ma5_10_20_30_rongHe = MA5_MA10_MA20_MA30_Ronghe(pre2SuperDayVO)
-							&& MA5_MA10_MA20_MA30_Ronghe(pre1SuperDayVO) && MA5_MA10_MA20_MA30_Ronghe(curSuperDayVO);
+							&& MA5_MA10_MA20_MA30_Ronghe(pre1SuperDayVO)
+							&& MA5_MA10_MA20_MA30_Ronghe(curSuperDayVO);
 					boolean ma5_10_20_rongHe = MA5_MA10_MA20_Ronghe(pre1SuperDayVO)
 							&& MA5_MA10_MA20_Ronghe(curSuperDayVO);
 
 					if (ma5_10_20_30_rongHe || ma5_10_20_rongHe) {
 						if (MA5_MA10_XiangShang(curSuperDayVO, pre1SuperDayVO)
-								|| MA10_MA20_XiangShang(curSuperDayVO, pre1SuperDayVO)) {
-							if (close_Higher_MA5_MA10(curSuperDayVO) || close_Higher_MA10_MA20(curSuperDayVO)
+								|| MA10_MA20_XiangShang(curSuperDayVO,
+										pre1SuperDayVO)) {
+							if (close_Higher_MA5_MA10(curSuperDayVO)
+									|| close_Higher_MA10_MA20(curSuperDayVO)
 									|| close_Higher_MA20_MA30(curSuperDayVO)) {
 								if (curSuperDayVO.priceVO.close > curSuperDayVO.avgMA20) {
 									return true;
@@ -688,12 +776,15 @@ public class CombineAnalyseHelper {
 
 			// oritinal day checking
 			// RSV or KDJ gordon
-			if (curSuperDayVO.rsvCorssType == CrossType.GORDON || curSuperDayVO.kdjCorssType == CrossType.NEAR_GORDON
+			if (curSuperDayVO.rsvCorssType == CrossType.GORDON
+					|| curSuperDayVO.kdjCorssType == CrossType.NEAR_GORDON
 					|| curSuperDayVO.kdjCorssType == CrossType.GORDON) {
 				// pre3 and pre2 green, pre1 and cur red
 				// example: 600021 000875 at 2015-04-13, 000062 at 2015-02-27
-				if (curSuperDayVO.priceVO.isKLineRed() && pre1SuperDayVO.priceVO.isKLineRed()
-						&& pre2SuperDayVO.priceVO.isKLineGreen() && pre3SuperDayVO.priceVO.isKLineGreen()) {
+				if (curSuperDayVO.priceVO.isKLineRed()
+						&& pre1SuperDayVO.priceVO.isKLineRed()
+						&& pre2SuperDayVO.priceVO.isKLineGreen()
+						&& pre3SuperDayVO.priceVO.isKLineGreen()) {
 					if (curSuperDayVO.volumeIncreasePercent > 1) {
 						if ((pre2SuperDayVO.volumeIncreasePercent < 1)
 								|| (pre2SuperDayVO.priceVO.volume < pre2SuperDayVO.avgVol5 && pre3SuperDayVO.priceVO.volume < pre3SuperDayVO.avgVol5)) {
@@ -701,8 +792,10 @@ public class CombineAnalyseHelper {
 							if (curSuperDayVO.priceVO.close >= curSuperDayVO.avgMA5
 									&& curSuperDayVO.priceVO.close >= curSuperDayVO.avgMA10) {
 								// pre2, pre1, cur rongHe; cur xiangShang
-								if (this.MA5_MA10_Ronghe(pre1SuperDayVO) && this.MA5_MA10_Ronghe(pre2SuperDayVO)) {
-									if (this.MA5_MA10_Ronghe_XiangShang(curSuperDayVO, pre1SuperDayVO)) {
+								if (this.MA5_MA10_Ronghe(pre1SuperDayVO)
+										&& this.MA5_MA10_Ronghe(pre2SuperDayVO)) {
+									if (this.MA5_MA10_Ronghe_XiangShang(
+											curSuperDayVO, pre1SuperDayVO)) {
 										if (curSuperDayVO.priceVO.close >= pre2SuperDayVO.priceVO.close)
 											return true;
 									}
@@ -713,8 +806,10 @@ public class CombineAnalyseHelper {
 				}
 				// pre3, pre2 and pre1 green, cur red
 				// example: 002260 2015-04-17
-				if (curSuperDayVO.priceVO.isKLineRed() && pre1SuperDayVO.priceVO.isKLineGreen()
-						&& pre2SuperDayVO.priceVO.isKLineGreen() && pre3SuperDayVO.priceVO.isKLineGreen()) {
+				if (curSuperDayVO.priceVO.isKLineRed()
+						&& pre1SuperDayVO.priceVO.isKLineGreen()
+						&& pre2SuperDayVO.priceVO.isKLineGreen()
+						&& pre3SuperDayVO.priceVO.isKLineGreen()) {
 					if (curSuperDayVO.volumeIncreasePercent > 1) {
 						if ((pre1SuperDayVO.volumeIncreasePercent < 1 && pre2SuperDayVO.volumeIncreasePercent < 1)
 								|| (pre1SuperDayVO.priceVO.volume < pre1SuperDayVO.avgVol5 && pre2SuperDayVO.priceVO.volume < pre2SuperDayVO.avgVol5)) {
@@ -722,8 +817,10 @@ public class CombineAnalyseHelper {
 							if (curSuperDayVO.priceVO.close >= curSuperDayVO.avgMA5
 									&& curSuperDayVO.priceVO.close >= curSuperDayVO.avgMA10) {
 								// pre2, pre1, cur rongHe; cur xiangShang
-								if (this.MA5_MA10_Ronghe(pre1SuperDayVO) && this.MA5_MA10_Ronghe(pre2SuperDayVO)) {
-									if (this.MA5_MA10_Ronghe_XiangShang(curSuperDayVO, pre1SuperDayVO)) {
+								if (this.MA5_MA10_Ronghe(pre1SuperDayVO)
+										&& this.MA5_MA10_Ronghe(pre2SuperDayVO)) {
+									if (this.MA5_MA10_Ronghe_XiangShang(
+											curSuperDayVO, pre1SuperDayVO)) {
 										if (curSuperDayVO.priceVO.close >= pre2SuperDayVO.priceVO.close)
 											return true;
 									}
@@ -738,7 +835,8 @@ public class CombineAnalyseHelper {
 
 		case HengPan_2_Weeks_MA_RongHe_XiangShang_Break_Platform: {
 			// example: 600021 000875 at 2015-04-13,
-			if ((curSuperWeekVO.kdjVO.k < curSuperWeekVO.kdjVO.d) || !this.isLatestKDJCrossGordon(overWeekList)) {
+			if ((curSuperWeekVO.kdjVO.k < curSuperWeekVO.kdjVO.d)
+					|| !this.isLatestKDJCrossGordon(overWeekList)) {
 				// over all week KDJ must after Gordon
 				return false;
 			}
@@ -749,7 +847,8 @@ public class CombineAnalyseHelper {
 			int minPlatformLen = 9;
 			int maxPlatformLen = 30;
 			for (int length = minPlatformLen; length <= maxPlatformLen; length++) {
-				if (findPlatformStartVO(overDayList.subList(overDayList.size() - length, overDayList.size()))) {
+				if (findPlatformStartVO(overDayList.subList(overDayList.size()
+						- length, overDayList.size()))) {
 					hasFlatformStartVO = true;
 					break;
 				}
@@ -760,12 +859,15 @@ public class CombineAnalyseHelper {
 			}
 			// oritinal day checking
 			// RSV or KDJ gordon
-			if (curSuperDayVO.rsvCorssType == CrossType.GORDON || curSuperDayVO.kdjCorssType == CrossType.NEAR_GORDON
+			if (curSuperDayVO.rsvCorssType == CrossType.GORDON
+					|| curSuperDayVO.kdjCorssType == CrossType.NEAR_GORDON
 					|| curSuperDayVO.kdjCorssType == CrossType.GORDON) {
 				// pre3 and pre2 green, pre1 and cur red
 				// example: 600021 000875 at 2015-04-13, 000062 at 2015-02-27
-				if (curSuperDayVO.priceVO.isKLineRed() && pre1SuperDayVO.priceVO.isKLineRed()
-						&& pre2SuperDayVO.priceVO.isKLineGreen() && pre3SuperDayVO.priceVO.isKLineGreen()) {
+				if (curSuperDayVO.priceVO.isKLineRed()
+						&& pre1SuperDayVO.priceVO.isKLineRed()
+						&& pre2SuperDayVO.priceVO.isKLineGreen()
+						&& pre3SuperDayVO.priceVO.isKLineGreen()) {
 					if (curSuperDayVO.volumeIncreasePercent > 1) {
 						if ((pre2SuperDayVO.volumeIncreasePercent < 1)
 								|| (pre2SuperDayVO.priceVO.volume < pre2SuperDayVO.avgVol5 && pre3SuperDayVO.priceVO.volume < pre3SuperDayVO.avgVol5)) {
@@ -773,8 +875,10 @@ public class CombineAnalyseHelper {
 							if (curSuperDayVO.priceVO.close >= curSuperDayVO.avgMA5
 									&& curSuperDayVO.priceVO.close >= curSuperDayVO.avgMA10) {
 								// pre2, pre1, cur rongHe; cur xiangShang
-								if (this.MA5_MA10_Ronghe(pre1SuperDayVO) && this.MA5_MA10_Ronghe(pre2SuperDayVO)) {
-									if (this.MA5_MA10_Ronghe_XiangShang(curSuperDayVO, pre1SuperDayVO)) {
+								if (this.MA5_MA10_Ronghe(pre1SuperDayVO)
+										&& this.MA5_MA10_Ronghe(pre2SuperDayVO)) {
+									if (this.MA5_MA10_Ronghe_XiangShang(
+											curSuperDayVO, pre1SuperDayVO)) {
 										if (curSuperDayVO.priceVO.close >= pre2SuperDayVO.priceVO.close)
 											return true;
 									}
@@ -785,8 +889,10 @@ public class CombineAnalyseHelper {
 				}
 				// pre3, pre2 and pre1 green, cur red
 				// example: 002260 2015-04-17
-				if (curSuperDayVO.priceVO.isKLineRed() && pre1SuperDayVO.priceVO.isKLineGreen()
-						&& pre2SuperDayVO.priceVO.isKLineGreen() && pre3SuperDayVO.priceVO.isKLineGreen()) {
+				if (curSuperDayVO.priceVO.isKLineRed()
+						&& pre1SuperDayVO.priceVO.isKLineGreen()
+						&& pre2SuperDayVO.priceVO.isKLineGreen()
+						&& pre3SuperDayVO.priceVO.isKLineGreen()) {
 					if (curSuperDayVO.volumeIncreasePercent > 1) {
 						if ((pre1SuperDayVO.volumeIncreasePercent < 1 && pre2SuperDayVO.volumeIncreasePercent < 1)
 								|| (pre1SuperDayVO.priceVO.volume < pre1SuperDayVO.avgVol5 && pre2SuperDayVO.priceVO.volume < pre2SuperDayVO.avgVol5)) {
@@ -794,8 +900,10 @@ public class CombineAnalyseHelper {
 							if (curSuperDayVO.priceVO.close >= curSuperDayVO.avgMA5
 									&& curSuperDayVO.priceVO.close >= curSuperDayVO.avgMA10) {
 								// pre2, pre1, cur rongHe; cur xiangShang
-								if (this.MA5_MA10_Ronghe(pre1SuperDayVO) && this.MA5_MA10_Ronghe(pre2SuperDayVO)) {
-									if (this.MA5_MA10_Ronghe_XiangShang(curSuperDayVO, pre1SuperDayVO)) {
+								if (this.MA5_MA10_Ronghe(pre1SuperDayVO)
+										&& this.MA5_MA10_Ronghe(pre2SuperDayVO)) {
+									if (this.MA5_MA10_Ronghe_XiangShang(
+											curSuperDayVO, pre1SuperDayVO)) {
 										if (curSuperDayVO.priceVO.close >= pre2SuperDayVO.priceVO.close)
 											return true;
 									}
@@ -810,7 +918,8 @@ public class CombineAnalyseHelper {
 
 		case HengPang_Ready_To_Break_Platform_KDJ_Gordon: {
 			// week KDJ gordon and day near kdj gordon
-			if ((curSuperWeekVO.kdjVO.k < curSuperWeekVO.kdjVO.d) || !this.isLatestKDJCrossGordon(overWeekList)) {
+			if ((curSuperWeekVO.kdjVO.k < curSuperWeekVO.kdjVO.d)
+					|| !this.isLatestKDJCrossGordon(overWeekList)) {
 				// over all week KDJ must after Gordon
 				return false;
 			}
@@ -828,7 +937,8 @@ public class CombineAnalyseHelper {
 		case HengPang_Ready_To_Break_Platform_MACD_Gordon_Week_KDJ_Gordon: {
 			// example 002673 @ 2015-06-08
 			// day macd gordon, week kdj gordon
-			if (curSuperDayVO.macdCorssType == CrossType.GORDON && curSuperWeekVO.kdjCorssType == CrossType.GORDON) {
+			if (curSuperDayVO.macdCorssType == CrossType.GORDON
+					&& curSuperWeekVO.kdjCorssType == CrossType.GORDON) {
 				return this.isPlatform(overDayList, overWeekList);
 			}
 			break;
@@ -848,15 +958,24 @@ public class CombineAnalyseHelper {
 				if (pre6SuperDayVO.priceVO.isKLineRed(6.0, 9.0)) {
 					double high = pre6SuperDayVO.priceVO.high;
 					double low = pre6SuperDayVO.priceVO.low;
-					if (pre5SuperDayVO.priceVO.high / high <= 1.02 && pre4SuperDayVO.priceVO.high / high <= 1.02
-							&& pre3SuperDayVO.priceVO.high / high <= 1.02 && pre2SuperDayVO.priceVO.high / high <= 1.02
-							&& pre1SuperDayVO.priceVO.high / high <= 1.02 && curSuperDayVO.priceVO.high / high <= 1.02) {
-						if (pre5SuperDayVO.priceVO.low >= low && pre4SuperDayVO.priceVO.low >= low
-								&& pre3SuperDayVO.priceVO.low >= low && pre2SuperDayVO.priceVO.low >= low
-								&& pre1SuperDayVO.priceVO.low >= low && curSuperDayVO.priceVO.low >= low) {
-							long totalVol = pre5SuperDayVO.priceVO.volume + pre4SuperDayVO.priceVO.volume
-									+ pre3SuperDayVO.priceVO.volume + pre2SuperDayVO.priceVO.volume
-									+ pre1SuperDayVO.priceVO.volume + curSuperDayVO.priceVO.volume;
+					if (pre5SuperDayVO.priceVO.high / high <= 1.02
+							&& pre4SuperDayVO.priceVO.high / high <= 1.02
+							&& pre3SuperDayVO.priceVO.high / high <= 1.02
+							&& pre2SuperDayVO.priceVO.high / high <= 1.02
+							&& pre1SuperDayVO.priceVO.high / high <= 1.02
+							&& curSuperDayVO.priceVO.high / high <= 1.02) {
+						if (pre5SuperDayVO.priceVO.low >= low
+								&& pre4SuperDayVO.priceVO.low >= low
+								&& pre3SuperDayVO.priceVO.low >= low
+								&& pre2SuperDayVO.priceVO.low >= low
+								&& pre1SuperDayVO.priceVO.low >= low
+								&& curSuperDayVO.priceVO.low >= low) {
+							long totalVol = pre5SuperDayVO.priceVO.volume
+									+ pre4SuperDayVO.priceVO.volume
+									+ pre3SuperDayVO.priceVO.volume
+									+ pre2SuperDayVO.priceVO.volume
+									+ pre1SuperDayVO.priceVO.volume
+									+ curSuperDayVO.priceVO.volume;
 							long avgVol = totalVol / 6;
 							if (avgVol < pre6SuperDayVO.priceVO.volume) {
 								return true;
@@ -928,7 +1047,8 @@ public class CombineAnalyseHelper {
 
 		case BollXueShi2_Dn_Gordon: {
 			// when xueShi2 dn cross bull dn
-			if ((curSuperWeekVO.kdjVO.k < curSuperWeekVO.kdjVO.d) || !this.isLatestKDJCrossGordon(overWeekList)) {
+			if ((curSuperWeekVO.kdjVO.k < curSuperWeekVO.kdjVO.d)
+					|| !this.isLatestKDJCrossGordon(overWeekList)) {
 				// over all week KDJ must after Gordon
 				return false;
 			}
@@ -943,7 +1063,8 @@ public class CombineAnalyseHelper {
 		case Close_Higher_BollUp_BollXueShi2_Dn_Gordon: {
 			// close price higher boll upper and
 			// boll xueShie2 dn gordon corss
-			if ((curSuperWeekVO.kdjVO.k < curSuperWeekVO.kdjVO.d) || !this.isLatestKDJCrossGordon(overWeekList)) {
+			if ((curSuperWeekVO.kdjVO.k < curSuperWeekVO.kdjVO.d)
+					|| !this.isLatestKDJCrossGordon(overWeekList)) {
 				// over all week KDJ must after Gordon
 				return false;
 			}
@@ -970,7 +1091,8 @@ public class CombineAnalyseHelper {
 			// Close_Higher_BollUp_BollXueShi2_Dn_Gordon
 			// close price higher boll upper and
 			// boll xueShie2 dn gordon corss
-			if ((curSuperWeekVO.kdjVO.k < curSuperWeekVO.kdjVO.d) || !this.isLatestKDJCrossGordon(overWeekList)) {
+			if ((curSuperWeekVO.kdjVO.k < curSuperWeekVO.kdjVO.d)
+					|| !this.isLatestKDJCrossGordon(overWeekList)) {
 				// over all week KDJ must after Gordon
 				return false;
 			}
@@ -989,7 +1111,8 @@ public class CombineAnalyseHelper {
 		case DaDie_KDJ_Gordon_Twice_DiWei_Gordon: {
 			// da die; more day KDJ zero; KDJ twice gordon, di wei gordon
 			// example 002673 and 600750 at 2015-06-30
-			if (curSuperDayVO.kdjCorssType == CrossType.GORDON && curSuperDayVO.kdjVO.kValueBetween(15, 30)) {
+			if (curSuperDayVO.kdjCorssType == CrossType.GORDON
+					&& curSuperDayVO.kdjVO.kValueBetween(15, 30)) {
 
 				boolean pre4DayKDJGordon = (pre4SuperDayVO.kdjCorssType == CrossType.GORDON
 						|| pre4SuperDayVO.kdjCorssType == CrossType.NEAR_GORDON || pre4SuperDayVO.rsvCorssType == CrossType.GORDON)
@@ -1049,7 +1172,8 @@ public class CombineAnalyseHelper {
 		return false;
 	}
 
-	public boolean isPlatform(List<StockSuperVO> overDayList, List<StockSuperVO> overWeekList) {
+	public boolean isPlatform(List<StockSuperVO> overDayList,
+			List<StockSuperVO> overWeekList) {
 
 		StockSuperVO curSuperDayVO = overDayList.get(overDayList.size() - 1);
 		// merge with findPlatformStartVO and
@@ -1060,7 +1184,8 @@ public class CombineAnalyseHelper {
 		int maxPlatformLen = 30;
 		boolean findPlatform = false;
 		for (int length = minPlatformLen; length <= maxPlatformLen; length++) {
-			if (findPlatformStartVO(overDayList.subList(overDayList.size() - length, overDayList.size()))) {
+			if (findPlatformStartVO(overDayList.subList(overDayList.size()
+					- length, overDayList.size()))) {
 				findPlatform = true;
 				curSuperDayVO.hengPanWeekLen = length / 5;
 				break;
@@ -1071,8 +1196,9 @@ public class CombineAnalyseHelper {
 		minPlatformLen = 3;
 		maxPlatformLen = 10;
 		for (int length = minPlatformLen; length <= maxPlatformLen; length++) {
-			if (findLongPlatformBasedOnWeekDate(
-					overWeekList.subList(overWeekList.size() - length, overWeekList.size()), overDayList)) {
+			if (findLongPlatformBasedOnWeekDate(overWeekList.subList(
+					overWeekList.size() - length, overWeekList.size()),
+					overDayList)) {
 				findPlatform = true;
 				curSuperDayVO.hengPanWeekLen = length;
 				break;
@@ -1091,7 +1217,8 @@ public class CombineAnalyseHelper {
 			double avgClose = 0;
 			for (int i = 1; i < overDayList.size(); i++) {
 				StockSuperVO vo = overDayList.get(i);
-				double priceIncrease = ((vo.priceVO.close - vo.priceVO.lastClose) * 100.0) / vo.priceVO.lastClose;
+				double priceIncrease = ((vo.priceVO.close - vo.priceVO.lastClose) * 100.0)
+						/ vo.priceVO.lastClose;
 
 				// if next day find one priceIncrease is bigger then startVO,
 				// then not the platform
@@ -1107,7 +1234,8 @@ public class CombineAnalyseHelper {
 
 				// if next day find one close is less than the platform
 				// startVO.open or less then ma20
-				if ((vo.priceVO.close < startVO.priceVO.open) || (vo.priceVO.close < vo.avgMA20)) {
+				if ((vo.priceVO.close < startVO.priceVO.open)
+						|| (vo.priceVO.close < vo.avgMA20)) {
 					return false;
 				}
 
@@ -1130,7 +1258,8 @@ public class CombineAnalyseHelper {
 
 	// original checker, only use week data
 	// to check if the list is a platform
-	public boolean findLongPlatformBasedOnWeekDateOrig(List<StockSuperVO> overWeekList) {
+	public boolean findLongPlatformBasedOnWeekDateOrig(
+			List<StockSuperVO> overWeekList) {
 		// example: 300216 @ 20150421; 002040 @ 20150421
 		// pls also consider: 000901, 600818, 300177 ,000768
 		// at least 5 weeks data
@@ -1171,7 +1300,8 @@ public class CombineAnalyseHelper {
 
 		for (int i = 1; i < overWeekList.size(); i++) {
 			StockSuperVO vo = overWeekList.get(i);
-			double priceIncrease = ((vo.priceVO.close - vo.priceVO.lastClose) * 100.0) / vo.priceVO.lastClose;
+			double priceIncrease = ((vo.priceVO.close - vo.priceVO.lastClose) * 100.0)
+					/ vo.priceVO.lastClose;
 
 			// if next week find one priceIncrease is bigger then startVO,
 			// then not the platform
@@ -1233,7 +1363,8 @@ public class CombineAnalyseHelper {
 
 	// new checker, use both week and day data
 	// to check if the list is a platform
-	public boolean findLongPlatformBasedOnWeekDate(List<StockSuperVO> overWeekList, List<StockSuperVO> overDayList) {
+	public boolean findLongPlatformBasedOnWeekDate(
+			List<StockSuperVO> overWeekList, List<StockSuperVO> overDayList) {
 		// example: 300216 @ 20150421; 002040 @ 20150421
 		// pls also consider: 000901, 600818, 300177 ,000768
 		// at least 5 weeks data
@@ -1278,7 +1409,8 @@ public class CombineAnalyseHelper {
 		int endIndex = this.getDayIndex(overDayList, Edate);
 		for (int i = startIndex; i <= endIndex; i++) {
 			StockSuperVO vo = overDayList.get(i);
-			double priceIncrease = ((vo.priceVO.close - vo.priceVO.lastClose) * 100.0) / vo.priceVO.lastClose;
+			double priceIncrease = ((vo.priceVO.close - vo.priceVO.lastClose) * 100.0)
+					/ vo.priceVO.lastClose;
 
 			// if next week find one priceIncrease is bigger then startVO,
 			// then not the platform
@@ -1404,8 +1536,10 @@ public class CombineAnalyseHelper {
 
 	private boolean MA5_MA10_MA20_Ronghe(StockSuperVO curSuperDayVO) {
 		// rongHe and xiangShang
-		double min = this.findMinValue(curSuperDayVO.avgMA5, curSuperDayVO.avgMA10, curSuperDayVO.avgMA20);
-		double max = this.findMaxValue(curSuperDayVO.avgMA5, curSuperDayVO.avgMA10, curSuperDayVO.avgMA20);
+		double min = this.findMinValue(curSuperDayVO.avgMA5,
+				curSuperDayVO.avgMA10, curSuperDayVO.avgMA20);
+		double max = this.findMaxValue(curSuperDayVO.avgMA5,
+				curSuperDayVO.avgMA10, curSuperDayVO.avgMA20);
 		double dif = Math.abs(max - min);
 		// MA rongHe
 		if (((dif / min) * 100) < 3.0) {
@@ -1416,9 +1550,11 @@ public class CombineAnalyseHelper {
 
 	private boolean MA5_MA10_MA20_MA30_Ronghe(StockSuperVO curSuperDayVO) {
 		// rongHe and xiangShang
-		double min = this.findMinValue(curSuperDayVO.avgMA5, curSuperDayVO.avgMA10, curSuperDayVO.avgMA20,
+		double min = this.findMinValue(curSuperDayVO.avgMA5,
+				curSuperDayVO.avgMA10, curSuperDayVO.avgMA20,
 				curSuperDayVO.avgMA30);
-		double max = this.findMaxValue(curSuperDayVO.avgMA5, curSuperDayVO.avgMA10, curSuperDayVO.avgMA20,
+		double max = this.findMaxValue(curSuperDayVO.avgMA5,
+				curSuperDayVO.avgMA10, curSuperDayVO.avgMA20,
 				curSuperDayVO.avgMA30);
 		double dif = Math.abs(max - min);
 		// MA rongHe
@@ -1428,21 +1564,27 @@ public class CombineAnalyseHelper {
 		return false;
 	}
 
-	private boolean MA5_MA10_Ronghe_XiangShang(StockSuperVO curSuperDayVO, StockSuperVO pre1SuperDayVO) {
-		return MA5_MA10_Ronghe(curSuperDayVO) && MA5_MA10_XiangShang(curSuperDayVO, pre1SuperDayVO);
+	private boolean MA5_MA10_Ronghe_XiangShang(StockSuperVO curSuperDayVO,
+			StockSuperVO pre1SuperDayVO) {
+		return MA5_MA10_Ronghe(curSuperDayVO)
+				&& MA5_MA10_XiangShang(curSuperDayVO, pre1SuperDayVO);
 	}
 
-	private boolean MA10_MA20_Ronghe_XiangShang(StockSuperVO curSuperDayVO, StockSuperVO pre1SuperDayVO) {
-		return MA10_MA20_Ronghe(curSuperDayVO) && MA10_MA20_XiangShang(curSuperDayVO, pre1SuperDayVO);
+	private boolean MA10_MA20_Ronghe_XiangShang(StockSuperVO curSuperDayVO,
+			StockSuperVO pre1SuperDayVO) {
+		return MA10_MA20_Ronghe(curSuperDayVO)
+				&& MA10_MA20_XiangShang(curSuperDayVO, pre1SuperDayVO);
 	}
 
-	private boolean MA5_MA10_MA20_Ronghe_XiangShang(StockSuperVO curSuperDayVO, StockSuperVO pre1SuperDayVO) {
+	private boolean MA5_MA10_MA20_Ronghe_XiangShang(StockSuperVO curSuperDayVO,
+			StockSuperVO pre1SuperDayVO) {
 		// rongHe
 		if (!MA5_MA10_MA20_Ronghe(curSuperDayVO))
 			return false;
 
 		// xiangShang
-		if ((curSuperDayVO.avgMA5 >= pre1SuperDayVO.avgMA5) && (curSuperDayVO.avgMA10 >= pre1SuperDayVO.avgMA10)
+		if ((curSuperDayVO.avgMA5 >= pre1SuperDayVO.avgMA5)
+				&& (curSuperDayVO.avgMA10 >= pre1SuperDayVO.avgMA10)
 				&& (curSuperDayVO.avgMA20 >= pre1SuperDayVO.avgMA20)) {
 			return true;
 		}
@@ -1450,14 +1592,16 @@ public class CombineAnalyseHelper {
 		return false;
 	}
 
-	private boolean MA5_MA10_MA20_MA30_Ronghe_XiangShang(StockSuperVO curSuperDayVO, StockSuperVO pre1SuperDayVO) {
+	private boolean MA5_MA10_MA20_MA30_Ronghe_XiangShang(
+			StockSuperVO curSuperDayVO, StockSuperVO pre1SuperDayVO) {
 
 		// rongHe
 		if (!MA5_MA10_MA20_MA30_Ronghe(curSuperDayVO))
 			return false;
 
 		// xiangShang
-		if ((curSuperDayVO.avgMA5 >= pre1SuperDayVO.avgMA5) && (curSuperDayVO.avgMA10 >= pre1SuperDayVO.avgMA10)
+		if ((curSuperDayVO.avgMA5 >= pre1SuperDayVO.avgMA5)
+				&& (curSuperDayVO.avgMA10 >= pre1SuperDayVO.avgMA10)
 				&& (curSuperDayVO.avgMA20 >= pre1SuperDayVO.avgMA20)
 				&& (curSuperDayVO.avgMA30 >= pre1SuperDayVO.avgMA30)) {
 			return true;
@@ -1466,17 +1610,21 @@ public class CombineAnalyseHelper {
 		return false;
 	}
 
-	private boolean MA5_MA10_XiangShang(StockSuperVO curSuperDayVO, StockSuperVO pre1SuperDayVO) {
+	private boolean MA5_MA10_XiangShang(StockSuperVO curSuperDayVO,
+			StockSuperVO pre1SuperDayVO) {
 		// xiangShang
-		if ((curSuperDayVO.avgMA5 >= pre1SuperDayVO.avgMA5) && (curSuperDayVO.avgMA10 >= pre1SuperDayVO.avgMA10)) {
+		if ((curSuperDayVO.avgMA5 >= pre1SuperDayVO.avgMA5)
+				&& (curSuperDayVO.avgMA10 >= pre1SuperDayVO.avgMA10)) {
 			return true;
 		}
 		return false;
 	}
 
-	private boolean MA10_MA20_XiangShang(StockSuperVO curSuperDayVO, StockSuperVO pre1SuperDayVO) {
+	private boolean MA10_MA20_XiangShang(StockSuperVO curSuperDayVO,
+			StockSuperVO pre1SuperDayVO) {
 		// xiangShang
-		if ((curSuperDayVO.avgMA10 >= pre1SuperDayVO.avgMA10) && (curSuperDayVO.avgMA20 >= pre1SuperDayVO.avgMA20)) {
+		if ((curSuperDayVO.avgMA10 >= pre1SuperDayVO.avgMA10)
+				&& (curSuperDayVO.avgMA20 >= pre1SuperDayVO.avgMA20)) {
 			return true;
 		}
 		return false;
@@ -1485,7 +1633,8 @@ public class CombineAnalyseHelper {
 	private boolean close_Higher_MA5_MA10(StockSuperVO curSuperDayVO) {
 
 		// close higher than ma5 and ma10
-		if (curSuperDayVO.priceVO.close >= curSuperDayVO.avgMA5 && curSuperDayVO.priceVO.close >= curSuperDayVO.avgMA10) {
+		if (curSuperDayVO.priceVO.close >= curSuperDayVO.avgMA5
+				&& curSuperDayVO.priceVO.close >= curSuperDayVO.avgMA10) {
 			return true;
 		}
 
@@ -1514,20 +1663,24 @@ public class CombineAnalyseHelper {
 		return false;
 	}
 
-	private boolean close_Higher_N_Percent_Than_LastClose(StockSuperVO curSuperDayVO, double increasePercent) {
+	private boolean close_Higher_N_Percent_Than_LastClose(
+			StockSuperVO curSuperDayVO, double increasePercent) {
 
 		// close higher N% than lastClose
-		if ((curSuperDayVO.priceVO.close - curSuperDayVO.priceVO.lastClose) * 100 / curSuperDayVO.priceVO.lastClose >= increasePercent) {
+		if ((curSuperDayVO.priceVO.close - curSuperDayVO.priceVO.lastClose)
+				* 100 / curSuperDayVO.priceVO.lastClose >= increasePercent) {
 			return true;
 		}
 
 		return false;
 	}
 
-	private boolean close_Lower_N_Percent_Than_LastClose(StockSuperVO curSuperDayVO, double increasePercent) {
+	private boolean close_Lower_N_Percent_Than_LastClose(
+			StockSuperVO curSuperDayVO, double increasePercent) {
 
 		// close higher N% than lastClose
-		if ((curSuperDayVO.priceVO.close - curSuperDayVO.priceVO.lastClose) * 100 / curSuperDayVO.priceVO.lastClose < increasePercent) {
+		if ((curSuperDayVO.priceVO.close - curSuperDayVO.priceVO.lastClose)
+				* 100 / curSuperDayVO.priceVO.lastClose < increasePercent) {
 			return true;
 		}
 
