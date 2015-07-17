@@ -1166,6 +1166,19 @@ public class CombineAnalyseHelper {
 			break;
 		}
 
+		case Pre1Pre2_Day_DieTing_Now_KaiBan: {
+			if (pre1SuperDayVO.priceVO.close < pre2SuperDayVO.priceVO.close) {
+				if (pre1SuperDayVO.priceVO.open == pre1SuperDayVO.priceVO.close
+						&& pre1SuperDayVO.priceVO.close == pre1SuperDayVO.priceVO.low
+						&& pre1SuperDayVO.priceVO.low == pre1SuperDayVO.priceVO.high) {
+					if (curSuperDayVO.priceVO.high != curSuperDayVO.priceVO.low) {
+						return true;
+					}
+				}
+			}
+			break;
+		}
+
 		default:
 			return false;
 		}
