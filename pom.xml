@@ -33,6 +33,7 @@
 				<module>Analyse</module>
 				<module>Portal</module>
 				<module>App</module>
+				<module>Scheduled</module>
 			</modules>
 		</profile>
 	</profiles>

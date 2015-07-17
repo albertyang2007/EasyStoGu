@@ -1,0 +1,51 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<parent>
+		<groupId>org.albertyang2007.easystogu</groupId>
+		<artifactId>easystogu-parent</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+		<relativePath>../Parent/</relativePath>
+	</parent>
+
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.albertyang2007.easystogu</groupId>
+	<artifactId>easystogu-scheduled</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>EasyStoGu-Scheduled</name>
+	<packaging>jar</packaging>
+	<description>EasyStoGu-Scheduled: Scheduled task in daily</description>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.albertyang2007.easystogu</groupId>
+			<artifactId>easystogu-commonlib</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.albertyang2007.easystogu</groupId>
+			<artifactId>easystogu-databaselib</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.albertyang2007.easystogu</groupId>
+			<artifactId>easystogu-sinadatacollect</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.albertyang2007.easystogu</groupId>
+			<artifactId>easystogu-easymoneycollect</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.albertyang2007.easystogu</groupId>
+			<artifactId>easystogu-indicator</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.albertyang2007.easystogu</groupId>
+			<artifactId>easystogu-analyse</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+	</dependencies>
+</project>
