@@ -10,8 +10,9 @@
 
 	<!-- Enable @Autowired -->
 	<context:annotation-config />
-	<context:component-scan base-package="org.easystogu.scheduler.*" />
+	<task:annotation-driven />
+	<context:component-scan base-package="org.easystogu.scheduler" />
 
-	<task:scheduler id="dailyScheduler" pool-size="5" />
+	<task:scheduler id="taskScheduler" pool-size="5" />
 
 </beans>
