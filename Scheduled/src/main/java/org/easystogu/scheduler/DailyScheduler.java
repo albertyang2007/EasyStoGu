@@ -52,9 +52,6 @@ public class DailyScheduler implements SchedulingConfigurer {
 
 	private void DailyUpdateOverAllRunner() {
 		logger.info("DailyUpdateOverAllRunner already running, please check folder result.");
-		System.out
-				.println("DailyUpdateOverAllRunner already running, please check folder result.");
-
 		Thread t = new Thread(new DailyUpdateOverAllRunner());
 		t.start();
 	}
