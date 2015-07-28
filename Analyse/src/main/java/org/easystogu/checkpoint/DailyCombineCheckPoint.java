@@ -37,8 +37,7 @@ public enum DailyCombineCheckPoint {
 			SellPointType.KDJ_Dead, 352, 6.80), Day_ShenXian_Gordon_ZhuliJinChu_Gordon(
 			SellPointType.KDJ_Dead, 11128, 8.21), Day_Mai2_ShenXian_ZhuliJinChu_Gordon_Week_Mai2_Gordon(
 			SellPointType.KDJ_Dead, 2086, 9.55), Day_Mai1_ShenXian_ZhuliJinChu_Gordon(
-			SellPointType.KDJ_Dead, 1514, 8.76), Pre1Pre2_Day_DieTing_Now_KaiBan(
-			SellPointType.KDJ_Dead, 0, 99);
+			SellPointType.KDJ_Dead, 1514, 8.76);
 
 	private String condition;
 	// history summary that meet the condiction
