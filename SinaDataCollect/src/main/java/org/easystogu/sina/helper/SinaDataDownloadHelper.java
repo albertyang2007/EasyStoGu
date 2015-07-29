@@ -16,8 +16,7 @@ import org.springframework.web.client.RestTemplate;
 
 public class SinaDataDownloadHelper {
 	private static final String baseUrl = "http://hq.sinajs.cn/list=";
-	private static FileConfigurationService configure = FileConfigurationService
-			.getInstance();
+	private static FileConfigurationService configure = FileConfigurationService.getInstance();
 
 	// stockList is like: sh000001,sh601318
 	// has prefix
@@ -38,16 +37,14 @@ public class SinaDataDownloadHelper {
 		requestFactory.setReadTimeout(10000);
 
 		if (Strings.isNotEmpty(configure.getString(Constants.httpProxyServer))) {
-			Proxy proxy = new Proxy(Type.HTTP, new InetSocketAddress(
-					configure.getString(Constants.httpProxyServer),
+			Proxy proxy = new Proxy(Type.HTTP, new InetSocketAddress(configure.getString(Constants.httpProxyServer),
 					configure.getInt(Constants.httpProxyPort)));
 			requestFactory.setProxy(proxy);
 		}
 
 		RestTemplate restTemplate = new RestTemplate(requestFactory);
 
-		String contents = restTemplate.getForObject(urlStr.toString(),
-				String.class);
+		String contents = restTemplate.getForObject(urlStr.toString(), String.class);
 
 		if (Strings.isEmpty(contents)) {
 			System.out.println("Contents is empty");
@@ -57,6 +54,9 @@ public class SinaDataDownloadHelper {
 		String[] content = contents.trim().split("\n");
 		for (int index = 0; index < content.length; index++) {
 			String[] items = content[index].trim().split("\"");
+			if (items.length <= 1) {
+				continue;
+			}
 			// System.out.println(items[1]);
 			// stockId has prefix, so remove it (sh, sz)
 			String realStockId = stockIds.get(index).substring(2);
