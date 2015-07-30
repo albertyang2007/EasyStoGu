@@ -85,16 +85,6 @@ public class KDJVO {
 		this.rsv = rsv;
 	}
 
-	public double[] getKDJ() {
-		double[] KDJ = new double[4];
-		KDJ[0] = this.k;
-		KDJ[1] = this.d;
-		KDJ[2] = this.j;
-		KDJ[3] = this.rsv;
-
-		return KDJ;
-	}
-
 	public boolean rsvValueBetween(double min, double max) {
 		if ((this.rsv >= min) && (this.rsv <= max)) {
 			return true;
