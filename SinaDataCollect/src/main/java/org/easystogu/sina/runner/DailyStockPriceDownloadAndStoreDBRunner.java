@@ -20,9 +20,11 @@ public class DailyStockPriceDownloadAndStoreDBRunner implements Runnable {
     public void downloadDataAndSaveIntoDB() {
         List<String> shStockIds = stockConfig.getAllSHStockId("sh");
         List<String> szStockIds = stockConfig.getAllSZStockId("sz");
+        String szzsStockId = stockConfig.getSZZSStockId();
 
         List<String> totalStockIds = new ArrayList<String>();
 
+        totalStockIds.add(szzsStockId);
         totalStockIds.addAll(shStockIds);
         totalStockIds.addAll(szStockIds);
 
@@ -51,10 +53,14 @@ public class DailyStockPriceDownloadAndStoreDBRunner implements Runnable {
 
     public void saveIntoDB(StockPriceVO vo) {
         try {
+        	if(vo.stockId.equalsIgnoreCase("sh000001"))
+        		System.out.println("szzs" + vo);
             if (vo.isValidated()) {
                 //System.out.println("saving into DB, vo=" + vo);
                 tableHelper.delete(vo.stockId, vo.date);
                 tableHelper.insert(vo);
+            }else {
+				System.out.println("vo invalidate: " + vo);
             }
         } catch (Exception e) {
             // TODO Auto-generated catch block

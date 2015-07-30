@@ -9,9 +9,7 @@
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.albertyang2007.easystogu</groupId>
 	<artifactId>easystogu-portal</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
 	<name>EasyStoGu-Portal</name>
 	<packaging>war</packaging>
 	<description>EasyStoGu-Portal: Web service and API</description>
