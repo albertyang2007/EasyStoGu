@@ -1,6 +1,5 @@
 package org.easystogu.portal;
 
-import java.io.IOException;
 import java.util.List;
 
 import javax.ws.rs.GET;
@@ -18,8 +17,7 @@ public class PriceEndPoint {
 	@GET
 	@Path("{stockid}")
 	@Produces( "application/json" )
-	public List<StockPriceVO> queryStockPriceById(@PathParam("stockid") String stockid)
-			throws IOException {
+	public List<StockPriceVO> queryStockPriceById(@PathParam("stockid") String stockid) {
 		return stockPriceTable.getNdateStockPriceById(stockid, 1);
 	}
 }

@@ -60,15 +60,6 @@ public class ShenXianVO {
 
 	}
 
-	public double[] getShenXian() {
-		double[] shenXian = new double[3];
-		shenXian[0] = this.h1;
-		shenXian[1] = this.h2;
-		shenXian[2] = this.h3;
-
-		return shenXian;
-	}
-
 	@Override
 	public String toString() {
 		StringBuffer sb = new StringBuffer("ShenXianVO: {");

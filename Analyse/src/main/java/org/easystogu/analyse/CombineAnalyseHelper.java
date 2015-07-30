@@ -2,6 +2,7 @@ package org.easystogu.analyse;
 
 import java.util.List;
 
+import org.easystogu.analyse.util.StockPriceUtils;
 import org.easystogu.checkpoint.DailyCombineCheckPoint;
 import org.easystogu.db.table.StockSuperVO;
 import org.easystogu.utils.CrossType;
@@ -17,16 +18,6 @@ public class CombineAnalyseHelper {
 			return false;
 		}
 		StockSuperVO curSuperWeekVO = overWeekList.get(overWeekList.size() - 1);
-		StockSuperVO pre1SuperWeekVO = overWeekList
-				.get(overWeekList.size() - 2);
-		StockSuperVO pre2SuperWeekVO = overWeekList
-				.get(overWeekList.size() - 3);
-		StockSuperVO pre3SuperWeekVO = overWeekList
-				.get(overWeekList.size() - 4);
-		StockSuperVO pre4SuperWeekVO = overWeekList
-				.get(overWeekList.size() - 5);
-		StockSuperVO pre5SuperWeekVO = overWeekList
-				.get(overWeekList.size() - 6);
 
 		int dayLength = overDayList.size();
 		StockSuperVO curSuperDayVO = overDayList.get(overDayList.size() - 1);
@@ -36,7 +27,6 @@ public class CombineAnalyseHelper {
 		StockSuperVO pre4SuperDayVO = overDayList.get(overDayList.size() - 5);
 		StockSuperVO pre5SuperDayVO = overDayList.get(overDayList.size() - 6);
 		StockSuperVO pre6SuperDayVO = overDayList.get(overDayList.size() - 7);
-		StockSuperVO pre7SuperDayVO = overDayList.get(overDayList.size() - 8);
 
 		switch (checkPoint) {
 		case MACD_Gordon:
@@ -67,11 +57,12 @@ public class CombineAnalyseHelper {
 			if (overDayList.size() >= 3) {
 				if ((curSuperDayVO.kdjCorssType == CrossType.GORDON)
 						&& ((curSuperDayVO.macdCorssType == CrossType.GORDON))) {
-					if (curSuperDayVO.priceVO.isKLineRed()
+					if (StockPriceUtils.isKLineRed(curSuperDayVO.priceVO)
 							&& (curSuperDayVO.volumeIncreasePercent >= 1.0)) {
-						if (pre1SuperDayVO.priceVO.isKLineRed()
+						if (StockPriceUtils.isKLineRed(pre1SuperDayVO.priceVO)
 								&& (pre1SuperDayVO.volumeIncreasePercent >= 1.0)
-								&& pre2SuperDayVO.priceVO.isKLineRed()) {
+								&& StockPriceUtils
+										.isKLineRed(pre2SuperDayVO.priceVO)) {
 							return MA5_MA10_MA20_Ronghe_XiangShang(
 									curSuperDayVO, pre1SuperDayVO);
 						}
@@ -90,11 +81,12 @@ public class CombineAnalyseHelper {
 			if (overDayList.size() >= 20) {
 				if ((curSuperDayVO.kdjCorssType == CrossType.GORDON)
 						&& ((curSuperDayVO.macdCorssType == CrossType.GORDON))) {
-					if (curSuperDayVO.priceVO.isKLineRed()
+					if (StockPriceUtils.isKLineRed(curSuperDayVO.priceVO)
 							&& (curSuperDayVO.volumeIncreasePercent >= 1.0)) {
-						if (pre1SuperDayVO.priceVO.isKLineRed()
+						if (StockPriceUtils.isKLineRed(pre1SuperDayVO.priceVO)
 								&& (pre1SuperDayVO.volumeIncreasePercent >= 1.0)
-								&& pre2SuperDayVO.priceVO.isKLineRed()) {
+								&& StockPriceUtils
+										.isKLineRed(pre2SuperDayVO.priceVO)) {
 							if ((curSuperDayVO.priceVO.close >= curSuperDayVO.avgMA5)
 									&& (curSuperDayVO.priceVO.close >= curSuperDayVO.avgMA10)
 									&& (pre1SuperDayVO.priceVO.close < pre1SuperDayVO.avgMA5)
@@ -182,11 +174,12 @@ public class CombineAnalyseHelper {
 										&& (pre1SuperDayVO.priceVO.close < curSuperDayVO.avgMA5)
 										&& (pre1SuperDayVO.priceVO.close < curSuperDayVO.avgMA10)) {
 									if (curSuperDayVO.volumeIncreasePercent >= 1.0) {
-										if ((curSuperDayVO.priceVO.isKLineRed() || (curSuperDayVO.priceVO.close > pre1SuperDayVO.priceVO.close))
-												&& (pre1SuperDayVO.priceVO
-														.isKLineRed() || (pre1SuperDayVO.priceVO.close > pre2SuperDayVO.priceVO.close))
-												&& (pre2SuperDayVO.priceVO
-														.isKLineGreen() || (pre2SuperDayVO.priceVO.close < pre3SuperDayVO.priceVO.close))) {
+										if ((StockPriceUtils
+												.isKLineRed(curSuperDayVO.priceVO) || (curSuperDayVO.priceVO.close > pre1SuperDayVO.priceVO.close))
+												&& (StockPriceUtils
+														.isKLineRed(pre1SuperDayVO.priceVO) || (pre1SuperDayVO.priceVO.close > pre2SuperDayVO.priceVO.close))
+												&& (StockPriceUtils
+														.isKLineGreen(pre2SuperDayVO.priceVO) || (pre2SuperDayVO.priceVO.close < pre3SuperDayVO.priceVO.close))) {
 											return true;
 										}
 									}
@@ -218,10 +211,12 @@ public class CombineAnalyseHelper {
 					&& (pre1SuperDayVO.avgMA20 >= pre1SuperDayVO.avgMA30)) {
 				if ((pre1SuperDayVO.priceVO.low <= pre1SuperDayVO.avgMA20)
 						&& (pre1SuperDayVO.priceVO.close > pre1SuperDayVO.avgMA20)) {
-					if (pre2SuperDayVO.priceVO.isKLineGreen()
-							&& pre3SuperDayVO.priceVO.isKLineGreen()) {
+					if (StockPriceUtils.isKLineGreen(pre2SuperDayVO.priceVO)
+							&& StockPriceUtils
+									.isKLineGreen(pre3SuperDayVO.priceVO)) {
 						if ((pre1SuperDayVO.priceVO.close > pre2SuperDayVO.priceVO.close)
-								|| pre1SuperDayVO.priceVO.isKLineRed()) {
+								|| StockPriceUtils
+										.isKLineRed(pre1SuperDayVO.priceVO)) {
 							if ((pre1SuperDayVO.kdjVO.j <= 10.0)
 									&& (curSuperDayVO.rsvCorssType == CrossType.GORDON)) {
 								return MA5_MA10_MA20_Ronghe_XiangShang(
@@ -252,10 +247,12 @@ public class CombineAnalyseHelper {
 					&& (pre1SuperDayVO.avgMA20 >= pre1SuperDayVO.avgMA30)) {
 				if ((pre1SuperDayVO.priceVO.low <= pre1SuperDayVO.avgMA30)
 						&& (pre1SuperDayVO.priceVO.close > pre1SuperDayVO.avgMA30)) {
-					if (pre2SuperDayVO.priceVO.isKLineGreen()
-							&& pre3SuperDayVO.priceVO.isKLineGreen()) {
+					if (StockPriceUtils.isKLineGreen(pre2SuperDayVO.priceVO)
+							&& StockPriceUtils
+									.isKLineGreen(pre3SuperDayVO.priceVO)) {
 						if ((pre1SuperDayVO.priceVO.close > pre2SuperDayVO.priceVO.close)
-								|| pre1SuperDayVO.priceVO.isKLineRed()) {
+								|| StockPriceUtils
+										.isKLineRed(pre1SuperDayVO.priceVO)) {
 							if (pre1SuperDayVO.kdjVO.j <= 10.0) {
 								if (curSuperDayVO.rsvCorssType == CrossType.GORDON
 										|| curSuperDayVO.kdjCorssType == CrossType.NEAR_GORDON
@@ -289,10 +286,12 @@ public class CombineAnalyseHelper {
 					&& (pre1SuperDayVO.avgMA20 >= pre1SuperDayVO.avgMA30)) {
 				if ((pre1SuperDayVO.priceVO.low <= pre1SuperDayVO.avgMA30)
 						&& (pre1SuperDayVO.priceVO.close > pre1SuperDayVO.avgMA30)) {
-					if (pre2SuperDayVO.priceVO.isKLineGreen()
-							&& pre3SuperDayVO.priceVO.isKLineGreen()) {
+					if (StockPriceUtils.isKLineGreen(pre2SuperDayVO.priceVO)
+							&& StockPriceUtils
+									.isKLineGreen(pre3SuperDayVO.priceVO)) {
 						if ((pre1SuperDayVO.priceVO.close > pre2SuperDayVO.priceVO.close)
-								|| pre1SuperDayVO.priceVO.isKLineRed()) {
+								|| StockPriceUtils
+										.isKLineRed(pre1SuperDayVO.priceVO)) {
 							if ((pre1SuperDayVO.kdjVO.j <= 10.0)
 									&& (curSuperDayVO.rsvCorssType == CrossType.GORDON)) {
 								// check MA rongHe and xiangShang
@@ -373,7 +372,7 @@ public class CombineAnalyseHelper {
 			if ((curSuperDayVO.macdVO.macd <= 0.0)
 					&& (curSuperDayVO.macdVO.dif > 0.0)) {
 				if ((curSuperDayVO.priceVO.close > curSuperDayVO.bollVO.mb)
-						&& curSuperDayVO.priceVO.isKLineRed()) {
+						&& StockPriceUtils.isKLineRed(curSuperDayVO.priceVO)) {
 					// check MA rongHe and xiangShang
 					return this.MA5_MA10_MA20_MA30_Ronghe_XiangShang(
 							curSuperDayVO, pre1SuperDayVO);
@@ -454,7 +453,7 @@ public class CombineAnalyseHelper {
 			if ((curSuperDayVO.macdVO.macd <= 0.0)
 					&& (curSuperDayVO.macdVO.dif > 0.0)) {
 				if ((curSuperDayVO.priceVO.close > curSuperDayVO.bollVO.mb)
-						&& curSuperDayVO.priceVO.isKLineRed()) {
+						&& StockPriceUtils.isKLineRed(curSuperDayVO.priceVO)) {
 					// check MA rongHe and xiangShang
 					return this.MA5_MA10_MA20_MA30_Ronghe_XiangShang(
 							curSuperDayVO, pre1SuperDayVO);
@@ -531,7 +530,7 @@ public class CombineAnalyseHelper {
 			if ((curSuperDayVO.macdVO.macd <= 0.0)
 					&& (curSuperDayVO.macdVO.dif > 0.0)) {
 				if ((curSuperDayVO.priceVO.close > curSuperDayVO.bollVO.mb)
-						&& curSuperDayVO.priceVO.isKLineRed()) {
+						&& StockPriceUtils.isKLineRed(curSuperDayVO.priceVO)) {
 					// check MA rongHe and xiangShang
 					return this.MA5_MA10_MA20_Ronghe_XiangShang(curSuperDayVO,
 							pre1SuperDayVO);
@@ -611,7 +610,7 @@ public class CombineAnalyseHelper {
 			if ((curSuperDayVO.macdVO.macd <= 0.0)
 					&& (curSuperDayVO.macdVO.dif > 0.0)) {
 				if ((curSuperDayVO.priceVO.close > curSuperDayVO.bollVO.mb)
-						&& curSuperDayVO.priceVO.isKLineRed()) {
+						&& StockPriceUtils.isKLineRed(curSuperDayVO.priceVO)) {
 					// check MA rongHe and xiangShang
 					return this.MA5_MA10_MA20_Ronghe_XiangShang(curSuperDayVO,
 							pre1SuperDayVO);
@@ -643,7 +642,7 @@ public class CombineAnalyseHelper {
 			if (curSuperDayVO.rsvCorssType == CrossType.GORDON
 					|| curSuperDayVO.kdjCorssType == CrossType.NEAR_GORDON
 					|| curSuperDayVO.kdjCorssType == CrossType.GORDON) {
-				if (curSuperDayVO.priceVO.isKLineRed()) {
+				if (StockPriceUtils.isKLineRed(curSuperDayVO.priceVO)) {
 					// check MA5, MA10,MA20,MA30 RongHe
 					boolean ma5_10_20_30_rongHe = MA5_MA10_MA20_MA30_Ronghe(pre2SuperDayVO)
 							&& MA5_MA10_MA20_MA30_Ronghe(pre1SuperDayVO)
@@ -674,10 +673,10 @@ public class CombineAnalyseHelper {
 					|| curSuperDayVO.kdjCorssType == CrossType.GORDON) {
 				// pre3 and pre2 green, pre1 and cur red
 				// example: 600021 000875 at 2015-04-13, 000062 at 2015-02-27
-				if (curSuperDayVO.priceVO.isKLineRed()
-						&& pre1SuperDayVO.priceVO.isKLineRed()
-						&& pre2SuperDayVO.priceVO.isKLineGreen()
-						&& pre3SuperDayVO.priceVO.isKLineGreen()) {
+				if (StockPriceUtils.isKLineRed(curSuperDayVO.priceVO)
+						&& StockPriceUtils.isKLineRed(pre1SuperDayVO.priceVO)
+						&& StockPriceUtils.isKLineGreen(pre2SuperDayVO.priceVO)
+						&& StockPriceUtils.isKLineGreen(pre3SuperDayVO.priceVO)) {
 					if (curSuperDayVO.volumeIncreasePercent > 1) {
 						if ((pre2SuperDayVO.volumeIncreasePercent < 1)
 								|| (pre2SuperDayVO.priceVO.volume < pre2SuperDayVO.avgVol5 && pre3SuperDayVO.priceVO.volume < pre3SuperDayVO.avgVol5)) {
@@ -699,10 +698,10 @@ public class CombineAnalyseHelper {
 				}
 				// pre3, pre2 and pre1 green, cur red
 				// example: 002260 2015-04-17
-				if (curSuperDayVO.priceVO.isKLineRed()
-						&& pre1SuperDayVO.priceVO.isKLineGreen()
-						&& pre2SuperDayVO.priceVO.isKLineGreen()
-						&& pre3SuperDayVO.priceVO.isKLineGreen()) {
+				if (StockPriceUtils.isKLineRed(curSuperDayVO.priceVO)
+						&& StockPriceUtils.isKLineGreen(pre1SuperDayVO.priceVO)
+						&& StockPriceUtils.isKLineGreen(pre2SuperDayVO.priceVO)
+						&& StockPriceUtils.isKLineGreen(pre3SuperDayVO.priceVO)) {
 					if (curSuperDayVO.volumeIncreasePercent > 1) {
 						if ((pre1SuperDayVO.volumeIncreasePercent < 1 && pre2SuperDayVO.volumeIncreasePercent < 1)
 								|| (pre1SuperDayVO.priceVO.volume < pre1SuperDayVO.avgVol5 && pre2SuperDayVO.priceVO.volume < pre2SuperDayVO.avgVol5)) {
@@ -750,7 +749,7 @@ public class CombineAnalyseHelper {
 			if (curSuperDayVO.rsvCorssType == CrossType.GORDON
 					|| curSuperDayVO.kdjCorssType == CrossType.NEAR_GORDON
 					|| curSuperDayVO.kdjCorssType == CrossType.GORDON) {
-				if (curSuperDayVO.priceVO.isKLineRed()) {
+				if (StockPriceUtils.isKLineRed(curSuperDayVO.priceVO)) {
 					// check MA5, MA10,MA20,MA30 RongHe
 					boolean ma5_10_20_30_rongHe = MA5_MA10_MA20_MA30_Ronghe(pre2SuperDayVO)
 							&& MA5_MA10_MA20_MA30_Ronghe(pre1SuperDayVO)
@@ -781,10 +780,10 @@ public class CombineAnalyseHelper {
 					|| curSuperDayVO.kdjCorssType == CrossType.GORDON) {
 				// pre3 and pre2 green, pre1 and cur red
 				// example: 600021 000875 at 2015-04-13, 000062 at 2015-02-27
-				if (curSuperDayVO.priceVO.isKLineRed()
-						&& pre1SuperDayVO.priceVO.isKLineRed()
-						&& pre2SuperDayVO.priceVO.isKLineGreen()
-						&& pre3SuperDayVO.priceVO.isKLineGreen()) {
+				if (StockPriceUtils.isKLineRed(curSuperDayVO.priceVO)
+						&& StockPriceUtils.isKLineRed(pre1SuperDayVO.priceVO)
+						&& StockPriceUtils.isKLineGreen(pre2SuperDayVO.priceVO)
+						&& StockPriceUtils.isKLineGreen(pre3SuperDayVO.priceVO)) {
 					if (curSuperDayVO.volumeIncreasePercent > 1) {
 						if ((pre2SuperDayVO.volumeIncreasePercent < 1)
 								|| (pre2SuperDayVO.priceVO.volume < pre2SuperDayVO.avgVol5 && pre3SuperDayVO.priceVO.volume < pre3SuperDayVO.avgVol5)) {
@@ -806,10 +805,10 @@ public class CombineAnalyseHelper {
 				}
 				// pre3, pre2 and pre1 green, cur red
 				// example: 002260 2015-04-17
-				if (curSuperDayVO.priceVO.isKLineRed()
-						&& pre1SuperDayVO.priceVO.isKLineGreen()
-						&& pre2SuperDayVO.priceVO.isKLineGreen()
-						&& pre3SuperDayVO.priceVO.isKLineGreen()) {
+				if (StockPriceUtils.isKLineRed(curSuperDayVO.priceVO)
+						&& StockPriceUtils.isKLineGreen(pre1SuperDayVO.priceVO)
+						&& StockPriceUtils.isKLineGreen(pre2SuperDayVO.priceVO)
+						&& StockPriceUtils.isKLineGreen(pre3SuperDayVO.priceVO)) {
 					if (curSuperDayVO.volumeIncreasePercent > 1) {
 						if ((pre1SuperDayVO.volumeIncreasePercent < 1 && pre2SuperDayVO.volumeIncreasePercent < 1)
 								|| (pre1SuperDayVO.priceVO.volume < pre1SuperDayVO.avgVol5 && pre2SuperDayVO.priceVO.volume < pre2SuperDayVO.avgVol5)) {
@@ -864,10 +863,10 @@ public class CombineAnalyseHelper {
 					|| curSuperDayVO.kdjCorssType == CrossType.GORDON) {
 				// pre3 and pre2 green, pre1 and cur red
 				// example: 600021 000875 at 2015-04-13, 000062 at 2015-02-27
-				if (curSuperDayVO.priceVO.isKLineRed()
-						&& pre1SuperDayVO.priceVO.isKLineRed()
-						&& pre2SuperDayVO.priceVO.isKLineGreen()
-						&& pre3SuperDayVO.priceVO.isKLineGreen()) {
+				if (StockPriceUtils.isKLineRed(curSuperDayVO.priceVO)
+						&& StockPriceUtils.isKLineRed(pre1SuperDayVO.priceVO)
+						&& StockPriceUtils.isKLineGreen(pre2SuperDayVO.priceVO)
+						&& StockPriceUtils.isKLineGreen(pre3SuperDayVO.priceVO)) {
 					if (curSuperDayVO.volumeIncreasePercent > 1) {
 						if ((pre2SuperDayVO.volumeIncreasePercent < 1)
 								|| (pre2SuperDayVO.priceVO.volume < pre2SuperDayVO.avgVol5 && pre3SuperDayVO.priceVO.volume < pre3SuperDayVO.avgVol5)) {
@@ -889,10 +888,10 @@ public class CombineAnalyseHelper {
 				}
 				// pre3, pre2 and pre1 green, cur red
 				// example: 002260 2015-04-17
-				if (curSuperDayVO.priceVO.isKLineRed()
-						&& pre1SuperDayVO.priceVO.isKLineGreen()
-						&& pre2SuperDayVO.priceVO.isKLineGreen()
-						&& pre3SuperDayVO.priceVO.isKLineGreen()) {
+				if (StockPriceUtils.isKLineRed(curSuperDayVO.priceVO)
+						&& StockPriceUtils.isKLineGreen(pre1SuperDayVO.priceVO)
+						&& StockPriceUtils.isKLineGreen(pre2SuperDayVO.priceVO)
+						&& StockPriceUtils.isKLineGreen(pre3SuperDayVO.priceVO)) {
 					if (curSuperDayVO.volumeIncreasePercent > 1) {
 						if ((pre1SuperDayVO.volumeIncreasePercent < 1 && pre2SuperDayVO.volumeIncreasePercent < 1)
 								|| (pre1SuperDayVO.priceVO.volume < pre1SuperDayVO.avgVol5 && pre2SuperDayVO.priceVO.volume < pre2SuperDayVO.avgVol5)) {
@@ -955,7 +954,8 @@ public class CombineAnalyseHelper {
 			// example 001696 @ 2015-06-14 ~ 06-12
 			if ((curSuperWeekVO.kdjVO.k < curSuperWeekVO.kdjVO.d)) {
 				// over all week KDJ must after Dead
-				if (pre6SuperDayVO.priceVO.isKLineRed(6.0, 9.0)) {
+				if (StockPriceUtils
+						.isKLineRed(pre6SuperDayVO.priceVO, 6.0, 9.0)) {
 					double high = pre6SuperDayVO.priceVO.high;
 					double low = pre6SuperDayVO.priceVO.low;
 					if (pre5SuperDayVO.priceVO.high / high <= 1.02
@@ -1440,7 +1440,7 @@ public class CombineAnalyseHelper {
 
 			avgClose += vo.priceVO.close;
 
-			if (vo.priceVO.isKLineRed()) {
+			if (StockPriceUtils.isKLineRed(vo.priceVO)) {
 				redKLineCount++;
 			}
 

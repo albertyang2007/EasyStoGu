@@ -36,14 +36,6 @@ public class Mai1Mai2VO {
 
 	}
 
-	public double[] getMai1Mai2VO() {
-		double[] sdsk = new double[2];
-		sdsk[0] = this.sd;
-		sdsk[1] = this.sk;
-
-		return sdsk;
-	}
-
 	@Override
 	public String toString() {
 		StringBuffer sb = new StringBuffer("Mai1Mai2VO: {");
