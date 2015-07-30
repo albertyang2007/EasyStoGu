@@ -8,12 +8,11 @@ import org.easystogu.runner.DailySelectionRunner;
 import org.easystogu.runner.DailyUpdateOverAllRunner;
 import org.easystogu.sina.runner.RealtimeDisplayStockPriceRunner;
 
-@Path("/home")
 public class HomeEndPoint {
 	@GET
 	@Path("/hello")
 	public Response test() {
-		return Response.ok().build();
+		return Response.ok().entity("Welcome easystogu").build();
 	}
 
 	@GET
