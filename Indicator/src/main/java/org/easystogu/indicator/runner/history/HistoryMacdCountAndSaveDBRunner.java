@@ -9,6 +9,7 @@ import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.table.MacdVO;
 import org.easystogu.db.table.StockPriceVO;
 import org.easystogu.indicator.TALIBWraper;
+import org.easystogu.utils.Strings;
 
 //计算数据库中所有macd值，包括最新和历史的，一次性运行
 public class HistoryMacdCountAndSaveDBRunner {
@@ -64,9 +65,9 @@ public class HistoryMacdCountAndSaveDBRunner {
 				MacdVO macdVo = new MacdVO();
 				macdVo.setStockId(stockId);
 				macdVo.setDate(priceList.get(index).date);
-				macdVo.setDif(dif);
-				macdVo.setDea(dea);
-				macdVo.setMacd(macdRtn);
+				macdVo.setDif(Strings.convert2ScaleDecimal(dif));
+				macdVo.setDea(Strings.convert2ScaleDecimal(dea));
+				macdVo.setMacd(Strings.convert2ScaleDecimal(macdRtn));
 
 				// if (macdVo.date.compareTo("2015-06-29") >= 0)
 				if (macdTable.getMacd(macdVo.stockId, macdVo.date) == null) {

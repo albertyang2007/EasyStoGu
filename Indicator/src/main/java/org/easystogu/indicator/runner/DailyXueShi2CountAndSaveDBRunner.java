@@ -11,6 +11,7 @@ import org.easystogu.db.table.StockPriceVO;
 import org.easystogu.db.table.XueShi2VO;
 import org.easystogu.indicator.TALIBWraper;
 import org.easystogu.multirunner.MultThreadRunner;
+import org.easystogu.utils.Strings;
 
 public class DailyXueShi2CountAndSaveDBRunner implements Runnable {
 	protected IndXueShi2TableHelper xueShi2Table = IndXueShi2TableHelper.getInstance();
@@ -81,8 +82,8 @@ public class DailyXueShi2CountAndSaveDBRunner implements Runnable {
 		XueShi2VO xueShi2VO = new XueShi2VO();
 		xueShi2VO.setStockId(stockId);
 		xueShi2VO.setDate(priceList.get(length - 1).date);
-		xueShi2VO.setUp(up);
-		xueShi2VO.setDn(dn);
+		xueShi2VO.setUp(Strings.convert2ScaleDecimal(up));
+		xueShi2VO.setDn(Strings.convert2ScaleDecimal(dn));
 
 		this.deleteXueShi2(stockId, xueShi2VO.date);
 		xueShi2Table.insert(xueShi2VO);

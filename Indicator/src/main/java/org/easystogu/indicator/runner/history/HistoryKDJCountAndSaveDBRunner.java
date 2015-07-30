@@ -10,6 +10,7 @@ import org.easystogu.db.table.KDJVO;
 import org.easystogu.db.table.StockPriceVO;
 import org.easystogu.indicator.KDJHelper;
 import org.easystogu.indicator.runner.utils.StockPriceFetcher;
+import org.easystogu.utils.Strings;
 
 public class HistoryKDJCountAndSaveDBRunner {
 	protected StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
@@ -49,10 +50,10 @@ public class HistoryKDJCountAndSaveDBRunner {
 
 		for (int i = 0; i < KDJ[0].length; i++) {
 			KDJVO vo = new KDJVO();
-			vo.setK(KDJ[0][i]);
-			vo.setD(KDJ[1][i]);
-			vo.setJ(KDJ[2][i]);
-			vo.setRsv(KDJ[3][i]);
+			vo.setK(Strings.convert2ScaleDecimal(KDJ[0][i]));
+			vo.setD(Strings.convert2ScaleDecimal(KDJ[1][i]));
+			vo.setJ(Strings.convert2ScaleDecimal(KDJ[2][i]));
+			vo.setRsv(Strings.convert2ScaleDecimal(KDJ[3][i]));
 			vo.setStockId(stockId);
 			vo.setDate(priceList.get(i).date);
 

@@ -9,6 +9,7 @@ import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.table.Mai1Mai2VO;
 import org.easystogu.db.table.StockPriceVO;
 import org.easystogu.indicator.Mai1Mai2Helper;
+import org.easystogu.utils.Strings;
 
 public class HistoryMai1Mai2CountAndSaveDBRunner {
 
@@ -52,8 +53,8 @@ public class HistoryMai1Mai2CountAndSaveDBRunner {
 
 		for (int i = 0; i < mai1mai2[0].length; i++) {
 			Mai1Mai2VO vo = new Mai1Mai2VO();
-			vo.setSd(mai1mai2[0][i]);
-			vo.setSk(mai1mai2[1][i]);
+			vo.setSd(Strings.convert2ScaleDecimal(mai1mai2[0][i]));
+			vo.setSk(Strings.convert2ScaleDecimal(mai1mai2[1][i]));
 			vo.setStockId(stockId);
 			vo.setDate(priceList.get(i).date);
 

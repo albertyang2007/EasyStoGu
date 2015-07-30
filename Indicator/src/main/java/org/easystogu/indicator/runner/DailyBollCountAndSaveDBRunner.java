@@ -11,6 +11,7 @@ import org.easystogu.db.table.BollVO;
 import org.easystogu.db.table.StockPriceVO;
 import org.easystogu.indicator.TALIBWraper;
 import org.easystogu.multirunner.MultThreadRunner;
+import org.easystogu.utils.Strings;
 
 //每日根据最新数据计算当天的boll值，每天运行一次
 public class DailyBollCountAndSaveDBRunner implements Runnable {
@@ -62,9 +63,9 @@ public class DailyBollCountAndSaveDBRunner implements Runnable {
 		double[][] boll = talib.getBbands(close, 20, 2, 2);
 
 		index = priceList.size() - 1;
-		double up = boll[0][index];
-		double mb = boll[1][index];
-		double dn = boll[2][index];
+		double up = Strings.convert2ScaleDecimal(boll[0][index]);
+		double mb = Strings.convert2ScaleDecimal(boll[1][index]);
+		double dn = Strings.convert2ScaleDecimal(boll[2][index]);
 		// System.out.println("MB=" + mb);
 		// System.out.println("UP=" + up);
 		// System.out.println("DN=" + dn);

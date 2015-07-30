@@ -11,6 +11,7 @@ import org.easystogu.db.table.StockPriceVO;
 import org.easystogu.indicator.ShenXianHelper;
 import org.easystogu.indicator.runner.utils.StockPriceFetcher;
 import org.easystogu.multirunner.MultThreadRunner;
+import org.easystogu.utils.Strings;
 
 public class DailyShenXianCountAndSaveDBRunner implements Runnable {
 	protected StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
@@ -64,9 +65,9 @@ public class DailyShenXianCountAndSaveDBRunner implements Runnable {
 		int length = shenXian[0].length;
 
 		ShenXianVO vo = new ShenXianVO();
-		vo.setH1(shenXian[0][length - 1]);
-		vo.setH2(shenXian[1][length - 1]);
-		vo.setH3(shenXian[2][length - 1]);
+		vo.setH1(Strings.convert2ScaleDecimal(shenXian[0][length - 1]));
+		vo.setH2(Strings.convert2ScaleDecimal(shenXian[1][length - 1]));
+		vo.setH3(Strings.convert2ScaleDecimal(shenXian[2][length - 1]));
 		vo.setStockId(stockId);
 		vo.setDate(priceList.get(length - 1).date);
 

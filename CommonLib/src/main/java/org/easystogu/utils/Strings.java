@@ -21,12 +21,12 @@ public class Strings {
         return true;
     }
 
-    public static double getDecimalWith2Scale(double num) {
+    public static double convert2ScaleDecimal(double num) {
         if (Double.isNaN(num)) {
             return 0;
         }
         BigDecimal bd = new BigDecimal(num);
-        num = bd.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+        num = bd.setScale(3, BigDecimal.ROUND_HALF_UP).doubleValue();
         return num;
     }
 }

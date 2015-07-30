@@ -10,6 +10,7 @@ import org.easystogu.db.table.Mai1Mai2VO;
 import org.easystogu.db.table.StockPriceVO;
 import org.easystogu.indicator.Mai1Mai2Helper;
 import org.easystogu.multirunner.MultThreadRunner;
+import org.easystogu.utils.Strings;
 
 public class DailyMai1Mai2CountAndSaveDBRunner implements Runnable {
 
@@ -68,8 +69,8 @@ public class DailyMai1Mai2CountAndSaveDBRunner implements Runnable {
 		double[][] mai1mai2 = mai1mai2Helper.getMai1Mai2List(var1);
 
 		Mai1Mai2VO vo = new Mai1Mai2VO();
-		vo.setSd(mai1mai2[0][length - 1]);
-		vo.setSk(mai1mai2[1][length - 1]);
+		vo.setSd(Strings.convert2ScaleDecimal(mai1mai2[0][length - 1]));
+		vo.setSk(Strings.convert2ScaleDecimal(mai1mai2[1][length - 1]));
 		vo.setStockId(stockId);
 		vo.setDate(priceList.get(length - 1).date);
 

@@ -10,6 +10,7 @@ import org.easystogu.db.table.ShenXianVO;
 import org.easystogu.db.table.StockPriceVO;
 import org.easystogu.indicator.ShenXianHelper;
 import org.easystogu.indicator.runner.utils.StockPriceFetcher;
+import org.easystogu.utils.Strings;
 
 public class HistoryShenXianCountAndSaveDBRunner {
 
@@ -47,9 +48,9 @@ public class HistoryShenXianCountAndSaveDBRunner {
 
 		for (int i = 0; i < shenXian[0].length; i++) {
 			ShenXianVO vo = new ShenXianVO();
-			vo.setH1(shenXian[0][i]);
-			vo.setH2(shenXian[1][i]);
-			vo.setH3(shenXian[2][i]);
+			vo.setH1(Strings.convert2ScaleDecimal(shenXian[0][i]));
+			vo.setH2(Strings.convert2ScaleDecimal(shenXian[1][i]));
+			vo.setH3(Strings.convert2ScaleDecimal(shenXian[2][i]));
 			vo.setStockId(stockId);
 			vo.setDate(priceList.get(i).date);
 

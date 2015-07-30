@@ -9,6 +9,7 @@ import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.table.StockPriceVO;
 import org.easystogu.db.table.ZhuliJinChuVO;
 import org.easystogu.indicator.ZhuliJinChuHelper;
+import org.easystogu.utils.Strings;
 
 public class HistoryZhuliJinChuCountAndSaveDBRunner {
 
@@ -52,8 +53,8 @@ public class HistoryZhuliJinChuCountAndSaveDBRunner {
 
 		for (int i = 0; i < zhuliJinChu[0].length; i++) {
 			ZhuliJinChuVO vo = new ZhuliJinChuVO();
-			vo.setDuofang(zhuliJinChu[0][i]);
-			vo.setKongfang(zhuliJinChu[1][i]);
+			vo.setDuofang(Strings.convert2ScaleDecimal(zhuliJinChu[0][i]));
+			vo.setKongfang(Strings.convert2ScaleDecimal(zhuliJinChu[1][i]));
 			vo.setStockId(stockId);
 			vo.setDate(priceList.get(i).date);
 

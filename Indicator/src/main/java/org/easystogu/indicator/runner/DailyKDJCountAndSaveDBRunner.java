@@ -11,6 +11,7 @@ import org.easystogu.db.table.StockPriceVO;
 import org.easystogu.indicator.KDJHelper;
 import org.easystogu.indicator.runner.utils.StockPriceFetcher;
 import org.easystogu.multirunner.MultThreadRunner;
+import org.easystogu.utils.Strings;
 
 public class DailyKDJCountAndSaveDBRunner implements Runnable {
 	private KDJHelper kdjHelper = new KDJHelper();
@@ -56,10 +57,10 @@ public class DailyKDJCountAndSaveDBRunner implements Runnable {
 
 		// for (int i = 0; i < KDJ[0].length; i++) {
 		KDJVO vo = new KDJVO();
-		vo.setK(KDJ[0][length - 1]);
-		vo.setD(KDJ[1][length - 1]);
-		vo.setJ(KDJ[2][length - 1]);
-		vo.setRsv(KDJ[3][length - 1]);
+		vo.setK(Strings.convert2ScaleDecimal(KDJ[0][length - 1]));
+		vo.setD(Strings.convert2ScaleDecimal(KDJ[1][length - 1]));
+		vo.setJ(Strings.convert2ScaleDecimal(KDJ[2][length - 1]));
+		vo.setRsv(Strings.convert2ScaleDecimal(KDJ[3][length - 1]));
 		vo.setStockId(stockId);
 		vo.setDate(priceList.get(length - 1).date);
 

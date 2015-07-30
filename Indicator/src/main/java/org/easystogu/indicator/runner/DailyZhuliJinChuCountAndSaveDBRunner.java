@@ -10,6 +10,7 @@ import org.easystogu.db.table.StockPriceVO;
 import org.easystogu.db.table.ZhuliJinChuVO;
 import org.easystogu.indicator.ZhuliJinChuHelper;
 import org.easystogu.multirunner.MultThreadRunner;
+import org.easystogu.utils.Strings;
 
 public class DailyZhuliJinChuCountAndSaveDBRunner implements Runnable {
 
@@ -68,8 +69,8 @@ public class DailyZhuliJinChuCountAndSaveDBRunner implements Runnable {
 		double[][] zhuliJinChu = zhuliJinChuHelper.getZhuliJinChuList(var1);
 
 		ZhuliJinChuVO vo = new ZhuliJinChuVO();
-		vo.setDuofang(zhuliJinChu[0][length - 1]);
-		vo.setKongfang(zhuliJinChu[1][length - 1]);
+		vo.setDuofang(Strings.convert2ScaleDecimal(zhuliJinChu[0][length - 1]));
+		vo.setKongfang(Strings.convert2ScaleDecimal(zhuliJinChu[1][length - 1]));
 		vo.setStockId(stockId);
 		vo.setDate(priceList.get(length - 1).date);
 

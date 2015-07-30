@@ -13,12 +13,14 @@ import org.easystogu.db.access.IndMacdTableHelper;
 import org.easystogu.db.access.IndMai1Mai2TableHelper;
 import org.easystogu.db.access.IndShenXianTableHelper;
 import org.easystogu.db.access.IndXueShi2TableHelper;
+import org.easystogu.db.access.IndZhuliJinChuTableHelper;
 import org.easystogu.db.table.BollVO;
 import org.easystogu.db.table.KDJVO;
 import org.easystogu.db.table.MacdVO;
 import org.easystogu.db.table.Mai1Mai2VO;
 import org.easystogu.db.table.ShenXianVO;
 import org.easystogu.db.table.XueShi2VO;
+import org.easystogu.db.table.ZhuliJinChuVO;
 
 public class IndicatorEndPoint {
     protected IndKDJTableHelper kdjTable = IndKDJTableHelper.getInstance();
@@ -27,6 +29,7 @@ public class IndicatorEndPoint {
     protected IndShenXianTableHelper shenXianTable = IndShenXianTableHelper.getInstance();
     protected IndXueShi2TableHelper xueShi2Table = IndXueShi2TableHelper.getInstance();
     protected IndMai1Mai2TableHelper mai1mai2Table = IndMai1Mai2TableHelper.getInstance();
+    protected IndZhuliJinChuTableHelper zhulijinchuTable = IndZhuliJinChuTableHelper.getInstance();
 
     @GET
     @Path("/macd/{stockid}")
@@ -74,5 +77,13 @@ public class IndicatorEndPoint {
     public List<Mai1Mai2VO> queryMai1Mai2ById(@PathParam("stockid")
     String stockid) {
         return mai1mai2Table.getNDateMai1Mai2(stockid, 1);
+    }
+    
+    @GET
+    @Path("/zhulijinchu/{stockid}")
+    @Produces("application/json")
+    public List<ZhuliJinChuVO> queryZhuliJinChuById(@PathParam("stockid")
+    String stockid) {
+        return zhulijinchuTable.getNDateZhuliJinChu(stockid, 1);
     }
 }

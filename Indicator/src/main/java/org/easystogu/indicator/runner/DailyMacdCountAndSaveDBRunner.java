@@ -10,6 +10,7 @@ import org.easystogu.db.table.MacdVO;
 import org.easystogu.db.table.StockPriceVO;
 import org.easystogu.indicator.TALIBWraper;
 import org.easystogu.multirunner.MultThreadRunner;
+import org.easystogu.utils.Strings;
 
 //每日根据最新数据计算当天的macd值，每天运行一次
 public class DailyMacdCountAndSaveDBRunner implements Runnable {
@@ -72,9 +73,9 @@ public class DailyMacdCountAndSaveDBRunner implements Runnable {
 		MacdVO vo = new MacdVO();
 		vo.setStockId(stockId);
 		vo.setDate(priceList.get(index).date);
-		vo.setDif(dif);
-		vo.setDea(dea);
-		vo.setMacd(macdRtn);
+		vo.setDif(Strings.convert2ScaleDecimal(dif));
+		vo.setDea(Strings.convert2ScaleDecimal(dea));
+		vo.setMacd(Strings.convert2ScaleDecimal(macdRtn));
 
 		// System.out.println(vo);
 		this.deleteMacd(stockId, vo.date);

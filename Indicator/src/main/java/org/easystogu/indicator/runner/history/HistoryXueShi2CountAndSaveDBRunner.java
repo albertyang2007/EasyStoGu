@@ -9,6 +9,7 @@ import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.table.StockPriceVO;
 import org.easystogu.db.table.XueShi2VO;
 import org.easystogu.indicator.TALIBWraper;
+import org.easystogu.utils.Strings;
 
 public class HistoryXueShi2CountAndSaveDBRunner {
 
@@ -63,8 +64,8 @@ public class HistoryXueShi2CountAndSaveDBRunner {
 				XueShi2VO xueShi2VO = new XueShi2VO();
 				xueShi2VO.setStockId(stockId);
 				xueShi2VO.setDate(priceList.get(index).date);
-				xueShi2VO.setUp(up);
-				xueShi2VO.setDn(dn);
+				xueShi2VO.setUp(Strings.convert2ScaleDecimal(up));
+				xueShi2VO.setDn(Strings.convert2ScaleDecimal(dn));
 
 				// if (xueShi2VO.date.compareTo("2015-06-29") >= 0)
 				if (xueShi2Table.getXueShi2(xueShi2VO.stockId, xueShi2VO.date) == null) {

@@ -1,7 +1,5 @@
 package org.easystogu.indicator.runner.history;
 
-import java.util.List;
-
 import org.easystogu.config.StockListConfigurationService;
 import org.easystogu.db.access.IndWeekShenXianTableHelper;
 import org.easystogu.db.access.WeekStockPriceTableHelper;

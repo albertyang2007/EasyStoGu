@@ -9,6 +9,7 @@ import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.table.BollVO;
 import org.easystogu.db.table.StockPriceVO;
 import org.easystogu.indicator.TALIBWraper;
+import org.easystogu.utils.Strings;
 
 //计算数据库中所有boll值，包括最新和历史的，一次性运行
 public class HistoryBollCountAndSaveDBRunner {
@@ -42,9 +43,9 @@ public class HistoryBollCountAndSaveDBRunner {
 			double[][] boll = talib.getBbands(close, 20, 2, 2);
 
 			for (index = priceList.size() - 1; index >= 0; index--) {
-				double up = boll[0][index];
-				double mb = boll[1][index];
-				double dn = boll[2][index];
+				double up = Strings.convert2ScaleDecimal(boll[0][index]);
+				double mb = Strings.convert2ScaleDecimal(boll[1][index]);
+				double dn = Strings.convert2ScaleDecimal(boll[2][index]);
 				// System.out.println("MB=" + mb);
 				// System.out.println("UP=" + up);
 				// System.out.println("DN=" + dn);
