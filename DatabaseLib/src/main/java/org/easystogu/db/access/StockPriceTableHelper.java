@@ -76,7 +76,7 @@ public class StockPriceTableHelper {
 			+ " WHERE stockId = :stockId AND DATE >= :date1 AND DATE <= :date2";
 	// only use for weekPrice, query the weekPrice based on date
 	protected String QUERY_BY_STOCKID_AND_BETWEEN_DATE = "SELECT * FROM " + tableName
-			+ " WHERE stockId = :stockId AND DATE >= :date1 AND DATE < :date2 ORDER BY DATE";
+			+ " WHERE stockId = :stockId AND DATE >= :date1 AND DATE <= :date2 ORDER BY DATE";
 	protected String QUERY_BY_STOCKID_AND_LESS_THAN_DATE = "SELECT * FROM " + tableName
 			+ " WHERE stockId = :stockId AND DATE < :date ORDER BY DATE";
 	// update batch price based on gaoSongZhuan and date

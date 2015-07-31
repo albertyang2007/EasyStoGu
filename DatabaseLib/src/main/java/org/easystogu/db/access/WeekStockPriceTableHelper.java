@@ -62,7 +62,7 @@ public class WeekStockPriceTableHelper extends StockPriceTableHelper {
 				+ " WHERE stockId = :stockId AND DATE >= :date1 AND DATE <= :date2";
 		// only use for weekPrice, query the weekPrice based on date
 		QUERY_BY_STOCKID_AND_BETWEEN_DATE = "SELECT * FROM " + tableName
-				+ " WHERE stockId = :stockId AND DATE >= :date1 AND DATE < :date2 ORDER BY DATE";
+				+ " WHERE stockId = :stockId AND DATE >= :date1 AND DATE <= :date2 ORDER BY DATE";
 		QUERY_LATEST_N_DATE_STOCKID_SQL = "SELECT date AS rtn FROM " + tableName
 				+ " WHERE stockId = :stockId ORDER BY date DESC LIMIT :limit";
 
