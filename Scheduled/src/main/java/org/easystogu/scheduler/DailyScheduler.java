@@ -1,5 +1,6 @@
 package org.easystogu.scheduler;
 
+import org.easystogu.easymoney.runner.DailyZiJinLiuXiangRunner;
 import org.easystogu.log.LogHelper;
 import org.easystogu.runner.DailyUpdateOverAllRunner;
 import org.slf4j.Logger;
@@ -26,26 +27,26 @@ public class DailyScheduler implements SchedulingConfigurer {
 
 	// refer to:
 	// http://www.quartz-scheduler.org/documentation/quartz-1.x/tutorials/crontrigger
-	// run at 9:59,10:59
-	@Scheduled(cron = "0 59 9-10 * * MON-FRI")
+	// run at 10:45
+	@Scheduled(cron = "0 45 10 * * MON-FRI")
 	public void morningUpdateOverAllRunner() {
 		this.DailyUpdateOverAllRunner();
 	}
 
-	// run at 13:30, 14:30
-	@Scheduled(cron = "0 30 13-14 * * MON-FRI")
-	public void afternoonUpdateOverAllRunner() {
-		this.DailyUpdateOverAllRunner();
-	}
-
-	// run at 11:35
-	@Scheduled(cron = "0 35 11 * * MON-FRI")
+	// run at 11:32
+	@Scheduled(cron = "0 32 11 * * MON-FRI")
 	public void noonUpdateOverAllRunner() {
 		this.DailyUpdateOverAllRunner();
 	}
 
-	// run at 15:05
-	@Scheduled(cron = "0 05 15 * * MON-FRI")
+	// run at 14:15
+	@Scheduled(cron = "0 15 14 * * MON-FRI")
+	public void afternoonUpdateOverAllRunner() {
+		this.DailyUpdateOverAllRunner();
+	}
+
+	// run at 15:02
+	@Scheduled(cron = "0 02 15 * * MON-FRI")
 	public void FinallyUpdateOverAllRunner() {
 		this.DailyUpdateOverAllRunner();
 	}

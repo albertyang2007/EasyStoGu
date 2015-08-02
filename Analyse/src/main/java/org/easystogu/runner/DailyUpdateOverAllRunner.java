@@ -2,6 +2,7 @@ package org.easystogu.runner;
 
 import java.util.Date;
 
+import org.easystogu.easymoney.runner.DailyZiJinLiuXiangRunner;
 import org.easystogu.indicator.runner.DailyBollCountAndSaveDBRunner;
 import org.easystogu.indicator.runner.DailyKDJCountAndSaveDBRunner;
 import org.easystogu.indicator.runner.DailyMacdCountAndSaveDBRunner;
@@ -41,13 +42,14 @@ public class DailyUpdateOverAllRunner implements Runnable {
 		DailyWeekBollCountAndSaveDBRunner.main(args);
 		DailyWeekMai1Mai2CountAndSaveDBRunner.main(args);
 		DailyWeekShenXianCountAndSaveDBRunner.main(args);
-		// DailyWeekXueShi2CountAndSaveDBRunner.main(args);
+
+		// zijinliu
+		DailyZiJinLiuXiangRunner.main(args);
 
 		// analyse
 		DailySelectionRunner.main(args);
 
 		System.out.println("stop at " + new Date());
-
 	}
 
 	public static void main(String[] args) {
