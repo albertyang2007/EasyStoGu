@@ -1,7 +1,6 @@
 package org.easystogu.runner;
 
 import java.util.Date;
-import java.util.Map;
 
 import org.easystogu.easymoney.runner.DailyZiJinLiuXiangRunner;
 import org.easystogu.indicator.runner.DailyBollCountAndSaveDBRunner;
