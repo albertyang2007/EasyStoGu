@@ -1,7 +1,6 @@
 package org.easystogu.db.table;
 
 import org.easystogu.utils.CrossType;
-import org.easystogu.vo.RealTimeZiJinLiuVO;
 
 public class StockSuperVO {
 	public StockPriceVO priceVO;
@@ -12,7 +11,7 @@ public class StockSuperVO {
 	public ShenXianVO shenXianVO;
 	public Mai1Mai2VO mai1mai2VO;
 	public ZhuliJinChuVO zhuliJinChuVO;
-	public RealTimeZiJinLiuVO ziJinLiuVO = new RealTimeZiJinLiuVO("");
+	public ZiJinLiuVO ziJinLiuVO = new ZiJinLiuVO("");
 	public double volumeIncreasePercent;// äº¤æ˜“çš„volumeè¾ƒå‰�ä¸€æ—¥çš„å¢žé‡�ç™¾åˆ†æ¯”
 	public long avgVol5;// avg of 5 days volume
 	public CrossType macdCorssType;
@@ -100,11 +99,11 @@ public class StockSuperVO {
 		return true;
 	}
 
-	public RealTimeZiJinLiuVO getZiJinLiuVO() {
+	public ZiJinLiuVO getZiJinLiuVO() {
 		return ziJinLiuVO;
 	}
 
-	public void setZiJinLiuVO(RealTimeZiJinLiuVO ziJinLiuVO) {
+	public void setZiJinLiuVO(ZiJinLiuVO ziJinLiuVO) {
 		this.ziJinLiuVO = ziJinLiuVO;
 	}
 

@@ -469,3 +469,32 @@ ALTER TABLE ind_week_zhulijinchu
   OWNER TO postgres;
 GRANT ALL ON TABLE ind_week_zhulijinchu TO public;
 GRANT ALL ON TABLE ind_week_zhulijinchu TO postgres;
+
+-- Table: zijinliu
+
+-- DROP TABLE zijinliu;
+
+CREATE TABLE zijinliu
+(
+  stockid text NOT NULL,
+  date text NOT NULL,
+  rate integer,
+  majornetin numeric,
+  majornetper numeric,
+  biggestnetin numeric,
+  biggestnetper numeric,
+  bignetin numeric,
+  bignetper numeric,
+  midnetin numeric,
+  midnetper numeric,
+  smallnetin numeric,
+  smallnetper numeric,
+  CONSTRAINT zijinliu_primary_key PRIMARY KEY (stockid, date)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE zijinliu
+  OWNER TO postgres;
+GRANT ALL ON TABLE zijinliu TO public;
+GRANT ALL ON TABLE zijinliu TO postgres;

@@ -205,3 +205,10 @@ Avg hold stock days when sell point: 7
 Avg hold stock days when high price: 5
 Total high earn between (25, 50): 24
 Total low  earn between (10, 10): 37
+
+===============================YiYang_Cross_4K_Lines (sellPoint:KDJ_Dead)==========================
+Total satisfy: 10092	 earnPercent[close]=1.3464204400321267	 earnPercent[high]=8.50348929165829	 earnPercent[low]=-6.017790957413637
+Avg hold stock days when sell point: 7
+Avg hold stock days when high price: 5
+Total high earn between (25, 50): 100
+Total low  earn between (10, 10): 237

@@ -283,7 +283,6 @@ public class HistoryAnalyseReport {
 			}
 			// reporter.searchAllStockIdAccordingToCheckPoint(checkPoint);
 		}
-		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.Day_Mai1_ShenXian_ZhuliJinChu_Gordon);
-		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.Day_Mai2_ShenXian_ZhuliJinChu_Gordon_Week_Mai2_Gordon);
+		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.YiYang_Cross_4K_Lines);
 	}
 }
