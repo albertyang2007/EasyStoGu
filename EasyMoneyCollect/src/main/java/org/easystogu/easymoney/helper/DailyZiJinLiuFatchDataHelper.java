@@ -17,7 +17,7 @@ import com.gargoylesoftware.htmlunit.html.HtmlTextInput;
 //东方财富通网站全部A股资金流排名
 public class DailyZiJinLiuFatchDataHelper {
 	// one page contains 50 stockIds and total 2914/50=59 pages
-	private final int totalPages = 59;
+	public static final int totalPages = 59;
 	private final String baseUrl = "http://data.eastmoney.com/zjlx/detail.html";
 
 	public List<ZiJinLiuVO> getAllStockIdsZiJinLiu() {
@@ -46,7 +46,7 @@ public class DailyZiJinLiuFatchDataHelper {
 					List<?> links = div.getByXPath("a");
 					HtmlAnchor anchor = (HtmlAnchor) links.get(links.size() - 1);
 					htmlpage = (HtmlPage) anchor.click();
-					webClient.waitForBackgroundJavaScript(1000 * 3L);
+					webClient.waitForBackgroundJavaScript(1000 * 5L);
 					tabContent = (HtmlTable) htmlpage.getElementById("dt_1");
 					rtn = this.parseOnePageStockIdsZiJinLiu(tabContent.asText());
 					System.out.println("Process ZiJinLiu Page " + page + " end with vo size: " + rtn.size());
@@ -97,6 +97,7 @@ public class DailyZiJinLiuFatchDataHelper {
 
 						// System.out.println(vo.toNetInString());
 						// System.out.println(vo.toNetPerString());
+						vo.isValidate = true;
 						list.add(vo);
 					} catch (Exception e) {
 						e.printStackTrace();
