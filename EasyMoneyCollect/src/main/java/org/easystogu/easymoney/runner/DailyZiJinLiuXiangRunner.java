@@ -16,17 +16,29 @@ public class DailyZiJinLiuXiangRunner implements Runnable {
     private ZiJinLiuTableHelper zijinliuTableHelper = ZiJinLiuTableHelper.getInstance();
     private StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
     private String latestDate = stockPriceTable.getLatestStockDate();
-    private boolean runInOffice = Strings.isNotEmpty(config.getString(Constants.httpProxyServer)) ? true : false;
-    private int toPage = (runInOffice) ? config.getInt("real_Time_Get_ZiJin_Liu_PageNumber", 5)
-            : DailyZiJinLiuFatchDataHelper.totalPages;
+    private boolean runInOffice = true;
+    private int toPage = 5;
+
+    public DailyZiJinLiuXiangRunner() {
+        this.runInOffice = Strings.isNotEmpty(config.getString(Constants.httpProxyServer)) ? true : false;
+        this.toPage = (this.runInOffice) ? config.getInt("real_Time_Get_ZiJin_Liu_PageNumber", 5)
+                : DailyZiJinLiuFatchDataHelper.totalPages;
+    }
+
+    public void resetToAllPage() {
+        this.toPage = DailyZiJinLiuFatchDataHelper.totalPages;
+    }
 
     public void countAndSaved() {
-        System.out.println("Fatch ZiJinLiu only toPage =" + toPage);
+        System.out.println("Fatch ZiJinLiu only toPage = " + toPage);
         List<ZiJinLiuVO> list = fatchDataHelper.getAllStockIdsZiJinLiu(toPage);
+        System.out.println("Total Fatch ZiJinLiu size = " + list.size());
         for (ZiJinLiuVO vo : list) {
-            vo.setDate(latestDate);
-            zijinliuTableHelper.delete(vo.stockId, vo.date);
-            zijinliuTableHelper.insert(vo);
+            if (vo.isValidated()) {
+                vo.setDate(latestDate);
+                zijinliuTableHelper.delete(vo.stockId, vo.date);
+                zijinliuTableHelper.insert(vo);
+            }
         }
     }
 

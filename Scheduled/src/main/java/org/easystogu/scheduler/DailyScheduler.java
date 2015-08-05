@@ -1,5 +1,6 @@
 package org.easystogu.scheduler;
 
+import org.easystogu.easymoney.runner.DailyZiJinLiuXiangRunner;
 import org.easystogu.log.LogHelper;
 import org.easystogu.runner.DailyUpdateOverAllRunner;
 import org.slf4j.Logger;
@@ -50,9 +51,23 @@ public class DailyScheduler implements SchedulingConfigurer {
         this.DailyUpdateOverAllRunner();
     }
 
+    // run at 07:00
+    @Scheduled(cron = "0 00 07 * * MON-FRI")
+    public void morningUpdateAllZiJinLiuXiangRunner() {
+        this.DailyZiJinLiuXiangRunner();
+    }
+
     private void DailyUpdateOverAllRunner() {
         logger.info("DailyUpdateOverAllRunner already running, please check folder result.");
         Thread t = new Thread(new DailyUpdateOverAllRunner());
+        t.start();
+    }
+
+    private void DailyZiJinLiuXiangRunner() {
+        logger.info("DailyZiJinLiuXiangRunner already running, please check DB result.");
+        DailyZiJinLiuXiangRunner runner = new DailyZiJinLiuXiangRunner();
+        runner.resetToAllPage();
+        Thread t = new Thread(runner);
         t.start();
     }
 

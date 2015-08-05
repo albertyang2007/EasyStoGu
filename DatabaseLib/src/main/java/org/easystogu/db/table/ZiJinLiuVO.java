@@ -15,9 +15,6 @@ public class ZiJinLiuVO {
 	public double smallNetIn;
 	public double smallNetPer;
 
-	//
-	public boolean isValidate = false;
-
 	public ZiJinLiuVO(String id, String date) {
 		this.stockId = id;
 		this.date = date;

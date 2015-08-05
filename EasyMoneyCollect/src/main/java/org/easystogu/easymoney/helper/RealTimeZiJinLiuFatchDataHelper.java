@@ -59,8 +59,6 @@ public class RealTimeZiJinLiuFatchDataHelper {
 
 				Element xdjzb = element.getElementById("data_xdjzb");
 				vo.smallNetPer = Double.parseDouble(xdjzb.text().substring(0, xdjzb.text().length() - 1));
-
-				vo.isValidate = true;
 			}
 
 			// System.out.println(vo.toNetInString());
