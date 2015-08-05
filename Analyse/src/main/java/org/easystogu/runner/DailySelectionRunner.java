@@ -144,7 +144,7 @@ public class DailySelectionRunner implements Runnable {
 			ZiJinLiuVO rtZiJinLiuVO = realTimeZiJinLiuHelper.fetchDataFromWeb(stockId);
 			ZiJinLiuVO dbZiJinLiuVO = ziJinLiuTableHelper.getZiJinLiu(stockId, latestDate);
 			if (rtZiJinLiuVO != null && dbZiJinLiuVO != null) {
-				if (!rtZiJinLiuVO.isValidate) {
+				if (!rtZiJinLiuVO.isValidated()) {
 					// if can not get real time zijinliu, then use DB
 					rtZiJinLiuVO = dbZiJinLiuVO;
 				} else {

@@ -97,7 +97,6 @@ public class DailyZiJinLiuFatchDataHelper {
 
 						// System.out.println(vo.toNetInString());
 						// System.out.println(vo.toNetPerString());
-						vo.isValidate = true;
 						list.add(vo);
 					} catch (Exception e) {
 						e.printStackTrace();
