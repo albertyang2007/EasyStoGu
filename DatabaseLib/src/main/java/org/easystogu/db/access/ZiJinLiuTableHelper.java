@@ -36,6 +36,8 @@ public class ZiJinLiuTableHelper {
 	protected String DELETE_BY_STOCKID_AND_DATE_SQL = "DELETE FROM " + tableName
 			+ " WHERE stockId = :stockId AND date = :date";
 	protected String DELETE_BY_DATE_SQL = "DELETE FROM " + tableName + " WHERE date = :date";
+	protected String QUERY_BY_DATE_SQL = "SELECT * FROM " + tableName
+			+ " WHERE stockId = :stockId AND date = :date";
 
 	protected NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 

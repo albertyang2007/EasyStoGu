@@ -28,13 +28,13 @@ public class ZiJinLiuVO {
 	}
 
 	public String toNetInString() {
-		return "ziJinLiu [" + this.rate + "," + this.date + "," + this.majorNetIn + "," + this.biggestNetIn + ","
-				+ this.bigNetIn + "," + this.midNetIn + "," + this.smallNetIn + "]";
+		return "ziJinLiu [" + this.rate + "," + this.majorNetIn + "," + this.biggestNetIn + "," + this.bigNetIn + ","
+				+ this.midNetIn + "," + this.smallNetIn + "]";
 	}
 
 	public String toNetPerString() {
-		return "ziJinLiu [" + this.rate + "," + this.date + "," + this.majorNetPer + "," + this.biggestNetPer + ","
-				+ this.bigNetPer + "," + this.midNetPer + "," + this.smallNetPer + "]";
+		return "ziJinLiu [" + this.rate + "," + this.majorNetPer + "," + this.biggestNetPer + "," + this.bigNetPer
+				+ "," + this.midNetPer + "," + this.smallNetPer + "]";
 	}
 
 	public boolean isValidated() {
