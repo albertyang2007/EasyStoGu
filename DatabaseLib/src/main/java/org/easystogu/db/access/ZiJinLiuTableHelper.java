@@ -4,10 +4,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.sql.DataSource;
 
+import org.easystogu.config.StockListConfigurationService;
 import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
 import org.easystogu.db.table.ZiJinLiuVO;
 import org.easystogu.log.LogHelper;
@@ -36,8 +39,7 @@ public class ZiJinLiuTableHelper {
 	protected String DELETE_BY_STOCKID_AND_DATE_SQL = "DELETE FROM " + tableName
 			+ " WHERE stockId = :stockId AND date = :date";
 	protected String DELETE_BY_DATE_SQL = "DELETE FROM " + tableName + " WHERE date = :date";
-	protected String QUERY_BY_DATE_SQL = "SELECT * FROM " + tableName
-			+ " WHERE stockId = :stockId AND date = :date";
+	protected String QUERY_BY_DATE_SQL = "SELECT * FROM " + tableName + " WHERE date = :date";
 
 	protected NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
@@ -170,6 +172,22 @@ public class ZiJinLiuTableHelper {
 		return null;
 	}
 
+	public List<ZiJinLiuVO> getZiJinLiu(String date) {
+		try {
+
+			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+			namedParameters.addValue("date", date);
+
+			List<ZiJinLiuVO> vo = this.namedParameterJdbcTemplate.query(QUERY_BY_DATE_SQL, namedParameters,
+					new ZiJinLiuVOMapper());
+
+			return vo;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new ArrayList<ZiJinLiuVO>();
+	}
+
 	public List<ZiJinLiuVO> getAllZiJinLiu(String stockId) {
 		try {
 
@@ -208,6 +226,31 @@ public class ZiJinLiuTableHelper {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
+		StockListConfigurationService stockConfig = StockListConfigurationService.getInstance();
+		List<String> Ids = stockConfig.getAllStockId();
+		Map<String, String> allIds = new HashMap<String, String>();
+		ZiJinLiuTableHelper ins = ZiJinLiuTableHelper.getInstance();
+		List<ZiJinLiuVO> list = ins.getZiJinLiu("2015-08-11");
+
+		System.out.println("Ids.size=" + Ids.size());
+		System.out.println("list.size=" + list.size());
+
+		for (ZiJinLiuVO vo : list) {
+			if (!allIds.containsKey(vo.stockId)) {
+				allIds.put(vo.stockId, vo.name);
+			}
+		}
+
+		for (String id : Ids) {
+			if (!allIds.containsKey(id)) {
+				allIds.put(id, stockConfig.getStockName(id));
+			}
+		}
+
+		for (Map.Entry<String, String> entry : allIds.entrySet()) {
+			if (entry.getValue() != null)
+				System.out.println(entry.getKey() + "=" + entry.getValue());
+		}
 	}
 
 }

@@ -35,9 +35,10 @@ public class StockListConfigurationService {
 	}
 
 	private StockListConfigurationService() {
-		String[] resourcesPaths = new String[2];
-		resourcesPaths[0] = "classpath:/sh_list.properties";
-		resourcesPaths[1] = "classpath:/sz_list.properties";
+		String[] resourcesPaths = new String[1];
+		resourcesPaths[0] = "classpath:/all_list.properties";
+		//resourcesPaths[1] = "classpath:/sz_list.properties";
+		//resourcesPaths[1] = "classpath:/sz_list.properties";
 		properties = loadProperties(resourcesPaths);
 		loadProperties2Map(resourcesPaths);
 	}
@@ -185,7 +186,7 @@ public class StockListConfigurationService {
 		// TODO Auto-generated method stub
 		StockListConfigurationService ins = StockListConfigurationService
 				.getInstance();
-		List<String> shList = ins.getAllSHStockId();
+		List<String> shList = ins.getAllSZStockId();
 		for (int i = 0; i < shList.size(); i++) {
 			System.out.println(shList.get(i));
 		}

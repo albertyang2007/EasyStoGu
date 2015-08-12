@@ -8,6 +8,7 @@ import org.easystogu.db.table.StockSuperVO;
 
 //�����ʷ���ͳ�Ƴ���������earnPercent�����VO
 public class RangeHistoryReportVO {
+	private StockListConfigurationService stockConfig = StockListConfigurationService.getInstance();
 	public List<HistoryReportDetailsVO> historyReporList;
 	public String stockId;
 	public DailyCombineCheckPoint checkPoint;
@@ -66,7 +67,6 @@ public class RangeHistoryReportVO {
 	}
 
 	public String getStockName(String stockId) {
-		StockListConfigurationService stockConfig = StockListConfigurationService.getInstance();
 		return stockConfig.getStockName(stockId);
 	}
 
