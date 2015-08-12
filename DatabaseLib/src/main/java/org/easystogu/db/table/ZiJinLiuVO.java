@@ -3,6 +3,7 @@ package org.easystogu.db.table;
 public class ZiJinLiuVO {
 	public int rate;// 当日资金流排名
 	public String stockId;
+	public String name;
 	public String date;
 	public double majorNetIn;
 	public double majorNetPer;
