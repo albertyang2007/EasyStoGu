@@ -20,8 +20,7 @@ import org.springframework.core.io.ResourceLoader;
 
 public class StockListConfigurationService {
 
-	private static Logger logger = LogHelper
-			.getLogger(StockListConfigurationService.class);
+	private static Logger logger = LogHelper.getLogger(StockListConfigurationService.class);
 	private static ResourceLoader resourceLoader = new DefaultResourceLoader();
 	private Properties properties = null;
 	private static StockListConfigurationService instance = null;
@@ -37,8 +36,8 @@ public class StockListConfigurationService {
 	private StockListConfigurationService() {
 		String[] resourcesPaths = new String[1];
 		resourcesPaths[0] = "classpath:/all_list.properties";
-		//resourcesPaths[1] = "classpath:/sz_list.properties";
-		//resourcesPaths[1] = "classpath:/sz_list.properties";
+		// resourcesPaths[1] = "classpath:/sz_list.properties";
+		// resourcesPaths[1] = "classpath:/sz_list.properties";
 		properties = loadProperties(resourcesPaths);
 		loadProperties2Map(resourcesPaths);
 	}
@@ -54,11 +53,9 @@ public class StockListConfigurationService {
 				is = resource.getInputStream();
 				props.load(is);
 			} catch (FileNotFoundException ex) {
-				logger.info("Properties not found from path:{}, {} ", location,
-						ex.getMessage());
+				logger.info("Properties not found from path:{}, {} ", location, ex.getMessage());
 			} catch (Exception ex) {
-				logger.info("Could not load properties from path:{}, {} ",
-						location, ex.getMessage());
+				logger.info("Could not load properties from path:{}, {} ", location, ex.getMessage());
 				ex.printStackTrace();
 			} finally {
 				if (is != null) {
@@ -92,11 +89,9 @@ public class StockListConfigurationService {
 				read.close();
 				insr.close();
 			} catch (FileNotFoundException ex) {
-				logger.info("Properties not found from path:{}, {} ", location,
-						ex.getMessage());
+				logger.info("Properties not found from path:{}, {} ", location, ex.getMessage());
 			} catch (Exception ex) {
-				logger.info("Could not load properties from path:{}, {} ",
-						location, ex.getMessage());
+				logger.info("Could not load properties from path:{}, {} ", location, ex.getMessage());
 				ex.printStackTrace();
 			} finally {
 				if (is != null) {
@@ -127,6 +122,9 @@ public class StockListConfigurationService {
 		while (keys.hasMoreElements()) {
 			stockIds.add((String) keys.nextElement());
 		}
+		// add szzs
+		stockIds.add(getSZZSStockIdForDB());
+
 		return stockIds;
 	}
 
@@ -153,9 +151,26 @@ public class StockListConfigurationService {
 		}
 		return stockIds;
 	}
-	
-	public String getSZZSStockId(){
+
+	public String getSZZSStockIdForSina() {
+		// szzs for search from http://hq.sinajs.cn/list=sh000001
 		return "sh000001";
+	}
+
+	public String getSZZSStockIdForDB() {
+		// szzs for search from http://hq.sinajs.cn/list=sh000001
+		return "999999";
+	}
+
+	// sina stockId mapping to DataBase
+	// input is like: "sh000001" "sz000002" "sh600123"
+	// return is like: 999999, 000002, 600123
+	public String getStockIdMapping(String stockIdWithPrefix) {
+		if (stockIdWithPrefix.equals(getSZZSStockIdForSina())) {
+			return getSZZSStockIdForDB();
+		}
+		// stockId has prefix, so remove it (sh, sz)
+		return stockIdWithPrefix.substring(2);
 	}
 
 	public List<String> getAllSHStockId() {
@@ -184,8 +199,7 @@ public class StockListConfigurationService {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		StockListConfigurationService ins = StockListConfigurationService
-				.getInstance();
+		StockListConfigurationService ins = StockListConfigurationService.getInstance();
 		List<String> shList = ins.getAllSZStockId();
 		for (int i = 0; i < shList.size(); i++) {
 			System.out.println(shList.get(i));
