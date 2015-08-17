@@ -57,7 +57,12 @@ public class HistoryAnalyseReport {
 		// "9999-99-99");
 
 		if (overDayList.size() == 0) {
-			// System.out.println("0");
+			System.out.println("doAnalyseReport overDayList size=0 for " + stockId);
+			return historyReportList;
+		}
+
+		if (overWeekList.size() == 0) {
+			System.out.println("doAnalyseReport overWeekList size=0 for " + stockId);
 			return historyReportList;
 		}
 
@@ -161,7 +166,7 @@ public class HistoryAnalyseReport {
 				+ checkPoint.getSellPointType() + ")==========================");
 		for (String stockId : stockIds) {
 
-			// if (!stockId.equals("601318"))
+			// if (!stockId.equals("300039"))
 			// continue;
 
 			List<HistoryReportDetailsVO> historyReportList = this.doAnalyseReport(stockId, checkPoint);
@@ -283,6 +288,6 @@ public class HistoryAnalyseReport {
 			}
 			// reporter.searchAllStockIdAccordingToCheckPoint(checkPoint);
 		}
-		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.YiYang_Cross_4K_Lines);
+		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.SuoLiang_HuiTiao_ShenXiao_Gordon);
 	}
 }

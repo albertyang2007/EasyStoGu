@@ -19,98 +19,99 @@ import org.easystogu.db.access.WeekStockPriceTableHelper;
 import org.easystogu.db.table.StockPriceVO;
 
 public class DataBaseSanityCheck {
-    protected StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
-    protected IndMacdTableHelper macdTable = IndMacdTableHelper.getInstance();
-    protected IndKDJTableHelper kdjTable = IndKDJTableHelper.getInstance();
-    protected IndBollTableHelper bollTable = IndBollTableHelper.getInstance();
-    protected IndMai1Mai2TableHelper mai1mai2Table = IndMai1Mai2TableHelper.getInstance();
-    protected IndShenXianTableHelper shenXianTable = IndShenXianTableHelper.getInstance();
-    protected IndXueShi2TableHelper xueShi2Table = IndXueShi2TableHelper.getInstance();
+	protected StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
+	protected IndMacdTableHelper macdTable = IndMacdTableHelper.getInstance();
+	protected IndKDJTableHelper kdjTable = IndKDJTableHelper.getInstance();
+	protected IndBollTableHelper bollTable = IndBollTableHelper.getInstance();
+	protected IndMai1Mai2TableHelper mai1mai2Table = IndMai1Mai2TableHelper.getInstance();
+	protected IndShenXianTableHelper shenXianTable = IndShenXianTableHelper.getInstance();
+	protected IndXueShi2TableHelper xueShi2Table = IndXueShi2TableHelper.getInstance();
 
-    protected WeekStockPriceTableHelper weekStockPriceTable = WeekStockPriceTableHelper.getInstance();
-    protected IndWeekMacdTableHelper macdWeekTable = IndWeekMacdTableHelper.getInstance();
-    protected IndWeekKDJTableHelper kdjWeekTable = IndWeekKDJTableHelper.getInstance();
-    protected IndWeekBollTableHelper bollWeekTable = IndWeekBollTableHelper.getInstance();
-    protected IndWeekMai1Mai2TableHelper mai1mai2WeekTable = IndWeekMai1Mai2TableHelper.getInstance();
-    protected IndWeekShenXianTableHelper shenXianWeekTable = IndWeekShenXianTableHelper.getInstance();
+	protected WeekStockPriceTableHelper weekStockPriceTable = WeekStockPriceTableHelper.getInstance();
+	protected IndWeekMacdTableHelper macdWeekTable = IndWeekMacdTableHelper.getInstance();
+	protected IndWeekKDJTableHelper kdjWeekTable = IndWeekKDJTableHelper.getInstance();
+	protected IndWeekBollTableHelper bollWeekTable = IndWeekBollTableHelper.getInstance();
+	protected IndWeekMai1Mai2TableHelper mai1mai2WeekTable = IndWeekMai1Mai2TableHelper.getInstance();
+	protected IndWeekShenXianTableHelper shenXianWeekTable = IndWeekShenXianTableHelper.getInstance();
 
-    public void sanityDailyCheck(List<String> stockIds) {
-        int index = 0;
-        for (String stockId : stockIds) {
-            if (index++ % 100 == 0) {
-                System.out.println("Processing " + index + "/" + stockIds.size());
-            }
-            this.sanityDailyCheck(stockId);
-        }
-    }
+	public void sanityDailyCheck(List<String> stockIds) {
+		int index = 0;
+		for (String stockId : stockIds) {
+			if (index++ % 100 == 0) {
+				System.out.println("Processing " + index + "/" + stockIds.size());
+			}
+			this.sanityDailyCheck(stockId);
+		}
+	}
 
-    public void sanityDailyCheck(String stockId) {
-        //System.out.println("Sanity Check of " + stockId);
+	public void sanityDailyCheck(String stockId) {
+		// System.out.println("Sanity Check of " + stockId);
 
-        List<StockPriceVO> spList = stockPriceTable.getStockPriceById(stockId);
-        if (spList.size() >= 108)
-            for (int index = 0; index < spList.size(); index++) {
-                StockPriceVO spVO = spList.get(index);
-                if (macdTable.getMacd(stockId, spVO.date) == null) {
-                    System.out.println(stockId + " missing macd at " + spVO.date);
-                }
-                if (kdjTable.getKDJ(stockId, spVO.date) == null) {
-                    System.out.println(stockId + " missing kdj at " + spVO.date);
-                }
-                if (bollTable.getBoll(stockId, spVO.date) == null) {
-                    System.out.println(stockId + " missing boll at " + spVO.date);
-                }
-                if (mai1mai2Table.getMai1Mai2(stockId, spVO.date) == null) {
-                    System.out.println(stockId + " missing mai1mai2 at " + spVO.date);
-                }
-                if (shenXianTable.getShenXian(stockId, spVO.date) == null) {
-                    System.out.println(stockId + " missing shenXian at " + spVO.date);
-                }
-                if (xueShi2Table.getXueShi2(stockId, spVO.date) == null) {
-                    System.out.println(stockId + " missing xieShi2 at " + spVO.date);
-                }
-            }
-    }
+		List<StockPriceVO> spList = stockPriceTable.getStockPriceById(stockId);
+		// if (spList.size() >= 108)
+		for (int index = 0; index < spList.size(); index++) {
+			StockPriceVO spVO = spList.get(index);
+			if (macdTable.getMacd(stockId, spVO.date) == null) {
+				System.out.println(stockId + " missing macd at " + spVO.date);
+			}
+			if (kdjTable.getKDJ(stockId, spVO.date) == null) {
+				System.out.println(stockId + " missing kdj at " + spVO.date);
+			}
+			if (bollTable.getBoll(stockId, spVO.date) == null) {
+				System.out.println(stockId + " missing boll at " + spVO.date);
+			}
+			if (mai1mai2Table.getMai1Mai2(stockId, spVO.date) == null) {
+				System.out.println(stockId + " missing mai1mai2 at " + spVO.date);
+			}
+			if (shenXianTable.getShenXian(stockId, spVO.date) == null) {
+				System.out.println(stockId + " missing shenXian at " + spVO.date);
+			}
+			if (xueShi2Table.getXueShi2(stockId, spVO.date) == null) {
+				System.out.println(stockId + " missing xieShi2 at " + spVO.date);
+			}
+		}
+	}
 
-    public void sanityWeekCheck(List<String> stockIds) {
-        int index = 0;
-        for (String stockId : stockIds) {
-            if (index++ % 100 == 0) {
-                System.out.println("Processing week " + index + "/" + stockIds.size());
-            }
-            this.sanityWeekCheck(stockId);
-        }
-    }
+	public void sanityWeekCheck(List<String> stockIds) {
+		int index = 0;
+		for (String stockId : stockIds) {
+			if (index++ % 100 == 0) {
+				System.out.println("Processing week " + index + "/" + stockIds.size());
+			}
+			this.sanityWeekCheck(stockId);
+		}
+	}
 
-    public void sanityWeekCheck(String stockId) {
-        //System.out.println("Sanity Check of " + stockId);
+	public void sanityWeekCheck(String stockId) {
+		// System.out.println("Sanity Check of " + stockId);
 
-        List<StockPriceVO> spList = weekStockPriceTable.getStockPriceById(stockId);
-        if (spList.size() >= 108)
-        for (int index = 0; index < spList.size(); index++) {
-            StockPriceVO spVO = spList.get(index);
-            if (macdWeekTable.getMacd(stockId, spVO.date) == null) {
-                System.out.println(stockId + " missing week macd at " + spVO.date);
-            }
-            if (kdjWeekTable.getKDJ(stockId, spVO.date) == null) {
-                System.out.println(stockId + " missing week kdj at " + spVO.date);
-            }
-            if (bollWeekTable.getBoll(stockId, spVO.date) == null) {
-                System.out.println(stockId + " missing week boll at " + spVO.date);
-            }
-            if (mai1mai2WeekTable.getMai1Mai2(stockId, spVO.date) == null) {
-                System.out.println(stockId + " missing week mai1mai2 at " + spVO.date);
-            }
-                if (shenXianWeekTable.getShenXian(stockId, spVO.date) == null) {
-                System.out.println(stockId + " missing week shenXian at " + spVO.date);
-            }
-        }
-    }
+		List<StockPriceVO> spList = weekStockPriceTable.getStockPriceById(stockId);
+		// if (spList.size() >= 108)
+		for (int index = 0; index < spList.size(); index++) {
+			StockPriceVO spVO = spList.get(index);
+			if (macdWeekTable.getMacd(stockId, spVO.date) == null) {
+				System.out.println(stockId + " missing week macd at " + spVO.date);
+			}
+			if (kdjWeekTable.getKDJ(stockId, spVO.date) == null) {
+				System.out.println(stockId + " missing week kdj at " + spVO.date);
+			}
+			if (bollWeekTable.getBoll(stockId, spVO.date) == null) {
+				System.out.println(stockId + " missing week boll at " + spVO.date);
+			}
+			if (mai1mai2WeekTable.getMai1Mai2(stockId, spVO.date) == null) {
+				System.out.println(stockId + " missing week mai1mai2 at " + spVO.date);
+			}
+			if (shenXianWeekTable.getShenXian(stockId, spVO.date) == null) {
+				System.out.println(stockId + " missing week shenXian at " + spVO.date);
+			}
+		}
+	}
 
-    public static void main(String[] args) {
-        StockListConfigurationService stockConfig = StockListConfigurationService.getInstance();
-        DataBaseSanityCheck check = new DataBaseSanityCheck();
-        check.sanityDailyCheck(stockConfig.getAllStockId());
-        //check.sanityWeekCheck(stockConfig.getAllStockId());
-    }
+	public static void main(String[] args) {
+		StockListConfigurationService stockConfig = StockListConfigurationService.getInstance();
+		DataBaseSanityCheck check = new DataBaseSanityCheck();
+		// check.sanityDailyCheck(stockConfig.getAllStockId());
+		check.sanityDailyCheck("300039");
+		check.sanityWeekCheck("300039");
+	}
 }

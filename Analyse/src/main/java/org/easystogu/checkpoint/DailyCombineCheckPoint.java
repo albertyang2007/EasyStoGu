@@ -28,7 +28,8 @@ public enum DailyCombineCheckPoint {
 			320, 7.56), DaDie_KDJ_Gordon_Twice_DiWei_Gordon(SellPointType.KDJ_Dead, 352, 6.80), Day_ShenXian_Gordon_ZhuliJinChu_Gordon(
 			SellPointType.KDJ_Dead, 11128, 8.21), Day_Mai2_ShenXian_ZhuliJinChu_Gordon_Week_Mai2_Gordon(
 			SellPointType.KDJ_Dead, 2086, 9.55), Day_Mai1_ShenXian_ZhuliJinChu_Gordon(SellPointType.KDJ_Dead, 1514,
-			8.76), YiYang_Cross_4K_Lines(SellPointType.KDJ_Dead, 10000, 8.50);
+			8.76), YiYang_Cross_4K_Lines(SellPointType.KDJ_Dead, 10000, 8.50), SuoLiang_HuiTiao_ShenXiao_Gordon(
+			SellPointType.KDJ_Dead, 99, 7.96);
 
 	private String condition;
 	// history summary that meet the condiction

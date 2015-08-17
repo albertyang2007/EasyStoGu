@@ -14,7 +14,8 @@ public class CombineAnalyseHelper {
 	public boolean isConditionSatisfy(DailyCombineCheckPoint checkPoint, List<StockSuperVO> overDayList,
 			List<StockSuperVO> overWeekList) {
 
-		if ((overWeekList == null) || (overWeekList.size() <= 1)) {
+		if ((overWeekList == null) || (overWeekList.size() < 1)) {
+			//System.out.println("CombineAnalyseHelper overWeekList size is 0");
 			return false;
 		}
 		StockSuperVO curSuperWeekVO = overWeekList.get(overWeekList.size() - 1);
@@ -1082,6 +1083,26 @@ public class CombineAnalyseHelper {
 					}
 				}
 			}
+			break;
+		}
+
+		case SuoLiang_HuiTiao_ShenXiao_Gordon: {
+			// example: 300039 @2015-08-13
+			// week rsv is gordon
+			// day shenxian is gordon, before this gordon, suoLiang huiTiao
+			if (curSuperWeekVO.kdjCorssType == CrossType.GORDON || curSuperWeekVO.kdjCorssType == CrossType.NEAR_GORDON
+					|| curSuperWeekVO.rsvCorssType == CrossType.GORDON)
+				if (curSuperDayVO.shenXianCorssType12 == CrossType.GORDON) {
+					// suoLiang HuiTiao
+					if (StockPriceUtils.isKLineGreen(pre2SuperDayVO.priceVO)
+							&& StockPriceUtils.isKLineGreen(pre1SuperDayVO.priceVO)
+							&& pre2SuperDayVO.priceVO.volume > pre1SuperDayVO.priceVO.volume
+							&& pre1SuperDayVO.priceVO.volume > curSuperDayVO.priceVO.volume
+							&& pre1SuperDayVO.priceVO.volume <= pre1SuperDayVO.avgVol5
+							&& curSuperDayVO.priceVO.volume <= curSuperDayVO.avgVol5) {
+						return true;
+					}
+				}
 			break;
 		}
 

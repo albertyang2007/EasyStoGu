@@ -212,3 +212,10 @@ Avg hold stock days when sell point: 7
 Avg hold stock days when high price: 5
 Total high earn between (25, 50): 100
 Total low  earn between (10, 10): 237
+
+===============================SuoLiang_HuiTiao_ShenXiao_Gordon (sellPoint:KDJ_Dead)==========================
+Total satisfy: 99	 earnPercent[close]=2.748490755569164	 earnPercent[high]=7.965930684650515	 earnPercent[low]=-3.813272764114636
+Avg hold stock days when sell point: 6
+Avg hold stock days when high price: 4
+Total high earn between (25, 50): 2
+Total low  earn between (10, 10): 2
