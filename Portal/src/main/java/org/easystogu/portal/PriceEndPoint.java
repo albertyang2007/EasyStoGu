@@ -1,6 +1,8 @@
 package org.easystogu.portal;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -8,43 +10,31 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
 import org.easystogu.db.access.StockPriceTableHelper;
-import org.easystogu.db.access.WeekStockPriceTableHelper;
 import org.easystogu.db.table.StockPriceVO;
+import org.easystogu.utils.Strings;
 
 public class PriceEndPoint {
-	private StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
-	private StockPriceTableHelper weekStockPriceTable = WeekStockPriceTableHelper.getInstance();
+    private StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
+    private String dateRegex = "[0-9]{4}-[0-9]{2}-[0-9]{2}";
+    private String fromToRegex = dateRegex + "_" + dateRegex;
 
-	@GET
-	@Path("/day/{date}/{stockid}")
-	@Produces("application/json")
-	public StockPriceVO queryDayPriceById(@PathParam("date") String date, @PathParam("stockid") String stockid) {
-		return stockPriceTable.getStockPriceByIdAndDate(stockid, date);
-	}
-
-	@GET
-	@Path("/day/{date1}_{date2}/{stockid}")
-	@Produces("application/json")
-	public List<StockPriceVO> queryDayListPriceById(@PathParam("date1") String date1, @PathParam("date2") String date2,
-			@PathParam("stockid") String stockid) {
-		return stockPriceTable.getStockPriceByIdBetweenDate(stockid, date1, date2);
-	}
-
-	// will have problem on query
-	@GET
-	@Path("/week/{date}/{stockid}")
-	@Produces("application/json")
-	public StockPriceVO queryWeekPriceById(@PathParam("date") String date, @PathParam("stockid") String stockid) {
-		return weekStockPriceTable.getStockPriceByIdAndDate(stockid, date);
-	}
-
-	// will have problem on query
-	@GET
-	@Path("/week/{date1}_{date2}/{stockid}")
-	@Produces("application/json")
-	public List<StockPriceVO> queryWeekListPriceById(@PathParam("date1") String date1,
-			@PathParam("date2") String date2, @PathParam("stockid") String stockid) {
-		return weekStockPriceTable.getStockPriceByIdBetweenDate(stockid, date1, date2);
-	}
-
+    @GET
+    @Path("/{stockid}/{date}")
+    @Produces("application/json")
+    public List<StockPriceVO> queryDayPriceById(@PathParam("date")
+    String date, @PathParam("stockid")
+    String stockid) {
+        List<StockPriceVO> list = new ArrayList<StockPriceVO>();
+        if (Strings.isNotEmpty(date)) {
+            if (Pattern.matches(dateRegex, date)) {
+                list.add(stockPriceTable.getStockPriceByIdAndDate(stockid, date));
+                return list;
+            } else if (Pattern.matches(fromToRegex, date)) {
+                String date1 = date.split("_")[0];
+                String date2 = date.split("_")[1];
+                return stockPriceTable.getStockPriceByIdBetweenDate(stockid, date1, date2);
+            }
+        }
+        return list;
+    }
 }
