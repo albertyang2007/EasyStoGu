@@ -4,30 +4,29 @@ import java.util.List;
 
 import org.easystogu.config.StockListConfigurationService;
 import org.easystogu.db.access.ChuQuanChuXiPriceHelper;
-import org.easystogu.db.access.IndShenXianTableHelper;
+import org.easystogu.db.access.IndYiMengBSTableHelper;
 import org.easystogu.db.access.StockPriceTableHelper;
-import org.easystogu.db.table.ShenXianVO;
 import org.easystogu.db.table.StockPriceVO;
-import org.easystogu.indicator.ShenXianHelper;
-import org.easystogu.indicator.runner.utils.StockPriceFetcher;
+import org.easystogu.db.table.YiMengBSVO;
+import org.easystogu.indicator.YiMengBSHelper;
 import org.easystogu.utils.Strings;
 
-public class HistoryShenXianCountAndSaveDBRunner {
+public class HistoryYiMengBSCountAndSaveDBRunner {
 
 	protected StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
-	protected IndShenXianTableHelper shenXianTable = IndShenXianTableHelper.getInstance();
-	private ShenXianHelper shenXianHelper = new ShenXianHelper();
+	protected IndYiMengBSTableHelper yiMengBSTable = IndYiMengBSTableHelper.getInstance();
+	private YiMengBSHelper yiMengBSHelper = new YiMengBSHelper();
 	protected ChuQuanChuXiPriceHelper chuQuanChuXiPriceHelper = new ChuQuanChuXiPriceHelper();
 
-	public void deleteShenXian(String stockId) {
-		shenXianTable.delete(stockId);
+	public void deleteYiMengBS(String stockId) {
+		yiMengBSTable.delete(stockId);
 	}
 
-	public void deleteShenXian(List<String> stockIds) {
+	public void deleteYiMengBS(List<String> stockIds) {
 		int index = 0;
 		for (String stockId : stockIds) {
-			System.out.println("Delete ShenXian for " + stockId + " " + (++index) + " of " + stockIds.size());
-			this.deleteShenXian(stockId);
+			System.out.println("Delete YiMengBS for " + stockId + " " + (++index) + " of " + stockIds.size());
+			this.deleteYiMengBS(stockId);
 		}
 	}
 
@@ -42,21 +41,18 @@ public class HistoryShenXianCountAndSaveDBRunner {
 		// update price based on chuQuanChuXi event
 		chuQuanChuXiPriceHelper.updatePrice(stockId, priceList);
 
-		List<Double> close = StockPriceFetcher.getClosePrice(priceList);
+		double[][] yiMeng = yiMengBSHelper.getYiMengBSList(priceList);
 
-		double[][] shenXian = shenXianHelper.getShenXianList(close.toArray(new Double[0]));
-
-		for (int i = 0; i < shenXian[0].length; i++) {
-			ShenXianVO vo = new ShenXianVO();
-			vo.setH1(Strings.convert2ScaleDecimal(shenXian[0][i]));
-			vo.setH2(Strings.convert2ScaleDecimal(shenXian[1][i]));
-			vo.setH3(Strings.convert2ScaleDecimal(shenXian[2][i]));
+		for (int i = 0; i < yiMeng[0].length; i++) {
+			YiMengBSVO vo = new YiMengBSVO();
+			vo.setX2(Strings.convert2ScaleDecimal(yiMeng[1][i]));
+			vo.setX3(Strings.convert2ScaleDecimal(yiMeng[2][i]));
 			vo.setStockId(stockId);
 			vo.setDate(priceList.get(i).date);
 
 			try {
-				if (shenXianTable.getShenXian(vo.stockId, vo.date) == null) {
-					shenXianTable.insert(vo);
+				if (yiMengBSTable.getYiMengBS(vo.stockId, vo.date) == null) {
+					yiMengBSTable.insert(vo);
 				}
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
@@ -69,7 +65,7 @@ public class HistoryShenXianCountAndSaveDBRunner {
 		int index = 0;
 		for (String stockId : stockIds) {
 			if (index++ % 100 == 0)
-				System.out.println("ShenXian countAndSaved: " + stockId + " " + (index) + " of " + stockIds.size());
+				System.out.println("YiMengBS countAndSaved: " + stockId + " " + (index) + " of " + stockIds.size());
 			this.countAndSaved(stockId);
 		}
 	}
@@ -78,9 +74,9 @@ public class HistoryShenXianCountAndSaveDBRunner {
 	// 一次性计算数据库中所有ShenXian数据，入库
 	public static void main(String[] args) {
 		StockListConfigurationService stockConfig = StockListConfigurationService.getInstance();
-		HistoryShenXianCountAndSaveDBRunner runner = new HistoryShenXianCountAndSaveDBRunner();
+		HistoryYiMengBSCountAndSaveDBRunner runner = new HistoryYiMengBSCountAndSaveDBRunner();
 		runner.countAndSaved(stockConfig.getAllStockId());
-		// runner.countAndSaved("600750");
+		// runner.countAndSaved("002194");
 	}
 
 }

@@ -498,3 +498,43 @@ ALTER TABLE zijinliu
   OWNER TO postgres;
 GRANT ALL ON TABLE zijinliu TO public;
 GRANT ALL ON TABLE zijinliu TO postgres;
+
+-- Table: ind_yimengbs
+
+-- DROP TABLE ind_yimengbs;
+
+CREATE TABLE ind_yimengbs
+(
+  stockid text NOT NULL,
+  date text NOT NULL,
+  x2 numeric,
+  x3 numeric,
+  CONSTRAINT yimengbs_primary_key PRIMARY KEY (stockid, date)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE ind_yimengbs
+  OWNER TO postgres;
+GRANT ALL ON TABLE ind_yimengbs TO public;
+GRANT ALL ON TABLE ind_yimengbs TO postgres;
+
+-- Table: ind_week_yimengbs
+
+-- DROP TABLE ind_week_yimengbs;
+
+CREATE TABLE ind_week_yimengbs
+(
+  stockid text NOT NULL,
+  date text NOT NULL,
+  x2 numeric,
+  x3 numeric,
+  CONSTRAINT week_yimengbs_primary_key PRIMARY KEY (stockid, date)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE ind_week_yimengbs
+  OWNER TO postgres;
+GRANT ALL ON TABLE ind_week_yimengbs TO public;
+GRANT ALL ON TABLE ind_week_yimengbs TO postgres;
