@@ -214,11 +214,11 @@ Total high earn between (25, 50): 100
 Total low  earn between (10, 10): 237
 
 ===============================SuoLiang_HuiTiao_ShenXiao_Gordon (sellPoint:KDJ_Dead)==========================
-Total satisfy: 99	 earnPercent[close]=2.748490755569164	 earnPercent[high]=7.965930684650515	 earnPercent[low]=-3.813272764114636
-Avg hold stock days when sell point: 6
+Total satisfy: 135	 earnPercent[close]=3.2482196845694196	 earnPercent[high]=10.771408419887624	 earnPercent[low]=-4.3380826195786755
+Avg hold stock days when sell point: 7
 Avg hold stock days when high price: 4
-Total high earn between (25, 50): 2
-Total low  earn between (10, 10): 2
+Total high earn between (25, 50): 5
+Total low  earn between (10, 10): 3
 
 ===============================YiMengBS_Gordon (sellPoint:KDJ_Dead)==========================
 Total satisfy: 125505	 earnPercent[close]=0.43135874234569255	 earnPercent[high]=7.667749863699444	 earnPercent[low]=-5.005120328574077

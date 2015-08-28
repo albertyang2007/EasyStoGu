@@ -1,7 +1,5 @@
 package org.easystogu.runner;
 
-import java.util.Date;
-
 import org.easystogu.easymoney.runner.DailyZiJinLiuXiangRunner;
 import org.easystogu.indicator.runner.DailyBollCountAndSaveDBRunner;
 import org.easystogu.indicator.runner.DailyKDJCountAndSaveDBRunner;
@@ -21,41 +19,42 @@ import org.easystogu.sina.runner.DailyStockPriceDownloadAndStoreDBRunner;
 import org.easystogu.sina.runner.DailyWeeklyStockPriceCountAndSaveDBRunner;
 
 public class DailyUpdateOverAllRunner implements Runnable {
-    public void run() {
-        String[] args = null;
-        System.out.println("start at " + new Date());
-        // zijinliu
-        DailyZiJinLiuXiangRunner.main(args);
-        // day
-        DailyStockPriceDownloadAndStoreDBRunner.main(args);
-        // chuquan
-        ChuQuanChuXiCheckerRunner.main(args);
-        // day ind
-        DailyMacdCountAndSaveDBRunner.main(args);
-        DailyKDJCountAndSaveDBRunner.main(args);
-        DailyBollCountAndSaveDBRunner.main(args);
-        DailyMai1Mai2CountAndSaveDBRunner.main(args);
-        DailyShenXianCountAndSaveDBRunner.main(args);
-        DailyXueShi2CountAndSaveDBRunner.main(args);
-        DailyZhuliJinChuCountAndSaveDBRunner.main(args);
-        DailyYiMengBSCountAndSaveDBRunner.main(args);
-        // week
-        DailyWeeklyStockPriceCountAndSaveDBRunner.main(args);
-        // week ind
-        DailyWeekMacdCountAndSaveDBRunner.main(args);
-        DailyWeekKDJCountAndSaveDBRunner.main(args);
-        DailyWeekBollCountAndSaveDBRunner.main(args);
-        DailyWeekMai1Mai2CountAndSaveDBRunner.main(args);
-        DailyWeekShenXianCountAndSaveDBRunner.main(args);
-        DailyWeekYiMengBSCountAndSaveDBRunner.main(args);
+	public void run() {
+		String[] args = null;
+		// zijinliu
+		DailyZiJinLiuXiangRunner.main(args);
+		//
+		long st = System.currentTimeMillis();
+		// day
+		DailyStockPriceDownloadAndStoreDBRunner.main(args);
+		// chuquan
+		ChuQuanChuXiCheckerRunner.main(args);
+		// day ind
+		DailyMacdCountAndSaveDBRunner.main(args);
+		DailyKDJCountAndSaveDBRunner.main(args);
+		DailyBollCountAndSaveDBRunner.main(args);
+		DailyMai1Mai2CountAndSaveDBRunner.main(args);
+		DailyShenXianCountAndSaveDBRunner.main(args);
+		DailyXueShi2CountAndSaveDBRunner.main(args);
+		DailyZhuliJinChuCountAndSaveDBRunner.main(args);
+		DailyYiMengBSCountAndSaveDBRunner.main(args);
+		// week
+		DailyWeeklyStockPriceCountAndSaveDBRunner.main(args);
+		// week ind
+		DailyWeekMacdCountAndSaveDBRunner.main(args);
+		DailyWeekKDJCountAndSaveDBRunner.main(args);
+		DailyWeekBollCountAndSaveDBRunner.main(args);
+		DailyWeekMai1Mai2CountAndSaveDBRunner.main(args);
+		DailyWeekShenXianCountAndSaveDBRunner.main(args);
+		DailyWeekYiMengBSCountAndSaveDBRunner.main(args);
 
-        // analyse
-        DailySelectionRunner.main(args);
+		// analyse
+		DailySelectionRunner.main(args);
 
-        System.out.println("stop at " + new Date());
-    }
+		System.out.println("stop using " + (System.currentTimeMillis() - st) / 1000 + " seconds");
+	}
 
-    public static void main(String[] args) {
-        new DailyUpdateOverAllRunner().run();
-    }
+	public static void main(String[] args) {
+		new DailyUpdateOverAllRunner().run();
+	}
 }

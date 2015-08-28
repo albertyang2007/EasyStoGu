@@ -1096,8 +1096,8 @@ public class CombineAnalyseHelper {
             // example: 300039 @2015-08-13
             // week rsv is gordon
             // day shenxian is gordon, before this gordon, suoLiang huiTiao
-            if (curSuperWeekVO.kdjCorssType == CrossType.GORDON || curSuperWeekVO.kdjCorssType == CrossType.NEAR_GORDON
-                    || curSuperWeekVO.rsvCorssType == CrossType.GORDON)
+            if (curSuperDayVO.kdjCorssType == CrossType.GORDON || curSuperDayVO.kdjCorssType == CrossType.NEAR_GORDON
+                    || curSuperDayVO.rsvCorssType == CrossType.GORDON)
                 if (curSuperDayVO.shenXianCorssType12 == CrossType.GORDON) {
                     // suoLiang HuiTiao
                     if (StockPriceUtils.isKLineGreen(pre2SuperDayVO.priceVO)

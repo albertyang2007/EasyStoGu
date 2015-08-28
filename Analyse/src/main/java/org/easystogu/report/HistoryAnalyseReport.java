@@ -55,12 +55,14 @@ public class HistoryAnalyseReport {
 		// "9999-99-99");
 
 		if (overDayList.size() == 0) {
-			System.out.println("doAnalyseReport overDayList size=0 for " + stockId);
+			// System.out.println("doAnalyseReport overDayList size=0 for " +
+			// stockId);
 			return historyReportList;
 		}
 
 		if (overWeekList.size() == 0) {
-			System.out.println("doAnalyseReport overWeekList size=0 for " + stockId);
+			// System.out.println("doAnalyseReport overWeekList size=0 for " +
+			// stockId);
 			return historyReportList;
 		}
 
@@ -144,8 +146,8 @@ public class HistoryAnalyseReport {
 				+ checkPoint.getSellPointType() + ")==========================");
 		for (String stockId : stockIds) {
 
-			//if (!stockId.equals("601636"))
-			//continue;
+			// if (!stockId.equals("601636"))
+			// continue;
 
 			List<HistoryReportDetailsVO> historyReportList = this.doAnalyseReport(stockId, checkPoint);
 			for (HistoryReportDetailsVO reportVO : historyReportList) {
@@ -161,7 +163,7 @@ public class HistoryAnalyseReport {
 					}
 
 					if (!reportVO.completed) {
-						System.out.println("Not Completed: " + reportVO);
+						//System.out.println("Not Completed: " + reportVO);
 						// save to checkpint daily selection table
 						if (isCheckPointSelected(checkPoint)) {
 							this.saveToCheckPointDailySelectionDB(reportVO.stockId, reportVO.buyPriceVO.date,
@@ -261,11 +263,11 @@ public class HistoryAnalyseReport {
 		HistoryAnalyseReport reporter = new HistoryAnalyseReport();
 
 		for (DailyCombineCheckPoint checkPoint : DailyCombineCheckPoint.values()) {
-			if (checkPoint.getEarnPercent() <= 0.0) {
-				continue;
-			}
-			// reporter.searchAllStockIdAccordingToCheckPoint(checkPoint);
+			//if (checkPoint.getEarnPercent() < 8.0) {
+			//	continue;
+			//}
+			reporter.searchAllStockIdAccordingToCheckPoint(checkPoint);
 		}
-		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.YiMengBS_KDJ_Gordon);
+		// reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.SuoLiang_HuiTiao_ShenXiao_Gordon);
 	}
 }

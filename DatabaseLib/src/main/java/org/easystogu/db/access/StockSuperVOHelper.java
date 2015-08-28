@@ -115,11 +115,6 @@ public class StockSuperVOHelper {
                 || (xueShie2List.size() != spList.size()) || (shenXianList.size() != spList.size())
                 || (mai1mai2List.size() != spList.size()) || (zhuliJinChuList.size() != spList.size())
                 || (yiMengBSList.size() != spList.size())) {
-            // System.out.println(stockId + " size of spList(" + spList.size() +
-            // "), macdList(" + macdList.size()
-            // + ") and kdjList(" + kdjList.size() + ") and shenXianList(" +
-            // xueShie2List.size()
-            // + ") is not equal, the database must meet fatel error!");
             return overList;
         }
 
@@ -136,8 +131,6 @@ public class StockSuperVOHelper {
                 || !spList.get(0).date.equals(mai1mai2List.get(0).date)
                 || !spList.get(0).date.equals(zhuliJinChuList.get(0).date)
                 || !spList.get(0).date.equals(yiMengBSList.get(0).date)) {
-            // System.out
-            // .println("Date of spList, macdList and kdjList is not equal, the database must meet fatel error!");
             return overList;
         }
 
