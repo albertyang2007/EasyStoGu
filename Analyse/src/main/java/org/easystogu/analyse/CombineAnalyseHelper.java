@@ -1122,6 +1122,24 @@ public class CombineAnalyseHelper {
             break;
         }
 
+        case YiMengBS_KDJ_Gordon_SuoLiang_HuiTiao: {
+            if (curSuperDayVO.kdjCorssType == CrossType.GORDON || curSuperDayVO.kdjCorssType == CrossType.NEAR_GORDON
+                    || curSuperDayVO.rsvCorssType == CrossType.GORDON) {
+                if (curSuperDayVO.yiMengBSCrossType == CrossType.GORDON) {
+                    // suoLiang HuiTiao
+                    if (StockPriceUtils.isKLineGreen(pre2SuperDayVO.priceVO)
+                            && StockPriceUtils.isKLineGreen(pre1SuperDayVO.priceVO)
+                            && pre2SuperDayVO.priceVO.volume > pre1SuperDayVO.priceVO.volume
+                            && pre1SuperDayVO.priceVO.volume > curSuperDayVO.priceVO.volume
+                            && pre1SuperDayVO.priceVO.volume <= pre1SuperDayVO.avgVol5
+                            && curSuperDayVO.priceVO.volume <= curSuperDayVO.avgVol5) {
+                        return true;
+                    }
+                }
+            }
+            break;
+        }
+
         default:
             return false;
         }
