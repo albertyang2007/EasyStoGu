@@ -3,6 +3,7 @@ package org.easystogu.scheduler;
 import org.easystogu.easymoney.runner.DailyZiJinLiuXiangRunner;
 import org.easystogu.log.LogHelper;
 import org.easystogu.runner.DailyUpdateOverAllRunner;
+import org.easystogu.runner.DataBaseSanityCheck;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -71,15 +72,11 @@ public class DailyScheduler implements SchedulingConfigurer {
         t.start();
     }
 
-    // @Scheduled(cron = "0 0/5 9-20 * * MON-FRI")
-    // public void test1() {
-    // logger.info("test 1: every 5 mins during 9-20 between MON-FRI");
-    // System.out.println("test 1: every 5 mins during 9-20 between MON-FRI");
-    // }
-
-    // @Scheduled(fixedDelay = 60 * 1000)
-    // public void test2() {
-    // logger.info("test 2: every 1 mins");
-    // System.out.println("test 2: every 1 mins");
-    // }
+    // run at 21:00
+    @Scheduled(cron = "0 00 21 * * MON-FRI")
+    public void dataBaseSanityCheck() {
+        logger.info("DataBaseSanityCheck already running.");
+        Thread t = new Thread(new DataBaseSanityCheck());
+        t.start();
+    }
 }

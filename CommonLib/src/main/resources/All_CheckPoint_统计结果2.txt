@@ -219,3 +219,17 @@ Avg hold stock days when sell point: 6
 Avg hold stock days when high price: 4
 Total high earn between (25, 50): 2
 Total low  earn between (10, 10): 2
+
+===============================YiMengBS_Gordon (sellPoint:KDJ_Dead)==========================
+Total satisfy: 125505	 earnPercent[close]=0.43135874234569255	 earnPercent[high]=7.667749863699444	 earnPercent[low]=-5.005120328574077
+Avg hold stock days when sell point: 7
+Avg hold stock days when high price: 4
+Total high earn between (25, 50): 943
+Total low  earn between (10, 10): 4106
+
+===============================YiMengBS_KDJ_Gordon (sellPoint:KDJ_Dead)==========================
+Total satisfy: 45142	 earnPercent[close]=0.9735155151126238	 earnPercent[high]=8.291662091844836	 earnPercent[low]=-5.181058659630685
+Avg hold stock days when sell point: 7
+Avg hold stock days when high price: 4
+Total high earn between (25, 50): 433
+Total low  earn between (10, 10): 1336

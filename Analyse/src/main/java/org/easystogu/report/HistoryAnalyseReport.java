@@ -4,9 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.easystogu.analyse.CombineAnalyseHelper;
-import org.easystogu.analyse.util.IndCrossCheckingHelper;
-import org.easystogu.analyse.util.PriceCheckingHelper;
-import org.easystogu.analyse.util.VolumeCheckingHelper;
+import org.easystogu.analyse.util.IndProcessHelper;
 import org.easystogu.checkpoint.DailyCombineCheckPoint;
 import org.easystogu.config.FileConfigurationService;
 import org.easystogu.config.StockListConfigurationService;
@@ -70,27 +68,7 @@ public class HistoryAnalyseReport {
 		chuQuanChuXiPriceHelper.updateSuperPrice(stockId, overDayList);
 		chuQuanChuXiPriceHelper.updateSuperPrice(stockId, overWeekList);
 
-		// count and update all ind data
-		// day
-		IndCrossCheckingHelper.macdCross(overDayList);
-		IndCrossCheckingHelper.kdjCross(overDayList);
-		IndCrossCheckingHelper.rsvCross(overDayList);
-		IndCrossCheckingHelper.bollXueShi2DnCross(overDayList);
-		IndCrossCheckingHelper.mai1Mai2Cross(overDayList);
-		IndCrossCheckingHelper.shenXianCross12(overDayList);
-		IndCrossCheckingHelper.zhuliJinChuCross(overDayList);
-		// IndCrossCheckingHelper.shenXianCross13(overDayList);
-		VolumeCheckingHelper.volumeIncreasePuls(overDayList);
-		VolumeCheckingHelper.avgVolume5(overDayList);
-		PriceCheckingHelper.priceHigherThanNday(overDayList, 15);
-		PriceCheckingHelper.setLastClosePrice(overDayList);
-		PriceCheckingHelper.countAvgMA(overDayList);
-		// week
-		IndCrossCheckingHelper.macdCross(overWeekList);
-		IndCrossCheckingHelper.kdjCross(overWeekList);
-		IndCrossCheckingHelper.rsvCross(overWeekList);
-		IndCrossCheckingHelper.mai1Mai2Cross(overWeekList);
-		PriceCheckingHelper.setLastClosePrice(overWeekList);
+		IndProcessHelper.process(overDayList, overWeekList);
 
 		HistoryReportDetailsVO reportVO = null;
 		for (int index = 120; index < overDayList.size() - 1; index++) {
@@ -166,8 +144,8 @@ public class HistoryAnalyseReport {
 				+ checkPoint.getSellPointType() + ")==========================");
 		for (String stockId : stockIds) {
 
-			// if (!stockId.equals("300039"))
-			// continue;
+			//if (!stockId.equals("601636"))
+			//continue;
 
 			List<HistoryReportDetailsVO> historyReportList = this.doAnalyseReport(stockId, checkPoint);
 			for (HistoryReportDetailsVO reportVO : historyReportList) {
@@ -288,6 +266,6 @@ public class HistoryAnalyseReport {
 			}
 			// reporter.searchAllStockIdAccordingToCheckPoint(checkPoint);
 		}
-		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.SuoLiang_HuiTiao_ShenXiao_Gordon);
+		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.YiMengBS_KDJ_Gordon);
 	}
 }

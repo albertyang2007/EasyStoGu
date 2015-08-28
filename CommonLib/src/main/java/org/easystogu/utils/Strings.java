@@ -22,7 +22,7 @@ public class Strings {
     }
 
     public static double convert2ScaleDecimal(double num) {
-        if (Double.isNaN(num)) {
+        if (Double.isNaN(num) || Double.isInfinite(num)) {
             return 0;
         }
         BigDecimal bd = new BigDecimal(num);

@@ -11,9 +11,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.easystogu.analyse.CombineAnalyseHelper;
-import org.easystogu.analyse.util.IndCrossCheckingHelper;
-import org.easystogu.analyse.util.PriceCheckingHelper;
-import org.easystogu.analyse.util.VolumeCheckingHelper;
+import org.easystogu.analyse.util.IndProcessHelper;
 import org.easystogu.checkpoint.DailyCombineCheckPoint;
 import org.easystogu.config.FileConfigurationService;
 import org.easystogu.config.StockListConfigurationService;
@@ -57,79 +55,63 @@ public class DailySelectionRunner implements Runnable {
     protected ChuQuanChuXiPriceHelper chuQuanChuXiPriceHelper = new ChuQuanChuXiPriceHelper();
 
     public void doAnalyse(String stockId) {
-        // LatestN is reverse in date order desc
-        List<StockSuperVO> overDayList = stockOverAllHelper.getLatestNStockSuperVO(stockId, 120);
-        List<StockSuperVO> overWeekList = weekStockOverAllHelper.getLatestNStockSuperVO(stockId, 30);
+        try {
+            // LatestN is reverse in date order desc
+            List<StockSuperVO> overDayList = stockOverAllHelper.getLatestNStockSuperVO(stockId, 120);
+            List<StockSuperVO> overWeekList = weekStockOverAllHelper.getLatestNStockSuperVO(stockId, 30);
 
-        if (overDayList.size() == 0) {
-            // System.out.println("No stockprice data for " + stockId);
-            return;
-        }
+            if (overDayList.size() == 0) {
+                // System.out.println("No stockprice data for " + stockId);
+                return;
+            }
 
-        // so must reverse in date order
-        Collections.reverse(overDayList);
-        Collections.reverse(overWeekList);
+            // so must reverse in date order
+            Collections.reverse(overDayList);
+            Collections.reverse(overWeekList);
 
-        // update price based on chuQuanChuXi event
-        chuQuanChuXiPriceHelper.updateSuperPrice(stockId, overDayList);
-        chuQuanChuXiPriceHelper.updateSuperPrice(stockId, overWeekList);
+            // update price based on chuQuanChuXi event
+            chuQuanChuXiPriceHelper.updateSuperPrice(stockId, overDayList);
+            chuQuanChuXiPriceHelper.updateSuperPrice(stockId, overWeekList);
 
-        // day
-        // count and update the macd/kdj corss
-        IndCrossCheckingHelper.macdCross(overDayList);
-        IndCrossCheckingHelper.kdjCross(overDayList);
-        IndCrossCheckingHelper.rsvCross(overDayList);
-        IndCrossCheckingHelper.bollXueShi2DnCross(overDayList);
-        IndCrossCheckingHelper.mai1Mai2Cross(overDayList);
-        IndCrossCheckingHelper.shenXianCross12(overDayList);
-        IndCrossCheckingHelper.zhuliJinChuCross(overDayList);
-        // IndCrossCheckingHelper.shenXianCross13(overDayList);
-        VolumeCheckingHelper.volumeIncreasePuls(overDayList);
-        VolumeCheckingHelper.avgVolume5(overDayList);
-        PriceCheckingHelper.priceHigherThanNday(overDayList, 15);
-        PriceCheckingHelper.setLastClosePrice(overDayList);
-        PriceCheckingHelper.countAvgMA(overDayList);
+            IndProcessHelper.process(overDayList, overWeekList);
 
-        // week
-        IndCrossCheckingHelper.macdCross(overWeekList);
-        IndCrossCheckingHelper.kdjCross(overWeekList);
-        IndCrossCheckingHelper.rsvCross(overWeekList);
-        IndCrossCheckingHelper.mai1Mai2Cross(overWeekList);
-        PriceCheckingHelper.setLastClosePrice(overWeekList);
+            int index = overDayList.size() - 1;
+            StockSuperVO superVO = overDayList.get(index);
 
-        int index = overDayList.size() - 1;
-        StockSuperVO superVO = overDayList.get(index);
+            if (!superVO.priceVO.date.equals(latestDate)) {
+                return;
+            }
 
-        if (!superVO.priceVO.date.equals(latestDate)) {
-            return;
-        }
-
-        // check all combine check point
-        for (DailyCombineCheckPoint checkPoint : DailyCombineCheckPoint.values()) {
-            if (this.isSelectedCheckPoint(checkPoint)) {
-                if (combineAnalyserHelper.isConditionSatisfy(checkPoint, overDayList, overWeekList)) {
-                    superVO.setZiJinLiuVO(this.getZiJinLiuVO(stockId));
-                    this.saveToCheckPointSelectionDB(superVO, checkPoint);
-                    this.addToConditionMapForReportDisplay(superVO, checkPoint);
-                }
-            } else if (this.isDependCheckPoint(checkPoint)) {
-                if (combineAnalyserHelper.isConditionSatisfy(checkPoint, overDayList, overWeekList)) {
-                    superVO.setZiJinLiuVO(this.getZiJinLiuVO(stockId));
-                    // search if other checkpoint already happen in recent days
-                    CheckPointDailySelectionVO latestCheckPointSelection = checkPointDailySelectionTable
-                            .getDifferentLatestCheckPointSelection(stockId, checkPoint.toString());
-                    if (latestCheckPointSelection != null
-                            && !latestCheckPointSelection.checkPoint.equals(checkPoint.toString())
-                            && !latestCheckPointSelection.date.equals(superVO.priceVO.date)) {
-                        // check if day is between 10 days
-                        String lastNDate = stockPriceTable.getLastNDate(stockId, 10);
-                        if (latestCheckPointSelection.date.compareTo(lastNDate) >= 0) {
-                            this.saveToCheckPointSelectionDB(superVO, checkPoint);
-                            this.addToConditionMapForReportDisplay(superVO, checkPoint);
+            // check all combine check point
+            for (DailyCombineCheckPoint checkPoint : DailyCombineCheckPoint.values()) {
+                if (this.isSelectedCheckPoint(checkPoint)) {
+                    if (combineAnalyserHelper.isConditionSatisfy(checkPoint, overDayList, overWeekList)) {
+                        superVO.setZiJinLiuVO(this.getZiJinLiuVO(stockId));
+                        this.saveToCheckPointSelectionDB(superVO, checkPoint);
+                        this.addToConditionMapForReportDisplay(superVO, checkPoint);
+                    }
+                } else if (this.isDependCheckPoint(checkPoint)) {
+                    if (combineAnalyserHelper.isConditionSatisfy(checkPoint, overDayList, overWeekList)) {
+                        superVO.setZiJinLiuVO(this.getZiJinLiuVO(stockId));
+                        // search if other checkpoint already happen in recent days
+                        CheckPointDailySelectionVO latestCheckPointSelection = checkPointDailySelectionTable
+                                .getDifferentLatestCheckPointSelection(stockId, checkPoint.toString());
+                        if (latestCheckPointSelection != null
+                                && !latestCheckPointSelection.checkPoint.equals(checkPoint.toString())
+                                && !latestCheckPointSelection.date.equals(superVO.priceVO.date)) {
+                            // check if day is between 10 days
+                            String lastNDate = stockPriceTable.getLastNDate(stockId, 10);
+                            if (latestCheckPointSelection.date.compareTo(lastNDate) >= 0) {
+                                this.saveToCheckPointSelectionDB(superVO, checkPoint);
+                                this.addToConditionMapForReportDisplay(superVO, checkPoint);
+                            }
                         }
                     }
                 }
             }
+        } catch (Exception e) {
+            System.out.println("Exception for " + stockId);
+            e.printStackTrace();
         }
     }
 
@@ -345,7 +327,6 @@ public class DailySelectionRunner implements Runnable {
 
     public static void main(String[] args) {
         // TODO Auto-generated method stub
-        DailySelectionRunner runner = new DailySelectionRunner();
-        runner.run();
+        new DailySelectionRunner().run();
     }
 }
