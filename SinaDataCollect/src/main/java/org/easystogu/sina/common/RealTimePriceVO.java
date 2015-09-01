@@ -1,6 +1,7 @@
 package org.easystogu.sina.common;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.easystogu.db.table.StockPriceVO;
 import org.easystogu.utils.Strings;
@@ -39,76 +40,80 @@ import org.easystogu.utils.Strings;
 //31����15:05:32�壬ʱ�䣻
 
 public class RealTimePriceVO {
-	public String stockId;
-	public String name;
-	public double open;
-	public double lastClose;
-	public double current;
-	public double high;
-	public double low;
-	public double dealBuy;
-	public double dealSale;
-	public long volume = 0;
-	public long deal;
-	public List<DealVO> dealDetails;// �嵵��ϸ
-	public String date;
+    public String stockId;
+    public String name;
+    public double open;
+    public double lastClose;
+    public double current;
+    public double high;
+    public double low;
+    public double dealBuy;
+    public double dealSale;
+    public long volume = 0;
+    public long deal;
+    public List<DealVO> dealDetails;// �嵵��ϸ
+    public String date;
 
-	public RealTimePriceVO(String stockId, String line) {
+    private String dateRegex = "[0-9]{4}-[0-9]{2}-[0-9]{2}";
 
-		if (Strings.isEmpty(line.trim())) {
-			return;
-		}
+    public RealTimePriceVO(String stockId, String line) {
 
-		this.stockId = stockId;
-		int index = 0;
-		String[] items = line.split(",");
-		this.name = items[index++];
-		this.open = Double.parseDouble(items[index++]);
-		this.lastClose = Double.parseDouble(items[index++]);
-		this.current = Double.parseDouble(items[index++]);
-		this.high = Double.parseDouble(items[index++]);
-		this.low = Double.parseDouble(items[index++]);
-		this.volume = Long.parseLong(items[index++ + 2]);
+        if (Strings.isEmpty(line.trim())) {
+            return;
+        }
 
-		this.date = items[items.length - 3];
-	}
+        this.stockId = stockId;
+        int index = 0;
+        String[] items = line.split(",");
+        this.name = items[index++];
+        this.open = Double.parseDouble(items[index++]);
+        this.lastClose = Double.parseDouble(items[index++]);
+        this.current = Double.parseDouble(items[index++]);
+        this.high = Double.parseDouble(items[index++]);
+        this.low = Double.parseDouble(items[index++]);
+        this.volume = Long.parseLong(items[index++ + 2]);
 
-	public boolean isValidated() {
-		return this.volume > 0 ? true : false;
-	}
+        this.date = items[items.length - 3];
+    }
 
-	@Override
-	public String toString() {
-		return this.stockId + this.name +"\t[lastClose:" + this.lastClose + "\t:open:" + this.open + "("
-				+ toPercent(this.open, this.lastClose) + ")" + ",\thigh:"
-				+ this.high + "(" + toPercent(this.high, this.lastClose) + ")"
-				+ ",\tcur:" + this.current + "("
-				+ toPercent(this.current, this.lastClose) + ")" + ",\tlow:"
-				+ this.low + "(" + toPercent(this.low, this.lastClose) + ")"
-				+ ",\trange:"
-				+ this.diffRange(this.high, this.low, this.lastClose) + "]";
-	}
+    public boolean isValidated() {
+        //check date format is like: 2015-09-01
+        if (Pattern.matches(dateRegex, date)) {
+            return this.volume > 0 ? true : false;
+        }
+        return false;
+    }
 
-	public String toPercent(double d1, double d2) {
-		double p = ((d1 - d2) * 100) / d2;
-		return String.format("%.2f", p) + "%";
-	}
+    @Override
+    public String toString() {
+        return this.stockId + this.name + "\t[lastClose:" + this.lastClose + "\t:open:" + this.open + "("
+                + toPercent(this.open, this.lastClose) + ")" + ",\thigh:" + this.high + "("
+                + toPercent(this.high, this.lastClose) + ")" + ",\tcur:" + this.current + "("
+                + toPercent(this.current, this.lastClose) + ")" + ",\tlow:" + this.low + "("
+                + toPercent(this.low, this.lastClose) + ")" + ",\trange:"
+                + this.diffRange(this.high, this.low, this.lastClose) + "]";
+    }
 
-	public String diffRange(double d1, double d2, double d3) {
-		double r = (((d1 - d3) * 100) / d3) - (((d2 - d3) * 100) / d3);
-		return String.format("%.2f", Math.abs(r)) + "%";
-	}
+    public String toPercent(double d1, double d2) {
+        double p = ((d1 - d2) * 100) / d2;
+        return String.format("%.2f", p) + "%";
+    }
 
-	public StockPriceVO convertToStockPriceVO() {
-		StockPriceVO vo = new StockPriceVO();
-		vo.setStockId(stockId);
-		vo.setOpen(open);
-		vo.setHigh(high);
-		vo.setClose(current);
-		vo.setLow(low);
-		vo.setDate(date);
-		vo.setVolume(volume);
-		vo.lastClose = this.lastClose;
-		return vo;
-	}
+    public String diffRange(double d1, double d2, double d3) {
+        double r = (((d1 - d3) * 100) / d3) - (((d2 - d3) * 100) / d3);
+        return String.format("%.2f", Math.abs(r)) + "%";
+    }
+
+    public StockPriceVO convertToStockPriceVO() {
+        StockPriceVO vo = new StockPriceVO();
+        vo.setStockId(stockId);
+        vo.setOpen(open);
+        vo.setHigh(high);
+        vo.setClose(current);
+        vo.setLow(low);
+        vo.setDate(date);
+        vo.setVolume(volume);
+        vo.lastClose = this.lastClose;
+        return vo;
+    }
 }
