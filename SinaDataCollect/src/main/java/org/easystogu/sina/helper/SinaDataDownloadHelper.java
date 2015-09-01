@@ -16,65 +16,70 @@ import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
 public class SinaDataDownloadHelper {
-	private static final String baseUrl = "http://hq.sinajs.cn/list=";
-	private static FileConfigurationService configure = FileConfigurationService.getInstance();
-	private StockListConfigurationService stockConfig = StockListConfigurationService.getInstance();
+    private static final String baseUrl = "http://hq.sinajs.cn/list=";
+    private static FileConfigurationService configure = FileConfigurationService.getInstance();
+    private StockListConfigurationService stockConfig = StockListConfigurationService.getInstance();
 
-	// stockList is like: sh000001,sh601318
-	// has prefix
-	public List<RealTimePriceVO> fetchDataFromWeb(String stockList) {
-		String[] stockIds = stockList.split(",");
-		return this.fetchDataFromWeb(Arrays.asList(stockIds));
-	}
+    // stockList is like: sh000001,sh601318
+    // has prefix
+    public List<RealTimePriceVO> fetchDataFromWeb(String stockList) {
+        String[] stockIds = stockList.split(",");
+        return this.fetchDataFromWeb(Arrays.asList(stockIds));
+    }
 
-	public List<RealTimePriceVO> fetchDataFromWeb(List<String> stockIds) {
-		List<RealTimePriceVO> list = new ArrayList<RealTimePriceVO>();
-		StringBuffer urlStr = new StringBuffer(baseUrl);
-		for (String stockId : stockIds) {
-			urlStr.append(stockId + ",");
-		}
+    public List<RealTimePriceVO> fetchDataFromWeb(List<String> stockIds) {
+        List<RealTimePriceVO> list = new ArrayList<RealTimePriceVO>();
+        try {
 
-		SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
-		requestFactory.setConnectTimeout(10000);
-		requestFactory.setReadTimeout(10000);
+            StringBuffer urlStr = new StringBuffer(baseUrl);
+            for (String stockId : stockIds) {
+                urlStr.append(stockId + ",");
+            }
 
-		if (Strings.isNotEmpty(configure.getString(Constants.httpProxyServer))) {
-			Proxy proxy = new Proxy(Type.HTTP, new InetSocketAddress(configure.getString(Constants.httpProxyServer),
-					configure.getInt(Constants.httpProxyPort)));
-			requestFactory.setProxy(proxy);
-		}
+            SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
+            requestFactory.setConnectTimeout(10000);
+            requestFactory.setReadTimeout(10000);
 
-		RestTemplate restTemplate = new RestTemplate(requestFactory);
+            if (Strings.isNotEmpty(configure.getString(Constants.httpProxyServer))) {
+                Proxy proxy = new Proxy(Type.HTTP, new InetSocketAddress(
+                        configure.getString(Constants.httpProxyServer), configure.getInt(Constants.httpProxyPort)));
+                requestFactory.setProxy(proxy);
+            }
 
-		// System.out.println("url=" + urlStr.toString());
-		String contents = restTemplate.getForObject(urlStr.toString(), String.class);
+            RestTemplate restTemplate = new RestTemplate(requestFactory);
 
-		if (Strings.isEmpty(contents)) {
-			System.out.println("Contents is empty");
-			return list;
-		}
+            // System.out.println("url=" + urlStr.toString());
+            String contents = restTemplate.getForObject(urlStr.toString(), String.class);
 
-		String[] content = contents.trim().split("\n");
-		for (int index = 0; index < content.length; index++) {
-			String[] items = content[index].trim().split("\"");
-			if (items.length <= 1) {
-				continue;
-			}
-			// System.out.println(items[1]);
-			String realStockId = stockConfig.getStockIdMapping(stockIds.get(index));
-			RealTimePriceVO vo = new RealTimePriceVO(realStockId, items[1]);
-			if (vo.isValidated()) {
-				list.add(vo);
-			}
+            if (Strings.isEmpty(contents)) {
+                System.out.println("Contents is empty");
+                return list;
+            }
 
-		}
-		return list;
-	}
+            String[] content = contents.trim().split("\n");
+            for (int index = 0; index < content.length; index++) {
+                String[] items = content[index].trim().split("\"");
+                if (items.length <= 1) {
+                    continue;
+                }
+                // System.out.println(items[1]);
+                String realStockId = stockConfig.getStockIdMapping(stockIds.get(index));
+                RealTimePriceVO vo = new RealTimePriceVO(realStockId, items[1]);
+                if (vo.isValidated()) {
+                    list.add(vo);
+                }
 
-	public static void main(String[] args) {
-		SinaDataDownloadHelper ins = new SinaDataDownloadHelper();
-		List<RealTimePriceVO> list = ins.fetchDataFromWeb("sh000001");
-		System.out.println(list.size());
-		System.out.println(list.get(0));
-	}
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public static void main(String[] args) {
+        SinaDataDownloadHelper ins = new SinaDataDownloadHelper();
+        List<RealTimePriceVO> list = ins.fetchDataFromWeb("sh000001");
+        System.out.println(list.size());
+        System.out.println(list.get(0));
+    }
 }
