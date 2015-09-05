@@ -163,7 +163,7 @@ public class HistoryAnalyseReport {
 					}
 
 					if (!reportVO.completed) {
-						//System.out.println("Not Completed: " + reportVO);
+						// System.out.println("Not Completed: " + reportVO);
 						// save to checkpint daily selection table
 						if (isCheckPointSelected(checkPoint)) {
 							this.saveToCheckPointDailySelectionDB(reportVO.stockId, reportVO.buyPriceVO.date,
@@ -193,8 +193,9 @@ public class HistoryAnalyseReport {
 		}
 
 		System.out.println("Total satisfy: " + totalCount + "\t earnPercent[close]=" + (earnPercent[0] / totalCount)
-				+ "\t earnPercent[high]=" + (earnPercent[1] / totalCount) + "\t earnPercent[low]="
-				+ (earnPercent[2] / totalCount));
+				+ "\t earnPercent[high]=" + (earnPercent[1] / totalCount) + "\noldEarn=" + checkPoint.getEarnPercent()
+				+ "\t earnPercent[low]=" + (earnPercent[2] / totalCount));
+
 		System.out.println("Avg hold stock days when sell point: " + (holdDays / totalCount));
 		System.out.println("Avg hold stock days when high price: " + (holdDaysWhenHighPrice / totalCount));
 		System.out.println("Total high earn between (25, 50): " + totalHighCount);
@@ -263,9 +264,9 @@ public class HistoryAnalyseReport {
 		HistoryAnalyseReport reporter = new HistoryAnalyseReport();
 
 		for (DailyCombineCheckPoint checkPoint : DailyCombineCheckPoint.values()) {
-			//if (checkPoint.getEarnPercent() < 8.0) {
-			//	continue;
-			//}
+			 if (checkPoint.getEarnPercent() >= 8.0) {
+			 continue;
+			 }
 			reporter.searchAllStockIdAccordingToCheckPoint(checkPoint);
 		}
 		// reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.SuoLiang_HuiTiao_ShenXiao_Gordon);
