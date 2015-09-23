@@ -144,10 +144,11 @@ public class HistoryAnalyseReport {
 
 		System.out.println("\n===============================" + checkPoint + " (sellPoint:"
 				+ checkPoint.getSellPointType() + ")==========================");
+		
 		for (String stockId : stockIds) {
 
-			// if (!stockId.equals("601636"))
-			// continue;
+			//if (!stockId.equals("002027"))
+			//	continue;
 
 			List<HistoryReportDetailsVO> historyReportList = this.doAnalyseReport(stockId, checkPoint);
 			for (HistoryReportDetailsVO reportVO : historyReportList) {
@@ -163,7 +164,7 @@ public class HistoryAnalyseReport {
 					}
 
 					if (!reportVO.completed) {
-						// System.out.println("Not Completed: " + reportVO);
+						System.out.println("Not Completed: " + reportVO);
 						// save to checkpint daily selection table
 						if (isCheckPointSelected(checkPoint)) {
 							this.saveToCheckPointDailySelectionDB(reportVO.stockId, reportVO.buyPriceVO.date,
@@ -263,12 +264,13 @@ public class HistoryAnalyseReport {
 	public static void main(String[] args) {
 		HistoryAnalyseReport reporter = new HistoryAnalyseReport();
 
-		for (DailyCombineCheckPoint checkPoint : DailyCombineCheckPoint.values()) {
-			 if (checkPoint.getEarnPercent() >= 8.0) {
-			 continue;
-			 }
-			reporter.searchAllStockIdAccordingToCheckPoint(checkPoint);
-		}
-		// reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.SuoLiang_HuiTiao_ShenXiao_Gordon);
+		// for (DailyCombineCheckPoint checkPoint :
+		// DailyCombineCheckPoint.values()) {
+		// if (checkPoint.getEarnPercent() >= 8.0) {
+		// continue;
+		// }
+		// reporter.searchAllStockIdAccordingToCheckPoint(checkPoint);
+		// }
+		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.Many_ZhangTing_Then_DieTing);
 	}
 }

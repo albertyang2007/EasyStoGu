@@ -240,3 +240,11 @@ Avg hold stock days when sell point: 7
 Avg hold stock days when high price: 5
 Total high earn between (25, 50): 12
 Total low  earn between (10, 10): 3
+
+===============================Many_ZhangTing_Then_DieTing (sellPoint:KDJ_Dead)==========================
+Total satisfy: 18	 earnPercent[close]=-11.107144250704165	 earnPercent[high]=15.0985915477926
+oldEarn=99.0	 earnPercent[low]=-26.52068416706634
+Avg hold stock days when sell point: 13
+Avg hold stock days when high price: 5
+Total high earn between (25, 50): 2
+Total low  earn between (10, 10): 8
