@@ -4,7 +4,7 @@ import org.easystogu.config.FileConfigurationService;
 import org.easystogu.utils.SellPointType;
 import org.easystogu.utils.Strings;
 
-public enum DailyCombineCheckPoint {
+public enum DailyCombineCheckPoint { 
 	HengPang_Ready_To_Break_Platform_MA30_Support_MA_RongHe_XiangShang(SellPointType.KDJ_Dead, 19, 19.0), HengPang_Ready_To_Break_Platform_MA20_Support_MA_RongHe_XiangShang(
 			SellPointType.KDJ_Dead, 447, 11.7), HengPang_Ready_To_Break_Platform_BollUp_BollXueShi2_Dn_Gordon(
 			SellPointType.KDJ_Dead, 452, 10.34), DuoTou_HuiTiao_MA30_Support_MA_RongHe_XiangShang(
