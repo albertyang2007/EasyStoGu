@@ -119,6 +119,9 @@ public class DailySelectionRunner implements Runnable {
 
         // if do not use ziJinLiuVO, then return a default vo
         if (!realTimeGetZiJinLiuAnalyse) {
+            ZiJinLiuVO dbZiJinLiuVO = ziJinLiuTableHelper.getZiJinLiu(stockId, latestDate);
+            if (dbZiJinLiuVO != null)
+                return dbZiJinLiuVO;
             return new ZiJinLiuVO("");
         }
 
