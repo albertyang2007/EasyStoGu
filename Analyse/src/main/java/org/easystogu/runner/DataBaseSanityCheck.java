@@ -70,6 +70,7 @@ public class DataBaseSanityCheck implements Runnable {
 			}
 			this.sanityDailyCheck(stockId);
 		}
+		System.out.println("sanityDailyCheck completed.");
 	}
 
 	public void sanityDailyCheck(String stockId) {
@@ -149,6 +150,7 @@ public class DataBaseSanityCheck implements Runnable {
 			}
 			this.sanityWeekCheck(stockId);
 		}
+		System.out.println("sanityWeekCheck completed.");
 	}
 
 	public void sanityWeekCheck(String stockId) {
