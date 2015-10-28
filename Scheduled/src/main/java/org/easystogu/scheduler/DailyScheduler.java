@@ -52,8 +52,8 @@ public class DailyScheduler implements SchedulingConfigurer {
         this.DailyUpdateOverAllRunner();
     }
 
-    // run at 22:00
-    @Scheduled(cron = "0 00 22 * * MON-FRI")
+    // run at 21:00
+    @Scheduled(cron = "0 00 21 * * MON-FRI")
     public void morningUpdateAllZiJinLiuXiangRunner() {
         this.DailyZiJinLiuXiangRunner();
     }
@@ -72,8 +72,8 @@ public class DailyScheduler implements SchedulingConfigurer {
         t.start();
     }
 
-    // run at 21:00
-    @Scheduled(cron = "0 00 21 * * MON-FRI")
+    // run at 22:00
+    @Scheduled(cron = "0 00 22 * * MON-FRI")
     public void dataBaseSanityCheck() {
         logger.info("DataBaseSanityCheck already running.");
         Thread t = new Thread(new DataBaseSanityCheck());
