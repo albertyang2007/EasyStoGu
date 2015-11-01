@@ -147,8 +147,8 @@ public class HistoryAnalyseReport {
 
 		for (String stockId : stockIds) {
 
-			if (!stockId.equals("000024"))
-				continue;
+			if (!stockId.equals("600167"))
+			 continue;
 
 			List<HistoryReportDetailsVO> historyReportList = this.doAnalyseReport(stockId, checkPoint);
 			for (HistoryReportDetailsVO reportVO : historyReportList) {
@@ -173,7 +173,7 @@ public class HistoryAnalyseReport {
 					} else {
 						// for completed VO
 						// remove it from daily selection
-						//System.out.println("Completed: " + reportVO);
+						System.out.println("Completed: " + reportVO);
 						this.checkPointDailySelectionTable.delete(stockId, reportVO.buyPriceVO.date,
 								checkPoint.toString());
 						// save case into history DB
@@ -195,8 +195,8 @@ public class HistoryAnalyseReport {
 		}
 
 		System.out.println("Total satisfy: " + totalCount + "\t earnPercent[close]=" + (earnPercent[0] / totalCount)
-				+ "\t earnPercent[high]=" + (earnPercent[1] / totalCount) + "\noldEarn=" + checkPoint.getEarnPercent()
-				+ "\t earnPercent[low]=" + (earnPercent[2] / totalCount));
+				+ "\t earnPercent[high]=" + (earnPercent[1] / totalCount) + "\t earnPercent[low]="
+				+ (earnPercent[2] / totalCount) + "\noldEarn=" + checkPoint.getEarnPercent());
 
 		System.out.println("Avg hold stock days when sell point: " + (holdDays / totalCount));
 		System.out.println("Avg hold stock days when high price: " + (holdDaysWhenHighPrice / totalCount));
@@ -265,19 +265,20 @@ public class HistoryAnalyseReport {
 	public static void main(String[] args) {
 		HistoryAnalyseReport reporter = new HistoryAnalyseReport();
 
-		//for (DailyCombineCheckPoint checkPoint : DailyCombineCheckPoint.values()) {
-		//	if (checkPoint.getEarnPercent() >= 8.0) {
-		//		continue;
-		//	}
-		//	reporter.searchAllStockIdAccordingToCheckPoint(checkPoint);
-		//}
-		 reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.HengPan_3_Weeks_MA_RongHe_Break_Platform);
-		 reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.HengPan_2_Weeks_MA_RongHe_XiangShang_Break_Platform);
-		 reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.HengPang_Ready_To_Break_Platform_MA30_Support_MA_RongHe_XiangShang);
-		 reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.HengPang_Ready_To_Break_Platform_MA20_Support_MA_RongHe_XiangShang);
-		 reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.HengPang_Ready_To_Break_Platform_KDJ_Gordon);
-		 reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.HengPang_Ready_To_Break_Platform_MACD_Gordon_Week_KDJ_Gordon);
-		 reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.HengPang_Ready_To_Break_Platform_BollUp_BollXueShi2_Dn_Gordon);		 
-		 
+		// for (DailyCombineCheckPoint checkPoint :
+		// DailyCombineCheckPoint.values()) {
+		// if (checkPoint.getEarnPercent() >= 8.0) {
+		// continue;
+		// }
+		// reporter.searchAllStockIdAccordingToCheckPoint(checkPoint);
+		// }
+		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.HengPan_3_Weeks_MA_RongHe_Break_Platform);
+		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.HengPan_2_Weeks_MA_RongHe_XiangShang_Break_Platform);
+		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.HengPang_Ready_To_Break_Platform_MA30_Support_MA_RongHe_XiangShang);
+		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.HengPang_Ready_To_Break_Platform_MA20_Support_MA_RongHe_XiangShang);
+		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.HengPang_Ready_To_Break_Platform_KDJ_Gordon);
+		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.HengPang_Ready_To_Break_Platform_MACD_Gordon_Week_KDJ_Gordon);
+		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.HengPang_Ready_To_Break_Platform_BollUp_BollXueShi2_Dn_Gordon);
+
 	}
 }

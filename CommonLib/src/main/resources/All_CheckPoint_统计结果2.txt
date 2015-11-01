@@ -79,19 +79,12 @@ Avg hold stock days when high price: 4
 Total high earn between (25, 50): 56
 Total low  earn between (10, 10): 151
 
-===============================HengPan_3_Weeks_MA_RongHe_Break_Platform_Orig (sellPoint:KDJ_Dead)==========================
-Total satisfy: 519	 earnPercent[close]=1.8697920062284221	 earnPercent[high]=9.975823595312155	 earnPercent[low]=-6.020916147557287
-Avg hold stock days when sell point: 6
-Avg hold stock days when high price: 4
-Total high earn between (25, 50): 12
-Total low  earn between (10, 10): 23
-
 ===============================HengPan_3_Weeks_MA_RongHe_Break_Platform (sellPoint:KDJ_Dead)==========================
-Total satisfy: 1417	 earnPercent[close]=1.150303737847588	 earnPercent[high]=8.729287722985847	 earnPercent[low]=-5.5375054666861665
+Total satisfy: 1421	 earnPercent[close]=1.1899655556757316	 earnPercent[high]=9.454252858038908 earnPercent[low]=-5.684194765943497
 Avg hold stock days when sell point: 6
 Avg hold stock days when high price: 4
-Total high earn between (25, 50): 16
-Total low  earn between (10, 10): 50
+Total high earn between (25, 50): 25
+Total low  earn between (10, 10): 57
 
 ===============================HengPan_2_Weeks_MA_RongHe_XiangShang_Break_Platform (sellPoint:KDJ_Dead)==========================
 Total satisfy: 672	 earnPercent[close]=1.0939488930984764	 earnPercent[high]=8.65294629099366	 earnPercent[low]=-5.527599603117146
