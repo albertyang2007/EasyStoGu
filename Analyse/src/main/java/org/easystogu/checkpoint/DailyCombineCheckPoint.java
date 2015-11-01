@@ -4,19 +4,18 @@ import org.easystogu.config.FileConfigurationService;
 import org.easystogu.utils.SellPointType;
 import org.easystogu.utils.Strings;
 
-public enum DailyCombineCheckPoint { 
+public enum DailyCombineCheckPoint {
 	HengPang_Ready_To_Break_Platform_MA30_Support_MA_RongHe_XiangShang(SellPointType.KDJ_Dead, 19, 19.0), HengPang_Ready_To_Break_Platform_MA20_Support_MA_RongHe_XiangShang(
 			SellPointType.KDJ_Dead, 447, 11.7), HengPang_Ready_To_Break_Platform_BollUp_BollXueShi2_Dn_Gordon(
 			SellPointType.KDJ_Dead, 452, 10.34), DuoTou_HuiTiao_MA30_Support_MA_RongHe_XiangShang(
 			SellPointType.KDJ_Dead, 142, 11.46), DuoTou_HuiTiao_MA20_Support_MA_RongHe_XiangShang(
-			SellPointType.KDJ_Dead, 2561, 9.46), HengPan_3_Weeks_MA_RongHe_Break_Platform_Orig(SellPointType.KDJ_Dead,
-			521, 10.91), HengPan_3_Weeks_MA_RongHe_Break_Platform(SellPointType.KDJ_Dead, 1419, 9.22), HengPan_2_Weeks_MA_RongHe_XiangShang_Break_Platform(
-			SellPointType.KDJ_Dead, 665, 8.63), HengPang_Ready_To_Break_Platform_KDJ_Gordon(SellPointType.KDJ_Dead,
-			12442, 8.45), HengPang_Ready_To_Break_Platform_MACD_Gordon_Week_KDJ_Gordon(SellPointType.KDJ_Dead, 326,
-			10.45), Close_Higher_BollUp_BollXueShi2_Dn_Gordon(SellPointType.KDJ_Dead, 17000, 8.87), MACD_Gordon(
-			SellPointType.MACD_Dead, 99400, 10.6), KDJ_Gordon(SellPointType.KDJ_Dead, 210114, 6.0), ShenXian_Gordon(
-			SellPointType.ShenXian_Dead, 72577, 12.75 - 12.75), ShenXian_Two_Gordons(SellPointType.KDJ_Dead, 25835,
-			6.0 - 6.0), BollXueShi2_Dn_Gordon(SellPointType.KDJ_Dead, 6685, 9.67), MACD_KDJ_Gordon_3_Days_Red_MA_Ronghe_XiangShang(
+			SellPointType.KDJ_Dead, 2561, 9.46), HengPan_3_Weeks_MA_RongHe_Break_Platform(SellPointType.KDJ_Dead, 1419,
+			9.22), HengPan_2_Weeks_MA_RongHe_XiangShang_Break_Platform(SellPointType.KDJ_Dead, 665, 8.63), HengPang_Ready_To_Break_Platform_KDJ_Gordon(
+			SellPointType.KDJ_Dead, 12442, 8.45), HengPang_Ready_To_Break_Platform_MACD_Gordon_Week_KDJ_Gordon(
+			SellPointType.KDJ_Dead, 326, 10.45), Close_Higher_BollUp_BollXueShi2_Dn_Gordon(SellPointType.KDJ_Dead,
+			17000, 8.87), MACD_Gordon(SellPointType.MACD_Dead, 99400, 10.6), KDJ_Gordon(SellPointType.KDJ_Dead, 210114,
+			6.0), ShenXian_Gordon(SellPointType.ShenXian_Dead, 72577, 12.75 - 12.75), ShenXian_Two_Gordons(
+			SellPointType.KDJ_Dead, 25835, 6.0 - 6.0), BollXueShi2_Dn_Gordon(SellPointType.KDJ_Dead, 6685, 9.67), MACD_KDJ_Gordon_3_Days_Red_MA_Ronghe_XiangShang(
 			SellPointType.KDJ_Dead, 895, 8.55), MACD_KDJ_Gordon_3_Days_Red_High_MA5_MA10_BOLL(SellPointType.KDJ_Dead,
 			43, 8.9), Phase2_Previous_Under_Zero_MACD_Gordon_Now_MACD_Dead_RSV_KDJ_Gordon(SellPointType.KDJ_Dead, 452,
 			8.27), DuoTou_Pre_2_Days_Green_Red_KDJ_Zero_MA30_Support(SellPointType.KDJ_Dead, 1058, 8.56), DuoTou_Pre_2_Days_Green_Red_KDJ_Zero_MA30_Support_MA_RongHe_XiangShang(
