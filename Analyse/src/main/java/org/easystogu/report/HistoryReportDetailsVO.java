@@ -1,6 +1,5 @@
 package org.easystogu.report;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.easystogu.db.access.StockPriceTableHelper;
