@@ -57,7 +57,5 @@ public class DailyUpdateOverAllRunner implements Runnable {
 	public static void main(String[] args) {
 		// run today stockprice anaylse
 		new DailyUpdateOverAllRunner().run();
-		// pre estimate next date stockprice
-		new PreEstimateStockPriceRunner().run();
 	}
 }

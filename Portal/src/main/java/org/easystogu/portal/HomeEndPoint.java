@@ -7,6 +7,7 @@ import javax.ws.rs.core.Response;
 import org.easystogu.easymoney.runner.DailyZiJinLiuXiangRunner;
 import org.easystogu.runner.DailySelectionRunner;
 import org.easystogu.runner.DailyUpdateOverAllRunner;
+import org.easystogu.runner.PreEstimateStockPriceRunner;
 import org.easystogu.sina.runner.RealtimeDisplayStockPriceRunner;
 
 public class HomeEndPoint {
@@ -22,6 +23,14 @@ public class HomeEndPoint {
 		Thread t = new Thread(new DailyUpdateOverAllRunner());
 		t.start();
 		return "DailyUpdateOverAllRunner already running, please check folder result.";
+	}
+	
+	@GET
+	@Path("/PreEstimateStockPriceRunner")
+	public String preEstimateStockPriceRunner() {
+		Thread t = new Thread(new PreEstimateStockPriceRunner());
+		t.start();
+		return "PreEstimateStockPriceRunner already running, please check folder result.";
 	}
 
 	@GET
