@@ -108,14 +108,12 @@ public class PreEstimateStockPriceRunner implements Runnable {
 		for (CheckPointDailySelectionVO currDateCP : currDateCPList) {
 			if (DailyCombineCheckPoint.getCheckPointByName(currDateCP.checkPoint).getEarnPercent() < minEarnPercent)
 				continue;
-			System.out.println("debug for currDateCP " + currDateCP.toString());
 			for (CheckPointDailySelectionVO nextDateCP : nextDateCPList) {
 				if (DailyCombineCheckPoint.getCheckPointByName(nextDateCP.checkPoint).getEarnPercent() < minEarnPercent)
 					continue;
-				System.out.println("debug for nextDateCP " + nextDateCP.toString());
 				if (currDateCP.stockId.equals(nextDateCP.stockId)) {
 					System.out.println(currDateCP.stockId + " " + stockConfig.getStockName(currDateCP.stockId)
-							+ " currDate=" + currDateCP.checkPoint + " nextDate=" + nextDateCP.checkPoint);
+							+ "\n   currDate=" + currDateCP.checkPoint + "\n   nextDate=" + nextDateCP.checkPoint);
 				}
 			}
 		}
