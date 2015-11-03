@@ -103,6 +103,7 @@ public class PreEstimateStockPriceRunner implements Runnable {
 		dailyCheckPointTable.deleteByDate(nextDate);
 	}
 
+	// if both date has checkpoint, this must be a NIU gu 牛股!
 	private void checkDailyCheckPointForBothDate() {
 		System.out.println("CheckPoint for Both Date Report:");
 		Collection<String> bothHitIds = new ArrayList<String>();
