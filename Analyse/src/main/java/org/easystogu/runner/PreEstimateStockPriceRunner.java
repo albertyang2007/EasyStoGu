@@ -1,5 +1,7 @@
 package org.easystogu.runner;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.easystogu.checkpoint.DailyCombineCheckPoint;
@@ -103,6 +105,8 @@ public class PreEstimateStockPriceRunner implements Runnable {
 
 	private void checkDailyCheckPointForBothDate() {
 		System.out.println("CheckPoint for Both Date Report:");
+		Collection<String> bothHitIds = new ArrayList<String>();
+
 		List<CheckPointDailySelectionVO> currDateCPList = dailyCheckPointTable.getDailyCheckPointByDate(currentDate);
 		List<CheckPointDailySelectionVO> nextDateCPList = dailyCheckPointTable.getDailyCheckPointByDate(nextDate);
 		for (CheckPointDailySelectionVO currDateCP : currDateCPList) {
@@ -112,9 +116,24 @@ public class PreEstimateStockPriceRunner implements Runnable {
 				if (DailyCombineCheckPoint.getCheckPointByName(nextDateCP.checkPoint).getEarnPercent() < minEarnPercent)
 					continue;
 				if (currDateCP.stockId.equals(nextDateCP.stockId)) {
-					System.out.println(currDateCP.stockId + " " + stockConfig.getStockName(currDateCP.stockId)
-							+ "\n   currDate=" + currDateCP.checkPoint + "\n   nextDate=" + nextDateCP.checkPoint);
+					if (!bothHitIds.contains(currDateCP.stockId)) {
+						bothHitIds.add(currDateCP.stockId);
+						break;
+					}
 				}
+			}
+		}
+		// report
+		for (String stockId : bothHitIds) {
+			List<CheckPointDailySelectionVO> currList = dailyCheckPointTable.getCheckPointSelection(stockId,
+					currentDate);
+			List<CheckPointDailySelectionVO> nextList = dailyCheckPointTable.getCheckPointSelection(stockId, nextDate);
+			System.out.println(stockId + " " + stockConfig.getStockName(stockId));
+			for (CheckPointDailySelectionVO currCP : currList) {
+				System.out.println("  currDate=" + currCP.checkPoint);
+			}
+			for (CheckPointDailySelectionVO nextCP : nextList) {
+				System.out.println("  nextDate=" + nextCP.checkPoint);
 			}
 		}
 	}

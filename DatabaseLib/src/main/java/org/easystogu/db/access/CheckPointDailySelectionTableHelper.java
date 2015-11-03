@@ -120,6 +120,25 @@ public class CheckPointDailySelectionTableHelper {
 		return null;
 	}
 
+	public List<CheckPointDailySelectionVO> getCheckPointSelection(String stockId, String date) {
+		try {
+
+			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+			namedParameters.addValue("stockid", stockId);
+			namedParameters.addValue("date", date);
+
+			List<CheckPointDailySelectionVO> list = this.namedParameterJdbcTemplate.query(
+					QUERY_BY_STOCKID_AND_DATE_AND_CHECKPOINT_SQL, namedParameters, new IndEventVOMapper());
+
+			return list;
+		} catch (EmptyResultDataAccessException ee) {
+			return null;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 	public CheckPointDailySelectionVO getDifferentLatestCheckPointSelection(String stockId, String checkPoint) {
 		try {
 
