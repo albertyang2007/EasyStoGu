@@ -12,6 +12,7 @@ import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
 import org.easystogu.db.table.ChuQuanChuXiVO;
 import org.easystogu.db.table.StockPriceVO;
 import org.easystogu.log.LogHelper;
+import org.easystogu.utils.WeekdayUtil;
 import org.slf4j.Logger;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -179,6 +180,17 @@ public class StockPriceTableHelper {
 			namedParameters.addValue("stockId", stockId);
 			namedParameters.addValue("date", date);
 			namedParameterJdbcTemplate.execute(DELETE_BY_STOCKID_AND_DATE_SQL, namedParameters,
+					new DefaultPreparedStatementCallback());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void deleteByDate(String date) {
+		try {
+			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+			namedParameters.addValue("date", date);
+			namedParameterJdbcTemplate.execute(DELETE_BY_DATE_SQL, namedParameters,
 					new DefaultPreparedStatementCallback());
 		} catch (Exception e) {
 			e.printStackTrace();

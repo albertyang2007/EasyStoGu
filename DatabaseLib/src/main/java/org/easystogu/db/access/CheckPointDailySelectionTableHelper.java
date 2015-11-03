@@ -3,7 +3,6 @@ package org.easystogu.db.access;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -32,6 +31,8 @@ public class CheckPointDailySelectionTableHelper {
 			+ " WHERE stockid = :stockid AND date = :date AND checkpoint = :checkpoint";
 	public String QUERY_LATEST_BY_STOCKID_AND_NOT_CHECKPOINT_SQL = "SELECT * FROM " + tableName
 			+ " WHERE stockid = :stockid AND checkpoint != :checkpoint ORDER BY DATE DESC LIMIT 1";
+	public String DELETE_BY_DATE_SQL = "DELETE FROM " + tableName + " WHERE date = :date";
+	public String QUERY_BY_DATE_SQL = "SELECT * FROM " + tableName + " WHERE date = :date";
 
 	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
@@ -138,6 +139,24 @@ public class CheckPointDailySelectionTableHelper {
 		return null;
 	}
 
+	public List<CheckPointDailySelectionVO> getDailyCheckPointByDate(String date) {
+		try {
+
+			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+			namedParameters.addValue("date", date);
+
+			List<CheckPointDailySelectionVO> list = this.namedParameterJdbcTemplate.query(QUERY_BY_DATE_SQL,
+					namedParameters, new IndEventVOMapper());
+
+			return list;
+		} catch (EmptyResultDataAccessException ee) {
+			return null;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 	public void delete(String stockId, String date, String checkpoint) {
 		try {
 			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
@@ -171,6 +190,17 @@ public class CheckPointDailySelectionTableHelper {
 			e.printStackTrace();
 		}
 		return false;
+	}
+
+	public void deleteByDate(String date) {
+		try {
+			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+			namedParameters.addValue("date", date);
+			namedParameterJdbcTemplate.execute(DELETE_BY_DATE_SQL, namedParameters,
+					new DefaultPreparedStatementCallback());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public static void main(String[] args) {
