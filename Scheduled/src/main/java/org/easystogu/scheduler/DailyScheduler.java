@@ -2,7 +2,7 @@ package org.easystogu.scheduler;
 
 import org.easystogu.easymoney.runner.DailyZiJinLiuXiangRunner;
 import org.easystogu.log.LogHelper;
-import org.easystogu.runner.DailyUpdateOverAllRunner;
+import org.easystogu.runner.DailyOverAllRunner;
 import org.easystogu.runner.DataBaseSanityCheck;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,25 +31,25 @@ public class DailyScheduler implements SchedulingConfigurer {
     // run at 10:45
     @Scheduled(cron = "0 45 10 * * MON-FRI")
     public void morningUpdateOverAllRunner() {
-        this.DailyUpdateOverAllRunner();
+        this.DailyOverAllRunner();
     }
 
     // run at 11:32
     @Scheduled(cron = "0 32 11 * * MON-FRI")
     public void noonUpdateOverAllRunner() {
-        this.DailyUpdateOverAllRunner();
+        this.DailyOverAllRunner();
     }
 
     // run at 14:15
     @Scheduled(cron = "0 15 14 * * MON-FRI")
     public void afternoonUpdateOverAllRunner() {
-        this.DailyUpdateOverAllRunner();
+        this.DailyOverAllRunner();
     }
 
     // run at 15:02
     @Scheduled(cron = "0 02 15 * * MON-FRI")
     public void FinallyUpdateOverAllRunner() {
-        this.DailyUpdateOverAllRunner();
+        this.DailyOverAllRunner();
     }
 
     // run at 21:00
@@ -58,9 +58,9 @@ public class DailyScheduler implements SchedulingConfigurer {
         this.DailyZiJinLiuXiangRunner();
     }
 
-    private void DailyUpdateOverAllRunner() {
+    private void DailyOverAllRunner() {
         logger.info("DailyUpdateOverAllRunner already running, please check folder result.");
-        Thread t = new Thread(new DailyUpdateOverAllRunner());
+        Thread t = new Thread(new DailyOverAllRunner());
         t.start();
     }
 

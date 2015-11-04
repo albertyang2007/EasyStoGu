@@ -303,7 +303,7 @@ public class DailySelectionRunner implements Runnable {
     // sort by avgHighEarnPercent
     @SuppressWarnings("unchecked")
     public void sortRangeHistoryReport(List<RangeHistoryReportVO> rangeList) {
-        // Collections.sort(rangeList, new CheckPointEarnPercentComparator());
+        //Collections.sort(rangeList, new CheckPointEarnPercentComparator());
         Collections.sort(rangeList, new ZiJinLiuComparator());
     }
 
