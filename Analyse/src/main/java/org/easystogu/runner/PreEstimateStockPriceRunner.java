@@ -1,5 +1,7 @@
 package org.easystogu.runner;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -40,6 +42,7 @@ import org.easystogu.indicator.runner.DailyWeekYiMengBSCountAndSaveDBRunner;
 import org.easystogu.indicator.runner.DailyXueShi2CountAndSaveDBRunner;
 import org.easystogu.indicator.runner.DailyYiMengBSCountAndSaveDBRunner;
 import org.easystogu.indicator.runner.DailyZhuliJinChuCountAndSaveDBRunner;
+import org.easystogu.report.ReportTemplate;
 import org.easystogu.sina.runner.DailyWeeklyStockPriceCountAndSaveDBRunner;
 import org.easystogu.utils.WeekdayUtil;
 
@@ -64,10 +67,10 @@ public class PreEstimateStockPriceRunner implements Runnable {
 				StockPriceVO vo2 = new StockPriceVO();
 				vo2.stockId = vo.stockId;
 				vo2.date = nextDate;
-				vo2.open = vo.close;
-				vo2.low = vo.close;
-				vo2.close = vo.close * nextDatePriceIncPercent;
-				vo2.high = vo.close * nextDatePriceIncPercent;
+				vo2.open = vo.close * nextDatePriceIncPercent;
+				vo2.low = vo2.open;
+				vo2.close = vo2.open;
+				vo2.high = vo2.open;
 				vo2.volume = vo.volume + 100;
 				vo2.lastClose = vo.close;
 
@@ -124,18 +127,57 @@ public class PreEstimateStockPriceRunner implements Runnable {
 				}
 			}
 		}
-		// report
-		for (String stockId : bothHitIds) {
-			List<CheckPointDailySelectionVO> currList = dailyCheckPointTable.getCheckPointSelection(stockId,
-					currentDate);
-			List<CheckPointDailySelectionVO> nextList = dailyCheckPointTable.getCheckPointSelection(stockId, nextDate);
-			System.out.println(stockId + " " + stockConfig.getStockName(stockId));
-			for (CheckPointDailySelectionVO currCP : currList) {
-				System.out.println("  currDate=" + currCP.checkPoint);
+		// report to html
+		reportToHtml(currentDate, nextDate, bothHitIds);
+	}
+
+	public void reportToHtml(String currDate, String nextDate, Collection<String> bothHitIds) {
+		String file = config.getString("report.estimate.html.file").replaceAll("nextDate", nextDate);
+		System.out.println("\nSaving estimate to " + file);
+		try {
+			BufferedWriter fout = new BufferedWriter(new FileWriter(file));
+			fout.write(ReportTemplate.htmlStart);
+			fout.newLine();
+			fout.write(ReportTemplate.tableStart);
+			fout.newLine();
+
+			for (String stockId : bothHitIds) {
+				List<CheckPointDailySelectionVO> currList = dailyCheckPointTable.getCheckPointSelection(stockId,
+						currDate);
+				List<CheckPointDailySelectionVO> nextList = dailyCheckPointTable.getCheckPointSelection(stockId,
+						nextDate);
+				StringBuffer sb = new StringBuffer();
+				sb.append(stockId + " " + stockConfig.getStockName(stockId) + "<br>");
+				System.out.println(stockId + " " + stockConfig.getStockName(stockId));
+				for (CheckPointDailySelectionVO currCP : currList) {
+					sb.append(currDate + " CheckPoint=" + currCP.checkPoint + "<br>");
+					System.out.println(currDate + "  CheckPoint=" + currCP.checkPoint);
+				}
+				for (CheckPointDailySelectionVO nextCP : nextList) {
+					sb.append(nextDate + " CheckPoint=" + nextCP.checkPoint + "<br>");
+					System.out.println(nextDate + "  CheckPoint=" + nextCP.checkPoint);
+				}
+
+				fout.write(ReportTemplate.tableTrStart);
+				fout.newLine();
+
+				fout.write(ReportTemplate.tableTdStart);
+				fout.write(sb.toString());
+				fout.write(ReportTemplate.tableTdEnd);
+
+				fout.write(ReportTemplate.tableTrEnd);
+				fout.newLine();
 			}
-			for (CheckPointDailySelectionVO nextCP : nextList) {
-				System.out.println("  nextDate=" + nextCP.checkPoint);
-			}
+
+			fout.write(ReportTemplate.tableEnd);
+			fout.newLine();
+			fout.write(ReportTemplate.htmlEnd);
+			fout.newLine();
+
+			fout.flush();
+			fout.close();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 

@@ -53,6 +53,7 @@ public class RealTimePriceVO {
 	public long deal;
 	public List<DealVO> dealDetails;// �嵵��ϸ
 	public String date;
+	public String time;
 
 	private String dateRegex = "[0-9]{4}-[0-9]{2}-[0-9]{2}";
 
@@ -74,6 +75,7 @@ public class RealTimePriceVO {
 		this.volume = Long.parseLong(items[index++ + 2]);
 
 		this.date = items[items.length - 3];
+		this.time = items[items.length - 2];
 	}
 
 	public boolean isValidated() {
