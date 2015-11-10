@@ -61,7 +61,7 @@ public class DailySelectionRunner implements Runnable {
             List<StockSuperVO> overWeekList = weekStockOverAllHelper.getLatestNStockSuperVO(stockId, 30);
 
             if (overDayList.size() == 0) {
-                // System.out.println("No stockprice data for " + stockId);
+                //System.out.println("No stockprice data for " + stockId);
                 return;
             }
 
@@ -79,6 +79,7 @@ public class DailySelectionRunner implements Runnable {
             StockSuperVO superVO = overDayList.get(index);
 
             if (!superVO.priceVO.date.equals(latestDate)) {
+            	//System.out.println("priveVO date is not equal latestDate");
                 return;
             }
 
@@ -317,7 +318,8 @@ public class DailySelectionRunner implements Runnable {
         List<String> stockIds = stockConfig.getAllStockId();
         int index = 0;
         for (String stockId : stockIds) {
-            // if (stockId.equals("000979"))
+            //if (!stockId.equals("600680"))
+            //	continue;
             if (index++ % 500 == 0) {
                 System.out.println("Analyse of " + index + "/" + stockIds.size());
             }

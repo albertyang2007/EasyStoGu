@@ -46,7 +46,7 @@ public class DailyUpdateOverAllRunner implements Runnable {
 		DailyWeekYiMengBSCountAndSaveDBRunner.main(args);
 
 		// zijinliu
-		DailyZiJinLiuXiangRunner.main(args);
+		//DailyZiJinLiuXiangRunner.main(args);
 		// analyse
 		DailySelectionRunner.main(args);
 
