@@ -55,8 +55,6 @@ public class RealTimePriceVO {
 	public String date;
 	public String time;
 
-	private String dateRegex = "[0-9]{4}-[0-9]{2}-[0-9]{2}";
-
 	public RealTimePriceVO(String stockId, String line) {
 
 		if (Strings.isEmpty(line.trim())) {
@@ -80,7 +78,7 @@ public class RealTimePriceVO {
 
 	public boolean isValidated() {
 		// check date format is like: 2015-09-01
-		if (date != null && Pattern.matches(dateRegex, date)) {
+		if (Strings.isDateValidate(date)) {
 			return this.volume > 0 ? true : false;
 		}
 		return false;

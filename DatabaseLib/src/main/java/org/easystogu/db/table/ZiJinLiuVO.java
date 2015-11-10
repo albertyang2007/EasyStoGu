@@ -1,5 +1,7 @@
 package org.easystogu.db.table;
 
+import org.easystogu.utils.Strings;
+
 public class ZiJinLiuVO {
 	public int rate;// 当日资金流排名
 	public String stockId;
@@ -39,6 +41,8 @@ public class ZiJinLiuVO {
 	}
 
 	public boolean isValidated() {
+		if (!Strings.isDateValidate(date))
+			return false;
 		if (this.majorNetIn == 0 && this.biggestNetIn == 0 && this.bigNetIn == 0 && this.midNetIn == 0
 				&& this.smallNetIn == 0)
 			return false;
