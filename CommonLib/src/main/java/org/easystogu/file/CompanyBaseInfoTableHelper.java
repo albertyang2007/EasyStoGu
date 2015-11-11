@@ -1,11 +1,13 @@
 package org.easystogu.file;
 
-import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.HashMap;
 
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.easystogu.log.LogHelper;
 import org.easystogu.utils.Strings;
 import org.slf4j.Logger;
@@ -17,66 +19,60 @@ import org.springframework.core.io.ResourceLoader;
 //export all data from easymoney software PC version in "分析"->"财务数据", select text file format
 //the Table_CompanyBaseInfo.txt is saved in CommonLib\src\main\resources
 public class CompanyBaseInfoTableHelper {
-	private static Logger logger = LogHelper.getLogger(CompanyBaseInfoTableHelper.class);
-	private static ResourceLoader resourceLoader = new DefaultResourceLoader();
-	private final HashMap<String, CompanyBaseInfoVO> companyBaseInfo;
-	private static CompanyBaseInfoTableHelper instance = null;
+    private static Logger logger = LogHelper.getLogger(CompanyBaseInfoTableHelper.class);
+    private static ResourceLoader resourceLoader = new DefaultResourceLoader();
+    private String resourcesFileName = "Table_CompanyBaseInfo.txt";
+    private Workbook companyBaseInfoWorkbook = null;
+    private static CompanyBaseInfoTableHelper instance = null;
 
-	public static CompanyBaseInfoTableHelper getInstance() {
-		if (instance == null) {
-			instance = new CompanyBaseInfoTableHelper();
-		}
-		return instance;
-	}
+    public static CompanyBaseInfoTableHelper getInstance() {
+        if (instance == null) {
+            instance = new CompanyBaseInfoTableHelper();
+        }
+        return instance;
+    }
 
-	private CompanyBaseInfoTableHelper() {
-		String[] resourcesPaths = new String[2];
-		resourcesPaths[0] = "classpath:/Table_CompanyBaseInfo.txt";
-		if (Strings.isNotEmpty(System.getProperty("easystogu.companyBaseInfoFile"))) {
-			resourcesPaths[1] = System.getProperty("easystogu.companyBaseInfoFile");
-		} else {
-			resourcesPaths[1] = "Table_CompanyBaseInfo.txt";
-		}
-		companyBaseInfo = loadDataFromFile(resourcesPaths);
-	}
+    public Workbook getCompanyBaseInfoWorkbook() {
+        return this.companyBaseInfoWorkbook;
+    }
 
-	private HashMap<String, CompanyBaseInfoVO> loadDataFromFile(String... resourcesPaths) {
-		HashMap<String, CompanyBaseInfoVO> map = new HashMap<String, CompanyBaseInfoVO>();
+    private CompanyBaseInfoTableHelper() {
 
-		for (String location : resourcesPaths) {
+        String resourcesFilePath = "classpath:/" + resourcesFileName;
+        if (Strings.isNotEmpty(System.getProperty("easystogu.companyBaseInfoFile"))) {
+            resourcesFilePath = System.getProperty("easystogu.companyBaseInfoFile");
+        }
 
-			logger.debug("Loading CompanyBaseInfo file from path:{}", location);
+        logger.debug("Loading CompanyBaseInfo file from path:{}", resourcesFilePath);
 
-			FileInputStream fis = null;
-			try {
-				Resource resource = resourceLoader.getResource(location);
-				fis = new FileInputStream(resource.getFile());
-				BufferedReader reader = new BufferedReader(new InputStreamReader(fis));
+        FileInputStream fis = null;
+        try {
+            Resource resource = resourceLoader.getResource(resourcesFilePath);
+            fis = new FileInputStream(resource.getFile());
+            companyBaseInfoWorkbook = new HSSFWorkbook(fis);
+        } catch (IOException ex) {
+            logger.error("Could not load data from path:{}, {} ", resourcesFilePath, ex.getMessage());
+        } finally {
+            if (fis != null) {
+                try {
+                    logger.debug("Close resource file.");
+                    fis.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
 
-				String line = reader.readLine();
-				while (line != null) {
-					if (Strings.isNotEmpty(line)) {
-						CompanyBaseInfoVO vo = new CompanyBaseInfoVO(line.trim());
-					}
-					line = reader.readLine();
-				}
-
-			} catch (IOException ex) {
-				logger.info("Could not load data from path:{}, {} ", location, ex.getMessage());
-			} finally {
-				if (fis != null) {
-					try {
-						fis.close();
-					} catch (IOException e) {
-					}
-				}
-			}
-		}
-		return map;
-	}
-
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		CompanyBaseInfoTableHelper.getInstance();
-	}
+    public static void main(String[] args) {
+        // TODO Auto-generated method stub
+        Workbook wb = CompanyBaseInfoTableHelper.getInstance().getCompanyBaseInfoWorkbook();
+        Sheet sheet1 = wb.getSheetAt(0);
+        for (Row row : sheet1) {
+          for (Cell cell : row) {
+            System.out.print(cell.getStringCellValue() + "  ");
+          }
+          System.out.println();
+        }
+    }
 }
