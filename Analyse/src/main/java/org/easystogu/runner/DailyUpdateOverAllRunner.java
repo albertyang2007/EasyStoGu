@@ -21,9 +21,6 @@ import org.easystogu.sina.runner.DailyWeeklyStockPriceCountAndSaveDBRunner;
 public class DailyUpdateOverAllRunner implements Runnable {
 	public void run() {
 		String[] args = null;
-		// zijinliu
-		DailyZiJinLiuXiangRunner.main(args);
-		//
 		long st = System.currentTimeMillis();
 		// day
 		DailyStockPriceDownloadAndStoreDBRunner.main(args);
@@ -48,6 +45,8 @@ public class DailyUpdateOverAllRunner implements Runnable {
 		DailyWeekShenXianCountAndSaveDBRunner.main(args);
 		DailyWeekYiMengBSCountAndSaveDBRunner.main(args);
 
+		// zijinliu
+		DailyZiJinLiuXiangRunner.main(args);
 		// analyse
 		DailySelectionRunner.main(args);
 
