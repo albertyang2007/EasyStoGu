@@ -2,12 +2,12 @@ package org.easystogu.indicator.runner;
 
 import java.util.List;
 
-import org.easystogu.config.StockListConfigurationService;
 import org.easystogu.db.access.ChuQuanChuXiPriceHelper;
 import org.easystogu.db.access.IndYiMengBSTableHelper;
 import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.table.StockPriceVO;
 import org.easystogu.db.table.YiMengBSVO;
+import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.indicator.YiMengBSHelper;
 import org.easystogu.multirunner.MultThreadRunner;
 import org.easystogu.utils.Strings;
@@ -17,7 +17,7 @@ public class DailyYiMengBSCountAndSaveDBRunner implements Runnable {
 	protected IndYiMengBSTableHelper yiMengBSTable = IndYiMengBSTableHelper.getInstance();
 	private YiMengBSHelper yiMengBSHelper = new YiMengBSHelper();
 	protected ChuQuanChuXiPriceHelper chuQuanChuXiPriceHelper = new ChuQuanChuXiPriceHelper();
-	protected StockListConfigurationService stockConfig = StockListConfigurationService.getInstance();
+	protected CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 	protected MultThreadRunner parentRunner;
 
 	public DailyYiMengBSCountAndSaveDBRunner() {
@@ -90,7 +90,7 @@ public class DailyYiMengBSCountAndSaveDBRunner implements Runnable {
 
 	// TODO Auto-generated method stub
 	public static void main(String[] args) {
-		StockListConfigurationService stockConfig = StockListConfigurationService.getInstance();
+		CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 		List<String> stockIds = stockConfig.getAllStockId();
 		DailyYiMengBSCountAndSaveDBRunner runner = new DailyYiMengBSCountAndSaveDBRunner();
 		runner.countAndSaved(stockIds);

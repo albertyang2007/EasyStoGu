@@ -2,9 +2,9 @@ package org.easystogu.indicator.runner;
 
 import java.util.List;
 
-import org.easystogu.config.StockListConfigurationService;
 import org.easystogu.db.access.IndWeekMacdTableHelper;
 import org.easystogu.db.access.WeekStockPriceTableHelper;
+import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.multirunner.MultThreadRunner;
 import org.easystogu.utils.WeekdayUtil;
 
@@ -30,7 +30,7 @@ public class DailyWeekMacdCountAndSaveDBRunner extends DailyMacdCountAndSaveDBRu
 
     public static void main(String[] args) {
         // TODO Auto-generated method stub
-        StockListConfigurationService stockConfig = StockListConfigurationService.getInstance();
+    	CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
         DailyWeekMacdCountAndSaveDBRunner runner = new DailyWeekMacdCountAndSaveDBRunner();
         runner.countAndSaved(stockConfig.getAllStockId());
         //runner.countAndSaved("002327");

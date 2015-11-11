@@ -1,6 +1,6 @@
 package org.easystogu.yahoo.runner;
 
-import org.easystogu.config.StockListConfigurationService;
+import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.yahoo.helper.YahooDataDownloadHelper;
 
 public class AutoDownloadRunner {
@@ -12,7 +12,7 @@ public class AutoDownloadRunner {
 		String[] startDate = { "2010", "0", "01" };// query last update date from db
 		String[] endDate = { "2015", "0", "23" };// should be today
 
-		StockListConfigurationService config = StockListConfigurationService
+		CompanyInfoFileHelper config = CompanyInfoFileHelper
 				.getInstance();
 		YahooDataDownloadHelper helper = new YahooDataDownloadHelper();
 		helper.downloadAllHistoryData(config.getAllSZStockId(), "sz",

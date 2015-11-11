@@ -2,7 +2,6 @@ package org.easystogu.runner;
 
 import java.util.List;
 
-import org.easystogu.config.StockListConfigurationService;
 import org.easystogu.db.access.IndBollTableHelper;
 import org.easystogu.db.access.IndKDJTableHelper;
 import org.easystogu.db.access.IndMacdTableHelper;
@@ -28,6 +27,7 @@ import org.easystogu.db.table.StockPriceVO;
 import org.easystogu.db.table.XueShi2VO;
 import org.easystogu.db.table.YiMengBSVO;
 import org.easystogu.db.table.ZhuliJinChuVO;
+import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.indicator.runner.history.HistoryBollCountAndSaveDBRunner;
 import org.easystogu.indicator.runner.history.HistoryKDJCountAndSaveDBRunner;
 import org.easystogu.indicator.runner.history.HistoryMacdCountAndSaveDBRunner;
@@ -90,6 +90,9 @@ public class DataBaseSanityCheck implements Runnable {
 
 		if ((spList.size() != macdList.size())) {
 			System.out.println(stockId + " size of macd is not equal:" + spList.size() + "!=" + macdList.size());
+			
+			figureOutDifferenceDate(spList, macdList);
+			
 			macdTable.delete(stockId);
 			HistoryMacdCountAndSaveDBRunner runner = new HistoryMacdCountAndSaveDBRunner();
 			runner.countAndSaved(stockId);
@@ -166,54 +169,74 @@ public class DataBaseSanityCheck implements Runnable {
 			return;
 
 		if ((spList.size() != macdList.size())) {
-			System.out.println(stockId + " size of macd is not equal:" + spList.size() + "!=" + macdList.size());
+			System.out.println(stockId + " size of week macd is not equal:" + spList.size() + "!=" + macdList.size());
+
+			figureOutDifferenceDate(spList, macdList);
+
 			macdWeekTable.delete(stockId);
 			HistoryWeeklyMacdCountAndSaveDBRunner runner = new HistoryWeeklyMacdCountAndSaveDBRunner();
 			runner.countAndSaved(stockId);
 		}
 		if ((spList.size() != kdjList.size())) {
-			System.out.println(stockId + " size of kdj is not equal:" + spList.size() + "!=" + kdjList.size());
+			System.out.println(stockId + " size of week kdj is not equal:" + spList.size() + "!=" + kdjList.size());
 			kdjWeekTable.delete(stockId);
 			HistoryWeeklyKDJCountAndSaveDBRunner runner = new HistoryWeeklyKDJCountAndSaveDBRunner();
 			runner.countAndSaved(stockId);
 		}
 		if ((spList.size() != bollList.size())) {
-			System.out.println(stockId + " size of boll is not equal:" + spList.size() + "!=" + bollList.size());
+			System.out.println(stockId + " size of week boll is not equal:" + spList.size() + "!=" + bollList.size());
 			bollWeekTable.delete(stockId);
 			HistoryWeeklyBollCountAndSaveDBRunner runner = new HistoryWeeklyBollCountAndSaveDBRunner();
 			runner.countAndSaved(stockId);
 		}
 		if ((spList.size() != shenXianList.size())) {
-			System.out
-					.println(stockId + " size of shenXian is not equal:" + spList.size() + "!=" + shenXianList.size());
+			System.out.println(stockId + " size of week shenXian is not equal:" + spList.size() + "!="
+					+ shenXianList.size());
 			shenXianWeekTable.delete(stockId);
 			HistoryWeeklyShenXianCountAndSaveDBRunner runner = new HistoryWeeklyShenXianCountAndSaveDBRunner();
 			runner.countAndSaved(stockId);
 		}
 		if ((spList.size() != mai1mai2List.size())) {
-			System.out
-					.println(stockId + " size of mai1mai2 is not equal:" + spList.size() + "!=" + mai1mai2List.size());
+			System.out.println(stockId + " size of week mai1mai2 is not equal:" + spList.size() + "!="
+					+ mai1mai2List.size());
 			mai1mai2WeekTable.delete(stockId);
 			HistoryWeeklyMai1Mai2CountAndSaveDBRunner runner = new HistoryWeeklyMai1Mai2CountAndSaveDBRunner();
 			runner.countAndSaved(stockId);
 		}
 		if ((spList.size() != yiMengBSList.size())) {
-			System.out
-					.println(stockId + " size of yiMengBS is not equal:" + spList.size() + "!=" + yiMengBSList.size());
+			System.out.println(stockId + " size of week yiMengBS is not equal:" + spList.size() + "!="
+					+ yiMengBSList.size());
 			yiMengBSWeekTable.delete(stockId);
 			HistoryWeeklyYiMengBSCountAndSaveDBRunner runner = new HistoryWeeklyYiMengBSCountAndSaveDBRunner();
 			runner.countAndSaved(stockId);
 		}
 	}
 
+	public void figureOutDifferenceDate(List<StockPriceVO> spList, List<MacdVO> macdList) {
+		int minLen = Math.min(spList.size(), macdList.size());
+		int index = 0;
+		for (; index < minLen; index++) {
+			StockPriceVO spvo = spList.get(index);
+			MacdVO macdvo = macdList.get(index);
+			if (!spvo.date.equals(macdvo.date)) {
+				System.out.println("spList date != macdList @" + spvo.date);
+			}
+		}
+		if (index == spList.size()) {
+			System.out.println("spList has, but macdList do not have @" + macdList.get(index).date);
+		}
+
+		if (index == macdList.size()) {
+			System.out.println("macdList has, but spList do not have @" + spList.get(index).date);
+		}
+	}
+
 	public void run() {
 		// TODO Auto-generated method stub
-		StockListConfigurationService stockConfig = StockListConfigurationService.getInstance();
+		CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 		DataBaseSanityCheck check = new DataBaseSanityCheck();
 		check.sanityDailyCheck(stockConfig.getAllStockId());
 		check.sanityWeekCheck(stockConfig.getAllStockId());
-		// check.sanityDailyCheck("300039");
-		// check.sanityWeekCheck("300268");
 	}
 
 	public static void main(String[] args) {

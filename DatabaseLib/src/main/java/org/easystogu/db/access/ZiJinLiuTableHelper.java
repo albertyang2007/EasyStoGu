@@ -10,9 +10,9 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
-import org.easystogu.config.StockListConfigurationService;
 import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
 import org.easystogu.db.table.ZiJinLiuVO;
+import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.log.LogHelper;
 import org.slf4j.Logger;
 import org.springframework.dao.DataAccessException;
@@ -226,7 +226,7 @@ public class ZiJinLiuTableHelper {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		StockListConfigurationService stockConfig = StockListConfigurationService.getInstance();
+		CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 		List<String> Ids = stockConfig.getAllStockId();
 		Map<String, String> allIds = new HashMap<String, String>();
 		ZiJinLiuTableHelper ins = ZiJinLiuTableHelper.getInstance();

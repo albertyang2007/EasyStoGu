@@ -2,12 +2,12 @@ package org.easystogu.indicator.runner.history;
 
 import java.util.List;
 
-import org.easystogu.config.StockListConfigurationService;
 import org.easystogu.db.access.ChuQuanChuXiPriceHelper;
 import org.easystogu.db.access.IndYiMengBSTableHelper;
 import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.table.StockPriceVO;
 import org.easystogu.db.table.YiMengBSVO;
+import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.indicator.YiMengBSHelper;
 import org.easystogu.utils.Strings;
 
@@ -73,7 +73,7 @@ public class HistoryYiMengBSCountAndSaveDBRunner {
 	// TODO Auto-generated method stub
 	// 一次性计算数据库中所有ShenXian数据，入库
 	public static void main(String[] args) {
-		StockListConfigurationService stockConfig = StockListConfigurationService.getInstance();
+		CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 		HistoryYiMengBSCountAndSaveDBRunner runner = new HistoryYiMengBSCountAndSaveDBRunner();
 		runner.countAndSaved(stockConfig.getAllStockId());
 		// runner.countAndSaved("002194");

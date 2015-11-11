@@ -2,12 +2,12 @@ package org.easystogu.indicator.runner;
 
 import java.util.List;
 
-import org.easystogu.config.StockListConfigurationService;
 import org.easystogu.db.access.ChuQuanChuXiPriceHelper;
 import org.easystogu.db.access.IndKDJTableHelper;
 import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.table.KDJVO;
 import org.easystogu.db.table.StockPriceVO;
+import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.indicator.KDJHelper;
 import org.easystogu.indicator.runner.utils.StockPriceFetcher;
 import org.easystogu.multirunner.MultThreadRunner;
@@ -18,7 +18,7 @@ public class DailyKDJCountAndSaveDBRunner implements Runnable {
 	protected StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
 	protected IndKDJTableHelper kdjTable = IndKDJTableHelper.getInstance();
 	protected ChuQuanChuXiPriceHelper chuQuanChuXiPriceHelper = new ChuQuanChuXiPriceHelper();
-	protected StockListConfigurationService stockConfig = StockListConfigurationService.getInstance();
+	protected CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 	protected MultThreadRunner parentRunner;
 
 	public DailyKDJCountAndSaveDBRunner() {
@@ -88,7 +88,7 @@ public class DailyKDJCountAndSaveDBRunner implements Runnable {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		StockListConfigurationService stockConfig = StockListConfigurationService.getInstance();
+		CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 		DailyKDJCountAndSaveDBRunner runner = new DailyKDJCountAndSaveDBRunner();
 		runner.countAndSaved(stockConfig.getAllStockId());
 		// runner.countAndSaved("002214");

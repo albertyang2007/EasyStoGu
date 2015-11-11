@@ -35,12 +35,6 @@ public class DailyScheduler implements SchedulingConfigurer {
 		this.DailyOverAllRunner();
 	}
 
-	// run at 14:15
-	@Scheduled(cron = "0 15 14 * * MON-FRI")
-	public void afternoonUpdateOverAllRunner() {
-		this.DailyOverAllRunner();
-	}
-
 	// run at 15:02
 	@Scheduled(cron = "0 02 15 * * MON-FRI")
 	public void FinallyUpdateOverAllRunner() {

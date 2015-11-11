@@ -1,11 +1,19 @@
 package org.easystogu.utils;
 
 import java.math.BigDecimal;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Strings {
 
+	public static Pattern p = Pattern.compile("\\s+");
+
 	public static String dateRegex = "[0-9]{4}-[0-9]{2}-[0-9]{2}";
+
+	public static String replaceAllSpaceToSingleSpace(String str) {
+		Matcher m = p.matcher(str);
+		return m.replaceAll(" ");
+	}
 
 	public static boolean isDateValidate(String date) {
 		if (date != null && Pattern.matches(dateRegex, date)) {

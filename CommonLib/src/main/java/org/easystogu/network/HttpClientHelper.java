@@ -12,7 +12,6 @@ import java.net.URL;
 
 import org.easystogu.config.Constants;
 import org.easystogu.config.FileConfigurationService;
-import org.easystogu.config.StockListConfigurationService;
 import org.easystogu.utils.Strings;
 
 //this http client still have connect timeout
@@ -86,15 +85,13 @@ public class HttpClientHelper {
 	public static void main(String[] args) {
 		String baseUrl = "http://data.eastmoney.com/zjlx/";
 		String outFilePath = "F:/Stock/EasyStoGu/EasyMoneyHistoryData/";
-		StockListConfigurationService stockConfig = StockListConfigurationService.getInstance();
+		String stockId = "000024";
 		HttpClientHelper ins = new HttpClientHelper();
-		for (String stockId : stockConfig.getAllStockId()) {
-			System.out.println("Process " + stockId);
-			String url = baseUrl + stockId + ".html";
-			String outfile = outFilePath + stockId + ".html";
-			String encode = "gb2312";
-			ins.getHttpContentFromWeb(url, outfile, encode);
-		}
+		System.out.println("Process " + stockId);
+		String url = baseUrl + stockId + ".html";
+		String outfile = outFilePath + stockId + ".html";
+		String encode = "gb2312";
+		ins.getHttpContentFromWeb(url, outfile, encode);
 	}
 
 }

@@ -1,8 +1,8 @@
 package org.easystogu.indicator.runner.history;
 
-import org.easystogu.config.StockListConfigurationService;
 import org.easystogu.db.access.IndWeekMai1Mai2TableHelper;
 import org.easystogu.db.access.WeekStockPriceTableHelper;
+import org.easystogu.file.access.CompanyInfoFileHelper;
 
 public class HistoryWeeklyMai1Mai2CountAndSaveDBRunner extends HistoryMai1Mai2CountAndSaveDBRunner {
 	public HistoryWeeklyMai1Mai2CountAndSaveDBRunner() {
@@ -12,7 +12,7 @@ public class HistoryWeeklyMai1Mai2CountAndSaveDBRunner extends HistoryMai1Mai2Co
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		StockListConfigurationService stockConfig = StockListConfigurationService.getInstance();
+		CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 		HistoryWeeklyMai1Mai2CountAndSaveDBRunner runner = new HistoryWeeklyMai1Mai2CountAndSaveDBRunner();
 		runner.countAndSaved(stockConfig.getAllStockId());
         //runner.countAndSaved("600750");

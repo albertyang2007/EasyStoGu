@@ -89,7 +89,7 @@ public enum DailyCombineCheckPoint {
 	}
 
 	public String toStringWithDetails() {
-		return super.toString() + "(" + this.sellPointType + ", " + this.sampleMeet + ", " + this.earnPercent + ")";
+		return super.toString() + "(" + this.sampleMeet + ", " + this.earnPercent + ")";
 	}
 
 	@Override

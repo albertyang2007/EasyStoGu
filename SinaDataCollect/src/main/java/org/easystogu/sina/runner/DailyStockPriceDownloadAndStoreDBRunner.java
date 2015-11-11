@@ -3,16 +3,16 @@ package org.easystogu.sina.runner;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.easystogu.config.StockListConfigurationService;
 import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.table.StockPriceVO;
+import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.sina.common.RealTimePriceVO;
 import org.easystogu.sina.helper.SinaDataDownloadHelper;
 
 public class DailyStockPriceDownloadAndStoreDBRunner implements Runnable {
 	// private static Logger logger =
 	// LogHelper.getLogger(DailyStockPriceDownloadAndStoreDBRunner.class);
-	private StockListConfigurationService stockConfig = StockListConfigurationService.getInstance();
+	private CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 	private StockPriceTableHelper tableHelper = StockPriceTableHelper.getInstance();
 	private SinaDataDownloadHelper sinaHelper = new SinaDataDownloadHelper();
 	private int totalError = 0;

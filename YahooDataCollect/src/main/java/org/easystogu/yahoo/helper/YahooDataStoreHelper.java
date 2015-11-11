@@ -2,14 +2,14 @@ package org.easystogu.yahoo.helper;
 
 import java.util.List;
 
-import org.easystogu.config.StockListConfigurationService;
 import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.table.StockPriceVO;
+import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.yahoo.csv.CSVReader;
 
 public class YahooDataStoreHelper {
     private StockPriceTableHelper tableHelper = StockPriceTableHelper.getInstance();
-    private StockListConfigurationService stockConfig = StockListConfigurationService.getInstance();
+    private CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 
     private void storeDataIntoDatabase(List<StockPriceVO> list) {
         try {

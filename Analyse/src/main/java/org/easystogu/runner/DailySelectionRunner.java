@@ -14,7 +14,6 @@ import org.easystogu.analyse.CombineAnalyseHelper;
 import org.easystogu.analyse.util.IndProcessHelper;
 import org.easystogu.checkpoint.DailyCombineCheckPoint;
 import org.easystogu.config.FileConfigurationService;
-import org.easystogu.config.StockListConfigurationService;
 import org.easystogu.db.access.CheckPointDailySelectionTableHelper;
 import org.easystogu.db.access.ChuQuanChuXiPriceHelper;
 import org.easystogu.db.access.StockPriceTableHelper;
@@ -25,6 +24,7 @@ import org.easystogu.db.table.CheckPointDailySelectionVO;
 import org.easystogu.db.table.StockSuperVO;
 import org.easystogu.db.table.ZiJinLiuVO;
 import org.easystogu.easymoney.helper.RealTimeZiJinLiuFatchDataHelper;
+import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.report.HistoryAnalyseReport;
 import org.easystogu.report.HistoryReportDetailsVO;
 import org.easystogu.report.RangeHistoryReportVO;
@@ -314,7 +314,7 @@ public class DailySelectionRunner implements Runnable {
         // System.out.println("Delete latest's Select Event");
         // eventTable.deleteByDate(runner.latestDate);
 
-        StockListConfigurationService stockConfig = StockListConfigurationService.getInstance();
+    	CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
         List<String> stockIds = stockConfig.getAllStockId();
         int index = 0;
         for (String stockId : stockIds) {

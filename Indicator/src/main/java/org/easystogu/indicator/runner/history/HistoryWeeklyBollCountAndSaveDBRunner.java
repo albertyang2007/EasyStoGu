@@ -1,8 +1,8 @@
 package org.easystogu.indicator.runner.history;
 
-import org.easystogu.config.StockListConfigurationService;
 import org.easystogu.db.access.IndWeekBollTableHelper;
 import org.easystogu.db.access.WeekStockPriceTableHelper;
+import org.easystogu.file.access.CompanyInfoFileHelper;
 
 public class HistoryWeeklyBollCountAndSaveDBRunner extends HistoryBollCountAndSaveDBRunner {
     public HistoryWeeklyBollCountAndSaveDBRunner() {
@@ -12,7 +12,7 @@ public class HistoryWeeklyBollCountAndSaveDBRunner extends HistoryBollCountAndSa
 
     public static void main(String[] args) {
         // TODO Auto-generated method stub
-        StockListConfigurationService stockConfig = StockListConfigurationService.getInstance();
+    	CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
         HistoryWeeklyBollCountAndSaveDBRunner runner = new HistoryWeeklyBollCountAndSaveDBRunner();
         runner.countAndSaved(stockConfig.getAllStockId());
         //runner.countAndSaved("600750");

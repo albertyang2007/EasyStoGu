@@ -2,12 +2,12 @@ package org.easystogu.indicator.runner;
 
 import java.util.List;
 
-import org.easystogu.config.StockListConfigurationService;
 import org.easystogu.db.access.ChuQuanChuXiPriceHelper;
 import org.easystogu.db.access.IndZhuliJinChuTableHelper;
 import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.table.StockPriceVO;
 import org.easystogu.db.table.ZhuliJinChuVO;
+import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.indicator.ZhuliJinChuHelper;
 import org.easystogu.multirunner.MultThreadRunner;
 import org.easystogu.utils.Strings;
@@ -18,7 +18,7 @@ public class DailyZhuliJinChuCountAndSaveDBRunner implements Runnable {
 	protected IndZhuliJinChuTableHelper zhuliJinChuTable = IndZhuliJinChuTableHelper.getInstance();
 	private ZhuliJinChuHelper zhuliJinChuHelper = new ZhuliJinChuHelper();
 	protected ChuQuanChuXiPriceHelper chuQuanChuXiPriceHelper = new ChuQuanChuXiPriceHelper();
-	protected StockListConfigurationService stockConfig = StockListConfigurationService.getInstance();
+	protected CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 	protected MultThreadRunner parentRunner;
 
 	public DailyZhuliJinChuCountAndSaveDBRunner() {
@@ -97,7 +97,7 @@ public class DailyZhuliJinChuCountAndSaveDBRunner implements Runnable {
 
 	// TODO Auto-generated method stub
 	public static void main(String[] args) {
-		StockListConfigurationService stockConfig = StockListConfigurationService.getInstance();
+		CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 		DailyZhuliJinChuCountAndSaveDBRunner runner = new DailyZhuliJinChuCountAndSaveDBRunner();
 		runner.countAndSaved(stockConfig.getAllStockId());
 		// runner.countAndSaved("600000");

@@ -12,7 +12,7 @@ import java.net.URLConnection;
 import java.util.List;
 
 import org.easystogu.config.FileConfigurationService;
-import org.easystogu.config.StockListConfigurationService;
+import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.log.LogHelper;
 import org.slf4j.Logger;
 
@@ -72,7 +72,7 @@ public class HistoryStockPriceDownloadRunner {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		StockListConfigurationService stockConfig = StockListConfigurationService.getInstance();
+		CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 		HistoryStockPriceDownloadRunner runner = new HistoryStockPriceDownloadRunner();
 
 		List<String> stockIds = stockConfig.getAllStockId();

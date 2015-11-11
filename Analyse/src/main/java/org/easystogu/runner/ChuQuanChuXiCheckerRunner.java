@@ -2,11 +2,11 @@ package org.easystogu.runner;
 
 import java.util.List;
 
-import org.easystogu.config.StockListConfigurationService;
 import org.easystogu.db.access.EventChuQuanChuXiTableHelper;
 import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.table.ChuQuanChuXiVO;
 import org.easystogu.db.table.StockPriceVO;
+import org.easystogu.file.access.CompanyInfoFileHelper;
 
 //if table event_gaosongzhuan has update, please run this runner 
 //to update all the gaoSongZhuan price data
@@ -16,7 +16,7 @@ import org.easystogu.db.table.StockPriceVO;
 public class ChuQuanChuXiCheckerRunner implements Runnable {
 	protected StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
 	protected EventChuQuanChuXiTableHelper chuQuanChuXiTable = EventChuQuanChuXiTableHelper.getInstance();
-	protected StockListConfigurationService stockConfig = StockListConfigurationService.getInstance();
+	protected CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 
 	private void checkIfGaoSongZhuanExist(String stockId) {
 		// get latest two day vo
@@ -57,7 +57,7 @@ public class ChuQuanChuXiCheckerRunner implements Runnable {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		StockListConfigurationService stockConfig = StockListConfigurationService.getInstance();
+		CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 		ChuQuanChuXiCheckerRunner runner = new ChuQuanChuXiCheckerRunner();
 		runner.checkIfChuQuanChuXiExist(stockConfig.getAllStockId());
 	}

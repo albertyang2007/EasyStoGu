@@ -7,7 +7,6 @@ import org.easystogu.analyse.CombineAnalyseHelper;
 import org.easystogu.analyse.util.IndProcessHelper;
 import org.easystogu.checkpoint.DailyCombineCheckPoint;
 import org.easystogu.config.FileConfigurationService;
-import org.easystogu.config.StockListConfigurationService;
 import org.easystogu.db.access.CheckPointDailySelectionTableHelper;
 import org.easystogu.db.access.CheckPointHistoryAnalyseTableHelper;
 import org.easystogu.db.access.CheckPointHistorySelectionTableHelper;
@@ -17,12 +16,13 @@ import org.easystogu.db.access.WeekStockSuperVOHelper;
 import org.easystogu.db.table.CheckPointDailySelectionVO;
 import org.easystogu.db.table.CheckPointHistoryAnalyseVO;
 import org.easystogu.db.table.StockSuperVO;
+import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.utils.CrossType;
 import org.easystogu.utils.SellPointType;
 
 public class HistoryAnalyseReport {
 	private FileConfigurationService config = FileConfigurationService.getInstance();
-	private StockListConfigurationService stockConfig = StockListConfigurationService.getInstance();
+	private CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 	private CheckPointHistorySelectionTableHelper historyReportTableHelper = CheckPointHistorySelectionTableHelper
 			.getInstance();
 	private WeekStockSuperVOHelper weekStockOverAllHelper = new WeekStockSuperVOHelper();

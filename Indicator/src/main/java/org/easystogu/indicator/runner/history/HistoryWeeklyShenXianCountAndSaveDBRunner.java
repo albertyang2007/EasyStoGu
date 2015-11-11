@@ -1,8 +1,8 @@
 package org.easystogu.indicator.runner.history;
 
-import org.easystogu.config.StockListConfigurationService;
 import org.easystogu.db.access.IndWeekShenXianTableHelper;
 import org.easystogu.db.access.WeekStockPriceTableHelper;
+import org.easystogu.file.access.CompanyInfoFileHelper;
 
 public class HistoryWeeklyShenXianCountAndSaveDBRunner extends HistoryShenXianCountAndSaveDBRunner {
 	public HistoryWeeklyShenXianCountAndSaveDBRunner() {
@@ -12,7 +12,7 @@ public class HistoryWeeklyShenXianCountAndSaveDBRunner extends HistoryShenXianCo
 
     public static void main(String[] args) {
         // TODO Auto-generated method stub
-        StockListConfigurationService stockConfig = StockListConfigurationService.getInstance();
+    	CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
         HistoryWeeklyShenXianCountAndSaveDBRunner runner = new HistoryWeeklyShenXianCountAndSaveDBRunner();
         runner.countAndSaved(stockConfig.getAllStockId());
         //runner.countAndSaved("600750");

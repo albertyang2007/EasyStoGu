@@ -8,7 +8,6 @@ import java.util.List;
 
 import org.easystogu.checkpoint.DailyCombineCheckPoint;
 import org.easystogu.config.FileConfigurationService;
-import org.easystogu.config.StockListConfigurationService;
 import org.easystogu.db.access.CheckPointDailySelectionTableHelper;
 import org.easystogu.db.access.IndBollTableHelper;
 import org.easystogu.db.access.IndKDJTableHelper;
@@ -28,6 +27,7 @@ import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.access.WeekStockPriceTableHelper;
 import org.easystogu.db.table.CheckPointDailySelectionVO;
 import org.easystogu.db.table.StockPriceVO;
+import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.indicator.runner.DailyBollCountAndSaveDBRunner;
 import org.easystogu.indicator.runner.DailyKDJCountAndSaveDBRunner;
 import org.easystogu.indicator.runner.DailyMacdCountAndSaveDBRunner;
@@ -49,7 +49,7 @@ import org.easystogu.utils.WeekdayUtil;
 //based on latest close price, pre-estimate next working day's price
 public class PreEstimateStockPriceRunner implements Runnable {
 	private FileConfigurationService config = FileConfigurationService.getInstance();
-	private StockListConfigurationService stockConfig = StockListConfigurationService.getInstance();
+	private CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 	private StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
 	private String currentDate = stockPriceTable.getLatestStockDate();
 	private String nextDate = WeekdayUtil.nextWorkingDate(currentDate);
@@ -182,8 +182,8 @@ public class PreEstimateStockPriceRunner implements Runnable {
 	}
 
 	public void run() {
+		String[] args = null;
 		try {
-			String[] args = null;
 			// day
 			injectMockStockPriceDate();
 
@@ -218,6 +218,18 @@ public class PreEstimateStockPriceRunner implements Runnable {
 		finally {
 			// clean up all the estimate price data
 			cleanupMockData();
+
+			// bug: to fix spList size is not equal to macdList size
+			// week nextdate is delete, so re-count the week data
+			// recount week
+			DailyWeeklyStockPriceCountAndSaveDBRunner.main(args);
+			// recount week ind
+			DailyWeekMacdCountAndSaveDBRunner.main(args);
+			DailyWeekKDJCountAndSaveDBRunner.main(args);
+			DailyWeekBollCountAndSaveDBRunner.main(args);
+			DailyWeekMai1Mai2CountAndSaveDBRunner.main(args);
+			DailyWeekShenXianCountAndSaveDBRunner.main(args);
+			DailyWeekYiMengBSCountAndSaveDBRunner.main(args);
 		}
 	}
 

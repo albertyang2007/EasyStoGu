@@ -2,11 +2,11 @@ package org.easystogu.sina.runner.history;
 
 import java.util.List;
 
-import org.easystogu.config.StockListConfigurationService;
 import org.easystogu.db.access.ChuQuanChuXiPriceHelper;
 import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.access.WeekStockPriceTableHelper;
 import org.easystogu.db.table.StockPriceVO;
+import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.utils.WeekdayUtil;
 
 //手动将2009年之后的stockprice分成每周入库，weeksotckprice，一次性运行
@@ -78,7 +78,7 @@ public class WeeklyStockPriceManualCountAndSaveDBRunner {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		StockListConfigurationService stockConfig = StockListConfigurationService.getInstance();
+		CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 		WeeklyStockPriceManualCountAndSaveDBRunner runner = new WeeklyStockPriceManualCountAndSaveDBRunner();
 		runner.countAndSave(stockConfig.getAllStockId());
 		// runner.countAndSave("002214");

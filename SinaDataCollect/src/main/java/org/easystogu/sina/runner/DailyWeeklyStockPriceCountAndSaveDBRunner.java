@@ -2,11 +2,11 @@ package org.easystogu.sina.runner;
 
 import java.util.List;
 
-import org.easystogu.config.StockListConfigurationService;
 import org.easystogu.db.access.ChuQuanChuXiPriceHelper;
 import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.access.WeekStockPriceTableHelper;
 import org.easystogu.db.table.StockPriceVO;
+import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.utils.WeekdayUtil;
 
 //每日stockprice入库之后计算本周的stockprice，入库
@@ -15,7 +15,7 @@ public class DailyWeeklyStockPriceCountAndSaveDBRunner implements Runnable {
 	private WeekStockPriceTableHelper weekStockPriceTable = WeekStockPriceTableHelper.getInstance();
 	private String latestDate = stockPriceTable.getLatestStockDate();
 	protected ChuQuanChuXiPriceHelper chuQuanChuXiPriceHelper = new ChuQuanChuXiPriceHelper();
-	protected StockListConfigurationService stockConfig = StockListConfigurationService.getInstance();
+	protected CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 
 	public void deleteWeekStockPrice(String stockId, String date) {
 		weekStockPriceTable.delete(stockId, date);
@@ -80,7 +80,7 @@ public class DailyWeeklyStockPriceCountAndSaveDBRunner implements Runnable {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		StockListConfigurationService stockConfig = StockListConfigurationService.getInstance();
+		CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 		DailyWeeklyStockPriceCountAndSaveDBRunner runner = new DailyWeeklyStockPriceCountAndSaveDBRunner();
 		runner.countAndSave(stockConfig.getAllStockId());
 		// runner.countAndSaved("002327");

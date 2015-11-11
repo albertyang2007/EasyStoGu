@@ -9,7 +9,7 @@ import java.util.List;
 
 import org.easystogu.config.Constants;
 import org.easystogu.config.FileConfigurationService;
-import org.easystogu.config.StockListConfigurationService;
+import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.sina.common.RealTimePriceVO;
 import org.easystogu.utils.Strings;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
@@ -18,7 +18,7 @@ import org.springframework.web.client.RestTemplate;
 public class SinaDataDownloadHelper {
     private static final String baseUrl = "http://hq.sinajs.cn/list=";
     private static FileConfigurationService configure = FileConfigurationService.getInstance();
-    private StockListConfigurationService stockConfig = StockListConfigurationService.getInstance();
+    private CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 
     // stockList is like: sh000001,sh601318
     // has prefix

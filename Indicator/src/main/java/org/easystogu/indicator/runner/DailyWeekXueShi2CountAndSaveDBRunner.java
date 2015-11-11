@@ -2,9 +2,9 @@ package org.easystogu.indicator.runner;
 
 import java.util.List;
 
-import org.easystogu.config.StockListConfigurationService;
 import org.easystogu.db.access.IndWeekXueShi2TableHelper;
 import org.easystogu.db.access.WeekStockPriceTableHelper;
+import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.utils.WeekdayUtil;
 
 public class DailyWeekXueShi2CountAndSaveDBRunner extends DailyXueShi2CountAndSaveDBRunner {
@@ -25,7 +25,7 @@ public class DailyWeekXueShi2CountAndSaveDBRunner extends DailyXueShi2CountAndSa
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		StockListConfigurationService stockConfig = StockListConfigurationService.getInstance();
+		CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 		DailyWeekXueShi2CountAndSaveDBRunner runner = new DailyWeekXueShi2CountAndSaveDBRunner();
 		runner.countAndSaved(stockConfig.getAllStockId());
 		// runner.countAndSaved("002214");
