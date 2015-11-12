@@ -222,14 +222,14 @@ public class PreEstimateStockPriceRunner implements Runnable {
 			// bug: to fix spList size is not equal to macdList size
 			// week nextdate is delete, so re-count the week data
 			// recount week
-			// DailyWeeklyStockPriceCountAndSaveDBRunner.main(args);
+			DailyWeeklyStockPriceCountAndSaveDBRunner.main(args);
 			// recount week ind
-			// DailyWeekMacdCountAndSaveDBRunner.main(args);
-			// DailyWeekKDJCountAndSaveDBRunner.main(args);
-			// DailyWeekBollCountAndSaveDBRunner.main(args);
-			// DailyWeekMai1Mai2CountAndSaveDBRunner.main(args);
-			// DailyWeekShenXianCountAndSaveDBRunner.main(args);
-			// DailyWeekYiMengBSCountAndSaveDBRunner.main(args);
+			DailyWeekMacdCountAndSaveDBRunner.main(args);
+			DailyWeekKDJCountAndSaveDBRunner.main(args);
+			DailyWeekBollCountAndSaveDBRunner.main(args);
+			DailyWeekMai1Mai2CountAndSaveDBRunner.main(args);
+			DailyWeekShenXianCountAndSaveDBRunner.main(args);
+			DailyWeekYiMengBSCountAndSaveDBRunner.main(args);
 		}
 	}
 
