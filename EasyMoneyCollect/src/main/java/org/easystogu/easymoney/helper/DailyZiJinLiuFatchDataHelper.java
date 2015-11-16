@@ -25,7 +25,7 @@ public class DailyZiJinLiuFatchDataHelper {
 	// one page contains 50 stockIds and total 2914/50=59 pages
 	public static final int totalPages = 59;
 	private final String baseUrl = "http://data.eastmoney.com/zjlx/detail.html";
-	private String currentDate = "";
+	public String currentDate = "";
 
 	public List<ZiJinLiuVO> getAllStockIdsZiJinLiu(int toPage) {
 		return this.get1DayAllStockIdsZiJinLiu(toPage);

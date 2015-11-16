@@ -17,7 +17,6 @@ public class DailyZiJinLiuXiangRunner implements Runnable {
 	private ZiJinLiu3DayTableHelper zijinliu3DayTableHelper = ZiJinLiu3DayTableHelper.getInstance();
 	private ZiJinLiu5DayTableHelper zijinliu5DayTableHelper = ZiJinLiu5DayTableHelper.getInstance();
 	private StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
-	private String latestDate = stockPriceTable.getLatestStockDate();
 	private int toPage = 10;
 
 	public DailyZiJinLiuXiangRunner() {
@@ -30,12 +29,11 @@ public class DailyZiJinLiuXiangRunner implements Runnable {
 
 	public void countAndSaved() {
 		System.out.println("Fatch ZiJinLiu only toPage = " + toPage);
+		zijinliuTableHelper.deleteByDate(fatchDataHelper.currentDate);
 		List<ZiJinLiuVO> list = fatchDataHelper.getAllStockIdsZiJinLiu(toPage);
 		System.out.println("Total Fatch ZiJinLiu size = " + list.size());
 		for (ZiJinLiuVO vo : list) {
-			vo.setDate(latestDate);
 			if (vo.isValidated()) {
-				zijinliuTableHelper.delete(vo.stockId, vo.date);
 				zijinliuTableHelper.insert(vo);
 				// System.out.println(vo.stockId + "=" + vo.name);
 			}
@@ -44,12 +42,11 @@ public class DailyZiJinLiuXiangRunner implements Runnable {
 
 	public void countAndSaved_3Day() {
 		System.out.println("Fatch ZiJinLiu only toPage = " + toPage);
+		zijinliu3DayTableHelper.deleteByDate(fatchDataHelper.currentDate);
 		List<ZiJinLiuVO> list = fatchDataHelper.get3DayAllStockIdsZiJinLiu(toPage);
 		System.out.println("Total Fatch ZiJinLiu size = " + list.size());
 		for (ZiJinLiuVO vo : list) {
-			vo.setDate(latestDate);
 			if (vo.isValidated()) {
-				zijinliu3DayTableHelper.delete(vo.stockId, vo.date);
 				zijinliu3DayTableHelper.insert(vo);
 				// System.out.println(vo.stockId + "=" + vo.name);
 			}
@@ -58,12 +55,11 @@ public class DailyZiJinLiuXiangRunner implements Runnable {
 
 	public void countAndSaved_5Day() {
 		System.out.println("Fatch ZiJinLiu only toPage = " + toPage);
+		zijinliu5DayTableHelper.deleteByDate(fatchDataHelper.currentDate);
 		List<ZiJinLiuVO> list = fatchDataHelper.get5DayAllStockIdsZiJinLiu(toPage);
 		System.out.println("Total Fatch ZiJinLiu size = " + list.size());
 		for (ZiJinLiuVO vo : list) {
-			vo.setDate(latestDate);
 			if (vo.isValidated()) {
-				zijinliu5DayTableHelper.delete(vo.stockId, vo.date);
 				zijinliu5DayTableHelper.insert(vo);
 				// System.out.println(vo.stockId + "=" + vo.name);
 			}
