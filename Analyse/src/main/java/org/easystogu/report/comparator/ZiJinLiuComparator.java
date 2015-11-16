@@ -10,6 +10,7 @@ public class ZiJinLiuComparator implements Comparator {
 		RangeHistoryReportVO vo1 = (RangeHistoryReportVO) arg0;
 		RangeHistoryReportVO vo2 = (RangeHistoryReportVO) arg1;
 
-		return (vo1.currentSuperVO.ziJinLiuVO.majorNetPer >= vo2.currentSuperVO.ziJinLiuVO.majorNetPer) ? 0 : 1;
+		return (vo1.currentSuperVO.getFirstZiJinLiuVO().majorNetPer >= vo2.currentSuperVO.getFirstZiJinLiuVO().majorNetPer) ? 0
+				: 1;
 	}
 }

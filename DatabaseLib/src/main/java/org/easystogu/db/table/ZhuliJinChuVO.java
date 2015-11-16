@@ -2,7 +2,6 @@ package org.easystogu.db.table;
 
 //table name = "ind_zhulijinchu"
 public class ZhuliJinChuVO {
-
 	public String stockId;
 	public String name;
 	public String date;

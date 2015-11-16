@@ -3,9 +3,14 @@ package org.easystogu.db.table;
 import org.easystogu.utils.Strings;
 
 public class ZiJinLiuVO {
+	public static final String curDay = "curDay";// current day's zijinliu
+	public static final String _3Day = "3Day";// recent 3 day's zijinliu
+	public static final String _5Day = "5Day";// recent 5 day's zijinliu
+
 	public int rate;// 当日资金流排名
 	public String stockId;
 	public String name;
+	public String incPer;
 	public String date;
 	public double majorNetIn;
 	public double majorNetPer;
@@ -31,13 +36,13 @@ public class ZiJinLiuVO {
 	}
 
 	public String toNetInString() {
-		return "ziJinLiu [" + this.rate + "," + this.majorNetIn + "," + this.biggestNetIn + "," + this.bigNetIn + ","
-				+ this.midNetIn + "," + this.smallNetIn + "]";
+		return "ZiJinLiu [" + this.rate + "," + this.incPer + "," + this.majorNetIn + "," + this.biggestNetIn + ","
+				+ this.bigNetIn + "," + this.midNetIn + "," + this.smallNetIn + "]";
 	}
 
 	public String toNetPerString() {
-		return "ziJinLiu [" + this.rate + "," + this.majorNetPer + "," + this.biggestNetPer + "," + this.bigNetPer
-				+ "," + this.midNetPer + "," + this.smallNetPer + "]";
+		return "ZiJinLiu [" + this.rate + "," + this.incPer + "," + this.majorNetPer + "," + this.biggestNetPer + ","
+				+ this.bigNetPer + "," + this.midNetPer + "," + this.smallNetPer + "]";
 	}
 
 	public boolean isValidated() {
@@ -151,5 +156,13 @@ public class ZiJinLiuVO {
 
 	public void setRate(int rate) {
 		this.rate = rate;
+	}
+
+	public String getIncPer() {
+		return incPer;
+	}
+
+	public void setIncPer(String incPer) {
+		this.incPer = incPer;
 	}
 }

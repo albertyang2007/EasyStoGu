@@ -163,6 +163,8 @@ public class DailyZiJinLiuFatchDataHelper {
 						vo.stockId = data[1];
 						vo.name = data[2].trim();
 
+						vo.incPer = data[7];
+
 						vo.majorNetIn = convertNetIn2Double(data[8]);
 						vo.majorNetPer = convertNetPer2Double(data[9]);
 
