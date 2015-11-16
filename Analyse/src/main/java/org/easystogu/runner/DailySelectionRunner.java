@@ -121,7 +121,7 @@ public class DailySelectionRunner implements Runnable {
 
 		// if real time zijinliu is not collect, then find it from total range
 		// zijinliu (59 pages)
-		superVO.putZiJinLiuVO(ZiJinLiuVO.curDay, ziJinLiuTableHelper.getZiJinLiu(superVO.priceVO.stockId, latestDate));
+		superVO.putZiJinLiuVO(ZiJinLiuVO._1Day, ziJinLiuTableHelper.getZiJinLiu(superVO.priceVO.stockId, latestDate));
 		superVO.putZiJinLiuVO(ZiJinLiuVO._3Day,
 				ziJinLiu3DayTableHelper.getZiJinLiu(superVO.priceVO.stockId, latestDate));
 		superVO.putZiJinLiuVO(ZiJinLiuVO._5Day,
@@ -254,7 +254,7 @@ public class DailySelectionRunner implements Runnable {
 
 				fout.write(ReportTemplate.tableTdStart);
 				fout.write(rangeVO.toSimpleString() + "&nbsp; WeekLen(" + rangeVO.currentSuperVO.hengPanWeekLen
-						+ ") &nbsp; KDJ(" + (int) rangeVO.currentSuperVO.kdjVO.k + ") &nbsp;"
+						+ ") &nbsp; KDJ(" + (int) rangeVO.currentSuperVO.kdjVO.k + ") <br> "
 						+ rangeVO.currentSuperVO.genZiJinLiuInfo());
 				fout.write(ReportTemplate.tableTdEnd);
 				fout.newLine();

@@ -127,11 +127,25 @@ public class StockSuperVO {
 	// we have 3 zijinliuvos: currentDay, 3Day, 5Day
 	// the first one is currentDay's ziJinLiu
 	//
-	public ZiJinLiuVO getFirstZiJinLiuVO() {
-		if (this.ziJinLiuVOMap.containsKey(ZiJinLiuVO.curDay)) {
-			return this.ziJinLiuVOMap.get(ZiJinLiuVO.curDay);
+	public double getFirstZiJinLiuVOMajorNetPer() {
+		if (this.ziJinLiuVOMap.containsKey(ZiJinLiuVO._1Day)) {
+			return this.ziJinLiuVOMap.get(ZiJinLiuVO._1Day).majorNetPer;
 		}
-		return new ZiJinLiuVO();
+		return 0;
+	}
+
+	public double getAllZiJinLiuVOMajorNetPer() {
+		double sum = 0.0;
+		if (this.ziJinLiuVOMap.containsKey(ZiJinLiuVO._1Day)) {
+			sum += this.ziJinLiuVOMap.get(ZiJinLiuVO._1Day).majorNetPer;
+		}
+		if (this.ziJinLiuVOMap.containsKey(ZiJinLiuVO._3Day)) {
+			sum += this.ziJinLiuVOMap.get(ZiJinLiuVO._3Day).majorNetPer;
+		}
+		if (this.ziJinLiuVOMap.containsKey(ZiJinLiuVO._5Day)) {
+			sum += this.ziJinLiuVOMap.get(ZiJinLiuVO._5Day).majorNetPer;
+		}
+		return sum;
 	}
 
 	public void putZiJinLiuVO(String whichDay, ZiJinLiuVO ziJinLiuVO) {
@@ -143,14 +157,14 @@ public class StockSuperVO {
 
 	public String genZiJinLiuInfo() {
 		StringBuffer rtn = new StringBuffer();
-		if (this.ziJinLiuVOMap.containsKey(ZiJinLiuVO.curDay)) {
-			rtn.append(ZiJinLiuVO.curDay + this.ziJinLiuVOMap.get(ZiJinLiuVO.curDay).toNetPerString() + " ");
+		if (this.ziJinLiuVOMap.containsKey(ZiJinLiuVO._1Day)) {
+			rtn.append(ZiJinLiuVO._1Day + this.ziJinLiuVOMap.get(ZiJinLiuVO._1Day).toNetPerString() + " <br> ");
 		}
 		if (this.ziJinLiuVOMap.containsKey(ZiJinLiuVO._3Day)) {
-			rtn.append(ZiJinLiuVO._3Day + this.ziJinLiuVOMap.get(ZiJinLiuVO._3Day).toNetPerString() + " ");
+			rtn.append(ZiJinLiuVO._3Day + this.ziJinLiuVOMap.get(ZiJinLiuVO._3Day).toNetPerString() + " <br> ");
 		}
 		if (this.ziJinLiuVOMap.containsKey(ZiJinLiuVO._5Day)) {
-			rtn.append(ZiJinLiuVO._5Day + this.ziJinLiuVOMap.get(ZiJinLiuVO._5Day).toNetPerString() + " ");
+			rtn.append(ZiJinLiuVO._5Day + this.ziJinLiuVOMap.get(ZiJinLiuVO._5Day).toNetPerString() + " <br> ");
 		}
 		return rtn.toString();
 	}
