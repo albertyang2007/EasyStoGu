@@ -40,11 +40,9 @@ public class DailySelectionRunner implements Runnable {
 	private CheckPointDailySelectionTableHelper checkPointDailySelectionTable = CheckPointDailySelectionTableHelper
 			.getInstance();
 	private ZiJinLiuTableHelper ziJinLiuTableHelper = ZiJinLiuTableHelper.getInstance();
-	private RealTimeZiJinLiuFatchDataHelper realTimeZiJinLiuHelper = new RealTimeZiJinLiuFatchDataHelper();
 	private HistoryAnalyseReport historyReportHelper = new HistoryAnalyseReport();
 	private CombineAnalyseHelper combineAnalyserHelper = new CombineAnalyseHelper();
 	private double minEarnPercent = config.getDouble("minEarnPercent_Select_CheckPoint");
-	private boolean realTimeGetZiJinLiuAnalyse = config.getBoolean("real_Time_Get_ZiJin_Liu_Analyse", true);
 	private boolean doHistoryAnalyzeInDailySelection = config.getBoolean("do_History_Analyze_In_Daily_Selection", true);
 	private String[] specifySelectCheckPoints = config.getString("specify_Select_CheckPoint", "").split(";");
 	private String[] specifyDependCheckPoints = config.getString("specify_Depend_CheckPoint", "").split(";");
@@ -121,29 +119,10 @@ public class DailySelectionRunner implements Runnable {
 
 		// if real time zijinliu is not collect, then find it from total range
 		// zijinliu (59 pages)
-		if (!realTimeGetZiJinLiuAnalyse) {
-			ZiJinLiuVO dbZiJinLiuVO = ziJinLiuTableHelper.getZiJinLiu(stockId, latestDate);
-			if (dbZiJinLiuVO != null)
-				return dbZiJinLiuVO;
-			return new ZiJinLiuVO("");
-		}
-
-		if (!this.realTimeZiJinLiuMap.containsKey(stockId)) {
-			ZiJinLiuVO rtZiJinLiuVO = realTimeZiJinLiuHelper.fetchDataFromWeb(stockId);
-			ZiJinLiuVO dbZiJinLiuVO = ziJinLiuTableHelper.getZiJinLiu(stockId, latestDate);
-			if (rtZiJinLiuVO != null && dbZiJinLiuVO != null) {
-				if (!rtZiJinLiuVO.isValidated()) {
-					// if can not get real time zijinliu, then use history DB
-					rtZiJinLiuVO = dbZiJinLiuVO;
-				} else {
-					// the real time zijinliu do not have rate, so do add it
-					rtZiJinLiuVO.setRate(dbZiJinLiuVO.getRate());
-				}
-			}
-			this.realTimeZiJinLiuMap.put(new String(stockId), rtZiJinLiuVO);
-		}
-
-		return this.realTimeZiJinLiuMap.get(stockId);
+		ZiJinLiuVO dbZiJinLiuVO = ziJinLiuTableHelper.getZiJinLiu(stockId, latestDate);
+		if (dbZiJinLiuVO != null)
+			return dbZiJinLiuVO;
+		return new ZiJinLiuVO("");
 	}
 
 	private void saveToCheckPointSelectionDB(StockSuperVO superVO, DailyCombineCheckPoint checkPoint) {

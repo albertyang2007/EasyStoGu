@@ -10,6 +10,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+//real time zijinliu
 public class RealTimeZiJinLiuFatchDataHelper {
 
 	private static final String baseUrl = "http://data.eastmoney.com/zjlx/";

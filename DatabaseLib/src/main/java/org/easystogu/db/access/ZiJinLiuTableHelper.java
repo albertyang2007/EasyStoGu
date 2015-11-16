@@ -26,6 +26,7 @@ public class ZiJinLiuTableHelper {
 	private static Logger logger = LogHelper.getLogger(ZiJinLiuTableHelper.class);
 	private static ZiJinLiuTableHelper instance = null;
 	protected DataSource dataSource = PostgreSqlDataSourceFactory.createDataSource();
+	// please modify this SQL in all subClass
 	protected String tableName = "ZIJINLIU";
 	protected String INSERT_SQL = "INSERT INTO "
 			+ tableName

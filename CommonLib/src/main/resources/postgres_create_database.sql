@@ -499,6 +499,66 @@ ALTER TABLE zijinliu
 GRANT ALL ON TABLE zijinliu TO public;
 GRANT ALL ON TABLE zijinliu TO postgres;
 
+-- Table: zijinliu_3day
+
+-- DROP TABLE zijinliu_3day;
+
+CREATE TABLE zijinliu_3day
+(
+  stockid text NOT NULL,
+  date text NOT NULL,
+  rate integer,
+  majornetin numeric,
+  majornetper numeric,
+  biggestnetin numeric,
+  biggestnetper numeric,
+  bignetin numeric,
+  bignetper numeric,
+  midnetin numeric,
+  midnetper numeric,
+  smallnetin numeric,
+  smallnetper numeric,
+  CONSTRAINT zijinliu_3day_primary_key PRIMARY KEY (stockid, date)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE zijinliu_3day
+  OWNER TO postgres;
+GRANT ALL ON TABLE zijinliu_3day TO public;
+GRANT ALL ON TABLE zijinliu_3day TO postgres;
+
+
+-- Table: zijinliu_5day
+
+-- DROP TABLE zijinliu_5day;
+
+CREATE TABLE zijinliu_5day
+(
+  stockid text NOT NULL,
+  date text NOT NULL,
+  rate integer,
+  majornetin numeric,
+  majornetper numeric,
+  biggestnetin numeric,
+  biggestnetper numeric,
+  bignetin numeric,
+  bignetper numeric,
+  midnetin numeric,
+  midnetper numeric,
+  smallnetin numeric,
+  smallnetper numeric,
+  CONSTRAINT zijinliu_5day_primary_key PRIMARY KEY (stockid, date)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE zijinliu_5day
+  OWNER TO postgres;
+GRANT ALL ON TABLE zijinliu_5day TO public;
+GRANT ALL ON TABLE zijinliu_5day TO postgres;
+
+
 -- Table: ind_yimengbs
 
 -- DROP TABLE ind_yimengbs;
