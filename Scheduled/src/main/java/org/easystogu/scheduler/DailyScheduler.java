@@ -1,6 +1,6 @@
 package org.easystogu.scheduler;
 
-import org.easystogu.easymoney.runner.DailyZiJinLiuXiangRunner;
+import org.easystogu.easymoney.runner.DailyZiJinLiuRunner;
 import org.easystogu.log.LogHelper;
 import org.easystogu.runner.DailyOverAllRunner;
 import org.easystogu.runner.DailyUpdateEstimateStockRunner;
@@ -62,13 +62,13 @@ public class DailyScheduler implements SchedulingConfigurer {
 
 	// run at 21:00
 	@Scheduled(cron = "0 00 21 * * MON-FRI")
-	public void morningUpdateAllZiJinLiuXiangRunner() {
-		this.DailyZiJinLiuXiangRunner();
+	public void _0_DailyZiJinLiuRunner() {
+		this.DailyZiJinLiuRunner();
 	}
 
 	// run at 22:00
 	@Scheduled(cron = "0 00 22 * * MON-FRI")
-	public void dataBaseSanityCheck() {
+	public void _0_DataBaseSanityCheck() {
 		logger.info("DataBaseSanityCheck already running.");
 		Thread t = new Thread(new DataBaseSanityCheck());
 		t.start();
@@ -80,9 +80,9 @@ public class DailyScheduler implements SchedulingConfigurer {
 		t.start();
 	}
 
-	private void DailyZiJinLiuXiangRunner() {
-		logger.info("DailyZiJinLiuXiangRunner already running, please check DB result.");
-		DailyZiJinLiuXiangRunner runner = new DailyZiJinLiuXiangRunner();
+	private void DailyZiJinLiuRunner() {
+		logger.info("DailyZiJinLiuRunner already running, please check DB result.");
+		DailyZiJinLiuRunner runner = new DailyZiJinLiuRunner();
 		runner.resetToAllPage();
 		Thread t = new Thread(runner);
 		t.start();

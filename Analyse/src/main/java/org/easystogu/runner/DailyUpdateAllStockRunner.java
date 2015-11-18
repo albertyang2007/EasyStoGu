@@ -2,7 +2,7 @@ package org.easystogu.runner;
 
 import java.util.List;
 
-import org.easystogu.easymoney.runner.DailyZiJinLiuXiangRunner;
+import org.easystogu.easymoney.runner.DailyZiJinLiuRunner;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.indicator.runner.AllDailyIndCountAndSaveDBRunner;
 import org.easystogu.sina.runner.DailyStockPriceDownloadAndStoreDBRunner;
@@ -11,6 +11,7 @@ import org.easystogu.sina.runner.DailyWeeklyStockPriceCountAndSaveDBRunner;
 public class DailyUpdateAllStockRunner implements Runnable {
 	private CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 	private List<String> allStockIds = stockConfig.getAllStockId();
+	private DailySelectionRunner dailySelectionRunner = new DailySelectionRunner();
 
 	public void run() {
 		String[] args = null;
@@ -27,9 +28,10 @@ public class DailyUpdateAllStockRunner implements Runnable {
 		new AllDailyIndCountAndSaveDBRunner().runDailyWeekIndForStockIds(allStockIds);
 
 		// zijinliu
-		DailyZiJinLiuXiangRunner.main(args);
+		DailyZiJinLiuRunner.main(args);
 		// analyse
-		new DailySelectionRunner().runForStockIds(allStockIds);
+		dailySelectionRunner.setFetchRealTimeZiJinLiu(false);
+		dailySelectionRunner.runForStockIds(allStockIds);
 
 		System.out.println("stop using " + (System.currentTimeMillis() - st) / 1000 + " seconds");
 	}

@@ -3,14 +3,13 @@ package org.easystogu.easymoney.runner;
 import java.util.List;
 
 import org.easystogu.config.FileConfigurationService;
-import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.access.ZiJinLiu3DayTableHelper;
 import org.easystogu.db.access.ZiJinLiu5DayTableHelper;
 import org.easystogu.db.access.ZiJinLiuTableHelper;
 import org.easystogu.db.table.ZiJinLiuVO;
 import org.easystogu.easymoney.helper.DailyZiJinLiuFatchDataHelper;
 
-public class DailyZiJinLiuXiangRunner implements Runnable {
+public class DailyZiJinLiuRunner implements Runnable {
 	private FileConfigurationService config = FileConfigurationService.getInstance();
 	private DailyZiJinLiuFatchDataHelper fatchDataHelper = new DailyZiJinLiuFatchDataHelper();
 	private ZiJinLiuTableHelper zijinliuTableHelper = ZiJinLiuTableHelper.getInstance();
@@ -18,7 +17,7 @@ public class DailyZiJinLiuXiangRunner implements Runnable {
 	private ZiJinLiu5DayTableHelper zijinliu5DayTableHelper = ZiJinLiu5DayTableHelper.getInstance();
 	private int toPage = 10;
 
-	public DailyZiJinLiuXiangRunner() {
+	public DailyZiJinLiuRunner() {
 		this.toPage = config.getInt("real_Time_Get_ZiJin_Liu_PageNumber", 10);
 	}
 
@@ -72,7 +71,7 @@ public class DailyZiJinLiuXiangRunner implements Runnable {
 	}
 
 	public static void main(String[] args) {
-		DailyZiJinLiuXiangRunner runner = new DailyZiJinLiuXiangRunner();
+		DailyZiJinLiuRunner runner = new DailyZiJinLiuRunner();
 		runner.run();
 	}
 }

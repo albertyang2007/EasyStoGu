@@ -12,8 +12,19 @@ import org.jsoup.select.Elements;
 
 //real time zijinliu
 public class RealTimeZiJinLiuFatchDataHelper {
-
 	private static final String baseUrl = "http://data.eastmoney.com/zjlx/";
+	private static RealTimeZiJinLiuFatchDataHelper instance = null;
+
+	private RealTimeZiJinLiuFatchDataHelper() {
+
+	}
+
+	public static RealTimeZiJinLiuFatchDataHelper getInstance() {
+		if (instance == null) {
+			instance = new RealTimeZiJinLiuFatchDataHelper();
+		}
+		return instance;
+	}
 
 	public ZiJinLiuVO fetchDataFromWeb(String stockId) {
 		ZiJinLiuVO vo = new ZiJinLiuVO(stockId);

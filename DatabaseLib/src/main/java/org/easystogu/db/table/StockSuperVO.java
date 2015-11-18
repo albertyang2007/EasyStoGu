@@ -136,6 +136,10 @@ public class StockSuperVO {
 
 	public double getAllZiJinLiuVOMajorNetPer() {
 		double sum = 0.0;
+
+		if (this.ziJinLiuVOMap.containsKey(ZiJinLiuVO.RealTime)) {
+			sum += this.ziJinLiuVOMap.get(ZiJinLiuVO.RealTime).majorNetPer;
+		}
 		if (this.ziJinLiuVOMap.containsKey(ZiJinLiuVO._1Day)) {
 			sum += this.ziJinLiuVOMap.get(ZiJinLiuVO._1Day).majorNetPer;
 		}
@@ -157,6 +161,9 @@ public class StockSuperVO {
 
 	public String genZiJinLiuInfo() {
 		StringBuffer rtn = new StringBuffer();
+		if (this.ziJinLiuVOMap.containsKey(ZiJinLiuVO.RealTime)) {
+			rtn.append(ZiJinLiuVO.RealTime + this.ziJinLiuVOMap.get(ZiJinLiuVO.RealTime).toNetPerString() + " <br> ");
+		}
 		if (this.ziJinLiuVOMap.containsKey(ZiJinLiuVO._1Day)) {
 			rtn.append(ZiJinLiuVO._1Day + this.ziJinLiuVOMap.get(ZiJinLiuVO._1Day).toNetPerString() + " <br> ");
 		}

@@ -3,6 +3,7 @@ package org.easystogu.db.table;
 import org.easystogu.utils.Strings;
 
 public class ZiJinLiuVO {
+	public static final String RealTime = "RealTime";// real time's zijinliu
 	public static final String _1Day = "1Day";// current day's zijinliu
 	public static final String _3Day = "3Day";// recent 3 day's zijinliu
 	public static final String _5Day = "5Day";// recent 5 day's zijinliu
