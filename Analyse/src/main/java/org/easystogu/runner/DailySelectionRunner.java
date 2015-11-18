@@ -132,6 +132,8 @@ public class DailySelectionRunner implements Runnable {
 			if (!this.realTimeZiJinLiuMap.containsKey(stockId)) {
 				realTimeVO = realTimeZiJinLiuHelper.fetchDataFromWeb(stockId);
 				this.realTimeZiJinLiuMap.put(stockId, realTimeVO);
+			} else {
+				realTimeVO = this.realTimeZiJinLiuMap.get(stockId);
 			}
 
 			// put ziJinLiu VO to list

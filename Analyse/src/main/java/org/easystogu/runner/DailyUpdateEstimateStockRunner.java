@@ -28,7 +28,7 @@ public class DailyUpdateEstimateStockRunner implements Runnable {
 		// day ind
 		new AllDailyIndCountAndSaveDBRunner().runDailyIndForStockIds(estimateStockIds);
 		// week
-		DailyWeeklyStockPriceCountAndSaveDBRunner.main(args);
+		new DailyWeeklyStockPriceCountAndSaveDBRunner().countAndSave(estimateStockIds);
 		// week ind
 		new AllDailyIndCountAndSaveDBRunner().runDailyWeekIndForStockIds(estimateStockIds);
 

@@ -23,7 +23,7 @@ public class DailyUpdateAllStockRunner implements Runnable {
 		// day ind
 		new AllDailyIndCountAndSaveDBRunner().runDailyIndForStockIds(allStockIds);
 		// week
-		DailyWeeklyStockPriceCountAndSaveDBRunner.main(args);
+		new DailyWeeklyStockPriceCountAndSaveDBRunner().countAndSave(allStockIds);
 		// week ind
 		new AllDailyIndCountAndSaveDBRunner().runDailyWeekIndForStockIds(allStockIds);
 

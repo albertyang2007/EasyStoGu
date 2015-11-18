@@ -34,7 +34,7 @@ public class RestTemplateHelper {
 
 	public String fetchDataFromWeb(String url) {
 		StringBuffer urlStr = new StringBuffer(url);
-
+		System.out.println("fetchDataFromWeb: url=" + urlStr);
 		try {
 			String contents = restTemplate.getForObject(urlStr.toString(), String.class);
 			// System.out.println(contents);
