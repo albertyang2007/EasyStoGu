@@ -6,8 +6,9 @@ import javax.ws.rs.core.Response;
 
 import org.easystogu.easymoney.runner.DailyZiJinLiuXiangRunner;
 import org.easystogu.runner.DailySelectionRunner;
-import org.easystogu.runner.DailyUpdateOverAllRunner;
+import org.easystogu.runner.DailyUpdateAllStockRunner;
 import org.easystogu.runner.DailyOverAllRunner;
+import org.easystogu.runner.DailyUpdateEstimateStockRunner;
 import org.easystogu.runner.PreEstimateStockPriceRunner;
 import org.easystogu.sina.runner.RealtimeDisplayStockPriceRunner;
 
@@ -17,15 +18,23 @@ public class HomeEndPoint {
 	public Response test() {
 		return Response.ok().entity("Welcome easystogu").build();
 	}
+	
+	@GET
+	@Path("/DailyUpdateEstimateStockRunner")
+	public String dailyUpdateEstimateStockRunner() {
+		Thread t = new Thread(new DailyUpdateEstimateStockRunner());
+		t.start();
+		return "DailyUpdateEstimateStockRunner already running, please check DB result.";
+	}
 
 	@GET
-	@Path("/DailyUpdateOverAllRunner")
+	@Path("/DailyUpdateAllStockRunner")
 	public String dailyUpdateOverAllRunner() {
-		Thread t = new Thread(new DailyUpdateOverAllRunner());
+		Thread t = new Thread(new DailyUpdateAllStockRunner());
 		t.start();
-		return "DailyUpdateOverAllRunner already running, please check folder result.";
+		return "DailyUpdateAllStockRunner already running, please check folder result.";
 	}
-	
+
 	@GET
 	@Path("/PreEstimateStockPriceRunner")
 	public String preEstimateStockPriceRunner() {
@@ -41,7 +50,7 @@ public class HomeEndPoint {
 		t.start();
 		return "DailySelectionRunner already running, please check folder result.";
 	}
-	
+
 	@GET
 	@Path("/DailyOverAllRunner")
 	public String dailyOverAllRunner() {
@@ -55,12 +64,12 @@ public class HomeEndPoint {
 	public String realtimeDisplayStockPriceRunner() {
 		return new RealtimeDisplayStockPriceRunner().printRealTimeOutput();
 	}
-	
+
 	@GET
-    @Path("/DailyZiJinLiuXiangRunner")
-    public String dailyZiJinLiuXiangRunner() {
-	    Thread t = new Thread(new DailyZiJinLiuXiangRunner());
-        t.start();
-        return "DailyZiJinLiuXiangRunner already running, please check DB result.";
-    }
+	@Path("/DailyZiJinLiuXiangRunner")
+	public String dailyZiJinLiuXiangRunner() {
+		Thread t = new Thread(new DailyZiJinLiuXiangRunner());
+		t.start();
+		return "DailyZiJinLiuXiangRunner already running, please check DB result.";
+	}
 }

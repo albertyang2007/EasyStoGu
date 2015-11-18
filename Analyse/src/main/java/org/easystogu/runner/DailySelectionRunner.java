@@ -34,6 +34,7 @@ import org.easystogu.report.comparator.ZiJinLiuComparator;
 
 public class DailySelectionRunner implements Runnable {
 	private FileConfigurationService config = FileConfigurationService.getInstance();
+	private CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 	private StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
 	private StockSuperVOHelper stockOverAllHelper = new StockSuperVOHelper();
 	private WeekStockSuperVOHelper weekStockOverAllHelper = new WeekStockSuperVOHelper();
@@ -292,14 +293,7 @@ public class DailySelectionRunner implements Runnable {
 		Collections.sort(rangeList, new ZiJinLiuComparator());
 	}
 
-	public void run() {
-		// CheckPointDailySelectionTableHelper eventTable =
-		// CheckPointDailySelectionTableHelper.getInstance();
-		// System.out.println("Delete latest's Select Event");
-		// eventTable.deleteByDate(runner.latestDate);
-
-		CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
-		List<String> stockIds = stockConfig.getAllStockId();
+	public void runForStockIds(List<String> stockIds) {
 		int index = 0;
 		for (String stockId : stockIds) {
 			// if (!stockId.equals("600680"))
@@ -312,6 +306,11 @@ public class DailySelectionRunner implements Runnable {
 
 		reportSelectedStockIds();
 		reportSelectedHistoryReport();
+	}
+
+	public void run() {
+		List<String> stockIds = stockConfig.getAllStockId();
+		this.runForStockIds(stockIds);
 	}
 
 	public static void main(String[] args) {

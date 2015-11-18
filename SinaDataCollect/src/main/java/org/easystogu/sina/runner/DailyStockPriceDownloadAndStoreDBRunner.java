@@ -3,11 +3,13 @@ package org.easystogu.sina.runner;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.easystogu.db.access.EstimateStockTableHelper;
 import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.table.StockPriceVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.sina.common.RealTimePriceVO;
 import org.easystogu.sina.helper.SinaDataDownloadHelper;
+import org.easystogu.utils.WeekdayUtil;
 
 public class DailyStockPriceDownloadAndStoreDBRunner implements Runnable {
 	// private static Logger logger =
@@ -18,35 +20,25 @@ public class DailyStockPriceDownloadAndStoreDBRunner implements Runnable {
 	private int totalError = 0;
 	private int totalSize = 0;
 
-	public void downloadDataAndSaveIntoDB() {
-		List<String> shStockIds = stockConfig.getAllSHStockId("sh");
-		List<String> szStockIds = stockConfig.getAllSZStockId("sz");
-		String szzsStockId = stockConfig.getSZZSStockIdForSina();
-
-		List<String> totalStockIds = new ArrayList<String>();
-
-		totalStockIds.add(szzsStockId);
-		totalStockIds.addAll(shStockIds);
-		totalStockIds.addAll(szStockIds);
-
+	public void downloadDataAndSaveIntoDB(List<String> allStockIds) {
 		int batchSize = 200;
-		int batchs = totalStockIds.size() / batchSize;
-		totalSize = totalStockIds.size();
-
+		int batchs = allStockIds.size() / batchSize;
+		totalSize = allStockIds.size();
+		System.out.println("Process daily price, totalSize= " + totalSize);
 		// 分批取数据
 		int index = 0;
 		for (; index < batchs; index++) {
 			System.out.println("Process daily price " + index + "/" + batchs);
-			List<RealTimePriceVO> list = sinaHelper.fetchDataFromWeb(totalStockIds.subList(index * batchSize,
-					(index + 1) * batchSize));
+			List<RealTimePriceVO> list = sinaHelper.fetchDataFromWeb(allStockIds.subList(index * batchSize, (index + 1)
+					* batchSize));
 			for (RealTimePriceVO vo : list) {
 				this.saveIntoDB(vo.convertToStockPriceVO());
 			}
 		}
 		// 去剩余数据
 		System.out.println("Process daily price " + index + "/" + batchs);
-		List<RealTimePriceVO> list = sinaHelper.fetchDataFromWeb(totalStockIds.subList(index * batchSize,
-				totalStockIds.size()));
+		List<RealTimePriceVO> list = sinaHelper.fetchDataFromWeb(allStockIds.subList(index * batchSize,
+				allStockIds.size()));
 		for (RealTimePriceVO vo : list) {
 			this.saveIntoDB(vo.convertToStockPriceVO());
 		}
@@ -76,15 +68,39 @@ public class DailyStockPriceDownloadAndStoreDBRunner implements Runnable {
 		System.out.println("totalError=" + this.totalError);
 	}
 
+	public void runForStockIds(List<String> allStockIds) {
+		// add prefix to stockId in query
+		List<String> totalStockIds = new ArrayList<String>();
+		for (String stockId : allStockIds) {
+			if (stockId.startsWith("6")) {
+				totalStockIds.add("sh" + stockId);
+			} else if (stockId.startsWith("0") || stockId.startsWith("3")) {
+				totalStockIds.add("sz" + stockId);
+			}
+		}
+
+		downloadDataAndSaveIntoDB(totalStockIds);
+		printResult();
+	}
+
 	public void run() {
-		downloadDataAndSaveIntoDB();
+		List<String> shStockIds = stockConfig.getAllSHStockId("sh");
+		List<String> szStockIds = stockConfig.getAllSZStockId("sz");
+		String szzsStockId = stockConfig.getSZZSStockIdForSina();
+
+		List<String> allStockIds = new ArrayList<String>();
+
+		allStockIds.add(szzsStockId);
+		allStockIds.addAll(shStockIds);
+		allStockIds.addAll(szStockIds);
+
+		downloadDataAndSaveIntoDB(allStockIds);
 		printResult();
 	}
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		DailyStockPriceDownloadAndStoreDBRunner runner = new DailyStockPriceDownloadAndStoreDBRunner();
-		runner.downloadDataAndSaveIntoDB();
-		runner.printResult();
+		runner.run();
 	}
 }

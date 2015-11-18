@@ -2,7 +2,8 @@ package org.easystogu.scheduler;
 
 import org.easystogu.easymoney.runner.DailyZiJinLiuXiangRunner;
 import org.easystogu.log.LogHelper;
-import org.easystogu.runner.DailyUpdateOverAllRunner;
+import org.easystogu.runner.DailyOverAllRunner;
+import org.easystogu.runner.DailyUpdateEstimateStockRunner;
 import org.easystogu.runner.DataBaseSanityCheck;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,16 +30,34 @@ public class DailyScheduler implements SchedulingConfigurer {
 	// refer to:
 	// http://www.quartz-scheduler.org/documentation/quartz-1.x/tutorials/crontrigger
 
+	// run at 10:32
+	@Scheduled(cron = "0 32 10 * * MON-FRI")
+	public void _0_DailyUpdateEstimateStockRunner() {
+		this.DailyUpdateEstimateStockRunner();
+	}
+
 	// run at 11:32
 	@Scheduled(cron = "0 32 11 * * MON-FRI")
-	public void noonUpdateOverAllRunner() {
-		this.DailyUpdateOverAllRunner();
+	public void _1_DailyUpdateEstimateStockRunner() {
+		this.DailyUpdateEstimateStockRunner();
+	}
+
+	// run at 13:42
+	@Scheduled(cron = "0 42 13 * * MON-FRI")
+	public void _2_DailyUpdateEstimateStockRunner() {
+		this.DailyUpdateEstimateStockRunner();
+	}
+
+	// run at 14:35
+	@Scheduled(cron = "0 35 14 * * MON-FRI")
+	public void _3_DailyUpdateEstimateStockRunner() {
+		this.DailyUpdateEstimateStockRunner();
 	}
 
 	// run at 15:02
 	@Scheduled(cron = "0 02 15 * * MON-FRI")
-	public void FinallyUpdateOverAllRunner() {
-		this.DailyUpdateOverAllRunner();
+	public void _0_DailyOverAllRunner() {
+		this.DailyOverAllRunner();
 	}
 
 	// run at 21:00
@@ -47,9 +66,17 @@ public class DailyScheduler implements SchedulingConfigurer {
 		this.DailyZiJinLiuXiangRunner();
 	}
 
-	private void DailyUpdateOverAllRunner() {
-		logger.info("DailyUpdateOverAllRunner already running, please check folder result.");
-		Thread t = new Thread(new DailyUpdateOverAllRunner());
+	// run at 22:00
+	@Scheduled(cron = "0 00 22 * * MON-FRI")
+	public void dataBaseSanityCheck() {
+		logger.info("DataBaseSanityCheck already running.");
+		Thread t = new Thread(new DataBaseSanityCheck());
+		t.start();
+	}
+	
+	private void DailyUpdateEstimateStockRunner() {
+		logger.info("DailyUpdateEstimateStockRunner already running, please check folder result.");
+		Thread t = new Thread(new DailyUpdateEstimateStockRunner());
 		t.start();
 	}
 
@@ -61,11 +88,10 @@ public class DailyScheduler implements SchedulingConfigurer {
 		t.start();
 	}
 
-	// run at 22:00
-	@Scheduled(cron = "0 00 22 * * MON-FRI")
-	public void dataBaseSanityCheck() {
-		logger.info("DataBaseSanityCheck already running.");
-		Thread t = new Thread(new DataBaseSanityCheck());
+	private void DailyOverAllRunner() {
+		logger.info("DailyOverAllRunner already running, please check DB result.");
+		DailyOverAllRunner runner = new DailyOverAllRunner();
+		Thread t = new Thread(runner);
 		t.start();
 	}
 }
