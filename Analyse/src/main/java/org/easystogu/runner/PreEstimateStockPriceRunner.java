@@ -101,7 +101,7 @@ public class PreEstimateStockPriceRunner implements Runnable {
 		List<CheckPointDailySelectionVO> nextDateCPList = dailyCheckPointTable.getDailyCheckPointByDate(nextDate);
 		for (CheckPointDailySelectionVO nextDateCP : nextDateCPList) {
 			if (DailyCombineCheckPoint.getCheckPointByName(nextDateCP.checkPoint).getEarnPercent() >= this.minEarnPercent) {
-				EstimateStockVO vo = new EstimateStockVO(nextDateCP.stockId, nextDateCP.date);				
+				EstimateStockVO vo = new EstimateStockVO(nextDateCP.stockId, nextDateCP.date);
 				estimateStockTable.insertIfNotExist(vo);
 			}
 		}
@@ -185,7 +185,8 @@ public class PreEstimateStockPriceRunner implements Runnable {
 	public void run() {
 		String[] args = null;
 		try {
-			// day
+			// mock next date stockprice, it must be call after current date's
+			// stockprice is inject into DB
 			injectMockStockPriceDate();
 
 			// day ind
