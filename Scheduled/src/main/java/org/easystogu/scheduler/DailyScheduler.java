@@ -2,6 +2,7 @@ package org.easystogu.scheduler;
 
 import org.easystogu.easymoney.runner.DailyZiJinLiuRunner;
 import org.easystogu.log.LogHelper;
+import org.easystogu.runner.DailyOverAllRunner;
 import org.easystogu.runner.DailyUpdateAllStockRunner;
 import org.easystogu.runner.DailyUpdateEstimateStockRunner;
 import org.easystogu.runner.DataBaseSanityCheck;
@@ -57,8 +58,8 @@ public class DailyScheduler implements SchedulingConfigurer {
 
 	// run at 15:02
 	@Scheduled(cron = "0 02 15 * * MON-FRI")
-	public void _0_PreEstimateStockPriceRunner() {
-		this.PreEstimateStockPriceRunner();
+	public void _0_DailyOverAllRunner() {
+		this.DailyOverAllRunner();
 	}
 
 	// run at 21:00
@@ -74,17 +75,17 @@ public class DailyScheduler implements SchedulingConfigurer {
 		Thread t = new Thread(new DataBaseSanityCheck());
 		t.start();
 	}
-	
+
 	private void DailyUpdateEstimateStockRunner() {
 		logger.info("DailyUpdateEstimateStockRunner already running, please check folder result.");
 		Thread t = new Thread(new DailyUpdateEstimateStockRunner());
 		t.start();
 	}
-	
-	private void DailyUpdateAllStockRunner(){
-	    logger.info("DailyUpdateAllStockRunner already running, please check folder result.");
-        Thread t = new Thread(new DailyUpdateAllStockRunner());
-        t.start();
+
+	private void DailyUpdateAllStockRunner() {
+		logger.info("DailyUpdateAllStockRunner already running, please check folder result.");
+		Thread t = new Thread(new DailyUpdateAllStockRunner());
+		t.start();
 	}
 
 	private void DailyZiJinLiuRunner() {
@@ -94,11 +95,18 @@ public class DailyScheduler implements SchedulingConfigurer {
 		Thread t = new Thread(runner);
 		t.start();
 	}
-	
+
 	private void PreEstimateStockPriceRunner() {
-        logger.info("PreEstimateStockPriceRunner already running, please check DB result.");
-        PreEstimateStockPriceRunner runner = new PreEstimateStockPriceRunner();
-        Thread t = new Thread(runner);
-        t.start();
-    }
+		logger.info("PreEstimateStockPriceRunner already running, please check DB result.");
+		PreEstimateStockPriceRunner runner = new PreEstimateStockPriceRunner();
+		Thread t = new Thread(runner);
+		t.start();
+	}
+
+	private void DailyOverAllRunner() {
+		logger.info("DailyOverAllRunner already running, please check DB result.");
+		DailyOverAllRunner runner = new DailyOverAllRunner();
+		Thread t = new Thread(runner);
+		t.start();
+	}
 }

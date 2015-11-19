@@ -12,9 +12,9 @@ public class DailyUpdateEstimateStockRunner implements Runnable {
 
     private EstimateStockTableHelper estimateStockTable = EstimateStockTableHelper.getInstance();
     private StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
-    private String currentDate = stockPriceTable.getLatestStockDate();
+    private String currentDate = null;
     //private String nextDate = WeekdayUtil.nextWorkingDate(currentDate);
-    private List<String> estimateStockIds = estimateStockTable.getAllEstimateStockIdsByDate(currentDate);
+    private List<String> estimateStockIds = null;
     private DailySelectionRunner dailySelectionRunner = new DailySelectionRunner();
 
     public void run() {
@@ -24,6 +24,11 @@ public class DailyUpdateEstimateStockRunner implements Runnable {
         DailyStockPriceDownloadAndStoreDBRunner.main(args);
         // chuquan
         ChuQuanChuXiCheckerRunner.main(args);
+        
+        currentDate = stockPriceTable.getLatestStockDate();
+        estimateStockIds = estimateStockTable.getAllEstimateStockIdsByDate(currentDate);
+        System.out.println("start running EstimateStock for " + currentDate);
+        
         // day ind
         new AllDailyIndCountAndSaveDBRunner().runDailyIndForStockIds(estimateStockIds);
         // week

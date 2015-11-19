@@ -29,9 +29,9 @@ public class DailyZiJinLiuRunner implements Runnable {
 		System.out.println("Fatch ZiJinLiu only toPage = " + toPage);
 		List<ZiJinLiuVO> list = fatchDataHelper.getAllStockIdsZiJinLiu(toPage);
 		System.out.println("Total Fatch ZiJinLiu size = " + list.size());
-		zijinliuTableHelper.deleteByDate(fatchDataHelper.currentDate);
 		for (ZiJinLiuVO vo : list) {
 			if (vo.isValidated()) {
+				zijinliuTableHelper.delete(vo.stockId, vo.date);
 				zijinliuTableHelper.insert(vo);
 				// System.out.println(vo.stockId + "=" + vo.name);
 			}
