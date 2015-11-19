@@ -50,6 +50,10 @@ public class ChuQuanChuXiCheckerRunner implements Runnable {
 			this.checkIfGaoSongZhuanExist(stockId);
 		}
 	}
+	
+	public void runForStockIds(List<String> stockIds) {
+        checkIfChuQuanChuXiExist(stockIds);
+    }
 
 	public void run() {
 		checkIfChuQuanChuXiExist(stockConfig.getAllStockId());

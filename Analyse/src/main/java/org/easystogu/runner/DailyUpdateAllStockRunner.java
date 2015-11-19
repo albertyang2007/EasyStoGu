@@ -16,8 +16,8 @@ public class DailyUpdateAllStockRunner implements Runnable {
 	public void run() {
 		String[] args = null;
 		long st = System.currentTimeMillis();
-		// day
-		new DailyStockPriceDownloadAndStoreDBRunner().runForStockIds(allStockIds);
+		// day (download all stockIds price)
+		DailyStockPriceDownloadAndStoreDBRunner.main(args);
 		// chuquan
 		ChuQuanChuXiCheckerRunner.main(args);
 		// day ind
