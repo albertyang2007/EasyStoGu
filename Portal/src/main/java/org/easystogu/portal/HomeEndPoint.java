@@ -5,7 +5,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
 
 import org.easystogu.easymoney.runner.DailyZiJinLiuRunner;
-import org.easystogu.runner.DailyOverAllRunner;
 import org.easystogu.runner.DailySelectionRunner;
 import org.easystogu.runner.DailyUpdateAllStockRunner;
 import org.easystogu.runner.DailyUpdateEstimateStockRunner;
@@ -21,7 +20,6 @@ public class HomeEndPoint {
         sb.append("<a href='DailyUpdateAllStockRunner'>DailyUpdateAllStockRunner</a><br>");
         sb.append("<a href='DailyUpdateEstimateStockRunner'>DailyUpdateEstimateStockRunner</a><br>");
         sb.append("<a href='PreEstimateStockPriceRunner'>PreEstimateStockPriceRunner</a><br>");
-        sb.append("<a href='DailyOverAllRunner'>DailyOverAllRunner (DailyUpdateAllStockRunner + PreEstimateStockPriceRunner)</a><br>");
         sb.append("<a href='DailySelectionRunner'>DailySelectionRunner</a><br>");
         sb.append("<a href='RealtimeDisplayStockPriceRunner'>RealtimeDisplayStockPriceRunner</a><br>");
         sb.append("<a href='DailyZiJinLiuXiangRunner'>DailyZiJinLiuXiangRunner</a><br>");
@@ -57,14 +55,6 @@ public class HomeEndPoint {
     @Path("/DailySelectionRunner")
     public String dailySelectionRunner() {
         Thread t = new Thread(new DailySelectionRunner());
-        t.start();
-        return "DailySelectionRunner already running, please check folder result.";
-    }
-
-    @GET
-    @Path("/DailyOverAllRunner")
-    public String dailyOverAllRunner() {
-        Thread t = new Thread(new DailyOverAllRunner());
         t.start();
         return "DailySelectionRunner already running, please check folder result.";
     }
