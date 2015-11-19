@@ -219,6 +219,7 @@ public class PreEstimateStockPriceRunner implements Runnable {
 			DailyWeeklyStockPriceCountAndSaveDBRunner.main(args);
 			// recount week ind
 			new AllDailyIndCountAndSaveDBRunner().runDailyWeekIndForStockIds(allStockIds);
+			System.out.println("PreEstimateStockPriceRunner completed!");
 		}
 	}
 
