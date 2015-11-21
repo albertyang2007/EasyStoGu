@@ -32,6 +32,9 @@ public enum DailyCombineCheckPoint {
 			SellPointType.KDJ_Dead, 45142, 8.29), YiMengBS_KDJ_Gordon_SuoLiang_HuiTiao(SellPointType.KDJ_Dead, 71, 28.0), Many_ZhangTing_Then_DieTing(
 			SellPointType.KDJ_Dead, 18, 15.09);
 
+	private FileConfigurationService config = FileConfigurationService.getInstance();
+	private double minEarnPercent = config.getDouble("minEarnPercent_Select_CheckPoint");
+
 	private String condition;
 	// history summary that meet the condiction
 	private int sampleMeet;
@@ -106,6 +109,10 @@ public enum DailyCombineCheckPoint {
 			}
 		}
 		return null;
+	}
+
+	public boolean isSatisfyMinEarnPercent() {
+		return this.getEarnPercent() >= minEarnPercent ? true : false;
 	}
 
 	public static void main(String[] args) {

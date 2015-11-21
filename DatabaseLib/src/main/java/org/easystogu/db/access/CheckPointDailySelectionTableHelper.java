@@ -23,18 +23,20 @@ public class CheckPointDailySelectionTableHelper {
 	private DataSource dataSource = PostgreSqlDataSourceFactory.createDataSource();
 	private static CheckPointDailySelectionTableHelper instance = null;
 	private String tableName = "CHECKPOINT_DAILY_SELECTION";
-	public String INSERT_SQL = "INSERT INTO " + tableName
+	protected String INSERT_SQL = "INSERT INTO " + tableName
 			+ " (stockid, date, checkpoint) VALUES (:stockid, :date, :checkpoint)";
-	public String DELETE_SQL = "DELETE FROM " + tableName
+	protected String DELETE_SQL = "DELETE FROM " + tableName
 			+ " WHERE stockid = :stockid AND date = :date AND checkpoint = :checkpoint";
-	public String QUERY_BY_STOCKID_AND_DATE_AND_CHECKPOINT_SQL = "SELECT * FROM " + tableName
+	protected String QUERY_BY_STOCKID_AND_DATE_AND_CHECKPOINT_SQL = "SELECT * FROM " + tableName
 			+ " WHERE stockid = :stockid AND date = :date AND checkpoint = :checkpoint";
-	public String QUERY_BY_STOCKID_AND_DATE_SQL = "SELECT * FROM " + tableName
+	protected String QUERY_BY_STOCKID_AND_DATE_SQL = "SELECT * FROM " + tableName
 			+ " WHERE stockid = :stockid AND date = :date";
-	public String QUERY_LATEST_BY_STOCKID_AND_NOT_CHECKPOINT_SQL = "SELECT * FROM " + tableName
+	protected String QUERY_LATEST_BY_STOCKID_AND_NOT_CHECKPOINT_SQL = "SELECT * FROM " + tableName
 			+ " WHERE stockid = :stockid AND checkpoint != :checkpoint ORDER BY DATE DESC LIMIT 1";
-	public String DELETE_BY_DATE_SQL = "DELETE FROM " + tableName + " WHERE date = :date";
-	public String QUERY_BY_DATE_SQL = "SELECT * FROM " + tableName + " WHERE date = :date";
+	protected String DELETE_BY_DATE_SQL = "DELETE FROM " + tableName + " WHERE date = :date";
+	protected String QUERY_BY_DATE_SQL = "SELECT * FROM " + tableName + " WHERE date = :date";
+	protected String QUERY_BY_RECENT_DAYS_SQL = "SELECT * FROM " + tableName
+			+ " WHERE date >= :date ORDER BY DATE DESC";
 
 	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
@@ -167,6 +169,24 @@ public class CheckPointDailySelectionTableHelper {
 			namedParameters.addValue("date", date);
 
 			List<CheckPointDailySelectionVO> list = this.namedParameterJdbcTemplate.query(QUERY_BY_DATE_SQL,
+					namedParameters, new IndEventVOMapper());
+
+			return list;
+		} catch (EmptyResultDataAccessException ee) {
+			return null;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public List<CheckPointDailySelectionVO> getRecentDaysCheckPoint(String date) {
+		try {
+
+			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+			namedParameters.addValue("date", date);
+
+			List<CheckPointDailySelectionVO> list = this.namedParameterJdbcTemplate.query(QUERY_BY_RECENT_DAYS_SQL,
 					namedParameters, new IndEventVOMapper());
 
 			return list;

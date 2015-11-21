@@ -12,7 +12,6 @@ import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
 import org.easystogu.db.table.ChuQuanChuXiVO;
 import org.easystogu.db.table.StockPriceVO;
 import org.easystogu.log.LogHelper;
-import org.easystogu.utils.WeekdayUtil;
 import org.slf4j.Logger;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -530,6 +529,23 @@ public class StockPriceTableHelper {
 			e.printStackTrace();
 		}
 		return "9999-99-99";
+	}
+
+	public List<String> getAllLastNDate(String stockId, int limitDays) {
+		try {
+
+			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+			namedParameters.addValue("stockId", stockId);
+			namedParameters.addValue("limit", limitDays);
+
+			List<String> dates = this.namedParameterJdbcTemplate.query(QUERY_LATEST_N_DATE_STOCKID_SQL,
+					namedParameters, new StringVOMapper());
+
+			return dates;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new ArrayList<String>();
 	}
 
 	public void updateChuQuanBatchPrice(ChuQuanChuXiVO vo) {

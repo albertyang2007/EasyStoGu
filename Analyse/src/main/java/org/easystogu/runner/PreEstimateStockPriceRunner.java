@@ -33,6 +33,7 @@ import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.indicator.runner.AllDailyIndCountAndSaveDBRunner;
 import org.easystogu.report.ReportTemplate;
 import org.easystogu.sina.runner.DailyWeeklyStockPriceCountAndSaveDBRunner;
+import org.easystogu.utils.FileHelper;
 import org.easystogu.utils.WeekdayUtil;
 
 //based on latest close price, pre-estimate next working day's price
@@ -57,10 +58,10 @@ public class PreEstimateStockPriceRunner implements Runnable {
 				StockPriceVO vo2 = new StockPriceVO();
 				vo2.stockId = vo.stockId;
 				vo2.date = nextDate;
-				vo2.open = vo.close * nextDatePriceIncPercent;
-				vo2.low = vo2.open;
-				vo2.close = vo2.open;
-				vo2.high = vo2.open;
+				vo2.open = vo.close;
+				vo2.low = vo.close;
+				vo2.close = vo.close * nextDatePriceIncPercent;
+				vo2.high = vo2.close;
 				vo2.volume = vo.volume + 100;
 				vo2.lastClose = vo.close;
 
@@ -133,7 +134,7 @@ public class PreEstimateStockPriceRunner implements Runnable {
 	}
 
 	public void reportToHtml(String currDate, String nextDate, Collection<String> bothHitIds) {
-		String file = config.getString("report.estimate.html.file").replaceAll("nextDate", nextDate);
+		String file = config.getString("report.estimate.both.html.file").replaceAll("currentDate", currDate);
 		System.out.println("\nSaving estimate to " + file);
 		try {
 			BufferedWriter fout = new BufferedWriter(new FileWriter(file));
@@ -177,9 +178,17 @@ public class PreEstimateStockPriceRunner implements Runnable {
 
 			fout.flush();
 			fout.close();
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	// rename report
+	private void renameToEstimateReport() {
+		String srcFile = config.getString("report.analyse.html.file").replaceAll("currentDate", nextDate);
+		String destFile = config.getString("report.estimate.html.file").replaceAll("nextDate", nextDate);
+		FileHelper.RenameFile(srcFile, destFile);
 	}
 
 	public void run() {
@@ -187,7 +196,7 @@ public class PreEstimateStockPriceRunner implements Runnable {
 		try {
 			// mock next date stockprice, it must be call after current date's
 			// stockprice is inject into DB
-			injectMockStockPriceDate();
+			this.injectMockStockPriceDate();
 
 			// day ind
 			new AllDailyIndCountAndSaveDBRunner().runDailyIndForStockIds(allStockIds);
@@ -199,11 +208,14 @@ public class PreEstimateStockPriceRunner implements Runnable {
 			// analyse
 			new DailySelectionRunner().runForStockIds(allStockIds);
 
+			// rename analyse report to estimate report
+			this.renameToEstimateReport();
+
 			// save next date estimate stock to table
-			saveEstimateStockToDB();
+			this.saveEstimateStockToDB();
 
 			// analyse both date
-			checkDailyCheckPointForBothDate();
+			this.checkDailyCheckPointForBothDate();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

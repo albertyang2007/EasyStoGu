@@ -33,6 +33,7 @@ import org.easystogu.report.RangeHistoryReportVO;
 import org.easystogu.report.ReportTemplate;
 import org.easystogu.report.comparator.ZiJinLiuComparator;
 
+//daily select stock that checkpoint is satisfied
 public class DailySelectionRunner implements Runnable {
 	private FileConfigurationService config = FileConfigurationService.getInstance();
 	private CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
@@ -42,13 +43,12 @@ public class DailySelectionRunner implements Runnable {
 	private String latestDate = stockPriceTable.getLatestStockDate();
 	private CheckPointDailySelectionTableHelper checkPointDailySelectionTable = CheckPointDailySelectionTableHelper
 			.getInstance();
-	private ZiJinLiuTableHelper ziJinLiuTableHelper = ZiJinLiuTableHelper.getInstance();
 	private RealTimeZiJinLiuFatchDataHelper realTimeZiJinLiuHelper = RealTimeZiJinLiuFatchDataHelper.getInstance();
+	private ZiJinLiuTableHelper ziJinLiuTableHelper = ZiJinLiuTableHelper.getInstance();
 	private ZiJinLiu3DayTableHelper ziJinLiu3DayTableHelper = ZiJinLiu3DayTableHelper.getInstance();
 	private ZiJinLiu5DayTableHelper ziJinLiu5DayTableHelper = ZiJinLiu5DayTableHelper.getInstance();
 	private HistoryAnalyseReport historyReportHelper = new HistoryAnalyseReport();
 	private CombineAnalyseHelper combineAnalyserHelper = new CombineAnalyseHelper();
-	private double minEarnPercent = config.getDouble("minEarnPercent_Select_CheckPoint");
 	private boolean doHistoryAnalyzeInDailySelection = config.getBoolean("do_History_Analyze_In_Daily_Selection", true);
 	private String[] specifySelectCheckPoints = config.getString("specify_Select_CheckPoint", "").split(";");
 	private String[] specifyDependCheckPoints = config.getString("specify_Depend_CheckPoint", "").split(";");
@@ -174,7 +174,7 @@ public class DailySelectionRunner implements Runnable {
 					return true;
 				}
 			}
-		} else if (checkPoint.getEarnPercent() >= minEarnPercent) {
+		} else if (checkPoint.isSatisfyMinEarnPercent()) {
 			return true;
 		}
 		return false;
@@ -196,14 +196,13 @@ public class DailySelectionRunner implements Runnable {
 			StockSuperVO superVO = keysIt.next();
 			List<DailyCombineCheckPoint> checkPointList = this.selectedMaps.get(superVO);
 			for (DailyCombineCheckPoint checkPoint : checkPointList) {
-				if (checkPoint.getEarnPercent() >= this.minEarnPercent) {
+				if (checkPoint.isSatisfyMinEarnPercent()) {
 					recommandStr.append(superVO.priceVO.stockId + " select :" + checkPointList.toString() + " "
 							+ superVO.genZiJinLiuInfo() + "\n");
 				}
 			}
 		}
 
-		System.out.println("\nRecommand to select below checkPoint that earnPercent >=" + minEarnPercent);
 		System.out.println(recommandStr.toString());
 	}
 
@@ -216,7 +215,7 @@ public class DailySelectionRunner implements Runnable {
 			List<DailyCombineCheckPoint> checkPointList = this.selectedMaps.get(superVO);
 
 			for (DailyCombineCheckPoint checkPoint : checkPointList) {
-				if (checkPoint.getEarnPercent() >= this.minEarnPercent) {
+				if (checkPoint.isSatisfyMinEarnPercent()) {
 					List<HistoryReportDetailsVO> hisReport = new ArrayList<HistoryReportDetailsVO>();
 					if (doHistoryAnalyzeInDailySelection) {
 						hisReport = historyReportHelper.doAnalyseReport(superVO.priceVO.stockId, checkPoint);
@@ -258,7 +257,7 @@ public class DailySelectionRunner implements Runnable {
 
 			for (RangeHistoryReportVO rangeVO : rangeList) {
 
-				if (rangeVO.checkPoint.getEarnPercent() < this.minEarnPercent) {
+				if (!rangeVO.checkPoint.isSatisfyMinEarnPercent()) {
 					continue;
 				}
 
