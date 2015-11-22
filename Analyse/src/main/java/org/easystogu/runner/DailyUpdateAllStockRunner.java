@@ -12,6 +12,11 @@ public class DailyUpdateAllStockRunner implements Runnable {
 	private CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 	private List<String> allStockIds = stockConfig.getAllStockId();
 	private DailySelectionRunner dailySelectionRunner = new DailySelectionRunner();
+	public boolean isGetZiJinLiu = true;
+
+	public DailyUpdateAllStockRunner(boolean isGetZiJinLiu) {
+		this.isGetZiJinLiu = isGetZiJinLiu;
+	}
 
 	public void run() {
 		String[] args = null;
@@ -28,7 +33,8 @@ public class DailyUpdateAllStockRunner implements Runnable {
 		new AllDailyIndCountAndSaveDBRunner().runDailyWeekIndForStockIds(allStockIds);
 
 		// zijinliu
-		DailyZiJinLiuRunner.main(args);
+		if (isGetZiJinLiu)
+			DailyZiJinLiuRunner.main(args);
 		// analyse
 		dailySelectionRunner.setFetchRealTimeZiJinLiu(false);
 		dailySelectionRunner.runForStockIds(allStockIds);
@@ -38,6 +44,6 @@ public class DailyUpdateAllStockRunner implements Runnable {
 
 	public static void main(String[] args) {
 		// run today stockprice anaylse
-		new DailyUpdateAllStockRunner().run();
+		new DailyUpdateAllStockRunner(true).run();
 	}
 }

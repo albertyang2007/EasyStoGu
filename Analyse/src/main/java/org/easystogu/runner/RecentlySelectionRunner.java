@@ -189,7 +189,9 @@ public class RecentlySelectionRunner implements Runnable {
 	}
 
 	public void run() {
-
+		fetchRecentDaysCheckPointFromDB();
+		printRecentCheckPointToConsole();
+		printRecentCheckPointToHtml();
 	}
 
 	public static void main(String[] args) {

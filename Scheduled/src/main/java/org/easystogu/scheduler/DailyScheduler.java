@@ -34,32 +34,30 @@ public class DailyScheduler implements SchedulingConfigurer {
 
 	// run at 10:32
 	@Scheduled(cron = "0 32 10 * * MON-FRI")
-	public void _0_DailyUpdateEstimateStockRunner() {
-		this.DailyUpdateEstimateStockRunner();
+	public void _0_DailyOverAllRunner() {
+		boolean isGetZiJinLiu = false;
+		this.DailyOverAllRunner(isGetZiJinLiu);
 	}
 
 	// run at 11:32
 	@Scheduled(cron = "0 32 11 * * MON-FRI")
-	public void _0_DailyUpdateAllStockRunner() {
-		this.DailyUpdateAllStockRunner();
+	public void _1_DailyOverAllRunner() {
+		boolean isGetZiJinLiu = true;
+		this.DailyOverAllRunner(isGetZiJinLiu);
 	}
 
-	// run at 13:42
-	@Scheduled(cron = "0 42 13 * * MON-FRI")
-	public void _1_DailyUpdateEstimateStockRunner() {
-		this.DailyUpdateEstimateStockRunner();
-	}
-
-	// run at 14:35
-	@Scheduled(cron = "0 35 14 * * MON-FRI")
-	public void _2_DailyUpdateEstimateStockRunner() {
-		this.DailyUpdateEstimateStockRunner();
+	// run at 14:02
+	@Scheduled(cron = "0 02 14 * * MON-FRI")
+	public void _2_DailyOverAllRunner() {
+		boolean isGetZiJinLiu = false;
+		this.DailyOverAllRunner(isGetZiJinLiu);
 	}
 
 	// run at 15:02
 	@Scheduled(cron = "0 02 15 * * MON-FRI")
-	public void _0_DailyOverAllRunner() {
-		this.DailyOverAllRunner();
+	public void _3_DailyOverAllRunner() {
+		boolean isGetZiJinLiu = true;
+		this.DailyOverAllRunner(isGetZiJinLiu);
 	}
 
 	// run at 21:00
@@ -82,9 +80,9 @@ public class DailyScheduler implements SchedulingConfigurer {
 		t.start();
 	}
 
-	private void DailyUpdateAllStockRunner() {
+	private void DailyUpdateAllStockRunner(boolean isGetZiJinLiu) {
 		logger.info("DailyUpdateAllStockRunner already running, please check folder result.");
-		Thread t = new Thread(new DailyUpdateAllStockRunner());
+		Thread t = new Thread(new DailyUpdateAllStockRunner(isGetZiJinLiu));
 		t.start();
 	}
 
@@ -103,9 +101,9 @@ public class DailyScheduler implements SchedulingConfigurer {
 		t.start();
 	}
 
-	private void DailyOverAllRunner() {
+	private void DailyOverAllRunner(boolean isGetZiJinLiu) {
 		logger.info("DailyOverAllRunner already running, please check DB result.");
-		DailyOverAllRunner runner = new DailyOverAllRunner();
+		DailyOverAllRunner runner = new DailyOverAllRunner(isGetZiJinLiu);
 		Thread t = new Thread(runner);
 		t.start();
 	}
