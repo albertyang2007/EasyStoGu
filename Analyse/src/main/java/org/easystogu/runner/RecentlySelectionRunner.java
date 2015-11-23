@@ -140,8 +140,7 @@ public class RecentlySelectionRunner implements Runnable {
 					fout.newLine();
 
 					fout.write(ReportTemplate.tableTdStart);
-					fout.write(this.getCheckPointOnDate(date, this.checkPointStocks.get(stockId)));
-					fout.write(this.getZiJinLiuOnDate(date, this.ziJinLius.get(stockId)));
+					fout.write(this.getCheckPointAndZiJinLiuOnDate(stockId, date));
 					fout.write(ReportTemplate.tableTdEnd);
 					fout.newLine();
 
@@ -180,6 +179,19 @@ public class RecentlySelectionRunner implements Runnable {
 		return stockId;
 	}
 
+	private String getCheckPointAndZiJinLiuOnDate(String stockId, String date) {
+		List<CheckPointDailySelectionVO> cpList = this.checkPointStocks.get(stockId);
+		List<ZiJinLiuVO> zjlList = this.ziJinLius.get(stockId);
+
+		String cpRtn = this.getCheckPointOnDate(date, cpList);
+		String zjlRtn = this.getZiJinLiuOnDate(date, zjlList);
+
+		String rtn = cpRtn + zjlRtn;
+		if (rtn.length() == 0)
+			rtn = "&nbsp;";
+		return rtn;
+	}
+
 	private String getCheckPointOnDate(String date, List<CheckPointDailySelectionVO> cpList) {
 		StringBuffer sb = new StringBuffer();
 		for (CheckPointDailySelectionVO cp : cpList) {
@@ -187,8 +199,6 @@ public class RecentlySelectionRunner implements Runnable {
 				sb.append(cp.checkPoint + "<br>");
 			}
 		}
-		if (sb.toString().length() == 0)
-			sb.append("&nbsp;");
 		return sb.toString();
 	}
 
@@ -199,8 +209,6 @@ public class RecentlySelectionRunner implements Runnable {
 				sb.append(zjl._DayType + zjl.toNetPerString() + "<br>");
 			}
 		}
-		if (sb.toString().length() == 0)
-			sb.append("&nbsp;");
 		return sb.toString();
 	}
 
