@@ -89,7 +89,7 @@ public class DailyScheduler implements SchedulingConfigurer {
 	private void DailyZiJinLiuRunner() {
 		logger.info("DailyZiJinLiuRunner already running, please check DB result.");
 		DailyZiJinLiuRunner runner = new DailyZiJinLiuRunner();
-		runner.resetToAllPage();
+		//runner.resetToAllPage();
 		Thread t = new Thread(runner);
 		t.start();
 	}
