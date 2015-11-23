@@ -35,7 +35,10 @@ public class RecentlySelectionRunner implements Runnable {
 			.getInstance();
 	private String latestDate = stockPriceTable.getLatestStockDate();
 	private List<String> lastNDates = stockPriceTable.getAllLastNDate(stockConfig.getSZZSStockIdForDB(), 10);
+	// <stockId, checkPoints>
 	private Map<String, List<CheckPointDailySelectionVO>> checkPointStocks = new HashMap<String, List<CheckPointDailySelectionVO>>();
+	// <stockId, ziJinLius>>
+	private Map<String, List<ZiJinLiuVO>> ziJinLius = new HashMap<String, List<ZiJinLiuVO>>();
 
 	private void fetchRecentDaysCheckPointFromDB() {
 		// TODO Auto-generated method stub
@@ -47,8 +50,6 @@ public class RecentlySelectionRunner implements Runnable {
 				this.addCheckPointStockToMap(cpVO);
 			}
 		}
-
-		this.checkPointStocks = CheckPointEventAndZiJinLiuComparator.sortMapByValue(checkPointStocks);
 	}
 
 	private void addCheckPointStockToMap(CheckPointDailySelectionVO cpVO) {
@@ -62,17 +63,45 @@ public class RecentlySelectionRunner implements Runnable {
 		}
 	}
 
-	private void printRecentCheckPointToConsole() {
+	private void fetchRecentZiJinLiuFromDB() {
 		Set<String> stockIds = this.checkPointStocks.keySet();
 		Iterator<String> its = stockIds.iterator();
 		while (its.hasNext()) {
 			String stockId = its.next();
-			List<CheckPointDailySelectionVO> cpList = this.checkPointStocks.get(stockId);
-			System.out.println(stockId + " " + cpList);
+
+			for (String date : lastNDates) {
+				ZiJinLiuVO _1dayVO = ziJinLiuTableHelper.getZiJinLiu(stockId, date);
+				ZiJinLiuVO _3dayVO = ziJinLiu3DayTableHelper.getZiJinLiu(stockId, date);
+				ZiJinLiuVO _5dayVO = ziJinLiu5DayTableHelper.getZiJinLiu(stockId, date);
+
+				List<ZiJinLiuVO> list = null;
+				if (!this.ziJinLius.containsKey(stockId)) {
+					list = new ArrayList<ZiJinLiuVO>();
+					this.ziJinLius.put(stockId, list);
+				} else {
+					list = this.ziJinLius.get(stockId);
+				}
+				if (_1dayVO != null) {
+					_1dayVO._DayType = ZiJinLiuVO._1Day;
+					list.add(_1dayVO);
+				}
+				if (_3dayVO != null) {
+					_3dayVO._DayType = ZiJinLiuVO._3Day;
+					list.add(_3dayVO);
+				}
+				if (_5dayVO != null) {
+					_5dayVO._DayType = ZiJinLiuVO._5Day;
+					list.add(_5dayVO);
+				}
+			}
 		}
 	}
 
 	public void printRecentCheckPointToHtml() {
+
+		// before report, sort
+		this.checkPointStocks = CheckPointEventAndZiJinLiuComparator.sortMapByValue(checkPointStocks, ziJinLius);
+
 		String file = config.getString("report.recent.analyse.html.file").replaceAll("currentDate", latestDate);
 		System.out.println("\nSaving report to " + file);
 		try {
@@ -112,7 +141,7 @@ public class RecentlySelectionRunner implements Runnable {
 
 					fout.write(ReportTemplate.tableTdStart);
 					fout.write(this.getCheckPointOnDate(date, this.checkPointStocks.get(stockId)));
-					fout.write(this.getZiJinLiu(stockId, date));
+					fout.write(this.getZiJinLiuOnDate(date, this.ziJinLius.get(stockId)));
 					fout.write(ReportTemplate.tableTdEnd);
 					fout.newLine();
 
@@ -158,25 +187,20 @@ public class RecentlySelectionRunner implements Runnable {
 				sb.append(cp.checkPoint + "<br>");
 			}
 		}
+		if (sb.toString().length() == 0)
+			sb.append("&nbsp;");
 		return sb.toString();
 	}
 
-	private String getZiJinLiu(String stockId, String date) {
+	private String getZiJinLiuOnDate(String date, List<ZiJinLiuVO> zjlList) {
 		StringBuffer sb = new StringBuffer();
-		ZiJinLiuVO _1dayVO = ziJinLiuTableHelper.getZiJinLiu(stockId, date);
-		ZiJinLiuVO _3dayVO = ziJinLiu3DayTableHelper.getZiJinLiu(stockId, date);
-		ZiJinLiuVO _5dayVO = ziJinLiu5DayTableHelper.getZiJinLiu(stockId, date);
-
-		if (_1dayVO != null) {
-			sb.append(ZiJinLiuVO._1Day + _1dayVO.toNetPerString() + "<br>");
+		for (ZiJinLiuVO zjl : zjlList) {
+			if (date.equals(zjl.date)) {
+				sb.append(zjl._DayType + zjl.toNetPerString() + "<br>");
+			}
 		}
-		if (_3dayVO != null) {
-			sb.append(ZiJinLiuVO._3Day + _3dayVO.toNetPerString() + "<br>");
-		}
-		if (_5dayVO != null) {
-			sb.append(ZiJinLiuVO._5Day + _5dayVO.toNetPerString() + "<br>");
-		}
-
+		if (sb.toString().length() == 0)
+			sb.append("&nbsp;");
 		return sb.toString();
 	}
 
@@ -193,7 +217,7 @@ public class RecentlySelectionRunner implements Runnable {
 
 	public void run() {
 		fetchRecentDaysCheckPointFromDB();
-		printRecentCheckPointToConsole();
+		fetchRecentZiJinLiuFromDB();
 		printRecentCheckPointToHtml();
 	}
 
@@ -201,7 +225,7 @@ public class RecentlySelectionRunner implements Runnable {
 		// TODO Auto-generated method stub
 		RecentlySelectionRunner runner = new RecentlySelectionRunner();
 		runner.fetchRecentDaysCheckPointFromDB();
-		runner.printRecentCheckPointToConsole();
+		runner.fetchRecentZiJinLiuFromDB();
 		runner.printRecentCheckPointToHtml();
 	}
 }

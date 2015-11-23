@@ -7,6 +7,7 @@ public class ZiJinLiuVO {
 	public static final String _1Day = "1Day";// current day's zijinliu
 	public static final String _3Day = "3Day";// recent 3 day's zijinliu
 	public static final String _5Day = "5Day";// recent 5 day's zijinliu
+	public String _DayType = _1Day;
 
 	public int rate;// 当日资金流排名
 	public String stockId;
