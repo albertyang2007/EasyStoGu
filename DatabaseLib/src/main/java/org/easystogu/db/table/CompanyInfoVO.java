@@ -8,7 +8,7 @@ public class CompanyInfoVO {
 	public String updateTime;
 	public double totalGuBen;
 	public double liuTongAGu;
-	public double liuTongShiZhi;// =liuTongAGu * currentPrice
+	private double liuTongShiZhi;// =liuTongAGu * currentPrice
 
 	public CompanyInfoVO(String line) {
 		// 1074,000002,万
@@ -51,6 +51,10 @@ public class CompanyInfoVO {
 		} else {
 			return Double.parseDouble(item.substring(0, item.length() - 1)) / (10000 * 10000);
 		}
+	}
+
+	public int countLiuTongShiZhi(double close) {
+		return (int) (this.liuTongAGu * close);
 	}
 
 	public String toString() {

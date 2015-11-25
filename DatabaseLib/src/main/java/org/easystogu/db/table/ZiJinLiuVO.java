@@ -38,12 +38,12 @@ public class ZiJinLiuVO {
 	}
 
 	public String toNetInString() {
-		return "ZiJinLiu [" + this.rate + "," + this.incPer + "," + this.majorNetIn + "," + this.biggestNetIn + ","
+		return "￥ [" + this.rate + "," + this.incPer + "," + this.majorNetIn + "," + this.biggestNetIn + ","
 				+ this.bigNetIn + "," + this.midNetIn + "," + this.smallNetIn + "]";
 	}
 
 	public String toNetPerString() {
-		return "ZiJinLiu [" + this.rate + "," + this.incPer + "," + this.majorNetPer + "," + this.biggestNetPer + ","
+		return "￥ [" + this.rate + "," + this.incPer + "," + this.majorNetPer + "," + this.biggestNetPer + ","
 				+ this.bigNetPer + "," + this.midNetPer + "," + this.smallNetPer + "]";
 	}
 

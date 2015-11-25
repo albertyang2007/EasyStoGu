@@ -14,7 +14,8 @@ import org.easystogu.db.table.ZiJinLiuVO;
 
 public class CheckPointEventAndZiJinLiuComparator {
 	public static Map<String, List<CheckPointDailySelectionVO>> sortMapByValue(
-			Map<String, List<CheckPointDailySelectionVO>> oriMap, final Map<String, List<ZiJinLiuVO>> ziJinLius) {
+			Map<String, List<CheckPointDailySelectionVO>> oriMap, final Map<String, List<ZiJinLiuVO>> ziJinLius,
+			final Map<String, Integer> liuTongShiZhis) {
 		Map<String, List<CheckPointDailySelectionVO>> sortedMap = new LinkedHashMap<String, List<CheckPointDailySelectionVO>>();
 		if (oriMap != null && !oriMap.isEmpty()) {
 			List<Map.Entry<String, List<CheckPointDailySelectionVO>>> entryList = new ArrayList<Map.Entry<String, List<CheckPointDailySelectionVO>>>(
@@ -22,18 +23,22 @@ public class CheckPointEventAndZiJinLiuComparator {
 			Collections.sort(entryList, new Comparator<Map.Entry<String, List<CheckPointDailySelectionVO>>>() {
 				public int compare(Entry<String, List<CheckPointDailySelectionVO>> entry1,
 						Entry<String, List<CheckPointDailySelectionVO>> entry2) {
-					List<CheckPointDailySelectionVO> value1 = null;
-					List<CheckPointDailySelectionVO> value2 = null;
+					List<CheckPointDailySelectionVO> cpList1 = null;
+					List<CheckPointDailySelectionVO> cpList2 = null;
 					try {
-						value1 = entry1.getValue();
-						value2 = entry2.getValue();
+						cpList1 = entry1.getValue();
+						cpList2 = entry2.getValue();
 					} catch (NumberFormatException e) {
 						e.printStackTrace();
 					}
 
+					String stockId1 = entry1.getKey();
+					String stockId2 = entry2.getKey();
 					// count checkPoint number & ZiJinLiu number
-					int s1 = value1.size() + countZiJinLiuVONumber(entry1.getKey(), ziJinLius);
-					int s2 = value2.size() + countZiJinLiuVONumber(entry2.getKey(), ziJinLius);
+					int s1 = cpList1.size() + countZiJinLiuVONumber(stockId1, ziJinLius) * 2
+							+ countLiuTongShiZhi(stockId1, liuTongShiZhis);
+					int s2 = cpList2.size() + countZiJinLiuVONumber(stockId2, ziJinLius) * 2
+							+ countLiuTongShiZhi(stockId2, liuTongShiZhis);
 
 					return s2 - s1;
 				}
@@ -53,6 +58,20 @@ public class CheckPointEventAndZiJinLiuComparator {
 		List<ZiJinLiuVO> list = ziJinLius.get(stockId);
 		if (list != null) {
 			return list.size();
+		}
+		return 0;
+	}
+
+	public static int countLiuTongShiZhi(String stockId, Map<String, Integer> liuTongShiZhis) {
+		int liuTongShiZhi = liuTongShiZhis.get(stockId);
+		if (liuTongShiZhi <= 50) {
+			return 3;
+		}
+		if (liuTongShiZhi <= 100) {
+			return 2;
+		}
+		if (liuTongShiZhi <= 200) {
+			return 1;
 		}
 		return 0;
 	}

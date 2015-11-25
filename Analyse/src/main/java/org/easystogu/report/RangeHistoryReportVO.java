@@ -66,7 +66,7 @@ public class RangeHistoryReportVO {
 		double liuTongShiZhi = 0.0;
 		CompanyInfoVO companyVO = stockConfig.getByStockId(stockId);
 		if (companyVO != null) {
-			liuTongShiZhi = companyVO.liuTongAGu * currentSuperVO.priceVO.close;
+			liuTongShiZhi = companyVO.countLiuTongShiZhi(currentSuperVO.priceVO.close);
 		}
 
 		return stockId + " " + getStockName(this.currentSuperVO.priceVO.stockId) + " "
