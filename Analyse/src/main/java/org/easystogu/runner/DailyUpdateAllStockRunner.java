@@ -11,7 +11,7 @@ import org.easystogu.sina.runner.DailyWeeklyStockPriceCountAndSaveDBRunner;
 public class DailyUpdateAllStockRunner implements Runnable {
 	private CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 	private List<String> allStockIds = stockConfig.getAllStockId();
-	private DailySelectionRunner dailySelectionRunner = new DailySelectionRunner();
+	private DailySelectionRunner dailySelectionRunner = null;
 	public boolean isGetZiJinLiu = true;
 
 	public DailyUpdateAllStockRunner(boolean isGetZiJinLiu) {
@@ -35,7 +35,9 @@ public class DailyUpdateAllStockRunner implements Runnable {
 		// zijinliu
 		if (isGetZiJinLiu)
 			DailyZiJinLiuRunner.main(args);
+
 		// analyse
+		dailySelectionRunner = new DailySelectionRunner();
 		dailySelectionRunner.setFetchRealTimeZiJinLiu(false);
 		dailySelectionRunner.runForStockIds(allStockIds);
 
