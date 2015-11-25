@@ -42,9 +42,9 @@ public class DailyZiJinLiuRunner implements Runnable {
 		System.out.println("Fatch ZiJinLiu only toPage = " + toPage);
 		List<ZiJinLiuVO> list = fatchDataHelper.get3DayAllStockIdsZiJinLiu(toPage);
 		System.out.println("Total Fatch ZiJinLiu size = " + list.size());
-		zijinliu3DayTableHelper.deleteByDate(fatchDataHelper.currentDate);
 		for (ZiJinLiuVO vo : list) {
 			if (vo.isValidated()) {
+			    zijinliu3DayTableHelper.delete(vo.stockId, vo.date);
 				zijinliu3DayTableHelper.insert(vo);
 				// System.out.println(vo.stockId + "=" + vo.name);
 			}
@@ -55,9 +55,9 @@ public class DailyZiJinLiuRunner implements Runnable {
 		System.out.println("Fatch ZiJinLiu only toPage = " + toPage);
 		List<ZiJinLiuVO> list = fatchDataHelper.get5DayAllStockIdsZiJinLiu(toPage);
 		System.out.println("Total Fatch ZiJinLiu size = " + list.size());
-		zijinliu5DayTableHelper.deleteByDate(fatchDataHelper.currentDate);
 		for (ZiJinLiuVO vo : list) {
 			if (vo.isValidated()) {
+			    zijinliu5DayTableHelper.delete(vo.stockId, vo.date);
 				zijinliu5DayTableHelper.insert(vo);
 				// System.out.println(vo.stockId + "=" + vo.name);
 			}
