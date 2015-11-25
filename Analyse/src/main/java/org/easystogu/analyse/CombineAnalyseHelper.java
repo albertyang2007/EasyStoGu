@@ -8,7 +8,7 @@ import org.easystogu.db.table.StockSuperVO;
 import org.easystogu.utils.CrossType;
 
 public class CombineAnalyseHelper {
-	public int[] tempInputArgs = new int[2];// just for temp history analyse
+	public int[] tempInputArgs = new int[2];// just for temp history analyse 
 
 	// overList is order by date, it is daily price and ind
 	public boolean isConditionSatisfy(DailyCombineCheckPoint checkPoint, List<StockSuperVO> overDayList,
