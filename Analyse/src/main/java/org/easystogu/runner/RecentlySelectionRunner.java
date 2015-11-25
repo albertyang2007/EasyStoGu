@@ -264,7 +264,7 @@ public class RecentlySelectionRunner implements Runnable {
 	public void run() {
 		fetchRecentDaysCheckPointFromDB();
 		fetchRecentZiJinLiuFromDB();
-		//searchAllStockIdsWithMany1DayZiJinLiuFromDB();
+		// searchAllStockIdsWithMany1DayZiJinLiuFromDB();
 		fetchLiuTongShiZhiFromDB();
 		printRecentCheckPointToHtml();
 	}
@@ -274,7 +274,7 @@ public class RecentlySelectionRunner implements Runnable {
 		RecentlySelectionRunner runner = new RecentlySelectionRunner();
 		runner.fetchRecentDaysCheckPointFromDB();
 		runner.fetchRecentZiJinLiuFromDB();
-		//runner.searchAllStockIdsWithMany1DayZiJinLiuFromDB();
+		// runner.searchAllStockIdsWithMany1DayZiJinLiuFromDB();
 		runner.fetchLiuTongShiZhiFromDB();
 		runner.printRecentCheckPointToHtml();
 	}
