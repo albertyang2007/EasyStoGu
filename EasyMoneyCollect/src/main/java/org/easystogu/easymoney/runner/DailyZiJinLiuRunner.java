@@ -66,8 +66,8 @@ public class DailyZiJinLiuRunner implements Runnable {
 
 	public void run() {
 		countAndSaved();
-		countAndSaved_3Day();
-		countAndSaved_5Day();
+		//countAndSaved_3Day();
+		//countAndSaved_5Day();
 	}
 
 	public static void main(String[] args) {
