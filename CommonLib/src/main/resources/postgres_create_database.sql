@@ -601,3 +601,25 @@ ALTER TABLE ind_week_yimengbs
   OWNER TO postgres;
 GRANT ALL ON TABLE ind_week_yimengbs TO public;
 GRANT ALL ON TABLE ind_week_yimengbs TO postgres;
+
+-- Table: zhulijingliuru
+
+-- DROP TABLE zhulijingliuru;
+
+CREATE TABLE zhulijingliuru
+(
+  stockid text NOT NULL,
+  date text NOT NULL,
+  rate integer,
+  price numeric,
+  majornetper numeric,
+  incper text,
+  CONSTRAINT zhulijingliuru_primary_key PRIMARY KEY (stockid, date)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE zhulijingliuru
+  OWNER TO postgres;
+GRANT ALL ON TABLE zhulijingliuru TO public;
+GRANT ALL ON TABLE zhulijingliuru TO postgres;

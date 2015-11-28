@@ -19,6 +19,7 @@ import org.easystogu.db.access.ChuQuanChuXiPriceHelper;
 import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.access.StockSuperVOHelper;
 import org.easystogu.db.access.WeekStockSuperVOHelper;
+import org.easystogu.db.access.ZhuLiJingLiuRuTableHelper;
 import org.easystogu.db.access.ZiJinLiu3DayTableHelper;
 import org.easystogu.db.access.ZiJinLiu5DayTableHelper;
 import org.easystogu.db.access.ZiJinLiuTableHelper;
@@ -45,6 +46,7 @@ public class DailySelectionRunner implements Runnable {
 			.getInstance();
 	private RealTimeZiJinLiuFatchDataHelper realTimeZiJinLiuHelper = RealTimeZiJinLiuFatchDataHelper.getInstance();
 	private ZiJinLiuTableHelper ziJinLiuTableHelper = ZiJinLiuTableHelper.getInstance();
+	private ZhuLiJingLiuRuTableHelper zhuLiJingLiuRuTableHelper = ZhuLiJingLiuRuTableHelper.getInstance();
 	private ZiJinLiu3DayTableHelper ziJinLiu3DayTableHelper = ZiJinLiu3DayTableHelper.getInstance();
 	private ZiJinLiu5DayTableHelper ziJinLiu5DayTableHelper = ZiJinLiu5DayTableHelper.getInstance();
 	private HistoryAnalyseReport historyReportHelper = new HistoryAnalyseReport();
@@ -146,6 +148,9 @@ public class DailySelectionRunner implements Runnable {
 				ziJinLiu3DayTableHelper.getZiJinLiu(superVO.priceVO.stockId, latestDate));
 		superVO.putZiJinLiuVO(ZiJinLiuVO._5Day,
 				ziJinLiu5DayTableHelper.getZiJinLiu(superVO.priceVO.stockId, latestDate));
+
+		// get zhuLiJingLiuRu from DB
+		superVO.setZhuLiJingLiuRuVO(zhuLiJingLiuRuTableHelper.getZhuLiJingLiuRu(superVO.priceVO.stockId, latestDate));
 	}
 
 	private void saveToCheckPointSelectionDB(StockSuperVO superVO, DailyCombineCheckPoint checkPoint) {
@@ -198,7 +203,7 @@ public class DailySelectionRunner implements Runnable {
 			for (DailyCombineCheckPoint checkPoint : checkPointList) {
 				if (checkPoint.isSatisfyMinEarnPercent()) {
 					recommandStr.append(superVO.priceVO.stockId + " select :" + checkPointList.toString() + " "
-							+ superVO.genZiJinLiuInfo() + "\n");
+							+ superVO.genZiJinLiuInfo() + " " + superVO.getZhuLiJingLiuRu() + "\n");
 				}
 			}
 		}
@@ -237,7 +242,7 @@ public class DailySelectionRunner implements Runnable {
 			if (rangeVO.currentSuperVO.isAllMajorNetPerIn()) {
 				System.out.println(rangeVO.toSimpleString() + " WeekLen(" + rangeVO.currentSuperVO.hengPanWeekLen
 						+ ") KDJ(" + (int) rangeVO.currentSuperVO.kdjVO.k + ") "
-						+ rangeVO.currentSuperVO.genZiJinLiuInfo());
+						+ rangeVO.currentSuperVO.genZiJinLiuInfo() + " " + rangeVO.currentSuperVO.getZhuLiJingLiuRu());
 			}
 		}
 	}
@@ -274,7 +279,7 @@ public class DailySelectionRunner implements Runnable {
 				fout.write(ReportTemplate.tableTdStart);
 				fout.write(rangeVO.toSimpleString() + "&nbsp; WeekLen(" + rangeVO.currentSuperVO.hengPanWeekLen
 						+ ") &nbsp; KDJ(" + (int) rangeVO.currentSuperVO.kdjVO.k + ") <br> "
-						+ rangeVO.currentSuperVO.genZiJinLiuInfo());
+						+ rangeVO.currentSuperVO.genZiJinLiuInfo() + rangeVO.currentSuperVO.getZhuLiJingLiuRu());
 				fout.write(ReportTemplate.tableTdEnd);
 				fout.newLine();
 

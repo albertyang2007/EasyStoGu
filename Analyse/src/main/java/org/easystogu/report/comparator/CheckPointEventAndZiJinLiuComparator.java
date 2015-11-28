@@ -10,12 +10,13 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.easystogu.db.table.CheckPointDailySelectionVO;
+import org.easystogu.db.table.ZhuLiJingLiuRuVO;
 import org.easystogu.db.table.ZiJinLiuVO;
 
 public class CheckPointEventAndZiJinLiuComparator {
 	public static Map<String, List<CheckPointDailySelectionVO>> sortMapByValue(
 			Map<String, List<CheckPointDailySelectionVO>> oriMap, final Map<String, List<ZiJinLiuVO>> ziJinLius,
-			final Map<String, Integer> liuTongShiZhis) {
+			final Map<String, Integer> liuTongShiZhis, final Map<String, List<ZhuLiJingLiuRuVO>> zhuLiJingLiuRus) {
 		Map<String, List<CheckPointDailySelectionVO>> sortedMap = new LinkedHashMap<String, List<CheckPointDailySelectionVO>>();
 		if (oriMap != null && !oriMap.isEmpty()) {
 			List<Map.Entry<String, List<CheckPointDailySelectionVO>>> entryList = new ArrayList<Map.Entry<String, List<CheckPointDailySelectionVO>>>(
@@ -35,9 +36,11 @@ public class CheckPointEventAndZiJinLiuComparator {
 					String stockId1 = entry1.getKey();
 					String stockId2 = entry2.getKey();
 					// count checkPoint number & ZiJinLiu number
-					int s1 = cpList1.size() + countZiJinLiuVONumber(stockId1, ziJinLius) * 2
+					int s1 = cpList1.size() + countZiJinLiuVONumber(stockId1, ziJinLius)
+							+ countZhuLiJingLiuRuVONumber(stockId1, zhuLiJingLiuRus)
 							+ countLiuTongShiZhi(stockId1, liuTongShiZhis);
-					int s2 = cpList2.size() + countZiJinLiuVONumber(stockId2, ziJinLius) * 2
+					int s2 = cpList2.size() + countZiJinLiuVONumber(stockId2, ziJinLius)
+							+ countZhuLiJingLiuRuVONumber(stockId1, zhuLiJingLiuRus)
 							+ countLiuTongShiZhi(stockId2, liuTongShiZhis);
 
 					return s2 - s1;
@@ -56,6 +59,14 @@ public class CheckPointEventAndZiJinLiuComparator {
 
 	public static int countZiJinLiuVONumber(String stockId, Map<String, List<ZiJinLiuVO>> ziJinLius) {
 		List<ZiJinLiuVO> list = ziJinLius.get(stockId);
+		if (list != null) {
+			return list.size();
+		}
+		return 0;
+	}
+
+	public static int countZhuLiJingLiuRuVONumber(String stockId, Map<String, List<ZhuLiJingLiuRuVO>> zhuLiJingLiuRus) {
+		List<ZhuLiJingLiuRuVO> list = zhuLiJingLiuRus.get(stockId);
 		if (list != null) {
 			return list.size();
 		}

@@ -13,11 +13,13 @@ import org.easystogu.checkpoint.DailyCombineCheckPoint;
 import org.easystogu.config.FileConfigurationService;
 import org.easystogu.db.access.CheckPointDailySelectionTableHelper;
 import org.easystogu.db.access.StockPriceTableHelper;
+import org.easystogu.db.access.ZhuLiJingLiuRuTableHelper;
 import org.easystogu.db.access.ZiJinLiu3DayTableHelper;
 import org.easystogu.db.access.ZiJinLiu5DayTableHelper;
 import org.easystogu.db.access.ZiJinLiuTableHelper;
 import org.easystogu.db.table.CheckPointDailySelectionVO;
 import org.easystogu.db.table.CompanyInfoVO;
+import org.easystogu.db.table.ZhuLiJingLiuRuVO;
 import org.easystogu.db.table.ZiJinLiuVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.report.ReportTemplate;
@@ -31,6 +33,7 @@ public class RecentlySelectionRunner implements Runnable {
 	private ZiJinLiuTableHelper ziJinLiuTableHelper = ZiJinLiuTableHelper.getInstance();
 	private ZiJinLiu3DayTableHelper ziJinLiu3DayTableHelper = ZiJinLiu3DayTableHelper.getInstance();
 	private ZiJinLiu5DayTableHelper ziJinLiu5DayTableHelper = ZiJinLiu5DayTableHelper.getInstance();
+	private ZhuLiJingLiuRuTableHelper zhuLiJingLiuRuTableHelper = ZhuLiJingLiuRuTableHelper.getInstance();
 	private CheckPointDailySelectionTableHelper checkPointDailySelectionTable = CheckPointDailySelectionTableHelper
 			.getInstance();
 	private String latestDate = stockPriceTable.getLatestStockDate();
@@ -39,6 +42,8 @@ public class RecentlySelectionRunner implements Runnable {
 	private Map<String, List<CheckPointDailySelectionVO>> checkPointStocks = new HashMap<String, List<CheckPointDailySelectionVO>>();
 	// <stockId, ziJinLius>>
 	private Map<String, List<ZiJinLiuVO>> ziJinLius = new HashMap<String, List<ZiJinLiuVO>>();
+	// <stockId, zhuLiJingLiuRu>>
+	private Map<String, List<ZhuLiJingLiuRuVO>> zhuLiJingLiuRus = new HashMap<String, List<ZhuLiJingLiuRuVO>>();
 	// <stockId, liuTongShiZhi>>
 	private Map<String, Integer> liuTongShiZhi = new HashMap<String, Integer>();
 
@@ -90,6 +95,30 @@ public class RecentlySelectionRunner implements Runnable {
 		}
 	}
 
+	private void fetchRecentZhuLiJingLiuRuFromDB() {
+		Set<String> stockIds = this.checkPointStocks.keySet();
+		Iterator<String> its = stockIds.iterator();
+		while (its.hasNext()) {
+			String stockId = its.next();
+
+			for (String date : lastNDates) {
+				ZhuLiJingLiuRuVO vo = zhuLiJingLiuRuTableHelper.getZhuLiJingLiuRu(stockId, date);
+
+				List<ZhuLiJingLiuRuVO> zljlrList = null;
+				if (!this.zhuLiJingLiuRus.containsKey(stockId)) {
+					zljlrList = new ArrayList<ZhuLiJingLiuRuVO>();
+					this.zhuLiJingLiuRus.put(stockId, zljlrList);
+				} else {
+					zljlrList = this.zhuLiJingLiuRus.get(stockId);
+				}
+				//
+				if (vo != null) {
+					zljlrList.add(vo);
+				}
+			}
+		}
+	}
+
 	private void fetchLiuTongShiZhiFromDB() {
 		Set<String> stockIds = this.checkPointStocks.keySet();
 		Iterator<String> its = stockIds.iterator();
@@ -131,7 +160,7 @@ public class RecentlySelectionRunner implements Runnable {
 
 		// before report, sort
 		this.checkPointStocks = CheckPointEventAndZiJinLiuComparator.sortMapByValue(checkPointStocks, ziJinLius,
-				liuTongShiZhi);
+				liuTongShiZhi, zhuLiJingLiuRus);
 
 		String file = config.getString("report.recent.analyse.html.file").replaceAll("currentDate", latestDate);
 		System.out.println("\nSaving report to " + file);
@@ -220,11 +249,13 @@ public class RecentlySelectionRunner implements Runnable {
 	private String getCheckPointAndZiJinLiuOnDate(String stockId, String date) {
 		List<CheckPointDailySelectionVO> cpList = this.checkPointStocks.get(stockId);
 		List<ZiJinLiuVO> zjlList = this.ziJinLius.get(stockId);
+		List<ZhuLiJingLiuRuVO> zljlrList = this.zhuLiJingLiuRus.get(stockId);
 
 		String cpRtn = this.getCheckPointOnDate(date, cpList);
 		String zjlRtn = this.getZiJinLiuOnDate(date, zjlList);
+		String zljlrRtn = this.getZhuLiJingLiuRuOnDate(date, zljlrList);
 
-		String rtn = cpRtn + zjlRtn;
+		String rtn = cpRtn + zjlRtn + zljlrRtn;
 		if (rtn.length() == 0)
 			rtn = "&nbsp;";
 		return rtn;
@@ -250,6 +281,16 @@ public class RecentlySelectionRunner implements Runnable {
 		return sb.toString();
 	}
 
+	private String getZhuLiJingLiuRuOnDate(String date, List<ZhuLiJingLiuRuVO> zljlrList) {
+		StringBuffer sb = new StringBuffer();
+		for (ZhuLiJingLiuRuVO zjl : zljlrList) {
+			if (date.equals(zjl.date)) {
+				sb.append(zjl.toNetInString() + "<br>");
+			}
+		}
+		return sb.toString();
+	}
+
 	// 盘子大小 (流通市值)
 	private int getLiuTongShiZhi(String stockId) {
 		CompanyInfoVO companyVO = stockConfig.getByStockId(stockId);
@@ -264,7 +305,7 @@ public class RecentlySelectionRunner implements Runnable {
 	public void run() {
 		fetchRecentDaysCheckPointFromDB();
 		fetchRecentZiJinLiuFromDB();
-		// searchAllStockIdsWithMany1DayZiJinLiuFromDB();
+		fetchRecentZhuLiJingLiuRuFromDB();
 		fetchLiuTongShiZhiFromDB();
 		printRecentCheckPointToHtml();
 	}
@@ -274,7 +315,7 @@ public class RecentlySelectionRunner implements Runnable {
 		RecentlySelectionRunner runner = new RecentlySelectionRunner();
 		runner.fetchRecentDaysCheckPointFromDB();
 		runner.fetchRecentZiJinLiuFromDB();
-		// runner.searchAllStockIdsWithMany1DayZiJinLiuFromDB();
+		runner.fetchRecentZhuLiJingLiuRuFromDB();
 		runner.fetchLiuTongShiZhiFromDB();
 		runner.printRecentCheckPointToHtml();
 	}

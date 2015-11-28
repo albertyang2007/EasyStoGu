@@ -4,6 +4,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
 
+import org.easystogu.easymoney.runner.DailyZhuLiJingLiuRuRunner;
 import org.easystogu.easymoney.runner.DailyZiJinLiuRunner;
 import org.easystogu.runner.DailyOverAllRunner;
 import org.easystogu.runner.DailySelectionRunner;
@@ -77,6 +78,14 @@ public class HomeEndPoint {
 		Thread t = new Thread(new DailyZiJinLiuRunner());
 		t.start();
 		return "DailyZiJinLiuXiangRunner already running, please check DB result.";
+	}
+
+	@GET
+	@Path("/DailyZhuLiJingLiuRuRunner")
+	public String dailyZhuLiJingLiuRuRunner() {
+		Thread t = new Thread(new DailyZhuLiJingLiuRuRunner());
+		t.start();
+		return "DailyZhuLiJingLiuRuRunner already running, please check DB result.";
 	}
 
 	@GET

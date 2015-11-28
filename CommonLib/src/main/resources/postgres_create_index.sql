@@ -186,6 +186,6 @@ CREATE INDEX index_id_for_zijinliu
 CREATE INDEX index_date_for_zijinliu
   ON zijinliu
   USING hash
-  (date COLLATE pg_catalog."default");  
+  (date COLLATE pg_catalog."default");   
   
                                   

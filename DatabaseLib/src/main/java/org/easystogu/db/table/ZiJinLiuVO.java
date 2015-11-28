@@ -1,12 +1,12 @@
 package org.easystogu.db.table;
 
 import org.easystogu.utils.Strings;
-
+//资金流入
 public class ZiJinLiuVO {
 	public static final String RealTime = "RealTime";// real time's zijinliu
-	public static final String _1Day = "1Day";// current day's zijinliu
-	public static final String _3Day = "3Day";// recent 3 day's zijinliu
-	public static final String _5Day = "5Day";// recent 5 day's zijinliu
+	public static final String _1Day = "1_day";// current day's zijinliu
+	public static final String _3Day = "3_day";// recent 3 day's zijinliu
+	public static final String _5Day = "5_day";// recent 5 day's zijinliu
 	public String _DayType = _1Day;
 
 	public int rate;// 当日资金流排名

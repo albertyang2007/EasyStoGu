@@ -18,6 +18,7 @@ public class StockSuperVO {
 	public ZhuliJinChuVO zhuliJinChuVO;
 	public YiMengBSVO yiMengBSVO;
 	public Map<String, ZiJinLiuVO> ziJinLiuVOMap = new HashMap<String, ZiJinLiuVO>();
+	public ZhuLiJingLiuRuVO zhuLiJingLiuRuVO = null;
 	public double volumeIncreasePercent;// äº¤æ˜“çš„volumeè¾ƒå‰�ä¸€æ—¥çš„å¢žé‡�ç™¾åˆ†æ¯”
 	public long avgVol5;// avg of 5 days volume
 	public CrossType macdCorssType;
@@ -174,6 +175,16 @@ public class StockSuperVO {
 			rtn.append(ZiJinLiuVO._5Day + this.ziJinLiuVOMap.get(ZiJinLiuVO._5Day).toNetPerString() + " <br> ");
 		}
 		return rtn.toString();
+	}
+
+	public void setZhuLiJingLiuRuVO(ZhuLiJingLiuRuVO zhuLiJingLiuRuVO) {
+		this.zhuLiJingLiuRuVO = zhuLiJingLiuRuVO;
+	}
+
+	public String getZhuLiJingLiuRu() {
+		if (this.zhuLiJingLiuRuVO != null)
+			return "JinLiu" + this.zhuLiJingLiuRuVO.toNetInString();
+		return "";
 	}
 
 }

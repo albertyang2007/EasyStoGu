@@ -1,5 +1,6 @@
 package org.easystogu.scheduler;
 
+import org.easystogu.easymoney.runner.DailyZhuLiJingLiuRuRunner;
 import org.easystogu.easymoney.runner.DailyZiJinLiuRunner;
 import org.easystogu.log.LogHelper;
 import org.easystogu.runner.DailyOverAllRunner;
@@ -89,9 +90,13 @@ public class DailyScheduler implements SchedulingConfigurer {
 	private void DailyZiJinLiuRunner() {
 		logger.info("DailyZiJinLiuRunner already running, please check DB result.");
 		DailyZiJinLiuRunner runner = new DailyZiJinLiuRunner();
-		//runner.resetToAllPage();
 		Thread t = new Thread(runner);
 		t.start();
+
+		logger.info("DailyZhuLiJingLiuRuRunner already running, please check DB result.");
+		DailyZhuLiJingLiuRuRunner runner2 = new DailyZhuLiJingLiuRuRunner();
+		Thread t2 = new Thread(runner2);
+		t2.start();
 	}
 
 	private void PreEstimateStockPriceRunner() {

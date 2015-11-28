@@ -48,13 +48,16 @@ public class DailyZiJinLiuFatchDataHelper {
 		WebClient webClient = HtmlUnitHelper.getWebClient();
 		try {
 			HtmlPage htmlpage = webClient.getPage(baseUrl);
+			//System.out.println(htmlpage.asXml());
 
 			// fetch current date
 			String dateTime = htmlpage.getElementById("datatime").asText().trim();
+			//System.out.println("dateTime="+dateTime);
 			currentDate = dateTime.substring(1, dateTime.length() - 1);
 
 			// first page content
 			HtmlTable tabContent = (HtmlTable) htmlpage.getElementById("dt_1");
+			//System.out.println("tabContent=\n"+tabContent.asText());
 			List<ZiJinLiuVO> rtn = this.parseOnePageStockIdsZiJinLiu(tabContent.asText());
 			System.out.println("Process 1 day ZiJinLiu Page 1 end with vo size: " + rtn.size());
 			list.addAll(rtn);
@@ -148,12 +151,13 @@ public class DailyZiJinLiuFatchDataHelper {
 	private List<ZiJinLiuVO> parseOnePageStockIdsZiJinLiu(String content) {
 		List<ZiJinLiuVO> list = new ArrayList<ZiJinLiuVO>();
 		String[] lines = content.split("\n");
-		for (int i = 2; i < lines.length; i++) {
+		for (int i = 3; i < lines.length; i++) {
 			// first two lines are table header
 			if (lines[i].trim().length() > 1) {
 				String line = lines[i].replaceAll("\\s{1,}", " ");
 				String[] data = line.trim().split(" ");
-				if (data.length == 18) {
+				//System.out.println("len=" + data.length);
+				if (data.length == 17) {
 					try {
 						ZiJinLiuVO vo = new ZiJinLiuVO();
 						// 19 601186 中国铁建 大单详情 股吧 研报 16.47 3.65% 1.56亿 8.25%
@@ -163,22 +167,22 @@ public class DailyZiJinLiuFatchDataHelper {
 						vo.stockId = data[1];
 						vo.name = data[2].trim();
 
-						vo.incPer = data[7];
+						vo.incPer = data[6];
 
-						vo.majorNetIn = convertNetIn2Double(data[8]);
-						vo.majorNetPer = convertNetPer2Double(data[9]);
+						vo.majorNetIn = convertNetIn2Double(data[7]);
+						vo.majorNetPer = convertNetPer2Double(data[8]);
 
-						vo.biggestNetIn = convertNetIn2Double(data[10]);
-						vo.biggestNetPer = convertNetPer2Double(data[11]);
+						vo.biggestNetIn = convertNetIn2Double(data[9]);
+						vo.biggestNetPer = convertNetPer2Double(data[10]);
 
-						vo.bigNetIn = convertNetIn2Double(data[12]);
-						vo.bigNetPer = convertNetPer2Double(data[13]);
+						vo.bigNetIn = convertNetIn2Double(data[11]);
+						vo.bigNetPer = convertNetPer2Double(data[12]);
 
-						vo.midNetIn = convertNetIn2Double(data[14]);
-						vo.midNetPer = convertNetPer2Double(data[15]);
+						vo.midNetIn = convertNetIn2Double(data[13]);
+						vo.midNetPer = convertNetPer2Double(data[14]);
 
-						vo.smallNetIn = convertNetIn2Double(data[16]);
-						vo.smallNetPer = convertNetPer2Double(data[17]);
+						vo.smallNetIn = convertNetIn2Double(data[15]);
+						vo.smallNetPer = convertNetPer2Double(data[16]);
 
 						vo.date = this.currentDate;
 
@@ -222,7 +226,7 @@ public class DailyZiJinLiuFatchDataHelper {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		DailyZiJinLiuFatchDataHelper helper = new DailyZiJinLiuFatchDataHelper();
-		List<ZiJinLiuVO> list = helper.get5DayAllStockIdsZiJinLiu(2);
+		List<ZiJinLiuVO> list = helper.get1DayAllStockIdsZiJinLiu(2);
 		for (ZiJinLiuVO vo : list) {
 			System.out.println(vo.stockId + "=" + vo.name);
 		}
