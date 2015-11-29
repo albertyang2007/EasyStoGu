@@ -14,8 +14,6 @@ import org.easystogu.config.FileConfigurationService;
 import org.easystogu.db.access.CheckPointDailySelectionTableHelper;
 import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.access.ZhuLiJingLiuRuTableHelper;
-import org.easystogu.db.access.ZiJinLiu3DayTableHelper;
-import org.easystogu.db.access.ZiJinLiu5DayTableHelper;
 import org.easystogu.db.access.ZiJinLiuTableHelper;
 import org.easystogu.db.table.CheckPointDailySelectionVO;
 import org.easystogu.db.table.CompanyInfoVO;
@@ -31,8 +29,6 @@ public class RecentlySelectionRunner implements Runnable {
 	private CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 	private StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
 	private ZiJinLiuTableHelper ziJinLiuTableHelper = ZiJinLiuTableHelper.getInstance();
-	private ZiJinLiu3DayTableHelper ziJinLiu3DayTableHelper = ZiJinLiu3DayTableHelper.getInstance();
-	private ZiJinLiu5DayTableHelper ziJinLiu5DayTableHelper = ZiJinLiu5DayTableHelper.getInstance();
 	private ZhuLiJingLiuRuTableHelper zhuLiJingLiuRuTableHelper = ZhuLiJingLiuRuTableHelper.getInstance();
 	private CheckPointDailySelectionTableHelper checkPointDailySelectionTable = CheckPointDailySelectionTableHelper
 			.getInstance();
@@ -159,7 +155,7 @@ public class RecentlySelectionRunner implements Runnable {
 	private void printRecentCheckPointToHtml() {
 
 		// before report, sort
-		this.checkPointStocks = CheckPointEventAndZiJinLiuComparator.sortMapByValue(checkPointStocks, ziJinLius,
+		this.checkPointStocks = CheckPointEventAndZiJinLiuComparator.sortMapByValue(lastNDates, checkPointStocks, ziJinLius,
 				liuTongShiZhi, zhuLiJingLiuRus);
 
 		String file = config.getString("report.recent.analyse.html.file").replaceAll("currentDate", latestDate);
