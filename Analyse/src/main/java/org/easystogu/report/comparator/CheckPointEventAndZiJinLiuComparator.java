@@ -45,7 +45,11 @@ public class CheckPointEventAndZiJinLiuComparator {
 							+ (countZiJinLiuVONumber(lastNDates, stockId2, ziJinLius) + countZhuLiJingLiuRuVONumber(
 									lastNDates, stockId2, zhuLiJingLiuRus));
 
+					int ddx1 = (int) getTotalDDX(stockId1, lastNDates, ziJinLius, liuTongShiZhis);
+					int ddx2 = (int) getTotalDDX(stockId2, lastNDates, ziJinLius, liuTongShiZhis);
+
 					return s2 - s1;
+					// return ddx2 - ddx1;
 				}
 			});
 			//
@@ -59,7 +63,7 @@ public class CheckPointEventAndZiJinLiuComparator {
 		return sortedMap;
 	}
 
-	public static int countZiJinLiuVONumber(List<String> lastNDates, String stockId,
+	private static int countZiJinLiuVONumber(List<String> lastNDates, String stockId,
 			Map<String, List<ZiJinLiuVO>> ziJinLius) {
 		int count = 0;
 		List<ZiJinLiuVO> list = ziJinLius.get(stockId);
@@ -76,7 +80,7 @@ public class CheckPointEventAndZiJinLiuComparator {
 		return count;
 	}
 
-	public static int countZhuLiJingLiuRuVONumber(List<String> lastNDates, String stockId,
+	private static int countZhuLiJingLiuRuVONumber(List<String> lastNDates, String stockId,
 			Map<String, List<ZhuLiJingLiuRuVO>> zhuLiJingLiuRus) {
 		int count = 0;
 		List<ZhuLiJingLiuRuVO> list = zhuLiJingLiuRus.get(stockId);
@@ -93,7 +97,7 @@ public class CheckPointEventAndZiJinLiuComparator {
 		return count;
 	}
 
-	public static int countLiuTongShiZhi(String stockId, Map<String, Integer> liuTongShiZhis) {
+	private static int countLiuTongShiZhi(String stockId, Map<String, Integer> liuTongShiZhis) {
 		int liuTongShiZhi = liuTongShiZhis.get(stockId);
 		if (liuTongShiZhi <= 50) {
 			return 3;
@@ -105,5 +109,20 @@ public class CheckPointEventAndZiJinLiuComparator {
 			return 1;
 		}
 		return 0;
+	}
+
+	private static double getTotalDDX(String stockId, List<String> lastNDates, Map<String, List<ZiJinLiuVO>> ziJinLius,
+			Map<String, Integer> liuTongShiZhis) {
+		List<ZiJinLiuVO> zjlList = ziJinLius.get(stockId);
+		int liuTongShiZhi = liuTongShiZhis.get(stockId);
+		double ddx = 0.0;
+		for (ZiJinLiuVO zjl : zjlList) {
+			for (int index = 0; index < lastNDates.size(); index++) {
+				if (zjl.date.equals(lastNDates.get(index))) {
+					ddx += zjl.getMajorNetIn() / liuTongShiZhi;
+				}
+			}
+		}
+		return ddx;
 	}
 }
