@@ -22,6 +22,7 @@ import org.easystogu.db.table.ZiJinLiuVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.report.ReportTemplate;
 import org.easystogu.report.comparator.CheckPointEventAndZiJinLiuComparator;
+import org.easystogu.utils.Strings;
 
 //recently (10 days) select stock that checkpoint is satisfied
 public class RecentlySelectionRunner implements Runnable {
@@ -155,8 +156,8 @@ public class RecentlySelectionRunner implements Runnable {
 	private void printRecentCheckPointToHtml() {
 
 		// before report, sort
-		this.checkPointStocks = CheckPointEventAndZiJinLiuComparator.sortMapByValue(lastNDates, checkPointStocks, ziJinLius,
-				liuTongShiZhi, zhuLiJingLiuRus);
+		this.checkPointStocks = CheckPointEventAndZiJinLiuComparator.sortMapByValue(lastNDates, checkPointStocks,
+				ziJinLius, liuTongShiZhi, zhuLiJingLiuRus);
 
 		String file = config.getString("report.recent.analyse.html.file").replaceAll("currentDate", latestDate);
 		System.out.println("\nSaving report to " + file);
@@ -250,8 +251,9 @@ public class RecentlySelectionRunner implements Runnable {
 		String cpRtn = this.getCheckPointOnDate(date, cpList);
 		String zjlRtn = this.getZiJinLiuOnDate(date, zjlList);
 		String zljlrRtn = this.getZhuLiJingLiuRuOnDate(date, zljlrList);
+		String ddxRtn = this.getDDXOnDate(date, zjlList);
 
-		String rtn = cpRtn + zjlRtn + zljlrRtn;
+		String rtn = cpRtn + zjlRtn + zljlrRtn + ddxRtn;
 		if (rtn.length() == 0)
 			rtn = "&nbsp;";
 		return rtn;
@@ -271,7 +273,7 @@ public class RecentlySelectionRunner implements Runnable {
 		StringBuffer sb = new StringBuffer();
 		for (ZiJinLiuVO zjl : zjlList) {
 			if (date.equals(zjl.date)) {
-				sb.append(zjl.toNetPerString() + "<br>");
+				sb.append(ZiJinLiuVO._1Day + zjl.toNetPerString() + "<br>");
 			}
 		}
 		return sb.toString();
@@ -281,7 +283,18 @@ public class RecentlySelectionRunner implements Runnable {
 		StringBuffer sb = new StringBuffer();
 		for (ZhuLiJingLiuRuVO zjl : zljlrList) {
 			if (date.equals(zjl.date)) {
-				sb.append(zjl.toNetInString() + "<br>");
+				sb.append("JinLiu" + zjl.toNetInString() + "<br>");
+			}
+		}
+		return sb.toString();
+	}
+
+	private String getDDXOnDate(String date, List<ZiJinLiuVO> zjlList) {
+		StringBuffer sb = new StringBuffer();
+		for (ZiJinLiuVO zjl : zjlList) {
+			if (date.equals(zjl.date)) {
+				double ddx = zjl.getMajorNetIn() / this.liuTongShiZhi.get(zjl.stockId) / 100;
+				sb.append("ddx [" + format2f(ddx) + "]<br>");
 			}
 		}
 		return sb.toString();
@@ -296,6 +309,10 @@ public class RecentlySelectionRunner implements Runnable {
 			liuTongShiZhi = companyVO.countLiuTongShiZhi(close);
 		}
 		return (int) liuTongShiZhi;
+	}
+	
+	public String format2f(double d) {
+		return String.format("%.2f", d);
 	}
 
 	public void run() {
