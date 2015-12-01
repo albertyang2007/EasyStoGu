@@ -22,7 +22,6 @@ import org.easystogu.db.table.ZiJinLiuVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.report.ReportTemplate;
 import org.easystogu.report.comparator.CheckPointEventAndZiJinLiuComparator;
-import org.easystogu.utils.Strings;
 
 //recently (10 days) select stock that checkpoint is satisfied
 public class RecentlySelectionRunner implements Runnable {
