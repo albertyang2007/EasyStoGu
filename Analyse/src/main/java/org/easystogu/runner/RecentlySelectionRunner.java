@@ -128,33 +128,6 @@ public class RecentlySelectionRunner implements Runnable {
 		}
 	}
 
-	private void searchAllStockIdsWithMany1DayZiJinLiuFromDB() {
-		List<String> stockIds = stockConfig.getAllStockId();
-		for (String stockId : stockIds) {
-			List<ZiJinLiuVO> zjlList = new ArrayList<ZiJinLiuVO>();
-			for (String date : lastNDates) {
-				ZiJinLiuVO _1dayVO = ziJinLiuTableHelper.getZiJinLiu(stockId, date);
-				if (_1dayVO != null) {
-					_1dayVO._DayType = ZiJinLiuVO._1Day;
-					zjlList.add(_1dayVO);
-				}
-			}
-			// in 10 days, there more than _1Day ZiJinLiVO, means big money buy
-			// this stock in recent days
-			if (zjlList.size() >= 5) {
-				if (!this.ziJinLius.containsKey(stockId)) {
-					this.ziJinLius.put(stockId, zjlList);
-				}
-				//
-				CheckPointDailySelectionVO mockCPVO = new CheckPointDailySelectionVO();
-				mockCPVO.setCheckPoint(DailyCombineCheckPoint.Continue_1Day_ZiJinLiu.toString());
-				mockCPVO.setStockId(stockId);
-				mockCPVO.setDate(zjlList.get(0).date);
-				this.addCheckPointStockToMap(mockCPVO);
-			}
-		}
-	}
-
 	private void printRecentCheckPointToHtml() {
 
 		// before report, sort

@@ -30,7 +30,7 @@ public enum DailyCombineCheckPoint {
 			8.76), YiYang_Cross_4K_Lines(SellPointType.KDJ_Dead, 10000, 8.50), SuoLiang_HuiTiao_ShenXiao_Gordon(
 			SellPointType.KDJ_Dead, 135, 10.77), YiMengBS_Gordon(SellPointType.KDJ_Dead, 45142, 8.29), YiMengBS_KDJ_Gordon(
 			SellPointType.KDJ_Dead, 45142, 8.29), YiMengBS_KDJ_Gordon_SuoLiang_HuiTiao(SellPointType.KDJ_Dead, 71, 28.0), Many_ZhangTing_Then_DieTing(
-			SellPointType.KDJ_Dead, 18, 15.09), Continue_1Day_ZiJinLiu(SellPointType.KDJ_Dead, 0, 99);
+			SellPointType.KDJ_Dead, 18, 15.09), Continue_ZiJinLiu_DDX_RED_KDJ_Gorden(SellPointType.KDJ_Dead, 0, 99);
 
 	private FileConfigurationService config = FileConfigurationService.getInstance();
 	private double minEarnPercent = config.getDouble("minEarnPercent_Select_CheckPoint");

@@ -8,7 +8,7 @@ import org.easystogu.db.table.StockSuperVO;
 import org.easystogu.utils.CrossType;
 
 public class CombineAnalyseHelper {
-	public int[] tempInputArgs = new int[2];// just for temp history analyse 
+	public int[] tempInputArgs = new int[2];// just for temp history analyse
 
 	// overList is order by date, it is daily price and ind
 	public boolean isConditionSatisfy(DailyCombineCheckPoint checkPoint, List<StockSuperVO> overDayList,
@@ -1065,6 +1065,18 @@ public class CombineAnalyseHelper {
 			break;
 		}
 
+		case Continue_ZiJinLiu_DDX_RED_KDJ_Gorden: {
+			// example: 600900,600016 @2015-11-30
+			// in 10 days, 7 days DDX red and money in
+			if (curSuperDayVO.kdjCorssType == CrossType.GORDON || curSuperDayVO.kdjCorssType == CrossType.NEAR_GORDON
+					|| curSuperDayVO.rsvCorssType == CrossType.GORDON) {
+				if (this.numberOfDDXRedInNDays(overDayList, 10) >= 7) {
+					return true;
+				}
+			}
+			break;
+		}
+
 		default:
 			return false;
 		}
@@ -1256,8 +1268,9 @@ public class CombineAnalyseHelper {
 			return false;
 		}
 		// System.out.println("debug 11 " + Sdate + " ~ " + Edate);
-		//System.out.println("findLongPlatformBasedOnWeekDateOrig from " + startVO.priceVO.date + " to "
-		//		+ endVO.priceVO.date);
+		// System.out.println("findLongPlatformBasedOnWeekDateOrig from " +
+		// startVO.priceVO.date + " to "
+		// + endVO.priceVO.date);
 		return true;
 	}
 
@@ -1374,8 +1387,9 @@ public class CombineAnalyseHelper {
 			// return false;
 		}
 		// System.out.println("debug OK " + Sdate + " ~ " + Edate);
-		//System.out.println("findLongPlatformBasedOnWeekDate from " + overDayList.get(startIndex).priceVO.date + " to "
-		//		+ overDayList.get(endIndex).priceVO.date);
+		// System.out.println("findLongPlatformBasedOnWeekDate from " +
+		// overDayList.get(startIndex).priceVO.date + " to "
+		// + overDayList.get(endIndex).priceVO.date);
 		return true;
 	}
 
@@ -1588,5 +1602,16 @@ public class CombineAnalyseHelper {
 		double max1 = Math.max(v1, v2);
 		double max2 = Math.max(max1, v3);
 		return Math.max(max1, max2);
+	}
+
+	private int numberOfDDXRedInNDays(List<StockSuperVO> overDayList, int NDays) {
+		int number = 0;
+		for (int index = overDayList.size() - 1; index >= (overDayList.size() - NDays); index--) {
+			StockSuperVO spvo = overDayList.get(index);
+			if (spvo.ddxVO != null && spvo.ddxVO.ddx > 0.0) {
+				number++;
+			}
+		}
+		return number;
 	}
 }

@@ -147,8 +147,8 @@ public class HistoryAnalyseReport {
 
 		for (String stockId : stockIds) {
 
-			if (!stockId.equals("000024"))
-			 continue;
+			//if (!stockId.equals("600383"))
+			// continue;
 
 			List<HistoryReportDetailsVO> historyReportList = this.doAnalyseReport(stockId, checkPoint);
 			for (HistoryReportDetailsVO reportVO : historyReportList) {
@@ -272,13 +272,6 @@ public class HistoryAnalyseReport {
 		// }
 		// reporter.searchAllStockIdAccordingToCheckPoint(checkPoint);
 		// }
-		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.HengPan_3_Weeks_MA_RongHe_Break_Platform);
-		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.HengPan_2_Weeks_MA_RongHe_XiangShang_Break_Platform);
-		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.HengPang_Ready_To_Break_Platform_MA30_Support_MA_RongHe_XiangShang);
-		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.HengPang_Ready_To_Break_Platform_MA20_Support_MA_RongHe_XiangShang);
-		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.HengPang_Ready_To_Break_Platform_KDJ_Gordon);
-		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.HengPang_Ready_To_Break_Platform_MACD_Gordon_Week_KDJ_Gordon);
-		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.HengPang_Ready_To_Break_Platform_BollUp_BollXueShi2_Dn_Gordon);
-
+		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.Continue_ZiJinLiu_DDX_RED_KDJ_Gorden);		
 	}
 }

@@ -17,6 +17,8 @@ public class StockSuperVO {
 	public Mai1Mai2VO mai1mai2VO;
 	public ZhuliJinChuVO zhuliJinChuVO;
 	public YiMengBSVO yiMengBSVO;
+	public DDXVO ddxVO;
+	public ZiJinLiuVO zhiJinLiuVO;
 	public Map<String, ZiJinLiuVO> ziJinLiuVOMap = new HashMap<String, ZiJinLiuVO>();
 	public ZhuLiJingLiuRuVO zhuLiJingLiuRuVO = null;
 	public double volumeIncreasePercent;// äº¤æ˜“çš„volumeè¾ƒå‰�ä¸€æ—¥çš„å¢žé‡�ç™¾åˆ†æ¯”
@@ -185,6 +187,22 @@ public class StockSuperVO {
 		if (this.zhuLiJingLiuRuVO != null)
 			return "JinLiu" + this.zhuLiJingLiuRuVO.toNetInString();
 		return "";
+	}
+
+	public DDXVO getDdxVO() {
+		return ddxVO;
+	}
+
+	public void setDdxVO(DDXVO ddxVO) {
+		this.ddxVO = ddxVO;
+	}
+
+	public ZiJinLiuVO getZhiJinLiuVO() {
+		return zhiJinLiuVO;
+	}
+
+	public void setZhiJinLiuVO(ZiJinLiuVO zhiJinLiuVO) {
+		this.zhiJinLiuVO = zhiJinLiuVO;
 	}
 
 }
