@@ -2,6 +2,7 @@ package org.easystogu.runner;
 
 import java.util.List;
 
+import org.easystogu.easymoney.runner.DailyDDXRunner;
 import org.easystogu.easymoney.runner.DailyZhuLiJingLiuRuRunner;
 import org.easystogu.easymoney.runner.DailyZiJinLiuRunner;
 import org.easystogu.file.access.CompanyInfoFileHelper;
@@ -38,6 +39,9 @@ public class DailyUpdateAllStockRunner implements Runnable {
 			DailyZiJinLiuRunner.main(args);
 			DailyZhuLiJingLiuRuRunner.main(args);
 		}
+
+		// ddx
+		new DailyDDXRunner().countAndSaved(allStockIds);
 
 		// analyse
 		dailySelectionRunner = new DailySelectionRunner();

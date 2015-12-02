@@ -12,11 +12,13 @@ import java.util.Set;
 import org.easystogu.checkpoint.DailyCombineCheckPoint;
 import org.easystogu.config.FileConfigurationService;
 import org.easystogu.db.access.CheckPointDailySelectionTableHelper;
+import org.easystogu.db.access.IndDDXTableHelper;
 import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.access.ZhuLiJingLiuRuTableHelper;
 import org.easystogu.db.access.ZiJinLiuTableHelper;
 import org.easystogu.db.table.CheckPointDailySelectionVO;
 import org.easystogu.db.table.CompanyInfoVO;
+import org.easystogu.db.table.DDXVO;
 import org.easystogu.db.table.ZhuLiJingLiuRuVO;
 import org.easystogu.db.table.ZiJinLiuVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
@@ -29,6 +31,7 @@ public class RecentlySelectionRunner implements Runnable {
 	private CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 	private StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
 	private ZiJinLiuTableHelper ziJinLiuTableHelper = ZiJinLiuTableHelper.getInstance();
+	private IndDDXTableHelper ddxTable = IndDDXTableHelper.getInstance();
 	private ZhuLiJingLiuRuTableHelper zhuLiJingLiuRuTableHelper = ZhuLiJingLiuRuTableHelper.getInstance();
 	private CheckPointDailySelectionTableHelper checkPointDailySelectionTable = CheckPointDailySelectionTableHelper
 			.getInstance();
@@ -250,7 +253,9 @@ public class RecentlySelectionRunner implements Runnable {
 		String cpRtn = this.getCheckPointOnDate(date, cpList);
 		String zjlRtn = this.getZiJinLiuOnDate(date, zjlList);
 		String zljlrRtn = this.getZhuLiJingLiuRuOnDate(date, zljlrList);
-		String ddxRtn = this.getDDXOnDate(date, zjlList);
+		// String ddxRtn = this.getDDXOnDate(date, zjlList);
+		DDXVO ddxvo = ddxTable.getDDX(stockId, date);
+		String ddxRtn = (ddxvo != null) ? ddxvo.toDDXString() : "";
 
 		String rtn = cpRtn + zjlRtn + zljlrRtn + ddxRtn;
 		if (rtn.length() == 0)
@@ -309,7 +314,7 @@ public class RecentlySelectionRunner implements Runnable {
 		}
 		return (int) liuTongShiZhi;
 	}
-	
+
 	public String format2f(double d) {
 		return String.format("%.2f", d);
 	}

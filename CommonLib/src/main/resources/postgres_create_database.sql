@@ -623,3 +623,24 @@ ALTER TABLE zhulijingliuru
   OWNER TO postgres;
 GRANT ALL ON TABLE zhulijingliuru TO public;
 GRANT ALL ON TABLE zhulijingliuru TO postgres;
+
+-- Table: ind_ddx
+
+-- DROP TABLE ind_ddx;
+
+CREATE TABLE ind_ddx
+(
+  stockid text NOT NULL,
+  date text NOT NULL,
+  ddx numeric,
+  ddy numeric,
+  ddz numeric,
+  CONSTRAINT ind_ddx_primary_key PRIMARY KEY (stockid, date)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE ind_ddx
+  OWNER TO postgres;
+GRANT ALL ON TABLE ind_ddx TO public;
+GRANT ALL ON TABLE ind_ddx TO postgres;
