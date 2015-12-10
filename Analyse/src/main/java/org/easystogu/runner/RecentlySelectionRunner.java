@@ -224,6 +224,10 @@ public class RecentlySelectionRunner implements Runnable {
 		List<ZhuLiJingLiuRuVO> zljlrList = this.zhuLiJingLiuRus.get(stockId);
 
 		String cpRtn = this.getCheckPointOnDate(date, cpList);
+		if (date.equals(this.latestDate) && cpRtn.trim().length() > 1) {
+			cpRtn = "Today:<br>" + cpRtn;
+		}
+
 		String zjlRtn = this.getZiJinLiuOnDate(date, zjlList);
 		String zljlrRtn = this.getZhuLiJingLiuRuOnDate(date, zljlrList);
 		// String ddxRtn = this.getDDXOnDate(date, zjlList);
