@@ -34,7 +34,7 @@ public class DailyScheduler implements SchedulingConfigurer {
 	// http://www.quartz-scheduler.org/documentation/quartz-1.x/tutorials/crontrigger
 
 	// run at 10:32
-	@Scheduled(cron = "0 32 10 * * MON-FRI")
+	//@Scheduled(cron = "0 32 10 * * MON-FRI")
 	public void _0_DailyOverAllRunner() {
 		boolean isGetZiJinLiu = false;
 		this.DailyOverAllRunner(isGetZiJinLiu);
@@ -48,7 +48,7 @@ public class DailyScheduler implements SchedulingConfigurer {
 	}
 
 	// run at 14:02
-	@Scheduled(cron = "0 02 14 * * MON-FRI")
+	//@Scheduled(cron = "0 02 14 * * MON-FRI")
 	public void _2_DailyOverAllRunner() {
 		boolean isGetZiJinLiu = false;
 		this.DailyOverAllRunner(isGetZiJinLiu);
