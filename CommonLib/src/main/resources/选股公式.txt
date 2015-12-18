@@ -308,3 +308,89 @@ H2:EMA(神仙大趋势H1,18);
 H3: EMA (CLOSE,108),COLORYELLOW;
 STICKLINE(神仙大趋势H1>H2,神仙大趋势H1,H2,1,1),COLORRED;
 STICKLINE(神仙大趋势H1<H2,神仙大趋势H1,H2,1,1),COLORBLUE;
+
+
+=======================================================================================
+价格通道：
+
+A:=(CLOSE+OPEN)/2;
+平衡线:=(20*A+19*REF(A,1)+18*REF(A,2)+17*REF(A,3)+16*REF(A,4)+15*REF(A,5)+14*REF(A,6)
++13*REF(A,7)+12*REF(A,8)+11*REF(A,9)+10*REF(A,10)+9*REF(A,11)+8*REF(A,12)
++7*REF(A,13)+6*REF(A,14)+5*REF(A,15)+4*REF(A,16)+3*REF(A,17)+2*REF(A,18)
++1*REF(A,19))/208;
+平仓:平衡线*1.16;
+风险:平衡线*1.11;
+回档:平衡线*1.053;
+平衡:平衡线*1,LINETHICK2;
+反弹:平衡线*0.93;
+超跌:平衡线*0.9;
+满仓:平衡线*0.841;
+
+DRAWKLINE(HIGH,OPEN,LOW,CLOSE);
+
+
+=======================================================================================
+绝对顶底：
+Sq:=ma(c,20);
+hld:=(close-Sq)/Sq;
+hh:=ref(hhv(hld,360),1);
+ll:=ref(llv(hld,360),1);
+zz:=(hh+ll)/2;
+ww:=(hh-ll)*5/6+ll;
+dd:=(hh-ll)*1/6+ll;
+【平衡】:sq*(1+zz),coloryellow,linethick0;
+PARTLINE(【平衡】,【平衡】>ref(【平衡】,1),RGB(255,255,0),【平衡】<ref(【平衡】,1),RGB(0,255,0),1,RGB(0,0,255)),linethick2;
+【顶】:sq*(1+hh),colorred,linethick2;
+次高:sq*(1+ww),colorff00ff;
+次低:sq*(1+dd),colorwhite;
+【底】:sq*(1+ll),color00ff00,linethick2;
+drawtext(h>次高 and c<次高,次高,'★'),coloryellow;
+drawtext(h>【顶】 and c<【顶】,h,'★'),color00ff00;
+drawtext(l<次低 and c>次低,次低,'▲'),coloryellow;
+drawtext(l<【底】 and c>【底】,l,'▲'),color00ff00;
+【量h】:=IF((AMOUNT/C)/(HHV(AMOUNT,20)/HHV(C,20))*100>100,100,(AMOUNT/C)/(HHV(AMOUNT,21)/HHV(C,21))*100);
+stickline(【量h】=100,l,h,1,0),colorff00ff;
+stickline(【量h】=100 and c>=o,c,o,8,1),colorff00ff;
+stickline(【量h】=100 and c<o,c,o,8,0),colorff00ff;
+ZDF:=(C-REF(C,1))/REF(C,1)*100;
+STICKLINE(ZDF>9.8,O,C,6,0),COLORRED;
+STICKLINE(ZDF<-9.8,O,C,5,0),COLORBLUE;
+DRAWKLINE(HIGH,OPEN,LOW,CLOSE);
+
+
+
+估:=(2*CLOSE+LOW+HIGH)/4;
+界:=SLOPE(CLOSE,21)*20+CLOSE;
+文:=EMA(估,40)*0.85;
+快线:EMA(CLOSE,3),COLORDDDDDD;
+慢线:EMA(界,55),COLOR3300FF;
+风险区:EMA(估,40)*1.15,POINTDOT,COLORFF33FF;
+庄家出货区:EMA(估,55)*1.3,CIRCLEDOT,COLORYELLOW;
+机构成本区:EMA(估,55),COLORWHITE,POINTDOT;
+庄家成本区:(机构成本区+文)/2,CIRCLEDOT,COLOR00FF33;
+STICKLINE(C>=庄家成本区 AND REF(C,1)<庄家成本区 AND REF(C,2)>庄家成本区,O,C,3,0),COLORRED;
+STICKLINE(C>=庄家成本区 AND REF(C,1)<庄家成本区 AND REF(C,2)>庄家成本区,L,H,0.2,0),COLORRED;
+STICKLINE(FILTER(C>=机构成本区 AND L<机构成本区,2),O,C,3,0),COLORYELLOW;
+STICKLINE(FILTER(C>=机构成本区 AND L<机构成本区,2),L,H,0.2,0),COLORYELLOW;
+STICKLINE(FILTER(CROSS(庄家出货区,CLOSE),3),O,C,3,0),COLORGREEN;
+STICKLINE(FILTER(CROSS(庄家出货区,CLOSE),3),L,H,0.2,0),COLORGREEN;
+DRAWICON(C>=庄家成本区 AND REF(C,1)<庄家成本区 AND REF(C,2)>庄家成本区,L*0.96,9);
+DRAWICON(FILTER(C>=机构成本区 AND L<机构成本区,2),L*0.96,1);
+DRAWICON(FILTER(CROSS(庄家出货区,CLOSE),3),H*1.03,2);
+DRAWICON(FILTER(CROSS(风险区,CLOSE),2),H*1.01,8);
+
+DRAWKLINE(HIGH,OPEN,LOW,CLOSE);
+
+
+
+
+A:=(CLOSE+OPEN)/2;
+平衡线:=(20*A+19*REF(A,1)+18*REF(A,2)+17*REF(A,3)+16*REF(A,4)+15*REF(A,5)+14*REF(A,6)
++13*REF(A,7)+12*REF(A,8)+11*REF(A,9)+10*REF(A,10)+9*REF(A,11)+8*REF(A,12)
++7*REF(A,13)+6*REF(A,14)+5*REF(A,15)+4*REF(A,16)+3*REF(A,17)+2*REF(A,18)
++1*REF(A,19))/208;
+平仓:平衡线*1.16;
+
+现价:C,COLORWHITE;
+
+
