@@ -48,6 +48,7 @@ public class DailyZiJinLiuFatchDataHelper {
 		WebClient webClient = HtmlUnitHelper.getWebClient();
 		try {
 			HtmlPage htmlpage = webClient.getPage(baseUrl);
+			webClient.waitForBackgroundJavaScript(1000 * 10L);
 			//System.out.println(htmlpage.asXml());
 
 			// fetch current date
