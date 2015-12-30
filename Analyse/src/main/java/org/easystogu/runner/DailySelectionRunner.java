@@ -118,7 +118,7 @@ public class DailySelectionRunner implements Runnable {
                             }
                         }
                     }
-                } else if (this.isGeneralCheckPoint(checkPoint)) {
+                } else if (this.isGeneralCheckPoint(checkPoint)) { 
                     if (combineAnalyserHelper.isConditionSatisfy(checkPoint, overDayList, overWeekList)) {
                         this.saveToCheckPointSelectionDB(superVO, checkPoint);
                         this.addToGeneralCheckPointGordonMap(checkPoint, stockId);
