@@ -6,7 +6,9 @@ public class CheckPointDailySelectionVO {
 	public String checkPoint;
 
 	public String toString() {
-		return stockId + " Date=" + this.date + ", CheckPoint=" + this.checkPoint;
+		// return stockId + " Date=" + this.date + ", CheckPoint=" +
+		// this.checkPoint;
+		return this.checkPoint;
 	}
 
 	public void setDate(String date) {

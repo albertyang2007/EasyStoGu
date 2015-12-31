@@ -13,7 +13,7 @@ import org.easystogu.db.table.CheckPointDailySelectionVO;
 import org.easystogu.db.table.ZhuLiJingLiuRuVO;
 import org.easystogu.db.table.ZiJinLiuVO;
 
-public class CheckPointEventAndZiJinLiuComparator {
+public class CheckPointEventComparator {
 	public static Map<String, List<CheckPointDailySelectionVO>> sortMapByValue(final List<String> lastNDates,
 			Map<String, List<CheckPointDailySelectionVO>> oriMap, final Map<String, List<ZiJinLiuVO>> ziJinLius,
 			final Map<String, Integer> liuTongShiZhis, final Map<String, List<ZhuLiJingLiuRuVO>> zhuLiJingLiuRus) {
@@ -124,5 +124,36 @@ public class CheckPointEventAndZiJinLiuComparator {
 			}
 		}
 		return ddx;
+	}
+
+	public static Map<String, List<CheckPointDailySelectionVO>> sortMapByEvent(
+			Map<String, List<CheckPointDailySelectionVO>> oriMap) {
+		Map<String, List<CheckPointDailySelectionVO>> sortedMap = new LinkedHashMap<String, List<CheckPointDailySelectionVO>>();
+		if (oriMap != null && !oriMap.isEmpty()) {
+			List<Map.Entry<String, List<CheckPointDailySelectionVO>>> entryList = new ArrayList<Map.Entry<String, List<CheckPointDailySelectionVO>>>(
+					oriMap.entrySet());
+			Collections.sort(entryList, new Comparator<Map.Entry<String, List<CheckPointDailySelectionVO>>>() {
+				public int compare(Entry<String, List<CheckPointDailySelectionVO>> entry1,
+						Entry<String, List<CheckPointDailySelectionVO>> entry2) {
+					List<CheckPointDailySelectionVO> cpList1 = null;
+					List<CheckPointDailySelectionVO> cpList2 = null;
+					try {
+						cpList1 = entry1.getValue();
+						cpList2 = entry2.getValue();
+					} catch (NumberFormatException e) {
+						e.printStackTrace();
+					}
+					return cpList2.size() - cpList1.size();
+				}
+			});
+			//
+			Iterator<Map.Entry<String, List<CheckPointDailySelectionVO>>> iter = entryList.iterator();
+			Map.Entry<String, List<CheckPointDailySelectionVO>> tmpEntry = null;
+			while (iter.hasNext()) {
+				tmpEntry = iter.next();
+				sortedMap.put(tmpEntry.getKey(), tmpEntry.getValue());
+			}
+		}
+		return sortedMap;
 	}
 }

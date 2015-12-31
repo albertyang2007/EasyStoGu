@@ -23,7 +23,7 @@ import org.easystogu.db.table.ZhuLiJingLiuRuVO;
 import org.easystogu.db.table.ZiJinLiuVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.report.ReportTemplate;
-import org.easystogu.report.comparator.CheckPointEventAndZiJinLiuComparator;
+import org.easystogu.report.comparator.CheckPointEventComparator;
 
 //recently (10 days) select stock that checkpoint is satisfied
 public class RecentlySelectionRunner implements Runnable {
@@ -131,7 +131,7 @@ public class RecentlySelectionRunner implements Runnable {
 	private void printRecentCheckPointToHtml() {
 
 		// before report, sort
-		this.checkPointStocks = CheckPointEventAndZiJinLiuComparator.sortMapByValue(lastNDates, checkPointStocks,
+		this.checkPointStocks = CheckPointEventComparator.sortMapByValue(lastNDates, checkPointStocks,
 				ziJinLius, liuTongShiZhi, zhuLiJingLiuRus);
 
 		String file = config.getString("report.recent.analyse.html.file").replaceAll("currentDate", latestDate);

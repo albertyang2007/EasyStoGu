@@ -24,7 +24,7 @@ public class DDXVO {
 	}
 
 	public String toDDXString() {
-		return String.format("ddx [%.2f, %.2f, %.2f]", ddx, ddy, ddz);
+		return String.format("ddx [%.2f]", ddx);
 	}
 
 	public String getStockId() {
