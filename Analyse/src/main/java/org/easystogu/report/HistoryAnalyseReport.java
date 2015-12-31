@@ -34,6 +34,7 @@ public class HistoryAnalyseReport {
 	private String specifySelectCheckPoint = config.getString("specify_Select_CheckPoint", "");
 	private String[] specifySelectCheckPoints = specifySelectCheckPoint.split(";");
 	protected ChuQuanChuXiPriceHelper chuQuanChuXiPriceHelper = new ChuQuanChuXiPriceHelper();
+	private String[] generalCheckPoints = config.getString("general_CheckPoint", "").split(";");
 
 	public List<HistoryReportDetailsVO> doAnalyseReport(String stockId, List<DailyCombineCheckPoint> checkPointList) {
 		List<HistoryReportDetailsVO> reportList = new ArrayList<HistoryReportDetailsVO>();
@@ -147,7 +148,7 @@ public class HistoryAnalyseReport {
 
 		for (String stockId : stockIds) {
 
-			//if (!stockId.equals("600383"))
+			// if (!stockId.equals("600383"))
 			// continue;
 
 			List<HistoryReportDetailsVO> historyReportList = this.doAnalyseReport(stockId, checkPoint);
@@ -264,14 +265,12 @@ public class HistoryAnalyseReport {
 
 	public static void main(String[] args) {
 		HistoryAnalyseReport reporter = new HistoryAnalyseReport();
-
-		// for (DailyCombineCheckPoint checkPoint :
-		// DailyCombineCheckPoint.values()) {
-		// if (checkPoint.getEarnPercent() >= 8.0) {
-		// continue;
-		// }
-		// reporter.searchAllStockIdAccordingToCheckPoint(checkPoint);
-		// }
-		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.Continue_ZiJinLiu_DDX_RED_KDJ_Gorden);		
+		FileConfigurationService config = FileConfigurationService.getInstance();
+		for (DailyCombineCheckPoint checkPoint : DailyCombineCheckPoint.values()) {
+			if (config.getString("general_CheckPoint", "").contains(checkPoint.name())) {
+				reporter.searchAllStockIdAccordingToCheckPoint(checkPoint);
+			}
+		}
+		// reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.Continue_ZiJinLiu_DDX_RED_KDJ_Gorden);
 	}
 }
