@@ -126,10 +126,7 @@ public class CombineAnalyseHelper {
             break;
         }
         case PlatForm: {
-            if (this.isPlatform(overDayList, overWeekList)) {
-                return true;
-            }
-            break;
+            return isPlatform(overDayList, overWeekList);
         }
         case WEEK_PlatForm: {
             boolean hasWeekFlatformStartVO = false;
@@ -149,19 +146,13 @@ public class CombineAnalyseHelper {
                 }
             }
 
-            if (hasWeekFlatformStartVO) {
-                return true;
-            }
-            break;
+            return hasWeekFlatformStartVO;
         }
 
         case RongHe_XiangShang: {
             boolean rh1 = MA5_MA10_MA20_Ronghe_XiangShang(curSuperDayVO, pre1SuperDayVO);
             boolean rh2 = MA5_MA10_MA20_MA30_Ronghe_XiangShang(curSuperDayVO, pre1SuperDayVO);
-            if (rh1 || rh2) {
-                return true;
-            }
-            break;
+            return rh1 || rh2;
         }
         case MACD_KDJ_Gordon_3_Days_Red_MA_Ronghe_XiangShang:
 
