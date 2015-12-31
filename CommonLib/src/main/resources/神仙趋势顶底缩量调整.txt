@@ -1,0 +1,116 @@
+{缩量调整}
+MA5:ma(CLOSE, 5);
+MA10:MA(CLOSE, 10);
+MA20:ma(CLOSE, 20);
+MA30:MA(CLOSE, 30);
+
+RSV:=(CLOSE-LLV(LOW,9))/(HHV(HIGH,9)-LLV(LOW,9))*100;
+K:=SMA(RSV,3,1);
+D:=SMA(K,3,1);
+J:=3*K-2*D;
+
+吸筹快线上穿慢线:= IF( CROSS(RSV, K), 1, 0);
+KDJ金叉:= IF( CROSS(K, D), 1, 0);
+KDJ接近金叉:= IF( (((REF(K,1) / REF(D,1)) <= 0.925) AND (K < D) AND (K / D >= 0.975)), 1, 0);
+KDJ系列金叉:= IF ( (吸筹快线上穿慢线 OR KDJ金叉 OR KDJ接近金叉), 1, 0);
+
+MA5_10_20_30融合度:= 0.045;
+MA5_10_20融合度:= 0.030;
+
+DRAWKLINE(HIGH,OPEN,LOW,CLOSE);
+
+MA5:=MA(CLOSE, 5);
+MA10:=MA(CLOSE, 10);
+MA20:=MA(CLOSE, 20);
+MA30:=MA(CLOSE, 30);
+
+VOLMA5:=MA(VOL, 5);
+
+CurDayMaxMA5_10_20_30:= MAX(MA5,MAX(MA10,MAX(MA20,MA30)));
+CurDayMinMA5_10_20_30:= MIN(MA5,MIN(MA10,MIN(MA20,MA30)));
+CurDayMA5_10_20_30均线融合:= IF( (CurDayMaxMA5_10_20_30-CurDayMinMA5_10_20_30)/CurDayMinMA5_10_20_30 < MA5_10_20_30融合度, 1, 0);
+
+CurDayMaxMA5_10_20:= MAX(MA5,MAX(MA10,MA20));
+CurDayMinMA5_10_20:= MIN(MA5,MIN(MA10,MA20));
+CurDayMA5_10_20均线融合:= IF( (CurDayMaxMA5_10_20-CurDayMinMA5_10_20)/CurDayMinMA5_10_20 < MA5_10_20融合度, 1, 0);
+
+Pre1DayMA5:=REF(MA5, 1);
+Pre1DayMA10:=REF(MA10, 1);
+Pre1DayMA20:=REF(MA20, 1);
+Pre1DayMA30:=REF(MA30, 1);
+
+Pre1DayMaxMA5_10_20_30:= MAX(Pre1DayMA5,MAX(Pre1DayMA10,MAX(Pre1DayMA20,Pre1DayMA30)));
+Pre1DayMinMA5_10_20_30:= MIN(Pre1DayMA5,MIN(Pre1DayMA10,MIN(Pre1DayMA20,Pre1DayMA30)));
+Pre1DayMA5_10_20_30均线融合:= IF( (Pre1DayMaxMA5_10_20_30-Pre1DayMinMA5_10_20_30)/Pre1DayMinMA5_10_20_30 < MA5_10_20_30融合度, 1, 0);
+
+Pre1DayMaxMA5_10_20:= MAX(Pre1DayMA5,MAX(Pre1DayMA10,Pre1DayMA20));
+Pre1DayMinMA5_10_20:= MIN(Pre1DayMA5,MIN(Pre1DayMA10,Pre1DayMA20));
+Pre1DayMA5_10_20均线融合:= IF( (Pre1DayMaxMA5_10_20-Pre1DayMinMA5_10_20)/Pre1DayMinMA5_10_20 < MA5_10_20融合度, 1, 0);
+
+Pre2DayMA5:=REF(MA5, 2);
+Pre2DayMA10:=REF(MA10, 2);
+Pre2DayMA20:=REF(MA20, 2);
+Pre2DayMA30:=REF(MA30, 2);
+
+Pre2DayMaxMA5_10_20_30:= MAX(Pre2DayMA5,MAX(Pre2DayMA10,MAX(Pre2DayMA20,Pre2DayMA30)));
+Pre2DayMinMA5_10_20_30:= MIN(Pre2DayMA5,MIN(Pre2DayMA10,MIN(Pre2DayMA20,Pre2DayMA30)));
+Pre2DayMA5_10_20_30均线融合:= IF( (Pre2DayMaxMA5_10_20_30-Pre2DayMinMA5_10_20_30)/Pre2DayMinMA5_10_20_30 < MA5_10_20_30融合度, 1, 0);
+
+MA5_10_20_30融合:= IF( (CurDayMA5_10_20_30均线融合 AND Pre1DayMA5_10_20_30均线融合 AND Pre2DayMA5_10_20_30均线融合), 1, 0);
+MA5_10_20融合:= IF( (CurDayMA5_10_20均线融合 AND Pre1DayMA5_10_20均线融合), 1, 0);
+MA融合 := IF(MA5_10_20_30融合 OR MA5_10_20融合, 1, 0);
+
+MA5_MA10_向上:= if ((MA5 >= Pre1DayMA5) && (MA10 >= Pre1DayMA10), 1, 0);
+MA10_MA20_向上:= if ((MA10 >= Pre1DayMA10) && (MA20 >= Pre1DayMA20), 1, 0);
+MA向上 := IF (MA5_MA10_向上 OR MA10_MA20_向上, 1, 0);
+
+收盘站上重要均线:= if((close >= MA5 AND close >= MA10) OR (close >= MA10 AND close >= MA20) OR (close >= MA20 AND close >= MA30) AND (CLOSE>=MA20), 1, 0);
+
+均线融合向上:=if(MA融合 AND MA向上 AND 收盘站上重要均线,1,0);
+
+三天缩量调整:= IF( (REF(CLOSE, 1) < REF(CLOSE, 2)) AND ((REF(VOL, 1) < REF(VOL, 2)) OR (REF(VOL, 1) < VOLMA5 AND REF(VOL, 2) < VOLMA5)), 1, 0);
+四天缩量调整:= IF( (REF(CLOSE, 2) < REF(CLOSE, 3)) AND ((REF(VOL, 2) < REF(VOL, 3)) OR (REF(VOL, 2) < VOLMA5 AND REF(VOL, 3) < VOLMA5)), 1, 0);
+
+今天收阳:= IF( CLOSE > REF(CLOSE, 1), 1, 0);
+两天放量收阳:= IF( CLOSE > REF(CLOSE, 1) AND (REF(CLOSE, 1) > REF(CLOSE, 2)) AND( VOL > REF(VOL, 1)), 1, 0);
+
+缩量调整完毕:= IF( (四天缩量调整 AND 两天放量收阳) OR (三天缩量调整 AND 今天收阳), 1, 0);
+
+
+{神仙大趋势}
+H1:EMA(CLOSE,6);
+H2:EMA(H1,18);
+H3:EMA(CLOSE,108),COLORYELLOW;
+STICKLINE(H1>H2,H1,H2,1,1),COLORRED;
+STICKLINE(H1<H2,H1,H2,1,1),COLORBLUE;
+
+
+{趋势顶底}
+A:=MA(-100*(HHV(HIGH,34)-CLOSE)/(HHV(HIGH,34)-LLV(LOW,34)),19);
+B:=-100*(HHV(HIGH,14)-CLOSE)/(HHV(HIGH,14)-LLV(LOW,14));
+D:=EMA(-100*(HHV(HIGH,34)-CLOSE)/(HHV(HIGH,34)-LLV(LOW,34)),4);
+
+长期线:=A+100;
+短期线:=B+100;
+中期线:=D+100;
+
+
+{多空指标}
+BBI :=(MA(CLOSE,3)+MA(CLOSE,6)+MA(CLOSE,12)+MA(CLOSE,24))/4;
+多 := IF(CROSS(CLOSE, BBI), 1, 0);
+空 := IF(CROSS(BBI, CLOSE), 1, 0);
+
+{MACD}
+DIF := EMA(CLOSE,12) - EMA(CLOSE,26);
+DEA := EMA(DIF,9);
+MACD:= 2*(DIF-DEA);
+
+买: IF((KDJ系列金叉 AND 缩量调整完毕 AND 均线融合向上 AND (H1>H2) AND(H1>H3) AND CROSS(短期线,中期线) AND (CLOSE>MA20) AND 多 AND (MACD>=0)), 1, 0);
+
+DRAWTEXT(FILTER(买=1,0),LOW-0.03,'买'),COLORRED;
+
+买5: IF(HHV(买,5),1,0);
+买10: IF(HHV(买,10),1,0);
+买20: IF(HHV(买,20),1,0);
+买60: IF(HHV(买,60),1,0);
+
