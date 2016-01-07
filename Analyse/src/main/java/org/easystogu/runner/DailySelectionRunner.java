@@ -341,7 +341,7 @@ public class DailySelectionRunner implements Runnable {
         while (keysIt.hasNext()) {
             DailyCombineCheckPoint checkPoint = keysIt.next();
             List<String> stockIds = this.generalCheckPointGordonMap.get(checkPoint);
-            System.out.println(checkPoint + " size=" + stockIds.size() + " " + stockIds);
+            System.out.println(checkPoint + " size=" + stockIds.size());
         }
     }
 
