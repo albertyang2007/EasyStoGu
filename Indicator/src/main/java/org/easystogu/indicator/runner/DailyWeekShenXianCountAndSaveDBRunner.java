@@ -33,7 +33,7 @@ public class DailyWeekShenXianCountAndSaveDBRunner extends DailyShenXianCountAnd
 		CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 		DailyWeekShenXianCountAndSaveDBRunner runner = new DailyWeekShenXianCountAndSaveDBRunner();
 		runner.countAndSaved(stockConfig.getAllStockId());
-		// runner.countAndSaved("600825");
+		//runner.countAndSaved("999999");
 	}
 
 }

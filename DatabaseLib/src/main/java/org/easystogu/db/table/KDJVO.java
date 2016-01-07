@@ -20,11 +20,11 @@ public class KDJVO {
 		StringBuffer sb = new StringBuffer("KDJVO: {");
 		sb.append("stockId:" + stockId);
 		sb.append(", name:" + name);
-		sb.append(", date:" + date);
+        sb.append(", date:" + date);
+        sb.append(", R:" + rsv);
 		sb.append(", K:" + k);
 		sb.append(", D:" + d);
 		sb.append(", J:" + j);
-		sb.append(", R:" + rsv);
 		sb.append("}");
 		return sb.toString();
 	}

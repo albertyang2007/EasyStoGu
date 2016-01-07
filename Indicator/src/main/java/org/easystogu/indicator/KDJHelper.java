@@ -80,16 +80,16 @@ public class KDJHelper {
     public static void main(String[] args) {
         StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
         KDJHelper ins = new KDJHelper();
-        String stockId = "002194";
+        String stockId = "999999";
         List<Double> close = stockPriceTable.getAllClosePrice(stockId);
         List<Double> low = stockPriceTable.getAllLowPrice(stockId);
         List<Double> high = stockPriceTable.getAllHighPrice(stockId);
         double[][] KDJ = ins.getKDJList((Double[]) close.toArray(new Double[0]), (Double[]) low.toArray(new Double[0]),
                 (Double[]) high.toArray(new Double[0]));
 
-        System.out.println(KDJ[0][close.size() - 1]);
-        System.out.println(KDJ[1][close.size() - 1]);
-        System.out.println(KDJ[2][close.size() - 1]);
-        System.out.println(KDJ[3][close.size() - 1]);
+        System.out.println("RSV " + KDJ[0][close.size() - 1]);
+        System.out.println("K   " + KDJ[1][close.size() - 1]);
+        System.out.println("D   " + KDJ[2][close.size() - 1]);
+        System.out.println("J   " + KDJ[3][close.size() - 1]);
     }
 }

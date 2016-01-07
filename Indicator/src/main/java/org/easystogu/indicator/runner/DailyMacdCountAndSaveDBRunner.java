@@ -77,7 +77,7 @@ public class DailyMacdCountAndSaveDBRunner implements Runnable {
 		vo.setDea(Strings.convert2ScaleDecimal(dea));
 		vo.setMacd(Strings.convert2ScaleDecimal(macdRtn));
 
-		// System.out.println(vo);
+		//System.out.println(vo);
 		this.deleteMacd(stockId, vo.date);
 		macdTable.insert(vo);
 
@@ -104,6 +104,6 @@ public class DailyMacdCountAndSaveDBRunner implements Runnable {
 		CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 		DailyMacdCountAndSaveDBRunner runner = new DailyMacdCountAndSaveDBRunner();
 		runner.countAndSaved(stockConfig.getAllStockId());
-		// runner.countAndSaved("002214");
+		//runner.countAndSaved("999999");
 	}
 }

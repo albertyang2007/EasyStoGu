@@ -64,7 +64,7 @@ public class DailyKDJCountAndSaveDBRunner implements Runnable {
 		vo.setStockId(stockId);
 		vo.setDate(priceList.get(length - 1).date);
 
-		// System.out.println(vo);
+		//System.out.println(vo);
 		this.deleteKDJ(stockId, vo.date);
 		kdjTable.insert(vo);
 
@@ -91,6 +91,6 @@ public class DailyKDJCountAndSaveDBRunner implements Runnable {
 		CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 		DailyKDJCountAndSaveDBRunner runner = new DailyKDJCountAndSaveDBRunner();
 		runner.countAndSaved(stockConfig.getAllStockId());
-		// runner.countAndSaved("002214");
+		//runner.countAndSaved("999999");
 	}
 }
