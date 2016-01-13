@@ -18,12 +18,12 @@ public class RealtimeDisplayStockPriceRunner {
 		String strList = configure.getString("realtime.display.stock.list")
 				+ "," + configure.getString("analyse.select.stock.list");
 
-		sb.append("============Main Selected===========\n");
+		sb.append("============Main Selected===========<br>\n");
 		// System.out.println("============Main Selected===========");
 		List<RealTimePriceVO> list = ins.fetchDataFromWeb(strList);
 		for (RealTimePriceVO vo : list) {
 			// System.out.println(vo);
-			sb.append(vo.toString() + "\n");
+			sb.append(vo.toString() + "<br>\n");
 		}
 		return sb.toString();
 	}
