@@ -36,6 +36,8 @@ public class IndMacdTableHelper {
     protected String DELETE_BY_STOCKID_AND_DATE_SQL = "DELETE FROM " + tableName
             + " WHERE stockId = :stockId AND date = :date";
     protected String DELETE_BY_DATE_SQL = "DELETE FROM " + tableName + " WHERE date = :date";
+    protected String QUERY_BY_STOCKID_AND_BETWEEN_DATE = "SELECT * FROM " + tableName
+            + " WHERE stockId = :stockId AND DATE >= :date1 AND DATE <= :date2 ORDER BY DATE";
 
     protected NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
@@ -160,6 +162,22 @@ public class IndMacdTableHelper {
             e.printStackTrace();
             return new ArrayList<MacdVO>();
         }
+    }
+
+    public List<MacdVO> getByIdAndBetweenDate(String stockId, String StartDate, String endDate) {
+        try {
+            MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+            namedParameters.addValue("stockId", stockId);
+            namedParameters.addValue("date1", StartDate);
+            namedParameters.addValue("date2", endDate);
+
+            List<MacdVO> list = this.namedParameterJdbcTemplate.query(QUERY_BY_STOCKID_AND_BETWEEN_DATE,
+                    namedParameters, new IndMacdVOMapper());
+            return list;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<MacdVO>();
     }
 
     // 最近几天的，必须使用时间倒序的SQL

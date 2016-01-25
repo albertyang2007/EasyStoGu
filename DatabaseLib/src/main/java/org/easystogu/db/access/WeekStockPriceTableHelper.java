@@ -25,7 +25,7 @@ public class WeekStockPriceTableHelper extends StockPriceTableHelper {
 		SELECT_CLOSE_PRICE_SQL = "SELECT close AS rtn FROM " + tableName + " WHERE stockId = :stockId ORDER BY DATE";
 		SELECT_LOW_PRICE_SQL = "SELECT low AS rtn FROM " + tableName + " WHERE stockId = :stockId ORDER BY DATE";
 		SELECT_HIGH_PRICE_SQL = "SELECT high AS rtn FROM " + tableName + " WHERE stockId = :stockId ORDER BY DATE";
-		SELECT_BY_STOCKID_AND_BETWEEN_DATE_SQL = "SELECT * FROM " + tableName
+		QUERY_BY_STOCKID_AND_BETWEEN_DATE = "SELECT * FROM " + tableName
 				+ " WHERE stockId = :stockId AND date >= :date1 AND date <= :date2 ORDER BY DATE";
 		// macd used this sql
 		QUERY_BY_STOCKID_SQL = "SELECT * FROM " + tableName + " WHERE stockId = :stockId ORDER BY DATE";
@@ -61,8 +61,8 @@ public class WeekStockPriceTableHelper extends StockPriceTableHelper {
 		COUNT_DAYS_BETWEEN_DATE1_DATE2 = "SELECT COUNT(*) FROM " + tableName
 				+ " WHERE stockId = :stockId AND DATE >= :date1 AND DATE <= :date2";
 		// only use for weekPrice, query the weekPrice based on date
-		QUERY_BY_STOCKID_AND_BETWEEN_DATE = "SELECT * FROM " + tableName
-				+ " WHERE stockId = :stockId AND DATE >= :date1 AND DATE <= :date2 ORDER BY DATE";
+		//QUERY_BY_STOCKID_AND_BETWEEN_DATE = "SELECT * FROM " + tableName
+		//		+ " WHERE stockId = :stockId AND DATE >= :date1 AND DATE <= :date2 ORDER BY DATE";
 		QUERY_LATEST_N_DATE_STOCKID_SQL = "SELECT date AS rtn FROM " + tableName
 				+ " WHERE stockId = :stockId ORDER BY date DESC LIMIT :limit";
 
@@ -73,7 +73,7 @@ public class WeekStockPriceTableHelper extends StockPriceTableHelper {
 		// TODO Auto-generated method stub
 		WeekStockPriceTableHelper ins = new WeekStockPriceTableHelper();
 		try {
-			List<StockPriceVO> list = ins.getStockPriceByIdBetweenDate("002336", "2015-04-03", "2015-04-25");
+			List<StockPriceVO> list = ins.getStockPriceByIdAndBetweenDate("002336", "2015-04-03", "2015-04-25");
 			System.out.println(list.get(0));
 			System.out.println(list.get(list.size() - 1));
 		} catch (Exception e) {

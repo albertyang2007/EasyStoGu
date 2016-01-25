@@ -24,6 +24,8 @@ public class IndWeekBollTableHelper extends IndBollTableHelper {
         DELETE_BY_STOCKID_SQL = "DELETE FROM " + tableName + " WHERE stockId = :stockId";
         DELETE_BY_STOCKID_AND_DATE_SQL = "DELETE FROM " + tableName + " WHERE stockId = :stockId AND date = :date";
         DELETE_BY_DATE_SQL = "DELETE FROM " + tableName + " WHERE date = :date";
+        QUERY_BY_STOCKID_AND_BETWEEN_DATE = "SELECT * FROM " + tableName
+                + " WHERE stockId = :stockId AND DATE >= :date1 AND DATE <= :date2 ORDER BY DATE";
 
         this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
     }
