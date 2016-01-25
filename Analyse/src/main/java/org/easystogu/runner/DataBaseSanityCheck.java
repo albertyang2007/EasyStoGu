@@ -48,19 +48,19 @@ public class DataBaseSanityCheck implements Runnable {
 	protected IndMacdTableHelper macdTable = IndMacdTableHelper.getInstance();
 	protected IndKDJTableHelper kdjTable = IndKDJTableHelper.getInstance();
 	protected IndBollTableHelper bollTable = IndBollTableHelper.getInstance();
-	protected IndMai1Mai2TableHelper mai1mai2Table = IndMai1Mai2TableHelper.getInstance();
+	//protected IndMai1Mai2TableHelper mai1mai2Table = IndMai1Mai2TableHelper.getInstance();
 	protected IndShenXianTableHelper shenXianTable = IndShenXianTableHelper.getInstance();
-	protected IndXueShi2TableHelper xueShi2Table = IndXueShi2TableHelper.getInstance();
-	protected IndYiMengBSTableHelper yiMengBSTable = IndYiMengBSTableHelper.getInstance();
-	protected IndZhuliJinChuTableHelper zhuliJinChuTable = IndZhuliJinChuTableHelper.getInstance();
+	//protected IndXueShi2TableHelper xueShi2Table = IndXueShi2TableHelper.getInstance();
+	//protected IndYiMengBSTableHelper yiMengBSTable = IndYiMengBSTableHelper.getInstance();
+	//protected IndZhuliJinChuTableHelper zhuliJinChuTable = IndZhuliJinChuTableHelper.getInstance();
 
 	protected WeekStockPriceTableHelper weekStockPriceTable = WeekStockPriceTableHelper.getInstance();
 	protected IndWeekMacdTableHelper macdWeekTable = IndWeekMacdTableHelper.getInstance();
 	protected IndWeekKDJTableHelper kdjWeekTable = IndWeekKDJTableHelper.getInstance();
 	protected IndWeekBollTableHelper bollWeekTable = IndWeekBollTableHelper.getInstance();
-	protected IndWeekMai1Mai2TableHelper mai1mai2WeekTable = IndWeekMai1Mai2TableHelper.getInstance();
+	//protected IndWeekMai1Mai2TableHelper mai1mai2WeekTable = IndWeekMai1Mai2TableHelper.getInstance();
 	protected IndWeekShenXianTableHelper shenXianWeekTable = IndWeekShenXianTableHelper.getInstance();
-	protected IndWeekYiMengBSTableHelper yiMengBSWeekTable = IndWeekYiMengBSTableHelper.getInstance();
+	//protected IndWeekYiMengBSTableHelper yiMengBSWeekTable = IndWeekYiMengBSTableHelper.getInstance();
 
 	public void sanityDailyCheck(List<String> stockIds) {
 		int index = 0;
@@ -80,10 +80,10 @@ public class DataBaseSanityCheck implements Runnable {
 		List<KDJVO> kdjList = kdjTable.getAllKDJ(stockId);
 		List<BollVO> bollList = bollTable.getAllBoll(stockId);
 		List<ShenXianVO> shenXianList = shenXianTable.getAllShenXian(stockId);
-		List<XueShi2VO> xueShie2List = xueShi2Table.getAllXueShi2(stockId);
-		List<Mai1Mai2VO> mai1mai2List = mai1mai2Table.getAllMai1Mai2(stockId);
-		List<ZhuliJinChuVO> zhuliJinChuList = zhuliJinChuTable.getAllZhuliJinChu(stockId);
-		List<YiMengBSVO> yiMengBSList = yiMengBSTable.getAllYiMengBS(stockId);
+		//List<XueShi2VO> xueShie2List = xueShi2Table.getAllXueShi2(stockId);
+		//List<Mai1Mai2VO> mai1mai2List = mai1mai2Table.getAllMai1Mai2(stockId);
+		//List<ZhuliJinChuVO> zhuliJinChuList = zhuliJinChuTable.getAllZhuliJinChu(stockId);
+		//List<YiMengBSVO> yiMengBSList = yiMengBSTable.getAllYiMengBS(stockId);
 
 		if (spList.size() <= 108)
 			return;
@@ -116,33 +116,33 @@ public class DataBaseSanityCheck implements Runnable {
 			HistoryShenXianCountAndSaveDBRunner runner = new HistoryShenXianCountAndSaveDBRunner();
 			runner.countAndSaved(stockId);
 		}
-		if ((spList.size() != xueShie2List.size())) {
-			System.out.println(stockId + " size of xueShi2 is not equal:" + spList.size() + "!=" + xueShie2List.size());
-			xueShi2Table.delete(stockId);
-			HistoryXueShi2CountAndSaveDBRunner runner = new HistoryXueShi2CountAndSaveDBRunner();
-			runner.countAndSaved(stockId);
-		}
-		if ((spList.size() != mai1mai2List.size())) {
-			System.out
-					.println(stockId + " size of mai1mai2 is not equal:" + spList.size() + "!=" + mai1mai2List.size());
-			mai1mai2Table.delete(stockId);
-			HistoryMai1Mai2CountAndSaveDBRunner runner = new HistoryMai1Mai2CountAndSaveDBRunner();
-			runner.countAndSaved(stockId);
-		}
-		if ((spList.size() != zhuliJinChuList.size())) {
-			System.out.println(stockId + " size of ziJiJinChu is not equal:" + spList.size() + "!="
-					+ zhuliJinChuList.size());
-			zhuliJinChuTable.delete(stockId);
-			HistoryZhuliJinChuCountAndSaveDBRunner runner = new HistoryZhuliJinChuCountAndSaveDBRunner();
-			runner.countAndSaved(stockId);
-		}
-		if ((spList.size() != yiMengBSList.size())) {
-			System.out
-					.println(stockId + " size of yiMengBS is not equal:" + spList.size() + "!=" + yiMengBSList.size());
-			yiMengBSTable.delete(stockId);
-			HistoryYiMengBSCountAndSaveDBRunner runner = new HistoryYiMengBSCountAndSaveDBRunner();
-			runner.countAndSaved(stockId);
-		}
+		//if ((spList.size() != xueShie2List.size())) {
+		//	System.out.println(stockId + " size of xueShi2 is not equal:" + spList.size() + "!=" + xueShie2List.size());
+		//	xueShi2Table.delete(stockId);
+		//	HistoryXueShi2CountAndSaveDBRunner runner = new HistoryXueShi2CountAndSaveDBRunner();
+		//	runner.countAndSaved(stockId);
+		//}
+		//if ((spList.size() != mai1mai2List.size())) {
+		//	System.out
+		//			.println(stockId + " size of mai1mai2 is not equal:" + spList.size() + "!=" + mai1mai2List.size());
+		//	mai1mai2Table.delete(stockId);
+		//	HistoryMai1Mai2CountAndSaveDBRunner runner = new HistoryMai1Mai2CountAndSaveDBRunner();
+		//	runner.countAndSaved(stockId);
+		//}
+		//if ((spList.size() != zhuliJinChuList.size())) {
+		//	System.out.println(stockId + " size of ziJiJinChu is not equal:" + spList.size() + "!="
+		//			+ zhuliJinChuList.size());
+		//	zhuliJinChuTable.delete(stockId);
+		//	HistoryZhuliJinChuCountAndSaveDBRunner runner = new HistoryZhuliJinChuCountAndSaveDBRunner();
+		//	runner.countAndSaved(stockId);
+		//}
+		//if ((spList.size() != yiMengBSList.size())) {
+		//	System.out
+		//			.println(stockId + " size of yiMengBS is not equal:" + spList.size() + "!=" + yiMengBSList.size());
+		//	yiMengBSTable.delete(stockId);
+		//	HistoryYiMengBSCountAndSaveDBRunner runner = new HistoryYiMengBSCountAndSaveDBRunner();
+		//	runner.countAndSaved(stockId);
+		//}
 	}
 
 	public void sanityWeekCheck(List<String> stockIds) {
@@ -162,8 +162,8 @@ public class DataBaseSanityCheck implements Runnable {
 		List<KDJVO> kdjList = kdjWeekTable.getAllKDJ(stockId);
 		List<BollVO> bollList = bollWeekTable.getAllBoll(stockId);
 		List<ShenXianVO> shenXianList = shenXianWeekTable.getAllShenXian(stockId);
-		List<Mai1Mai2VO> mai1mai2List = mai1mai2WeekTable.getAllMai1Mai2(stockId);
-		List<YiMengBSVO> yiMengBSList = yiMengBSWeekTable.getAllYiMengBS(stockId);
+		//List<Mai1Mai2VO> mai1mai2List = mai1mai2WeekTable.getAllMai1Mai2(stockId);
+		//List<YiMengBSVO> yiMengBSList = yiMengBSWeekTable.getAllYiMengBS(stockId);
 
 		if (spList.size() <= 108)
 			return;
@@ -196,20 +196,20 @@ public class DataBaseSanityCheck implements Runnable {
 			HistoryWeeklyShenXianCountAndSaveDBRunner runner = new HistoryWeeklyShenXianCountAndSaveDBRunner();
 			runner.countAndSaved(stockId);
 		}
-		if ((spList.size() != mai1mai2List.size())) {
-			System.out.println(stockId + " size of week mai1mai2 is not equal:" + spList.size() + "!="
-					+ mai1mai2List.size());
-			mai1mai2WeekTable.delete(stockId);
-			HistoryWeeklyMai1Mai2CountAndSaveDBRunner runner = new HistoryWeeklyMai1Mai2CountAndSaveDBRunner();
-			runner.countAndSaved(stockId);
-		}
-		if ((spList.size() != yiMengBSList.size())) {
-			System.out.println(stockId + " size of week yiMengBS is not equal:" + spList.size() + "!="
-					+ yiMengBSList.size());
-			yiMengBSWeekTable.delete(stockId);
-			HistoryWeeklyYiMengBSCountAndSaveDBRunner runner = new HistoryWeeklyYiMengBSCountAndSaveDBRunner();
-			runner.countAndSaved(stockId);
-		}
+		//if ((spList.size() != mai1mai2List.size())) {
+		//	System.out.println(stockId + " size of week mai1mai2 is not equal:" + spList.size() + "!="
+		//			+ mai1mai2List.size());
+		//	mai1mai2WeekTable.delete(stockId);
+		//	HistoryWeeklyMai1Mai2CountAndSaveDBRunner runner = new HistoryWeeklyMai1Mai2CountAndSaveDBRunner();
+		//	runner.countAndSaved(stockId);
+		//}
+		//if ((spList.size() != yiMengBSList.size())) {
+		//	System.out.println(stockId + " size of week yiMengBS is not equal:" + spList.size() + "!="
+		//			+ yiMengBSList.size());
+		//	yiMengBSWeekTable.delete(stockId);
+		//	HistoryWeeklyYiMengBSCountAndSaveDBRunner runner = new HistoryWeeklyYiMengBSCountAndSaveDBRunner();
+		//	runner.countAndSaved(stockId);
+		//}
 	}
 
 	public void figureOutDifferenceDate(List<StockPriceVO> spList, List<MacdVO> macdList) {
