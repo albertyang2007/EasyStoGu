@@ -31,10 +31,10 @@ public class HistoryStockPriceDownloadRunner {
 			// save to this filename
 			File file = new File(saveToPath + fileName);
 
-			if (file.exists() && (file.length() > 0)) {
-				System.out.println("File already exist, skip: " + fileName);
-				return;
-			}
+			//if (file.exists() && (file.length() > 0)) {
+			//	System.out.println("File already exist, skip: " + fileName);
+			//	return;
+			//}
 
 			file.createNewFile();
 
@@ -79,9 +79,9 @@ public class HistoryStockPriceDownloadRunner {
 		int count = 0;
 		for (String stockId : stockIds) {
 			System.out.println("Process " + ++count + " of " + stockIds.size());
-			for (int year = 2015; year <= 2015; year++) {
-				if (year == 2015) {
-					runner.getFromWebAndSaveToFile(stockId, year, 2);
+			for (int year = 2016; year <= 2016; year++) {
+				if (year == 2016) {
+					runner.getFromWebAndSaveToFile(stockId, year, 1);
 				} else {
 					runner.getFromWebAndSaveToFile(stockId, year, 1);
 					runner.getFromWebAndSaveToFile(stockId, year, 2);

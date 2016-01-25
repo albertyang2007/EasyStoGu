@@ -6,13 +6,9 @@ import java.util.List;
 import org.easystogu.db.table.BollVO;
 import org.easystogu.db.table.KDJVO;
 import org.easystogu.db.table.MacdVO;
-import org.easystogu.db.table.Mai1Mai2VO;
 import org.easystogu.db.table.ShenXianVO;
 import org.easystogu.db.table.StockPriceVO;
 import org.easystogu.db.table.StockSuperVO;
-import org.easystogu.db.table.XueShi2VO;
-import org.easystogu.db.table.YiMengBSVO;
-import org.easystogu.db.table.ZhuliJinChuVO;
 
 public class StockSuperVOHelper {
 
@@ -20,12 +16,12 @@ public class StockSuperVOHelper {
     protected IndMacdTableHelper macdTable = IndMacdTableHelper.getInstance();
     protected IndKDJTableHelper kdjTable = IndKDJTableHelper.getInstance();
     protected IndBollTableHelper bollTable = IndBollTableHelper.getInstance();
-    protected IndMai1Mai2TableHelper mai1mai2Table = IndMai1Mai2TableHelper.getInstance();
+    //protected IndMai1Mai2TableHelper mai1mai2Table = IndMai1Mai2TableHelper.getInstance();
     protected IndShenXianTableHelper shenXianTable = IndShenXianTableHelper.getInstance();
-    protected IndXueShi2TableHelper xueShi2Table = IndXueShi2TableHelper.getInstance();
-    protected IndZhuliJinChuTableHelper zhuliJinChuTable = IndZhuliJinChuTableHelper.getInstance();
-    protected IndYiMengBSTableHelper yiMengBSTable = IndYiMengBSTableHelper.getInstance();
-    protected ZiJinLiuTableHelper ziJinLiuTableHelper = ZiJinLiuTableHelper.getInstance();
+    //protected IndXueShi2TableHelper xueShi2Table = IndXueShi2TableHelper.getInstance();
+    //protected IndZhuliJinChuTableHelper zhuliJinChuTable = IndZhuliJinChuTableHelper.getInstance();
+    //protected IndYiMengBSTableHelper yiMengBSTable = IndYiMengBSTableHelper.getInstance();
+    //protected ZiJinLiuTableHelper ziJinLiuTableHelper = ZiJinLiuTableHelper.getInstance();
     protected IndDDXTableHelper ddxTable = IndDDXTableHelper.getInstance();
 
     public List<StockSuperVO> getLatestNStockSuperVO(String stockId, int day) {
@@ -80,7 +76,7 @@ public class StockSuperVOHelper {
                     bollList.get(index));
             superVO.setShenXianVO(shenXianList.get(index));
             superVO.setDdxVO(ddxTable.getDDX(superVO.priceVO.stockId, superVO.priceVO.date));
-            superVO.setZhiJinLiuVO(ziJinLiuTableHelper.getZiJinLiu(superVO.priceVO.stockId, superVO.priceVO.date));
+            //superVO.setZhiJinLiuVO(ziJinLiuTableHelper.getZiJinLiu(superVO.priceVO.stockId, superVO.priceVO.date));
 
             overList.add(superVO);
         }
@@ -124,7 +120,7 @@ public class StockSuperVOHelper {
                     bollList.get(index));
             superVO.setShenXianVO(shenXianList.get(index));
             superVO.setDdxVO(ddxTable.getDDX(superVO.priceVO.stockId, superVO.priceVO.date));
-            superVO.setZhiJinLiuVO(ziJinLiuTableHelper.getZiJinLiu(superVO.priceVO.stockId, superVO.priceVO.date));
+            //superVO.setZhiJinLiuVO(ziJinLiuTableHelper.getZiJinLiu(superVO.priceVO.stockId, superVO.priceVO.date));
 
             overList.add(superVO);
         }

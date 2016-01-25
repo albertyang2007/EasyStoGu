@@ -68,6 +68,7 @@ public class HistoryStockPriceManualParseHtmlAndSaveToDB {
 			if (vo.isValidated()) {
 				// System.out.println("saving into DB, vo=" + vo);
 				if (tableHelper.getStockPriceByIdAndDate(vo.stockId, vo.date) == null) {
+					System.out.println("saving into DB, vo=" + vo);
 					tableHelper.insert(vo);
 				}
 			}
@@ -93,13 +94,15 @@ public class HistoryStockPriceManualParseHtmlAndSaveToDB {
 		File path = new File(htmlPath);
 		File[] files = path.listFiles();
 		int index = 0;
-		String startDay = "2015-06-29";
+		String startDay = "2016-01-14";
 		for (File file : files) {
-			System.out.println("Processing " + file.getName() + " " + ++index + " / " + files.length);
-			// please fliter the data that save into DB
-			if ((file.length() > 0)) {
-				//save to DB if not exist
-				runner.parseDataAndSaveToDB(file, startDay);
+			if (file.getName().contains("_2016_1")) {
+				System.out.println("Processing " + file.getName() + " " + ++index + " / " + files.length);
+				// please fliter the data that save into DB
+				if ((file.length() > 0)) {
+					// save to DB if not exist
+					runner.parseDataAndSaveToDB(file, startDay);
+				}
 			}
 		}
 
