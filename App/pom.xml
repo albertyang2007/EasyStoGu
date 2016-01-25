@@ -77,13 +77,13 @@
 						<webModule>
 							<groupId>org.albertyang2007.easystogu</groupId>
 							<artifactId>easystogu-portal</artifactId>
-							<contextRoot>easystogu/api</contextRoot>
-							<bundleFileName>easystogu-api.war</bundleFileName>
+							<contextRoot>portal</contextRoot>
+							<bundleFileName>easystogu-portal.war</bundleFileName>
 						</webModule>
 						<webModule>
 							<groupId>org.albertyang2007.easystogu</groupId>
 							<artifactId>easystogu-eweb</artifactId>
-							<contextRoot>easystogu/eweb</contextRoot>
+							<contextRoot>eweb</contextRoot>
 							<bundleFileName>easystogu-eweb.war</bundleFileName>
 						</webModule>
 					</modules>
