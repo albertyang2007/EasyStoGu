@@ -1,65 +1,95 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-    <parent>
-        <groupId>org.albertyang2007.easystogu</groupId>
-        <artifactId>easystogu-parent</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
-        <relativePath>../Parent/</relativePath>
-    </parent>
+	<parent>
+		<groupId>org.albertyang2007.easystogu</groupId>
+		<artifactId>easystogu-parent</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+		<relativePath>../Parent/</relativePath>
+	</parent>
 
-    <modelVersion>4.0.0</modelVersion>
-    <groupId>org.albertyang2007.easystogu</groupId>
-    <artifactId>easystogu-app</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <name>EasyStoGu-App</name>
-    <packaging>ear</packaging>
-    <description>EasyStoGu-App: App</description>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.albertyang2007.easystogu</groupId>
+	<artifactId>easystogu-app</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>EasyStoGu-App</name>
+	<packaging>ear</packaging>
+	<description>EasyStoGu-App: App</description>
 
-    <dependencies>
-        <!-- modules -->
-        <dependency>
-            <groupId>org.albertyang2007.easystogu</groupId>
-            <artifactId>easystogu-portal</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-            <type>war</type>
-        </dependency>
+	<dependencies>
+		<!-- modules -->
+		<dependency>
+			<groupId>org.albertyang2007.easystogu</groupId>
+			<artifactId>easystogu-portal</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+			<type>war</type>
+		</dependency>
 
-        <dependency>
-            <groupId>org.albertyang2007.easystogu</groupId>
-            <artifactId>easystogu-portal</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-            <type>pom</type>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-dependencies</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-starter-web</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-    </dependencies>
+		<dependency>
+			<groupId>org.albertyang2007.easystogu</groupId>
+			<artifactId>easystogu-eweb</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+			<type>war</type>
+		</dependency>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-ear-plugin</artifactId>
-                <configuration>
-                    <modules>
-                        <webModule>
-                            <groupId>org.albertyang2007.easystogu</groupId>
-                            <artifactId>easystogu-portal</artifactId>
-                            <contextRoot>easystogu</contextRoot>
-                            <bundleFileName>easystogu.war</bundleFileName>
-                        </webModule>
-                    </modules>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
+		<dependency>
+			<groupId>org.albertyang2007.easystogu</groupId>
+			<artifactId>easystogu-portal</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+			<type>pom</type>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-dependencies</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-web</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>org.albertyang2007.easystogu</groupId>
+			<artifactId>easystogu-eweb</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+			<type>pom</type>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-dependencies</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-web</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-ear-plugin</artifactId>
+				<configuration>
+					<modules>
+						<webModule>
+							<groupId>org.albertyang2007.easystogu</groupId>
+							<artifactId>easystogu-portal</artifactId>
+							<contextRoot>easystogu/api</contextRoot>
+							<bundleFileName>easystogu-api.war</bundleFileName>
+						</webModule>
+						<webModule>
+							<groupId>org.albertyang2007.easystogu</groupId>
+							<artifactId>easystogu-eweb</artifactId>
+							<contextRoot>easystogu/eweb</contextRoot>
+							<bundleFileName>easystogu-eweb.war</bundleFileName>
+						</webModule>
+					</modules>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 
 </project>
