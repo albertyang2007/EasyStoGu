@@ -1,0 +1,105 @@
+﻿<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>Highstock Example</title>
+
+		<script type="text/javascript" src="js/jquery_1.8.2/jquery.min.js"></script>
+		<style type="text/css">
+${demo.css}
+		</style>
+		<script type="text/javascript">
+$(function () {
+    var seriesOptions = [],
+        seriesCounter = 0,
+        data_h1 = [],
+        data_h2 = [],
+        data_h3 = [];
+
+    /**
+     * Create the chart when all data is loaded
+     * @returns {undefined}
+     */
+    function createChart() {
+
+        $('#container').highcharts('StockChart', {
+
+            rangeSelector: {
+                selected: 4
+            },
+
+            yAxis: {
+                labels: {
+                    formatter: function () {
+                        return (this.value > 0 ? ' + ' : '') + this.value + '%';
+                    }
+                },
+                plotLines: [{
+                    value: 0,
+                    width: 2,
+                    color: 'silver'
+                }]
+            },
+
+            plotOptions: {
+                series: {
+                    compare: 'percent'
+                }
+            },
+
+            tooltip: {
+                pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b> ({point.change}%)<br/>',
+                valueDecimals: 2
+            },
+
+            series: seriesOptions
+        });
+    }
+
+    $.getJSON('http://localhost:8080/portal/ind/shenxian/002238/2015-10-01_2016-12-31',    function (data) {
+        i = 0;
+        for (i; i < data.length; i += 1) {
+            data_h1.push([
+                data[i]['date'], // the date
+                data[i]['h1']
+            ]);
+
+            data_h2.push([
+                data[i]['date'], // the date
+                data[i]['h2']
+            ]);
+            
+            data_h3.push([
+                data[i]['date'], // the date                
+                data[i]['h3']
+            ]);
+        }
+        
+            seriesOptions[0] = {
+                name: 'H1',
+                data: data_h1
+            };
+            
+            seriesOptions[1] = {
+                name: 'H2',
+                data: data_h2
+            };
+            
+            seriesOptions[2] = {
+                name: 'H3',
+                data: data_h3
+            };
+
+            createChart();
+    });
+});
+		</script>
+	</head>
+	<body>
+<script src="js/highstock_4.2.1/highstock.js"></script>
+<script src="js/highstock_4.2.1/modules/exporting.js"></script>
+
+
+<div id="container" style="height: 400px; min-width: 310px"></div>
+	</body>
+</html>
