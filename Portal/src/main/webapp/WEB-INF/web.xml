@@ -10,15 +10,6 @@
         </param-value>
     </context-param>
     
-    <context-param>
-        <param-name>parentContextKey</param-name>
-        <param-value>org.easystogu.scheduler</param-value>
-    </context-param>
-    <context-param>
-        <param-name>locatorFactorySelector</param-name>
-        <param-value>classpath*:beanRefFactory_scheduler.xml</param-value>
-    </context-param>
-    
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
