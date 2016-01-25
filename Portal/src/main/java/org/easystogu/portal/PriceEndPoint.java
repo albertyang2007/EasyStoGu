@@ -19,7 +19,7 @@ public class PriceEndPoint {
     private String fromToRegex = dateRegex + "_" + dateRegex;
 
     @GET
-    @Path("/{stockid}/{date}")
+    @Path("/price/{stockid}/{date}")
     @Produces("application/json")
     public List<StockPriceVO> queryDayPriceById(@PathParam("date")
     String date, @PathParam("stockid")
