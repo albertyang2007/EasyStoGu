@@ -34,6 +34,6 @@ public class PriceEndPoint {
             list.add(stockPriceTable.getStockPriceByIdAndDate(stockid, date));
             return list;
         }
-        return null;
-    }    
+        return new ArrayList<StockPriceVO>();
+    }
 }
