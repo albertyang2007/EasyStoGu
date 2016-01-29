@@ -32,6 +32,7 @@ public class PriceEndPoint {
         if (Pattern.matches(dateRegex, date) || Strings.isEmpty(date)) {
             List<StockPriceVO> list = new ArrayList<StockPriceVO>();
             list.add(stockPriceTable.getStockPriceByIdAndDate(stockid, date));
+            System.out.println("Fetch size=" + list.size());
             return list;
         }
         return new ArrayList<StockPriceVO>();

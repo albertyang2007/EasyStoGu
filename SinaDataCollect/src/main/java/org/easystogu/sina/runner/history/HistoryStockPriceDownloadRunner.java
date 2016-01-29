@@ -20,8 +20,10 @@ import org.slf4j.Logger;
 public class HistoryStockPriceDownloadRunner {
 	private static Logger logger = LogHelper.getLogger(HistoryStockPriceDownloadRunner.class);
 	private String baseUrl = "http://money.finance.sina.com.cn/corp/go.php/vMS_MarketHistory/stockid/";
+	private String szzsUrl = "http://vip.stock.finance.sina.com.cn/corp/go.php/vMS_MarketHistory/stockid/000001/type/S.phtml";// 上证指数
 	private FileConfigurationService configure = FileConfigurationService.getInstance();
 	private String saveToPath = configure.getString("sina.history.file.path");
+	private CompanyInfoFileHelper companyInfoHelper = CompanyInfoFileHelper.getInstance();
 
 	// ��ȡstockIdĳ��ĳ���ȵ����
 	public void getFromWebAndSaveToFile(String stockId, int year, int jidu) {
@@ -31,15 +33,18 @@ public class HistoryStockPriceDownloadRunner {
 			// save to this filename
 			File file = new File(saveToPath + fileName);
 
-			//if (file.exists() && (file.length() > 0)) {
-			//	System.out.println("File already exist, skip: " + fileName);
-			//	return;
-			//}
+			// if (file.exists() && (file.length() > 0)) {
+			// System.out.println("File already exist, skip: " + fileName);
+			// return;
+			// }
 
 			file.createNewFile();
 
 			// get URL content
 			url = new URL(baseUrl + stockId + ".phtml?year=" + year + "&jidu=" + jidu);
+			if (stockId.equals(companyInfoHelper.getSZZSStockIdForDB()))
+				url = new URL(szzsUrl + ".phtml?year=" + year + "&jidu=" + jidu);
+
 			URLConnection conn = url.openConnection();
 
 			// open the stream and put it into BufferedReader
@@ -78,15 +83,17 @@ public class HistoryStockPriceDownloadRunner {
 		List<String> stockIds = stockConfig.getAllStockId();
 		int count = 0;
 		for (String stockId : stockIds) {
-			System.out.println("Process " + ++count + " of " + stockIds.size());
-			for (int year = 2016; year <= 2016; year++) {
-				if (year == 2016) {
-					runner.getFromWebAndSaveToFile(stockId, year, 1);
-				} else {
-					runner.getFromWebAndSaveToFile(stockId, year, 1);
-					runner.getFromWebAndSaveToFile(stockId, year, 2);
-					runner.getFromWebAndSaveToFile(stockId, year, 3);
-					runner.getFromWebAndSaveToFile(stockId, year, 4);
+			if (stockId.equals("999999")) {
+				System.out.println("Process " + ++count + " of " + stockIds.size());
+				for (int year = 1991; year <= 2016; year++) {
+					if (year == 2016) {
+						runner.getFromWebAndSaveToFile(stockId, year, 1);
+					} else {
+						runner.getFromWebAndSaveToFile(stockId, year, 1);
+						runner.getFromWebAndSaveToFile(stockId, year, 2);
+						runner.getFromWebAndSaveToFile(stockId, year, 3);
+						runner.getFromWebAndSaveToFile(stockId, year, 4);
+					}
 				}
 			}
 		}

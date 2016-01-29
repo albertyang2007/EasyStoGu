@@ -52,6 +52,10 @@ public class CompanyInfoFileHelper {
 			return vo.name;
 		} else if (stockId.equals(this.getSZZSStockIdForDB())) {
 			return "上证指数";
+		} else if (stockId.equals(this.getSZCZStockIdForDB())) {
+			return "深证成指";
+		} else if (stockId.equals(this.getCYBZStockIdForDB())) {
+			return "创业板指";
 		}
 
 		return "N/A";
@@ -62,6 +66,8 @@ public class CompanyInfoFileHelper {
 		Set<String> set = this.companyMap.keySet();
 		stockIds.addAll(set);
 		stockIds.add(getSZZSStockIdForDB());
+		stockIds.add(getSZCZStockIdForDB());
+		stockIds.add(getCYBZStockIdForDB());
 		return stockIds;
 	}
 
@@ -93,6 +99,10 @@ public class CompanyInfoFileHelper {
 	public String getStockIdMapping(String stockIdWithPrefix) {
 		if (stockIdWithPrefix.equals(getSZZSStockIdForSina())) {
 			return getSZZSStockIdForDB();
+		} else if (stockIdWithPrefix.equals(getSZCZStockIdForSina())) {
+			return getSZCZStockIdForDB();
+		} else if (stockIdWithPrefix.equals(getCYBZStockIdForSina())) {
+			return getCYBZStockIdForDB();
 		}
 		// stockId has prefix, so remove it (sh, sz)
 		return stockIdWithPrefix.substring(2);
@@ -120,11 +130,37 @@ public class CompanyInfoFileHelper {
 		return stockIds;
 	}
 
+	// 上证指数
 	public String getSZZSStockIdForSina() {
 		// szzs for search from http://hq.sinajs.cn/list=sh000001
 		return "sh000001";
 	}
 
+	// 深证成指
+	public String getSZCZStockIdForSina() {
+		// szzs for search from http://hq.sinajs.cn/list=sz399001
+		return "sz399001";
+	}
+
+	// 创业板指
+	public String getCYBZStockIdForSina() {
+		// szzs for search from http://hq.sinajs.cn/list=sz399006
+		return "sz399006";
+	}
+
+	// 上证指数
+	public String getSZCZStockIdForDB() {
+		// szzs for search from http://hq.sinajs.cn/list=sh000001
+		return "399001";
+	}
+
+	// 深证成指
+	public String getCYBZStockIdForDB() {
+		// szzs for search from http://hq.sinajs.cn/list=sh000001
+		return "399006";
+	}
+
+	// 创业板指
 	public String getSZZSStockIdForDB() {
 		// szzs for search from http://hq.sinajs.cn/list=sh000001
 		return "999999";

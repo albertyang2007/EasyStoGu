@@ -86,11 +86,12 @@ public class DailyStockPriceDownloadAndStoreDBRunner implements Runnable {
 	public void run() {
 		List<String> shStockIds = stockConfig.getAllSHStockId("sh");
 		List<String> szStockIds = stockConfig.getAllSZStockId("sz");
-		String szzsStockId = stockConfig.getSZZSStockIdForSina();
 
 		List<String> allStockIds = new ArrayList<String>();
 
-		allStockIds.add(szzsStockId);
+		allStockIds.add(stockConfig.getSZZSStockIdForSina());
+		allStockIds.add(stockConfig.getSZCZStockIdForSina());
+		allStockIds.add(stockConfig.getCYBZStockIdForSina());
 		allStockIds.addAll(shStockIds);
 		allStockIds.addAll(szStockIds);
 
