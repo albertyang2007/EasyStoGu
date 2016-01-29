@@ -37,7 +37,7 @@ public class DailyUpdateAllStockRunner implements Runnable {
 		// zijinliu
 		if (isGetZiJinLiu) {
 			DailyZiJinLiuRunner.main(args);
-			DailyZhuLiJingLiuRuRunner.main(args);
+			//DailyZhuLiJingLiuRuRunner.main(args);
 		}
 
 		// ddx

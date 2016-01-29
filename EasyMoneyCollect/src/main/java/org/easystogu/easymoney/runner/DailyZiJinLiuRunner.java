@@ -9,6 +9,7 @@ import org.easystogu.db.access.ZiJinLiuTableHelper;
 import org.easystogu.db.table.ZiJinLiuVO;
 import org.easystogu.easymoney.helper.DailyZiJinLiuFatchDataHelper;
 
+//zijinliu, ddx use this
 public class DailyZiJinLiuRunner implements Runnable {
 	private FileConfigurationService config = FileConfigurationService.getInstance();
 	private DailyZiJinLiuFatchDataHelper fatchDataHelper = new DailyZiJinLiuFatchDataHelper();
