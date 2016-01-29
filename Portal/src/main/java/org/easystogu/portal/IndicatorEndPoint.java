@@ -116,33 +116,6 @@ public class IndicatorEndPoint {
         return new ArrayList<ShenXianVO>();
     }
 
-    //fetch price from db and count ind on real time
-    @GET
-    @Path("/shenxian2/{stockid}/{date}")
-    @Produces("application/json")
-    public List<ShenXianVO> queryShenXian2ById(@PathParam("stockid")
-    String stockid, @PathParam("date")
-    String date) {
-        List<ShenXianVO> list = new ArrayList<ShenXianVO>();
-        List<StockPriceVO> spList = this.fetchPrices(stockid, date);
-        List<Double> close = StockPriceFetcher.getClosePrice(spList);
-
-        double[][] shenXian = shenXianHelper.getShenXianList(close.toArray(new Double[0]));
-
-        for (int i = 0; i < shenXian[0].length; i++) {
-            ShenXianVO vo = new ShenXianVO();
-            vo.setH1(Strings.convert2ScaleDecimal(shenXian[0][i]));
-            vo.setH2(Strings.convert2ScaleDecimal(shenXian[1][i]));
-            vo.setH3(Strings.convert2ScaleDecimal(shenXian[2][i]));
-            vo.setStockId(stockid);
-            vo.setDate(spList.get(i).date);
-
-            list.add(vo);
-        }
-
-        return list;
-    }
-
     @GET
     @Path("/luzao/{stockid}/{date}")
     @Produces("application/json")
