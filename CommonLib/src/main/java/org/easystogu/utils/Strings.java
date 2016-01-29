@@ -1,13 +1,14 @@
 package org.easystogu.utils;
 
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Strings {
-
 	public static Pattern p = Pattern.compile("\\s+");
-
 	public static String dateRegex = "[0-9]{4}-[0-9]{2}-[0-9]{2}";
 
 	public static String replaceAllSpaceToSingleSpace(String str) {
@@ -47,5 +48,27 @@ public class Strings {
 		BigDecimal bd = new BigDecimal(num);
 		num = bd.setScale(3, BigDecimal.ROUND_HALF_UP).doubleValue();
 		return num;
+	}
+
+	// convert from string to date and then to time
+	// dateStr is like:yyyy-MM-dd HH:mm:ss
+	public static long stringToTime(String dateStr) {
+		Date date = new Date();
+		DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		try {
+			date = sdf.parse(dateStr);
+			return date.getTime();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return 0l;
+	}
+
+	// date is like: 2015-11-09
+	public static boolean isDateSelected(String date1, String date2, String aDate) {
+		if ((stringToTime(aDate) >= stringToTime(date1)) && (stringToTime(aDate) <= stringToTime(date2))) {
+			return true;
+		}
+		return false;
 	}
 }

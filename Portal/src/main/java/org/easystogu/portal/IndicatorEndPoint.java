@@ -23,15 +23,19 @@ import org.easystogu.db.table.MacdVO;
 import org.easystogu.db.table.ShenXianVO;
 import org.easystogu.db.table.StockPriceVO;
 import org.easystogu.indicator.LuZaoHelper;
+import org.easystogu.indicator.ShenXianHelper;
+import org.easystogu.indicator.runner.utils.StockPriceFetcher;
 import org.easystogu.utils.Strings;
 
 public class IndicatorEndPoint {
+	private static String HHmmss = "00:00:00";
 	private StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
 	protected IndKDJTableHelper kdjTable = IndKDJTableHelper.getInstance();
 	protected IndMacdTableHelper macdTable = IndMacdTableHelper.getInstance();
 	protected IndBollTableHelper bollTable = IndBollTableHelper.getInstance();
 	protected IndShenXianTableHelper shenXianTable = IndShenXianTableHelper.getInstance();
 	protected ChuQuanChuXiPriceHelper chuQuanChuXiPriceHelper = new ChuQuanChuXiPriceHelper();
+	protected ShenXianHelper shenXianHelper = new ShenXianHelper();
 
 	private String dateRegex = "[0-9]{4}-[0-9]{2}-[0-9]{2}";
 	private String fromToRegex = dateRegex + "_" + dateRegex;
@@ -48,7 +52,6 @@ public class IndicatorEndPoint {
 		if (Pattern.matches(dateRegex, date) || Strings.isEmpty(date)) {
 			List<MacdVO> list = new ArrayList<MacdVO>();
 			list.add(macdTable.getMacd(stockid, date));
-			System.out.println("Fetch size=" + list.size());
 			return list;
 		}
 		return new ArrayList<MacdVO>();
@@ -66,7 +69,6 @@ public class IndicatorEndPoint {
 		if (Pattern.matches(fromToRegex, date) || Strings.isEmpty(date)) {
 			List<KDJVO> list = new ArrayList<KDJVO>();
 			list.add(kdjTable.getKDJ(stockid, date));
-			System.out.println("Fetch size=" + list.size());
 			return list;
 		}
 		return new ArrayList<KDJVO>();
@@ -84,7 +86,6 @@ public class IndicatorEndPoint {
 		if (Pattern.matches(dateRegex, date) || Strings.isEmpty(date)) {
 			List<BollVO> list = new ArrayList<BollVO>();
 			list.add(bollTable.getBoll(stockid, date));
-			System.out.println("Fetch size=" + list.size());
 			return list;
 		}
 		return new ArrayList<BollVO>();
@@ -103,38 +104,64 @@ public class IndicatorEndPoint {
 		if (Pattern.matches(dateRegex, date) || Strings.isEmpty(date)) {
 			List<ShenXianVO> list = new ArrayList<ShenXianVO>();
 			list.add(shenXianTable.getShenXian(stockid, date));
-			System.out.println("Fetch size=" + list.size());
 			return list;
 		}
 		return new ArrayList<ShenXianVO>();
+	}
+
+	// fetch price from db and count ind on real time
+	@GET
+	@Path("/shenxian2/{stockid}/{date}")
+	@Produces("application/json")
+	public List<ShenXianVO> queryShenXian2ById(@PathParam("stockid") String stockid, @PathParam("date") String date) {
+		List<ShenXianVO> list = new ArrayList<ShenXianVO>();
+		List<StockPriceVO> spList = this.fetchAllPrices(stockid);
+		List<Double> close = StockPriceFetcher.getClosePrice(spList);
+		double[][] shenXian = shenXianHelper.getShenXianList(close.toArray(new Double[0]));
+		for (int i = 0; i < shenXian[0].length; i++) {
+			if (this.isStockDateSelected(date, spList.get(i).date)) {
+				ShenXianVO vo = new ShenXianVO();
+				vo.setH1(Strings.convert2ScaleDecimal(shenXian[0][i]));
+				vo.setH2(Strings.convert2ScaleDecimal(shenXian[1][i]));
+				vo.setH3(Strings.convert2ScaleDecimal(shenXian[2][i]));
+				vo.setStockId(stockid);
+				vo.setDate(spList.get(i).date);
+				list.add(vo);
+			}
+		}
+
+		return list;
 	}
 
 	@GET
 	@Path("/luzao/{stockid}/{date}")
 	@Produces("application/json")
 	public List<LuZaoVO> queryLuZaoById(@PathParam("stockid") String stockid, @PathParam("date") String date) {
-		List<StockPriceVO> spList = this.fetchPrices(stockid, date);
+		List<StockPriceVO> spList = this.fetchAllPrices(stockid);
 		List<LuZaoVO> list = LuZaoHelper.countAvgMA(spList);
 		Collections.reverse(list);
-		System.out.println("Fetch size=" + list.size());
 		return list;
 	}
 
 	// common function to fetch price from stockPrice table
 	// date: xxxx-xx-xx or xxxx-xx-xx_xxxx-xx-xx
-	private List<StockPriceVO> fetchPrices(String stockid, String date) {
+	private List<StockPriceVO> fetchAllPrices(String stockid) {
 		List<StockPriceVO> spList = null;
-		if (Pattern.matches(fromToRegex, date)) {
-			String date1 = date.split("_")[0];
-			String date2 = date.split("_")[1];
-			spList = stockPriceTable.getStockPriceByIdAndBetweenDate(stockid, date1, date2);
-		}
-		if (Pattern.matches(dateRegex, date) || Strings.isEmpty(date)) {
-			spList = new ArrayList<StockPriceVO>();
-			spList.add(stockPriceTable.getStockPriceByIdAndDate(stockid, date));
-		}
+		spList = stockPriceTable.getStockPriceById(stockid);
 		// update price based on chuQuanChuXi event
 		chuQuanChuXiPriceHelper.updatePrice(stockid, spList);
 		return spList;
+	}
+
+	private boolean isStockDateSelected(String date, String aDate) {
+		if (Pattern.matches(fromToRegex, date)) {
+			String date1 = date.split("_")[0];
+			String date2 = date.split("_")[1];
+			return Strings.isDateSelected(date1 + " " + HHmmss, date2 + " " + HHmmss, aDate + " " + HHmmss);
+		}
+		if (Pattern.matches(dateRegex, date) || Strings.isEmpty(date)) {
+			return aDate.equals(date);
+		}
+		return false;
 	}
 }
