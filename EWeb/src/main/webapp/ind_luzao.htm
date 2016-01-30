@@ -59,18 +59,20 @@ $(function () {
     $.getJSON('http://localhost:8080/portal/ind/luzao/999999/2012-01-01_2016-12-31',    function (data) {
         i = 0;
         for (i; i < data.length; i += 1) {
+            var dateStr = data[i]['date'] + " 15:00:00";
+            var dateD = new Date(Date.parse(dateStr.replace(/-/g,   "/"))); 
             data_ma19.push([
-                data[i]['date'], // the date
+                dateD.getTime(),
                 data[i]['ma19']
             ]);
 
             data_ma43.push([
-                data[i]['date'], // the date
+                dateD.getTime(),
                 data[i]['ma43']
             ]);
             
             data_ma86.push([
-                data[i]['date'], // the date                
+                dateD.getTime(),
                 data[i]['ma86']
             ]);
         }
@@ -100,6 +102,6 @@ $(function () {
 <script src="js/highstock_4.2.1/modules/exporting.js"></script>
 
 
-<div id="container" style="height: 400px; min-width: 310px"></div>
+<div id="container" style="height: 600px; min-width: 310px"></div>
 	</body>
 </html>

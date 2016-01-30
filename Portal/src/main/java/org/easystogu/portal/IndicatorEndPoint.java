@@ -139,8 +139,14 @@ public class IndicatorEndPoint {
 	public List<LuZaoVO> queryLuZaoById(@PathParam("stockid") String stockid, @PathParam("date") String date) {
 		List<StockPriceVO> spList = this.fetchAllPrices(stockid);
 		List<LuZaoVO> list = LuZaoHelper.countAvgMA(spList);
-		Collections.reverse(list);
-		return list;
+		List<LuZaoVO> subList = new ArrayList<LuZaoVO>();
+		for (LuZaoVO vo : list) {
+			if (this.isStockDateSelected(date, vo.date)) {
+				subList.add(vo);
+			}
+		}
+		Collections.reverse(subList);
+		return subList;
 	}
 
 	// common function to fetch price from stockPrice table

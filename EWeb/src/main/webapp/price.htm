@@ -11,7 +11,7 @@ ${demo.css}
 		</style>
 		<script type="text/javascript">
 $(function () {
-    $.getJSON('http://localhost:8080/portal/price/002238/2015-10-01_2016-12-31', function (data) {
+    $.getJSON('http://localhost:8080/portal/price/999999/2012-01-01_2016-12-31', function (data) {
 
         // split the data set into ohlc and volume
         var ohlc = [],
@@ -29,8 +29,10 @@ $(function () {
             i = 0;
 
         for (i; i < dataLength; i += 1) {
+        	var dateStr = data[i]['date'] + " 15:00:00";
+            var dateD = new Date(Date.parse(dateStr.replace(/-/g,   "/")));
             ohlc.push([
-                data[i]['date'], // the date
+                dateD.getTime(),
                 data[i]['open'], // open
                 data[i]['high'], // high
                 data[i]['low'], // low
@@ -38,7 +40,7 @@ $(function () {
             ]);
 
             volume.push([
-                data[i]['date'], // the date
+                dateD.getTime(),
                 data[i]['volume'] // the volume
             ]);
         }
@@ -81,7 +83,7 @@ $(function () {
 
             series: [{
                 type: 'candlestick',
-                name: 'AAPL',
+                name: 'SZZS',
                 data: ohlc,
                 dataGrouping: {
                     units: groupingUnits
@@ -105,6 +107,6 @@ $(function () {
 <script src="js/highstock_4.2.1/modules/exporting.js"></script>
 
 
-<div id="container" style="height: 400px; min-width: 310px"></div>
+<div id="container" style="height: 600px; min-width: 310px"></div>
 	</body>
 </html>
