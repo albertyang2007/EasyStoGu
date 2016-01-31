@@ -1,4 +1,4 @@
-﻿<!DOCTYPE HTML>
+﻿﻿<!DOCTYPE HTML>
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -12,6 +12,8 @@ ${demo.css}
 $(function () {
     var seriesOptions = [],
         seriesCounter = 0,
+        date_price = [],
+        volume = [],
         data_h1 = [],
         data_h2 = [],
         data_h3 = [];
@@ -24,39 +26,91 @@ $(function () {
 
         $('#container').highcharts('StockChart', {
 
-            rangeSelector: {
-                selected: 4
-            },
-
-            yAxis: {
-                labels: {
-                    formatter: function () {
-                        return (this.value > 0 ? ' + ' : '') + this.value + '%';
-                    }
-                },
-                plotLines: [{
-                    value: 0,
-                    width: 2,
-                    color: 'silver'
-                }]
-            },
-
-            plotOptions: {
-                series: {
-                    compare: 'percent'
-                }
-            },
-
-            tooltip: {
-                pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b> ({point.change}%)<br/>',
-                valueDecimals: 2
-            },
-
-            series: seriesOptions
+                rangeSelector: {
+		                selected: 1
+		            },
+		
+		            title: {
+		                text: '上证指数'
+		            },
+		
+		            yAxis: [{
+		                labels: {
+		                    align: 'right',
+		                    x: -3
+		                },
+		                title: {
+		                    text: 'Price'
+		                },
+		                height: '60%',
+		                lineWidth: 2
+		            }, {
+		                labels: {
+		                    align: 'right',
+		                    x: -3
+		                },
+		                title: {
+		                    text: 'Volume'
+		                },
+		                top: '65%',
+		                height: '35%',
+		                offset: 0,
+		                lineWidth: 2
+		            }],
+		
+		            series: [{
+		                type: 'candlestick',
+		                name: '上证指数',
+		                data: date_price
+		            }, 
+		            {
+		                name: 'H1',
+		                data: data_h1
+		            }, 
+		            {
+		                name: 'H2',
+		                data: data_h2
+		            }, 
+		            {
+		                name: 'H3',
+		                data: data_h3
+		            },                         
+		               {
+		                type: 'column',
+		                name: 'Volume',
+		                data: volume,
+		                yAxis: 1
+		            }]
         });
     }
-    
-    $.getJSON('http://localhost:8080/portal/ind/shenxian/999999/2012-01-01_2016-12-31',    function (data) {
+
+
+    $.getJSON('http://localhost:8080/portal/price/002673/2012-01-01_2016-12-31',    function (data) {
+        i = 0;
+        for (i; i < data.length; i += 1) {
+        	var dateStr = data[i]['date'] + " 15:00:00";
+            var dateD = new Date(Date.parse(dateStr.replace(/-/g,   "/")));
+            date_price.push([
+                dateD.getTime(),
+                data[i]['open'],
+                data[i]['high'],
+                data[i]['low'],
+                data[i]['close']
+            ]);
+            
+            volume.push([
+                dateD.getTime(),
+                data[i]['volume']
+            ]);  
+        }
+        
+        seriesCounter += 1;
+        if (seriesCounter === 2) {
+            createChart();
+        }
+    });
+        
+    $.getJSON('http://localhost:8080/portal/ind/shenxian/002673/2012-01-01_2016-12-31',    function (data) {
         i = 0;
         for (i; i < data.length; i += 1) {
         	var dateStr = data[i]['date'] + " 15:00:00";
@@ -77,22 +131,10 @@ $(function () {
             ]);
         }
         
-            seriesOptions[0] = {
-                name: 'H1',
-                data: data_h1
-            };
-            
-            seriesOptions[1] = {
-                name: 'H2',
-                data: data_h2
-            };
-            
-            seriesOptions[2] = {
-                name: 'H3',
-                data: data_h3
-            };
-
+        seriesCounter += 1;
+        if (seriesCounter === 2) {
             createChart();
+        }
     });
 });
 		</script>

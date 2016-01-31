@@ -16,6 +16,10 @@ $(function () {
         // split the data set into ohlc and volume
         var ohlc = [],
             volume = [],
+            data_h1 = [],
+            data_h2 = [],
+            data_h3 = [];
+        
             dataLength = data.length,
             // set the allowed units for data grouping
             groupingUnits = [[
@@ -42,62 +46,110 @@ $(function () {
             volume.push([
                 dateD.getTime(),
                 data[i]['volume'] // the volume
-            ]);
+            ]);           
         }
+        
+        $.getJSON('http://localhost:8080/portal/ind/shenxian/999999/2012-01-01_2016-12-31',    function (data) {
+		        i = 0;
+		        for (i; i < data.length; i += 1) {
+		        	var dateStr = data[i]['date'] + " 15:00:00";
+		            var dateD = new Date(Date.parse(dateStr.replace(/-/g,   "/")));
+		            data_h1.push([
+		                dateD.getTime(),
+		                data[i]['h1']
+		            ]);
+		
+		            data_h2.push([
+		                dateD.getTime(),
+		                data[i]['h2']
+		            ]);
+		            
+		            data_h3.push([
+		                dateD.getTime(),
+		                data[i]['h3']
+		            ]);
+		        }
+		        
+		        createChart();		     
+		    });
 
 
         // create the chart
-        $('#container').highcharts('StockChart', {
-
-            rangeSelector: {
-                selected: 1
-            },
-
-            title: {
-                text: 'AAPL Historical'
-            },
-
-            yAxis: [{
-                labels: {
-                    align: 'right',
-                    x: -3
-                },
-                title: {
-                    text: 'OHLC'
-                },
-                height: '60%',
-                lineWidth: 2
-            }, {
-                labels: {
-                    align: 'right',
-                    x: -3
-                },
-                title: {
-                    text: 'Volume'
-                },
-                top: '65%',
-                height: '35%',
-                offset: 0,
-                lineWidth: 2
-            }],
-
-            series: [{
-                type: 'candlestick',
-                name: 'SZZS',
-                data: ohlc,
-                dataGrouping: {
-                    units: groupingUnits
-                }
-            }, {
-                type: 'column',
-                name: 'Volume',
-                data: volume,
-                yAxis: 1,
-                dataGrouping: {
-                    units: groupingUnits
-                }
-            }]
-        });
+        function createChart() {
+		        $('#container').highcharts('StockChart', {
+		
+		            rangeSelector: {
+		                selected: 1
+		            },
+		
+		            title: {
+		                text: '上证指数'
+		            },
+		
+		            yAxis: [{
+		                labels: {
+		                    align: 'right',
+		                    x: -3
+		                },
+		                title: {
+		                    text: 'OHLC'
+		                },
+		                height: '60%',
+		                lineWidth: 2
+		            }, {
+		                labels: {
+		                    align: 'right',
+		                    x: -3
+		                },
+		                title: {
+		                    text: 'Volume'
+		                },
+		                top: '65%',
+		                height: '35%',
+		                offset: 0,
+		                lineWidth: 2
+		            }],
+		
+		            series: [{
+		                type: 'candlestick',
+		                name: '上证指数',
+		                data: ohlc,
+		                dataGrouping: {
+		                    units: groupingUnits
+		                }
+		            }, 
+		            {
+		                name: 'H1',
+		                data: data_h1,
+		                dataGrouping: {
+		                    units: groupingUnits
+		                }
+		            }, 
+		            {
+		                name: 'H2',
+		                data: data_h2,
+		                dataGrouping: {
+		                    units: groupingUnits
+		                }
+		            }, 
+		            {
+		                name: 'H3',
+		                data: data_h3,
+		                dataGrouping: {
+		                    units: groupingUnits
+		                }
+		            },                         
+		               {
+		                type: 'column',
+		                name: 'Volume',
+		                data: volume,
+		                yAxis: 1,
+		                dataGrouping: {
+		                    units: groupingUnits
+		                }
+		            }]
+		        });
+        }
     });
 });
 		</script>
