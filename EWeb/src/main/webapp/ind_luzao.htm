@@ -17,6 +17,16 @@ $(function () {
         data_ma19 = [],
         data_ma43 = [],
         data_ma86 = [];
+    
+    var stockId = GetQueryString("stockId");
+    var dateRange = GetQueryString("date");
+            
+    function GetQueryString(name)
+		{
+		    var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+		    var r = window.location.search.substr(1).match(reg);
+		    if(r!=null)return  unescape(r[2]); return null;
+		}    
 
     /**
      * Create the chart when all data is loaded
@@ -84,8 +94,8 @@ $(function () {
         });
     }
 
-
-    $.getJSON('http://localhost:8080/portal/price/002673/2012-01-01_2016-12-31',    function (data) {
+    var url_price = "http://localhost:8080/portal/price/" + stockId + "/" + dateRange;
+    $.getJSON(url_price,    function (data) {
         i = 0;
         for (i; i < data.length; i += 1) {
         	var dateStr = data[i]['date'] + " 15:00:00";
@@ -110,7 +120,8 @@ $(function () {
         }
     });
         
-    $.getJSON('http://localhost:8080/portal/ind/luzao/002673/2012-01-01_2016-12-31',    function (data) {
+    var url_luzao = "http://localhost:8080/portal/ind/luzao/" + stockId + "/" + dateRange;
+    $.getJSON(url_luzao,    function (data) {
         i = 0;
         for (i; i < data.length; i += 1) {
         	var dateStr = data[i]['date'] + " 15:00:00";

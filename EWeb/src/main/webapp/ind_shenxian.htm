@@ -18,6 +18,16 @@ $(function () {
         data_h2 = [],
         data_h3 = [];
 
+    var stockId = GetQueryString("stockId");
+    var dateRange = GetQueryString("date");
+            
+    function GetQueryString(name)
+		{
+		    var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+		    var r = window.location.search.substr(1).match(reg);
+		    if(r!=null)return  unescape(r[2]); return null;
+		}    
+		
     /**
      * Create the chart when all data is loaded
      * @returns {undefined}
@@ -85,7 +95,8 @@ $(function () {
     }
 
 
-    $.getJSON('http://localhost:8080/portal/price/002673/2012-01-01_2016-12-31',    function (data) {
+    var url_price = "http://localhost:8080/portal/price/" + stockId + "/" + dateRange;
+    $.getJSON(url_price,    function (data) {
         i = 0;
         for (i; i < data.length; i += 1) {
         	var dateStr = data[i]['date'] + " 15:00:00";
@@ -109,8 +120,9 @@ $(function () {
             createChart();
         }
     });
-        
-    $.getJSON('http://localhost:8080/portal/ind/shenxian/002673/2012-01-01_2016-12-31',    function (data) {
+
+    var url_shenxian = "http://localhost:8080/portal/ind/shenxian/" + stockId + "/" + dateRange;
+    $.getJSON(url_shenxian,    function (data) {
         i = 0;
         for (i; i < data.length; i += 1) {
         	var dateStr = data[i]['date'] + " 15:00:00";
