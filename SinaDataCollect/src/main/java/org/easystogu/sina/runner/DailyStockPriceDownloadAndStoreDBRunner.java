@@ -3,13 +3,11 @@ package org.easystogu.sina.runner;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.easystogu.db.access.EstimateStockTableHelper;
 import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.table.StockPriceVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.sina.common.RealTimePriceVO;
 import org.easystogu.sina.helper.SinaDataDownloadHelper;
-import org.easystogu.utils.WeekdayUtil;
 
 public class DailyStockPriceDownloadAndStoreDBRunner implements Runnable {
 	// private static Logger logger =

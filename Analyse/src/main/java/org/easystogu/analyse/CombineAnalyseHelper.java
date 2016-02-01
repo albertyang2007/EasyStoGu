@@ -1178,6 +1178,52 @@ public class CombineAnalyseHelper {
             }
             break;
         }
+        //luzao close>ma19 and ma19<ma43<ma86
+        //shenxian close>h1 and h1<h2
+        case Trend_PhaseI_GuanCha: {
+            if (curSuperDayVO.priceVO.close > curSuperDayVO.avgMA19
+                    && (curSuperDayVO.avgMA19 < curSuperDayVO.avgMA43 && curSuperDayVO.avgMA43 < curSuperDayVO.avgMA86)) {
+                if (curSuperDayVO.priceVO.close > curSuperDayVO.shenXianVO.h1
+                        && curSuperDayVO.shenXianVO.h1 < curSuperDayVO.shenXianVO.h2) {
+                    return true;
+                }
+            }
+            break;
+        }
+
+        //luzao close>ma19 and ma19<ma43<ma86 and ma19 is up
+        //shenxian h1>h2
+        case Trend_PhaseII_JianCang: {
+            if (curSuperDayVO.priceVO.close > curSuperDayVO.avgMA19
+                    && (curSuperDayVO.avgMA19 < curSuperDayVO.avgMA43 && curSuperDayVO.avgMA43 < curSuperDayVO.avgMA86)
+                    && pre1SuperDayVO.avgMA19 < curSuperDayVO.avgMA19) {
+                if (curSuperDayVO.shenXianVO.h1 > curSuperDayVO.shenXianVO.h2) {
+                    return true;
+                }
+            }
+            break;
+        }
+
+        //luzao ma19>ma43 and ma43<ma86
+        //shenxian h1>h2
+        case Trend_PhaseIII_ChiGu: {
+            if (curSuperDayVO.avgMA19 > curSuperDayVO.avgMA43 && curSuperDayVO.avgMA43 < curSuperDayVO.avgMA86) {
+                if (curSuperDayVO.shenXianVO.h1 > curSuperDayVO.shenXianVO.h2) {
+                    return true;
+                }
+            }
+            break;
+        }
+
+        //luzao ma19>ma43 and ma43>ma86
+        //shenxian h1<h2
+        case Trend_PhaseVI_JianCang: {
+            if ((curSuperDayVO.avgMA19 > curSuperDayVO.avgMA43 && curSuperDayVO.avgMA43 > curSuperDayVO.avgMA86)
+                    || (curSuperDayVO.shenXianVO.h1 < curSuperDayVO.shenXianVO.h2)) {
+                return true;
+            }
+            break;
+        }
 
         default:
             return false;

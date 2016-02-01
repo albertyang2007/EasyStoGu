@@ -48,14 +48,23 @@ public class PriceCheckingHelper {
             if (((index - 9) >= 0) && ((index + 1) <= overList.size())) {
                 superVO.avgMA10 = avgClosePrice(overList.subList(index - 9, index + 1));
             }
+            if (((index - 18) >= 0) && ((index + 1) <= overList.size())) {
+                superVO.avgMA19 = avgClosePrice(overList.subList(index - 18, index + 1));
+            }
             if (((index - 19) >= 0) && ((index + 1) <= overList.size())) {
                 superVO.avgMA20 = avgClosePrice(overList.subList(index - 19, index + 1));
             }
             if (((index - 29) >= 0) && ((index + 1) <= overList.size())) {
                 superVO.avgMA30 = avgClosePrice(overList.subList(index - 29, index + 1));
             }
+            if (((index - 42) >= 0) && ((index + 1) <= overList.size())) {
+                superVO.avgMA43 = avgClosePrice(overList.subList(index - 42, index + 1));
+            }
             if (((index - 59) >= 0) && ((index + 1) <= overList.size())) {
                 superVO.avgMA60 = avgClosePrice(overList.subList(index - 59, index + 1));
+            }
+            if (((index - 85) >= 0) && ((index + 1) <= overList.size())) {
+                superVO.avgMA86 = avgClosePrice(overList.subList(index - 85, index + 1));
             }
             if (((index - 119) >= 0) && ((index + 1) <= overList.size())) {
                 superVO.avgMA120 = avgClosePrice(overList.subList(index - 119, index + 1));
