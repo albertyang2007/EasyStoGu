@@ -14,9 +14,9 @@ $(function () {
         seriesCounter = 0,
         date_price = [],
         volume = [],
-        data_h1 = [],
-        data_h2 = [],
-        data_h3 = [];
+        data_mb = [],
+        data_up = [],
+        data_dn = [];
 
     var stockId = GetQueryString("stockId");
     var dateRange = GetQueryString("date");
@@ -74,16 +74,16 @@ $(function () {
 		                data: date_price
 		            }, 
 		            {
-		                name: 'H1',
-		                data: data_h1
+		                name: 'MB',
+		                data: data_mb
 		            }, 
 		            {
-		                name: 'H2',
-		                data: data_h2
+		                name: 'UP',
+		                data: data_up
 		            }, 
 		            {
-		                name: 'H3',
-		                data: data_h3
+		                name: 'DN',
+		                data: data_dn
 		            },                         
 		               {
 		                type: 'column',
@@ -121,25 +121,25 @@ $(function () {
         }
     });
 
-    var url_shenxian = "http://localhost:8080/portal/ind/shenxian/" + stockId + "/" + dateRange;
-    $.getJSON(url_shenxian,    function (data) {
+    var url_boll = "http://localhost:8080/portal/ind/boll/" + stockId + "/" + dateRange;
+    $.getJSON(url_boll,    function (data) {
         i = 0;
         for (i; i < data.length; i += 1) {
         	var dateStr = data[i]['date'] + " 15:00:00";
             var dateD = new Date(Date.parse(dateStr.replace(/-/g,   "/")));
-            data_h1.push([
+            data_mb.push([
                 dateD.getTime(),
-                data[i]['h1']
+                data[i]['mb']
             ]);
 
-            data_h2.push([
+            data_up.push([
                 dateD.getTime(),
-                data[i]['h2']
+                data[i]['up']
             ]);
             
-            data_h3.push([
+            data_dn.push([
                 dateD.getTime(),
-                data[i]['h3']
+                data[i]['dn']
             ]);
         }
         
