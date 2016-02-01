@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <script type="text/javascript" src="js/reactjs_0.13.0/JSXTransformer.js"></script>
+      <script type="text/javascript" src="js/reactjs_0.13.0/react.js"></script>
+      <script type="text/javascript" src="js/jquery_1.8.2/jquery.min.js"></script>
+   </head>
+   <body>
+      <div id="container"</div>
+      <script type="text/jsx">
+      
+      var LoginForm = React.createClass({
+         getInitialState: function() {
+         return {
+            username: "",
+            password: "",
+        };
+      },
+      
+      handleChange: function(e) {
+         var newState = {};
+         newState[e.target.name] = e.target.value;
+         this.setState(newState);
+      },
+
+      handleClick: function() {
+         var data = {
+            username : this.state.username,
+            password : this.state.password,
+        };
+        
+        var my_url = "http://localhost:8080/portal/price/" + data.username + "/2012-01-01_2016-12-31";
+        $.ajax(my_url);
+      },
+      
+      render: function(){
+      
+		      return (<div>
+		              <div>
+		                <label>Name:</label>
+		                <input type="text" value={this.state.username} name='loginName' onChange={this.handleChange} />
+		              </div>
+		              <div>
+		                <label>Password:</label>
+		                <input type="text" value={this.state.password} name='loginPassword' onChange={this.handleChange} />
+		              </div>
+		              <div>
+		                  <input type="submit" value="Submit" onClick={this.handleClick} />
+		              </div>
+		              </div>);
+		     }         
+      });
+      
+      React.render(<LoginForm />,
+      document.getElementById("container")
+      );
+      </script>
+   </body>
+</html>
