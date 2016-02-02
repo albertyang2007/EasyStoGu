@@ -1,39 +1,17 @@
-﻿<!DOCTYPE HTML>
-<html>
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<title>Highstock Example</title>
-
-		<script type="text/javascript" src="js/jquery_1.8.2/jquery.min.js"></script>
-		<style type="text/css">
-${demo.css}
-		</style>
-		<script type="text/javascript">
-$(function () {
+function loadStockData(stockId, dateFrom, dateTo) {
     var seriesOptions = [],
         seriesCounter = 0,
         date_price = [],
         volume = [],
         data_h1 = [],
         data_h2 = [],
-        data_h3 = [];
-
-    var stockId = GetQueryString("stockId");
-    var dateRange = GetQueryString("date");
-            
-    function GetQueryString(name)
-		{
-		    var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
-		    var r = window.location.search.substr(1).match(reg);
-		    if(r!=null)return  unescape(r[2]); return null;
-		}    
+        data_h3 = [];  
 		
     /**
      * Create the chart when all data is loaded
      * @returns {undefined}
      */
     function createChart() {
-
         $('#container').highcharts('StockChart', {
 
                 rangeSelector: {
@@ -95,7 +73,7 @@ $(function () {
     }
 
 
-    var url_price = "http://localhost:8080/portal/price/" + stockId + "/" + dateRange;
+    var url_price = "http://localhost:8080/portal/price/" + stockId + "/" + dateFrom + "_" + dateTo;
     $.getJSON(url_price,    function (data) {
         i = 0;
         for (i; i < data.length; i += 1) {
@@ -121,7 +99,7 @@ $(function () {
         }
     });
 
-    var url_shenxian = "http://localhost:8080/portal/ind/shenxian/" + stockId + "/" + dateRange;
+    var url_shenxian = "http://localhost:8080/portal/ind/shenxian/" + stockId + "/" + dateFrom + "_" + dateTo;
     $.getJSON(url_shenxian,    function (data) {
         i = 0;
         for (i; i < data.length; i += 1) {
@@ -148,14 +126,4 @@ $(function () {
             createChart();
         }
     });
-});
-		</script>
-	</head>
-	<body>
-<script src="js/highstock_4.2.1/highstock.js"></script>
-<script src="js/highstock_4.2.1/modules/exporting.js"></script>
-
-
-<div id="container" style="height: 800px; min-width: 310px"></div>
-	</body>
-</html>
+}
