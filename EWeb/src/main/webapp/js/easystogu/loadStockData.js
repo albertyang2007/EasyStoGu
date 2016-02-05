@@ -1,4 +1,33 @@
 /**
+ * Load CompanyBaseInfo
+ * 
+ * @returns {undefined}
+ */
+function loadCompanyInfo(stockId) {
+	var url_company = "http://localhost:8080/portal/company/" + stockId;
+	var companyInfo = "N/A";
+	$.getJSON(url_company, function(data) {
+		alert(data);
+		companyInfo = data;
+	});
+	return companyInfo;
+}
+
+/**
+ * Load CompanyBaseInfo
+ * 
+ * @returns {undefined}
+ */
+function loadCompanyInfoByName(name) {
+	var url_company = "http://localhost:8080/portal/company/name=" + name;
+	var companyInfo = "N/A";
+	$.getJSON(url_company, function(data) {
+		companyInfo = data;
+	});
+	return companyInfo;
+}
+
+/**
  * Load ShenXian and StockPrice
  * 
  * @returns {undefined}
@@ -19,7 +48,7 @@ function loadShenXian(stockId, dateFrom, dateTo) {
 			},
 
 			title : {
-				text : 'OHLC'
+				text : stockId
 			},
 
 			yAxis : [ {
@@ -139,7 +168,7 @@ function loadLuZao(stockId, dateFrom, dateTo) {
 			},
 
 			title : {
-				text : 'OHLC'
+				text : stockId
 			},
 
 			yAxis : [ {
@@ -259,7 +288,7 @@ function loadBoll(stockId, dateFrom, dateTo) {
 			},
 
 			title : {
-				text : 'OHLC'
+				text : stockId
 			},
 
 			yAxis : [ {
@@ -349,6 +378,124 @@ function loadBoll(stockId, dateFrom, dateTo) {
 			data_up.push([ dateD.getTime(), data[i]['up'] ]);
 
 			data_dn.push([ dateD.getTime(), data[i]['dn'] ]);
+		}
+
+		seriesCounter += 1;
+		if (seriesCounter === 2) {
+			createChart();
+		}
+	});
+}
+
+/**
+ * Load Macd and StockPrice
+ * 
+ * @returns {undefined}
+ */
+function loadMacd(stockId, dateFrom, dateTo) {
+	var seriesCounter = 0, date_price = [], volume = [], data_dif = [], data_dea = [], data_macd = [];
+
+	/**
+	 * Create the chart when all data is loaded
+	 * 
+	 * @returns {undefined}
+	 */
+	function createChart() {
+		$('#container').highcharts('StockChart', {
+
+			rangeSelector : {
+				selected : 1
+			},
+
+			title : {
+				text : stockId
+			},
+
+			yAxis : [ {
+				labels : {
+					align : 'right',
+					x : -3
+				},
+				title : {
+					text : 'Price'
+				},
+				height : '60%',
+				lineWidth : 2
+			}, {
+				labels : {
+					align : 'right',
+					x : -3
+				},
+				title : {
+					text : 'MACD'
+				},
+				top : '65%',
+				height : '35%',
+				offset : 0,
+				lineWidth : 2
+			} ],
+
+			series : [ {
+				type : 'candlestick',
+				name : 'OHLC',
+				data : date_price
+			}, {
+				name : 'DIF',
+				data : data_dif,
+				yAxis : 1
+			}, {
+				name : 'DEA',
+				data : data_dea,
+				yAxis : 1
+			}, {
+				name : 'MACD',
+				data : data_macd,
+				yAxis : 1
+			} ]
+		});
+	}
+
+	/**
+	 * Load StocPrice and display OHLC
+	 * 
+	 * @returns {undefined}
+	 */
+	var url_price = "http://localhost:8080/portal/price/" + stockId + "/"
+			+ dateFrom + "_" + dateTo;
+	$.getJSON(url_price, function(data) {
+		i = 0;
+		for (i; i < data.length; i += 1) {
+			var dateStr = data[i]['date'] + " 15:00:00";
+			var dateD = new Date(Date.parse(dateStr.replace(/-/g, "/")));
+			date_price.push([ dateD.getTime(), data[i]['open'],
+					data[i]['high'], data[i]['low'], data[i]['close'] ]);
+
+			volume.push([ dateD.getTime(), data[i]['volume'] ]);
+		}
+
+		seriesCounter += 1;
+		if (seriesCounter === 2) {
+			createChart();
+		}
+	});
+
+	/**
+	 * Load ShenXian Indicator and display
+	 * 
+	 * @returns {undefined}
+	 */
+	var url_ind = "http://localhost:8080/portal/ind/macd/" + stockId + "/"
+			+ dateFrom + "_" + dateTo;
+	$.getJSON(url_ind, function(data) {
+		i = 0;
+		for (i; i < data.length; i += 1) {
+			var dateStr = data[i]['date'] + " 15:00:00";
+			var dateD = new Date(Date.parse(dateStr.replace(/-/g, "/")));
+			data_dif.push([ dateD.getTime(), data[i]['dif'] ]);
+
+			data_dea.push([ dateD.getTime(), data[i]['dea'] ]);
+
+			data_macd.push([ dateD.getTime(), data[i]['macd'] ]);
 		}
 
 		seriesCounter += 1;

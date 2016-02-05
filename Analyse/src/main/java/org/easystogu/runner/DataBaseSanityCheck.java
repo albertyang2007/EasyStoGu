@@ -237,6 +237,12 @@ public class DataBaseSanityCheck implements Runnable {
 		DataBaseSanityCheck check = new DataBaseSanityCheck();
 		check.sanityDailyCheck(stockConfig.getAllStockId());
 		check.sanityWeekCheck(stockConfig.getAllStockId());
+		//check.sanityDailyCheck("999999");
+		//check.sanityDailyCheck("399001");
+		//check.sanityDailyCheck("399006");
+		//check.sanityWeekCheck("999999");
+		//check.sanityWeekCheck("399001");
+		//check.sanityWeekCheck("399006");
 	}
 
 	public static void main(String[] args) {

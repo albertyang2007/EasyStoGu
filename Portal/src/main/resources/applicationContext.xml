@@ -44,4 +44,15 @@
 			<bean class="com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider" />
 		</jaxrs:providers>
 	</jaxrs:server>
+	
+	<bean id="portalServiceCompanyInfoEndPoint" class="org.easystogu.portal.CompanyInfoEndPoint">
+	</bean>
+	<jaxrs:server id="cxfrsservice_CompanyInfoEndPoint" address="/company">
+		<jaxrs:serviceBeans>
+			<ref bean="portalServiceCompanyInfoEndPoint" />
+		</jaxrs:serviceBeans>
+		<jaxrs:providers>
+			<bean class="com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider" />
+		</jaxrs:providers>
+	</jaxrs:server>
 </beans>

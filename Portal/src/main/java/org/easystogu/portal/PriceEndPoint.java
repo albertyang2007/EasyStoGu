@@ -19,19 +19,19 @@ public class PriceEndPoint {
     private String fromToRegex = dateRegex + "_" + dateRegex;
 
     @GET
-    @Path("/{stockid}/{date}")
+    @Path("/{stockId}/{date}")
     @Produces("application/json")
-    public List<StockPriceVO> queryDayPriceById(@PathParam("stockid")
-    String stockid, @PathParam("date")
-    String date) {
-        if (Pattern.matches(fromToRegex, date)) {
-            String date1 = date.split("_")[0];
-            String date2 = date.split("_")[1];
-            return stockPriceTable.getStockPriceByIdAndBetweenDate(stockid, date1, date2);
+    public List<StockPriceVO> queryDayPriceById(@PathParam("stockId")
+    String stockIdParm, @PathParam("date")
+    String dateParm) {
+        if (Pattern.matches(fromToRegex, dateParm)) {
+            String date1 = dateParm.split("_")[0];
+            String date2 = dateParm.split("_")[1];
+            return stockPriceTable.getStockPriceByIdAndBetweenDate(stockIdParm, date1, date2);
         }
-        if (Pattern.matches(dateRegex, date) || Strings.isEmpty(date)) {
+        if (Pattern.matches(dateRegex, dateParm) || Strings.isEmpty(dateParm)) {
             List<StockPriceVO> list = new ArrayList<StockPriceVO>();
-            list.add(stockPriceTable.getStockPriceByIdAndDate(stockid, date));
+            list.add(stockPriceTable.getStockPriceByIdAndDate(stockIdParm, dateParm));
             return list;
         }
         return new ArrayList<StockPriceVO>();

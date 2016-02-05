@@ -36,6 +36,18 @@
 	            dateFrom : this.state.dateFrom,
 	            dateTo : this.state.dateTo,
 	        };
+	          // set ajax async to false just to query the stock company info
+            $.ajaxSettings.async = false;
+
+            // convert the stock name to sotckId if input parm is not a stockId
+            var stockIdRegex = new RegExp('[0-9]{6}','g');
+            if(!data.stockId.match(stockIdRegex)){
+            	 var companyInfo = loadCompanyInfoByName(data.stockId);
+               data.stockId = companyInfo.stockId;
+            }
+
+            //reset ajax async to true when load big data from portal
+            $.ajaxSettings.async = true;
 	        
             if(data.indicator == "shenxian"){ 
 	           loadShenXian(data.stockId, data.dateFrom, data.dateTo);
@@ -43,6 +55,8 @@
 	           loadLuZao(data.stockId, data.dateFrom, data.dateTo);
             }else if(data.indicator == "boll"){ 
 	           loadBoll(data.stockId, data.dateFrom, data.dateTo);
+            }else if(data.indicator == "macd"){ 
+	           loadMacd(data.stockId, data.dateFrom, data.dateTo);
             }
 	      },
 	      
@@ -55,6 +69,7 @@
 			                  <select name='indicator' onChange={this.handleChange}>
                               <option value='shenxian' defaultValue>shenxian</option>
                               <option value='luzao'>luzao</option>
+                              <option value='macd'>macd</option>
                               <option value='boll'>boll</option>
                               </select>&nbsp;&nbsp;
 
