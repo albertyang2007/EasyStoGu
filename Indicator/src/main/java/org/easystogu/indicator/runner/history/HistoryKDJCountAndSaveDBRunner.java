@@ -12,6 +12,8 @@ import org.easystogu.indicator.KDJHelper;
 import org.easystogu.indicator.runner.utils.StockPriceFetcher;
 import org.easystogu.utils.Strings;
 
+import com.google.common.primitives.Doubles;
+
 public class HistoryKDJCountAndSaveDBRunner {
 	protected StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
 	protected IndKDJTableHelper kdjTable = IndKDJTableHelper.getInstance();
@@ -45,8 +47,7 @@ public class HistoryKDJCountAndSaveDBRunner {
 		List<Double> low = StockPriceFetcher.getLowPrice(priceList);
 		List<Double> high = StockPriceFetcher.getHighPrice(priceList);
 
-		double[][] KDJ = kdjHelper.getKDJList(close.toArray(new Double[0]), low.toArray(new Double[0]),
-				high.toArray(new Double[0]));
+		double[][] KDJ = kdjHelper.getKDJList(Doubles.toArray(close), Doubles.toArray(low), Doubles.toArray(high));
 
 		for (int i = 0; i < KDJ[0].length; i++) {
 			KDJVO vo = new KDJVO();

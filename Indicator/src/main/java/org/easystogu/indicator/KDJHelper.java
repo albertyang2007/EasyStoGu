@@ -4,77 +4,65 @@ import java.util.List;
 
 import org.easystogu.db.access.StockPriceTableHelper;
 
-public class KDJHelper {
+import com.google.common.primitives.Doubles;
 
-    public double RSV(double close, double lown, double highn) {
+/*
+ RSV:=(CLOSE-LLV(LOW,9))/(HHV(HIGH,N)-LLV(LOW,9))*100;
+ K:=SMA(RSV,3,1);
+ D:=SMA(K,3,1);
+ J:=3*K-2*D;
+ */
+public class KDJHelper {
+    public static final double DEFAULT_VALUE = 50.0;
+    public IND ind = new IND();
+
+    public double getRsv(double close, double lown, double highn) {
         return 100.0 * (close - lown) / (highn - lown);
     }
 
-    public double lown(Double[] low, int start, int end) {
-        double lown = low[start];
-
-        for (int i = start + 1; i <= end; i++) {
-            if (lown > low[i]) {
-                lown = low[i];
-            }
+    public double[] RSV(double[] close, double[] llv, double[] hhv) {
+        double[] rsv = new double[close.length];
+        for (int index = 0; index < close.length; index++) {
+            rsv[index] = this.getRsv(close[index], llv[index], hhv[index]);
         }
-
-        return lown;
-    }
-
-    public double highn(Double[] high, int start, int end) {
-        double highn = high[start];
-
-        for (int i = start + 1; i <= end; i++) {
-            if (highn < high[i]) {
-                highn = high[i];
-            }
-        }
-
-        return highn;
+        return rsv;
     }
 
     // �ӵ�һ����ʼ����JDK,������
-    public double[][] getKDJList(Double[] close, Double[] low, Double[] high) {
-        int length = close.length;
-
-        double[][] KDJ = new double[4][length];// KDJ����:0��K����,1��D����,2��J����, RSV�����
-
-        int start = 8;// start from index 8
-        // ǰ��8�� KDJֵ��Ϊ0,�ӵ�9����ʼ����
-        for (int index = 0; index < start; index++) {
-            KDJ[0][index] = 50.0;
-            KDJ[1][index] = 50.0;
-            KDJ[2][index] = 50.0;
-            KDJ[3][index] = 50.0;
-        }
-
-        for (int index = start; index < length; index++) {
-
-            double lown = this.lown(low, index - 8, index);
-            double highn = this.highn(high, index - 8, index);
-            double RSV = this.RSV(close[index], lown, highn);
-
-            KDJ[0][index] = (2.0 / 3.0) * KDJ[0][index - 1] + (1.0 / 3.0) * RSV;// K
-            KDJ[1][index] = (2.0 / 3.0) * KDJ[1][index - 1] + (1.0 / 3.0) * KDJ[0][index];// D
-            KDJ[2][index] = 3.0 * KDJ[0][index] - 2.0 * KDJ[1][index];// J	
-            KDJ[3][index] = RSV;
-        }
-
-        return KDJ;
+    public double[][] getKDJList(double[] close, double[] low, double[] high) {
+        return KDJ(close, low, high, 9, 3, 3);
     }
 
-    // ����һ��KDJ
-    public double[] getKDJ(double[] preKDJ, double close, double lown, double highn) {
-        double[] KDJ = new double[4];// KDJ����:0��K����,1��D����,2��J����
+    public double[] getJ(double[] k, double[] d) {
+        double[] j = new double[k.length];
+        for (int index = 0; index < k.length; index++) {
+            j[index] = 3 * k[index] - 2 * d[index];
+        }
+        return j;
+    }
 
-        double RSV = this.RSV(close, lown, highn);
-        KDJ[0] = (2.0 / 3.0) * preKDJ[0] + (1.0 / 3.0) * RSV;// K
-        KDJ[1] = (2.0 / 3.0) * preKDJ[1] + (1.0 / 3.0) * KDJ[0];// D
-        KDJ[2] = 3.0 * KDJ[0] - 2.0 * KDJ[1];// J  
-        KDJ[3] = RSV;
+    //(N,M1,M2)=(9,3,3)
+    public double[][] KDJ(double[] close, double[] low, double[] high, int N, int M1, int M2) {
+        int length = close.length;
+        double[][] kdj = new double[4][length];
+        double[] rsv = this.RSV(close, ind.LLV(low, N), ind.HHV(high, N));
 
-        return KDJ;
+        for (int index = 0; index < N; index++) {
+            kdj[0][index] = DEFAULT_VALUE;
+            kdj[1][index] = DEFAULT_VALUE;
+            kdj[2][index] = DEFAULT_VALUE;
+            kdj[3][index] = DEFAULT_VALUE;
+        }
+
+        for (int index = N - 1; index < length; index++) {
+
+            kdj[0][index] = (2.0 / 3.0) * kdj[0][index - 1] + (1.0 / 3.0) * rsv[index];// K
+            kdj[1][index] = (2.0 / 3.0) * kdj[1][index - 1] + (1.0 / 3.0) * kdj[0][index];// D
+            kdj[2][index] = 3.0 * kdj[0][index] - 2.0 * kdj[1][index];// J  
+            kdj[3][index] = rsv[index];
+        }
+
+        return kdj;
     }
 
     public static void main(String[] args) {
@@ -84,12 +72,11 @@ public class KDJHelper {
         List<Double> close = stockPriceTable.getAllClosePrice(stockId);
         List<Double> low = stockPriceTable.getAllLowPrice(stockId);
         List<Double> high = stockPriceTable.getAllHighPrice(stockId);
-        double[][] KDJ = ins.getKDJList((Double[]) close.toArray(new Double[0]), (Double[]) low.toArray(new Double[0]),
-                (Double[]) high.toArray(new Double[0]));
 
-        System.out.println("RSV " + KDJ[0][close.size() - 1]);
-        System.out.println("K   " + KDJ[1][close.size() - 1]);
-        System.out.println("D   " + KDJ[2][close.size() - 1]);
-        System.out.println("J   " + KDJ[3][close.size() - 1]);
+        double[][] newKDJ = ins.KDJ(Doubles.toArray(close), Doubles.toArray(low), Doubles.toArray(high), 9, 3, 3);
+        System.out.println("K   " + newKDJ[0][close.size() - 1]);
+        System.out.println("D   " + newKDJ[1][close.size() - 1]);
+        System.out.println("J   " + newKDJ[2][close.size() - 1]);
+        System.out.println("RSV " + newKDJ[3][close.size() - 1]);
     }
 }
