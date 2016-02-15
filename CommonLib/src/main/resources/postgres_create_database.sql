@@ -644,3 +644,46 @@ ALTER TABLE ind_ddx
   OWNER TO postgres;
 GRANT ALL ON TABLE ind_ddx TO public;
 GRANT ALL ON TABLE ind_ddx TO postgres;
+
+-- Table: ind_qsdd
+
+-- DROP TABLE ind_qsdd;
+
+CREATE TABLE ind_qsdd
+(
+  stockid text NOT NULL,
+  date text NOT NULL,
+  lonterm numeric,
+  shoterm numeric,
+  midterm numeric,
+  CONSTRAINT ind_qsdd_primary_key PRIMARY KEY (stockid, date)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE ind_qsdd
+  OWNER TO postgres;
+GRANT ALL ON TABLE ind_qsdd TO public;
+GRANT ALL ON TABLE ind_qsdd TO postgres;
+
+
+-- Table: ind_week_qsdd
+
+-- DROP TABLE ind_week_qsdd;
+
+CREATE TABLE ind_week_qsdd
+(
+  stockid text NOT NULL,
+  date text NOT NULL,
+  lonterm numeric,
+  midterm numeric,
+  shoterm numeric,
+  CONSTRAINT ind_week_sdd_primary_key PRIMARY KEY (stockid, date)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE ind_week_qsdd
+  OWNER TO postgres;
+GRANT ALL ON TABLE ind_week_qsdd TO public;
+GRANT ALL ON TABLE ind_week_qsdd TO postgres;

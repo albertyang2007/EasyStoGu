@@ -47,13 +47,18 @@ public class ChuQuanChuXiCheckerRunner implements Runnable {
 	private void checkIfChuQuanChuXiExist(List<String> stockIds) {
 		System.out.println("Run chuQuan for all stocks.");
 		for (String stockId : stockIds) {
+			if (stockId.equals(stockConfig.getSZZSStockIdForDB()) 
+					|| stockId.equals(stockConfig.getSZCZStockIdForDB())
+					|| stockId.equals(stockConfig.getCYBZStockIdForDB())) {
+				continue;
+			}
 			this.checkIfGaoSongZhuanExist(stockId);
 		}
 	}
-	
+
 	public void runForStockIds(List<String> stockIds) {
-        checkIfChuQuanChuXiExist(stockIds);
-    }
+		checkIfChuQuanChuXiExist(stockIds);
+	}
 
 	public void run() {
 		checkIfChuQuanChuXiExist(stockConfig.getAllStockId());

@@ -57,6 +57,8 @@
 	           loadBoll(data.stockId, data.dateFrom, data.dateTo);
             }else if(data.indicator == "macd"){ 
 	           loadMacd(data.stockId, data.dateFrom, data.dateTo);
+            }else if(data.indicator == "qsdd"){ 
+	           loadQSDD(data.stockId, data.dateFrom, data.dateTo);
             }
 	      },
 	      
@@ -71,6 +73,7 @@
                               <option value='luzao'>luzao</option>
                               <option value='macd'>macd</option>
                               <option value='boll'>boll</option>
+                              <option value='qsdd'>qsdd</option>
                               </select>&nbsp;&nbsp;
 
 			                  <label>DateFrom:</label>
