@@ -24,8 +24,8 @@ public class QSDDHelper extends IND {
 
 		qsdd[0] = MA(DIV(MUL(-100, (SUB(HHV(HIGH, 34), CLOSE))), (SUB(HHV(HIGH, 34), LLV(LOW, 34)))), 19);
 		qsdd[1] = DIV(MUL(-100, (SUB(HHV(HIGH, 14), CLOSE))), SUB(HHV(HIGH, 14), LLV(LOW, 14)));
-		// it should use EMA, but I don't know why EMA return NaN, so use MA
-		qsdd[2] = MA(DIV(MUL(-100, (SUB(HHV(HIGH, 34), CLOSE))), SUB(HHV(HIGH, 34), LLV(LOW, 34))), 4);
+		// it should use EMA(d, 4), but I don't know why EMA return NaN, so use MA(MA(d,4),2)
+		qsdd[2] = MA(MA(DIV(MUL(-100, (SUB(HHV(HIGH, 34), CLOSE))), SUB(HHV(HIGH, 34), LLV(LOW, 34))), 4),2);
 
 		// finally add 100
 		qsdd[0] = ADD(qsdd[0], 100.0);
@@ -38,15 +38,15 @@ public class QSDDHelper extends IND {
 	public static void main(String[] args) {
 		StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
 		QSDDHelper ins = new QSDDHelper();
-		String stockId = "999999";
+		String stockId = "399006";
 		List<Double> close = stockPriceTable.getAllClosePrice(stockId);
 		List<Double> low = stockPriceTable.getAllLowPrice(stockId);
 		List<Double> high = stockPriceTable.getAllHighPrice(stockId);
 
 		double[][] qsdd = ins.getQSDDList(Doubles.toArray(close), Doubles.toArray(low), Doubles.toArray(high));
 		System.out.println("长期线=" + (qsdd[0][close.size() - 1]));
-		System.out.println("短期线=" + (qsdd[1][close.size() - 1]));
 		System.out.println("中期线=" + (qsdd[2][close.size() - 1]));
+		System.out.println("短期线=" + (qsdd[1][close.size() - 1]));
 	}
 
 }
