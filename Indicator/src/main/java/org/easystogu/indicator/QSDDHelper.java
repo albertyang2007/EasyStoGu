@@ -26,7 +26,8 @@ public class QSDDHelper extends IND {
         qsdd[0] = MA(tmp, 19);
         qsdd[1] = DIV(MUL(-100, (SUB(HHV(HIGH, 14), CLOSE))), SUB(HHV(HIGH, 14), LLV(LOW, 14)));
         // it should use EMA(d, 4), but I don't know why EMA return NaN, so use MA(MA(d,4),2)
-        qsdd[2] = MA(MA(tmp, 4), 2);
+        //qsdd[2] = EMA(tmp, 4);
+        qsdd[2] = MA(MA(tmp,4),2);
 
         // finally add 100
         qsdd[0] = ADD(qsdd[0], 100.0);
@@ -39,7 +40,7 @@ public class QSDDHelper extends IND {
     public static void main(String[] args) {
         StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
         QSDDHelper ins = new QSDDHelper();
-        String stockId = "399006";
+        String stockId = "999999";
         List<Double> close = stockPriceTable.getAllClosePrice(stockId);
         List<Double> low = stockPriceTable.getAllLowPrice(stockId);
         List<Double> high = stockPriceTable.getAllHighPrice(stockId);

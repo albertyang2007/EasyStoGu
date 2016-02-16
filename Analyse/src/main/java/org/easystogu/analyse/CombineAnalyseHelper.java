@@ -1218,9 +1218,10 @@ public class CombineAnalyseHelper {
         //luzao ma19>ma43 and ma43>ma86
         //shenxian h1<h2
         case Trend_PhaseVI_JianCang: {
-            if ((curSuperDayVO.avgMA19 > curSuperDayVO.avgMA43 && curSuperDayVO.avgMA43 > curSuperDayVO.avgMA86)
-                    || (curSuperDayVO.shenXianVO.h1 < curSuperDayVO.shenXianVO.h2)) {
-                return true;
+            if (curSuperDayVO.avgMA19 > curSuperDayVO.avgMA43 && curSuperDayVO.avgMA43 > curSuperDayVO.avgMA86) {
+                if (curSuperDayVO.shenXianVO.h1 > curSuperDayVO.shenXianVO.h2) {
+                    return true;
+                }
             }
             break;
         }
