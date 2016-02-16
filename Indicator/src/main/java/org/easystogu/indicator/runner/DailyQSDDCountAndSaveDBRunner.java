@@ -64,7 +64,7 @@ public class DailyQSDDCountAndSaveDBRunner implements Runnable {
 		vo.setStockId(stockId);
 		vo.setDate(priceList.get(length - 1).date);
 
-		// System.out.println(vo);
+		//System.out.println(vo);
 		this.deleteQSDD(stockId, vo.date);
 		qsddTable.insert(vo);
 
@@ -89,8 +89,8 @@ public class DailyQSDDCountAndSaveDBRunner implements Runnable {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
-		DailyKDJCountAndSaveDBRunner runner = new DailyKDJCountAndSaveDBRunner();
+		DailyQSDDCountAndSaveDBRunner runner = new DailyQSDDCountAndSaveDBRunner();
 		runner.countAndSaved(stockConfig.getAllStockId());
-		// runner.countAndSaved("999999");
+		//runner.countAndSaved("999999");
 	}
 }
