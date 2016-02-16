@@ -54,8 +54,8 @@ public class DailyScheduler implements SchedulingConfigurer {
 		this.DailyOverAllRunner(isGetZiJinLiu);
 	}
 
-	// run at 15:02
-	@Scheduled(cron = "0 02 15 * * MON-FRI")
+	// run at 15:06
+	@Scheduled(cron = "0 06 15 * * MON-FRI")
 	public void _3_DailyOverAllRunner() {
 		boolean isGetZiJinLiu = true;
 		this.DailyOverAllRunner(isGetZiJinLiu);
