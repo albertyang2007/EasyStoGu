@@ -2,12 +2,15 @@ package org.easystogu.portal;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
+import org.easystogu.db.access.ChuQuanChuXiPriceHelper;
+import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.table.BollVO;
 import org.easystogu.db.table.KDJVO;
 import org.easystogu.db.table.LuZaoVO;
@@ -17,6 +20,7 @@ import org.easystogu.db.table.ShenXianVO;
 import org.easystogu.db.table.StockPriceVO;
 import org.easystogu.indicator.BOLLHelper;
 import org.easystogu.indicator.KDJHelper;
+import org.easystogu.indicator.LuZaoHelper;
 import org.easystogu.indicator.MACDHelper;
 import org.easystogu.indicator.QSDDHelper;
 import org.easystogu.indicator.ShenXianHelper;
@@ -26,12 +30,18 @@ import org.easystogu.utils.Strings;
 import com.google.common.primitives.Doubles;
 
 //V2, query price and count in real time
-public class IndicatorEndPointV2 extends IndicatorEndPoint {
+public class IndicatorEndPointV2 {
+	protected static String HHmmss = "00:00:00";
+	protected StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
 	protected MACDHelper macdHelper = new MACDHelper();
 	protected KDJHelper kdjHelper = new KDJHelper();
 	protected ShenXianHelper shenXianHelper = new ShenXianHelper();
 	protected QSDDHelper qsddHelper = new QSDDHelper();
 	protected BOLLHelper bollHelper = new BOLLHelper();
+	protected LuZaoHelper luzaoHelper = new LuZaoHelper();
+	protected ChuQuanChuXiPriceHelper chuQuanChuXiPriceHelper = new ChuQuanChuXiPriceHelper();
+	protected String dateRegex = "[0-9]{4}-[0-9]{2}-[0-9]{2}";
+	protected String fromToRegex = dateRegex + "_" + dateRegex;
 
 	@GET
 	@Path("/macd/{stockId}/{date}")
@@ -131,7 +141,23 @@ public class IndicatorEndPointV2 extends IndicatorEndPoint {
 	@Path("/luzao/{stockId}/{date}")
 	@Produces("application/json")
 	public List<LuZaoVO> queryLuZaoById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm) {
-		return super.queryLuZaoById(stockIdParm, dateParm);
+		List<LuZaoVO> list = new ArrayList<LuZaoVO>();
+		List<StockPriceVO> spList = this.fetchAllPrices(stockIdParm);
+		List<Double> close = StockPriceFetcher.getClosePrice(spList);
+		double[][] lz = luzaoHelper.getLuZaoList(Doubles.toArray(close));
+		for (int i = 0; i < lz[0].length; i++) {
+			if (this.isStockDateSelected(dateParm, spList.get(i).date)) {
+				LuZaoVO vo = new LuZaoVO();
+				vo.setMa19(Strings.convert2ScaleDecimal(lz[0][i]));
+				vo.setMa43(Strings.convert2ScaleDecimal(lz[1][i]));
+				vo.setMa86(Strings.convert2ScaleDecimal(lz[2][i]));
+				vo.setStockId(stockIdParm);
+				vo.setDate(spList.get(i).date);
+				list.add(vo);
+			}
+		}
+
+		return list;
 	}
 
 	@GET
@@ -157,5 +183,27 @@ public class IndicatorEndPointV2 extends IndicatorEndPoint {
 		}
 
 		return list;
+	}
+
+	// common function to fetch price from stockPrice table
+	// date: xxxx-xx-xx or xxxx-xx-xx_xxxx-xx-xx
+	protected List<StockPriceVO> fetchAllPrices(String stockid) {
+		List<StockPriceVO> spList = null;
+		spList = stockPriceTable.getStockPriceById(stockid);
+		// update price based on chuQuanChuXi event
+		chuQuanChuXiPriceHelper.updatePrice(stockid, spList);
+		return spList;
+	}
+
+	protected boolean isStockDateSelected(String date, String aDate) {
+		if (Pattern.matches(fromToRegex, date)) {
+			String date1 = date.split("_")[0];
+			String date2 = date.split("_")[1];
+			return Strings.isDateSelected(date1 + " " + HHmmss, date2 + " " + HHmmss, aDate + " " + HHmmss);
+		}
+		if (Pattern.matches(dateRegex, date) || Strings.isEmpty(date)) {
+			return aDate.equals(date);
+		}
+		return false;
 	}
 }
