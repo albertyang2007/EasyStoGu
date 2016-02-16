@@ -8,7 +8,7 @@ import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.table.BollVO;
 import org.easystogu.db.table.StockPriceVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
-import org.easystogu.indicator.TALIBWraper;
+import org.easystogu.indicator.BOLLHelper;
 import org.easystogu.utils.Strings;
 
 //计算数据库中所有boll值，包括最新和历史的，一次性运行
@@ -16,7 +16,7 @@ public class HistoryBollCountAndSaveDBRunner {
 
 	protected IndBollTableHelper bollTable = IndBollTableHelper.getInstance();
 	protected StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
-	private TALIBWraper talib = new TALIBWraper();
+	private BOLLHelper bollHelper = new BOLLHelper();
 	protected ChuQuanChuXiPriceHelper chuQuanChuXiPriceHelper = new ChuQuanChuXiPriceHelper();
 
 	public void countAndSaved(String stockId) {
@@ -40,7 +40,7 @@ public class HistoryBollCountAndSaveDBRunner {
 				close[index++] = vo.close;
 			}
 
-			double[][] boll = talib.getBbands(close, 20, 2, 2);
+			double[][] boll = bollHelper.getBOLLList(close, 20, 2, 2);
 
 			for (index = priceList.size() - 1; index >= 0; index--) {
 				double up = Strings.convert2ScaleDecimal(boll[0][index]);

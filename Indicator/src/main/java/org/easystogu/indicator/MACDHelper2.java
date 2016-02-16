@@ -9,7 +9,7 @@ public class MACDHelper2 {
 
 	public static void main(String[] args) {
 		StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
-		List<StockPriceVO> list = stockPriceTable.getStockPriceById("002194");
+		List<StockPriceVO> list = stockPriceTable.getStockPriceById("002673");
 		TALIBWraper talib = new TALIBWraper();
 
 		// list is order by date

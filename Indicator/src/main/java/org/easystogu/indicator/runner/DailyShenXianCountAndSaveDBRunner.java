@@ -13,6 +13,8 @@ import org.easystogu.indicator.runner.utils.StockPriceFetcher;
 import org.easystogu.multirunner.MultThreadRunner;
 import org.easystogu.utils.Strings;
 
+import com.google.common.primitives.Doubles;
+
 public class DailyShenXianCountAndSaveDBRunner implements Runnable {
 	protected StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
 	protected IndShenXianTableHelper shenXianTable = IndShenXianTableHelper.getInstance();
@@ -60,7 +62,7 @@ public class DailyShenXianCountAndSaveDBRunner implements Runnable {
 
 		List<Double> close = StockPriceFetcher.getClosePrice(priceList);
 
-		double[][] shenXian = shenXianHelper.getShenXianList(close.toArray(new Double[0]));
+		double[][] shenXian = shenXianHelper.getShenXianList(Doubles.toArray(close));
 
 		int length = shenXian[0].length;
 

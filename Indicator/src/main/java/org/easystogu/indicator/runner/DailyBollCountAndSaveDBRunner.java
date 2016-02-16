@@ -9,7 +9,7 @@ import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.table.BollVO;
 import org.easystogu.db.table.StockPriceVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
-import org.easystogu.indicator.TALIBWraper;
+import org.easystogu.indicator.BOLLHelper;
 import org.easystogu.multirunner.MultThreadRunner;
 import org.easystogu.utils.Strings;
 
@@ -17,7 +17,7 @@ import org.easystogu.utils.Strings;
 public class DailyBollCountAndSaveDBRunner implements Runnable {
 	protected IndBollTableHelper bollTable = IndBollTableHelper.getInstance();
 	protected StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
-	private TALIBWraper talib = new TALIBWraper();
+	private BOLLHelper bollHelper = new BOLLHelper();
 	protected ChuQuanChuXiPriceHelper chuQuanChuXiPriceHelper = new ChuQuanChuXiPriceHelper();
 	protected CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 	protected MultThreadRunner parentRunner;
@@ -60,7 +60,7 @@ public class DailyBollCountAndSaveDBRunner implements Runnable {
 			close[index++] = vo.close;
 		}
 
-		double[][] boll = talib.getBbands(close, 20, 2, 2);
+		double[][] boll = bollHelper.getBOLLList(close, 20, 2, 2);
 
 		index = priceList.size() - 1;
 		double up = Strings.convert2ScaleDecimal(boll[0][index]);

@@ -1,48 +1,22 @@
 package org.easystogu.indicator;
 
-import java.util.ArrayList;
-import java.util.List;
 
-import org.easystogu.db.table.LuZaoVO;
-import org.easystogu.db.table.StockPriceVO;
-import org.easystogu.utils.Strings;
+/*
+ {鲁兆大趋势}
+ MA19:MA(CLOSE, 19);
+ MA43:EMA(MA19, 43);
+ MA86:MA(CLOSE, 86);
+ */
+public class LuZaoHelper extends IND {
+	public double[][] getLuZaoList(double[] CLOSE) {
+		int length = CLOSE.length;
+		double[][] lz = new double[3][length];
 
-public class LuZaoHelper {
-	public static List<LuZaoVO> countAvgMA(List<StockPriceVO> spList) {
-		List<LuZaoVO> list = new ArrayList<LuZaoVO>();
-		if (spList == null || spList.size() == 0)
-			return list;
+		lz[0] = MA(CLOSE, 19);
+		lz[1] = MA(CLOSE, 43);
+		lz[2] = MA(CLOSE, 86);
 
-		for (int index = spList.size() - 1; index > 0; index--) {
-			StockPriceVO spvo = spList.get(index);
-			LuZaoVO lzvo = new LuZaoVO();
-			lzvo.stockId = spvo.stockId;
-			lzvo.name = spvo.name;
-			lzvo.date = spvo.date;
-
-			if (((index - 18) >= 0) && ((index + 1) <= spList.size())) {
-				lzvo.ma19 = avgClosePrice(spList.subList(index - 18, index + 1));
-			}
-			if (((index - 42) >= 0) && ((index + 1) <= spList.size())) {
-				lzvo.ma43 = avgClosePrice(spList.subList(index - 42, index + 1));
-			}
-			if (((index - 85) >= 0) && ((index + 1) <= spList.size())) {
-				lzvo.ma86 = avgClosePrice(spList.subList(index - 85, index + 1));
-			}
-			list.add(lzvo);
-		}
-		return list;
-	}
-
-	public static double avgClosePrice(List<StockPriceVO> subList) {
-		double avg = 0.0;
-		for (StockPriceVO vo : subList) {
-			avg += vo.close;
-		}
-		if (subList.size() > 0) {
-			return Strings.convert2ScaleDecimal(avg / subList.size());
-		}
-		return 0.0;
+		return lz;
 	}
 
 	public static void main(String[] args) {

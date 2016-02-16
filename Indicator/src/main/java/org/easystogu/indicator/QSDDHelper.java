@@ -30,9 +30,9 @@ public class QSDDHelper extends IND {
         qsdd[2] = MA(MA(tmp,4),2);
 
         // finally add 100
-        qsdd[0] = ADD(qsdd[0], 100.0);
-        qsdd[1] = ADD(qsdd[1], 100.0);
-        qsdd[2] = ADD(qsdd[2], 100.0);
+        qsdd[0] = ADD(qsdd[0], 100.0);//longTerm
+        qsdd[1] = ADD(qsdd[1], 100.0);//shortTerm
+        qsdd[2] = ADD(qsdd[2], 100.0);//midTerm
 
         return qsdd;
     }

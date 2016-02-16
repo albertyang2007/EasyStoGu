@@ -12,6 +12,8 @@ import org.easystogu.indicator.ShenXianHelper;
 import org.easystogu.indicator.runner.utils.StockPriceFetcher;
 import org.easystogu.utils.Strings;
 
+import com.google.common.primitives.Doubles;
+
 public class HistoryShenXianCountAndSaveDBRunner {
 
 	protected StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
@@ -44,7 +46,7 @@ public class HistoryShenXianCountAndSaveDBRunner {
 
 		List<Double> close = StockPriceFetcher.getClosePrice(priceList);
 
-		double[][] shenXian = shenXianHelper.getShenXianList(close.toArray(new Double[0]));
+		double[][] shenXian = shenXianHelper.getShenXianList(Doubles.toArray(close));
 
 		for (int i = 0; i < shenXian[0].length; i++) {
 			ShenXianVO vo = new ShenXianVO();

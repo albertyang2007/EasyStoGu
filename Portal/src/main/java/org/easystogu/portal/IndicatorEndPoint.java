@@ -1,7 +1,6 @@
 package org.easystogu.portal;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -25,23 +24,25 @@ import org.easystogu.db.table.QSDDVO;
 import org.easystogu.db.table.ShenXianVO;
 import org.easystogu.db.table.StockPriceVO;
 import org.easystogu.indicator.LuZaoHelper;
-import org.easystogu.indicator.ShenXianHelper;
 import org.easystogu.indicator.runner.utils.StockPriceFetcher;
 import org.easystogu.utils.Strings;
 
+import com.google.common.primitives.Doubles;
+
+//V1, query indicator from DB
 public class IndicatorEndPoint {
-	private static String HHmmss = "00:00:00";
-	private StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
+	protected static String HHmmss = "00:00:00";
+	protected StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
 	protected IndKDJTableHelper kdjTable = IndKDJTableHelper.getInstance();
 	protected IndMacdTableHelper macdTable = IndMacdTableHelper.getInstance();
 	protected IndBollTableHelper bollTable = IndBollTableHelper.getInstance();
 	protected IndQSDDTableHelper qsddTable = IndQSDDTableHelper.getInstance();
 	protected IndShenXianTableHelper shenXianTable = IndShenXianTableHelper.getInstance();
 	protected ChuQuanChuXiPriceHelper chuQuanChuXiPriceHelper = new ChuQuanChuXiPriceHelper();
-	protected ShenXianHelper shenXianHelper = new ShenXianHelper();
+	protected LuZaoHelper luzaoHelper = new LuZaoHelper();
 
-	private String dateRegex = "[0-9]{4}-[0-9]{2}-[0-9]{2}";
-	private String fromToRegex = dateRegex + "_" + dateRegex;
+	protected String dateRegex = "[0-9]{4}-[0-9]{2}-[0-9]{2}";
+	protected String fromToRegex = dateRegex + "_" + dateRegex;
 
 	@GET
 	@Path("/macd/{stockId}/{date}")
@@ -113,22 +114,20 @@ public class IndicatorEndPoint {
 		return new ArrayList<ShenXianVO>();
 	}
 
-	// fetch price from db and count ind on real time
 	@GET
-	@Path("/shenxian2/{stockId}/{date}")
+	@Path("/luzao/{stockId}/{date}")
 	@Produces("application/json")
-	public List<ShenXianVO> queryShenXian2ById(@PathParam("stockId") String stockIdParm,
-			@PathParam("date") String dateParm) {
-		List<ShenXianVO> list = new ArrayList<ShenXianVO>();
+	public List<LuZaoVO> queryLuZaoById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm) {
+		List<LuZaoVO> list = new ArrayList<LuZaoVO>();
 		List<StockPriceVO> spList = this.fetchAllPrices(stockIdParm);
 		List<Double> close = StockPriceFetcher.getClosePrice(spList);
-		double[][] shenXian = shenXianHelper.getShenXianList(close.toArray(new Double[0]));
-		for (int i = 0; i < shenXian[0].length; i++) {
+		double[][] lz = luzaoHelper.getLuZaoList(Doubles.toArray(close));
+		for (int i = 0; i < lz[0].length; i++) {
 			if (this.isStockDateSelected(dateParm, spList.get(i).date)) {
-				ShenXianVO vo = new ShenXianVO();
-				vo.setH1(Strings.convert2ScaleDecimal(shenXian[0][i]));
-				vo.setH2(Strings.convert2ScaleDecimal(shenXian[1][i]));
-				vo.setH3(Strings.convert2ScaleDecimal(shenXian[2][i]));
+				LuZaoVO vo = new LuZaoVO();
+				vo.setMa19(Strings.convert2ScaleDecimal(lz[0][i]));
+				vo.setMa43(Strings.convert2ScaleDecimal(lz[1][i]));
+				vo.setMa86(Strings.convert2ScaleDecimal(lz[2][i]));
 				vo.setStockId(stockIdParm);
 				vo.setDate(spList.get(i).date);
 				list.add(vo);
@@ -136,22 +135,6 @@ public class IndicatorEndPoint {
 		}
 
 		return list;
-	}
-
-	@GET
-	@Path("/luzao/{stockId}/{date}")
-	@Produces("application/json")
-	public List<LuZaoVO> queryLuZaoById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm) {
-		List<StockPriceVO> spList = this.fetchAllPrices(stockIdParm);
-		List<LuZaoVO> list = LuZaoHelper.countAvgMA(spList);
-		List<LuZaoVO> subList = new ArrayList<LuZaoVO>();
-		for (LuZaoVO vo : list) {
-			if (this.isStockDateSelected(dateParm, vo.date)) {
-				subList.add(vo);
-			}
-		}
-		Collections.reverse(subList);
-		return subList;
 	}
 
 	@GET
@@ -173,7 +156,7 @@ public class IndicatorEndPoint {
 
 	// common function to fetch price from stockPrice table
 	// date: xxxx-xx-xx or xxxx-xx-xx_xxxx-xx-xx
-	private List<StockPriceVO> fetchAllPrices(String stockid) {
+	protected List<StockPriceVO> fetchAllPrices(String stockid) {
 		List<StockPriceVO> spList = null;
 		spList = stockPriceTable.getStockPriceById(stockid);
 		// update price based on chuQuanChuXi event
@@ -181,7 +164,7 @@ public class IndicatorEndPoint {
 		return spList;
 	}
 
-	private boolean isStockDateSelected(String date, String aDate) {
+	protected boolean isStockDateSelected(String date, String aDate) {
 		if (Pattern.matches(fromToRegex, date)) {
 			String date1 = date.split("_")[0];
 			String date2 = date.split("_")[1];

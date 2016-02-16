@@ -32,9 +32,12 @@ function loadCompanyInfoByName(name) {
  * 
  * @returns {undefined}
  */
-function loadShenXian(stockId, dateFrom, dateTo) {
+function loadShenXian(version, stockId, dateFrom, dateTo) {
 	var seriesCounter = 0, date_price = [], volume = [], data_h1 = [], data_h2 = [], data_h3 = [];
-
+    var v = "1";
+    if(version == 'v2'){
+    	v = "2";
+    }
 	/**
 	 * Create the chart when all data is loaded
 	 * 
@@ -126,7 +129,7 @@ function loadShenXian(stockId, dateFrom, dateTo) {
 	 * 
 	 * @returns {undefined}
 	 */
-	var url_ind = "http://localhost:8080/portal/ind/shenxian/" + stockId + "/"
+	var url_ind = "http://localhost:8080/portal/ind" + v + "/shenxian/" + stockId + "/"
 			+ dateFrom + "_" + dateTo;
 	$.getJSON(url_ind, function(data) {
 		i = 0;
@@ -152,9 +155,12 @@ function loadShenXian(stockId, dateFrom, dateTo) {
  * 
  * @returns {undefined}
  */
-function loadLuZao(stockId, dateFrom, dateTo) {
+function loadLuZao(version, stockId, dateFrom, dateTo) {
 	var seriesCounter = 0, date_price = [], volume = [], data_ma19 = [], data_ma43 = [], data_ma86 = [];
-
+    var v = "1";
+    if(version == 'v2'){
+    	v = "2";
+    }
 	/**
 	 * Create the chart when all data is loaded
 	 * 
@@ -246,7 +252,7 @@ function loadLuZao(stockId, dateFrom, dateTo) {
 	 * 
 	 * @returns {undefined}
 	 */
-	var url_ind = "http://localhost:8080/portal/ind/luzao/" + stockId + "/"
+	var url_ind = "http://localhost:8080/portal/ind" + v + "/luzao/" + stockId + "/"
 			+ dateFrom + "_" + dateTo;
 	$.getJSON(url_ind, function(data) {
 		i = 0;
@@ -272,9 +278,12 @@ function loadLuZao(stockId, dateFrom, dateTo) {
  * 
  * @returns {undefined}
  */
-function loadBoll(stockId, dateFrom, dateTo) {
+function loadBoll(version, stockId, dateFrom, dateTo) {
 	var seriesCounter = 0, date_price = [], volume = [], data_mb = [], data_up = [], data_dn = [];
-
+    var v = "1";
+    if(version == 'v2'){
+    	v = "2";
+    }
 	/**
 	 * Create the chart when all data is loaded
 	 * 
@@ -366,7 +375,7 @@ function loadBoll(stockId, dateFrom, dateTo) {
 	 * 
 	 * @returns {undefined}
 	 */
-	var url_ind = "http://localhost:8080/portal/ind/boll/" + stockId + "/"
+	var url_ind = "http://localhost:8080/portal/ind" + v + "/boll/" + stockId + "/"
 			+ dateFrom + "_" + dateTo;
 	$.getJSON(url_ind, function(data) {
 		i = 0;
@@ -392,9 +401,12 @@ function loadBoll(stockId, dateFrom, dateTo) {
  * 
  * @returns {undefined}
  */
-function loadMacd(stockId, dateFrom, dateTo) {
+function loadMacd(version, stockId, dateFrom, dateTo) {
 	var seriesCounter = 0, date_price = [], volume = [], data_dif = [], data_dea = [], data_macd = [];
-
+    var v = "1";
+    if(version == 'v2'){
+    	v = "2";
+    }
 	/**
 	 * Create the chart when all data is loaded
 	 * 
@@ -484,7 +496,7 @@ function loadMacd(stockId, dateFrom, dateTo) {
 	 * 
 	 * @returns {undefined}
 	 */
-	var url_ind = "http://localhost:8080/portal/ind/macd/" + stockId + "/"
+	var url_ind = "http://localhost:8080/portal/ind" + v + "/macd/" + stockId + "/"
 			+ dateFrom + "_" + dateTo;
 	$.getJSON(url_ind, function(data) {
 		i = 0;
@@ -510,9 +522,12 @@ function loadMacd(stockId, dateFrom, dateTo) {
  * 
  * @returns {undefined}
  */
-function loadQSDD(stockId, dateFrom, dateTo) {
+function loadQSDD(version, stockId, dateFrom, dateTo) {
 	var seriesCounter = 0, date_price = [], volume = [], data_lonTerm = [], data_midTerm = [], data_shoTerm = [];
-
+    var v = "1";
+    if(version == 'v2'){
+    	v = "2";
+    }
 	/**
 	 * Create the chart when all data is loaded
 	 * 
@@ -602,7 +617,7 @@ function loadQSDD(stockId, dateFrom, dateTo) {
 	 * 
 	 * @returns {undefined}
 	 */
-	var url_ind = "http://localhost:8080/portal/ind/qsdd/" + stockId + "/"
+	var url_ind = "http://localhost:8080/portal/ind" + v + "/qsdd/" + stockId + "/"
 			+ dateFrom + "_" + dateTo;
 	$.getJSON(url_ind, function(data) {
 		i = 0;

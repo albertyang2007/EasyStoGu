@@ -8,7 +8,7 @@ import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.table.MacdVO;
 import org.easystogu.db.table.StockPriceVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
-import org.easystogu.indicator.TALIBWraper;
+import org.easystogu.indicator.MACDHelper;
 import org.easystogu.multirunner.MultThreadRunner;
 import org.easystogu.utils.Strings;
 
@@ -16,7 +16,7 @@ import org.easystogu.utils.Strings;
 public class DailyMacdCountAndSaveDBRunner implements Runnable {
 	protected IndMacdTableHelper macdTable = IndMacdTableHelper.getInstance();
 	protected StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
-	protected TALIBWraper talib = new TALIBWraper();
+	protected MACDHelper macdHelper = new MACDHelper();
 	protected ChuQuanChuXiPriceHelper chuQuanChuXiPriceHelper = new ChuQuanChuXiPriceHelper();
 	protected CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 	protected MultThreadRunner parentRunner;
@@ -59,12 +59,12 @@ public class DailyMacdCountAndSaveDBRunner implements Runnable {
 			close[index++] = vo.close;
 		}
 
-		double[][] macd = talib.getMacdExt(close, 12, 26, 9);
+		double[][] macd = macdHelper.getMACDList(close);
 
 		index = priceList.size() - 1;
 		double dif = macd[0][index];
 		double dea = macd[1][index];
-		double macdRtn = (dif - dea) * 2;
+		double macdRtn = macd[2][index];
 		// System.out.println("date=" + list.get(index).date);
 		// System.out.println("DIF=" + dif);
 		// System.out.println("DEA=" + dea);
@@ -77,7 +77,7 @@ public class DailyMacdCountAndSaveDBRunner implements Runnable {
 		vo.setDea(Strings.convert2ScaleDecimal(dea));
 		vo.setMacd(Strings.convert2ScaleDecimal(macdRtn));
 
-		//System.out.println(vo);
+		// System.out.println(vo);
 		this.deleteMacd(stockId, vo.date);
 		macdTable.insert(vo);
 
@@ -104,6 +104,6 @@ public class DailyMacdCountAndSaveDBRunner implements Runnable {
 		CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 		DailyMacdCountAndSaveDBRunner runner = new DailyMacdCountAndSaveDBRunner();
 		runner.countAndSaved(stockConfig.getAllStockId());
-		//runner.countAndSaved("999999");
+		// runner.countAndSaved("999999");
 	}
 }

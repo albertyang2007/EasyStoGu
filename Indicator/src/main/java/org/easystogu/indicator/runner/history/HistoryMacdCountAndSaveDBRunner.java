@@ -8,7 +8,7 @@ import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.table.MacdVO;
 import org.easystogu.db.table.StockPriceVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
-import org.easystogu.indicator.TALIBWraper;
+import org.easystogu.indicator.MACDHelper;
 import org.easystogu.utils.Strings;
 
 //计算数据库中所有macd值，包括最新和历史的，一次性运行
@@ -16,7 +16,7 @@ public class HistoryMacdCountAndSaveDBRunner {
 
 	protected IndMacdTableHelper macdTable = IndMacdTableHelper.getInstance();
 	protected StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
-	private TALIBWraper talib = new TALIBWraper();
+	protected MACDHelper macdHelper = new MACDHelper();
 	protected ChuQuanChuXiPriceHelper chuQuanChuXiPriceHelper = new ChuQuanChuXiPriceHelper();
 
 	public void deleteMacd(String stockId) {
@@ -52,12 +52,12 @@ public class HistoryMacdCountAndSaveDBRunner {
 				close[index++] = vo.close;
 			}
 
-			double[][] macd = talib.getMacdExt(close, 12, 26, 9);
+			double[][] macd = macdHelper.getMACDList(close);
 
 			for (index = priceList.size() - 1; index >= 0; index--) {
 				double dif = macd[0][index];
 				double dea = macd[1][index];
-				double macdRtn = (dif - dea) * 2;
+				double macdRtn = macd[2][index];
 				// System.out.println("DIF=" + dif);
 				// System.out.println("DEA=" + dea);
 				// System.out.println("MACD=" + macdRtn);
