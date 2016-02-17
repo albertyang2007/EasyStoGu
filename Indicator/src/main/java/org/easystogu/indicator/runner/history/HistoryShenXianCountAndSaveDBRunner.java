@@ -36,8 +36,8 @@ public class HistoryShenXianCountAndSaveDBRunner {
 	public void countAndSaved(String stockId) {
 		List<StockPriceVO> priceList = stockPriceTable.getStockPriceById(stockId);
 
-		if (priceList.size() <= 108) {
-			System.out.println("StockPrice data is less than 108, skip " + stockId);
+		if (priceList.size() <= 18) {
+			System.out.println("StockPrice data is less than 18, skip " + stockId);
 			return;
 		}
 

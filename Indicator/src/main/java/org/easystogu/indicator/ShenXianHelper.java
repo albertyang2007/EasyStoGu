@@ -13,29 +13,30 @@ import com.google.common.primitives.Doubles;
 // STICKLINE(神仙大趋势H1>H2,神仙大趋势H1,H2,1,1),COLORRED;
 // STICKLINE(神仙大趋势H1<H2,神仙大趋势H1,H2,1,1),COLORBLUE;
 public class ShenXianHelper extends IND {
-	public double[][] getShenXianList(double[] close) {
-		int length = close.length;
-		double[][] shenXian = new double[3][length];
+    public double[][] getShenXianList(double[] close) {
+        int length = close.length;
+        double[][] shenXian = new double[3][length];
 
-		shenXian[0] = EMA(close, 6);
-		shenXian[1] = EMA(shenXian[0], 18);
-		shenXian[2] = EMA(close, 108);
-		
-		return shenXian;
-	}
+        int len108 = (close.length < 108) ? close.length : 108;
+        shenXian[0] = EMA(close, 6);
+        shenXian[1] = EMA(shenXian[0], 18);
+        shenXian[2] = EMA(close, len108);
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
-		ShenXianHelper ins = new ShenXianHelper();
+        return shenXian;
+    }
 
-		String stockId = "999999";
-		List<Double> close = stockPriceTable.getAllClosePrice(stockId);
+    public static void main(String[] args) {
+        // TODO Auto-generated method stub
+        StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
+        ShenXianHelper ins = new ShenXianHelper();
 
-		double[][] sx = ins.getShenXianList(Doubles.toArray(close));
-		System.out.println("H1=" + (sx[0][close.size() - 1]));
-		System.out.println("H2=" + (sx[1][close.size() - 1]));
-		System.out.println("H3=" + (sx[2][close.size() - 1]));
-	}
+        String stockId = "999999";
+        List<Double> close = stockPriceTable.getAllClosePrice(stockId);
+
+        double[][] sx = ins.getShenXianList(Doubles.toArray(close));
+        System.out.println("H1=" + (sx[0][close.size() - 1]));
+        System.out.println("H2=" + (sx[1][close.size() - 1]));
+        System.out.println("H3=" + (sx[2][close.size() - 1]));
+    }
 
 }
