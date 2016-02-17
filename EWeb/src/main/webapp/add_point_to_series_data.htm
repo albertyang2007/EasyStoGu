@@ -1,0 +1,38 @@
+﻿<!DOCTYPE HTML>
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <script type="text/javascript" src="js/reactjs_0.13.0/JSXTransformer.js"></script>
+      <script type="text/javascript" src="js/reactjs_0.13.0/react.js"></script>
+      <script type="text/javascript" src="js/jquery_1.8.2/jquery.min.js"></script>
+      <script type="text/javascript" src="js/easystogu/loadStockData.js"></script>
+      <style type="text/css">
+        ${demo.css}
+	  </style>
+   </head>
+   <body>
+      <script type="text/jsx">
+      
+	      $(function () {
+			    $('#container').highcharts({
+			        series: [{
+			            data: [29.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4]
+			        }]
+			    });
+			
+			
+			    // the button action
+			    var i = 0;
+			    $('#button').click(function () {
+			        var chart = $('#container').highcharts();
+			        chart.series[0].addPoint(50 * (i % 3), true, true);
+			        i += 1;
+			    });
+			});
+      </script>
+			<script src="https://code.highcharts.com/highcharts.js"></script>
+			
+			<div id="container" style="height: 400px"></div>
+			<button id="button" class="autocompare">Add point</button> 
+   </body>
+</html>
