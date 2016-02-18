@@ -48,7 +48,7 @@
 			    var dateD = new Date(Date.parse(dateStr.replace(/-/g, "/")));
 			    date_price.push([ dateD.getTime(), data.date_01_open, data.date_01_high, data.date_01_low, data.date_01_close ]);
 
-			        var chart = $('#container').highcharts();
+			        var chart = $('#container').highcharts('StockChart');
 			        chart.series[0].addPoint(date_price, true, true);
 			        i += 1;
 			        					
