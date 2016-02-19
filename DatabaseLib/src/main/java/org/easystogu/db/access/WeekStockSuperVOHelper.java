@@ -35,7 +35,8 @@ public class WeekStockSuperVOHelper extends StockSuperVOHelper {
         //List<YiMengBSVO> yiMengBSList = yiMengBSTable.getNDateYiMengBS(stockId, day);
         List<ShenXianVO> shenXianList = shenXianTable.getNDateShenXian(stockId, day);
 
-        if ((spList.size() != day) || (macdList.size() != day) || (kdjList.size() != day) || (bollList.size() != day)) {
+        if ((spList.size() != day) || (macdList.size() != day) || (kdjList.size() != day) || (bollList.size() != day)
+                || (shenXianList.size() != day)) {
             return overList;
         }
 
@@ -75,39 +76,6 @@ public class WeekStockSuperVOHelper extends StockSuperVOHelper {
         //List<YiMengBSVO> yiMengBSList = yiMengBSTable.getAllYiMengBS(stockId);
         List<ShenXianVO> shenXianList = shenXianTable.getAllShenXian(stockId);
 
-        /*
-         * for (int index = 0; index < spList.size(); index++) {
-         * StockPriceVO spVO = spList.get(index);
-         * 
-         * MacdVO macdVO = macdTable.getMacd(stockId, spVO.date); if
-         * (macdVO == null) { //System.out.println(stockId +
-         * " missing week macd at " + spVO.date); return overList; }
-         * KDJVO kdjVO = kdjTable.getKDJ(stockId, spVO.date); if
-         * (kdjVO == null) { //System.out.println(stockId +
-         * " missing week kdj at " + spVO.date); return overList; }
-         * BollVO bollVO = bollTable.getBoll(stockId, spVO.date); if
-         * (bollVO == null) { //System.out.println(stockId +
-         * " missing week boll at " + spVO.date); return overList; }
-         * Mai1Mai2VO mai1mai2VO = mai1mai2Table.getMai1Mai2(stockId,
-         * spVO.date); if (mai1mai2VO == null) {
-         * //System.out.println(stockId + " missing week mai1mai2 at "
-         * + spVO.date); return overList; }
-         * 
-         * ShenXianVO shenXianVO = shenXianTable.getShenXian(stockId,
-         * spVO.date); if (shenXianVO == null) {
-         * //System.out.println(stockId + " missing week shenXian at "
-         * + spVO.date); return overList; }
-         * 
-         * YiMengBSVO yiMengBSVO = yiMengBSTable.getYiMengBS(stockId,
-         * spVO.date); if (yiMengBSVO == null) {
-         * //System.out.println(stockId + " missing week yiMengBS at "
-         * + spVO.date); return overList; }
-         * 
-         * // StockSuperVO superVO = new StockSuperVO(spVO, macdVO,
-         * kdjVO, bollVO); superVO.setMai1Mai2VO(mai1mai2VO);
-         * superVO.setShenXianVO(shenXianVO);
-         * superVO.setYiMengBSVO(yiMengBSVO); overList.add(superVO); }
-         */
 
         if ((spList.size() != macdList.size()) || (spList.size() != kdjList.size())
                 || (spList.size() != bollList.size()) || (spList.size() != shenXianList.size())) {
