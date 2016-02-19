@@ -55,6 +55,17 @@
 			<bean class="com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider" />
 		</jaxrs:providers>
 	</jaxrs:server>
+	
+	<bean id="portalServiceIndicatorEndPointV3" class="org.easystogu.portal.IndicatorEndPointV3">
+	</bean>
+	<jaxrs:server id="cxfrsservice_IndicatorEndPointV3" address="/ind3">
+		<jaxrs:serviceBeans>
+			<ref bean="portalServiceIndicatorEndPointV3" />
+		</jaxrs:serviceBeans>
+		<jaxrs:providers>
+			<bean class="com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider" />
+		</jaxrs:providers>
+	</jaxrs:server>	
 
 	<bean id="portalServiceCompanyInfoEndPoint" class="org.easystogu.portal.CompanyInfoEndPoint">
 	</bean>

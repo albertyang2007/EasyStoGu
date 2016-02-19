@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -26,11 +26,14 @@ import org.easystogu.indicator.QSDDHelper;
 import org.easystogu.indicator.ShenXianHelper;
 import org.easystogu.indicator.runner.utils.StockPriceFetcher;
 import org.easystogu.utils.Strings;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import com.google.common.primitives.Doubles;
 
-//V2, query price and count in real time
-public class IndicatorEndPointV2 {
+//V3, with forecast data, query price and count in real time
+public class IndicatorEndPointV3 {
 	protected static String HHmmss = "00:00:00";
 	protected StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
 	protected MACDHelper macdHelper = new MACDHelper();
@@ -43,10 +46,11 @@ public class IndicatorEndPointV2 {
 	protected String dateRegex = "[0-9]{4}-[0-9]{2}-[0-9]{2}";
 	protected String fromToRegex = dateRegex + "_" + dateRegex;
 
-	@GET
+	@POST
 	@Path("/macd/{stockId}/{date}")
 	@Produces("application/json")
-	public List<MacdVO> queryMACDById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm) {
+	public List<MacdVO> queryMACDById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
+			String postBody) {
 		List<MacdVO> list = new ArrayList<MacdVO>();
 		List<StockPriceVO> spList = this.fetchAllPrices(stockIdParm);
 		List<Double> close = StockPriceFetcher.getClosePrice(spList);
@@ -65,10 +69,11 @@ public class IndicatorEndPointV2 {
 		return list;
 	}
 
-	@GET
+	@POST
 	@Path("/kdj/{stockId}/{date}")
 	@Produces("application/json")
-	public List<KDJVO> queryKDJById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm) {
+	public List<KDJVO> queryKDJById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
+			String postBody) {
 		List<KDJVO> list = new ArrayList<KDJVO>();
 		List<StockPriceVO> spList = this.fetchAllPrices(stockIdParm);
 		List<Double> close = StockPriceFetcher.getClosePrice(spList);
@@ -90,10 +95,11 @@ public class IndicatorEndPointV2 {
 		return list;
 	}
 
-	@GET
+	@POST
 	@Path("/boll/{stockId}/{date}")
 	@Produces("application/json")
-	public List<BollVO> queryBollById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm) {
+	public List<BollVO> queryBollById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
+			String postBody) {
 		List<BollVO> list = new ArrayList<BollVO>();
 		List<StockPriceVO> spList = this.fetchAllPrices(stockIdParm);
 		List<Double> close = StockPriceFetcher.getClosePrice(spList);
@@ -113,11 +119,11 @@ public class IndicatorEndPointV2 {
 		return list;
 	}
 
-	@GET
+	@POST
 	@Path("/shenxian/{stockId}/{date}")
 	@Produces("application/json")
 	public List<ShenXianVO> queryShenXian2ById(@PathParam("stockId") String stockIdParm,
-			@PathParam("date") String dateParm) {
+			@PathParam("date") String dateParm, String postBody) {
 		List<ShenXianVO> list = new ArrayList<ShenXianVO>();
 		List<StockPriceVO> spList = this.fetchAllPrices(stockIdParm);
 		List<Double> close = StockPriceFetcher.getClosePrice(spList);
@@ -137,12 +143,38 @@ public class IndicatorEndPointV2 {
 		return list;
 	}
 
-	@GET
+	@POST
 	@Path("/luzao/{stockId}/{date}")
 	@Produces("application/json")
-	public List<LuZaoVO> queryLuZaoById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm) {
+	public List<LuZaoVO> queryLuZaoById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
+			String postBody) {
 		List<LuZaoVO> list = new ArrayList<LuZaoVO>();
 		List<StockPriceVO> spList = this.fetchAllPrices(stockIdParm);
+
+		try {
+			// parse the forecast body and add back to spList
+			if (Strings.isNotEmpty(postBody)) {
+				//System.out.println("postBody=\n" + postBody);
+				JSONArray myJsonArray = new JSONArray(postBody);
+				for (int i = 0; i < myJsonArray.length(); i++) {
+					JSONObject jobj = myJsonArray.getJSONObject(i);
+					StockPriceVO vo = new StockPriceVO();
+					vo.setStockId(jobj.getString("stockId"));
+					vo.setDate(jobj.getString("date"));
+					vo.setOpen(Double.parseDouble(jobj.getString("open")));
+					vo.setClose(Double.parseDouble(jobj.getString("close")));
+					vo.setLow(Double.parseDouble(jobj.getString("low")));
+					vo.setHigh(Double.parseDouble(jobj.getString("high")));
+					vo.setVolume(Long.parseLong(jobj.getString("volume")));
+
+					spList.add(vo);
+				}
+			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		List<Double> close = StockPriceFetcher.getClosePrice(spList);
 		double[][] lz = luzaoHelper.getLuZaoList(Doubles.toArray(close));
 		for (int i = 0; i < lz[0].length; i++) {
@@ -160,7 +192,7 @@ public class IndicatorEndPointV2 {
 		return list;
 	}
 
-	@GET
+	@POST
 	@Path("/qsdd/{stockId}/{date}")
 	@Produces("application/json")
 	public List<QSDDVO> queryQSDDById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm) {

@@ -6,6 +6,7 @@
       <script type="text/javascript" src="js/reactjs_0.13.0/react.js"></script>
       <script type="text/javascript" src="js/jquery_1.8.2/jquery.min.js"></script>
       <script type="text/javascript" src="js/easystogu/loadStockData.js"></script>
+      <script type="text/javascript" src="js/easystogu/sendStockData.js"></script>
       <style type="text/css">
         ${demo.css}
 	  </style>
@@ -38,25 +39,30 @@
 	            date_01_open  : this.state.date_01_open,
 	            date_01_low   : this.state.date_01_low,
 	        };
-	        alert(data.date_01_low + "; " + data.date_01_open + "; " + data.date_01_close + "; " + data.date_01_high);
-	        
 	        
 	        // the button action
 			    var i = 0;
 			    var date_price = [];
-			    var dateStr = "2016-02-18 15:00:00";
+			    var date_h1 = [];
+			    var date_h2 = [];
+			    var date_h3 = [];
+			    var date_vol = [];
+			    var dateStr = "2016-02-19 15:00:00";
 			    var dateD = new Date(Date.parse(dateStr.replace(/-/g, "/")));
 			    date_price.push([ dateD.getTime(), data.date_01_open, data.date_01_high, data.date_01_low, data.date_01_close ]);
+			    date_h1.push([ dateD.getTime(), 2601]);
+			    date_h2.push([ dateD.getTime(), 2701]);
+			    date_h3.push([ dateD.getTime(), 2801]);
+			    date_vol.push([ dateD.getTime(), 2601000]);
 
-			        var chart = $('#container').highcharts('StockChart');
-			        chart.series[0].addPoint(date_price, true, true);
-			        i += 1;
-			        					
-			    $('#button').click(function () {
-			        var chart = $('#container').highcharts();
-			        chart.series[0].addPoint(date_price, true, true);
-			        i += 1;
-			    });
+			    //var chart = $('#container').highcharts();
+			    //chart.series[0].addPoint(date_price[0], true, true);
+			    //chart.series[1].addPoint(date_h1[0], true, true);
+			    //chart.series[2].addPoint(date_h2[0], true, true);
+			    //chart.series[3].addPoint(date_h3[0], true, true);
+			    //chart.series[4].addPoint(date_vol[0], true, true);
+			    
+			    postStockPrice('600652', '2014-10-01', '2016-12-31');
 	      },
 	      
 	      render: function(){
@@ -78,10 +84,7 @@
 	      React.render(<ForecastForm />,
 	      document.getElementById("forecastForm")
 	      );
-      </script>
-      
-      <!--main chart-->
-      <script type="text/jsx">
+
       
 	      var ParmForm = React.createClass({
 	         getInitialState: function() {
@@ -177,7 +180,6 @@
         <div id="forecastForm"></div>
         <div id="containerForm"></div>
         <div id="container" style="height: 600px; min-width: 310px"></div>
-        <button id="button" class="autocompare">Add point</button> 
       </div>  
    </body>
 </html>
