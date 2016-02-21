@@ -14,7 +14,8 @@
    <body>
       <!--add point button-->   
       <script type="text/jsx">
-      
+          var stockId = "999999";
+
 	      var ForecastForm = React.createClass({
 	         getInitialState: function() {
 	         return {
@@ -62,7 +63,7 @@
 			    //chart.series[3].addPoint(date_h3[0], true, true);
 			    //chart.series[4].addPoint(date_vol[0], true, true);
 			    
-			    postStockPrice('600652', '2014-10-01', '2016-12-31');
+			    postStockPrice(stockId, '2014-10-01', '2016-12-31');
 	      },
 	      
 	      render: function(){
@@ -107,11 +108,14 @@
 	         var data = {
 	            stockId : this.state.stockId,
 	            indicator : this.state.indicator,
-              version: this.state.version, 
+                version: this.state.version, 
 	            dateFrom : this.state.dateFrom,
 	            dateTo : this.state.dateTo,
 	        };
-	          // set ajax async to false just to query the stock company info
+	        
+            stockId = data.stockId;
+
+            // set ajax async to false just to query the stock company info
             $.ajaxSettings.async = false;
 
             // convert the stock name to sotckId if input parm is not a stockId

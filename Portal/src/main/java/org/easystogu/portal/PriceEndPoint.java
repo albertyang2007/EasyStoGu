@@ -48,21 +48,22 @@ public class PriceEndPoint {
 	public List<StockPriceVO> queryDayPriceByIdWithForecastPrice(@PathParam("stockId") String stockIdParm,
 			@PathParam("date") String dateParm, String postBody) {
 		List<StockPriceVO> spList = this.fetchAllPrices(stockIdParm);
+		double f = spList.get(spList.size() - 1).close / 20.0;
 		try {
 			// parse the forecast body and add back to spList
 			if (Strings.isNotEmpty(postBody)) {
-				//System.out.println("postBody=\n" + postBody);
+				// System.out.println("postBody=\n" + postBody);
 				JSONArray myJsonArray = new JSONArray(postBody);
 				for (int i = 0; i < myJsonArray.length(); i++) {
 					JSONObject jobj = myJsonArray.getJSONObject(i);
 					StockPriceVO vo = new StockPriceVO();
 					vo.setStockId(jobj.getString("stockId"));
 					vo.setDate(jobj.getString("date"));
-					vo.setOpen(Double.parseDouble(jobj.getString("open")));
-					vo.setClose(Double.parseDouble(jobj.getString("close")));
-					vo.setLow(Double.parseDouble(jobj.getString("low")));
-					vo.setHigh(Double.parseDouble(jobj.getString("high")));
-					vo.setVolume(Long.parseLong(jobj.getString("volume")));
+					vo.setOpen(f * Double.parseDouble(jobj.getString("open")));
+					vo.setClose(f * Double.parseDouble(jobj.getString("close")));
+					vo.setLow(f * Double.parseDouble(jobj.getString("low")));
+					vo.setHigh(f * Double.parseDouble(jobj.getString("high")));
+					vo.setVolume(0);
 
 					spList.add(vo);
 				}

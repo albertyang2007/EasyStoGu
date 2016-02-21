@@ -11,9 +11,12 @@ function postStockPrice(stockId, dateFrom, dateTo) {
 	 * 
 	 * @returns {undefined}
 	 */
-	function createChart() {
-		$('#container').highcharts('StockChart', {
-
+	function createChart() {	
+		$('#container').highcharts('StockChart', {		
+	        
+			chart: {
+	        },
+	        
 			rangeSelector : {
 				selected : 1
 			},
@@ -49,7 +52,19 @@ function postStockPrice(stockId, dateFrom, dateTo) {
 			series : [ {
 				type : 'candlestick',
 				name : 'OHLC',
-				data : date_price
+				data : date_price,
+				events: {
+                    click: function (event) {
+                        alert(this.name + "; dateTime=" + event.point.x + "; category=" + event.point.category + "; chart.series.length=" + chart.series.length);
+                        
+                        for(var i = 0;i < chart.series.length;i++){
+                            if(this.name == chart.series[i].name){
+                              alert(JSON.stringify(chart.series[i].data));
+                            break;
+                            }
+                        }
+                    }
+                }
 			}, {
 				name : 'MA19',
 				data : data_ma19
@@ -66,10 +81,12 @@ function postStockPrice(stockId, dateFrom, dateTo) {
 				yAxis : 1
 			} ]
 		});
+		
+		chart =  $('#container').highcharts();
 	}
 
 	var forecastData = [ {
-		"stockId" : "600652",
+		"stockId" : stockId,
 		"date" : "2016-02-22",
 		"open" : "19.99",
 		"close" : "20.50",
@@ -77,7 +94,7 @@ function postStockPrice(stockId, dateFrom, dateTo) {
 		"high" : "20.80",
 		"volume" : "44000000"
 	}, {
-		"stockId" : "600652",
+		"stockId" : stockId,
 		"date" : "2016-02-23",
 		"open" : "20.80",
 		"close" : "20.70",
@@ -85,7 +102,7 @@ function postStockPrice(stockId, dateFrom, dateTo) {
 		"high" : "21.10",
 		"volume" : "45000000"
 	}, {
-		"stockId" : "600652",
+		"stockId" : stockId,
 		"date" : "2016-02-24",
 		"open" : "20.50",
 		"close" : "21.80",
@@ -93,7 +110,7 @@ function postStockPrice(stockId, dateFrom, dateTo) {
 		"high" : "22.00",
 		"volume" : "46000000"
 	}, {
-		"stockId" : "600652",
+		"stockId" : stockId,
 		"date" : "2016-02-25",
 		"open" : "21.80",
 		"close" : "20.90",
@@ -101,7 +118,7 @@ function postStockPrice(stockId, dateFrom, dateTo) {
 		"high" : "22.20",
 		"volume" : "54000000"
 	}, {
-		"stockId" : "600652",
+		"stockId" : stockId,
 		"date" : "2016-02-26",
 		"open" : "20.70",
 		"close" : "22.00",
@@ -109,7 +126,7 @@ function postStockPrice(stockId, dateFrom, dateTo) {
 		"high" : "22.00",
 		"volume" : "64000000"
 	}, {
-		"stockId" : "600652",
+		"stockId" : stockId,
 		"date" : "2016-02-29",
 		"open" : "22.20",
 		"close" : "22.50",
@@ -117,7 +134,7 @@ function postStockPrice(stockId, dateFrom, dateTo) {
 		"high" : "22.80",
 		"volume" : "84000000"
 	}, {
-		"stockId" : "600652",
+		"stockId" : stockId,
 		"date" : "2016-03-01",
 		"open" : "23.00",
 		"close" : "23.50",
@@ -125,7 +142,7 @@ function postStockPrice(stockId, dateFrom, dateTo) {
 		"high" : "23.99",
 		"volume" : "78000000"
 	}, {
-		"stockId" : "600652",
+		"stockId" : stockId,
 		"date" : "2016-03-02",
 		"open" : "22.90",
 		"close" : "22.00",
@@ -133,7 +150,7 @@ function postStockPrice(stockId, dateFrom, dateTo) {
 		"high" : "23.30",
 		"volume" : "83000000"
 	}, {
-		"stockId" : "600652",
+		"stockId" : stockId,
 		"date" : "2016-03-03",
 		"open" : "22.01",
 		"close" : "21.05",
@@ -141,7 +158,7 @@ function postStockPrice(stockId, dateFrom, dateTo) {
 		"high" : "22.30",
 		"volume" : "74000000"
 	}, {
-		"stockId" : "600652",
+		"stockId" : stockId,
 		"date" : "2016-03-04",
 		"open" : "21.50",
 		"close" : "21.20",
@@ -149,7 +166,7 @@ function postStockPrice(stockId, dateFrom, dateTo) {
 		"high" : "22.00",
 		"volume" : "78000000"
 	}, {
-		"stockId" : "600652",
+		"stockId" : stockId,
 		"date" : "2016-03-07",
 		"open" : "21.20",
 		"close" : "22.50",
@@ -157,7 +174,7 @@ function postStockPrice(stockId, dateFrom, dateTo) {
 		"high" : "22.80",
 		"volume" : "84000000"
 	}, {
-		"stockId" : "600652",
+		"stockId" : stockId,
 		"date" : "2016-03-08",
 		"open" : "22.40",
 		"close" : "23.50",
@@ -165,7 +182,7 @@ function postStockPrice(stockId, dateFrom, dateTo) {
 		"high" : "23.99",
 		"volume" : "78000000"
 	}, {
-		"stockId" : "600652",
+		"stockId" : stockId,
 		"date" : "2016-03-09",
 		"open" : "24.00",
 		"close" : "24.99",
@@ -173,7 +190,7 @@ function postStockPrice(stockId, dateFrom, dateTo) {
 		"high" : "25.10",
 		"volume" : "83000000"
 	}, {
-		"stockId" : "600652",
+		"stockId" : stockId,
 		"date" : "2016-03-10",
 		"open" : "26.60",
 		"close" : "26.70",
@@ -181,7 +198,7 @@ function postStockPrice(stockId, dateFrom, dateTo) {
 		"high" : "27.00",
 		"volume" : "74000000"
 	}, {
-		"stockId" : "600652",
+		"stockId" : stockId,
 		"date" : "2016-03-11",
 		"open" : "26.50",
 		"close" : "26.00",
@@ -189,7 +206,7 @@ function postStockPrice(stockId, dateFrom, dateTo) {
 		"high" : "27.00",
 		"volume" : "78000000"
 	}, {
-		"stockId" : "600652",
+		"stockId" : stockId,
 		"date" : "2016-03-14",
 		"open" : "25.80",
 		"close" : "25.50",
@@ -197,7 +214,7 @@ function postStockPrice(stockId, dateFrom, dateTo) {
 		"high" : "25.99",
 		"volume" : "84000000"
 	}, {
-		"stockId" : "600652",
+		"stockId" : stockId,
 		"date" : "2016-03-15",
 		"open" : "25.99",
 		"close" : "26.99",
@@ -205,7 +222,7 @@ function postStockPrice(stockId, dateFrom, dateTo) {
 		"high" : "27.99",
 		"volume" : "78000000"
 	}, {
-		"stockId" : "600652",
+		"stockId" : stockId,
 		"date" : "2016-03-16",
 		"open" : "27.30",
 		"close" : "26.80",
@@ -213,7 +230,7 @@ function postStockPrice(stockId, dateFrom, dateTo) {
 		"high" : "27.50",
 		"volume" : "83000000"
 	}, {
-		"stockId" : "600652",
+		"stockId" : stockId,
 		"date" : "2016-03-17",
 		"open" : "26.60",
 		"close" : "27.20",
@@ -221,7 +238,7 @@ function postStockPrice(stockId, dateFrom, dateTo) {
 		"high" : "27.99",
 		"volume" : "74000000"
 	}, {
-		"stockId" : "600652",
+		"stockId" : stockId,
 		"date" : "2016-03-18",
 		"open" : "28.50",
 		"close" : "29.00",
@@ -229,7 +246,7 @@ function postStockPrice(stockId, dateFrom, dateTo) {
 		"high" : "30.00",
 		"volume" : "78000000"
 	}, {
-		"stockId" : "600652",
+		"stockId" : stockId,
 		"date" : "2016-03-21",
 		"open" : "30.00",
 		"close" : "29.50",
@@ -237,7 +254,7 @@ function postStockPrice(stockId, dateFrom, dateTo) {
 		"high" : "30.00",
 		"volume" : "84000000"
 	}, {
-		"stockId" : "600652",
+		"stockId" : stockId,
 		"date" : "2016-03-22",
 		"open" : "29.40",
 		"close" : "30.90",
@@ -245,7 +262,7 @@ function postStockPrice(stockId, dateFrom, dateTo) {
 		"high" : "31.00",
 		"volume" : "78000000"
 	}, {
-		"stockId" : "600652",
+		"stockId" : stockId,
 		"date" : "2016-03-23",
 		"open" : "31.30",
 		"close" : "32.90",
@@ -253,7 +270,7 @@ function postStockPrice(stockId, dateFrom, dateTo) {
 		"high" : "33.50",
 		"volume" : "83000000"
 	}, {
-		"stockId" : "600652",
+		"stockId" : stockId,
 		"date" : "2016-03-24",
 		"open" : "33.01",
 		"close" : "34.20",
@@ -261,7 +278,7 @@ function postStockPrice(stockId, dateFrom, dateTo) {
 		"high" : "35.24",
 		"volume" : "74000000"
 	}, {
-		"stockId" : "600652",
+		"stockId" : stockId,
 		"date" : "2016-03-25",
 		"open" : "35.00",
 		"close" : "36.50",
