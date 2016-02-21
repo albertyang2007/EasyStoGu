@@ -46,7 +46,7 @@ public class Strings {
 			return 0;
 		}
 		BigDecimal bd = new BigDecimal(num);
-		num = bd.setScale(3, BigDecimal.ROUND_HALF_UP).doubleValue();
+		num = bd.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 		return num;
 	}
 

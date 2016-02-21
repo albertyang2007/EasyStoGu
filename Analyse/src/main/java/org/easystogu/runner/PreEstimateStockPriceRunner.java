@@ -29,7 +29,6 @@ import org.easystogu.db.access.WeekStockPriceTableHelper;
 import org.easystogu.db.table.CheckPointDailySelectionVO;
 import org.easystogu.db.table.EstimateStockVO;
 import org.easystogu.db.table.StockPriceVO;
-import org.easystogu.easymoney.runner.DailyDDXRunner;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.indicator.runner.AllDailyIndCountAndSaveDBRunner;
 import org.easystogu.report.ReportTemplate;

@@ -111,6 +111,7 @@ public class IndicatorEndPoint {
 	@Path("/luzao/{stockId}/{date}")
 	@Produces("application/json")
 	public List<LuZaoVO> queryLuZaoById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm) {
+		// currently there is no DB for luzao, please count it when use!
 		List<LuZaoVO> list = new ArrayList<LuZaoVO>();
 		return list;
 	}

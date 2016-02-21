@@ -14,6 +14,7 @@ import org.easystogu.db.access.ChuQuanChuXiPriceHelper;
 import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.table.StockPriceVO;
 import org.easystogu.utils.Strings;
+import org.easystogu.utils.WeekdayUtil;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -48,29 +49,40 @@ public class PriceEndPoint {
 	public List<StockPriceVO> queryDayPriceByIdWithForecastPrice(@PathParam("stockId") String stockIdParm,
 			@PathParam("date") String dateParm, String postBody) {
 		List<StockPriceVO> spList = this.fetchAllPrices(stockIdParm);
-		double f = spList.get(spList.size() - 1).close / 20.0;
+
 		try {
 			// parse the forecast body and add back to spList
 			if (Strings.isNotEmpty(postBody)) {
-				// System.out.println("postBody=\n" + postBody);
+				StockPriceVO curSPVO = spList.get(spList.size() - 1);
+
 				JSONArray myJsonArray = new JSONArray(postBody);
-				for (int i = 0; i < myJsonArray.length(); i++) {
+				int length = myJsonArray.length();
+				List<String> nextWorkingDateList = WeekdayUtil.nextWorkingDateList(curSPVO.date, length);
+
+				for (int i = 0; i < length; i++) {
 					JSONObject jobj = myJsonArray.getJSONObject(i);
 					StockPriceVO vo = new StockPriceVO();
+					vo.setDate(nextWorkingDateList.get(i));
 					vo.setStockId(jobj.getString("stockId"));
-					vo.setDate(jobj.getString("date"));
-					vo.setOpen(f * Double.parseDouble(jobj.getString("open")));
-					vo.setClose(f * Double.parseDouble(jobj.getString("close")));
-					vo.setLow(f * Double.parseDouble(jobj.getString("low")));
-					vo.setHigh(f * Double.parseDouble(jobj.getString("high")));
-					vo.setVolume(0);
+					vo.setLastClose(curSPVO.close);
+					vo.setOpen(Strings.convert2ScaleDecimal(vo.lastClose
+							* (1.0 + Double.parseDouble(jobj.getString("open")) / 100.0)));
+					vo.setClose(Strings.convert2ScaleDecimal(vo.lastClose
+							* (1.0 + Double.parseDouble(jobj.getString("close")) / 100.0)));
+					vo.setLow(Strings.convert2ScaleDecimal(vo.lastClose
+							* (1.0 + Double.parseDouble(jobj.getString("low")) / 100.0)));
+					vo.setHigh(Strings.convert2ScaleDecimal(vo.lastClose
+							* (1.0 + Double.parseDouble(jobj.getString("high")) / 100.0)));
+					vo.setVolume((long) (curSPVO.volume * Double.parseDouble(jobj.getString("volume"))));
 
 					spList.add(vo);
+					curSPVO = vo;
 				}
 			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return spList;
 		}
 
 		return spList;

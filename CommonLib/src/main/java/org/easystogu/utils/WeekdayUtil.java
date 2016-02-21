@@ -209,6 +209,17 @@ public class WeekdayUtil {
 		return "";
 	}
 
+	// 返回某日后若干个工作日
+	public static List<String> nextWorkingDateList(String today, int length) {
+		List<String> list = new ArrayList<String>();
+		for (int i = 0; i < length; i++) {
+			String nextDate = nextWorkingDate(today);
+			list.add(nextDate);
+			today = nextDate;
+		}
+		return list;
+	}
+
 	// 判断date1和date2之间的时间跨距, 如果是10日之内，返回true
 	public static boolean isDateBetweenNumberofDays(String date1, String date2, int len) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -231,7 +242,7 @@ public class WeekdayUtil {
 
 	public static void main(String[] args) {
 
-		String nextDay = WeekdayUtil.nextWorkingDate("2015-11-07");
-		System.out.println(nextDay);
+		List<String> list = WeekdayUtil.nextWorkingDateList("2016-02-22", 20);
+		System.out.println(list);
 	}
 }
