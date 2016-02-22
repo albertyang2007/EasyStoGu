@@ -17,7 +17,7 @@ public class TrendModeEndPoint {
 	public String queryByName(@PathParam("name") String name) {
 		// just for debug. will load data from json file in trendmode project
 		ModeExtractor ins = new ModeExtractor();
-		TrendModeVO tmVO = ins.generateTrendMode("TestName", "Test Description", "999999", "2016-01-20", "2016-02-22");
+		TrendModeVO tmVO = ins.generateTrendMode("TestName", "Test Description", "999999", "2015-12-31", "2016-02-22");
 		return JSONArray.fromObject(tmVO.prices).toString();
 	}
 }
