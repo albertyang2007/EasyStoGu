@@ -63,7 +63,7 @@ public class PriceEndPoint {
 					JSONObject jobj = myJsonArray.getJSONObject(i);
 					StockPriceVO vo = new StockPriceVO();
 					vo.setDate(nextWorkingDateList.get(i));
-					vo.setStockId(jobj.getString("stockId"));
+					vo.setStockId(stockIdParm);
 					vo.setLastClose(curSPVO.close);
 					vo.setOpen(Strings.convert2ScaleDecimal(vo.lastClose
 							* (1.0 + Double.parseDouble(jobj.getString("open")) / 100.0)));

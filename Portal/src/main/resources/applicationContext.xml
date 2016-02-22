@@ -47,7 +47,8 @@
 
 	<bean id="portalServiceIndicatorEndPointV2" class="org.easystogu.portal.IndicatorEndPointV2">
 	</bean>
-	<jaxrs:server id="cxfrsservice_IndicatorEndPointV2" address="/ind2">
+	<jaxrs:server id="cxfrsservice_IndicatorEndPointV2"
+		address="/ind2">
 		<jaxrs:serviceBeans>
 			<ref bean="portalServiceIndicatorEndPointV2" />
 		</jaxrs:serviceBeans>
@@ -55,17 +56,18 @@
 			<bean class="com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider" />
 		</jaxrs:providers>
 	</jaxrs:server>
-	
+
 	<bean id="portalServiceIndicatorEndPointV3" class="org.easystogu.portal.IndicatorEndPointV3">
 	</bean>
-	<jaxrs:server id="cxfrsservice_IndicatorEndPointV3" address="/ind3">
+	<jaxrs:server id="cxfrsservice_IndicatorEndPointV3"
+		address="/ind3">
 		<jaxrs:serviceBeans>
 			<ref bean="portalServiceIndicatorEndPointV3" />
 		</jaxrs:serviceBeans>
 		<jaxrs:providers>
 			<bean class="com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider" />
 		</jaxrs:providers>
-	</jaxrs:server>	
+	</jaxrs:server>
 
 	<bean id="portalServiceCompanyInfoEndPoint" class="org.easystogu.portal.CompanyInfoEndPoint">
 	</bean>
@@ -73,6 +75,17 @@
 		address="/company">
 		<jaxrs:serviceBeans>
 			<ref bean="portalServiceCompanyInfoEndPoint" />
+		</jaxrs:serviceBeans>
+		<jaxrs:providers>
+			<bean class="com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider" />
+		</jaxrs:providers>
+	</jaxrs:server>
+
+	<bean id="portalServiceTrendModeEndPoint" class="org.easystogu.portal.TrendModeEndPoint">
+	</bean>
+	<jaxrs:server id="cxfrsservice_TrendModeEndPoint" address="/trendmode">
+		<jaxrs:serviceBeans>
+			<ref bean="portalServiceTrendModeEndPoint" />
 		</jaxrs:serviceBeans>
 		<jaxrs:providers>
 			<bean class="com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider" />

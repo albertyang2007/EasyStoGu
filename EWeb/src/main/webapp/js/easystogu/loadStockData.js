@@ -28,6 +28,20 @@ function loadCompanyInfoByName(name) {
 }
 
 /**
+ * Load TrendMode Price
+ * 
+ * @returns {undefined}
+ */
+function loadTrendMode(name) {
+	var url_trend = "http://localhost:8080/portal/trendmode/" + name;
+	var prices = "[]";
+	$.getJSON(url_trend, function(data) {
+		prices = data;
+	});
+	return prices;
+}
+
+/**
  * Load ShenXian and StockPrice
  * 
  * @returns {undefined}

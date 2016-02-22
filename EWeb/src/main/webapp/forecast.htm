@@ -15,6 +15,7 @@
       <!--add point button-->   
       <script type="text/jsx">
           var stockId = "999999";
+          var indicator = "shenxian";
 
 	      var ForecastForm = React.createClass({
 	         getInitialState: function() {
@@ -39,31 +40,17 @@
 	            date_01_close : this.state.date_01_close,
 	            date_01_open  : this.state.date_01_open,
 	            date_01_low   : this.state.date_01_low,
-	        };
-	        
-	        // the button action
-			    var i = 0;
-			    var date_price = [];
-			    var date_h1 = [];
-			    var date_h2 = [];
-			    var date_h3 = [];
-			    var date_vol = [];
-			    var dateStr = "2016-02-19 15:00:00";
-			    var dateD = new Date(Date.parse(dateStr.replace(/-/g, "/")));
-			    date_price.push([ dateD.getTime(), data.date_01_open, data.date_01_high, data.date_01_low, data.date_01_close ]);
-			    date_h1.push([ dateD.getTime(), 2601]);
-			    date_h2.push([ dateD.getTime(), 2701]);
-			    date_h3.push([ dateD.getTime(), 2801]);
-			    date_vol.push([ dateD.getTime(), 2601000]);
-
-			    //var chart = $('#container').highcharts();
-			    //chart.series[0].addPoint(date_price[0], true, true);
-			    //chart.series[1].addPoint(date_h1[0], true, true);
-			    //chart.series[2].addPoint(date_h2[0], true, true);
-			    //chart.series[3].addPoint(date_h3[0], true, true);
-			    //chart.series[4].addPoint(date_vol[0], true, true);
+	        };	        
 			    
-			    postStockPrice(stockId, '2014-10-01', '2016-12-31');
+            $.ajaxSettings.async = false;
+
+            var trendModePrices = loadTrendMode('TestName');
+
+            alert(trendModePrices);
+
+            $.ajaxSettings.async = true;
+
+			postStockPrice(stockId, '2014-10-01', '2016-12-31', trendModePrices);
 	      },
 	      
 	      render: function(){
@@ -114,6 +101,7 @@
 	        };
 	        
             stockId = data.stockId;
+            indicator = data.indicator;
 
             // set ajax async to false just to query the stock company info
             $.ajaxSettings.async = false;

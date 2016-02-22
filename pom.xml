@@ -35,6 +35,7 @@
 				<module>EWeb</module>
 				<module>App</module>
 				<module>Scheduled</module>
+				<module>TrendMode</module>
 			</modules>
 		</profile>
 	</profiles>
