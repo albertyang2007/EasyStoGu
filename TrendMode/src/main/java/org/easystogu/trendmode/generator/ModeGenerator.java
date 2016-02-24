@@ -4,24 +4,24 @@ import java.util.List;
 
 import net.sf.json.JSONArray;
 
-import org.easystogu.db.access.ChuQuanChuXiPriceHelper;
 import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.table.StockPriceVO;
+import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.trendmode.vo.SimplePriceVO;
 import org.easystogu.trendmode.vo.TrendModeVO;
 import org.easystogu.utils.Strings;
 
 public class ModeGenerator {
-    protected StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
-    protected ChuQuanChuXiPriceHelper chuQuanChuXiPriceHelper = new ChuQuanChuXiPriceHelper();
+    private CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
+    private StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
 
     // select range prices for one stock and return json str
     public TrendModeVO generateTrendMode(String name, String description, String stockId, String dateStart,
             String dateEnd) {
         List<StockPriceVO> spList = stockPriceTable.getStockPriceByIdAndBetweenDate(stockId, dateStart, dateEnd);
         TrendModeVO tmpVO = new TrendModeVO();
-        tmpVO.setDescription(description + "; Selected from stock " + stockId + "; Time (" + dateStart + "~" + dateEnd
-                + ")");
+        tmpVO.setDescription("Select from " + stockConfig.getStockName(stockId) + "(" + stockId + "); Time: ("
+                + dateStart + " ~ " + dateEnd + ") " + description);
         tmpVO.setLength(spList.size() - 1);
         tmpVO.setName(name);
 
@@ -44,10 +44,27 @@ public class ModeGenerator {
         return tmpVO;
     }
 
+    public void scenarios() {
+        TrendModeVO tmo = null;
+        tmo = this.generateTrendMode("Platform_8", "暴涨,长平台整理,突破,下跌", "000701", "2015-09-30", "2016-01-04");
+        System.out.println(JSONArray.fromObject(tmo).toString());
+
+        tmo = this.generateTrendMode("M_Tou", "M 头", "999999", "2015-11-03", "2016-01-04");
+        System.out.println(JSONArray.fromObject(tmo).toString());
+
+        tmo = this.generateTrendMode("Break_Platform_1", "长平台整理,阶梯上升", "600021", "2015-01-20", "2015-04-17");
+        System.out.println(JSONArray.fromObject(tmo).toString());
+
+        tmo = this.generateTrendMode("Break_Platform_2", "短平台整理,阶梯上升", "000979", "2015-02-25", "2015-04-14");
+        System.out.println(JSONArray.fromObject(tmo).toString());
+
+        tmo = this.generateTrendMode("ZiMaKaiHua", "芝麻开花,节节高", "600408", "2015-02-06", "2015-03-24");
+        System.out.println(JSONArray.fromObject(tmo).toString());
+    }
+
     public static void main(String[] args) {
         // TODO Auto-generated method stub
         ModeGenerator ins = new ModeGenerator();
-        TrendModeVO rtn = ins.generateTrendMode("TestName", "Test Description", "999999", "2016-01-20", "2016-02-22");
-        System.out.println(JSONArray.fromObject(rtn.prices).toString());
+        ins.scenarios();
     }
 }
