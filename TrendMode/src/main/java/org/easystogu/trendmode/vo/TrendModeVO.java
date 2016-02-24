@@ -3,6 +3,8 @@ package org.easystogu.trendmode.vo;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.sf.json.JSONArray;
+
 public class TrendModeVO {
 	public String name;
 	public String description;
@@ -39,5 +41,9 @@ public class TrendModeVO {
 
 	public void setPrices(List<SimplePriceVO> prices) {
 		this.prices = prices;
+	}
+
+	public String toJson() {
+		return JSONArray.fromObject(this).toString();
 	}
 }

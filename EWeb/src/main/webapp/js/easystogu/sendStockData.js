@@ -3,9 +3,12 @@
  * 
  * @returns {undefined}
  */
-function postStockPrice(stockId, dateFrom, dateTo, trendModePrices) {
+function postStockPrice(stockId, dateFrom, dateTo, trendModeName) {
 	var seriesCounter = 0, date_price = [], volume = [], data_ma19 = [], data_ma43 = [], data_ma86 = [];
 	var v = "3";
+	var reqParms = {
+		"trendModeName" : trendModeName
+	};
 	/**
 	 * Create the chart when all data is loaded
 	 * 
@@ -95,7 +98,7 @@ function postStockPrice(stockId, dateFrom, dateTo, trendModePrices) {
 		url : url_price,
 		processData : false,
 		contentType : 'application/json; charset=utf-8',
-		data : JSON.stringify(trendModePrices),
+		data : JSON.stringify(reqParms),
 		success : function(data) {
 			// push data to price candlestick
 			i = 0;
@@ -125,7 +128,7 @@ function postStockPrice(stockId, dateFrom, dateTo, trendModePrices) {
 		url : url_ind,
 		processData : false,
 		contentType : 'application/json; charset=utf-8',
-		data : JSON.stringify(trendModePrices),
+		data : JSON.stringify(reqParms),
 		success : function(data) {
 			i = 0;
 			for (i; i < data.length; i += 1) {

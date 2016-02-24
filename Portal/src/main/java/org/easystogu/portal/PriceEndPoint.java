@@ -13,6 +13,9 @@ import javax.ws.rs.Produces;
 import org.easystogu.db.access.ChuQuanChuXiPriceHelper;
 import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.table.StockPriceVO;
+import org.easystogu.trendmode.loader.ModeLoader;
+import org.easystogu.trendmode.vo.SimplePriceVO;
+import org.easystogu.trendmode.vo.TrendModeVO;
 import org.easystogu.utils.Strings;
 import org.easystogu.utils.WeekdayUtil;
 import org.json.JSONArray;
@@ -22,6 +25,7 @@ import org.json.JSONObject;
 public class PriceEndPoint {
 	private StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
 	protected ChuQuanChuXiPriceHelper chuQuanChuXiPriceHelper = new ChuQuanChuXiPriceHelper();
+	protected ModeLoader trendModeLoader = ModeLoader.getInstance();
 	private String dateRegex = "[0-9]{4}-[0-9]{2}-[0-9]{2}";
 	private String fromToRegex = dateRegex + "_" + dateRegex;
 
@@ -55,28 +59,25 @@ public class PriceEndPoint {
 			if (Strings.isNotEmpty(postBody)) {
 				StockPriceVO curSPVO = spList.get(spList.size() - 1);
 
-				JSONArray myJsonArray = new JSONArray(postBody);
-				int length = myJsonArray.length();
-				List<String> nextWorkingDateList = WeekdayUtil.nextWorkingDateList(curSPVO.date, length);
+				JSONObject jsonParm = new JSONObject(postBody);
+				String trendModeName = jsonParm.getString("trendModeName");
+				TrendModeVO tmo = trendModeLoader.loadTrendMode(trendModeName);
+				List<String> nextWorkingDateList = WeekdayUtil.nextWorkingDateList(curSPVO.date, tmo.prices.size());
 
-				for (int i = 0; i < length; i++) {
-					JSONObject jobj = myJsonArray.getJSONObject(i);
-					StockPriceVO vo = new StockPriceVO();
-					vo.setDate(nextWorkingDateList.get(i));
-					vo.setStockId(stockIdParm);
-					vo.setLastClose(curSPVO.close);
-					vo.setOpen(Strings.convert2ScaleDecimal(vo.lastClose
-							* (1.0 + Double.parseDouble(jobj.getString("open")) / 100.0)));
-					vo.setClose(Strings.convert2ScaleDecimal(vo.lastClose
-							* (1.0 + Double.parseDouble(jobj.getString("close")) / 100.0)));
-					vo.setLow(Strings.convert2ScaleDecimal(vo.lastClose
-							* (1.0 + Double.parseDouble(jobj.getString("low")) / 100.0)));
-					vo.setHigh(Strings.convert2ScaleDecimal(vo.lastClose
-							* (1.0 + Double.parseDouble(jobj.getString("high")) / 100.0)));
-					vo.setVolume((long) (curSPVO.volume * Double.parseDouble(jobj.getString("volume"))));
+				for (int i = 0; i < tmo.prices.size(); i++) {
+					SimplePriceVO svo = tmo.prices.get(i);
+					StockPriceVO spvo = new StockPriceVO();
+					spvo.setDate(nextWorkingDateList.get(i));
+					spvo.setStockId(stockIdParm);
+					spvo.setLastClose(curSPVO.close);
+					spvo.setOpen(Strings.convert2ScaleDecimal(spvo.lastClose * (1.0 + svo.getOpen() / 100.0)));
+					spvo.setClose(Strings.convert2ScaleDecimal(spvo.lastClose * (1.0 + svo.getClose() / 100.0)));
+					spvo.setLow(Strings.convert2ScaleDecimal(spvo.lastClose * (1.0 + svo.getLow() / 100.0)));
+					spvo.setHigh(Strings.convert2ScaleDecimal(spvo.lastClose * (1.0 + svo.getHigh() / 100.0)));
+					spvo.setVolume((long) (curSPVO.volume * svo.getVolume()));
 
-					spList.add(vo);
-					curSPVO = vo;
+					spList.add(spvo);
+					curSPVO = spvo;
 				}
 			}
 		} catch (JSONException e) {
