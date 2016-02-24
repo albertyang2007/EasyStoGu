@@ -15,6 +15,7 @@ public class ModeGenerator {
     private CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
     private StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
 
+
     // select range prices for one stock and return json str
     public TrendModeVO generateTrendMode(String name, String description, String stockId, String dateStart,
             String dateEnd) {
