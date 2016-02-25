@@ -7,6 +7,7 @@
       <script type="text/javascript" src="js/jquery_1.8.2/jquery.min.js"></script>
       <script type="text/javascript" src="js/easystogu/loadStockData.js"></script>
       <script type="text/javascript" src="js/easystogu/sendStockData.js"></script>
+      <script type="text/javascript" src="js/easystogu/common.js"></script>
       <style type="text/css">
         ${demo.css}
 	  </style>
@@ -40,7 +41,20 @@
   
             trendModeName = data.trendModeName;
 
-			postStockPrice(stockId, dateFrom, dateTo, trendModeName);
+            //reset ajax async to true when load big data from portal
+            $.ajaxSettings.async = true;
+	        
+            if(indicator == "shenxian"){ 
+	           loadShenXianWithForecast(stockId, dateFrom, dateTo, trendModeName);
+            }else if(indicator == "luzao"){ 
+	           loadLuZaoWithForecast(stockId, dateFrom, dateTo, trendModeName);
+            }else if(indicator == "boll"){ 
+	           loadBollWithForecast(stockId, dateFrom, dateTo, trendModeName);
+            }else if(indicator == "macd"){ 
+	           loadMacdWithForecast(stockId, dateFrom, dateTo, trendModeName);
+            }else if(indicator == "qsdd"){ 
+	           loadQsddWithForecast(stockId, dateFrom, dateTo, trendModeName);
+            }
 	      },
 	      
 	      render: function(){
@@ -53,6 +67,8 @@
 			                  <label>TrendModeName:</label>
 			                  <select name='trendModeName' onChange={this.handleChange2}>
                               <option value='M_Tou' defaultValue>M_Tou</option>
+                              <option value='BaoDie'>BaoDie</option>
+                              <option value='BaoZhang'>BaoZhang</option>
                               <option value='Break_Platform_1'>Break_Platform_1</option>
                               <option value='Break_Platform_2'>Break_Platform_2</option>
                               <option value='Break_Platform_3'>Break_Platform_3</option>
@@ -96,7 +112,6 @@
 	            dateTo : this.state.dateTo,
 	        };
 	        
-            stockId = data.stockId;
             indicator = data.indicator;
             dateFrom = data.dateFrom;
             dateTo = data.dateTo;
@@ -109,6 +124,7 @@
             if(!data.stockId.match(stockIdRegex)){
             	 var companyInfo = loadCompanyInfoByName(data.stockId);
                data.stockId = companyInfo.stockId;
+               stockId = data.stockId;
             }
 
             //reset ajax async to true when load big data from portal

@@ -57,6 +57,9 @@ public class IndicatorEndPointV3 {
 			String postBody) {
 		List<MacdVO> list = new ArrayList<MacdVO>();
 		List<StockPriceVO> spList = this.fetchAllPrices(stockIdParm);
+
+		this.updateStockPriceWithTrendModeStockPrice(stockIdParm, spList, postBody);
+
 		List<Double> close = StockPriceFetcher.getClosePrice(spList);
 		double[][] macd = macdHelper.getMACDList(Doubles.toArray(close));
 		for (int i = 0; i < macd[0].length; i++) {
@@ -80,6 +83,9 @@ public class IndicatorEndPointV3 {
 			String postBody) {
 		List<KDJVO> list = new ArrayList<KDJVO>();
 		List<StockPriceVO> spList = this.fetchAllPrices(stockIdParm);
+
+		this.updateStockPriceWithTrendModeStockPrice(stockIdParm, spList, postBody);
+
 		List<Double> close = StockPriceFetcher.getClosePrice(spList);
 		List<Double> low = StockPriceFetcher.getLowPrice(spList);
 		List<Double> high = StockPriceFetcher.getHighPrice(spList);
@@ -106,6 +112,9 @@ public class IndicatorEndPointV3 {
 			String postBody) {
 		List<BollVO> list = new ArrayList<BollVO>();
 		List<StockPriceVO> spList = this.fetchAllPrices(stockIdParm);
+
+		this.updateStockPriceWithTrendModeStockPrice(stockIdParm, spList, postBody);
+
 		List<Double> close = StockPriceFetcher.getClosePrice(spList);
 		double[][] boll = bollHelper.getBOLLList(Doubles.toArray(close), 20, 2.0, 2.0);
 		for (int i = 0; i < boll[0].length; i++) {
@@ -130,6 +139,9 @@ public class IndicatorEndPointV3 {
 			@PathParam("date") String dateParm, String postBody) {
 		List<ShenXianVO> list = new ArrayList<ShenXianVO>();
 		List<StockPriceVO> spList = this.fetchAllPrices(stockIdParm);
+
+		this.updateStockPriceWithTrendModeStockPrice(stockIdParm, spList, postBody);
+
 		List<Double> close = StockPriceFetcher.getClosePrice(spList);
 		double[][] shenXian = shenXianHelper.getShenXianList(Doubles.toArray(close));
 		for (int i = 0; i < shenXian[0].length; i++) {
@@ -155,37 +167,7 @@ public class IndicatorEndPointV3 {
 		List<LuZaoVO> list = new ArrayList<LuZaoVO>();
 		List<StockPriceVO> spList = this.fetchAllPrices(stockIdParm);
 
-		try {
-			// parse the forecast body and add back to spList
-			if (Strings.isNotEmpty(postBody)) {
-				StockPriceVO curSPVO = spList.get(spList.size() - 1);
-
-				JSONObject jsonParm = new JSONObject(postBody);
-				String trendModeName = jsonParm.getString("trendModeName");
-				TrendModeVO tmo = trendModeLoader.loadTrendMode(trendModeName);
-				List<String> nextWorkingDateList = WeekdayUtil.nextWorkingDateList(curSPVO.date, tmo.prices.size());
-
-				for (int i = 0; i < tmo.prices.size(); i++) {
-					SimplePriceVO svo = tmo.prices.get(i);
-					StockPriceVO spvo = new StockPriceVO();
-					spvo.setDate(nextWorkingDateList.get(i));
-					spvo.setStockId(stockIdParm);
-					spvo.setLastClose(curSPVO.close);
-					spvo.setOpen(Strings.convert2ScaleDecimal(spvo.lastClose * (1.0 + svo.getOpen() / 100.0)));
-					spvo.setClose(Strings.convert2ScaleDecimal(spvo.lastClose * (1.0 + svo.getClose() / 100.0)));
-					spvo.setLow(Strings.convert2ScaleDecimal(spvo.lastClose * (1.0 + svo.getLow() / 100.0)));
-					spvo.setHigh(Strings.convert2ScaleDecimal(spvo.lastClose * (1.0 + svo.getHigh() / 100.0)));
-					spvo.setVolume((long) (curSPVO.volume * svo.getVolume()));
-
-					spList.add(spvo);
-					curSPVO = spvo;
-				}
-			}
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return list;
-		}
+		this.updateStockPriceWithTrendModeStockPrice(stockIdParm, spList, postBody);
 
 		List<Double> close = StockPriceFetcher.getClosePrice(spList);
 		double[][] lz = luzaoHelper.getLuZaoList(Doubles.toArray(close));
@@ -207,9 +189,13 @@ public class IndicatorEndPointV3 {
 	@POST
 	@Path("/qsdd/{stockId}/{date}")
 	@Produces("application/json")
-	public List<QSDDVO> queryQSDDById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm) {
+	public List<QSDDVO> queryQSDDById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
+			String postBody) {
 		List<QSDDVO> list = new ArrayList<QSDDVO>();
 		List<StockPriceVO> spList = this.fetchAllPrices(stockIdParm);
+
+		this.updateStockPriceWithTrendModeStockPrice(stockIdParm, spList, postBody);
+
 		List<Double> close = StockPriceFetcher.getClosePrice(spList);
 		List<Double> low = StockPriceFetcher.getLowPrice(spList);
 		List<Double> high = StockPriceFetcher.getHighPrice(spList);
@@ -227,6 +213,39 @@ public class IndicatorEndPointV3 {
 		}
 
 		return list;
+	}
+
+	private void updateStockPriceWithTrendModeStockPrice(String stockId, List<StockPriceVO> spList, String postBody) {
+		try {
+			// parse the forecast body and add back to spList
+			if (Strings.isNotEmpty(postBody)) {
+				StockPriceVO curSPVO = spList.get(spList.size() - 1);
+
+				JSONObject jsonParm = new JSONObject(postBody);
+				String trendModeName = jsonParm.getString("trendModeName");
+				TrendModeVO tmo = trendModeLoader.loadTrendMode(trendModeName);
+				List<String> nextWorkingDateList = WeekdayUtil.nextWorkingDateList(curSPVO.date, tmo.prices.size());
+
+				for (int i = 0; i < tmo.prices.size(); i++) {
+					SimplePriceVO svo = tmo.prices.get(i);
+					StockPriceVO spvo = new StockPriceVO();
+					spvo.setDate(nextWorkingDateList.get(i));
+					spvo.setStockId(stockId);
+					spvo.setLastClose(curSPVO.close);
+					spvo.setOpen(Strings.convert2ScaleDecimal(spvo.lastClose * (1.0 + svo.getOpen() / 100.0)));
+					spvo.setClose(Strings.convert2ScaleDecimal(spvo.lastClose * (1.0 + svo.getClose() / 100.0)));
+					spvo.setLow(Strings.convert2ScaleDecimal(spvo.lastClose * (1.0 + svo.getLow() / 100.0)));
+					spvo.setHigh(Strings.convert2ScaleDecimal(spvo.lastClose * (1.0 + svo.getHigh() / 100.0)));
+					spvo.setVolume((long) (curSPVO.volume * svo.getVolume()));
+
+					spList.add(spvo);
+					curSPVO = spvo;
+				}
+			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	// common function to fetch price from stockPrice table
