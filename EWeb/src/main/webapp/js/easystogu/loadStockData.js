@@ -33,12 +33,26 @@ function loadCompanyInfoByName(name) {
  * @returns {undefined}
  */
 function loadTrendMode(name) {
-	var url_trend = "http://localhost:8080/portal/trendmode/" + name;
+	var url_trend = "http://localhost:8080/portal/trendmode/query/" + name;
 	var prices = "[]";
 	$.getJSON(url_trend, function(data) {
 		prices = data;
 	});
 	return prices;
+}
+
+/**
+ * Load all TrendMode names
+ * 
+ * @returns {undefined}
+ */
+function getAllTrendModeNames() {
+	var url_names = "http://localhost:8080/portal/trendmode/listnames";
+	var names = "[]";
+	$.getJSON(url_names, function(data) {
+		names = data;
+	});
+	return names;
 }
 
 /**

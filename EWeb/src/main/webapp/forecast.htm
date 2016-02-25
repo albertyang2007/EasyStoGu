@@ -44,6 +44,11 @@
 	      },
 	      
 	      render: function(){
+
+                  $.ajaxSettings.async = false;
+                  var trendModeNames = getAllTrendModeNames();
+                  $.ajaxSettings.async = true;
+
 			      return (<div>
 			                  <label>TrendModeName:</label>
 			                  <select name='trendModeName' onChange={this.handleChange2}>
