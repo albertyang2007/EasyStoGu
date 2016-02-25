@@ -18,7 +18,6 @@ import org.easystogu.trendmode.vo.SimplePriceVO;
 import org.easystogu.trendmode.vo.TrendModeVO;
 import org.easystogu.utils.Strings;
 import org.easystogu.utils.WeekdayUtil;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 

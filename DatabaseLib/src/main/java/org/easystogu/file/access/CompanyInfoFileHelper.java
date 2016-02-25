@@ -31,7 +31,7 @@ public class CompanyInfoFileHelper {
     }
 
     protected CompanyInfoFileHelper() {
-        String[] lines = fileSource.loadContent(fileName);
+        String[] lines = fileSource.loadContent(fileName).split("\n");
         for (int index = 1; index < lines.length; index++) {
             String line = lines[index];
             if (Strings.isNotEmpty(line)) {
@@ -192,6 +192,8 @@ public class CompanyInfoFileHelper {
 
     public static void main(String[] args) {
         // TODO Auto-generated method stub
-
+        CompanyInfoFileHelper ins = new CompanyInfoFileHelper();
+        
+        System.out.println(ins.getStockName("000048"));
     }
 }
