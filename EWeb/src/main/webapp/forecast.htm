@@ -65,6 +65,12 @@ demo
 	      },
 
           handlePreViewClick: function() {
+	         var data = {
+	            trendModeName  : this.state.trendModeName,
+	        };	        			   
+  
+            trendModeName = data.trendModeName;
+
             //reset ajax async to true when load big data from portal
             $.ajaxSettings.async = true;
 
@@ -73,6 +79,7 @@ demo
             var volume = convert2Volume(trendmode_data);
              
             //how to popup a html window in reactjs and jquery?
+            alert(trendModeName);
 
 	      },
 	      
