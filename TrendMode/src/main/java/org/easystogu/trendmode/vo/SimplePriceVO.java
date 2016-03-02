@@ -1,11 +1,13 @@
 package org.easystogu.trendmode.vo;
 
 public class SimplePriceVO {
+	public String stockId;
 	public double open;
 	public double high;
 	public double low;
 	public double close;
 	public double volume;
+	public String date;
 
 	public double getOpen() {
 		return open;
@@ -45,5 +47,21 @@ public class SimplePriceVO {
 
 	public void setVolume(double volume) {
 		this.volume = volume;
+	}
+
+	public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
+	}
+
+	public String getStockId() {
+		return stockId;
+	}
+
+	public void setStockId(String stockId) {
+		this.stockId = stockId;
 	}
 }

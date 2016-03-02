@@ -41,6 +41,8 @@ public class ModeGenerator {
 			spvo.high = Strings.convert2ScaleDecimal(100.0 * (vo.high - curVO.close) / curVO.close);
 			spvo.low = Strings.convert2ScaleDecimal(100.0 * (vo.low - curVO.close) / curVO.close);
 			spvo.volume = Strings.convert2ScaleDecimal(vo.volume * 1.0 / curVO.volume);
+			spvo.date = vo.date;
+			spvo.stockId = vo.stockId;
 			// set next vo to curVO
 			curVO = vo;
 			tmpVO.getPrices().add(spvo);

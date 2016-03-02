@@ -368,6 +368,61 @@ function createChart_Qsdd(stockId, date_price, volume, data_lonTerm,
 	});
 }
 
+/**
+ * Create the StockPrice Candlestick chart
+ * 
+ * @returns {undefined}
+ */
+function createChart_Candlestick(stockId, date_price, volume) {
+	$('#container').highcharts('StockChart', {
+
+		rangeSelector : {
+			selected : 1
+		},
+
+		title : {
+			text : stockId
+		},
+
+		yAxis : [ {
+			labels : {
+				align : 'right',
+				x : -3
+			},
+			title : {
+				text : 'Price'
+			},
+			height : '60%',
+			lineWidth : 2
+		}, {
+			labels : {
+				align : 'right',
+				x : -3
+			},
+			title : {
+				text : 'Volume'
+			},
+			top : '65%',
+			height : '35%',
+			offset : 0,
+			lineWidth : 2
+		} ],
+
+		series : [ {
+			type : 'candlestick',
+			name : 'OHLC',
+			data : date_price
+		}, {
+			type : 'column',
+			name : 'Volume',
+			data : volume,
+			yAxis : 1
+		} ]
+	});
+
+	chart = $('#container').highcharts();
+}
+
 /*
  * convert from data to candlestick data
  */
