@@ -33,8 +33,8 @@ public class MACDHelper extends IND {
 
 		double[][] macd = ins.getMACDList(Doubles.toArray(close));
 		System.out.println("DIF=" + (macd[0][close.size() - 1]));
-		System.out.println("DEA=" + (macd[2][close.size() - 1]));
-		System.out.println("MACD=" + (macd[1][close.size() - 1]));
+		System.out.println("DEA=" + (macd[1][close.size() - 1]));
+		System.out.println("MACD=" + (macd[2][close.size() - 1]));
 	}
 
 }
