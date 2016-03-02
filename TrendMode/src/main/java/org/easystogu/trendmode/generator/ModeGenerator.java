@@ -67,6 +67,7 @@ public class ModeGenerator {
 		saveToFile(generateTrendMode("M_Tou", "M 头", "999999", "2015-11-03", "2016-01-04"));
 		saveToFile(generateTrendMode("BaoDie", "暴跌", "999999", "2015-08-17", "2015-10-08"));
 		saveToFile(generateTrendMode("BaoZhang", "暴涨", "999999", "2015-05-18", "2015-06-15"));
+		saveToFile(generateTrendMode("MidFanTan", "中级反弹", "999999", "2008-11-10", "2009-02-17"));
 		saveToFile(generateTrendMode("Break_Platform_1", "长平台整理,阶梯上升", "600021", "2015-01-20", "2015-04-17"));
 		saveToFile(generateTrendMode("Break_Platform_2", "短平台整理,阶梯上升", "000979", "2015-02-25", "2015-04-14"));
 		saveToFile(generateTrendMode("Break_Platform_3", "短平台整理,阶梯上升", "300216", "2015-03-06", "2015-04-28"));
