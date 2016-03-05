@@ -22,7 +22,7 @@ ${demo.css}
           var dateFrom = "1991-01-01";
           var dateTo = "2099-12-31";
           var trendModeName = "M_Tou";
-
+          
 	      var ForecastForm = React.createClass({
 	         getInitialState: function() {
 	         return {
@@ -58,21 +58,6 @@ ${demo.css}
 	           loadQsddWithForecast(stockId, dateFrom, dateTo, trendModeName);
             }
 	      },
-
-          handlePreViewClick: function() {
-	         var data = {
-	            trendModeName  : this.state.trendModeName,
-	        };	        			   
-  
-            trendModeName = data.trendModeName;
-            
-            //refer to: http://dinbror.dk/bpopup/ and http://dinbror.dk/blog/bPopup/
-            $('#trendmodePopupForm').bPopup({
-            contentContainer:'.content',
-            loadUrl: 'popup_trendmode.htm?trendModeName=' + trendModeName
-            });
-
-	      },
 	      
 	      render: function(){
 
@@ -93,8 +78,8 @@ ${demo.css}
                               <option value='Platform_8'>Platform_8</option>
                               <option value='ZiMaKaiHua'>ZiMaKaiHua</option>
                               </select>&nbsp;&nbsp;
-                              <input type="submit" value="Submit" onClick={this.handleSubmitClick} />
-                              <input type="submit" value="PreView" onClick={this.handlePreViewClick} />&nbsp;&nbsp;
+                              <input type="submit" value="Submit" onClick={this.handleSubmitClick} />&nbsp;&nbsp;
+                              <a href='popup_trendmode.htm?trendModeName=M_Tou'>open popup</a>
 			              </div>
 			              );
 			     }         
@@ -103,7 +88,6 @@ ${demo.css}
 	      React.render(<ForecastForm />,
 	      document.getElementById("forecastForm")
 	      );
-
       
 	      var ParmForm = React.createClass({
 	         getInitialState: function() {

@@ -17,7 +17,7 @@ ${demo.css}
 	$(function () {
 		$.ajaxSettings.async = false;
 		var name = getQueryString("trendModeName");
-		var data = loadTrendMode("M_Tou");
+		var data = loadTrendMode(name);
 		var price = convert2Candlestick(data);
 		var volume = convert2Volume(data);
 		createChart_Candlestick(name, price, volume);
