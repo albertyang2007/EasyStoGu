@@ -55,6 +55,34 @@ function getAllTrendModeNames() {
 	return names;
 }
 
+/*
+ * get the query parameters from http GET request, for example
+ * http://localhost:8080/query?name=value
+ * return value
+ */
+function getQueryString(name) {
+	var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+	var r = window.location.search.substr(1).match(reg);
+	if (r != null)
+		return unescape(r[2]);
+	return null;
+}
+
+/**
+ * Load TrendMode Price
+ * 
+ * @returns {undefined}
+ */
+function loadStockPrice(stockId, dateFrom, dateTo) {
+	var url_price = "http://localhost:8080/portal/price/" + stockId + "/"
+			+ dateFrom + "_" + dateTo;
+	var data_price = [];
+	$.getJSON(url_price, function(data) {
+		data_price = data;
+	});
+	return data_price;
+}
+
 /**
  * Create the StockPrice and luzao chart
  * 

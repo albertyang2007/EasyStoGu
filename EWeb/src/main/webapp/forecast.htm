@@ -5,18 +5,13 @@
 <script type="text/javascript" src="js/reactjs_0.13.0/JSXTransformer.js"></script>
 <script type="text/javascript" src="js/reactjs_0.13.0/react.js"></script>
 <script type="text/javascript" src="js/jquery_1.8.2/jquery.min.js"></script>
+<script type="text/javascript"
+	src="js/jquery_1.8.2/jquery.bpopup.min.js"></script>
 <script type="text/javascript" src="js/easystogu/loadStockData.js"></script>
 <script type="text/javascript" src="js/easystogu/sendStockData.js"></script>
 <script type="text/javascript" src="js/easystogu/common.js"></script>
 <style type="text/css">
-${
-demo
-
-
-.css
-
-
-}
+${demo.css}
 </style>
 </head>
 <body>
@@ -70,16 +65,12 @@ demo
 	        };	        			   
   
             trendModeName = data.trendModeName;
-
-            //reset ajax async to true when load big data from portal
-            $.ajaxSettings.async = true;
-
-            var trendmode_data = loadTrendMode(trendModeName);
-            var price = convert2Candlestick(trendmode_data);
-            var volume = convert2Volume(trendmode_data);
-             
-            //how to popup a html window in reactjs and jquery?
-            alert(trendModeName);
+            
+            //refer to: http://dinbror.dk/bpopup/ and http://dinbror.dk/blog/bPopup/
+            $('#trendmodePopupForm').bPopup({
+            contentContainer:'.content',
+            loadUrl: 'popup_trendmode.htm?trendModeName=' + trendModeName
+            });
 
 	      },
 	      
@@ -102,8 +93,8 @@ demo
                               <option value='Platform_8'>Platform_8</option>
                               <option value='ZiMaKaiHua'>ZiMaKaiHua</option>
                               </select>&nbsp;&nbsp;
-                              <input type="submit" value="PreView" onClick={this.handlePreViewClick} />&nbsp;&nbsp;
                               <input type="submit" value="Submit" onClick={this.handleSubmitClick} />
+                              <input type="submit" value="PreView" onClick={this.handlePreViewClick} />&nbsp;&nbsp;
 			              </div>
 			              );
 			     }         
@@ -215,6 +206,7 @@ demo
 	<div>
 		<div id="forecastForm"></div>
 		<div id="containerForm"></div>
+		<div id="trendmodePopupForm"></div>
 		<div id="container" style="height: 800px; min-width: 310px"></div>
 	</div>
 </body>
