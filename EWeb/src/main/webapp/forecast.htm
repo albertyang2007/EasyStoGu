@@ -5,8 +5,6 @@
 <script type="text/javascript" src="js/reactjs_0.13.0/JSXTransformer.js"></script>
 <script type="text/javascript" src="js/reactjs_0.13.0/react.js"></script>
 <script type="text/javascript" src="js/jquery_1.8.2/jquery.min.js"></script>
-<script type="text/javascript"
-	src="js/jquery_1.8.2/jquery.bpopup.min.js"></script>
 <script type="text/javascript" src="js/easystogu/loadStockData.js"></script>
 <script type="text/javascript" src="js/easystogu/sendStockData.js"></script>
 <script type="text/javascript" src="js/easystogu/common.js"></script>
@@ -67,6 +65,9 @@ demo
                   $.ajaxSettings.async = false;
                   var trendModeNames = getAllTrendModeNames();
                   $.ajaxSettings.async = true;
+                  
+                  // By defaut show the 999999 luzhao data
+                  loadLuZao('v2', '999999', dateFrom, dateTo);
 
 			      return (<div>
 			                  <label>TrendModeName:</label>
@@ -74,7 +75,9 @@ demo
                               <option value='M_Tou' defaultValue>M_Tou</option>
                               <option value='BaoDie'>BaoDie</option>
                               <option value='BaoZhang'>BaoZhang</option>
+                              <option value='BaoZhang2'>BaoZhang2</option>
                               <option value='MidFanTan'>MidFanTan</option>
+                              <option value='GuoQingHangQing'>GuoQingHangQing</option>
                               <option value='Break_Platform_1'>Break_Platform_1</option>
                               <option value='Break_Platform_2'>Break_Platform_2</option>
                               <option value='Break_Platform_3'>Break_Platform_3</option>
