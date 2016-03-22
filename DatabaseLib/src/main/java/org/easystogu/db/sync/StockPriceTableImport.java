@@ -4,7 +4,6 @@ import java.util.List;
 
 import net.sf.json.JSONArray;
 
-import org.easystogu.config.FileConfigurationService;
 import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.table.StockPriceVO;
 import org.easystogu.file.TextFileSourceHelper;
