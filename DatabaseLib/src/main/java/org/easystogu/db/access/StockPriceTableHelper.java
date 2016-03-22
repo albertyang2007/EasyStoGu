@@ -90,6 +90,7 @@ public class StockPriceTableHelper {
     // query the latest N date
     protected String QUERY_LATEST_N_DATE_STOCKID_SQL = "SELECT date AS rtn FROM " + tableName
             + " WHERE stockId = :stockId ORDER BY date DESC LIMIT :limit";
+    protected String QUERY_ALL_BY_DATE = "SELECT * FROM " + tableName + " WHERE DATE = :date ORDER BY stockId";
 
     protected NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
@@ -560,6 +561,21 @@ public class StockPriceTableHelper {
                     new DefaultPreparedStatementCallback());
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public List<StockPriceVO> getAllStockPriceByDate(String date) {
+        try {
+            MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+            namedParameters.addValue("date", date);
+
+            List<StockPriceVO> list = this.namedParameterJdbcTemplate.query(QUERY_ALL_BY_DATE, namedParameters,
+                    new StockPriceVOMapper());
+
+            return list;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ArrayList<StockPriceVO>();
         }
     }
 
