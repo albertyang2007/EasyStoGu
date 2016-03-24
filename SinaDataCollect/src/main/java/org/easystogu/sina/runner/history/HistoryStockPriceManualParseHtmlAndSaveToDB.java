@@ -50,7 +50,7 @@ public class HistoryStockPriceManualParseHtmlAndSaveToDB {
 				}
 				StockPriceVO vo = new StockPriceVO(name.text().trim());
 				vo.stockId = stockId;
-				vo.volume = vo.volume / 100;
+				//vo.volume = vo.volume / 100;
 				// System.out.println(vo);
 				list.add(vo);
 			}

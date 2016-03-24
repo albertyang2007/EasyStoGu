@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<link rel="stylesheet" type="text/css" href="css/jquery.mobile-1.3.2.min.css"/>
+<link rel="stylesheet" type="text/css" href="css/jquery-mobile-slide-menu.css"/>
+<link rel="stylesheet" type="text/css" href="css/demo.css">
+<script type="text/javascript" src="js/jquery_1.8.2/jquery.min.js"></script>
+<script type="text/javascript" src="js/jquery_1.8.2/jquery-ui.js"></script>
+<script type="text/javascript" src="js/jquery_1.8.2/jquery.mobile-1.3.2.min.js"></script>
+<script type="text/javascript" src="js/jquery_1.8.2/jquery-mobile-slide-menu.js"></script>
+<title>jQuery slideMenu</title>
+</head>
+<body>
+<div id="side-menu">
+<ul>
+<li><a href="/">Main</a><span class="icon"></span></li>
+<li><a href="/page-2/">Page 2</a><span class="icon"></span></li>
+<li><a href="/page-3/">Page 3</a><span class="icon"></span></li>
+<li><a href="/page-4/">Page 4</a><span class="icon"></span></li>
+</ul>
+</div>
+<div data-role="page" id="about-the-band" data-title="Page Title" data-theme="b" class="pages">
+<a href="#" class="showMenu" data-role="button" data-icon="grid" data-iconpos="notext">Menu</a>
+<div id="main_demo"/>
+	
+<script type="text/javascript">
+	$(function(){
+		$('#side-menu').slideMenu();
+	});
+	</script>
+</body>
+</html>
