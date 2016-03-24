@@ -95,10 +95,9 @@ public class HistoryStockPriceManualParseHtmlAndSaveToDB {
 		File path = new File(htmlPath);
 		File[] files = path.listFiles();
 		int index = 0;
-		String startDay = "1991-01-01";
+		String startDay = "2016-03-23";
 		for (File file : files) {
-			if (file.getName().contains("999999") || file.getName().contains("399001")
-					|| file.getName().contains("399006")) {
+			if (file.getName().contains("_2016_1.html")) {
 				System.out.println("Processing " + file.getName() + " " + ++index + " / " + files.length);
 				// please fliter the data that save into DB
 				if ((file.length() > 0)) {

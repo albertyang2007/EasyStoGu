@@ -83,9 +83,9 @@ public class HistoryStockPriceDownloadRunner {
         List<String> stockIds = stockConfig.getAllStockId();
         int count = 0;
         for (String stockId : stockIds) {
-            if (stockId.equals("999999") || stockId.equals("399001") || stockId.equals("399006")) {
+            //if (stockId.equals("999999") || stockId.equals("399001") || stockId.equals("399006")) {
                 System.out.println("Process " + ++count + " of " + stockIds.size());
-                for (int year = 1991; year <= 2016; year++) {
+                for (int year = 2016; year <= 2016; year++) {
                     if (year == 2016) {
                         runner.getFromWebAndSaveToFile(stockId, year, 1);
                     } else {
@@ -95,7 +95,7 @@ public class HistoryStockPriceDownloadRunner {
                         runner.getFromWebAndSaveToFile(stockId, year, 4);
                     }
                 }
-            }
+            //}
         }
     }
 }
