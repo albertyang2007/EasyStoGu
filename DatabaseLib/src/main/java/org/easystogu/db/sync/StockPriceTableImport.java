@@ -31,6 +31,6 @@ public class StockPriceTableImport {
     public static void main(String[] args) {
         // TODO Auto-generated method stub
         StockPriceTableImport ins = new StockPriceTableImport();
-        ins.importFromFile("2016-03-21");
+        ins.importFromFile("2016-03-25");
     }
 }

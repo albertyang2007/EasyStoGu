@@ -39,7 +39,7 @@ public class ModeLoader {
         try {
             List<String> names = fileSource.listResourceFiles("classpath:/*.json");
             //why names.size = 0 when invoke query/listnames from web??? Different classloader???
-            System.out.println("loadTrendModeFromResource, len=" + names.size());
+            System.out.println("ModeLoader loadTrendModeFromResource, len=" + names.size());
             for (String name : names) {
                 JSONObject jsonObject = JSONObject.fromObject(fileSource.loadContent(name));
                 TrendModeVO tmo = (TrendModeVO) JSONObject.toBean(jsonObject, TrendModeVO.class, classMap);
