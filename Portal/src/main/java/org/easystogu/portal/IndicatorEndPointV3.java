@@ -25,13 +25,14 @@ import org.easystogu.indicator.MACDHelper;
 import org.easystogu.indicator.QSDDHelper;
 import org.easystogu.indicator.ShenXianHelper;
 import org.easystogu.indicator.runner.utils.StockPriceFetcher;
-import org.easystogu.trendmode.loader.ModeLoader;
+import org.easystogu.portal.init.TrendModeLoader;
 import org.easystogu.trendmode.vo.SimplePriceVO;
 import org.easystogu.trendmode.vo.TrendModeVO;
 import org.easystogu.utils.Strings;
 import org.easystogu.utils.WeekdayUtil;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.common.primitives.Doubles;
 
@@ -46,7 +47,8 @@ public class IndicatorEndPointV3 {
 	protected BOLLHelper bollHelper = new BOLLHelper();
 	protected LuZaoHelper luzaoHelper = new LuZaoHelper();
 	protected ChuQuanChuXiPriceHelper chuQuanChuXiPriceHelper = new ChuQuanChuXiPriceHelper();
-	protected ModeLoader trendModeLoader = ModeLoader.getInstance();
+	@Autowired
+	protected TrendModeLoader trendModeLoader;
 	protected String dateRegex = "[0-9]{4}-[0-9]{2}-[0-9]{2}";
 	protected String fromToRegex = dateRegex + "_" + dateRegex;
 

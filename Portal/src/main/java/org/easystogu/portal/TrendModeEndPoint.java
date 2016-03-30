@@ -9,14 +9,16 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
 import org.easystogu.db.table.StockPriceVO;
-import org.easystogu.trendmode.loader.ModeLoader;
+import org.easystogu.portal.init.TrendModeLoader;
 import org.easystogu.trendmode.vo.SimplePriceVO;
 import org.easystogu.trendmode.vo.TrendModeVO;
 import org.easystogu.utils.Strings;
 import org.easystogu.utils.WeekdayUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class TrendModeEndPoint {
-    private ModeLoader modeLoader = ModeLoader.getInstance();
+    @Autowired
+    private TrendModeLoader modeLoader;
 
     @GET
     @Path("/query/{name}")
@@ -25,6 +27,8 @@ public class TrendModeEndPoint {
     String name) {
         List<StockPriceVO> spList = new ArrayList<StockPriceVO>();
         TrendModeVO tmo = modeLoader.loadTrendMode(name);
+        if (tmo == null)
+            return spList;
         List<String> nextWorkingDateList = WeekdayUtil
                 .nextWorkingDateList(WeekdayUtil.currentDate(), tmo.prices.size());
         StockPriceVO curSPVO = StockPriceVO.createDefaulyVO();

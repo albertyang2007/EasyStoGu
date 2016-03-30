@@ -16,22 +16,21 @@ import org.easystogu.trendmode.vo.TrendModeVO;
 import org.springframework.stereotype.Component;
 
 @Component
-public class Initialization {
+public class TrendModeLoader {
     private TextFileSourceHelper fileSource = TextFileSourceHelper.getInstance();
     private Map<String, TrendModeVO> trendModeMap = new HashMap<String, TrendModeVO>();
     private static Map<String, Class> classMap = new HashMap<String, Class>();
     static {
         classMap.put("prices", SimplePriceVO.class);
     }
-    
+
     @PostConstruct
     public void startUp() {
         try {
-            List<String> names = fileSource.listResourceFiles("file:../TrendMode/src/main/resources/*.json");
-            //why names.size = 0 when invoke query/listnames from web??? Different classloader???
+            List<String> names = fileSource.listResourceFiles("classpath:/TrendMode/*.json");
             System.out.println("Initialization loadTrendModeFromResource, len=" + names.size());
             for (String name : names) {
-                JSONObject jsonObject = JSONObject.fromObject(fileSource.loadContent(name));
+                JSONObject jsonObject = JSONObject.fromObject(fileSource.loadContent("TrendMode/" + name));
                 TrendModeVO tmo = (TrendModeVO) JSONObject.toBean(jsonObject, TrendModeVO.class, classMap);
                 trendModeMap.put(name.split("\\.")[0], tmo);
             }
@@ -44,7 +43,15 @@ public class Initialization {
     public void shutDown() {
 
     }
-    
+
+    public TrendModeVO loadTrendMode(String name) {
+        TrendModeVO tmo = this.trendModeMap.get(name);
+        if (tmo == null) {
+            System.out.println("loadTrendMode is null for " + name);
+        }
+        return tmo;
+    }
+
     public List<String> getAllNames() {
         List<String> names = new ArrayList<String>();
         String[] str = this.trendModeMap.keySet().toArray(new String[0]);
@@ -56,8 +63,9 @@ public class Initialization {
 
     public static void main(String[] args) {
         // TODO Auto-generated method stub
-        Initialization ins = new Initialization();
+        TrendModeLoader ins = new TrendModeLoader();
         ins.startUp();
+        ins.loadTrendMode("test");
     }
 
 }

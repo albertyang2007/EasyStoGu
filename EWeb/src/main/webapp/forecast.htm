@@ -28,6 +28,7 @@ demo
 	         getInitialState: function() {
 	         return {
 	            trendModeName: "M_Tou",
+                options: []
 	        };
 	      },
 	      
@@ -65,6 +66,13 @@ demo
                   $.ajaxSettings.async = false;
                   var trendModeNames = getAllTrendModeNames();
                   $.ajaxSettings.async = true;
+                  this.state.options = [];
+
+                  for (var i = 0; i < trendModeNames.length; i++) {
+                      this.state.options.push(
+                      <option value={trendModeNames[i]}>{trendModeNames[i]}</option>
+                      );
+                  }
                   
                   // By defaut show the 999999 luzhao data
                   loadLuZao('v2', '999999', dateFrom, dateTo);
@@ -72,17 +80,7 @@ demo
 			      return (<div>
 			                  <label>TrendModeName:</label>
 			                  <select name='trendModeName' onChange={this.handleChange}>
-                              <option value='M_Tou' defaultValue>M_Tou</option>
-                              <option value='BaoDie'>BaoDie</option>
-                              <option value='BaoZhang'>BaoZhang</option>
-                              <option value='BaoZhang2'>BaoZhang2</option>
-                              <option value='MidFanTan'>MidFanTan</option>
-                              <option value='GuoQingHangQing'>GuoQingHangQing</option>
-                              <option value='Break_Platform_1'>Break_Platform_1</option>
-                              <option value='Break_Platform_2'>Break_Platform_2</option>
-                              <option value='Break_Platform_3'>Break_Platform_3</option>
-                              <option value='Platform_8'>Platform_8</option>
-                              <option value='ZiMaKaiHua'>ZiMaKaiHua</option>
+                              {this.state.options}
                               </select>&nbsp;&nbsp;
                               <input type="submit" value="Submit" onClick={this.handleSubmitClick} />&nbsp;&nbsp;
                               <a href='popup_trendmode.htm?trendModeName=M_Tou'>open popup</a>
