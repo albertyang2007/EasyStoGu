@@ -33,7 +33,7 @@ public class StockPriceTableExport {
     public static void main(String[] args) {
         // TODO Auto-generated method stub
         StockPriceTableExport ins = new StockPriceTableExport();
-        ins.exportToFile("2016-03-25");
+        ins.exportToFile("2016-04-05");
     }
 
 }
