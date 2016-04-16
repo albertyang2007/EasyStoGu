@@ -3,12 +3,9 @@
  * 
  * @returns {undefined}
  */
-function loadLuZaoWithForecast(stockId, dateFrom, dateTo, trendModeName) {
+function loadLuZaoWithReqParms(stockId, dateFrom, dateTo, reqParms) {
 	var seriesCounter = 0, date_price = [], volume = [], data_ma19 = [], data_ma43 = [], data_ma86 = [];
 	var v = "3";
-	var reqParms = {
-		"trendModeName" : trendModeName
-	};
 
 	/*
 	 * POST forecast sotck price and fetch back full price data
@@ -71,12 +68,9 @@ function loadLuZaoWithForecast(stockId, dateFrom, dateTo, trendModeName) {
  * 
  * @returns {undefined}
  */
-function loadShenXianWithForecast(stockId, dateFrom, dateTo, trendModeName) {
+function loadShenXianWithReqParms(stockId, dateFrom, dateTo, reqParms) {
 	var seriesCounter = 0, date_price = [], volume = [], data_h1 = [], data_h2 = [], data_h3 = [];
 	var v = "3";
-	var reqParms = {
-		"trendModeName" : trendModeName
-	};
 
 	/*
 	 * POST forecast sotck price and fetch back full price data
@@ -139,12 +133,9 @@ function loadShenXianWithForecast(stockId, dateFrom, dateTo, trendModeName) {
  * 
  * @returns {undefined}
  */
-function loadBollWithForecast(stockId, dateFrom, dateTo, trendModeName) {
+function loadBollWithReqParms(stockId, dateFrom, dateTo, reqParms) {
 	var seriesCounter = 0, date_price = [], volume = [], data_mb = [], data_up = [], data_dn = [];
 	var v = "3";
-	var reqParms = {
-		"trendModeName" : trendModeName
-	};
 
 	/*
 	 * POST forecast sotck price and fetch back full price data
@@ -207,12 +198,9 @@ function loadBollWithForecast(stockId, dateFrom, dateTo, trendModeName) {
  * 
  * @returns {undefined}
  */
-function loadMacdWithForecast(stockId, dateFrom, dateTo, trendModeName) {
+function loadMacdWithReqParms(stockId, dateFrom, dateTo, reqParms) {
 	var seriesCounter = 0, date_price = [], volume = [], data_dif = [], data_dea = [], data_macd = [];
 	var v = "3";
-	var reqParms = {
-		"trendModeName" : trendModeName
-	};
 
 	/*
 	 * POST forecast sotck price and fetch back full price data
@@ -275,12 +263,9 @@ function loadMacdWithForecast(stockId, dateFrom, dateTo, trendModeName) {
  * 
  * @returns {undefined}
  */
-function loadQsddWithForecast(stockId, dateFrom, dateTo, trendModeName) {
+function loadQsddWithReqParms(stockId, dateFrom, dateTo, reqParms) {
 	var seriesCounter = 0, date_price = [], volume = [], data_lonTerm = [], data_midTerm = [], data_shoTerm = [];
 	var v = "3";
-	var reqParms = {
-		"trendModeName" : trendModeName
-	};
 
 	/*
 	 * POST forecast sotck price and fetch back full price data

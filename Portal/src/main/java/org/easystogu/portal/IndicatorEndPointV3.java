@@ -25,13 +25,7 @@ import org.easystogu.indicator.MACDHelper;
 import org.easystogu.indicator.QSDDHelper;
 import org.easystogu.indicator.ShenXianHelper;
 import org.easystogu.indicator.runner.utils.StockPriceFetcher;
-import org.easystogu.portal.init.TrendModeLoader;
-import org.easystogu.trendmode.vo.SimplePriceVO;
-import org.easystogu.trendmode.vo.TrendModeVO;
 import org.easystogu.utils.Strings;
-import org.easystogu.utils.WeekdayUtil;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.common.primitives.Doubles;
@@ -48,7 +42,7 @@ public class IndicatorEndPointV3 {
 	protected LuZaoHelper luzaoHelper = new LuZaoHelper();
 	protected ChuQuanChuXiPriceHelper chuQuanChuXiPriceHelper = new ChuQuanChuXiPriceHelper();
 	@Autowired
-	protected TrendModeLoader trendModeLoader;
+	protected ProcessRequestParmsInPostBody postParmsProcess;
 	protected String dateRegex = "[0-9]{4}-[0-9]{2}-[0-9]{2}";
 	protected String fromToRegex = dateRegex + "_" + dateRegex;
 
@@ -58,9 +52,7 @@ public class IndicatorEndPointV3 {
 	public List<MacdVO> queryMACDById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
 			String postBody) {
 		List<MacdVO> list = new ArrayList<MacdVO>();
-		List<StockPriceVO> spList = this.fetchAllPrices(stockIdParm);
-
-		this.updateStockPriceWithTrendModeStockPrice(stockIdParm, spList, postBody);
+		List<StockPriceVO> spList = postParmsProcess.updateStockPriceAccordingToRequest(stockIdParm, postBody);
 
 		List<Double> close = StockPriceFetcher.getClosePrice(spList);
 		double[][] macd = macdHelper.getMACDList(Doubles.toArray(close));
@@ -84,9 +76,7 @@ public class IndicatorEndPointV3 {
 	public List<KDJVO> queryKDJById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
 			String postBody) {
 		List<KDJVO> list = new ArrayList<KDJVO>();
-		List<StockPriceVO> spList = this.fetchAllPrices(stockIdParm);
-
-		this.updateStockPriceWithTrendModeStockPrice(stockIdParm, spList, postBody);
+		List<StockPriceVO> spList = postParmsProcess.updateStockPriceAccordingToRequest(stockIdParm, postBody);
 
 		List<Double> close = StockPriceFetcher.getClosePrice(spList);
 		List<Double> low = StockPriceFetcher.getLowPrice(spList);
@@ -113,9 +103,7 @@ public class IndicatorEndPointV3 {
 	public List<BollVO> queryBollById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
 			String postBody) {
 		List<BollVO> list = new ArrayList<BollVO>();
-		List<StockPriceVO> spList = this.fetchAllPrices(stockIdParm);
-
-		this.updateStockPriceWithTrendModeStockPrice(stockIdParm, spList, postBody);
+		List<StockPriceVO> spList = postParmsProcess.updateStockPriceAccordingToRequest(stockIdParm, postBody);
 
 		List<Double> close = StockPriceFetcher.getClosePrice(spList);
 		double[][] boll = bollHelper.getBOLLList(Doubles.toArray(close), 20, 2.0, 2.0);
@@ -140,9 +128,7 @@ public class IndicatorEndPointV3 {
 	public List<ShenXianVO> queryShenXian2ById(@PathParam("stockId") String stockIdParm,
 			@PathParam("date") String dateParm, String postBody) {
 		List<ShenXianVO> list = new ArrayList<ShenXianVO>();
-		List<StockPriceVO> spList = this.fetchAllPrices(stockIdParm);
-
-		this.updateStockPriceWithTrendModeStockPrice(stockIdParm, spList, postBody);
+		List<StockPriceVO> spList = postParmsProcess.updateStockPriceAccordingToRequest(stockIdParm, postBody);
 
 		List<Double> close = StockPriceFetcher.getClosePrice(spList);
 		double[][] shenXian = shenXianHelper.getShenXianList(Doubles.toArray(close));
@@ -167,9 +153,7 @@ public class IndicatorEndPointV3 {
 	public List<LuZaoVO> queryLuZaoById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
 			String postBody) {
 		List<LuZaoVO> list = new ArrayList<LuZaoVO>();
-		List<StockPriceVO> spList = this.fetchAllPrices(stockIdParm);
-
-		this.updateStockPriceWithTrendModeStockPrice(stockIdParm, spList, postBody);
+		List<StockPriceVO> spList = postParmsProcess.updateStockPriceAccordingToRequest(stockIdParm, postBody);
 
 		List<Double> close = StockPriceFetcher.getClosePrice(spList);
 		double[][] lz = luzaoHelper.getLuZaoList(Doubles.toArray(close));
@@ -194,9 +178,7 @@ public class IndicatorEndPointV3 {
 	public List<QSDDVO> queryQSDDById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
 			String postBody) {
 		List<QSDDVO> list = new ArrayList<QSDDVO>();
-		List<StockPriceVO> spList = this.fetchAllPrices(stockIdParm);
-
-		this.updateStockPriceWithTrendModeStockPrice(stockIdParm, spList, postBody);
+		List<StockPriceVO> spList = postParmsProcess.updateStockPriceAccordingToRequest(stockIdParm, postBody);
 
 		List<Double> close = StockPriceFetcher.getClosePrice(spList);
 		List<Double> low = StockPriceFetcher.getLowPrice(spList);
@@ -215,48 +197,6 @@ public class IndicatorEndPointV3 {
 		}
 
 		return list;
-	}
-
-	private void updateStockPriceWithTrendModeStockPrice(String stockId, List<StockPriceVO> spList, String postBody) {
-		try {
-			// parse the forecast body and add back to spList
-			if (Strings.isNotEmpty(postBody)) {
-				StockPriceVO curSPVO = spList.get(spList.size() - 1);
-
-				JSONObject jsonParm = new JSONObject(postBody);
-				String trendModeName = jsonParm.getString("trendModeName");
-				TrendModeVO tmo = trendModeLoader.loadTrendMode(trendModeName);
-				List<String> nextWorkingDateList = WeekdayUtil.nextWorkingDateList(curSPVO.date, tmo.prices.size());
-
-				for (int i = 0; i < tmo.prices.size(); i++) {
-					SimplePriceVO svo = tmo.prices.get(i);
-					StockPriceVO spvo = new StockPriceVO();
-					spvo.setDate(nextWorkingDateList.get(i));
-					spvo.setStockId(stockId);
-					spvo.setLastClose(curSPVO.close);
-					spvo.setOpen(Strings.convert2ScaleDecimal(spvo.lastClose * (1.0 + svo.getOpen() / 100.0)));
-					spvo.setClose(Strings.convert2ScaleDecimal(spvo.lastClose * (1.0 + svo.getClose() / 100.0)));
-					spvo.setLow(Strings.convert2ScaleDecimal(spvo.lastClose * (1.0 + svo.getLow() / 100.0)));
-					spvo.setHigh(Strings.convert2ScaleDecimal(spvo.lastClose * (1.0 + svo.getHigh() / 100.0)));
-					spvo.setVolume((long) (curSPVO.volume * svo.getVolume()));
-
-					spList.add(spvo);
-					curSPVO = spvo;
-				}
-			}
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-	// common function to fetch price from stockPrice table
-	protected List<StockPriceVO> fetchAllPrices(String stockid) {
-		List<StockPriceVO> spList = null;
-		spList = stockPriceTable.getStockPriceById(stockid);
-		// update price based on chuQuanChuXi event
-		chuQuanChuXiPriceHelper.updatePrice(stockid, spList);
-		return spList;
 	}
 
 	protected boolean isStockDateSelected(String date, String aDate) {

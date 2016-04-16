@@ -12,6 +12,7 @@ import javax.ws.rs.Produces;
 
 import org.easystogu.db.access.ChuQuanChuXiPriceHelper;
 import org.easystogu.db.access.StockPriceTableHelper;
+import org.easystogu.db.table.BollVO;
 import org.easystogu.db.table.StockPriceVO;
 import org.easystogu.portal.init.TrendModeLoader;
 import org.easystogu.trendmode.vo.SimplePriceVO;
@@ -23,10 +24,10 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class PriceEndPoint {
+	protected static String HHmmss = "00:00:00";
 	private StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
-	protected ChuQuanChuXiPriceHelper chuQuanChuXiPriceHelper = new ChuQuanChuXiPriceHelper();
 	@Autowired
-    private TrendModeLoader trendModeLoader;
+	protected ProcessRequestParmsInPostBody postParmsProcess;
 	private String dateRegex = "[0-9]{4}-[0-9]{2}-[0-9]{2}";
 	private String fromToRegex = dateRegex + "_" + dateRegex;
 
@@ -53,47 +54,27 @@ public class PriceEndPoint {
 	@Produces("application/json")
 	public List<StockPriceVO> queryDayPriceByIdWithForecastPrice(@PathParam("stockId") String stockIdParm,
 			@PathParam("date") String dateParm, String postBody) {
-		List<StockPriceVO> spList = this.fetchAllPrices(stockIdParm);
+		List<StockPriceVO> rtnSpList = new ArrayList<StockPriceVO>();
+		List<StockPriceVO> spList = postParmsProcess.updateStockPriceAccordingToRequest(stockIdParm, postBody);
 
-		try {
-			// parse the forecast body and add back to spList
-			if (Strings.isNotEmpty(postBody)) {
-				StockPriceVO curSPVO = spList.get(spList.size() - 1);
-
-				JSONObject jsonParm = new JSONObject(postBody);
-				String trendModeName = jsonParm.getString("trendModeName");
-				TrendModeVO tmo = trendModeLoader.loadTrendMode(trendModeName);
-				List<String> nextWorkingDateList = WeekdayUtil.nextWorkingDateList(curSPVO.date, tmo.prices.size());
-
-				for (int i = 0; i < tmo.prices.size(); i++) {
-					SimplePriceVO svo = tmo.prices.get(i);
-					StockPriceVO spvo = new StockPriceVO();
-					spvo.setDate(nextWorkingDateList.get(i));
-					spvo.setStockId(stockIdParm);
-					spvo.setLastClose(curSPVO.close);
-					spvo.setOpen(Strings.convert2ScaleDecimal(spvo.lastClose * (1.0 + svo.getOpen() / 100.0)));
-					spvo.setClose(Strings.convert2ScaleDecimal(spvo.lastClose * (1.0 + svo.getClose() / 100.0)));
-					spvo.setLow(Strings.convert2ScaleDecimal(spvo.lastClose * (1.0 + svo.getLow() / 100.0)));
-					spvo.setHigh(Strings.convert2ScaleDecimal(spvo.lastClose * (1.0 + svo.getHigh() / 100.0)));
-					spvo.setVolume((long) (curSPVO.volume * svo.getVolume()));
-
-					spList.add(spvo);
-					curSPVO = spvo;
-				}
+		for (StockPriceVO vo : spList) {
+			if (this.isStockDateSelected(dateParm, vo.date)) {
+				rtnSpList.add(vo);
 			}
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return spList;
 		}
 
-		return spList;
+		return rtnSpList;
 	}
 
-	// common function to fetch price from stockPrice table
-	protected List<StockPriceVO> fetchAllPrices(String stockid) {
-		List<StockPriceVO> spList = null;
-		spList = stockPriceTable.getStockPriceById(stockid);
-		return spList;
+	protected boolean isStockDateSelected(String date, String aDate) {
+		if (Pattern.matches(fromToRegex, date)) {
+			String date1 = date.split("_")[0];
+			String date2 = date.split("_")[1];
+			return Strings.isDateSelected(date1 + " " + HHmmss, date2 + " " + HHmmss, aDate + " " + HHmmss);
+		}
+		if (Pattern.matches(dateRegex, date) || Strings.isEmpty(date)) {
+			return aDate.equals(date);
+		}
+		return false;
 	}
 }

@@ -22,12 +22,14 @@ demo
           var indicator = "shenxian";
           var dateFrom = "1991-01-01";
           var dateTo = "2099-12-31";
-          var trendModeName = "M_Tou";
+          var trendModeName = "";
+          var nDays = "1";
           
 	      var ForecastForm = React.createClass({
 	         getInitialState: function() {
 	         return {
-	            trendModeName: "M_Tou",
+	            trendModeName: "",
+                nDays : "1",
                 options: []
 	        };
 	      },
@@ -40,24 +42,31 @@ demo
 	
 	      handleSubmitClick: function() {
 	         var data = {
-	            trendModeName  : this.state.trendModeName,
+	            trendModeName  :  this.state.trendModeName,
+                nDays :  this.state.nDays
 	        };	        			   
   
             trendModeName = data.trendModeName;
+            nDays = data.nDays;
+
+	        var reqParms = {
+		        "trendModeName" : trendModeName,
+                "nDays" : nDays
+	        };
 
             //reset ajax async to true when load big data from portal
             $.ajaxSettings.async = true;
 	        
             if(indicator == "shenxian"){ 
-	           loadShenXianWithForecast(stockId, dateFrom, dateTo, trendModeName);
+	           loadShenXianWithReqParms(stockId, dateFrom, dateTo, reqParms);
             }else if(indicator == "luzao"){ 
-	           loadLuZaoWithForecast(stockId, dateFrom, dateTo, trendModeName);
+	           loadLuZaoWithReqParms(stockId, dateFrom, dateTo, reqParms);
             }else if(indicator == "boll"){ 
-	           loadBollWithForecast(stockId, dateFrom, dateTo, trendModeName);
+	           loadBollWithReqParms(stockId, dateFrom, dateTo, reqParms);
             }else if(indicator == "macd"){ 
-	           loadMacdWithForecast(stockId, dateFrom, dateTo, trendModeName);
+	           loadMacdWithReqParms(stockId, dateFrom, dateTo, reqParms);
             }else if(indicator == "qsdd"){ 
-	           loadQsddWithForecast(stockId, dateFrom, dateTo, trendModeName);
+	           loadQsddWithReqParms(stockId, dateFrom, dateTo, reqParms);
             }
 	      },
 	      
@@ -68,6 +77,10 @@ demo
                   $.ajaxSettings.async = true;
                   this.state.options = [];
 
+                  //first option is empty
+	              this.state.options.push(
+                      <option value=''></option>
+                      );
                   for (var i = 0; i < trendModeNames.length; i++) {
                       this.state.options.push(
                       <option value={trendModeNames[i]}>{trendModeNames[i]}</option>
@@ -78,6 +91,8 @@ demo
                   loadLuZao('v2', '999999', dateFrom, dateTo);
 
 			      return (<div>
+                              <label>nDays</label>
+			                  <input type="text" value={this.state.nDays} name='nDays' maxLength="4" onChange={this.handleChange} />&nbsp;&nbsp;
 			                  <label>TrendModeName:</label>
 			                  <select name='trendModeName' onChange={this.handleChange}>
                               {this.state.options}

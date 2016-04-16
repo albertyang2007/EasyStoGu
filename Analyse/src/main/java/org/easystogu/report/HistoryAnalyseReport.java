@@ -81,10 +81,21 @@ public class HistoryAnalyseReport {
 			if (reportVO == null) {
 				String startDate = overDayList.get(index - 120).priceVO.date;
 				String endDate = overDayList.get(index + 1).priceVO.date;
+
+				System.out.println(startDate + " ~~ " + endDate);
+
 				// include the startDate, not include the endDate
 				List<StockSuperVO> subOverWeekList = this.getSubWeekVOList(overWeekList, startDate, endDate);
-				if (combineAanalyserHelper.isConditionSatisfy(checkPoint, overDayList.subList(index - 120, index + 1),
-						subOverWeekList)) {
+				
+				//System.out.println(subOverWeekList.get(0).priceVO.date + " week "
+				//		+ subOverWeekList.get(subOverWeekList.size() - 1).priceVO.date);
+				
+				List<StockSuperVO> subOverDayList = overDayList.subList(index - 120, index + 2);
+
+				//System.out.println(subOverDayList.get(0).priceVO.date + " day "
+				//		+ subOverDayList.get(subOverDayList.size() - 1).priceVO.date);
+
+				if (combineAanalyserHelper.isConditionSatisfy(checkPoint, subOverDayList, subOverWeekList)) {
 					reportVO = new HistoryReportDetailsVO(overDayList);
 					reportVO.setBuyPriceVO(superVO.priceVO);
 					continue;
@@ -148,8 +159,8 @@ public class HistoryAnalyseReport {
 
 		for (String stockId : stockIds) {
 
-			// if (!stockId.equals("600383"))
-			// continue;
+			if (!stockId.equals("002609"))
+				continue;
 
 			List<HistoryReportDetailsVO> historyReportList = this.doAnalyseReport(stockId, checkPoint);
 			for (HistoryReportDetailsVO reportVO : historyReportList) {
@@ -266,11 +277,13 @@ public class HistoryAnalyseReport {
 	public static void main(String[] args) {
 		HistoryAnalyseReport reporter = new HistoryAnalyseReport();
 		FileConfigurationService config = FileConfigurationService.getInstance();
-		for (DailyCombineCheckPoint checkPoint : DailyCombineCheckPoint.values()) {
-			if (config.getString("general_CheckPoint", "").contains(checkPoint.name())) {
-				reporter.searchAllStockIdAccordingToCheckPoint(checkPoint);
-			}
-		}
-		// reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.Continue_ZiJinLiu_DDX_RED_KDJ_Gorden);
+		// for (DailyCombineCheckPoint checkPoint :
+		// DailyCombineCheckPoint.values()) {
+		// if (config.getString("general_CheckPoint",
+		// "").contains(checkPoint.name())) {
+		// reporter.searchAllStockIdAccordingToCheckPoint(checkPoint);
+		// }
+		// }
+		reporter.searchAllStockIdAccordingToCheckPoint(DailyCombineCheckPoint.HengPang_Ready_To_Break_Platform_KDJ_Gordon);
 	}
 }
