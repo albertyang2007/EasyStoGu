@@ -15,6 +15,11 @@ public class WeekdayUtil {
 		return sdf.format(new Date()).toString();
 	}
 
+	public static int currentYear() {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
+		return Integer.parseInt(sdf.format(new Date()).toString());
+	}
+
 	/**
 	 * @title 判断两个日期是否在指定工作日内
 	 * @detail (只计算周六和周日) 例如：前时间2008-12-05，后时间2008-12-11
@@ -241,8 +246,6 @@ public class WeekdayUtil {
 	}
 
 	public static void main(String[] args) {
-
-		List<String> list = WeekdayUtil.nextWorkingDateList("2016-02-22", 20);
-		System.out.println(list);
+		System.out.println(WeekdayUtil.currentYear());
 	}
 }

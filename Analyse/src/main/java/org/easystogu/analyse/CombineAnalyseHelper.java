@@ -1378,7 +1378,7 @@ public class CombineAnalyseHelper {
 			// if next week find one priceIncrease is bigger then startVO,
 			// then not the platform
 			if (priceIncrease > startPriceIncrease) {
-				 System.out.println("debug 4 " + Sdate + " ~ " + Edate);
+				// System.out.println("debug 4 " + Sdate + " ~ " + Edate);
 				return false;
 			}
 
@@ -1425,7 +1425,7 @@ public class CombineAnalyseHelper {
 		// next avg close is greater than the middle platform startVO.open +
 		// close / 2
 		if (avgClose < ((startVO.priceVO.open + startVO.priceVO.close) / 2.05)) {
-			 System.out.println("debug 10 " + Sdate + " ~ " + Edate);
+			// System.out.println("debug 10 " + Sdate + " ~ " + Edate);
 			return false;
 		}
 		// System.out.println("debug 11 " + Sdate + " ~ " + Edate);

@@ -285,7 +285,8 @@ public class HistoryAnalyseReport {
 		if (!lastWeekPriceDate.equals(endDate)) {
 			// the endDate is not at Friday, so need to re-count the last week
 			// superVO, including priceVO and all other indicator vo.
-			spList = this.getStockSuperVOBeforeDateAndRecountIndicator(stockId, endDate);
+			spList = this.getStockSuperVOBeforeDateAndRecountIndicator(stockId, overWeekList, endDate);
+			IndProcessHelper.processWeekList(spList);
 		}
 		// then select all super vo between startDate and endDate
 		for (StockSuperVO vo : spList) {
@@ -315,14 +316,17 @@ public class HistoryAnalyseReport {
 	}
 
 	// for history count and report, it need to de-merge the week price vo
-	private List<StockSuperVO> getStockSuperVOBeforeDateAndRecountIndicator(String stockId, String endDay) {
+	private List<StockSuperVO> getStockSuperVOBeforeDateAndRecountIndicator(String stockId,
+			List<StockSuperVO> overWeekList, String endDay) {
 		// merge them into one overall VO
 		List<StockSuperVO> overList = new ArrayList<StockSuperVO>();
 
 		List<StockPriceVO> spDayList = stockPriceTable.getStockPriceByIdBeforeDate(stockId, endDay);
+		chuQuanChuXiPriceHelper.updatePrice(stockId, spDayList);
 
 		List<StockPriceVO> spWeekList = weekPriceMergeUtil.generateAllWeekPriceVO(stockId, spDayList);
 
+		//为了更精确的分析，需要重新计算week ind的值
 		// re-count week macd
 		List<MacdVO> macdList = new ArrayList<MacdVO>();
 		List<Double> close = StockPriceFetcher.getClosePrice(spWeekList);
@@ -386,7 +390,7 @@ public class HistoryAnalyseReport {
 			superVO.setShenXianVO(shenXianList.get(index));
 			overList.add(superVO);
 		}
-
+		
 		return overList;
 	}
 

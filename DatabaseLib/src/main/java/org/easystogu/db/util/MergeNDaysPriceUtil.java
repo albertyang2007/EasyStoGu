@@ -13,7 +13,7 @@ public class MergeNDaysPriceUtil {
 
 	public List<StockPriceVO> generateAllWeekPriceVO(String stockId, List<StockPriceVO> spList) {
 		List<StockPriceVO> spWeekList = new ArrayList<StockPriceVO>();
-		for (int year = 1991; year <= 2099; year++) {
+		for (int year = 1991; year <= WeekdayUtil.currentYear(); year++) {
 			for (int week = 1; week <= 54; week++) {
 				List<String> dates = WeekdayUtil.getWorkingDaysOfWeek(year, week);
 				if ((dates != null) && (dates.size() >= 1)) {
@@ -56,7 +56,7 @@ public class MergeNDaysPriceUtil {
 		return spWeekList;
 	}
 
-	//后对其模式
+	// 后对其模式
 	// such as merge 5 days price into a real week price, it will discard some
 	// vo from the start index, let all the remain can group into a week vo
 	public List<StockPriceVO> generateNDaysPriceVOInDescOrder(int nDays, List<StockPriceVO> spDayList) {
