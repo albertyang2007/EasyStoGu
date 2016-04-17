@@ -75,17 +75,25 @@ public class HistoryAnalyseReportOld {
 		IndProcessHelper.processWeekList(overWeekList);
 
 		HistoryReportDetailsVO reportVO = null;
-		for (int index = 120; index < overDayList.size() - 1; index++) {
+		for (int index = 120; index < overDayList.size(); index++) {
 			StockSuperVO superVO = overDayList.get(index);
 
 			// buy point
 			if (reportVO == null) {
 				String startDate = overDayList.get(index - 120).priceVO.date;
-				String endDate = overDayList.get(index + 1).priceVO.date;
+				String endDate = overDayList.get(index).priceVO.date;
+				System.out.println(startDate + " ~~ " + endDate);
 				// include the startDate, not include the endDate
 				List<StockSuperVO> subOverWeekList = this.getSubWeekVOList(overWeekList, startDate, endDate);
-				if (combineAanalyserHelper.isConditionSatisfy(checkPoint, overDayList.subList(index - 120, index + 1),
-						subOverWeekList)) {
+				System.out.println(subOverWeekList.get(0).priceVO.date + " week "
+						+ subOverWeekList.get(subOverWeekList.size() - 1).priceVO.date);
+
+				List<StockSuperVO> subOverDayList = overDayList.subList(index - 120, index + 1);
+
+				System.out.println(subOverDayList.get(0).priceVO.date + " day "
+						+ subOverDayList.get(subOverDayList.size() - 1).priceVO.date);
+
+				if (combineAanalyserHelper.isConditionSatisfy(checkPoint, subOverDayList, subOverWeekList)) {
 					reportVO = new HistoryReportDetailsVO(overDayList);
 					reportVO.setBuyPriceVO(superVO.priceVO);
 					continue;

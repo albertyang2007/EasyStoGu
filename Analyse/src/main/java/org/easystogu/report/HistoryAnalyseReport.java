@@ -104,22 +104,18 @@ public class HistoryAnalyseReport {
 				String startDate = overDayList.get(index - 120).priceVO.date;
 				String endDate = overDayList.get(index).priceVO.date;
 
-				// System.out.println(startDate + " ~~ " + endDate);
+				System.out.println(startDate + " ~~ " + endDate);
 
 				// include the startDate, not include the endDate
 				List<StockSuperVO> subOverWeekList = this.getSubWeekVOList(stockId, overWeekList, startDate, endDate);
 
-				// System.out.println(subOverWeekList.get(0).priceVO.date +
-				// " week "
-				// + subOverWeekList.get(subOverWeekList.size() -
-				// 1).priceVO.date);
+				System.out.println(subOverWeekList.get(0).priceVO.date + " week "
+						+ subOverWeekList.get(subOverWeekList.size() - 1).priceVO.date);
 
 				List<StockSuperVO> subOverDayList = overDayList.subList(index - 120, index + 1);
 
-				// System.out.println(subOverDayList.get(0).priceVO.date +
-				// " day "
-				// + subOverDayList.get(subOverDayList.size() -
-				// 1).priceVO.date);
+				System.out.println(subOverDayList.get(0).priceVO.date + " day "
+						+ subOverDayList.get(subOverDayList.size() - 1).priceVO.date);
 
 				if (combineAanalyserHelper.isConditionSatisfy(checkPoint, subOverDayList, subOverWeekList)) {
 					reportVO = new HistoryReportDetailsVO(overDayList);
@@ -326,7 +322,7 @@ public class HistoryAnalyseReport {
 
 		List<StockPriceVO> spWeekList = weekPriceMergeUtil.generateAllWeekPriceVO(stockId, spDayList);
 
-		//为了更精确的分析，需要重新计算week ind的值
+		// 为了更精确的分析，需要重新计算week ind的值
 		// re-count week macd
 		List<MacdVO> macdList = new ArrayList<MacdVO>();
 		List<Double> close = StockPriceFetcher.getClosePrice(spWeekList);
@@ -390,7 +386,7 @@ public class HistoryAnalyseReport {
 			superVO.setShenXianVO(shenXianList.get(index));
 			overList.add(superVO);
 		}
-		
+
 		return overList;
 	}
 
