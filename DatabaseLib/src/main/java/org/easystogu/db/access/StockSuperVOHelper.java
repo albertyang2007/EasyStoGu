@@ -9,13 +9,13 @@ import org.easystogu.db.table.MacdVO;
 import org.easystogu.db.table.ShenXianVO;
 import org.easystogu.db.table.StockPriceVO;
 import org.easystogu.db.table.StockSuperVO;
-import org.easystogu.db.util.WeekPriceMergeUtil;
+import org.easystogu.db.util.MergeNDaysPriceUtil;
 import org.easystogu.utils.Strings;
 
 import com.google.common.primitives.Doubles;
 
 public class StockSuperVOHelper {
-	private WeekPriceMergeUtil weekPriceMergeUtil = new WeekPriceMergeUtil();
+	private MergeNDaysPriceUtil weekPriceMergeUtil = new MergeNDaysPriceUtil();
 	protected StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
 	protected IndMacdTableHelper macdTable = IndMacdTableHelper.getInstance();
 	protected IndKDJTableHelper kdjTable = IndKDJTableHelper.getInstance();

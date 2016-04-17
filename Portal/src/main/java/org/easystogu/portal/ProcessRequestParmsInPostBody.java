@@ -1,11 +1,11 @@
 package org.easystogu.portal;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.easystogu.db.access.ChuQuanChuXiPriceHelper;
 import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.table.StockPriceVO;
+import org.easystogu.db.util.MergeNDaysPriceUtil;
 import org.easystogu.portal.init.TrendModeLoader;
 import org.easystogu.trendmode.vo.SimplePriceVO;
 import org.easystogu.trendmode.vo.TrendModeVO;
@@ -24,6 +24,7 @@ import org.springframework.stereotype.Component;
 public class ProcessRequestParmsInPostBody {
 	protected StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
 	protected ChuQuanChuXiPriceHelper chuQuanChuXiPriceHelper = new ChuQuanChuXiPriceHelper();
+	protected MergeNDaysPriceUtil mergeNdaysPriceHeloer = new MergeNDaysPriceUtil();
 	@Autowired
 	protected TrendModeLoader trendModeLoader;
 
@@ -37,12 +38,12 @@ public class ProcessRequestParmsInPostBody {
 			// parms has process priority, do not change the order
 			String nDays = jsonParm.getString("nDays");
 			if (Strings.isNotEmpty(nDays) && Strings.isNumeric(nDays)) {
-				spList = this.updateSpListWithNDays(Integer.parseInt(nDays), spList);
+				spList = this.mergeNDaysPrice(Integer.parseInt(nDays), spList);
 			}
 
 			String trendModeName = jsonParm.getString("trendModeName");
 			if (Strings.isNotEmpty(trendModeName)) {
-				spList = this.updateSpListWithTrendMode(trendModeName, spList);
+				spList = this.appendTrendModePrice(trendModeName, spList);
 			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
@@ -53,46 +54,11 @@ public class ProcessRequestParmsInPostBody {
 		return spList;
 	}
 
-	private List<StockPriceVO> updateSpListWithNDays(int nDays, List<StockPriceVO> spList) {
-
-		if (nDays <= 0)
-			return spList;
-
-		List<StockPriceVO> newSpList = new ArrayList<StockPriceVO>();
-
-		int startIndex = spList.size() % nDays;
-
-		for (int i = startIndex; i < spList.size(); i += nDays) {
-
-			List<StockPriceVO> subSpList = spList.subList(i, i + nDays);
-
-			int last = subSpList.size() - 1;
-			// first day
-			StockPriceVO mergeVO = subSpList.get(0).copy();
-			// last day
-			mergeVO.close = subSpList.get(last).close;
-			mergeVO.date = subSpList.get(last).date;
-
-			if (subSpList.size() > 1) {
-				for (int j = 1; j < subSpList.size(); j++) {
-					StockPriceVO vo = subSpList.get(j);
-					mergeVO.volume += vo.volume;
-					if (mergeVO.high < vo.high) {
-						mergeVO.high = vo.high;
-					}
-					if (mergeVO.low > vo.low) {
-						mergeVO.low = vo.low;
-					}
-				}
-			}
-
-			newSpList.add(mergeVO);
-		}
-
-		return newSpList;
+	private List<StockPriceVO> mergeNDaysPrice(int nDays, List<StockPriceVO> spList) {
+		return mergeNdaysPriceHeloer.generateNDaysPriceVOInDescOrder(nDays, spList);
 	}
 
-	private List<StockPriceVO> updateSpListWithTrendMode(String trendModeName, List<StockPriceVO> spList) {
+	private List<StockPriceVO> appendTrendModePrice(String trendModeName, List<StockPriceVO> spList) {
 		// parse the forecast body and add back to spList
 		StockPriceVO curSPVO = spList.get(spList.size() - 1);
 		TrendModeVO tmo = trendModeLoader.loadTrendMode(trendModeName);

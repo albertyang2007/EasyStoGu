@@ -1345,18 +1345,18 @@ public class CombineAnalyseHelper {
 
 		String Sdate = startVO.priceVO.date;
 		String Edate = endVO.priceVO.date;
-		// System.out.println("debug 1 " + Sdate + " ~ " + Edate + " " +
-		// startVO.kdjVO);
+		 System.out.println("debug 1 " + Sdate + " ~ " + Edate + " " +
+		 startVO.kdjVO);
 
 		if (startVO.kdjVO.j < 73)
 			return false;
 
-		// System.out.println("debug 2 " + Sdate + " ~ " + Edate);
+		 System.out.println("debug 2 " + Sdate + " ~ " + Edate);
 
 		if (startVO.macdVO.macd < 0)
 			return false;
 
-		// System.out.println("debug 3 " + Sdate + " ~ " + Edate);
+		 System.out.println("debug 3 " + Sdate + " ~ " + Edate);
 
 		double startPriceIncrease = ((startVO.priceVO.close - startVO.priceVO.lastClose) * 100.0)
 				/ startVO.priceVO.lastClose;
@@ -1367,7 +1367,7 @@ public class CombineAnalyseHelper {
 		double minKDJ_K = 100;
 
 		if (startPriceIncrease < 12) {
-			// System.out.println("debug 4 " + Sdate + " ~ " + Edate);
+			 System.out.println("debug 4 " + Sdate + " ~ " + Edate);
 			return false;
 		}
 
@@ -1378,26 +1378,26 @@ public class CombineAnalyseHelper {
 			// if next week find one priceIncrease is bigger then startVO,
 			// then not the platform
 			if (priceIncrease > startPriceIncrease) {
-				// System.out.println("debug 4 " + Sdate + " ~ " + Edate);
+				 System.out.println("debug 4 " + Sdate + " ~ " + Edate);
 				return false;
 			}
 
 			// if next week find one high is greater since platform
 			// startVO.hight, then not the platform
 			if (vo.priceVO.high > startVO.priceVO.high * 1.05) {
-				// System.out.println("debug 5 " + Sdate + " ~ " + Edate);
+				 System.out.println("debug 5 " + Sdate + " ~ " + Edate);
 				return false;
 			}
 
 			// if next week find one low is less than the platform
 			// startVO.open or less then ma20
 			if (vo.priceVO.low < startVO.priceVO.low * 0.975) {
-				// System.out.println("debug 6 " + Sdate + " ~ " + Edate);
+				 System.out.println("debug 6 " + Sdate + " ~ " + Edate);
 				return false;
 			}
 
 			if (vo.kdjCorssType == CrossType.DEAD) {
-				// System.out.println("debug 7 " + Sdate + " ~ " + Edate);
+				 System.out.println("debug 7 " + Sdate + " ~ " + Edate);
 				findKDJDead = true;
 			}
 
@@ -1411,13 +1411,13 @@ public class CombineAnalyseHelper {
 
 		// if no found KDJ dead, not the long platform
 		if (!findKDJDead) {
-			// System.out.println("debug 8 " + Sdate + " ~ " + Edate);
+			 System.out.println("debug 8 " + Sdate + " ~ " + Edate);
 			return false;
 		}
 
 		// max KDJ_K and min KDJ_K must between 15%
 		if ((maxKDJ_K - minKDJ_K) / minKDJ_K * 100 >= 25) {
-			// System.out.println("debug 9 " + Sdate + " ~ " + Edate);
+			 System.out.println("debug 9 " + Sdate + " ~ " + Edate);
 			return false;
 		}
 
@@ -1425,7 +1425,7 @@ public class CombineAnalyseHelper {
 		// next avg close is greater than the middle platform startVO.open +
 		// close / 2
 		if (avgClose < ((startVO.priceVO.open + startVO.priceVO.close) / 2.05)) {
-			// System.out.println("debug 10 " + Sdate + " ~ " + Edate);
+			 System.out.println("debug 10 " + Sdate + " ~ " + Edate);
 			return false;
 		}
 		// System.out.println("debug 11 " + Sdate + " ~ " + Edate);
@@ -1452,18 +1452,18 @@ public class CombineAnalyseHelper {
 		String Edate = endVO.priceVO.date;
 		int redKLineCount = 0;
 
-		// System.out.println("debug 1 " + Sdate + " ~ " + Edate + " " +
-		// startVO.kdjVO);
+		 System.out.println("debug 1 " + Sdate + " ~ " + Edate + " " +
+		 startVO.kdjVO);
 
 		if (startVO.kdjVO.j < 73)
 			return false;
 
-		// System.out.println("debug 2 " + Sdate + " ~ " + Edate);
+		 System.out.println("debug 2 " + Sdate + " ~ " + Edate);
 
 		if (startVO.macdVO.macd < 0)
 			return false;
 
-		// System.out.println("debug 3 " + Sdate + " ~ " + Edate);
+		 System.out.println("debug 3 " + Sdate + " ~ " + Edate);
 
 		double startPriceIncrease = ((startVO.priceVO.close - startVO.priceVO.lastClose) * 100.0)
 				/ startVO.priceVO.lastClose;
@@ -1474,7 +1474,7 @@ public class CombineAnalyseHelper {
 		double minKDJ_K = 100;
 
 		if (startPriceIncrease < 12) {
-			// System.out.println("debug 41 " + Sdate + " ~ " + Edate);
+			 System.out.println("debug 41 " + Sdate + " ~ " + Edate);
 			return false;
 		}
 
@@ -1487,28 +1487,28 @@ public class CombineAnalyseHelper {
 			// if next week find one priceIncrease is bigger then startVO,
 			// then not the platform
 			if (priceIncrease > startPriceIncrease) {
-				// System.out.println("debug 42 " + Sdate + " ~ " + Edate);
+				 System.out.println("debug 42 " + Sdate + " ~ " + Edate);
 				return false;
 			}
 
 			// if next week find one high is greater since platform
 			// startVO.hight, then not the platform
 			if (vo.priceVO.high > startVO.priceVO.high * 1.05) {
-				// System.out.println("debug 5 " + Sdate + " ~ " + Edate +
-				// " High Price=" + vo.priceVO.high
-				// + ", start High Price=" + startVO.priceVO.high);
+				 System.out.println("debug 5 " + Sdate + " ~ " + Edate +
+				 " High Price=" + vo.priceVO.high
+				 + ", start High Price=" + startVO.priceVO.high);
 				return false;// reasonable???????
 			}
 
 			// if next week find one low is less than the platform
 			// startVO.open or less then ma20
 			if (vo.priceVO.low < startVO.priceVO.low * 0.975) {
-				// System.out.println("debug 6 " + Sdate + " ~ " + Edate);
+				 System.out.println("debug 6 " + Sdate + " ~ " + Edate);
 				return false;
 			}
 
 			if (vo.kdjCorssType == CrossType.DEAD) {
-				// System.out.println("debug 7 " + Sdate + " ~ " + Edate);
+				 System.out.println("debug 7 " + Sdate + " ~ " + Edate);
 				findKDJDead = true;
 			}
 
@@ -1526,13 +1526,13 @@ public class CombineAnalyseHelper {
 
 		// if no found KDJ dead, not the long platform
 		if (!findKDJDead) {
-			// System.out.println("debug 8 " + Sdate + " ~ " + Edate);
+			 System.out.println("debug 8 " + Sdate + " ~ " + Edate);
 			return false;
 		}
 
 		// max KDJ_K and min KDJ_K must between 15%
 		if ((maxKDJ_K - minKDJ_K) / minKDJ_K * 100 >= 25) {
-			// System.out.println("debug 9 " + Sdate + " ~ " + Edate);
+			 System.out.println("debug 9 " + Sdate + " ~ " + Edate);
 			// return false;
 		}
 
@@ -1540,13 +1540,13 @@ public class CombineAnalyseHelper {
 		// next avg close is greater than the middle platform startVO.open +
 		// close / 2.05
 		if (avgClose < ((startVO.priceVO.open + startVO.priceVO.close) / 2.05)) {
-			// System.out.println("debug 10 " + avgClose + " " + Sdate + " ~ " +
-			// Edate);
+			 System.out.println("debug 10 " + avgClose + " " + Sdate + " ~ " +
+			 Edate);
 			return false;
 		}
 
 		if (redKLineCount < (endIndex - startIndex) / 2) {
-			// System.out.println("debug 11 " + Sdate + " ~ " + Edate);
+			 System.out.println("debug 11 " + Sdate + " ~ " + Edate);
 			// return false;
 		}
 		// System.out.println("debug OK " + Sdate + " ~ " + Edate);

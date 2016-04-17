@@ -8,7 +8,7 @@ import org.easystogu.db.table.StockPriceVO;
 import org.easystogu.utils.WeekdayUtil;
 
 //merge days price vo into week price vo
-public class WeekPriceMergeUtil {
+public class MergeNDaysPriceUtil {
 	protected ChuQuanChuXiPriceHelper chuQuanChuXiPriceHelper = new ChuQuanChuXiPriceHelper();
 
 	public List<StockPriceVO> generateAllWeekPriceVO(String stockId, List<StockPriceVO> spList) {
@@ -54,6 +54,49 @@ public class WeekPriceMergeUtil {
 			}
 		}
 		return spWeekList;
+	}
+
+	//后对其模式
+	// such as merge 5 days price into a real week price, it will discard some
+	// vo from the start index, let all the remain can group into a week vo
+	public List<StockPriceVO> generateNDaysPriceVOInDescOrder(int nDays, List<StockPriceVO> spDayList) {
+		if (nDays <= 1)
+			return spDayList;
+
+		List<StockPriceVO> newWeekSpList = new ArrayList<StockPriceVO>();
+
+		int startIndex = spDayList.size() % nDays;
+
+		System.out.println("sub startDay=" + spDayList.get(0).date + ", size=" + spDayList.size() + ", startIndex="
+				+ startIndex);
+
+		for (int i = startIndex; i < spDayList.size(); i += nDays) {
+
+			List<StockPriceVO> subSpList = spDayList.subList(i, i + nDays);
+
+			int last = subSpList.size() - 1;
+			// first day
+			StockPriceVO mergeVO = subSpList.get(0).copy();
+			// last day
+			mergeVO.close = subSpList.get(last).close;
+			mergeVO.date = subSpList.get(last).date;
+
+			if (subSpList.size() > 1) {
+				for (int j = 1; j < subSpList.size(); j++) {
+					StockPriceVO vo = subSpList.get(j);
+					mergeVO.volume += vo.volume;
+					if (mergeVO.high < vo.high) {
+						mergeVO.high = vo.high;
+					}
+					if (mergeVO.low > vo.low) {
+						mergeVO.low = vo.low;
+					}
+				}
+			}
+
+			newWeekSpList.add(mergeVO);
+		}
+		return newWeekSpList;
 	}
 
 	private List<StockPriceVO> getSubList(List<StockPriceVO> spList, String startDay, String endDay) {

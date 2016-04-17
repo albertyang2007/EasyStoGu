@@ -5,13 +5,13 @@ import java.util.List;
 import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.access.WeekStockPriceTableHelper;
 import org.easystogu.db.table.StockPriceVO;
-import org.easystogu.db.util.WeekPriceMergeUtil;
+import org.easystogu.db.util.MergeNDaysPriceUtil;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 
 //手动将2009年之后的stockprice分成每周入库，weeksotckprice，一次性运行
 public class WeeklyStockPriceManualCountAndSaveDBRunner {
 	private StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
-	private WeekPriceMergeUtil weekPriceMergeUtil = new WeekPriceMergeUtil();
+	private MergeNDaysPriceUtil weekPriceMergeUtil = new MergeNDaysPriceUtil();
 	private WeekStockPriceTableHelper weekStockPriceTable = WeekStockPriceTableHelper.getInstance();
 
 	public void deleteStockPrice(String stockId) {

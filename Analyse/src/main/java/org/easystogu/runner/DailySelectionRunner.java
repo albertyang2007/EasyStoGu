@@ -28,7 +28,7 @@ import org.easystogu.db.table.StockSuperVO;
 import org.easystogu.db.table.ZiJinLiuVO;
 import org.easystogu.easymoney.helper.RealTimeZiJinLiuFatchDataHelper;
 import org.easystogu.file.access.CompanyInfoFileHelper;
-import org.easystogu.report.HistoryAnalyseReport;
+import org.easystogu.report.HistoryAnalyseReportNew;
 import org.easystogu.report.HistoryReportDetailsVO;
 import org.easystogu.report.RangeHistoryReportVO;
 import org.easystogu.report.ReportTemplate;
@@ -49,7 +49,7 @@ public class DailySelectionRunner implements Runnable {
     private ZhuLiJingLiuRuTableHelper zhuLiJingLiuRuTableHelper = ZhuLiJingLiuRuTableHelper.getInstance();
     private ZiJinLiu3DayTableHelper ziJinLiu3DayTableHelper = ZiJinLiu3DayTableHelper.getInstance();
     private ZiJinLiu5DayTableHelper ziJinLiu5DayTableHelper = ZiJinLiu5DayTableHelper.getInstance();
-    private HistoryAnalyseReport historyReportHelper = new HistoryAnalyseReport();
+    private HistoryAnalyseReportNew historyReportHelper = new HistoryAnalyseReportNew();
     private CombineAnalyseHelper combineAnalyserHelper = new CombineAnalyseHelper();
     private boolean doHistoryAnalyzeInDailySelection = config.getBoolean("do_History_Analyze_In_Daily_Selection", true);
     private String[] specifySelectCheckPoints = config.getString("specify_Select_CheckPoint", "").split(";");
@@ -82,7 +82,8 @@ public class DailySelectionRunner implements Runnable {
             chuQuanChuXiPriceHelper.updateSuperPrice(stockId, overDayList);
             chuQuanChuXiPriceHelper.updateSuperPrice(stockId, overWeekList);
 
-            IndProcessHelper.process(overDayList, overWeekList);
+            IndProcessHelper.processDayList(overDayList);
+            IndProcessHelper.processWeekList(overWeekList);
 
             int index = overDayList.size() - 1;
             StockSuperVO superVO = overDayList.get(index);
