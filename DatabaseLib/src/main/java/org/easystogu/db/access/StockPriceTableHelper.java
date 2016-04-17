@@ -77,8 +77,8 @@ public class StockPriceTableHelper {
     // only use for weekPrice, query the weekPrice based on date
     //protected String QUERY_BY_STOCKID_AND_BETWEEN_DATE = "SELECT * FROM " + tableName
     //		+ " WHERE stockId = :stockId AND DATE >= :date1 AND DATE <= :date2 ORDER BY DATE";
-    protected String QUERY_BY_STOCKID_AND_LESS_THAN_DATE = "SELECT * FROM " + tableName
-            + " WHERE stockId = :stockId AND DATE < :date ORDER BY DATE";
+    protected String QUERY_BY_STOCKID_AND_BEFORE_DATE = "SELECT * FROM " + tableName
+            + " WHERE stockId = :stockId AND DATE <= :date ORDER BY DATE";
     // update batch price based on gaoSongZhuan and date
     protected String UPDATE_BATCH_PRICE_BASED_ON_CHUQUAN_AND_DATE = "UPDATE " + tableName
             + " SET open = open*:rate, high = high*:rate, low = low*:rate, close = close*:rate "
@@ -385,13 +385,14 @@ public class StockPriceTableHelper {
         return new ArrayList<StockPriceVO>();
     }
 
-    public List<StockPriceVO> getStockPriceByIdLessThanDate(String stockId, String date) {
+    //include the endDay
+    public List<StockPriceVO> getStockPriceByIdBeforeDate(String stockId, String endDay) {
         try {
             MapSqlParameterSource namedParameters = new MapSqlParameterSource();
             namedParameters.addValue("stockId", stockId);
-            namedParameters.addValue("date", date);
+            namedParameters.addValue("date", endDay);
 
-            List<StockPriceVO> list = this.namedParameterJdbcTemplate.query(QUERY_BY_STOCKID_AND_LESS_THAN_DATE,
+            List<StockPriceVO> list = this.namedParameterJdbcTemplate.query(QUERY_BY_STOCKID_AND_BEFORE_DATE,
                     namedParameters, new StockPriceVOMapper());
             return list;
         } catch (Exception e) {

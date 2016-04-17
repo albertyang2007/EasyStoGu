@@ -11,26 +11,47 @@ import org.easystogu.db.access.CheckPointDailySelectionTableHelper;
 import org.easystogu.db.access.CheckPointHistoryAnalyseTableHelper;
 import org.easystogu.db.access.CheckPointHistorySelectionTableHelper;
 import org.easystogu.db.access.ChuQuanChuXiPriceHelper;
+import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.access.StockSuperVOHelper;
 import org.easystogu.db.access.WeekStockSuperVOHelper;
+import org.easystogu.db.table.BollVO;
 import org.easystogu.db.table.CheckPointDailySelectionVO;
 import org.easystogu.db.table.CheckPointHistoryAnalyseVO;
+import org.easystogu.db.table.KDJVO;
+import org.easystogu.db.table.MacdVO;
+import org.easystogu.db.table.ShenXianVO;
+import org.easystogu.db.table.StockPriceVO;
 import org.easystogu.db.table.StockSuperVO;
+import org.easystogu.db.util.WeekPriceMergeUtil;
 import org.easystogu.file.access.CompanyInfoFileHelper;
+import org.easystogu.indicator.BOLLHelper;
+import org.easystogu.indicator.KDJHelper;
+import org.easystogu.indicator.MACDHelper;
+import org.easystogu.indicator.ShenXianHelper;
+import org.easystogu.indicator.runner.utils.StockPriceFetcher;
 import org.easystogu.utils.CrossType;
 import org.easystogu.utils.SellPointType;
+import org.easystogu.utils.Strings;
+
+import com.google.common.primitives.Doubles;
 
 public class HistoryAnalyseReport {
 	private FileConfigurationService config = FileConfigurationService.getInstance();
 	private CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 	private CheckPointHistorySelectionTableHelper historyReportTableHelper = CheckPointHistorySelectionTableHelper
 			.getInstance();
+	private StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
 	private WeekStockSuperVOHelper weekStockOverAllHelper = new WeekStockSuperVOHelper();
-	protected CombineAnalyseHelper combineAanalyserHelper = new CombineAnalyseHelper();
+	private CombineAnalyseHelper combineAanalyserHelper = new CombineAnalyseHelper();
 	private StockSuperVOHelper stockOverAllHelper = new StockSuperVOHelper();
 	private CheckPointHistoryAnalyseTableHelper cpHistoryAnalyse = CheckPointHistoryAnalyseTableHelper.getInstance();
 	private CheckPointDailySelectionTableHelper checkPointDailySelectionTable = CheckPointDailySelectionTableHelper
 			.getInstance();
+	private MACDHelper macdHelper = new MACDHelper();
+	private KDJHelper kdjHelper = new KDJHelper();
+	private ShenXianHelper shenXianHelper = new ShenXianHelper();
+	private BOLLHelper bollHelper = new BOLLHelper();
+	private WeekPriceMergeUtil weekPriceMergeUtil = new WeekPriceMergeUtil();
 	private String specifySelectCheckPoint = config.getString("specify_Select_CheckPoint", "");
 	private String[] specifySelectCheckPoints = specifySelectCheckPoint.split(";");
 	protected ChuQuanChuXiPriceHelper chuQuanChuXiPriceHelper = new ChuQuanChuXiPriceHelper();
@@ -82,18 +103,18 @@ public class HistoryAnalyseReport {
 				String startDate = overDayList.get(index - 120).priceVO.date;
 				String endDate = overDayList.get(index).priceVO.date;
 
-				System.out.println(startDate + " ~~ " + endDate);
+				//System.out.println(startDate + " ~~ " + endDate);
 
 				// include the startDate, not include the endDate
-				List<StockSuperVO> subOverWeekList = this.getSubWeekVOList(overWeekList, startDate, endDate);
-				
-				System.out.println(subOverWeekList.get(0).priceVO.date + " week "
-						+ subOverWeekList.get(subOverWeekList.size() - 1).priceVO.date);
-				
+				List<StockSuperVO> subOverWeekList = this.getSubWeekVOList(stockId, overWeekList, startDate, endDate);
+
+				//System.out.println(subOverWeekList.get(0).priceVO.date + " week "
+				//		+ subOverWeekList.get(subOverWeekList.size() - 1).priceVO.date);
+
 				List<StockSuperVO> subOverDayList = overDayList.subList(index - 120, index + 1);
 
-				System.out.println(subOverDayList.get(0).priceVO.date + " day "
-						+ subOverDayList.get(subOverDayList.size() - 1).priceVO.date);
+				//System.out.println(subOverDayList.get(0).priceVO.date + " day "
+				//		+ subOverDayList.get(subOverDayList.size() - 1).priceVO.date);
 
 				if (combineAanalyserHelper.isConditionSatisfy(checkPoint, subOverDayList, subOverWeekList)) {
 					reportVO = new HistoryReportDetailsVO(overDayList);
@@ -244,17 +265,31 @@ public class HistoryAnalyseReport {
 		return false;
 	}
 
-	public List<StockSuperVO> getSubWeekVOList(List<StockSuperVO> overWeekList, String startDate, String endDate) {
-		List<StockSuperVO> subList = new ArrayList<StockSuperVO>();
-
+	public List<StockSuperVO> getSubWeekVOList(String stockId, List<StockSuperVO> overWeekList, String startDate,
+			String endDate) {
+		List<StockSuperVO> subweekList = new ArrayList<StockSuperVO>();
+		List<StockSuperVO> spList = overWeekList;
+		// find the last week price vo
+		String lastWeekPriceDate = "";
 		for (StockSuperVO vo : overWeekList) {
-			// include the startDate, not include the endDate
-			if (vo.priceVO.date.compareTo(startDate) >= 0 && vo.priceVO.date.compareTo(endDate) <= 0) {
-				subList.add(vo);
+			if (vo.priceVO.date.compareTo(endDate) <= 0) {
+				lastWeekPriceDate = vo.priceVO.date;
 			}
 		}
 
-		return subList;
+		if (!lastWeekPriceDate.equals(endDate)) {
+			// the endDate is not at Friday, so need to re-count the last week
+			// superVO, including priceVO and all other indicator vo.
+			spList = this.getStockSuperVOBeforeDateAndRecountIndicator(stockId, endDate);
+		}
+		// then select all super vo between startDate and endDate
+		for (StockSuperVO vo : spList) {
+			if (vo.priceVO.date.compareTo(startDate) >= 0 && vo.priceVO.date.compareTo(endDate) <= 0) {
+				subweekList.add(vo);
+			}
+		}
+
+		return subweekList;
 	}
 
 	public List<StockSuperVO> getSubDayVOList(List<StockSuperVO> overDayList, String startDate, String endDate) {
@@ -272,6 +307,82 @@ public class HistoryAnalyseReport {
 
 	public void emptyTableByCheckPoint(String checkPoint) {
 		this.historyReportTableHelper.deleteByCheckPoint(checkPoint);
+	}
+
+	// for history count and report, it need to de-merge the week price vo
+	private List<StockSuperVO> getStockSuperVOBeforeDateAndRecountIndicator(String stockId, String endDay) {
+		// merge them into one overall VO
+		List<StockSuperVO> overList = new ArrayList<StockSuperVO>();
+
+		List<StockPriceVO> spDayList = stockPriceTable.getStockPriceByIdBeforeDate(stockId, endDay);
+
+		List<StockPriceVO> spWeekList = weekPriceMergeUtil.generateAllWeekPriceVO(stockId, spDayList);
+
+		// re-count week macd
+		List<MacdVO> macdList = new ArrayList<MacdVO>();
+		List<Double> close = StockPriceFetcher.getClosePrice(spWeekList);
+		double[][] macd = macdHelper.getMACDList(Doubles.toArray(close));
+		for (int i = 0; i < macd[0].length; i++) {
+			MacdVO vo = new MacdVO();
+			vo.setDif(Strings.convert2ScaleDecimal(macd[0][i]));
+			vo.setDea(Strings.convert2ScaleDecimal(macd[1][i]));
+			vo.setMacd(Strings.convert2ScaleDecimal(macd[2][i]));
+			vo.setStockId(stockId);
+			vo.setDate(spWeekList.get(i).date);
+			macdList.add(vo);
+		}
+
+		// re-count week kdj
+		List<KDJVO> kdjList = new ArrayList<KDJVO>();
+		List<Double> low = StockPriceFetcher.getLowPrice(spWeekList);
+		List<Double> high = StockPriceFetcher.getHighPrice(spWeekList);
+		double[][] kdj = kdjHelper.getKDJList(Doubles.toArray(close), Doubles.toArray(low), Doubles.toArray(high));
+		for (int i = 0; i < kdj[0].length; i++) {
+			KDJVO vo = new KDJVO();
+			vo.setK(Strings.convert2ScaleDecimal(kdj[0][i]));
+			vo.setD(Strings.convert2ScaleDecimal(kdj[1][i]));
+			vo.setJ(Strings.convert2ScaleDecimal(kdj[2][i]));
+			vo.setRsv(Strings.convert2ScaleDecimal(kdj[3][i]));
+			vo.setStockId(stockId);
+			vo.setDate(spWeekList.get(i).date);
+			kdjList.add(vo);
+		}
+
+		// re-count week boll
+		List<BollVO> bollList = new ArrayList<BollVO>();
+		double[][] boll = bollHelper.getBOLLList(Doubles.toArray(close), 20, 2.0, 2.0);
+		for (int i = 0; i < boll[0].length; i++) {
+			BollVO vo = new BollVO();
+			vo.setUp(Strings.convert2ScaleDecimal(boll[0][i]));
+			vo.setMb(Strings.convert2ScaleDecimal(boll[1][i]));
+			vo.setDn(Strings.convert2ScaleDecimal(boll[2][i]));
+			vo.setStockId(stockId);
+			vo.setDate(spWeekList.get(i).date);
+			bollList.add(vo);
+		}
+
+		// re-count week shenxian
+		List<ShenXianVO> shenXianList = new ArrayList<ShenXianVO>();
+		double[][] shenXian = shenXianHelper.getShenXianList(Doubles.toArray(close));
+		for (int i = 0; i < shenXian[0].length; i++) {
+			ShenXianVO vo = new ShenXianVO();
+			vo.setH1(Strings.convert2ScaleDecimal(shenXian[0][i]));
+			vo.setH2(Strings.convert2ScaleDecimal(shenXian[1][i]));
+			vo.setH3(Strings.convert2ScaleDecimal(shenXian[2][i]));
+			vo.setStockId(stockId);
+			vo.setDate(spWeekList.get(i).date);
+			shenXianList.add(vo);
+		}
+
+		// set all ind list to super vo
+		for (int index = 0; index < spWeekList.size(); index++) {
+			StockSuperVO superVO = new StockSuperVO(spWeekList.get(index), macdList.get(index), kdjList.get(index),
+					bollList.get(index));
+			superVO.setShenXianVO(shenXianList.get(index));
+			overList.add(superVO);
+		}
+
+		return overList;
 	}
 
 	public static void main(String[] args) {

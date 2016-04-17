@@ -2,18 +2,17 @@ package org.easystogu.sina.runner.history;
 
 import java.util.List;
 
-import org.easystogu.db.access.ChuQuanChuXiPriceHelper;
 import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.access.WeekStockPriceTableHelper;
 import org.easystogu.db.table.StockPriceVO;
+import org.easystogu.db.util.WeekPriceMergeUtil;
 import org.easystogu.file.access.CompanyInfoFileHelper;
-import org.easystogu.utils.WeekdayUtil;
 
 //手动将2009年之后的stockprice分成每周入库，weeksotckprice，一次性运行
 public class WeeklyStockPriceManualCountAndSaveDBRunner {
 	private StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
+	private WeekPriceMergeUtil weekPriceMergeUtil = new WeekPriceMergeUtil();
 	private WeekStockPriceTableHelper weekStockPriceTable = WeekStockPriceTableHelper.getInstance();
-	protected ChuQuanChuXiPriceHelper chuQuanChuXiPriceHelper = new ChuQuanChuXiPriceHelper();
 
 	public void deleteStockPrice(String stockId) {
 		weekStockPriceTable.delete(stockId);
@@ -36,43 +35,11 @@ public class WeeklyStockPriceManualCountAndSaveDBRunner {
 	}
 
 	public void countAndSave(String stockId) {
-		for (int year = 1991; year <= 2016; year++) {
-			for (int week = 1; week <= 54; week++) {
-				List<String> dates = WeekdayUtil.getWorkingDaysOfWeek(year, week);
-				if ((dates != null) && (dates.size() >= 1)) {
-					String firstDate = dates.get(0);
-					String lastDate = dates.get(dates.size() - 1);
-					List<StockPriceVO> spList = stockPriceTable.getStockPriceByIdAndBetweenDate(stockId, firstDate,
-							lastDate);
-					if ((spList != null) && (spList.size() >= 1)) {
-
-						// update price based on chuQuanChuXi event
-						chuQuanChuXiPriceHelper.updateWeekPrice(stockId, spList, firstDate, lastDate);
-
-						int last = spList.size() - 1;
-						// first day
-						StockPriceVO mergeVO = spList.get(0).copy();
-						// last day
-						mergeVO.close = spList.get(last).close;
-						mergeVO.date = spList.get(last).date;
-
-						if (spList.size() > 1) {
-							for (int j = 1; j < spList.size(); j++) {
-								StockPriceVO vo = spList.get(j);
-								mergeVO.volume += vo.volume;
-								if (mergeVO.high < vo.high) {
-									mergeVO.high = vo.high;
-								}
-								if (mergeVO.low > vo.low) {
-									mergeVO.low = vo.low;
-								}
-							}
-						}
-						weekStockPriceTable.delete(stockId, mergeVO.date);
-						weekStockPriceTable.insert(mergeVO);
-					}
-				}
-			}
+		List<StockPriceVO> spWeekList = weekPriceMergeUtil.generateAllWeekPriceVO(stockId,
+				stockPriceTable.getStockPriceById(stockId));
+		for (StockPriceVO mergeVO : spWeekList) {
+			weekStockPriceTable.delete(mergeVO.stockId, mergeVO.date);
+			weekStockPriceTable.insert(mergeVO);
 		}
 	}
 
@@ -81,9 +48,9 @@ public class WeeklyStockPriceManualCountAndSaveDBRunner {
 		CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 		WeeklyStockPriceManualCountAndSaveDBRunner runner = new WeeklyStockPriceManualCountAndSaveDBRunner();
 		runner.countAndSave(stockConfig.getAllStockId());
-		//runner.countAndSave("999999");
-		//runner.countAndSave("399001");
-		//runner.countAndSave("399006");
+		// runner.countAndSave("999999");
+		// runner.countAndSave("399001");
+		// runner.countAndSave("399006");
 	}
 
 }
