@@ -180,8 +180,8 @@ public class HistoryAnalyseReport {
 
 		for (String stockId : stockIds) {
 
-			if (!stockId.equals("002609"))
-				continue;
+			//if (!stockId.equals("002609"))
+			//	continue;
 
 			List<HistoryReportDetailsVO> historyReportList = this.doAnalyseReport(stockId, checkPoint);
 			for (HistoryReportDetailsVO reportVO : historyReportList) {
