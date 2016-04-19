@@ -67,8 +67,8 @@ public class MergeNDaysPriceUtil {
 
 		int startIndex = spDayList.size() % nDays;
 
-		System.out.println("sub startDay=" + spDayList.get(0).date + ", size=" + spDayList.size() + ", startIndex="
-				+ startIndex);
+		//System.out.println("sub startDay=" + spDayList.get(0).date + ", size=" + spDayList.size() + ", startIndex="
+		//		+ startIndex);
 
 		for (int i = startIndex; i < spDayList.size(); i += nDays) {
 

@@ -113,18 +113,22 @@ public class HistoryAnalyseReportNew {
 				String startDate = overDayList.get(index - 120).priceVO.date;
 				String endDate = overDayList.get(index).priceVO.date;
 
-				System.out.println(startDate + " ~~ " + endDate);
+				// System.out.println(startDate + " ~~ " + endDate);
 
 				// include the startDate, not include the endDate
 				List<StockSuperVO> subOverWeekList = this.getSubWeekVOList(stockId, startDate, endDate, index);
 
-				System.out.println(subOverWeekList.get(0).priceVO.date + " week "
-						+ subOverWeekList.get(subOverWeekList.size() - 1).priceVO.date);
+				// System.out.println(subOverWeekList.get(0).priceVO.date +
+				// " week "
+				// + subOverWeekList.get(subOverWeekList.size() -
+				// 1).priceVO.date);
 
 				List<StockSuperVO> subOverDayList = overDayList.subList(index - 120, index + 1);
 
-				System.out.println(subOverDayList.get(0).priceVO.date + " day "
-						+ subOverDayList.get(subOverDayList.size() - 1).priceVO.date);
+				// System.out.println(subOverDayList.get(0).priceVO.date +
+				// " day "
+				// + subOverDayList.get(subOverDayList.size() -
+				// 1).priceVO.date);
 
 				if (combineAanalyserHelper.isConditionSatisfy(checkPoint, subOverDayList, subOverWeekList)) {
 					reportVO = new HistoryReportDetailsVO(overDayList);
@@ -279,10 +283,11 @@ public class HistoryAnalyseReportNew {
 		// use startDate and endDate to determinate the overWeekList from
 		// nDaysOffStockSuperMap
 		List<StockSuperVO> subweekList = new ArrayList<StockSuperVO>();
-		List<StockSuperVO> spList = this.nDaysOffWeekStockSuperMap.get(new Integer((index + 1) % 5));
+		List<StockSuperVO> nDaysSpList = this.nDaysOffWeekStockSuperMap.get(new Integer((index + 1) % 5));
+		// List<StockSuperVO> nDaysSpList = this.getNDaysSpList(endDate);
 
 		// then select all super vo between startDate and endDate
-		for (StockSuperVO vo : spList) {
+		for (StockSuperVO vo : nDaysSpList) {
 			if (vo.priceVO.date.compareTo(startDate) >= 0 && vo.priceVO.date.compareTo(endDate) <= 0) {
 				subweekList.add(vo);
 			}
@@ -379,6 +384,18 @@ public class HistoryAnalyseReportNew {
 		return overList;
 	}
 
+	private List<StockSuperVO> getNDaysSpList(String endDate) {
+		for (int i = 0; i < 5; i++) {
+			List<StockSuperVO> tmpList = this.nDaysOffWeekStockSuperMap.get(new Integer(i));
+			for (StockSuperVO spvo : tmpList) {
+				if (spvo.priceVO.date.equals(endDate)) {
+					return tmpList;
+				}
+			}
+		}
+		return null;
+	}
+
 	private void initNDaysOffWeekStockSuperMap(String stockId) {
 
 		// first empty the map for stockId
@@ -389,7 +406,8 @@ public class HistoryAnalyseReportNew {
 		// update price based on chuQuanChuXi event
 		chuQuanChuXiPriceHelper.updatePrice(stockId, spDayList);
 
-		System.out.println("original startDay=" + spDayList.get(0).date + ", size=" + spDayList.size());
+		// System.out.println("original startDay=" + spDayList.get(0).date +
+		// ", size=" + spDayList.size());
 
 		int offSet = spDayList.size() % 5;
 
@@ -397,14 +415,15 @@ public class HistoryAnalyseReportNew {
 			int excludeSize = (5 - i + offSet) % 5;
 			List<StockPriceVO> spWeekList_i_off = mergeNdaysPriceHeloer.generateNDaysPriceVOInDescOrder(5,
 					spDayList.subList(i, spDayList.size() - excludeSize));
-			System.out.println("map: i=" + i + ", dat startDay=" + spWeekList_i_off.get(0).date + ", endDay="
-					+ spWeekList_i_off.get(spWeekList_i_off.size() - 1).date);
+			// System.out.println("map: i=" + i + ", dat startDay=" +
+			// spWeekList_i_off.get(0).date + ", endDay="
+			// + spWeekList_i_off.get(spWeekList_i_off.size() - 1).date);
 			List<StockSuperVO> overWeekList = this.generateStockSuperVOList(stockId, spWeekList_i_off);
-			System.out.println("map: i=" + i + ", week startDay=" + overWeekList.get(0).priceVO.date + ", endDay="
-					+ overWeekList.get(overWeekList.size() - 1).priceVO.date);
+			// System.out.println("map: i=" + i + ", week startDay=" +
+			// overWeekList.get(0).priceVO.date + ", endDay="
+			// + overWeekList.get(overWeekList.size() - 1).priceVO.date);
 
 			IndProcessHelper.processWeekList(overWeekList);
-			System.out.println();
 			this.nDaysOffWeekStockSuperMap.put(new Integer(i), overWeekList);
 		}
 	}
