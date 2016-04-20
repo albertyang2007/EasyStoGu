@@ -93,4 +93,15 @@
 			<bean class="com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider" />
 		</jaxrs:providers>
 	</jaxrs:server>
+	
+	<bean id="portalStatisticsEndPoint" class="org.easystogu.portal.StatisticsEndPoint">
+	</bean>
+	<jaxrs:server id="cxfrsservice_StatisticsEndPoint" address="/statistics">
+		<jaxrs:serviceBeans>
+			<ref bean="portalStatisticsEndPoint" />
+		</jaxrs:serviceBeans>
+		<jaxrs:providers>
+			<bean class="com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider" />
+		</jaxrs:providers>
+	</jaxrs:server>
 </beans>

@@ -40,7 +40,7 @@ demo
 	         this.setState(newState);
 	      },
 	
-	      handleSubmitClick: function() {
+	      handleClick: function() {
 	         var data = {
 	            trendModeName  :  this.state.trendModeName,
                 nDays :  this.state.nDays
@@ -97,13 +97,15 @@ demo
 			                  <select name='trendModeName' onChange={this.handleChange}>
                               {this.state.options}
                               </select>&nbsp;&nbsp;
-                              <input type="submit" value="Submit" onClick={this.handleSubmitClick} />&nbsp;&nbsp;
+                              <input type="submit" value="Submit" onClick={this.handleClick} />&nbsp;&nbsp;
                               <a href='popup_trendmode.htm?trendModeName=M_Tou'>open popup</a>
 			              </div>
 			              );
 			     }         
-	      });
-	      
+	      });	      
+      </script>
+      
+      <script type="text/jsx">
 	      React.render(<ForecastForm />,
 	      document.getElementById("forecastForm")
 	      );

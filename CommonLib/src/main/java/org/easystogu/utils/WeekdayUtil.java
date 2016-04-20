@@ -245,7 +245,20 @@ public class WeekdayUtil {
 		return false;
 	}
 
+	// return working date between start ~ end date, both inclusive
+	public static List<String> getWorkingDatesBetween(String startDate, String endDate) {
+		List<String> list = new ArrayList<String>();
+		String curDate = startDate;
+		while (curDate.compareTo(endDate) <= 0) {
+			list.add(curDate);
+			curDate = nextWorkingDate(curDate);
+		}
+		return list;
+	}
+
 	public static void main(String[] args) {
-		System.out.println(WeekdayUtil.currentYear());
+		List<String> list = WeekdayUtil.getWorkingDatesBetween("2016-04-01", "2016-04-28");
+		for (String date : list)
+			System.out.println(date);
 	}
 }

@@ -29,6 +29,8 @@ public class CheckPointDailySelectionTableHelper {
 			+ " WHERE stockid = :stockid AND date = :date AND checkpoint = :checkpoint";
 	protected String QUERY_BY_STOCKID_AND_DATE_AND_CHECKPOINT_SQL = "SELECT * FROM " + tableName
 			+ " WHERE stockid = :stockid AND date = :date AND checkpoint = :checkpoint";
+	protected String COUNT_BY_DATE_AND_CHECKPOINT_SQL = "SELECT count(*) AS rtn FROM " + tableName
+			+ " WHERE date = :date AND checkpoint = :checkpoint";
 	protected String QUERY_BY_STOCKID_AND_DATE_SQL = "SELECT * FROM " + tableName
 			+ " WHERE stockid = :stockid AND date = :date";
 	protected String QUERY_LATEST_BY_STOCKID_AND_NOT_CHECKPOINT_SQL = "SELECT * FROM " + tableName
@@ -49,6 +51,12 @@ public class CheckPointDailySelectionTableHelper {
 
 	private CheckPointDailySelectionTableHelper() {
 		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+	}
+
+	private static final class IntVOMapper implements RowMapper<Integer> {
+		public Integer mapRow(ResultSet rs, int rowNum) throws SQLException {
+			return rs.getInt("rtn");
+		}
 	}
 
 	private static final class IndEventVOMapper implements RowMapper<CheckPointDailySelectionVO> {
@@ -196,6 +204,23 @@ public class CheckPointDailySelectionTableHelper {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	public int countByDateAndCheckPoint(String date, String checkPoint) {
+		try {
+
+			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+			namedParameters.addValue("date", date);
+			namedParameters.addValue("checkpoint", checkPoint);
+
+			int rtn = this.namedParameterJdbcTemplate.queryForObject(COUNT_BY_DATE_AND_CHECKPOINT_SQL, namedParameters,
+					new IntVOMapper());
+
+			return rtn;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return 0;
 	}
 
 	public void delete(String stockId, String date, String checkpoint) {

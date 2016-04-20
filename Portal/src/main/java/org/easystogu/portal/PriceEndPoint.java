@@ -10,17 +10,9 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
-import org.easystogu.db.access.ChuQuanChuXiPriceHelper;
 import org.easystogu.db.access.StockPriceTableHelper;
-import org.easystogu.db.table.BollVO;
 import org.easystogu.db.table.StockPriceVO;
-import org.easystogu.portal.init.TrendModeLoader;
-import org.easystogu.trendmode.vo.SimplePriceVO;
-import org.easystogu.trendmode.vo.TrendModeVO;
 import org.easystogu.utils.Strings;
-import org.easystogu.utils.WeekdayUtil;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class PriceEndPoint {

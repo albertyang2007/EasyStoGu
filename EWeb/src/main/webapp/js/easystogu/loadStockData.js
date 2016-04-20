@@ -219,7 +219,7 @@ function loadLuZao(version, stockId, dateFrom, dateTo) {
 	});
 
 	/**
-	 * Load ShenXian Indicator and display
+	 * Load luzao Indicator and display
 	 * 
 	 * @returns {undefined}
 	 */
@@ -342,7 +342,7 @@ function loadBoll(version, stockId, dateFrom, dateTo) {
 	});
 
 	/**
-	 * Load ShenXian Indicator and display
+	 * Load boll Indicator and display
 	 * 
 	 * @returns {undefined}
 	 */
@@ -463,7 +463,7 @@ function loadMacd(version, stockId, dateFrom, dateTo) {
 	});
 
 	/**
-	 * Load ShenXian Indicator and display
+	 * Load macd Indicator and display
 	 * 
 	 * @returns {undefined}
 	 */
@@ -584,7 +584,7 @@ function loadQSDD(version, stockId, dateFrom, dateTo) {
 	});
 
 	/**
-	 * Load ShenXian Indicator and display
+	 * Load qsdd Indicator and display
 	 * 
 	 * @returns {undefined}
 	 */
