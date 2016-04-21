@@ -45,15 +45,15 @@ public class HistoryAnalyseReport {
     //date, count
     private Map<String, Integer> generalCheckPointStatisticsMap = new HashMap<String, Integer>();
 
-    public List<HistoryReportDetailsVO> doAnalyseReport(String stockId, List<DailyCombineCheckPoint> checkPointList) {
+    public List<HistoryReportDetailsVO> doAnalyseBuySellDate(String stockId, List<DailyCombineCheckPoint> checkPointList) {
         List<HistoryReportDetailsVO> reportList = new ArrayList<HistoryReportDetailsVO>();
         for (DailyCombineCheckPoint checkPoint : checkPointList) {
-            reportList.addAll(this.doAnalyseReport(stockId, checkPoint));
+            reportList.addAll(this.doAnalyseBuySellDate(stockId, checkPoint));
         }
         return reportList;
     }
 
-    public List<HistoryReportDetailsVO> doAnalyseReport(String stockId, DailyCombineCheckPoint checkPoint) {
+    public List<HistoryReportDetailsVO> doAnalyseBuySellDate(String stockId, DailyCombineCheckPoint checkPoint) {
 
         List<HistoryReportDetailsVO> historyReportList = new ArrayList<HistoryReportDetailsVO>();
 
@@ -153,6 +153,71 @@ public class HistoryAnalyseReport {
         return historyReportList;
     }
 
+    //if the checkpoint is meet, then add vo to list
+    public List<HistoryReportDetailsVO> doAnalyseStatistics(String stockId, DailyCombineCheckPoint checkPoint) {
+
+        List<HistoryReportDetailsVO> historyReportList = new ArrayList<HistoryReportDetailsVO>();
+
+        List<StockSuperVO> overDayList = stockOverAllHelper.getAllStockSuperVO(stockId);
+        List<StockSuperVO> overWeekList = weekStockOverAllHelper.getAllStockSuperVO(stockId);
+
+        // fliter the history data, set the startDate and endDate
+        // overDayList = this.getSubDayVOList(overDayList, "2014-04-01",
+        // "9999-99-99");
+
+        if (overDayList.size() == 0) {
+            // System.out.println("doAnalyseReport overDayList size=0 for " +
+            // stockId);
+            return historyReportList;
+        }
+
+        if (overWeekList.size() == 0) {
+            // System.out.println("doAnalyseReport overWeekList size=0 for " +
+            // stockId);
+            return historyReportList;
+        }
+
+        // update price based on chuQuanChuXi event
+        chuQuanChuXiPriceHelper.updateSuperPrice(stockId, overDayList);
+        chuQuanChuXiPriceHelper.updateSuperPrice(stockId, overWeekList);
+
+        IndProcessHelper.processDayList(overDayList);
+        IndProcessHelper.processWeekList(overWeekList);
+
+        HistoryReportDetailsVO reportVO = null;
+        for (int index = 120; index < overDayList.size(); index++) {
+            StockSuperVO superVO = overDayList.get(index);
+
+            // buy point
+            if (reportVO == null) {
+                String startDate = overDayList.get(index - 120).priceVO.date;
+                String endDate = overDayList.get(index).priceVO.date;
+                // System.out.println(startDate + " ~~ " + endDate);
+                // include the startDate, not include the endDate
+                List<StockSuperVO> subOverWeekList = this.getSubWeekVOList(overWeekList, startDate, endDate);
+                // System.out.println(subOverWeekList.get(0).priceVO.date +
+                // " week "
+                // + subOverWeekList.get(subOverWeekList.size() -
+                // 1).priceVO.date);
+
+                List<StockSuperVO> subOverDayList = overDayList.subList(index - 120, index + 1);
+
+                // System.out.println(subOverDayList.get(0).priceVO.date +
+                // " day "
+                // + subOverDayList.get(subOverDayList.size() -
+                // 1).priceVO.date);
+
+                if (combineAanalyserHelper.isConditionSatisfy(checkPoint, subOverDayList, subOverWeekList)) {
+                    reportVO = new HistoryReportDetailsVO(overDayList);
+                    reportVO.setBuyPriceVO(superVO.priceVO);//must keep it
+                    historyReportList.add(reportVO);
+                }
+            }
+        }
+
+        return historyReportList;
+    }
+
     //original analyse all stockId for checkPoint
     //count buyDate, sellDate, maxEarn, minEarn etc, save data into checkpoint_history_selection
     public void searchAllStockIdAnalyseHistoryCheckPoint(DailyCombineCheckPoint checkPoint) {
@@ -175,7 +240,7 @@ public class HistoryAnalyseReport {
             //if (!stockId.equals("002609"))
             //    continue;
 
-            List<HistoryReportDetailsVO> historyReportList = this.doAnalyseReport(stockId, checkPoint);
+            List<HistoryReportDetailsVO> historyReportList = this.doAnalyseBuySellDate(stockId, checkPoint);
             for (HistoryReportDetailsVO reportVO : historyReportList) {
                 //analyse the original buy and sell data
                 if (reportVO.sellPriceVO != null) {
@@ -262,7 +327,7 @@ public class HistoryAnalyseReport {
                 System.out.println("Analyse of " + index + "/" + stockIds.size());
             }
 
-            List<HistoryReportDetailsVO> historyReportList = this.doAnalyseReport(stockId, checkPoint);
+            List<HistoryReportDetailsVO> historyReportList = this.doAnalyseStatistics(stockId, checkPoint);
             for (HistoryReportDetailsVO reportVO : historyReportList) {
                 //statistics the checkPoint and count at date               
                 Integer count = this.generalCheckPointStatisticsMap.get(reportVO.buyPriceVO.date);
