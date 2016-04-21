@@ -60,6 +60,8 @@ public class WeekStockPriceTableHelper extends StockPriceTableHelper {
 		DELETE_BY_STOCKID_AND_DATE_SQL = "DELETE FROM " + tableName + " WHERE stockId = :stockId AND date = :date";
 		COUNT_DAYS_BETWEEN_DATE1_DATE2 = "SELECT COUNT(*) FROM " + tableName
 				+ " WHERE stockId = :stockId AND DATE >= :date1 AND DATE <= :date2";
+		QUERY_DAYS_BETWEEN_DATE1_DATE2 = "SELECT date AS rtn FROM " + tableName
+				+ " WHERE stockId = :stockId AND DATE >= :date1 AND DATE <= :date2";
 		// only use for weekPrice, query the weekPrice based on date
 		// QUERY_BY_STOCKID_AND_BETWEEN_DATE = "SELECT * FROM " + tableName
 		// +

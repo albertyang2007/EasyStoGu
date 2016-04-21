@@ -31,21 +31,19 @@ public class CheckPointStatisticsEndPoint {
 			String date1 = dateParm.split("_")[0];
 			String date2 = dateParm.split("_")[1];
 
-			List<String> dateList = WeekdayUtil.getWorkingDatesBetween(date1, date2);
+			List<String> dateList = stockPriceTable.getDayListByIdAndBetweenDates("999999", date1, date2);
 			for (String date : dateList) {
-				if (stockPriceTable.isDateInDealDate(date)) {
-					StatisticsVO vo = new StatisticsVO();
-					vo.date = date;
-					vo.count1 = checkPointStatisticsTable.countByDateAndCheckPoint(date,
-							DailyCombineCheckPoint.Trend_PhaseI_GuanCha.name());
-					vo.count2 = checkPointStatisticsTable.countByDateAndCheckPoint(date,
-							DailyCombineCheckPoint.Trend_PhaseII_JianCang.name());
-					vo.count3 = checkPointStatisticsTable.countByDateAndCheckPoint(date,
-							DailyCombineCheckPoint.Trend_PhaseIII_ChiGu.name());
-					vo.count4 = checkPointStatisticsTable.countByDateAndCheckPoint(date,
-							DailyCombineCheckPoint.Trend_PhaseVI_JianCang.name());
-					list.add(vo);
-				}
+				StatisticsVO vo = new StatisticsVO();
+				vo.date = date;
+				vo.count1 = checkPointStatisticsTable.countByDateAndCheckPoint(date,
+						DailyCombineCheckPoint.Trend_PhaseI_GuanCha.name());
+				vo.count2 = checkPointStatisticsTable.countByDateAndCheckPoint(date,
+						DailyCombineCheckPoint.Trend_PhaseII_JianCang.name());
+				vo.count3 = checkPointStatisticsTable.countByDateAndCheckPoint(date,
+						DailyCombineCheckPoint.Trend_PhaseIII_ChiGu.name());
+				vo.count4 = checkPointStatisticsTable.countByDateAndCheckPoint(date,
+						DailyCombineCheckPoint.Trend_PhaseVI_JianCang.name());
+				list.add(vo);
 			}
 		}
 

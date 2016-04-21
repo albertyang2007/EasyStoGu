@@ -74,6 +74,8 @@ public class StockPriceTableHelper {
 	protected String DELETE_BY_DATE_SQL = "DELETE FROM " + tableName + " WHERE date = :date";
 	protected String COUNT_DAYS_BETWEEN_DATE1_DATE2 = "SELECT COUNT(*) FROM " + tableName
 			+ " WHERE stockId = :stockId AND DATE >= :date1 AND DATE <= :date2";
+	protected String QUERY_DAYS_BETWEEN_DATE1_DATE2 = "SELECT date AS rtn FROM " + tableName
+			+ " WHERE stockId = :stockId AND DATE >= :date1 AND DATE <= :date2";
 	// only use for weekPrice, query the weekPrice based on date
 	// protected String QUERY_BY_STOCKID_AND_BETWEEN_DATE = "SELECT * FROM " +
 	// tableName
@@ -413,21 +415,36 @@ public class StockPriceTableHelper {
 		return new ArrayList<StockPriceVO>();
 	}
 
-	public int getDaysByIdAndBetweenDates(String stockId, String date1, String date2) {
+	public int getNumberDayByIdAndBetweenDates(String stockId, String date1, String date2) {
 		try {
 			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 			namedParameters.addValue("stockId", stockId);
 			namedParameters.addValue("date1", date1);
 			namedParameters.addValue("date2", date2);
 
-			int days = this.namedParameterJdbcTemplate.queryForInt(COUNT_DAYS_BETWEEN_DATE1_DATE2, namedParameters);
-			return days;
-		} catch (EmptyResultDataAccessException ee) {
-			return 0;
+			List<String> dayList = this.namedParameterJdbcTemplate.query(QUERY_DAYS_BETWEEN_DATE1_DATE2,
+					namedParameters, new StringVOMapper());
+			return dayList.size();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return 0;
+	}
+
+	public List<String> getDayListByIdAndBetweenDates(String stockId, String date1, String date2) {
+		try {
+			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+			namedParameters.addValue("stockId", stockId);
+			namedParameters.addValue("date1", date1);
+			namedParameters.addValue("date2", date2);
+
+			List<String> dayList = this.namedParameterJdbcTemplate.query(QUERY_DAYS_BETWEEN_DATE1_DATE2,
+					namedParameters, new StringVOMapper());
+			return dayList;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new ArrayList<String>();
 	}
 
 	public String getLatestStockDate() {
@@ -613,7 +630,9 @@ public class StockPriceTableHelper {
 		// TODO Auto-generated method stub
 		StockPriceTableHelper ins = new StockPriceTableHelper();
 		try {
-
+			List<String> dates = ins.getDayListByIdAndBetweenDates("999999", "2016-04-01", "2016-12-31");
+			int n = ins.getNumberDayByIdAndBetweenDates("999999", "2016-04-01", "2016-12-31");
+			System.out.println(n);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

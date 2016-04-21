@@ -404,7 +404,7 @@ public class HistoryAnalyseReport {
 		// reporter.searchAllStockIdAnalyseHistoryCheckPoint(checkPoint);
 		// }
 		// }
-		reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.QSDD_Top_Area);
+		//reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.QSDD_Top_Area);
 		reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.QSDD_Bottom_Area);
 		reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.QSDD_Bottom_Gordon);
 	}

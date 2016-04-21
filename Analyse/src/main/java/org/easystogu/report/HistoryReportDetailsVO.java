@@ -44,8 +44,8 @@ public class HistoryReportDetailsVO {
 		this.earnPercent[1] = ((this.highPrice - this.buyPriceVO.close) * 100.0) / this.buyPriceVO.close;
 		this.earnPercent[2] = ((this.lowPrice - this.buyPriceVO.close) * 100.0) / this.buyPriceVO.close;
 
-		this.holdDays = stockPriceTable.getDaysByIdAndBetweenDates(this.stockId, buyPriceVO.date, sellPriceVO.date);
-		this.holdDaysWhenHighPrice = stockPriceTable.getDaysByIdAndBetweenDates(this.stockId, buyPriceVO.date,
+		this.holdDays = stockPriceTable.getNumberDayByIdAndBetweenDates(this.stockId, buyPriceVO.date, sellPriceVO.date);
+		this.holdDaysWhenHighPrice = stockPriceTable.getNumberDayByIdAndBetweenDates(this.stockId, buyPriceVO.date,
 				highPriceDate);
 	}
 

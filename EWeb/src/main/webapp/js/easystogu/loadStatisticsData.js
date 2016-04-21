@@ -63,19 +63,19 @@ function loadLuZaoStatistics(version, stockId, dateFrom, dateTo) {
 				name : 'MA86',
 				data : data_ma86
 			}, {
-				name : '1 观察',
+				name : '观察阶段数目',
 				data : count1,
 				yAxis : 1
 			}, {
-				name : '2 建仓',
+				name : '建仓阶段数目',
 				data : count2,
 				yAxis : 1
 			}, {
-				name : '3 持股',
+				name : '持股阶段数目',
 				data : count3,
 				yAxis : 1
 			}, {
-				name : '4 减仓',
+				name : '减仓阶段数目',
 				data : count4,
 				yAxis : 1
 			} ]
@@ -211,7 +211,7 @@ function loadQsddStatistics(version, stockId, dateFrom, dateTo) {
 					x : -3
 				},
 				title : {
-					text : 'Statistics'
+					text : 'QSDD'
 				},
 				top : '65%',
 				height : '35%',
@@ -224,27 +224,27 @@ function loadQsddStatistics(version, stockId, dateFrom, dateTo) {
 				name : 'OHLC',
 				data : date_price
 			}, {
-				name : 'LonTerm',
-				data : data_lonTerm,
-				yAxis : 1
-			}, {
-				name : 'MidTerm',
-				data : data_midTerm,
-				yAxis : 1
-			}, {
-				name : 'ShoTerm',
+				name : '短期线',
 				data : data_shoTerm,
 				yAxis : 1
 			}, {
-				name : '1 见顶',
+				name : '中期线',
+				data : data_midTerm,
+				yAxis : 1
+			}, {
+				name : '长期线',
+				data : data_lonTerm,
+				yAxis : 1
+			}, {
+				name : '见顶个股数目',
 				data : count1,
 				yAxis : 2
 			}, {
-				name : '2 见底',
+				name : '见底个股数目',
 				data : count2,
 				yAxis : 2
 			}, {
-				name : '3 金叉',
+				name : '金叉个股数目',
 				data : count3,
 				yAxis : 2
 			} ]
