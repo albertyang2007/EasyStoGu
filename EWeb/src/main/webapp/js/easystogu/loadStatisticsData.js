@@ -63,15 +63,15 @@ function loadLuZaoStatistics(version, stockId, dateFrom, dateTo) {
 				name : 'MA86',
 				data : data_ma86
 			}, {
-				name : '观察阶段数目',
+				name : '观察个股数目',
 				data : count1,
 				yAxis : 1
 			}, {
-				name : '建仓阶段数目',
+				name : '建仓个股数目',
 				data : count2,
 				yAxis : 1
 			}, {
-				name : '持股阶段数目',
+				name : '持股个股数目',
 				data : count3,
 				yAxis : 1
 			}, {
