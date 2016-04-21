@@ -94,7 +94,7 @@
 		</jaxrs:providers>
 	</jaxrs:server>
 	
-	<bean id="portalStatisticsEndPoint" class="org.easystogu.portal.StatisticsEndPoint">
+	<bean id="portalStatisticsEndPoint" class="org.easystogu.portal.CheckPointStatisticsEndPoint">
 	</bean>
 	<jaxrs:server id="cxfrsservice_StatisticsEndPoint" address="/statistics">
 		<jaxrs:serviceBeans>

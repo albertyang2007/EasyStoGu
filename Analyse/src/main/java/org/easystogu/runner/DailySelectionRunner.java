@@ -15,6 +15,7 @@ import org.easystogu.analyse.util.IndProcessHelper;
 import org.easystogu.checkpoint.DailyCombineCheckPoint;
 import org.easystogu.config.FileConfigurationService;
 import org.easystogu.db.access.CheckPointDailySelectionTableHelper;
+import org.easystogu.db.access.CheckPointDailyStatisticsTableHelper;
 import org.easystogu.db.access.ChuQuanChuXiPriceHelper;
 import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.access.StockSuperVOHelper;
@@ -24,6 +25,7 @@ import org.easystogu.db.access.ZiJinLiu3DayTableHelper;
 import org.easystogu.db.access.ZiJinLiu5DayTableHelper;
 import org.easystogu.db.access.ZiJinLiuTableHelper;
 import org.easystogu.db.table.CheckPointDailySelectionVO;
+import org.easystogu.db.table.CheckPointDailyStatisticsVO;
 import org.easystogu.db.table.StockSuperVO;
 import org.easystogu.db.table.ZiJinLiuVO;
 import org.easystogu.easymoney.helper.RealTimeZiJinLiuFatchDataHelper;
@@ -43,6 +45,8 @@ public class DailySelectionRunner implements Runnable {
     private WeekStockSuperVOHelper weekStockOverAllHelper = new WeekStockSuperVOHelper();
     private String latestDate = stockPriceTable.getLatestStockDate();
     private CheckPointDailySelectionTableHelper checkPointDailySelectionTable = CheckPointDailySelectionTableHelper
+            .getInstance();
+    private CheckPointDailyStatisticsTableHelper checkPointDailyStatisticsTable = CheckPointDailyStatisticsTableHelper
             .getInstance();
     private RealTimeZiJinLiuFatchDataHelper realTimeZiJinLiuHelper = RealTimeZiJinLiuFatchDataHelper.getInstance();
     private ZiJinLiuTableHelper ziJinLiuTableHelper = ZiJinLiuTableHelper.getInstance();
@@ -122,7 +126,7 @@ public class DailySelectionRunner implements Runnable {
                 }
                 if (this.isGeneralCheckPoint(checkPoint)) {
                     if (combineAnalyserHelper.isConditionSatisfy(checkPoint, overDayList, overWeekList)) {
-                        this.saveToCheckPointSelectionDB(superVO, checkPoint);
+                        //this.saveToCheckPointSelectionDB(superVO, checkPoint);
                         this.addToGeneralCheckPointGordonMap(checkPoint, stockId);
                     }
                 }
@@ -336,14 +340,23 @@ public class DailySelectionRunner implements Runnable {
         }
     }
 
-    private void printGeneralCheckPointAnalyseResult() {
-        System.out.println("==================General CheckPoint Summary=====================");
+    private void addGeneralCheckPointStatisticsResultToDB() {
+        System.out.println("==================General CheckPoint Statistics=====================");
         Set<DailyCombineCheckPoint> keys = this.generalCheckPointGordonMap.keySet();
         Iterator<DailyCombineCheckPoint> keysIt = keys.iterator();
         while (keysIt.hasNext()) {
             DailyCombineCheckPoint checkPoint = keysIt.next();
             List<String> stockIds = this.generalCheckPointGordonMap.get(checkPoint);
-            System.out.println(checkPoint + " size=" + stockIds.size());
+
+            CheckPointDailyStatisticsVO cpdsvo = new CheckPointDailyStatisticsVO();
+            cpdsvo.date = latestDate;
+            cpdsvo.checkPoint = checkPoint.name();
+            cpdsvo.count = stockIds.size();
+            //update
+            checkPointDailyStatisticsTable.delete(cpdsvo.date, cpdsvo.checkPoint);
+            checkPointDailyStatisticsTable.insert(cpdsvo);
+
+            System.out.println(cpdsvo);
         }
     }
 
@@ -365,8 +378,8 @@ public class DailySelectionRunner implements Runnable {
     public void runForStockIds(List<String> stockIds) {
         int index = 0;
         for (String stockId : stockIds) {
-            // if (!stockId.equals("600680"))
-            // continue;
+            //if (!stockId.equals("002609"))
+            //   continue;
             if (index++ % 500 == 0) {
                 System.out.println("Analyse of " + index + "/" + stockIds.size());
             }
@@ -375,7 +388,7 @@ public class DailySelectionRunner implements Runnable {
 
         reportSelectedStockIds();
         reportSelectedHistoryReport();
-        printGeneralCheckPointAnalyseResult();
+        addGeneralCheckPointStatisticsResultToDB();
     }
 
     public void run() {

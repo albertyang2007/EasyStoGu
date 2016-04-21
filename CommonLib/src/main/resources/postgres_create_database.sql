@@ -687,3 +687,25 @@ ALTER TABLE ind_week_qsdd
   OWNER TO postgres;
 GRANT ALL ON TABLE ind_week_qsdd TO public;
 GRANT ALL ON TABLE ind_week_qsdd TO postgres;
+
+-- Table: checkpoint_daily_statistics
+
+-- DROP TABLE checkpoint_daily_statistics;
+
+CREATE TABLE checkpoint_daily_statistics
+(
+  date text NOT NULL,
+  checkpoint text NOT NULL,
+  count integer,
+  CONSTRAINT checkpoint_daily_statistics_primary_key PRIMARY KEY (date, checkpoint)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE checkpoint_daily_statistics
+  OWNER TO postgres;
+GRANT ALL ON TABLE checkpoint_daily_statistics TO public;
+GRANT ALL ON TABLE checkpoint_daily_statistics TO postgres;
+COMMENT ON TABLE checkpoint_daily_statistics
+  IS 'Store daily checkpoint statistics report, selecting checkpoint count based on date.';
+
