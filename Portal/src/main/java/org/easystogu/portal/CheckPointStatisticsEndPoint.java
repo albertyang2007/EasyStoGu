@@ -10,38 +10,70 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
 import org.easystogu.checkpoint.DailyCombineCheckPoint;
-import org.easystogu.db.access.CheckPointDailySelectionTableHelper;
-import org.easystogu.portal.vo.LuZaoStatisticsVO;
+import org.easystogu.db.access.CheckPointDailyStatisticsTableHelper;
+import org.easystogu.db.access.StockPriceTableHelper;
+import org.easystogu.portal.vo.StatisticsVO;
 import org.easystogu.utils.WeekdayUtil;
 
 public class CheckPointStatisticsEndPoint {
-	private CheckPointDailySelectionTableHelper checkPointSelectionTable = CheckPointDailySelectionTableHelper
+	private CheckPointDailyStatisticsTableHelper checkPointStatisticsTable = CheckPointDailyStatisticsTableHelper
 			.getInstance();
+	private StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
 	private String dateRegex = "[0-9]{4}-[0-9]{2}-[0-9]{2}";
 	private String fromToRegex = dateRegex + "_" + dateRegex;
 
 	@GET
-	@Path("/luzao_trend_phase/{date}")
+	@Path("/luzao/{date}")
 	@Produces("application/json")
-	public List<LuZaoStatisticsVO> queryLuZaoTrendPhaseStatistics(@PathParam("date") String dateParm) {
-		List<LuZaoStatisticsVO> list = new ArrayList<LuZaoStatisticsVO>();
+	public List<StatisticsVO> queryLuZaoStatistics(@PathParam("date") String dateParm) {
+		List<StatisticsVO> list = new ArrayList<StatisticsVO>();
 		if (Pattern.matches(fromToRegex, dateParm)) {
 			String date1 = dateParm.split("_")[0];
 			String date2 = dateParm.split("_")[1];
 
 			List<String> dateList = WeekdayUtil.getWorkingDatesBetween(date1, date2);
 			for (String date : dateList) {
-				LuZaoStatisticsVO vo = new LuZaoStatisticsVO();
-				vo.date = date;
-				vo.count_I_GuanCha = checkPointSelectionTable.countByDateAndCheckPoint(date,
-						DailyCombineCheckPoint.Trend_PhaseI_GuanCha.name());
-				vo.count_II_JianCang = checkPointSelectionTable.countByDateAndCheckPoint(date,
-						DailyCombineCheckPoint.Trend_PhaseII_JianCang.name());
-				vo.count_III_ChiGu = checkPointSelectionTable.countByDateAndCheckPoint(date,
-						DailyCombineCheckPoint.Trend_PhaseIII_ChiGu.name());
-				vo.count_VI_JianCang = checkPointSelectionTable.countByDateAndCheckPoint(date,
-						DailyCombineCheckPoint.Trend_PhaseVI_JianCang.name());
-				list.add(vo);
+				if (stockPriceTable.isDateInDealDate(date)) {
+					StatisticsVO vo = new StatisticsVO();
+					vo.date = date;
+					vo.count1 = checkPointStatisticsTable.countByDateAndCheckPoint(date,
+							DailyCombineCheckPoint.Trend_PhaseI_GuanCha.name());
+					vo.count2 = checkPointStatisticsTable.countByDateAndCheckPoint(date,
+							DailyCombineCheckPoint.Trend_PhaseII_JianCang.name());
+					vo.count3 = checkPointStatisticsTable.countByDateAndCheckPoint(date,
+							DailyCombineCheckPoint.Trend_PhaseIII_ChiGu.name());
+					vo.count4 = checkPointStatisticsTable.countByDateAndCheckPoint(date,
+							DailyCombineCheckPoint.Trend_PhaseVI_JianCang.name());
+					list.add(vo);
+				}
+			}
+		}
+
+		return list;
+	}
+
+	@GET
+	@Path("/qsdd/{date}")
+	@Produces("application/json")
+	public List<StatisticsVO> queryQsddStatistics(@PathParam("date") String dateParm) {
+		List<StatisticsVO> list = new ArrayList<StatisticsVO>();
+		if (Pattern.matches(fromToRegex, dateParm)) {
+			String date1 = dateParm.split("_")[0];
+			String date2 = dateParm.split("_")[1];
+
+			List<String> dateList = WeekdayUtil.getWorkingDatesBetween(date1, date2);
+			for (String date : dateList) {
+				if (stockPriceTable.isDateInDealDate(date)) {
+					StatisticsVO vo = new StatisticsVO();
+					vo.date = date;
+					vo.count1 = checkPointStatisticsTable.countByDateAndCheckPoint(date,
+							DailyCombineCheckPoint.QSDD_Top_Area.name());
+					vo.count2 = checkPointStatisticsTable.countByDateAndCheckPoint(date,
+							DailyCombineCheckPoint.QSDD_Bottom_Area.name());
+					vo.count3 = checkPointStatisticsTable.countByDateAndCheckPoint(date,
+							DailyCombineCheckPoint.QSDD_Bottom_Gordon.name());
+					list.add(vo);
+				}
 			}
 		}
 

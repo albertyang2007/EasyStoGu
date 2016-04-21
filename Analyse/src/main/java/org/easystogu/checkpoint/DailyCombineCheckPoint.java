@@ -40,7 +40,8 @@ public enum DailyCombineCheckPoint {
 			SellPointType.KDJ_Dead, 71, 28.0), Many_ZhangTing_Then_DieTing(SellPointType.KDJ_Dead, 18, 15.09), Continue_ZiJinLiu_DDX_RED_KDJ_Gorden(
 			SellPointType.KDJ_Dead, 0, 99), Trend_PhaseI_GuanCha(SellPointType.KDJ_Dead, 0, 99.0), Trend_PhaseII_JianCang(
 			SellPointType.KDJ_Dead, 0, 99.0), Trend_PhaseIII_ChiGu(SellPointType.KDJ_Dead, 0, 99.0), Trend_PhaseVI_JianCang(
-			SellPointType.KDJ_Dead, 0, 99.0);
+			SellPointType.KDJ_Dead, 0, 99.0), QSDD_Top_Area(SellPointType.KDJ_Dead, 0, 99.0), QSDD_Bottom_Area(
+			SellPointType.KDJ_Dead, 0, 99.0), QSDD_Bottom_Gordon(SellPointType.KDJ_Dead, 0, 99.0);
 
 	private FileConfigurationService config = FileConfigurationService.getInstance();
 	private double minEarnPercent = config.getDouble("minEarnPercent_Select_CheckPoint");

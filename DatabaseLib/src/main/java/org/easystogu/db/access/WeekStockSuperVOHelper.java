@@ -31,10 +31,6 @@ public class WeekStockSuperVOHelper extends StockSuperVOHelper {
 		List<MacdVO> macdList = macdTable.getNDateMacd(stockId, day);
 		List<KDJVO> kdjList = kdjTable.getNDateKDJ(stockId, day);
 		List<BollVO> bollList = bollTable.getNDateBoll(stockId, day);
-		// List<Mai1Mai2VO> mai1mai2List =
-		// mai1mai2Table.getNDateMai1Mai2(stockId, day);
-		// List<YiMengBSVO> yiMengBSList =
-		// yiMengBSTable.getNDateYiMengBS(stockId, day);
 		List<ShenXianVO> shenXianList = shenXianTable.getNDateShenXian(stockId, day);
 
 		if ((spList.size() != day) || (macdList.size() != day) || (kdjList.size() != day) || (bollList.size() != day)
@@ -73,11 +69,7 @@ public class WeekStockSuperVOHelper extends StockSuperVOHelper {
 		List<StockPriceVO> spList = stockPriceTable.getStockPriceById(stockId);
 		List<MacdVO> macdList = macdTable.getAllMacd(stockId);
 		List<KDJVO> kdjList = kdjTable.getAllKDJ(stockId);
-		// List<Mai1Mai2VO> mai1mai2List =
-		// mai1mai2Table.getAllMai1Mai2(stockId);
 		List<BollVO> bollList = bollTable.getAllBoll(stockId);
-		// List<YiMengBSVO> yiMengBSList =
-		// yiMengBSTable.getAllYiMengBS(stockId);
 		List<ShenXianVO> shenXianList = shenXianTable.getAllShenXian(stockId);
 
 		if ((spList.size() != macdList.size()) || (spList.size() != kdjList.size())

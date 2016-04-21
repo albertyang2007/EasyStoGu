@@ -69,6 +69,7 @@ public class WeekStockPriceTableHelper extends StockPriceTableHelper {
 		QUERY_LATEST_N_DATE_STOCKID_SQL = "SELECT date AS rtn FROM " + tableName
 				+ " WHERE stockId = :stockId ORDER BY date DESC LIMIT :limit";
 		QUERY_ALL_BY_DATE = "SELECT * FROM " + tableName + " WHERE DATE = :date ORDER BY stockId";
+		IS_DATE_IN_DEAL = "SELECT count(*) AS rtn FROM " + tableName + " WHERE stockid='999999' AND DATE = :date";
 
 		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
 	}

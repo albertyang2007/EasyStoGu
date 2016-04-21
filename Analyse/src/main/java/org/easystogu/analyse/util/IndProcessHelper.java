@@ -11,11 +11,8 @@ public class IndProcessHelper {
 		IndCrossCheckingHelper.macdCross(overDayList);
 		IndCrossCheckingHelper.kdjCross(overDayList);
 		IndCrossCheckingHelper.rsvCross(overDayList);
-		// IndCrossCheckingHelper.bollXueShi2DnCross(overDayList);
-		// IndCrossCheckingHelper.mai1Mai2Cross(overDayList);
 		IndCrossCheckingHelper.shenXianCross12(overDayList);
-		// IndCrossCheckingHelper.yiMengBSCross(overDayList);
-		// IndCrossCheckingHelper.zhuliJinChuCross(overDayList);
+		IndCrossCheckingHelper.qsddCross(overDayList);
 		VolumeCheckingHelper.volumeIncreasePuls(overDayList);
 		VolumeCheckingHelper.avgVolume5(overDayList);
 		PriceCheckingHelper.priceHigherThanNday(overDayList, 15);
@@ -29,9 +26,7 @@ public class IndProcessHelper {
 		IndCrossCheckingHelper.macdCross(overWeekList);
 		IndCrossCheckingHelper.kdjCross(overWeekList);
 		IndCrossCheckingHelper.rsvCross(overWeekList);
-		// IndCrossCheckingHelper.mai1Mai2Cross(overWeekList);
 		IndCrossCheckingHelper.shenXianCross12(overWeekList);
-		// IndCrossCheckingHelper.yiMengBSCross(overWeekList);
 		PriceCheckingHelper.setLastClosePrice(overWeekList);
 	}
 }

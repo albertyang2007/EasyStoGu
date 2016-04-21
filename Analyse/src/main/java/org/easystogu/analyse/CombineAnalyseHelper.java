@@ -1231,6 +1231,27 @@ public class CombineAnalyseHelper {
 			break;
 		}
 
+		// qsdd top
+		case QSDD_Top_Area: {
+			if (curSuperDayVO.qsddTopArea)
+				return true;
+			break;
+		}
+
+		// qsdd top
+		case QSDD_Bottom_Area: {
+			if (curSuperDayVO.qsddBottomArea)
+				return true;
+			break;
+		}
+
+		// qsdd top
+		case QSDD_Bottom_Gordon: {
+			if (curSuperDayVO.qsddBottomCrossType == CrossType.GORDON)
+				return true;
+			break;
+		}
+
 		default:
 			return false;
 		}

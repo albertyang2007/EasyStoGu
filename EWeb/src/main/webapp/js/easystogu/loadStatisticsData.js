@@ -4,7 +4,7 @@
  * @returns {undefined}
  */
 function loadLuZaoStatistics(version, stockId, dateFrom, dateTo) {
-	var seriesCounter = 0, date_price = [], volume = [], data_ma19 = [], data_ma43 = [], data_ma86 = [], count_I = [], count_II = [], count_III = [], count_VI = [];
+	var seriesCounter = 0, date_price = [], volume = [], data_ma19 = [], data_ma43 = [], data_ma86 = [], count1 = [], count2 = [], count3 = [], count4 = [];
 	var v = "1";
 	if (version == 'v2') {
 		v = "2";
@@ -63,20 +63,20 @@ function loadLuZaoStatistics(version, stockId, dateFrom, dateTo) {
 				name : 'MA86',
 				data : data_ma86
 			}, {
-				name : 'I_GuanCha',
-				data : count_I,
+				name : '1 观察',
+				data : count1,
 				yAxis : 1
 			}, {
-				name : 'II_JianCang',
-				data : count_II,
+				name : '2 建仓',
+				data : count2,
 				yAxis : 1
 			}, {
-				name : 'III_ChiGu',
-				data : count_III,
+				name : '3 持股',
+				data : count3,
 				yAxis : 1
 			}, {
-				name : 'VI_JianCang',
-				data : count_VI,
+				name : '4 减仓',
+				data : count4,
 				yAxis : 1
 			} ]
 		});
@@ -136,17 +136,185 @@ function loadLuZaoStatistics(version, stockId, dateFrom, dateTo) {
 	 * 
 	 * @returns {undefined}
 	 */
-	var url_ind = "http://localhost:8080/portal/statistics/luzao_trend_phase/"
-			+ dateFrom + "_" + dateTo;
+	var url_ind = "http://localhost:8080/portal/statistics/luzao/" + dateFrom
+			+ "_" + dateTo;
 	$.getJSON(url_ind, function(data) {
 		i = 0;
 		for (i; i < data.length; i += 1) {
 			var dateStr = data[i]['date'] + " 15:00:00";
 			var dateD = new Date(Date.parse(dateStr.replace(/-/g, "/")));
-			count_I.push([ dateD.getTime(), data[i]['count_I_GuanCha'] ]);
-			count_II.push([ dateD.getTime(), data[i]['count_II_JianCang'] ]);
-			count_III.push([ dateD.getTime(), data[i]['count_III_ChiGu'] ]);
-			count_VI.push([ dateD.getTime(), data[i]['count_VI_JianCang'] ]);
+			count1.push([ dateD.getTime(), data[i]['count1'] ]);
+			count2.push([ dateD.getTime(), data[i]['count2'] ]);
+			count3.push([ dateD.getTime(), data[i]['count3'] ]);
+			count4.push([ dateD.getTime(), data[i]['count4'] ]);
+		}
+
+		seriesCounter += 1;
+		if (seriesCounter === 3) {
+			createChart();
+		}
+	});
+}
+
+/**
+ * Load Qsdd and Top Bottom Satistics
+ * 
+ * @returns {undefined}
+ */
+function loadQsddStatistics(version, stockId, dateFrom, dateTo) {
+	var seriesCounter = 0, date_price = [], volume = [], data_lonTerm = [], data_midTerm = [], data_shoTerm = [], count1 = [], count2 = [], count3 = [];
+	var v = "1";
+	if (version == 'v2') {
+		v = "2";
+	}
+	/**
+	 * Create the chart when all data is loaded
+	 * 
+	 * @returns {undefined}
+	 */
+	function createChart() {
+		$('#container').highcharts('StockChart', {
+
+			rangeSelector : {
+				selected : 1
+			},
+
+			title : {
+				text : stockId
+			},
+
+			yAxis : [ {
+				labels : {
+					align : 'right',
+					x : -3
+				},
+				title : {
+					text : 'Price'
+				},
+				height : '60%',
+				lineWidth : 2
+			}, {
+				labels : {
+					align : 'right',
+					x : -3
+				},
+				title : {
+					text : 'QSDD'
+				},
+				top : '65%',
+				height : '35%',
+				offset : 0,
+				lineWidth : 2
+			}, {
+				labels : {
+					align : 'right',
+					x : -3
+				},
+				title : {
+					text : 'Statistics'
+				},
+				top : '65%',
+				height : '35%',
+				offset : 0,
+				lineWidth : 2
+			} ],
+
+			series : [ {
+				type : 'candlestick',
+				name : 'OHLC',
+				data : date_price
+			}, {
+				name : 'LonTerm',
+				data : data_lonTerm,
+				yAxis : 1
+			}, {
+				name : 'MidTerm',
+				data : data_midTerm,
+				yAxis : 1
+			}, {
+				name : 'ShoTerm',
+				data : data_shoTerm,
+				yAxis : 1
+			}, {
+				name : '1 见顶',
+				data : count1,
+				yAxis : 2
+			}, {
+				name : '2 见底',
+				data : count2,
+				yAxis : 2
+			}, {
+				name : '3 金叉',
+				data : count3,
+				yAxis : 2
+			} ]
+		});
+	}
+
+	/**
+	 * Load StocPrice and display OHLC
+	 * 
+	 * @returns {undefined}
+	 */
+	var url_price = "http://localhost:8080/portal/price/" + stockId + "/"
+			+ dateFrom + "_" + dateTo;
+	$.getJSON(url_price, function(data) {
+		i = 0;
+		for (i; i < data.length; i += 1) {
+			var dateStr = data[i]['date'] + " 15:00:00";
+			var dateD = new Date(Date.parse(dateStr.replace(/-/g, "/")));
+			date_price.push([ dateD.getTime(), data[i]['open'],
+					data[i]['high'], data[i]['low'], data[i]['close'] ]);
+
+			volume.push([ dateD.getTime(), data[i]['volume'] ]);
+		}
+
+		seriesCounter += 1;
+		if (seriesCounter === 3) {
+			createChart();
+		}
+	});
+
+	/**
+	 * Load luzao Indicator and display
+	 * 
+	 * @returns {undefined}
+	 */
+	var url_ind = "http://localhost:8080/portal/ind" + v + "/qsdd/" + stockId
+			+ "/" + dateFrom + "_" + dateTo;
+	$.getJSON(url_ind, function(data) {
+		i = 0;
+		for (i; i < data.length; i += 1) {
+			var dateStr = data[i]['date'] + " 15:00:00";
+			var dateD = new Date(Date.parse(dateStr.replace(/-/g, "/")));
+			data_lonTerm.push([ dateD.getTime(), data[i]['lonTerm'] ]);
+
+			data_midTerm.push([ dateD.getTime(), data[i]['midTerm'] ]);
+
+			data_shoTerm.push([ dateD.getTime(), data[i]['shoTerm'] ]);
+		}
+
+		seriesCounter += 1;
+		if (seriesCounter === 3) {
+			createChart();
+		}
+	});
+
+	/**
+	 * Load qsdd top bottom statistics and display
+	 * 
+	 * @returns {undefined}
+	 */
+	var url_ind = "http://localhost:8080/portal/statistics/qsdd/" + dateFrom
+			+ "_" + dateTo;
+	$.getJSON(url_ind, function(data) {
+		i = 0;
+		for (i; i < data.length; i += 1) {
+			var dateStr = data[i]['date'] + " 15:00:00";
+			var dateD = new Date(Date.parse(dateStr.replace(/-/g, "/")));
+			count1.push([ dateD.getTime(), data[i]['count1'] ]);
+			count2.push([ dateD.getTime(), data[i]['count2'] ]);
+			count3.push([ dateD.getTime(), data[i]['count3'] ]);
 		}
 
 		seriesCounter += 1;
