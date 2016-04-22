@@ -126,7 +126,12 @@ public class DailySelectionRunner implements Runnable {
                 }
                 if (this.isGeneralCheckPoint(checkPoint)) {
                     if (combineAnalyserHelper.isConditionSatisfy(checkPoint, overDayList, overWeekList)) {
-                        //this.saveToCheckPointSelectionDB(superVO, checkPoint);
+                        //only save QSDD Bottom to daily selection table and display
+                        if (checkPoint.compareTo(DailyCombineCheckPoint.QSDD_Bottom_Area) == 0
+                                || checkPoint.compareTo(DailyCombineCheckPoint.QSDD_Bottom_Gordon) == 0) {
+                            this.saveToCheckPointSelectionDB(superVO, checkPoint);
+                            this.addToConditionMapForReportDisplay(superVO, checkPoint);
+                        }
                         this.addToGeneralCheckPointGordonMap(checkPoint, stockId);
                     }
                 }
@@ -356,7 +361,7 @@ public class DailySelectionRunner implements Runnable {
             checkPointDailyStatisticsTable.delete(cpdsvo.date, cpdsvo.checkPoint);
             checkPointDailyStatisticsTable.insert(cpdsvo);
 
-            System.out.println(cpdsvo.checkPoint + "=" +cpdsvo.count);
+            System.out.println(cpdsvo.checkPoint + "=" + cpdsvo.count);
         }
     }
 
