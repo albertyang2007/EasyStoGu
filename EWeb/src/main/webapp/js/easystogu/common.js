@@ -99,6 +99,13 @@ function createChart_LuZao(stockId, date_price, volume, data_ma19, data_ma43,
 		title : {
 			text : stockId
 		},
+		
+		plotOptions : {
+			candlestick : {
+				color : '#00ff00',// Green
+				upColor : '#ff0000'// Red
+			}
+		},
 
 		yAxis : [ {
 			labels : {
@@ -164,6 +171,13 @@ function createChart_ShenXian(stockId, date_price, volume, data_h1, data_h2,
 		title : {
 			text : stockId
 		},
+		
+		plotOptions : {
+			candlestick : {
+				color : '#00ff00',// Green
+				upColor : '#ff0000'// Red
+			}
+		},
 
 		yAxis : [ {
 			labels : {
@@ -226,6 +240,13 @@ function createChart_Boll(stockId, date_price, volume, data_mb, data_up,
 
 		title : {
 			text : stockId
+		},
+		
+		plotOptions : {
+			candlestick : {
+				color : '#00ff00',// Green
+				upColor : '#ff0000'// Red
+			}
 		},
 
 		yAxis : [ {
@@ -290,6 +311,13 @@ function createChart_Macd(stockId, date_price, volume, data_dif, data_dea,
 		title : {
 			text : stockId
 		},
+		
+		plotOptions : {
+			candlestick : {
+				color : '#00ff00',// Green
+				upColor : '#ff0000'// Red
+			}
+		},
 
 		yAxis : [ {
 			labels : {
@@ -351,6 +379,13 @@ function createChart_Qsdd(stockId, date_price, volume, data_lonTerm,
 		title : {
 			text : stockId
 		},
+		
+		plotOptions : {
+			candlestick : {
+				color : '#00ff00',// Green
+				upColor : '#ff0000'// Red
+			}
+		},
 
 		yAxis : [ {
 			labels : {
@@ -410,6 +445,13 @@ function createChart_Candlestick(stockId, date_price, volume) {
 
 		title : {
 			text : stockId
+		},
+		
+		plotOptions : {
+			candlestick : {
+				color : '#00ff00',// Green
+				upColor : '#ff0000'// Red
+			}
 		},
 
 		yAxis : [ {

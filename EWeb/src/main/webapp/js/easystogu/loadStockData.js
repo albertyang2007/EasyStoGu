@@ -24,6 +24,13 @@ function loadShenXian(version, stockId, dateFrom, dateTo) {
 			title : {
 				text : stockId
 			},
+			
+			plotOptions : {
+				candlestick : {
+					color : '#00ff00',// Green
+					upColor : '#ff0000'// Red
+				}
+			},
 
 			yAxis : [ {
 				labels : {
@@ -146,6 +153,13 @@ function loadLuZao(version, stockId, dateFrom, dateTo) {
 
 			title : {
 				text : stockId
+			},
+			
+			plotOptions : {
+				candlestick : {
+					color : '#00ff00',// Green
+					upColor : '#ff0000'// Red
+				}
 			},
 
 			yAxis : [ {
@@ -271,6 +285,13 @@ function loadBoll(version, stockId, dateFrom, dateTo) {
 				text : stockId
 			},
 
+			plotOptions : {
+				candlestick : {
+					color : '#00ff00',// Green
+					upColor : '#ff0000'// Red
+				}
+			},
+			
 			yAxis : [ {
 				labels : {
 					align : 'right',
@@ -393,6 +414,13 @@ function loadMacd(version, stockId, dateFrom, dateTo) {
 			title : {
 				text : stockId
 			},
+			
+			plotOptions : {
+				candlestick : {
+					color : '#00ff00',// Green
+					upColor : '#ff0000'// Red
+				}
+			},
 
 			yAxis : [ {
 				labels : {
@@ -513,6 +541,13 @@ function loadQSDD(version, stockId, dateFrom, dateTo) {
 
 			title : {
 				text : stockId
+			},
+			
+			plotOptions : {
+				candlestick : {
+					color : '#00ff00',// Green
+					upColor : '#ff0000'// Red
+				}
 			},
 
 			yAxis : [ {

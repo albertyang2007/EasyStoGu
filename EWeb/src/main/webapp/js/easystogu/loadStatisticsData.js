@@ -25,6 +25,13 @@ function loadLuZaoStatistics(version, stockId, dateFrom, dateTo) {
 				text : stockId
 			},
 
+			plotOptions : {
+				candlestick : {
+					color : '#00ff00',// Green
+					upColor : '#ff0000'// Red
+				}
+			},
+
 			yAxis : [ {
 				labels : {
 					align : 'right',
@@ -181,6 +188,13 @@ function loadQsddStatistics(version, stockId, dateFrom, dateTo) {
 
 			title : {
 				text : stockId
+			},
+
+			plotOptions : {
+				candlestick : {
+					color : '#00ff00',// Green
+					upColor : '#ff0000'// Red
+				}
 			},
 
 			yAxis : [ {
