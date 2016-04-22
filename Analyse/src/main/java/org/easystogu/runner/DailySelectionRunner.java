@@ -356,7 +356,7 @@ public class DailySelectionRunner implements Runnable {
             checkPointDailyStatisticsTable.delete(cpdsvo.date, cpdsvo.checkPoint);
             checkPointDailyStatisticsTable.insert(cpdsvo);
 
-            System.out.println(cpdsvo);
+            System.out.println(cpdsvo.checkPoint + "=" +cpdsvo.count);
         }
     }
 
