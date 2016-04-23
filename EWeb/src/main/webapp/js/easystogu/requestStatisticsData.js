@@ -4,90 +4,11 @@
  * @returns {undefined}
  */
 function loadLuZaoStatistics(version, stockId, dateFrom, dateTo) {
-	var seriesCounter = 0, date_price = [], volume = [], data_ma19 = [], data_ma43 = [], data_ma86 = [], count1 = [], count2 = [], count3 = [], count4 = [];
-	var v = "1";
-	if (version == 'v2') {
-		v = "2";
-	}
-	/**
-	 * Create the chart when all data is loaded
-	 * 
-	 * @returns {undefined}
-	 */
-	function createChart() {
-		$('#container').highcharts('StockChart', {
-
-			rangeSelector : {
-				selected : 1
-			},
-
-			title : {
-				text : stockId
-			},
-
-			plotOptions : {
-				candlestick : {
-					color : '#00ff00',// Green
-					upColor : '#ff0000'// Red
-				}
-			},
-
-			yAxis : [ {
-				labels : {
-					align : 'right',
-					x : -3
-				},
-				title : {
-					text : 'Price'
-				},
-				height : '60%',
-				lineWidth : 2
-			}, {
-				labels : {
-					align : 'right',
-					x : -3
-				},
-				title : {
-					text : 'Statistics'
-				},
-				top : '65%',
-				height : '35%',
-				offset : 0,
-				lineWidth : 2
-			} ],
-
-			series : [ {
-				type : 'candlestick',
-				name : 'OHLC',
-				data : date_price
-			}, {
-				name : 'MA19',
-				data : data_ma19
-			}, {
-				name : 'MA43',
-				data : data_ma43
-			}, {
-				name : 'MA86',
-				data : data_ma86
-			}, {
-				name : '观察个股数目',
-				data : count1,
-				yAxis : 1
-			}, {
-				name : '建仓个股数目',
-				data : count2,
-				yAxis : 1
-			}, {
-				name : '持股个股数目',
-				data : count3,
-				yAxis : 1
-			}, {
-				name : '减仓阶段数目',
-				data : count4,
-				yAxis : 1
-			} ]
-		});
-	}
+	var seriesCounter = 0, date_price = [], volume = [], data_ma19 = [], data_ma43 = [], data_ma86 = [], data_1_guancha = [], data_2_jiancang = [], data_3_chigu = [], data_4_jiancang = [];
+    var v = "1";
+    if(version == 'v2'){
+    	v = "2";
+    }
 
 	/**
 	 * Load StocPrice and display OHLC
@@ -109,7 +30,9 @@ function loadLuZaoStatistics(version, stockId, dateFrom, dateTo) {
 
 		seriesCounter += 1;
 		if (seriesCounter === 3) {
-			createChart();
+			createChart_LuZao_Statistics(stockId, date_price, volume,
+					data_ma19, data_ma43, data_ma86, data_1_guancha,
+					data_2_jiancang, data_3_chigu, data_4_jiancang);
 		}
 	});
 
@@ -134,7 +57,9 @@ function loadLuZaoStatistics(version, stockId, dateFrom, dateTo) {
 
 		seriesCounter += 1;
 		if (seriesCounter === 3) {
-			createChart();
+			createChart_LuZao_Statistics(stockId, date_price, volume,
+					data_ma19, data_ma43, data_ma86, data_1_guancha,
+					data_2_jiancang, data_3_chigu, data_4_jiancang);
 		}
 	});
 
@@ -150,15 +75,17 @@ function loadLuZaoStatistics(version, stockId, dateFrom, dateTo) {
 		for (i; i < data.length; i += 1) {
 			var dateStr = data[i]['date'] + " 15:00:00";
 			var dateD = new Date(Date.parse(dateStr.replace(/-/g, "/")));
-			count1.push([ dateD.getTime(), data[i]['count1'] ]);
-			count2.push([ dateD.getTime(), data[i]['count2'] ]);
-			count3.push([ dateD.getTime(), data[i]['count3'] ]);
-			count4.push([ dateD.getTime(), data[i]['count4'] ]);
+			data_1_guancha.push([ dateD.getTime(), data[i]['count1'] ]);
+			data_2_jiancang.push([ dateD.getTime(), data[i]['count2'] ]);
+			data_3_chigu.push([ dateD.getTime(), data[i]['count3'] ]);
+			data_4_jiancang.push([ dateD.getTime(), data[i]['count4'] ]);
 		}
 
 		seriesCounter += 1;
 		if (seriesCounter === 3) {
-			createChart();
+			createChart_LuZao_Statistics(stockId, date_price, volume,
+					data_ma19, data_ma43, data_ma86, data_1_guancha,
+					data_2_jiancang, data_3_chigu, data_4_jiancang);
 		}
 	});
 }
@@ -169,101 +96,11 @@ function loadLuZaoStatistics(version, stockId, dateFrom, dateTo) {
  * @returns {undefined}
  */
 function loadQsddStatistics(version, stockId, dateFrom, dateTo) {
-	var seriesCounter = 0, date_price = [], volume = [], data_lonTerm = [], data_midTerm = [], data_shoTerm = [], count1 = [], count2 = [], count3 = [];
-	var v = "1";
-	if (version == 'v2') {
-		v = "2";
-	}
-	/**
-	 * Create the chart when all data is loaded
-	 * 
-	 * @returns {undefined}
-	 */
-	function createChart() {
-		$('#container').highcharts('StockChart', {
-
-			rangeSelector : {
-				selected : 1
-			},
-
-			title : {
-				text : stockId
-			},
-
-			plotOptions : {
-				candlestick : {
-					color : '#00ff00',// Green
-					upColor : '#ff0000'// Red
-				}
-			},
-
-			yAxis : [ {
-				labels : {
-					align : 'right',
-					x : -3
-				},
-				title : {
-					text : 'Price'
-				},
-				height : '60%',
-				lineWidth : 2
-			}, {
-				labels : {
-					align : 'right',
-					x : -3
-				},
-				title : {
-					text : 'QSDD'
-				},
-				top : '65%',
-				height : '35%',
-				offset : 0,
-				lineWidth : 2
-			}, {
-				labels : {
-					align : 'right',
-					x : -3
-				},
-				title : {
-					text : 'QSDD'
-				},
-				top : '65%',
-				height : '35%',
-				offset : 0,
-				lineWidth : 2
-			} ],
-
-			series : [ {
-				type : 'candlestick',
-				name : 'OHLC',
-				data : date_price
-			}, {
-				name : '短期线',
-				data : data_shoTerm,
-				yAxis : 1
-			}, {
-				name : '中期线',
-				data : data_midTerm,
-				yAxis : 1
-			}, {
-				name : '长期线',
-				data : data_lonTerm,
-				yAxis : 1
-			}, {
-				name : '见顶个股数目',
-				data : count1,
-				yAxis : 2
-			}, {
-				name : '见底个股数目',
-				data : count2,
-				yAxis : 2
-			}, {
-				name : '金叉个股数目',
-				data : count3,
-				yAxis : 2
-			} ]
-		});
-	}
+	var seriesCounter = 0, date_price = [], volume = [], data_lonTerm = [], data_midTerm = [], data_shoTerm = [], date_topArea = [], date_bottomArea = [], data_bottomGordon = [];
+    var v = "1";
+    if(version == 'v2'){
+    	v = "2";
+    }
 
 	/**
 	 * Load StocPrice and display OHLC
@@ -285,7 +122,9 @@ function loadQsddStatistics(version, stockId, dateFrom, dateTo) {
 
 		seriesCounter += 1;
 		if (seriesCounter === 3) {
-			createChart();
+			createChart_Qsdd_Statistics(stockId, date_price, volume,
+					data_lonTerm, data_midTerm, data_shoTerm, date_topArea,
+					date_bottomArea, data_bottomGordon);
 		}
 	});
 
@@ -310,7 +149,9 @@ function loadQsddStatistics(version, stockId, dateFrom, dateTo) {
 
 		seriesCounter += 1;
 		if (seriesCounter === 3) {
-			createChart();
+			createChart_Qsdd_Statistics(stockId, date_price, volume,
+					data_lonTerm, data_midTerm, data_shoTerm, date_topArea,
+					date_bottomArea, data_bottomGordon);
 		}
 	});
 
@@ -326,14 +167,16 @@ function loadQsddStatistics(version, stockId, dateFrom, dateTo) {
 		for (i; i < data.length; i += 1) {
 			var dateStr = data[i]['date'] + " 15:00:00";
 			var dateD = new Date(Date.parse(dateStr.replace(/-/g, "/")));
-			count1.push([ dateD.getTime(), data[i]['count1'] ]);
-			count2.push([ dateD.getTime(), data[i]['count2'] ]);
-			count3.push([ dateD.getTime(), data[i]['count3'] ]);
+			date_topArea.push([ dateD.getTime(), data[i]['count1'] ]);
+			date_bottomArea.push([ dateD.getTime(), data[i]['count2'] ]);
+			data_bottomGordon.push([ dateD.getTime(), data[i]['count3'] ]);
 		}
 
 		seriesCounter += 1;
 		if (seriesCounter === 3) {
-			createChart();
+			createChart_Qsdd_Statistics(stockId, date_price, volume,
+					data_lonTerm, data_midTerm, data_shoTerm, date_topArea,
+					date_bottomArea, data_bottomGordon);
 		}
 	});
 }
