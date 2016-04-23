@@ -10,6 +10,7 @@ import org.easystogu.db.table.QSDDVO;
 import org.easystogu.db.table.ShenXianVO;
 import org.easystogu.db.table.StockPriceVO;
 import org.easystogu.db.table.StockSuperVO;
+import org.easystogu.db.table.YiMengBSVO;
 
 public class StockSuperVOHelper {
 
@@ -20,6 +21,7 @@ public class StockSuperVOHelper {
 	protected IndShenXianTableHelper shenXianTable = IndShenXianTableHelper.getInstance();
 	protected IndDDXTableHelper ddxTable = IndDDXTableHelper.getInstance();
 	protected IndQSDDTableHelper qsddTable = IndQSDDTableHelper.getInstance();
+	protected IndYiMengBSTableHelper ymbsTable = IndYiMengBSTableHelper.getInstance();
 
 	public List<StockSuperVO> getLatestNStockSuperVO(String stockId, int day) {
 		// merge them into one overall VO
@@ -31,9 +33,10 @@ public class StockSuperVOHelper {
 		List<BollVO> bollList = bollTable.getNDateBoll(stockId, day);
 		List<ShenXianVO> shenXianList = shenXianTable.getNDateShenXian(stockId, day);
 		List<QSDDVO> qsddList = qsddTable.getNDateQSDD(stockId, day);
+		List<YiMengBSVO> ymbsList = ymbsTable.getNDateYiMengBS(stockId, day);
 
 		if ((spList.size() != day) || (macdList.size() != day) || (kdjList.size() != day) || (bollList.size() != day)
-				|| (shenXianList.size() != day) || (qsddList.size() != day)) {
+				|| (shenXianList.size() != day) || (qsddList.size() != day) || (ymbsList.size() != day)) {
 			// System.out.println(stockId + " size of spList(" + spList.size() +
 			// "), macdList(" + macdList.size()
 			// + ") and kdjList(" + kdjList.size() + ") and xueShie2List(" +
@@ -45,7 +48,7 @@ public class StockSuperVOHelper {
 		if (!spList.get(0).date.equals(macdList.get(0).date) || !spList.get(0).date.equals(kdjList.get(0).date)
 				|| !spList.get(0).date.equals(bollList.get(0).date)
 				|| !spList.get(0).date.equals(shenXianList.get(0).date)
-				|| !spList.get(0).date.equals(qsddList.get(0).date)) {
+				|| !spList.get(0).date.equals(qsddList.get(0).date) || !spList.get(0).date.equals(ymbsList.get(0).date)) {
 			// System.out.println(stockId
 			// +
 			// " date of spList, macdList and kdjList is not equal, the database must meet fatel error!");
@@ -56,7 +59,8 @@ public class StockSuperVOHelper {
 				|| !spList.get(day - 1).date.equals(kdjList.get(day - 1).date)
 				|| !spList.get(day - 1).date.equals(bollList.get(day - 1).date)
 				|| !spList.get(day - 1).date.equals(shenXianList.get(day - 1).date)
-				|| !spList.get(day - 1).date.equals(qsddList.get(day - 1).date)) {
+				|| !spList.get(day - 1).date.equals(qsddList.get(day - 1).date)
+				|| !spList.get(day - 1).date.equals(ymbsList.get(day - 1).date)) {
 			// System.out.println(stockId + " Date of spList(" + spList.get(day
 			// - 1).date + "), macdList("
 			// + macdList.get(day - 1).date + "),kdjList(" + kdjList.get(day -
@@ -72,6 +76,7 @@ public class StockSuperVOHelper {
 					bollList.get(index));
 			superVO.setShenXianVO(shenXianList.get(index));
 			superVO.setQsddVO(qsddList.get(index));
+			superVO.setYiMengBSVO(ymbsList.get(index));
 			superVO.setDdxVO(ddxTable.getDDX(superVO.priceVO.stockId, superVO.priceVO.date));
 			// superVO.setZhiJinLiuVO(ziJinLiuTableHelper.getZiJinLiu(superVO.priceVO.stockId,
 			// superVO.priceVO.date));
@@ -92,24 +97,24 @@ public class StockSuperVOHelper {
 		List<BollVO> bollList = bollTable.getAllBoll(stockId);
 		List<ShenXianVO> shenXianList = shenXianTable.getAllShenXian(stockId);
 		List<QSDDVO> qsddList = qsddTable.getAllQSDD(stockId);
+		List<YiMengBSVO> ymbsList = ymbsTable.getAllYiMengBS(stockId);
 
 		if ((spList.size() != macdList.size()) || (macdList.size() != kdjList.size())
 				|| (kdjList.size() != spList.size()) || (bollList.size() != spList.size())
-				|| (shenXianList.size() != spList.size())
-				|| (qsddList.size() != spList.size())) {
+				|| (shenXianList.size() != spList.size()) || (qsddList.size() != spList.size())
+				|| (ymbsList.size() != spList.size())) {
 			return overList;
 		}
 
 		if ((spList.size() == 0) || (macdList.size() == 0) || (kdjList.size() == 0) || (bollList.size() == 0)
-				|| (shenXianList.size() == 0)
-				|| (qsddList.size() == 0)) {
+				|| (shenXianList.size() == 0) || (qsddList.size() == 0) || (ymbsList.size() == 0)) {
 			return overList;
 		}
 
 		if (!spList.get(0).date.equals(macdList.get(0).date) || !spList.get(0).date.equals(kdjList.get(0).date)
 				|| !spList.get(0).date.equals(bollList.get(0).date)
 				|| !spList.get(0).date.equals(shenXianList.get(0).date)
-				|| !spList.get(0).date.equals(qsddList.get(0).date)) {
+				|| !spList.get(0).date.equals(qsddList.get(0).date) || !spList.get(0).date.equals(ymbsList.get(0).date)) {
 			return overList;
 		}
 
@@ -117,6 +122,7 @@ public class StockSuperVOHelper {
 			StockSuperVO superVO = new StockSuperVO(spList.get(index), macdList.get(index), kdjList.get(index),
 					bollList.get(index));
 			superVO.setShenXianVO(shenXianList.get(index));
+			superVO.setYiMengBSVO(ymbsList.get(index));
 			superVO.setDdxVO(ddxTable.getDDX(superVO.priceVO.stockId, superVO.priceVO.date));
 			superVO.setQsddVO(qsddList.get(index));
 			overList.add(superVO);

@@ -137,11 +137,29 @@ public class IND {
 		return rtn;
 	}
 
+	// return double[] * N
+	public double[] MUL(double[] a, int n) {
+		double[] rtn = new double[a.length];
+		for (int index = 0; index < a.length; index++) {
+			rtn[index] = a[index] * n;
+		}
+		return rtn;
+	}
+
 	// return double[] / double[]
 	public double[] DIV(double[] a, double[] b) {
 		double[] rtn = new double[a.length];
 		for (int index = 0; index < a.length; index++) {
 			rtn[index] = a[index] / b[index];
+		}
+		return rtn;
+	}
+
+	// return double[] / n
+	public double[] DIV(double[] a, int n) {
+		double[] rtn = new double[a.length];
+		for (int index = 0; index < a.length; index++) {
+			rtn[index] = a[index] / n;
 		}
 		return rtn;
 	}

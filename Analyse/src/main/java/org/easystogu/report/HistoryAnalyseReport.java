@@ -109,6 +109,7 @@ public class HistoryAnalyseReport {
 				if (combineAanalyserHelper.isConditionSatisfy(checkPoint, subOverDayList, subOverWeekList)) {
 					reportVO = new HistoryReportDetailsVO(overDayList);
 					reportVO.setBuyPriceVO(superVO.priceVO);
+					System.out.println(superVO.priceVO.date + " buy");
 					continue;
 				}
 			}
@@ -235,8 +236,8 @@ public class HistoryAnalyseReport {
 
 		for (String stockId : stockIds) {
 
-			// if (!stockId.equals("002609"))
-			// continue;
+			 //if (!stockId.equals("002609"))
+			 //continue;
 
 			List<HistoryReportDetailsVO> historyReportList = this.doAnalyseBuySellDate(stockId, checkPoint);
 			for (HistoryReportDetailsVO reportVO : historyReportList) {
@@ -319,8 +320,8 @@ public class HistoryAnalyseReport {
 
 		for (String stockId : stockIds) {
 
-			//if (!stockId.equals("600036"))
-			//	continue;
+			// if (!stockId.equals("600036"))
+			// continue;
 
 			if (index++ % 100 == 0) {
 				System.out.println("Analyse of " + index + "/" + stockIds.size());
@@ -404,7 +405,6 @@ public class HistoryAnalyseReport {
 		// reporter.searchAllStockIdAnalyseHistoryCheckPoint(checkPoint);
 		// }
 		// }
-		reporter.searchAllStockIdAnalyseHistoryCheckPoint(DailyCombineCheckPoint.QSDD_Bottom_Area);
-		reporter.searchAllStockIdAnalyseHistoryCheckPoint(DailyCombineCheckPoint.QSDD_Bottom_Gordon);
+		reporter.searchAllStockIdAnalyseHistoryCheckPoint(DailyCombineCheckPoint.YiMengBS_KDJ_Gordon_SuoLiang_HuiTiao);
 	}
 }

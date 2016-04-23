@@ -36,5 +36,4 @@ public class MACDHelper extends IND {
 		System.out.println("DEA=" + (macd[1][close.size() - 1]));
 		System.out.println("MACD=" + (macd[2][close.size() - 1]));
 	}
-
 }

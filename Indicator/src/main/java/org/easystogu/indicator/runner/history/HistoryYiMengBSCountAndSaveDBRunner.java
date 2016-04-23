@@ -9,7 +9,10 @@ import org.easystogu.db.table.StockPriceVO;
 import org.easystogu.db.table.YiMengBSVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.indicator.YiMengBSHelper;
+import org.easystogu.indicator.runner.utils.StockPriceFetcher;
 import org.easystogu.utils.Strings;
+
+import com.google.common.primitives.Doubles;
 
 public class HistoryYiMengBSCountAndSaveDBRunner {
 
@@ -40,13 +43,18 @@ public class HistoryYiMengBSCountAndSaveDBRunner {
 
 		// update price based on chuQuanChuXi event
 		chuQuanChuXiPriceHelper.updatePrice(stockId, priceList);
+		
 
-		double[][] yiMeng = yiMengBSHelper.getYiMengBSList(priceList);
+		List<Double> close = StockPriceFetcher.getClosePrice(priceList);
+		List<Double> low = StockPriceFetcher.getLowPrice(priceList);
+		List<Double> high = StockPriceFetcher.getHighPrice(priceList);
+
+		double[][] yiMeng = yiMengBSHelper.getYiMengBSList(Doubles.toArray(close), Doubles.toArray(low), Doubles.toArray(high));
 
 		for (int i = 0; i < yiMeng[0].length; i++) {
 			YiMengBSVO vo = new YiMengBSVO();
-			vo.setX2(Strings.convert2ScaleDecimal(yiMeng[1][i]));
-			vo.setX3(Strings.convert2ScaleDecimal(yiMeng[2][i]));
+			vo.setX2(Strings.convert2ScaleDecimal(yiMeng[0][i]));
+			vo.setX3(Strings.convert2ScaleDecimal(yiMeng[1][i]));
 			vo.setStockId(stockId);
 			vo.setDate(priceList.get(i).date);
 

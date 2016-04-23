@@ -9,8 +9,11 @@ import org.easystogu.db.table.StockPriceVO;
 import org.easystogu.db.table.YiMengBSVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.indicator.YiMengBSHelper;
+import org.easystogu.indicator.runner.utils.StockPriceFetcher;
 import org.easystogu.multirunner.MultThreadRunner;
 import org.easystogu.utils.Strings;
+
+import com.google.common.primitives.Doubles;
 
 public class DailyYiMengBSCountAndSaveDBRunner implements Runnable {
 	protected StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
@@ -57,13 +60,18 @@ public class DailyYiMengBSCountAndSaveDBRunner implements Runnable {
 		// update price based on chuQuanChuXi event
 		chuQuanChuXiPriceHelper.updatePrice(stockId, priceList);
 
-		double[][] yiMeng = yiMengBSHelper.getYiMengBSList(priceList);
+		List<Double> close = StockPriceFetcher.getClosePrice(priceList);
+		List<Double> low = StockPriceFetcher.getLowPrice(priceList);
+		List<Double> high = StockPriceFetcher.getHighPrice(priceList);
+
+		double[][] yiMeng = yiMengBSHelper.getYiMengBSList(Doubles.toArray(close), Doubles.toArray(low),
+				Doubles.toArray(high));
 
 		int length = yiMeng[0].length;
 
 		YiMengBSVO vo = new YiMengBSVO();
-		vo.setX2(Strings.convert2ScaleDecimal(yiMeng[1][length - 1]));
-		vo.setX3(Strings.convert2ScaleDecimal(yiMeng[2][length - 1]));
+		vo.setX2(Strings.convert2ScaleDecimal(yiMeng[0][length - 1]));
+		vo.setX3(Strings.convert2ScaleDecimal(yiMeng[1][length - 1]));
 		vo.setStockId(stockId);
 		vo.setDate(priceList.get(length - 1).date);
 
