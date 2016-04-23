@@ -262,7 +262,7 @@ public class HistoryAnalyseReport {
 					} else {
 						// for completed VO
 						// remove it from daily selection
-						System.out.println("Completed: " + reportVO);
+						//System.out.println("Completed: " + reportVO);
 						this.checkPointDailySelectionTable.delete(stockId, reportVO.buyPriceVO.date,
 								checkPoint.toString());
 						// save case into history DB
@@ -404,8 +404,7 @@ public class HistoryAnalyseReport {
 		// reporter.searchAllStockIdAnalyseHistoryCheckPoint(checkPoint);
 		// }
 		// }
-		reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.QSDD_Top_Area);
-		reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.QSDD_Bottom_Area);
-		reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.QSDD_Bottom_Gordon);
+		reporter.searchAllStockIdAnalyseHistoryCheckPoint(DailyCombineCheckPoint.QSDD_Bottom_Area);
+		reporter.searchAllStockIdAnalyseHistoryCheckPoint(DailyCombineCheckPoint.QSDD_Bottom_Gordon);
 	}
 }

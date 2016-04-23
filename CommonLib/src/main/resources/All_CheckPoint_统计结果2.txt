@@ -241,3 +241,19 @@ Avg hold stock days when sell point: 13
 Avg hold stock days when high price: 5
 Total high earn between (25, 50): 2
 Total low  earn between (10, 10): 8
+
+===============================QSDD_Bottom_Area (sellPoint:KDJ_Dead)==========================
+Total satisfy: 11848	 earnPercent[close]=2.360534460056547	 earnPercent[high]=10.849331200210784	 earnPercent[low]=-5.202408668487623
+oldEarn=99.0
+Avg hold stock days when sell point: 11
+Avg hold stock days when high price: 7
+Total high earn between (25, 50): 115
+Total low  earn between (10, 10): 650
+
+===============================QSDD_Bottom_Gordon (sellPoint:KDJ_Dead)==========================
+Total satisfy: 5055	 earnPercent[close]=3.245448757054624	 earnPercent[high]=12.098883713025968	 earnPercent[low]=-6.0409620551389525
+oldEarn=99.0
+Avg hold stock days when sell point: 11
+Avg hold stock days when high price: 7
+Total high earn between (25, 50): 86
+Total low  earn between (10, 10): 267
