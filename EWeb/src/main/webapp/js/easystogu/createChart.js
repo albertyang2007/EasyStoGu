@@ -222,7 +222,82 @@ function createChart_ShenXian(stockId, date_price, volume, data_h1, data_h2,
 			yAxis : 1
 		} ]
 	});
-	
+
+	chart = $('#container').highcharts();
+}
+
+/**
+ * Create the StockPrice and shenxian chart, and statistics chart
+ * 
+ * @returns {undefined}
+ */
+function createChart_ShenXian_Statistics(stockId, date_price, volume, data_h1,
+		data_h2, data_h3, data_gordon, data_dead) {
+	$('#container').highcharts('StockChart', {
+
+		rangeSelector : {
+			selected : 1
+		},
+
+		title : {
+			text : stockId
+		},
+
+		plotOptions : {
+			candlestick : {
+				color : '#00ff00',// Green
+				upColor : '#ff0000'// Red
+			}
+		},
+
+		yAxis : [ {
+			labels : {
+				align : 'right',
+				x : -3
+			},
+			title : {
+				text : 'Price'
+			},
+			height : '60%',
+			lineWidth : 2
+		}, {
+			labels : {
+				align : 'right',
+				x : -3
+			},
+			title : {
+				text : 'Statistics'
+			},
+			top : '65%',
+			height : '35%',
+			offset : 0,
+			lineWidth : 2
+		} ],
+
+		series : [ {
+			type : 'candlestick',
+			name : 'OHLC',
+			data : date_price
+		}, {
+			name : 'H1',
+			data : data_h1
+		}, {
+			name : 'H2',
+			data : data_h2
+		}, {
+			name : 'H3',
+			data : data_h3
+		}, {
+			name : '金叉个股数目',
+			data : data_gordon,
+			yAxis : 1
+		}, {
+			name : '死叉个股数目',
+			data : data_dead,
+			yAxis : 1
+		} ]
+	});
+
 	chart = $('#container').highcharts();
 }
 
@@ -294,7 +369,7 @@ function createChart_Boll(stockId, date_price, volume, data_mb, data_up,
 			yAxis : 1
 		} ]
 	});
-	
+
 	chart = $('#container').highcharts();
 }
 
@@ -364,7 +439,7 @@ function createChart_Macd(stockId, date_price, volume, data_dif, data_dea,
 			yAxis : 1
 		} ]
 	});
-	
+
 	chart = $('#container').highcharts();
 }
 
@@ -434,7 +509,7 @@ function createChart_Qsdd(stockId, date_price, volume, data_lonTerm,
 			yAxis : 1
 		} ]
 	});
-	
+
 	chart = $('#container').highcharts();
 }
 
@@ -530,7 +605,7 @@ function createChart_Qsdd_Statistics(stockId, date_price, volume, data_lonTerm,
 			yAxis : 2
 		} ]
 	});
-	
+
 	chart = $('#container').highcharts();
 }
 

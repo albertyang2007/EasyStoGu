@@ -77,4 +77,30 @@ public class CheckPointStatisticsEndPoint {
 
 		return list;
 	}
+
+	@GET
+	@Path("/shenxian/{date}")
+	@Produces("application/json")
+	public List<StatisticsVO> queryShenXianStatistics(@PathParam("date") String dateParm) {
+		List<StatisticsVO> list = new ArrayList<StatisticsVO>();
+		if (Pattern.matches(fromToRegex, dateParm)) {
+			String date1 = dateParm.split("_")[0];
+			String date2 = dateParm.split("_")[1];
+
+			List<String> dateList = WeekdayUtil.getWorkingDatesBetween(date1, date2);
+			for (String date : dateList) {
+				if (stockPriceTable.isDateInDealDate(date)) {
+					StatisticsVO vo = new StatisticsVO();
+					vo.date = date;
+					vo.count1 = checkPointStatisticsTable.countByDateAndCheckPoint(date,
+							DailyCombineCheckPoint.ShenXian_Gordon.name());
+					vo.count2 = checkPointStatisticsTable.countByDateAndCheckPoint(date,
+							DailyCombineCheckPoint.ShenXian_Dead.name());
+					list.add(vo);
+				}
+			}
+		}
+
+		return list;
+	}
 }

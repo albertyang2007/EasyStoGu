@@ -5,10 +5,10 @@
  */
 function loadLuZaoStatistics(version, stockId, dateFrom, dateTo) {
 	var seriesCounter = 0, date_price = [], volume = [], data_ma19 = [], data_ma43 = [], data_ma86 = [], data_1_guancha = [], data_2_jiancang = [], data_3_chigu = [], data_4_jiancang = [];
-    var v = "1";
-    if(version == 'v2'){
-    	v = "2";
-    }
+	var v = "1";
+	if (version == 'v2') {
+		v = "2";
+	}
 
 	/**
 	 * Load StocPrice and display OHLC
@@ -97,10 +97,10 @@ function loadLuZaoStatistics(version, stockId, dateFrom, dateTo) {
  */
 function loadQsddStatistics(version, stockId, dateFrom, dateTo) {
 	var seriesCounter = 0, date_price = [], volume = [], data_lonTerm = [], data_midTerm = [], data_shoTerm = [], date_topArea = [], date_bottomArea = [], data_bottomGordon = [];
-    var v = "1";
-    if(version == 'v2'){
-    	v = "2";
-    }
+	var v = "1";
+	if (version == 'v2') {
+		v = "2";
+	}
 
 	/**
 	 * Load StocPrice and display OHLC
@@ -177,6 +177,92 @@ function loadQsddStatistics(version, stockId, dateFrom, dateTo) {
 			createChart_Qsdd_Statistics(stockId, date_price, volume,
 					data_lonTerm, data_midTerm, data_shoTerm, date_topArea,
 					date_bottomArea, data_bottomGordon);
+		}
+	});
+}
+
+/**
+ * Load ShenXian and Gordon, Dead Statistics data
+ * 
+ * @returns {undefined}
+ */
+function loadShenXianStatistics(version, stockId, dateFrom, dateTo) {
+	var seriesCounter = 0, date_price = [], volume = [], data_h1 = [], data_h2 = [], data_h3 = [], data_gordon = [], data_dead = [];
+	var v = "1";
+	if (version == 'v2') {
+		v = "2";
+	}
+	/**
+	 * Load StocPrice and display OHLC
+	 * 
+	 * @returns {undefined}
+	 */
+	var url_price = "http://localhost:8080/portal/price/" + stockId + "/"
+			+ dateFrom + "_" + dateTo;
+	$.getJSON(url_price, function(data) {
+		i = 0;
+		for (i; i < data.length; i += 1) {
+			var dateStr = data[i]['date'] + " 15:00:00";
+			var dateD = new Date(Date.parse(dateStr.replace(/-/g, "/")));
+			date_price.push([ dateD.getTime(), data[i]['open'],
+					data[i]['high'], data[i]['low'], data[i]['close'] ]);
+
+			volume.push([ dateD.getTime(), data[i]['volume'] ]);
+		}
+
+		seriesCounter += 1;
+		if (seriesCounter === 3) {
+			createChart_ShenXian_Statistics(stockId, date_price, volume,
+					data_h1, data_h2, data_h3, data_gordon, data_dead);
+		}
+	});
+
+	/**
+	 * Load ShenXian Indicator and display
+	 * 
+	 * @returns {undefined}
+	 */
+	var url_ind = "http://localhost:8080/portal/ind" + v + "/shenxian/"
+			+ stockId + "/" + dateFrom + "_" + dateTo;
+	$.getJSON(url_ind, function(data) {
+		i = 0;
+		for (i; i < data.length; i += 1) {
+			var dateStr = data[i]['date'] + " 15:00:00";
+			var dateD = new Date(Date.parse(dateStr.replace(/-/g, "/")));
+			data_h1.push([ dateD.getTime(), data[i]['h1'] ]);
+
+			data_h2.push([ dateD.getTime(), data[i]['h2'] ]);
+
+			data_h3.push([ dateD.getTime(), data[i]['h3'] ]);
+		}
+
+		seriesCounter += 1;
+		if (seriesCounter === 3) {
+			createChart_ShenXian_Statistics(stockId, date_price, volume,
+					data_h1, data_h2, data_h3, data_gordon, data_dead);
+		}
+	});
+
+	/**
+	 * Load shenxian gordon and dead statistics and display
+	 * 
+	 * @returns {undefined}
+	 */
+	var url_ind = "http://localhost:8080/portal/statistics/shenxian/"
+			+ dateFrom + "_" + dateTo;
+	$.getJSON(url_ind, function(data) {
+		i = 0;
+		for (i; i < data.length; i += 1) {
+			var dateStr = data[i]['date'] + " 15:00:00";
+			var dateD = new Date(Date.parse(dateStr.replace(/-/g, "/")));
+			data_gordon.push([ dateD.getTime(), data[i]['count1'] ]);
+			data_dead.push([ dateD.getTime(), data[i]['count2'] ]);
+		}
+
+		seriesCounter += 1;
+		if (seriesCounter === 3) {
+			createChart_ShenXian_Statistics(stockId, date_price, volume,
+					data_h1, data_h2, data_h3, data_gordon, data_dead);
 		}
 	});
 }

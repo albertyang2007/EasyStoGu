@@ -6,14 +6,14 @@ import org.easystogu.utils.Strings;
 
 public enum DailyCombineCheckPoint {
 	MACD_Gordon(SellPointType.MACD_Dead, 0, 0), KDJ_Gordon(SellPointType.KDJ_Dead, 0, 0), RSV_Gordon(
-			SellPointType.KDJ_Dead, 0, 0), ShenXian_Gordon(SellPointType.ShenXian_Dead, 0, 0), WEEK_MACD_Gordon(
-			SellPointType.MACD_Dead, 0, 0), WEEK_KDJ_Gordon(SellPointType.KDJ_Dead, 0, 0), WEEK_ShenXian_Gordon(
-			SellPointType.ShenXian_Dead, 0, 0), Mai1Mai2_1_Gordon(SellPointType.KDJ_Dead, 0, 0), WEEK_Mai1Mai2_1_Gordon(
-			SellPointType.KDJ_Dead, 0, 0), Mai1Mai2_2_Gordon(SellPointType.KDJ_Dead, 0, 0), WEEK_Mai1Mai2_2_Gordon(
-			SellPointType.KDJ_Dead, 0, 0), YiMengBS_Gordon(SellPointType.KDJ_Dead, 0, 0), WEEK_YiMengBS_Gordon(
-			SellPointType.KDJ_Dead, 0, 0), SuoLiang_HuiTiao(SellPointType.KDJ_Dead, 0, 0), PlatForm(
-			SellPointType.KDJ_Dead, 0, 0), WEEK_PlatForm(SellPointType.KDJ_Dead, 0, 0), RongHe_XiangShang(
-			SellPointType.KDJ_Dead, 0, 0), HengPang_Ready_To_Break_Platform_MA30_Support_MA_RongHe_XiangShang(
+			SellPointType.KDJ_Dead, 0, 0), ShenXian_Gordon(SellPointType.ShenXian_Dead, 0, 0), ShenXian_Dead(
+			SellPointType.ShenXian_Dead, 0, 0), WEEK_MACD_Gordon(SellPointType.MACD_Dead, 0, 0), WEEK_KDJ_Gordon(
+			SellPointType.KDJ_Dead, 0, 0), WEEK_ShenXian_Gordon(SellPointType.ShenXian_Dead, 0, 0), Mai1Mai2_1_Gordon(
+			SellPointType.KDJ_Dead, 0, 0), WEEK_Mai1Mai2_1_Gordon(SellPointType.KDJ_Dead, 0, 0), Mai1Mai2_2_Gordon(
+			SellPointType.KDJ_Dead, 0, 0), WEEK_Mai1Mai2_2_Gordon(SellPointType.KDJ_Dead, 0, 0), YiMengBS_Gordon(
+			SellPointType.KDJ_Dead, 0, 0), WEEK_YiMengBS_Gordon(SellPointType.KDJ_Dead, 0, 0), SuoLiang_HuiTiao(
+			SellPointType.KDJ_Dead, 0, 0), PlatForm(SellPointType.KDJ_Dead, 0, 0), WEEK_PlatForm(
+			SellPointType.KDJ_Dead, 0, 0), RongHe_XiangShang(SellPointType.KDJ_Dead, 0, 0), HengPang_Ready_To_Break_Platform_MA30_Support_MA_RongHe_XiangShang(
 			SellPointType.KDJ_Dead, 19, 19.0), HengPang_Ready_To_Break_Platform_MA20_Support_MA_RongHe_XiangShang(
 			SellPointType.KDJ_Dead, 447, 11.7), HengPang_Ready_To_Break_Platform_BollUp_BollXueShi2_Dn_Gordon(
 			SellPointType.KDJ_Dead, 452, 10.34), DuoTou_HuiTiao_MA30_Support_MA_RongHe_XiangShang(

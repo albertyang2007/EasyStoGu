@@ -52,6 +52,11 @@ public class CombineAnalyseHelper {
 				return true;
 			}
 			break;
+		case ShenXian_Dead:
+			if (curSuperDayVO.shenXianCorssType12 == CrossType.DEAD) {
+				return true;
+			}
+			break;
 		case WEEK_MACD_Gordon:
 			if (curSuperWeekVO.macdCorssType == CrossType.GORDON) {
 				return true;
@@ -1138,12 +1143,12 @@ public class CombineAnalyseHelper {
 			break;
 		}
 
-		case YiMengBS_KDJ_Gordon_SuoLiang_HuiTiao: {				
+		case YiMengBS_KDJ_Gordon_SuoLiang_HuiTiao: {
 			if (curSuperDayVO.kdjCorssType == CrossType.GORDON || curSuperDayVO.kdjCorssType == CrossType.NEAR_GORDON
 					|| curSuperDayVO.rsvCorssType == CrossType.GORDON) {
-				//System.out.println(" here 2");
+				// System.out.println(" here 2");
 				if (curSuperDayVO.yiMengBSCrossType == CrossType.GORDON) {
-					//System.out.println(" here 3");
+					// System.out.println(" here 3");
 					// suoLiang HuiTiao
 					if (StockPriceUtils.isKLineGreen(pre2SuperDayVO.priceVO)
 							&& StockPriceUtils.isKLineGreen(pre1SuperDayVO.priceVO)
@@ -1151,7 +1156,7 @@ public class CombineAnalyseHelper {
 							&& pre1SuperDayVO.priceVO.volume > curSuperDayVO.priceVO.volume
 							&& pre1SuperDayVO.priceVO.volume <= pre1SuperDayVO.avgVol5
 							&& curSuperDayVO.priceVO.volume <= curSuperDayVO.avgVol5) {
-						//System.out.println(" here 4");
+						// System.out.println(" here 4");
 						return true;
 					}
 				}

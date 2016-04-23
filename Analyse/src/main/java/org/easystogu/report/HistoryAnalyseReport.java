@@ -405,6 +405,6 @@ public class HistoryAnalyseReport {
 		// reporter.searchAllStockIdAnalyseHistoryCheckPoint(checkPoint);
 		// }
 		// }
-		reporter.searchAllStockIdAnalyseHistoryCheckPoint(DailyCombineCheckPoint.YiMengBS_KDJ_Gordon_SuoLiang_HuiTiao);
+		reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.ShenXian_Dead);
 	}
 }

@@ -48,7 +48,9 @@ demo
       dateTo = data.dateTo;
       stockId = data.stockId;
       
-      if(data.indicator == "luzao"){ 
+      if(data.indicator == "shenxian"){ 
+         loadShenXianStatistics(data.version, data.stockId, data.dateFrom, data.dateTo);
+      }else if(data.indicator == "luzao"){ 
          loadLuZaoStatistics(data.version, data.stockId, data.dateFrom, data.dateTo);  
       }else if(data.indicator == "qsdd"){ 
          loadQsddStatistics(data.version, data.stockId, data.dateFrom, data.dateTo);
@@ -62,6 +64,7 @@ demo
 		                  
                         <label>Indicator:</label>
 		                  <select name='indicator' onChange={this.handleChange}>
+                        <option value='shenxian'>shenxian</option>
                         <option value='luzao'>luzao</option>
                         <option value='qsdd'>qsdd</option>
                         </select>&nbsp;&nbsp;
