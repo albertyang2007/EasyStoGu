@@ -4,17 +4,13 @@ import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.Proxy.Type;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import org.easystogu.config.Constants;
 import org.easystogu.config.FileConfigurationService;
-import org.easystogu.file.access.CompanyInfoFileHelper;
-import org.easystogu.sina.common.RealTimePriceVO;
 import org.easystogu.sina.common.SinaQuotesServiceVO;
 import org.easystogu.utils.Strings;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
@@ -25,13 +21,9 @@ public class DailyStockPriceDownloadHelper2 {
 	// the numberPage
 	private static final int totalNumberPage = 6;
 	private static final int numberPerPage = 500;
-	private static final String baseUrl = "http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/Market_Center.getHQNodeData?page=1&num=500&sort=symbol&asc=1&node=hs_a";
+	private static final String baseUrl = "http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/Market_Center.getHQNodeData?page=1&num="
+			+ numberPerPage + "&sort=symbol&asc=1&node=hs_a";
 	private static FileConfigurationService configure = FileConfigurationService.getInstance();
-	private CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
-
-	private static Map<String, Class> classMap = new HashMap<String, Class>();
-	static {
-	}
 
 	public List<SinaQuotesServiceVO> fetchAllStockPriceFromWeb() {
 		List<SinaQuotesServiceVO> list = new ArrayList<SinaQuotesServiceVO>();
@@ -46,6 +38,7 @@ public class DailyStockPriceDownloadHelper2 {
 		try {
 
 			String url = baseUrl.replaceFirst("page=1", "page=" + pageNumber);
+			System.out.println("Fetch Sina Data from url: " + url);
 
 			SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
 			requestFactory.setConnectTimeout(10000);
