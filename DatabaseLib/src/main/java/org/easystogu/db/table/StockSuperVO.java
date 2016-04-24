@@ -84,10 +84,9 @@ public class StockSuperVO {
 
 	@Override
 	public String toString() {
-		return priceVO.toString() + ";" + macdVO.toString() + ";" + kdjVO.toString() + ";" + bollVO.toString() + ";"
-				+ "; macdCross:" + macdCorssType + "; kdjCross:" + kdjCorssType + "; shenXianCross:"
-				+ shenXianCorssType12 + "; shenXianCross2:" + shenXianCorssType13 + "; volumeIncFactor="
-				+ volumeIncreasePercent;
+		return priceVO.toString() + ";" + "; macdCross:" + macdCorssType + "; kdjCross:" + kdjCorssType
+				+ "; shenXianCross:" + shenXianCorssType12 + "; shenXianCross2:" + shenXianCorssType13
+				+ "; volumeIncFactor=" + volumeIncreasePercent;
 	}
 
 	@Override
