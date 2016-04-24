@@ -15,6 +15,10 @@ import com.google.common.primitives.Doubles;
 public class KDJHelper extends IND {
 	public static final double DEFAULT_VALUE = 50.0;
 
+	public double[][] getKDJList(double[] CLOSE, double[] LOW, double[] HIGH) {
+		return KDJ(CLOSE, LOW, HIGH, 9, 3, 3);
+	}
+
 	private double getRsv(double close, double lown, double highn) {
 		return 100.0 * (close - lown) / (highn - lown);
 	}
@@ -25,11 +29,6 @@ public class KDJHelper extends IND {
 			rsv[index] = this.getRsv(close[index], llv[index], hhv[index]);
 		}
 		return rsv;
-	}
-
-	// �ӵ�һ����ʼ����JDK,������
-	public double[][] getKDJList(double[] close, double[] low, double[] high) {
-		return KDJ(close, low, high, 9, 3, 3);
 	}
 
 	public double[] getJ(double[] k, double[] d) {
@@ -67,7 +66,7 @@ public class KDJHelper extends IND {
 	public static void main(String[] args) {
 		StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
 		KDJHelper ins = new KDJHelper();
-		String stockId = "999999";
+		String stockId = "002789";
 		List<Double> close = stockPriceTable.getAllClosePrice(stockId);
 		List<Double> low = stockPriceTable.getAllLowPrice(stockId);
 		List<Double> high = stockPriceTable.getAllHighPrice(stockId);

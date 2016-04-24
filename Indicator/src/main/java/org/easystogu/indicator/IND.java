@@ -1,14 +1,13 @@
 package org.easystogu.indicator;
 
-import java.util.List;
+import org.easystogu.config.FileConfigurationService;
 
-import org.easystogu.db.access.StockPriceTableHelper;
-
-import com.google.common.primitives.Doubles;
 import com.tictactec.ta.lib.Core;
 import com.tictactec.ta.lib.MInteger;
 
 public class IND {
+	private FileConfigurationService config = FileConfigurationService.getInstance();
+	public int mockLength = config.getInt("insert_length_mock_price_count_indicator", 120);
 	protected static final double DEFAULT_VALUE = 0.0;
 	protected Core core = new Core();
 
@@ -208,7 +207,33 @@ public class IND {
 		return sum;
 	}
 
-	private double[] subList(double[] d, int start, int end) {
+	// insert b[] before a[]
+	public double[] insertBefore(double[] a, double[] b) {
+		double[] rtn = new double[a.length + b.length];
+		int index = 0;
+		for (int bIndex = 0; bIndex < b.length; bIndex++) {
+			rtn[index++] = b[bIndex];
+		}
+		for (int aIndex = 0; aIndex < a.length; aIndex++) {
+			rtn[index++] = a[aIndex];
+		}
+		return rtn;
+	}
+
+	// insert length of b before a[]
+	public double[] insertBefore(double[] a, double b, int length) {
+		double[] rtn = new double[a.length + length];
+		int index = 0;
+		for (int bIndex = 0; bIndex < length; bIndex++) {
+			rtn[index++] = b;
+		}
+		for (int aIndex = 0; aIndex < a.length; aIndex++) {
+			rtn[index++] = a[aIndex];
+		}
+		return rtn;
+	}
+
+	public double[] subList(double[] d, int start, int end) {
 		double[] rtn = new double[end - start];
 		for (int index = start; index < end; index++) {
 			rtn[index - start] = d[index];
@@ -248,12 +273,10 @@ public class IND {
 
 	public static void main(String[] args) {
 		IND ind = new IND();
-		StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
-		String stockId = "999999";
-		List<Double> close = stockPriceTable.getAllClosePrice(stockId);
-		double[] ma1 = ind.EMA(Doubles.toArray(close), 19);
-		double[] ma2 = ind.EXPMA(Doubles.toArray(close), 19);
-		System.out.println("ma1=" + ma1[close.size() - 1]);
-		System.out.println("ma2=" + ma2[0]);
+		double[] a = new double[] { 1.0, 2.0, 3.0, 4.0, 5.0 };
+		double[] c = ind.insertBefore(a, 9.0, 5);
+		for (int i = 0; i < c.length; i++) {
+			System.out.println(c[i]);
+		}
 	}
 }

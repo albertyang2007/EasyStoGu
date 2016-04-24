@@ -35,10 +35,11 @@ public class HistoryQSDDCountAndSaveDBRunner {
 	public void countAndSaved(String stockId) {
 		List<StockPriceVO> priceList = stockPriceTable.getStockPriceById(stockId);
 
-		if (priceList.size() <= 34) {
-			System.out.println("StockPrice data is less than 34, skip " + stockId);
-			return;
-		}
+		// if (priceList.size() <= 34) {
+		// System.out.println("StockPrice data is less than 34, skip " +
+		// stockId);
+		// return;
+		// }
 
 		// update price based on chuQuanChuXi event
 		chuQuanChuXiPriceHelper.updatePrice(stockId, priceList);

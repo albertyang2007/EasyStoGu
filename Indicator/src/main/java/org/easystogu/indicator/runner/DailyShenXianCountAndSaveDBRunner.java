@@ -51,11 +51,11 @@ public class DailyShenXianCountAndSaveDBRunner implements Runnable {
 	public void countAndSaved(String stockId) {
 		List<StockPriceVO> priceList = stockPriceTable.getStockPriceById(stockId);
 
-		if (priceList.size() <= 18) {
-			// System.out.println("StockPrice data is less than 18, skip " +
-			// stockId);
-			return;
-		}
+		// if (priceList.size() <= 18) {
+		// System.out.println("StockPrice data is less than 18, skip " +
+		// stockId);
+		// return;
+		// }
 
 		// update price based on chuQuanChuXi event
 		chuQuanChuXiPriceHelper.updatePrice(stockId, priceList);
@@ -73,7 +73,7 @@ public class DailyShenXianCountAndSaveDBRunner implements Runnable {
 		vo.setStockId(stockId);
 		vo.setDate(priceList.get(length - 1).date);
 
-		//System.out.println(vo);
+		// System.out.println(vo);
 		this.deleteShenXian(stockId, vo.date);
 		shenXianTable.insert(vo);
 
@@ -101,6 +101,6 @@ public class DailyShenXianCountAndSaveDBRunner implements Runnable {
 		List<String> stockIds = stockConfig.getAllStockId();
 		DailyShenXianCountAndSaveDBRunner runner = new DailyShenXianCountAndSaveDBRunner();
 		runner.countAndSaved(stockIds);
-		//runner.countAndSaved("999999");
+		// runner.countAndSaved("999999");
 	}
 }

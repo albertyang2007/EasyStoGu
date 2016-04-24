@@ -5,7 +5,7 @@
 <script type="text/javascript" src="js/reactjs_0.13.0/JSXTransformer.js"></script>
 <script type="text/javascript" src="js/reactjs_0.13.0/react.js"></script>
 <script type="text/javascript" src="js/jquery_1.8.2/jquery.min.js"></script>
-<script type="text/javascript" src="js/easystogu/requestForecastData.js"></script>
+<script type="text/javascript" src="js/easystogu/requestStockData.js"></script>
 <script type="text/javascript" src="js/easystogu/common.js"></script>
 <script type="text/javascript" src="js/easystogu/createChart.js"></script>
 <style type="text/css">
@@ -15,100 +15,7 @@ demo
 }
 </style>
 </head>
-<body>
-	<!--add point button-->
-	<script type="text/jsx">
-          var stockId = "999999";
-          var indicator = "shenxian";
-          var dateFrom = "1991-01-01";
-          var dateTo = "2099-12-31";
-          var trendModeName = "";
-          var nDays = "1";
-          
-	      var ForecastForm = React.createClass({
-	         getInitialState: function() {
-	         return {
-	            trendModeName: "",
-                nDays : "1",
-                options: []
-	        };
-	      },
-	      
-	      handleChange: function(e) {
-	         var newState = {};
-	         newState[e.target.name] = e.target.value;
-	         this.setState(newState);
-	      },
-	
-	      handleClick: function() {
-	         var data = {
-	            trendModeName  :  this.state.trendModeName,
-                nDays :  this.state.nDays
-	        };	        			   
-  
-            trendModeName = data.trendModeName;
-            nDays = data.nDays;
-
-	        var reqParms = {
-		        "trendModeName" : trendModeName,
-                "nDays" : nDays
-	        };
-
-            //reset ajax async to true when load big data from portal
-            $.ajaxSettings.async = true;
-	        
-            if(indicator == "shenxian"){ 
-	           loadShenXianWithReqParms(stockId, dateFrom, dateTo, reqParms);
-            }else if(indicator == "luzao"){ 
-	           loadLuZaoWithReqParms(stockId, dateFrom, dateTo, reqParms);
-            }else if(indicator == "boll"){ 
-	           loadBollWithReqParms(stockId, dateFrom, dateTo, reqParms);
-            }else if(indicator == "macd"){ 
-	           loadMacdWithReqParms(stockId, dateFrom, dateTo, reqParms);
-            }else if(indicator == "qsdd"){ 
-	           loadQsddWithReqParms(stockId, dateFrom, dateTo, reqParms);
-            }
-	      },
-	      
-	      render: function(){
-
-                  $.ajaxSettings.async = false;
-                  var trendModeNames = getAllTrendModeNames();
-                  $.ajaxSettings.async = true;
-                  this.state.options = [];
-
-                  //first option is empty
-	              this.state.options.push(
-                      <option value=''></option>
-                      );
-                  for (var i = 0; i < trendModeNames.length; i++) {
-                      this.state.options.push(
-                      <option value={trendModeNames[i]}>{trendModeNames[i]}</option>
-                      );
-                  }
-                  
-                  // By defaut show the 999999 luzhao data
-                  loadLuZao('v2', '999999', dateFrom, dateTo);
-
-			      return (<div>
-                              <label>nDays</label>
-			                  <input type="text" value={this.state.nDays} name='nDays' maxLength="4" onChange={this.handleChange} />&nbsp;&nbsp;
-			                  <label>TrendModeName:</label>
-			                  <select name='trendModeName' onChange={this.handleChange}>
-                              {this.state.options}
-                              </select>&nbsp;&nbsp;
-                              <input type="submit" value="Submit" onClick={this.handleClick} />&nbsp;&nbsp;
-                              <a href='popup_trendmode.htm?trendModeName=M_Tou'>open popup</a>
-			              </div>
-			              );
-			     }         
-	      });	      
-
-	      React.render(<ForecastForm />,
-	      document.getElementById("forecastForm")
-	      );
-      </script>
-      
+<body>	
       <script type="text/jsx">      
 	      var ParmForm = React.createClass({
 	         getInitialState: function() {
@@ -209,9 +116,7 @@ demo
 	<script type="text/javascript"
 		src="js/highstock_4.2.1/modules/exporting.js"></script>
 	<div>
-		<div id="forecastForm"></div>
 		<div id="containerForm"></div>
-		<div id="trendmodePopupForm"></div>
 		<div id="container" style="height: 800px; min-width: 310px"></div>
 	</div>
 </body>

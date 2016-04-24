@@ -16,8 +16,25 @@ import com.tictactec.ta.lib.MInteger;
  LOWER:=MA20-2*STD(CLOSE,20);
  */
 public class BOLLHelper extends IND {
-	// same as TALIBWraper.getBbands
+
 	public double[][] getBOLLList(double[] prices, int optInTimePeriod, double optInNbDevUp, double optInNbDevDn) {
+		int length = prices.length + mockLength;
+		// always add 120 mock date price before the list
+		// append mock data at the begging
+		prices = insertBefore(prices, prices[0], mockLength);
+
+		double[][] boll = this.getBOLLListOrig(prices, optInTimePeriod, optInNbDevUp, optInNbDevDn);
+
+		// exclude the mockLength data
+		boll[0] = subList(boll[0], mockLength, length);
+		boll[1] = subList(boll[1], mockLength, length);
+		boll[2] = subList(boll[2], mockLength, length);
+		
+		return boll;
+	}
+
+	// same as TALIBWraper.getBbands
+	public double[][] getBOLLListOrig(double[] prices, int optInTimePeriod, double optInNbDevUp, double optInNbDevDn) {
 		MAType optInMAType = MAType.Sma;
 
 		double[] tempoutput1 = new double[prices.length];
@@ -58,7 +75,7 @@ public class BOLLHelper extends IND {
 
 	public static void main(String[] args) {
 		StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
-		List<StockPriceVO> list = stockPriceTable.getStockPriceById("002194");
+		List<StockPriceVO> list = stockPriceTable.getStockPriceById("002789");
 		BOLLHelper ins = new BOLLHelper();
 		// list is order by date
 		int length = list.size();

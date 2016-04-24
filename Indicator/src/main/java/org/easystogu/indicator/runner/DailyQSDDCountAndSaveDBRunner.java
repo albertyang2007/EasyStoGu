@@ -39,11 +39,11 @@ public class DailyQSDDCountAndSaveDBRunner implements Runnable {
 	public void countAndSaved(String stockId) {
 		List<StockPriceVO> priceList = stockPriceTable.getStockPriceById(stockId);
 
-		if (priceList.size() <= 34) {
-			// System.out.println("StockPrice data is less than 9, skip " +
-			// stockId);
-			return;
-		}
+		// if (priceList.size() <= 34) {
+		// System.out.println("StockPrice data is less than 9, skip " +
+		// stockId);
+		// return;
+		// }
 
 		// update price based on chuQuanChuXi event
 		chuQuanChuXiPriceHelper.updatePrice(stockId, priceList);
@@ -64,7 +64,7 @@ public class DailyQSDDCountAndSaveDBRunner implements Runnable {
 		vo.setStockId(stockId);
 		vo.setDate(priceList.get(length - 1).date);
 
-		//System.out.println(vo);
+		// System.out.println(vo);
 		this.deleteQSDD(stockId, vo.date);
 		qsddTable.insert(vo);
 
@@ -91,6 +91,6 @@ public class DailyQSDDCountAndSaveDBRunner implements Runnable {
 		CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 		DailyQSDDCountAndSaveDBRunner runner = new DailyQSDDCountAndSaveDBRunner();
 		runner.countAndSaved(stockConfig.getAllStockId());
-		//runner.countAndSaved("999999");
+		// runner.countAndSaved("999999");
 	}
 }

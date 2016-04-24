@@ -24,10 +24,10 @@ public class IndProcessHelper {
 	public static void processWeekList(List<StockSuperVO> overWeekList) {
 		// count and update all ind data
 		// week
-		IndCrossCheckingHelper.macdCross(overWeekList);
-		IndCrossCheckingHelper.kdjCross(overWeekList);
-		IndCrossCheckingHelper.rsvCross(overWeekList);
-		IndCrossCheckingHelper.shenXianCross12(overWeekList);
 		PriceCheckingHelper.setLastClosePrice(overWeekList);
+		//IndCrossCheckingHelper.macdCross(overWeekList);
+		IndCrossCheckingHelper.kdjCross(overWeekList);
+		//IndCrossCheckingHelper.rsvCross(overWeekList);
+		//IndCrossCheckingHelper.shenXianCross12(overWeekList);
 	}
 }

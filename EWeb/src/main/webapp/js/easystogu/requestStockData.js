@@ -5,79 +5,10 @@
  */
 function loadShenXian(version, stockId, dateFrom, dateTo) {
 	var seriesCounter = 0, date_price = [], volume = [], data_h1 = [], data_h2 = [], data_h3 = [];
-    var v = "1";
-    if(version == 'v2'){
-    	v = "2";
-    }
-	/**
-	 * Create the chart when all data is loaded
-	 * 
-	 * @returns {undefined}
-	 */
-	function createChart() {
-		$('#container').highcharts('StockChart', {
-
-			rangeSelector : {
-				selected : 1
-			},
-
-			title : {
-				text : stockId
-			},
-			
-			plotOptions : {
-				candlestick : {
-					color : '#00ff00',// Green
-					upColor : '#ff0000'// Red
-				}
-			},
-
-			yAxis : [ {
-				labels : {
-					align : 'right',
-					x : -3
-				},
-				title : {
-					text : 'Price'
-				},
-				height : '60%',
-				lineWidth : 2
-			}, {
-				labels : {
-					align : 'right',
-					x : -3
-				},
-				title : {
-					text : 'Volume'
-				},
-				top : '65%',
-				height : '35%',
-				offset : 0,
-				lineWidth : 2
-			} ],
-
-			series : [ {
-				type : 'candlestick',
-				name : 'OHLC',
-				data : date_price
-			}, {
-				name : 'H1',
-				data : data_h1
-			}, {
-				name : 'H2',
-				data : data_h2
-			}, {
-				name : 'H3',
-				data : data_h3
-			}, {
-				type : 'column',
-				name : 'Volume',
-				data : volume,
-				yAxis : 1
-			} ]
-		});
+	var v = "1";
+	if (version == 'v2') {
+		v = "2";
 	}
-
 	/**
 	 * Load StocPrice and display OHLC
 	 * 
@@ -98,7 +29,8 @@ function loadShenXian(version, stockId, dateFrom, dateTo) {
 
 		seriesCounter += 1;
 		if (seriesCounter === 2) {
-			createChart();
+			createChart_ShenXian(stockId, date_price, volume, data_h1, data_h2,
+					data_h3);
 		}
 	});
 
@@ -107,8 +39,8 @@ function loadShenXian(version, stockId, dateFrom, dateTo) {
 	 * 
 	 * @returns {undefined}
 	 */
-	var url_ind = "http://localhost:8080/portal/ind" + v + "/shenxian/" + stockId + "/"
-			+ dateFrom + "_" + dateTo;
+	var url_ind = "http://localhost:8080/portal/ind" + v + "/shenxian/"
+			+ stockId + "/" + dateFrom + "_" + dateTo;
 	$.getJSON(url_ind, function(data) {
 		i = 0;
 		for (i; i < data.length; i += 1) {
@@ -123,7 +55,8 @@ function loadShenXian(version, stockId, dateFrom, dateTo) {
 
 		seriesCounter += 1;
 		if (seriesCounter === 2) {
-			createChart();
+			createChart_ShenXian(stockId, date_price, volume, data_h1, data_h2,
+					data_h3);
 		}
 	});
 }
@@ -135,79 +68,10 @@ function loadShenXian(version, stockId, dateFrom, dateTo) {
  */
 function loadLuZao(version, stockId, dateFrom, dateTo) {
 	var seriesCounter = 0, date_price = [], volume = [], data_ma19 = [], data_ma43 = [], data_ma86 = [];
-    var v = "1";
-    if(version == 'v2'){
-    	v = "2";
-    }
-	/**
-	 * Create the chart when all data is loaded
-	 * 
-	 * @returns {undefined}
-	 */
-	function createChart() {
-		$('#container').highcharts('StockChart', {
-
-			rangeSelector : {
-				selected : 1
-			},
-
-			title : {
-				text : stockId
-			},
-			
-			plotOptions : {
-				candlestick : {
-					color : '#00ff00',// Green
-					upColor : '#ff0000'// Red
-				}
-			},
-
-			yAxis : [ {
-				labels : {
-					align : 'right',
-					x : -3
-				},
-				title : {
-					text : 'Price'
-				},
-				height : '60%',
-				lineWidth : 2
-			}, {
-				labels : {
-					align : 'right',
-					x : -3
-				},
-				title : {
-					text : 'Volume'
-				},
-				top : '65%',
-				height : '35%',
-				offset : 0,
-				lineWidth : 2
-			} ],
-
-			series : [ {
-				type : 'candlestick',
-				name : 'OHLC',
-				data : date_price
-			}, {
-				name : 'MA19',
-				data : data_ma19
-			}, {
-				name : 'MA43',
-				data : data_ma43
-			}, {
-				name : 'MA86',
-				data : data_ma86
-			}, {
-				type : 'column',
-				name : 'Volume',
-				data : volume,
-				yAxis : 1
-			} ]
-		});
+	var v = "1";
+	if (version == 'v2') {
+		v = "2";
 	}
-
 	/**
 	 * Load StocPrice and display OHLC
 	 * 
@@ -228,7 +92,8 @@ function loadLuZao(version, stockId, dateFrom, dateTo) {
 
 		seriesCounter += 1;
 		if (seriesCounter === 2) {
-			createChart();
+			createChart_LuZao(stockId, date_price, volume, data_ma19,
+					data_ma43, data_ma86);
 		}
 	});
 
@@ -237,8 +102,8 @@ function loadLuZao(version, stockId, dateFrom, dateTo) {
 	 * 
 	 * @returns {undefined}
 	 */
-	var url_ind = "http://localhost:8080/portal/ind" + v + "/luzao/" + stockId + "/"
-			+ dateFrom + "_" + dateTo;
+	var url_ind = "http://localhost:8080/portal/ind" + v + "/luzao/" + stockId
+			+ "/" + dateFrom + "_" + dateTo;
 	$.getJSON(url_ind, function(data) {
 		i = 0;
 		for (i; i < data.length; i += 1) {
@@ -253,7 +118,8 @@ function loadLuZao(version, stockId, dateFrom, dateTo) {
 
 		seriesCounter += 1;
 		if (seriesCounter === 2) {
-			createChart();
+			createChart_LuZao(stockId, date_price, volume, data_ma19,
+					data_ma43, data_ma86);
 		}
 	});
 }
@@ -265,79 +131,10 @@ function loadLuZao(version, stockId, dateFrom, dateTo) {
  */
 function loadBoll(version, stockId, dateFrom, dateTo) {
 	var seriesCounter = 0, date_price = [], volume = [], data_mb = [], data_up = [], data_dn = [];
-    var v = "1";
-    if(version == 'v2'){
-    	v = "2";
-    }
-	/**
-	 * Create the chart when all data is loaded
-	 * 
-	 * @returns {undefined}
-	 */
-	function createChart() {
-		$('#container').highcharts('StockChart', {
-
-			rangeSelector : {
-				selected : 1
-			},
-
-			title : {
-				text : stockId
-			},
-
-			plotOptions : {
-				candlestick : {
-					color : '#00ff00',// Green
-					upColor : '#ff0000'// Red
-				}
-			},
-			
-			yAxis : [ {
-				labels : {
-					align : 'right',
-					x : -3
-				},
-				title : {
-					text : 'Price'
-				},
-				height : '60%',
-				lineWidth : 2
-			}, {
-				labels : {
-					align : 'right',
-					x : -3
-				},
-				title : {
-					text : 'Volume'
-				},
-				top : '65%',
-				height : '35%',
-				offset : 0,
-				lineWidth : 2
-			} ],
-
-			series : [ {
-				type : 'candlestick',
-				name : 'OHLC',
-				data : date_price
-			}, {
-				name : 'MB',
-				data : data_mb
-			}, {
-				name : 'UP',
-				data : data_up
-			}, {
-				name : 'DN',
-				data : data_dn
-			}, {
-				type : 'column',
-				name : 'Volume',
-				data : volume,
-				yAxis : 1
-			} ]
-		});
+	var v = "1";
+	if (version == 'v2') {
+		v = "2";
 	}
-
 	/**
 	 * Load StocPrice and display OHLC
 	 * 
@@ -358,7 +155,8 @@ function loadBoll(version, stockId, dateFrom, dateTo) {
 
 		seriesCounter += 1;
 		if (seriesCounter === 2) {
-			createChart();
+			createChart_Boll(stockId, date_price, volume, data_mb, data_up,
+					data_dn);
 		}
 	});
 
@@ -367,8 +165,8 @@ function loadBoll(version, stockId, dateFrom, dateTo) {
 	 * 
 	 * @returns {undefined}
 	 */
-	var url_ind = "http://localhost:8080/portal/ind" + v + "/boll/" + stockId + "/"
-			+ dateFrom + "_" + dateTo;
+	var url_ind = "http://localhost:8080/portal/ind" + v + "/boll/" + stockId
+			+ "/" + dateFrom + "_" + dateTo;
 	$.getJSON(url_ind, function(data) {
 		i = 0;
 		for (i; i < data.length; i += 1) {
@@ -383,7 +181,8 @@ function loadBoll(version, stockId, dateFrom, dateTo) {
 
 		seriesCounter += 1;
 		if (seriesCounter === 2) {
-			createChart();
+			createChart_Boll(stockId, date_price, volume, data_mb, data_up,
+					data_dn);
 		}
 	});
 }
@@ -395,77 +194,10 @@ function loadBoll(version, stockId, dateFrom, dateTo) {
  */
 function loadMacd(version, stockId, dateFrom, dateTo) {
 	var seriesCounter = 0, date_price = [], volume = [], data_dif = [], data_dea = [], data_macd = [];
-    var v = "1";
-    if(version == 'v2'){
-    	v = "2";
-    }
-	/**
-	 * Create the chart when all data is loaded
-	 * 
-	 * @returns {undefined}
-	 */
-	function createChart() {
-		$('#container').highcharts('StockChart', {
-
-			rangeSelector : {
-				selected : 1
-			},
-
-			title : {
-				text : stockId
-			},
-			
-			plotOptions : {
-				candlestick : {
-					color : '#00ff00',// Green
-					upColor : '#ff0000'// Red
-				}
-			},
-
-			yAxis : [ {
-				labels : {
-					align : 'right',
-					x : -3
-				},
-				title : {
-					text : 'Price'
-				},
-				height : '60%',
-				lineWidth : 2
-			}, {
-				labels : {
-					align : 'right',
-					x : -3
-				},
-				title : {
-					text : 'MACD'
-				},
-				top : '65%',
-				height : '35%',
-				offset : 0,
-				lineWidth : 2
-			} ],
-
-			series : [ {
-				type : 'candlestick',
-				name : 'OHLC',
-				data : date_price
-			}, {
-				name : 'DIF',
-				data : data_dif,
-				yAxis : 1
-			}, {
-				name : 'DEA',
-				data : data_dea,
-				yAxis : 1
-			}, {
-				name : 'MACD',
-				data : data_macd,
-				yAxis : 1
-			} ]
-		});
+	var v = "1";
+	if (version == 'v2') {
+		v = "2";
 	}
-
 	/**
 	 * Load StocPrice and display OHLC
 	 * 
@@ -486,7 +218,8 @@ function loadMacd(version, stockId, dateFrom, dateTo) {
 
 		seriesCounter += 1;
 		if (seriesCounter === 2) {
-			createChart();
+			createChart_Macd(stockId, date_price, volume, data_dif, data_dea,
+					data_macd);
 		}
 	});
 
@@ -495,8 +228,8 @@ function loadMacd(version, stockId, dateFrom, dateTo) {
 	 * 
 	 * @returns {undefined}
 	 */
-	var url_ind = "http://localhost:8080/portal/ind" + v + "/macd/" + stockId + "/"
-			+ dateFrom + "_" + dateTo;
+	var url_ind = "http://localhost:8080/portal/ind" + v + "/macd/" + stockId
+			+ "/" + dateFrom + "_" + dateTo;
 	$.getJSON(url_ind, function(data) {
 		i = 0;
 		for (i; i < data.length; i += 1) {
@@ -511,7 +244,8 @@ function loadMacd(version, stockId, dateFrom, dateTo) {
 
 		seriesCounter += 1;
 		if (seriesCounter === 2) {
-			createChart();
+			createChart_Macd(stockId, date_price, volume, data_dif, data_dea,
+					data_macd);
 		}
 	});
 }
@@ -523,77 +257,10 @@ function loadMacd(version, stockId, dateFrom, dateTo) {
  */
 function loadQSDD(version, stockId, dateFrom, dateTo) {
 	var seriesCounter = 0, date_price = [], volume = [], data_lonTerm = [], data_midTerm = [], data_shoTerm = [];
-    var v = "1";
-    if(version == 'v2'){
-    	v = "2";
-    }
-	/**
-	 * Create the chart when all data is loaded
-	 * 
-	 * @returns {undefined}
-	 */
-	function createChart() {
-		$('#container').highcharts('StockChart', {
-
-			rangeSelector : {
-				selected : 1
-			},
-
-			title : {
-				text : stockId
-			},
-			
-			plotOptions : {
-				candlestick : {
-					color : '#00ff00',// Green
-					upColor : '#ff0000'// Red
-				}
-			},
-
-			yAxis : [ {
-				labels : {
-					align : 'right',
-					x : -3
-				},
-				title : {
-					text : 'Price'
-				},
-				height : '60%',
-				lineWidth : 2
-			}, {
-				labels : {
-					align : 'right',
-					x : -3
-				},
-				title : {
-					text : 'QSDD'
-				},
-				top : '65%',
-				height : '35%',
-				offset : 0,
-				lineWidth : 2
-			} ],
-
-			series : [ {
-				type : 'candlestick',
-				name : 'OHLC',
-				data : date_price
-			}, {
-				name : 'LonTerm',
-				data : data_lonTerm,
-				yAxis : 1
-			}, {
-				name : 'MidTerm',
-				data : data_midTerm,
-				yAxis : 1
-			}, {
-				name : 'ShoTerm',
-				data : data_shoTerm,
-				yAxis : 1
-			} ]
-		});
+	var v = "1";
+	if (version == 'v2') {
+		v = "2";
 	}
-
 	/**
 	 * Load StocPrice and display OHLC
 	 * 
@@ -614,7 +281,8 @@ function loadQSDD(version, stockId, dateFrom, dateTo) {
 
 		seriesCounter += 1;
 		if (seriesCounter === 2) {
-			createChart();
+			createChart_Qsdd(stockId, date_price, volume, data_lonTerm,
+					data_midTerm, data_shoTerm);
 		}
 	});
 
@@ -623,8 +291,8 @@ function loadQSDD(version, stockId, dateFrom, dateTo) {
 	 * 
 	 * @returns {undefined}
 	 */
-	var url_ind = "http://localhost:8080/portal/ind" + v + "/qsdd/" + stockId + "/"
-			+ dateFrom + "_" + dateTo;
+	var url_ind = "http://localhost:8080/portal/ind" + v + "/qsdd/" + stockId
+			+ "/" + dateFrom + "_" + dateTo;
 	$.getJSON(url_ind, function(data) {
 		i = 0;
 		for (i; i < data.length; i += 1) {
@@ -639,7 +307,8 @@ function loadQSDD(version, stockId, dateFrom, dateTo) {
 
 		seriesCounter += 1;
 		if (seriesCounter === 2) {
-			createChart();
+			createChart_Qsdd(stockId, date_price, volume, data_lonTerm,
+					data_midTerm, data_shoTerm);
 		}
 	});
 }
