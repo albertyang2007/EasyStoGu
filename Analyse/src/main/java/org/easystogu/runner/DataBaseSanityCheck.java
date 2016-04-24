@@ -87,8 +87,8 @@ public class DataBaseSanityCheck implements Runnable {
 		List<YiMengBSVO> ymbsList = ymbsTable.getAllYiMengBS(stockId);
 		List<QSDDVO> qsddList = qsddTable.getAllQSDD(stockId);
 
-		if (spList.size() <= 108)
-			return;
+		//if (spList.size() <= 108)
+		//	return;
 
 		if ((spList.size() != macdList.size())) {
 			System.out.println(stockId + " size of macd is not equal:" + spList.size() + "!=" + macdList.size());
@@ -129,7 +129,7 @@ public class DataBaseSanityCheck implements Runnable {
 			ymbsTable.delete(stockId);
 			HistoryYiMengBSCountAndSaveDBRunner runner = new HistoryYiMengBSCountAndSaveDBRunner();
 			runner.countAndSaved(stockId);
-		}		
+		}
 	}
 
 	public void sanityWeekCheck(List<String> stockIds) {
@@ -147,16 +147,16 @@ public class DataBaseSanityCheck implements Runnable {
 		List<StockPriceVO> spList = weekStockPriceTable.getStockPriceById(stockId);
 		List<MacdVO> macdList = macdWeekTable.getAllMacd(stockId);
 		List<KDJVO> kdjList = kdjWeekTable.getAllKDJ(stockId);
-		List<BollVO> bollList = bollWeekTable.getAllBoll(stockId);
 		List<ShenXianVO> shenXianList = shenXianWeekTable.getAllShenXian(stockId);
 		List<QSDDVO> qsddList = qsddWeekTable.getAllQSDD(stockId);
+		//List<BollVO> bollList = bollWeekTable.getAllBoll(stockId);
 		// List<Mai1Mai2VO> mai1mai2List =
 		// mai1mai2WeekTable.getAllMai1Mai2(stockId);
 		// List<YiMengBSVO> yiMengBSList =
 		// yiMengBSWeekTable.getAllYiMengBS(stockId);
 
-		if (spList.size() <= 108)
-			return;
+		//if (spList.size() <= 108)
+		//	return;
 
 		if ((spList.size() != macdList.size())) {
 			System.out.println(stockId + " size of week macd is not equal:" + spList.size() + "!=" + macdList.size());
@@ -172,13 +172,7 @@ public class DataBaseSanityCheck implements Runnable {
 			kdjWeekTable.delete(stockId);
 			HistoryWeeklyKDJCountAndSaveDBRunner runner = new HistoryWeeklyKDJCountAndSaveDBRunner();
 			runner.countAndSaved(stockId);
-		}
-		if ((spList.size() != bollList.size())) {
-			System.out.println(stockId + " size of week boll is not equal:" + spList.size() + "!=" + bollList.size());
-			bollWeekTable.delete(stockId);
-			HistoryWeeklyBollCountAndSaveDBRunner runner = new HistoryWeeklyBollCountAndSaveDBRunner();
-			runner.countAndSaved(stockId);
-		}
+		}		
 		if ((spList.size() != shenXianList.size())) {
 			System.out.println(stockId + " size of week shenXian is not equal:" + spList.size() + "!="
 					+ shenXianList.size());
@@ -192,6 +186,13 @@ public class DataBaseSanityCheck implements Runnable {
 			HistoryWeeklyQSDDCountAndSaveDBRunner runner = new HistoryWeeklyQSDDCountAndSaveDBRunner();
 			runner.countAndSaved(stockId);
 		}
+		/*
+		if ((spList.size() != bollList.size())) {
+			System.out.println(stockId + " size of week boll is not equal:" + spList.size() + "!=" + bollList.size());
+			bollWeekTable.delete(stockId);
+			HistoryWeeklyBollCountAndSaveDBRunner runner = new HistoryWeeklyBollCountAndSaveDBRunner();
+			runner.countAndSaved(stockId);
+		}*/
 	}
 
 	public void figureOutDifferenceDate(List<StockPriceVO> spList, List<MacdVO> macdList) {
