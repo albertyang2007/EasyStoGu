@@ -78,7 +78,7 @@ public class DailyStockPriceDownloadHelper {
 
 	public static void main(String[] args) {
 		DailyStockPriceDownloadHelper ins = new DailyStockPriceDownloadHelper();
-		List<RealTimePriceVO> list = ins.fetchDataFromWeb("sh000001");
+		List<RealTimePriceVO> list = ins.fetchDataFromWeb("sh600000");
 		System.out.println(list.size());
 		System.out.println(list.get(0));
 	}
