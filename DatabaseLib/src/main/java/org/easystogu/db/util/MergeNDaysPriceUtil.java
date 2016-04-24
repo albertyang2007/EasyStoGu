@@ -13,7 +13,7 @@ public class MergeNDaysPriceUtil {
 
 	public List<StockPriceVO> generateAllWeekPriceVO(String stockId, List<StockPriceVO> spList) {
 		List<StockPriceVO> spWeekList = new ArrayList<StockPriceVO>();
-		for (int year = 1991; year <= WeekdayUtil.currentYear(); year++) {
+		for (int year = 1997; year <= WeekdayUtil.currentYear(); year++) {
 			for (int week = 1; week <= 54; week++) {
 				List<String> dates = WeekdayUtil.getWorkingDaysOfWeek(year, week);
 				if ((dates != null) && (dates.size() >= 1)) {

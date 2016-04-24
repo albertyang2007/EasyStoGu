@@ -7,14 +7,14 @@ import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.table.StockPriceVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.sina.common.RealTimePriceVO;
-import org.easystogu.sina.helper.SinaDataDownloadHelper;
+import org.easystogu.sina.helper.DailyStockPriceDownloadHelper;
 
 public class DailyStockPriceDownloadAndStoreDBRunner implements Runnable {
 	// private static Logger logger =
 	// LogHelper.getLogger(DailyStockPriceDownloadAndStoreDBRunner.class);
 	private CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 	private StockPriceTableHelper tableHelper = StockPriceTableHelper.getInstance();
-	private SinaDataDownloadHelper sinaHelper = new SinaDataDownloadHelper();
+	private DailyStockPriceDownloadHelper sinaHelper = new DailyStockPriceDownloadHelper();
 	private int totalError = 0;
 	private int totalSize = 0;
 

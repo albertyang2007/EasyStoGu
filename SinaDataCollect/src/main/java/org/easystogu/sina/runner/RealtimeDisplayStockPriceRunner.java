@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.easystogu.config.FileConfigurationService;
 import org.easystogu.sina.common.RealTimePriceVO;
-import org.easystogu.sina.helper.SinaDataDownloadHelper;
+import org.easystogu.sina.helper.DailyStockPriceDownloadHelper;
 
 public class RealtimeDisplayStockPriceRunner {
 
@@ -13,7 +13,7 @@ public class RealtimeDisplayStockPriceRunner {
 		StringBuffer sb = new StringBuffer();
 		FileConfigurationService configure = FileConfigurationService
 				.getInstance();
-		SinaDataDownloadHelper ins = new SinaDataDownloadHelper();
+		DailyStockPriceDownloadHelper ins = new DailyStockPriceDownloadHelper();
 
 		String strList = configure.getString("realtime.display.stock.list")
 				+ "," + configure.getString("analyse.select.stock.list");

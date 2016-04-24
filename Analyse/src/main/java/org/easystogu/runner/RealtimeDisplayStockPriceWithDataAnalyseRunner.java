@@ -6,7 +6,7 @@ import org.easystogu.config.FileConfigurationService;
 import org.easystogu.db.table.BollVO;
 import org.easystogu.indicator.runner.DailyBollCountAndSaveDBRunner;
 import org.easystogu.sina.common.RealTimePriceVO;
-import org.easystogu.sina.helper.SinaDataDownloadHelper;
+import org.easystogu.sina.helper.DailyStockPriceDownloadHelper;
 import org.easystogu.sina.runner.DailyStockPriceDownloadAndStoreDBRunner;
 
 public class RealtimeDisplayStockPriceWithDataAnalyseRunner {
@@ -16,7 +16,7 @@ public class RealtimeDisplayStockPriceWithDataAnalyseRunner {
         StringBuffer out = new StringBuffer();
         StringBuffer alarm = new StringBuffer();
         FileConfigurationService configure = FileConfigurationService.getInstance();
-        SinaDataDownloadHelper ins = new SinaDataDownloadHelper();
+        DailyStockPriceDownloadHelper ins = new DailyStockPriceDownloadHelper();
         DailyStockPriceDownloadAndStoreDBRunner dailyStockRunner = new DailyStockPriceDownloadAndStoreDBRunner();
         DailyBollCountAndSaveDBRunner dailyBollRunner = new DailyBollCountAndSaveDBRunner();
 

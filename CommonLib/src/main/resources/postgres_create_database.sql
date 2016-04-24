@@ -709,3 +709,29 @@ GRANT ALL ON TABLE checkpoint_daily_statistics TO postgres;
 COMMENT ON TABLE checkpoint_daily_statistics
   IS 'Store daily checkpoint statistics report, selecting checkpoint count based on date.';
 
+  
+-- Table: fuquan_stockprice
+
+-- DROP TABLE fuquan_stockprice;
+
+CREATE TABLE fuquan_stockprice
+(
+  stockid text NOT NULL,
+  date text NOT NULL,
+  open numeric NOT NULL,
+  high numeric NOT NULL,
+  low numeric NOT NULL,
+  close numeric NOT NULL,
+  volume bigint NOT NULL,
+  lastclose numeric,
+  CONSTRAINT fuquan_stockprice_primary_key PRIMARY KEY (stockid, date)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE fuquan_stockprice
+  OWNER TO postgres;
+GRANT ALL ON TABLE fuquan_stockprice TO public;
+GRANT ALL ON TABLE fuquan_stockprice TO postgres;
+COMMENT ON TABLE fuquan_stockprice
+  IS 'FU Quan STOCK PRICE';  

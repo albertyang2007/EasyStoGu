@@ -9,21 +9,18 @@ import org.easystogu.http.util.HttpUtil;
 
 public class YahooDataDownloadHelper {
 
-	private FileConfigurationService fileConfile = FileConfigurationService
-			.getInstance();
+	private FileConfigurationService fileConfile = FileConfigurationService.getInstance();
 
 	private static final String yahooBaseUrl = "http://ichart.yahoo.com/table.csv?s=";
 	private int totalError = 0;
 	private int totalSkip = 0;
 	private int totalSuccess = 0;
 
-	public void downloadHistoryData(String stockId, String area,
-			String[] startDate, String[] endDate) {
+	public void downloadHistoryData(String stockId, String area, String[] startDate, String[] endDate) {
 		String path = fileConfile.getString("yahoo.csv.file.path");
 		String saveFile = path + stockId + ".csv";
-		String url = yahooBaseUrl + stockId + "." + area + "&a=" + startDate[1]
-				+ "&b=" + startDate[2] + "&c=" + startDate[0] + "&d="
-				+ endDate[1] + "&e=" + endDate[2] + "&f=" + endDate[0] + "&g=d";
+		String url = yahooBaseUrl + stockId + "." + area + "&a=" + startDate[1] + "&b=" + startDate[2] + "&c="
+				+ startDate[0] + "&d=" + endDate[1] + "&e=" + endDate[2] + "&f=" + endDate[0] + "&g=d";
 		try {
 			// first check if file already exist
 			File file = new File(saveFile);
@@ -37,17 +34,14 @@ public class YahooDataDownloadHelper {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			totalError++;
-			System.out.println("Can't download stockId=" + stockId + ", error="
-					+ e.getMessage());
+			System.out.println("Can't download stockId=" + stockId + ", error=" + e.getMessage());
 			// e.printStackTrace();
 		}
 	}
 
-	public void downloadAllHistoryData(List<String> stockId, String area,
-			String[] startDate, String[] endDate) {
+	public void downloadAllHistoryData(List<String> stockId, String area, String[] startDate, String[] endDate) {
 		for (int i = 0; i < stockId.size(); i++) {
-			System.out.println("downloading " + stockId.get(i) + "," + (i + 1)
-					+ "/" + stockId.size());
+			System.out.println("downloading " + stockId.get(i) + "," + (i + 1) + "/" + stockId.size());
 			downloadHistoryData(stockId.get(i), area, startDate, endDate);
 		}
 	}
@@ -65,7 +59,11 @@ public class YahooDataDownloadHelper {
 	}
 
 	public static void main(String[] args) {
-
+		YahooDataDownloadHelper helper = new YahooDataDownloadHelper();
+		String stockId = "002609";
+		String area = "sz";
+		String[] startDate = { "2010", "0", "01" };// query last update date
+		String[] endDate = { "2016", "3", "24" };// should be today
+		helper.downloadHistoryData(stockId, area, startDate, endDate);
 	}
-
 }

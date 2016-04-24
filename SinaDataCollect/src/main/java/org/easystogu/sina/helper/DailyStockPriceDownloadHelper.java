@@ -15,7 +15,7 @@ import org.easystogu.utils.Strings;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
-public class SinaDataDownloadHelper {
+public class DailyStockPriceDownloadHelper {
 	private static final String baseUrl = "http://hq.sinajs.cn/list=";
 	private static FileConfigurationService configure = FileConfigurationService.getInstance();
 	private CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
@@ -77,7 +77,7 @@ public class SinaDataDownloadHelper {
 	}
 
 	public static void main(String[] args) {
-		SinaDataDownloadHelper ins = new SinaDataDownloadHelper();
+		DailyStockPriceDownloadHelper ins = new DailyStockPriceDownloadHelper();
 		List<RealTimePriceVO> list = ins.fetchDataFromWeb("sh000001");
 		System.out.println(list.size());
 		System.out.println(list.get(0));
