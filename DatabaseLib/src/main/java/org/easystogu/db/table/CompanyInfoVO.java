@@ -15,6 +15,10 @@ public class CompanyInfoVO {
         this.name = name;
     }
 
+    public CompanyInfoVO() {
+
+    }
+
     public CompanyInfoVO(String line) {
         // 1074,000002,万
         // 科Ａ,2015/09/30,111亿,97.2亿,2.92万,0.62,8.05,7.69,796亿,26.06,124亿,
@@ -62,6 +66,7 @@ public class CompanyInfoVO {
         return (int) (this.liuTongAGu * close);
     }
 
+    @Override
     public String toString() {
         StringBuffer sb = new StringBuffer("CompanyInfoVO: {");
         sb.append("stockId:" + stockId);
@@ -72,5 +77,53 @@ public class CompanyInfoVO {
         sb.append(", liuTongShiZhi:" + liuTongShiZhi);
         sb.append("}");
         return sb.toString();
+    }
+
+    public String getStockId() {
+        return stockId;
+    }
+
+    public void setStockId(String stockId) {
+        this.stockId = stockId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(String updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public double getTotalGuBen() {
+        return totalGuBen;
+    }
+
+    public void setTotalGuBen(double totalGuBen) {
+        this.totalGuBen = totalGuBen;
+    }
+
+    public double getLiuTongAGu() {
+        return liuTongAGu;
+    }
+
+    public void setLiuTongAGu(double liuTongAGu) {
+        this.liuTongAGu = liuTongAGu;
+    }
+
+    public double getLiuTongShiZhi() {
+        return liuTongShiZhi;
+    }
+
+    public void setLiuTongShiZhi(double liuTongShiZhi) {
+        this.liuTongShiZhi = liuTongShiZhi;
     }
 }

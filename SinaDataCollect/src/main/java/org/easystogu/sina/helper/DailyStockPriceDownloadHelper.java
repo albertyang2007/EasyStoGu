@@ -15,6 +15,8 @@ import org.easystogu.utils.Strings;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
+//get real time stock price from http://hq.sinajs.cn/list=
+//it need sotckIds as parameter
 public class DailyStockPriceDownloadHelper {
 	private static final String baseUrl = "http://hq.sinajs.cn/list=";
 	private static FileConfigurationService configure = FileConfigurationService.getInstance();

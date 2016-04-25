@@ -4,14 +4,16 @@ public class SinaQuotesServiceVO {
 	public String symbol;
 	public String code;
 	public String name;
-	public String trade;
-	public String open;
-	public String high;
-	public String low;
-	public String volume;
+	public double trade;
+	public double open;
+	public double high;
+	public double low;
+	public double pricechange;
+	public long volume;
 	public String ticktime;
 
-	public String toString() {
+	@Override
+    public String toString() {
 		return this.symbol + ";" + this.code + ";" + this.name + ";" + this.open + ";" + this.trade + ";" + this.high
 				+ ";" + this.low + ";" + this.volume;
 	}
@@ -40,51 +42,59 @@ public class SinaQuotesServiceVO {
 		this.name = name;
 	}
 
-	public String getTrade() {
-		return trade;
-	}
+    public double getTrade() {
+        return trade;
+    }
 
-	public void setTrade(String trade) {
-		this.trade = trade;
-	}
+    public void setTrade(double trade) {
+        this.trade = trade;
+    }
 
-	public String getOpen() {
-		return open;
-	}
+    public double getOpen() {
+        return open;
+    }
 
-	public void setOpen(String open) {
-		this.open = open;
-	}
+    public void setOpen(double open) {
+        this.open = open;
+    }
 
-	public String getHigh() {
-		return high;
-	}
+    public double getHigh() {
+        return high;
+    }
 
-	public void setHigh(String high) {
-		this.high = high;
-	}
+    public void setHigh(double high) {
+        this.high = high;
+    }
 
-	public String getLow() {
-		return low;
-	}
+    public double getLow() {
+        return low;
+    }
 
-	public void setLow(String low) {
-		this.low = low;
-	}
+    public void setLow(double low) {
+        this.low = low;
+    }
 
-	public String getVolume() {
-		return volume;
-	}
+    public double getPricechange() {
+        return pricechange;
+    }
 
-	public void setVolume(String volume) {
-		this.volume = volume;
-	}
+    public void setPricechange(double pricechange) {
+        this.pricechange = pricechange;
+    }
 
-	public String getTicktime() {
-		return ticktime;
-	}
+    public long getVolume() {
+        return volume;
+    }
 
-	public void setTicktime(String ticktime) {
-		this.ticktime = ticktime;
-	}
+    public void setVolume(long volume) {
+        this.volume = volume;
+    }
+
+    public String getTicktime() {
+        return ticktime;
+    }
+
+    public void setTicktime(String ticktime) {
+        this.ticktime = ticktime;
+    }
 }

@@ -37,12 +37,9 @@ public class HistoryMacdCountAndSaveDBRunner {
 
 			int length = priceList.size();
 
-			// if (length < 26) {
-			// System.out.println(stockId
-			// +
-			// " price data is not enough to count MACD, please wait until it has at least 26 days. Skip");
-			// return;
-			// }
+	        if (length < 1) {
+	            return;
+	        }
 
 			// update price based on chuQuanChuXi event
 			chuQuanChuXiPriceHelper.updatePrice(stockId, priceList);

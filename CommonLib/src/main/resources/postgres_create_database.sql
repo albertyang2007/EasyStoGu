@@ -735,3 +735,27 @@ GRANT ALL ON TABLE fuquan_stockprice TO public;
 GRANT ALL ON TABLE fuquan_stockprice TO postgres;
 COMMENT ON TABLE fuquan_stockprice
   IS 'FU Quan STOCK PRICE';  
+  
+
+-- Table: company_info
+
+-- DROP TABLE company_info;
+
+CREATE TABLE company_info
+(
+  stockid text NOT NULL,
+  name text NOT NULL,
+  totalguben numeric,
+  liutongagu numeric,
+  updatetime text NULL,
+  CONSTRAINT company_info_primary_key PRIMARY KEY (stockid)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE company_info
+  OWNER TO postgres;
+GRANT ALL ON TABLE company_info TO public;
+GRANT ALL ON TABLE company_info TO postgres;
+COMMENT ON TABLE company_info
+  IS 'STOCK Company Base Info';
