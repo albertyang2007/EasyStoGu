@@ -32,7 +32,6 @@ public class DailyStockPriceDownloadHelper2 {
         for (int pageNumber = 1; pageNumber <= totalNumberPage; pageNumber++) {
             list.addAll(this.fetchAPageDataFromWeb(pageNumber));
         }
-        System.out.println("Total fetch result size= " + list.size());
         return list;
     }
 
