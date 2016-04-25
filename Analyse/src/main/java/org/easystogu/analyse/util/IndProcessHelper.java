@@ -27,7 +27,7 @@ public class IndProcessHelper {
 		PriceCheckingHelper.setLastClosePrice(overWeekList);
 		IndCrossCheckingHelper.macdCross(overWeekList);
 		IndCrossCheckingHelper.kdjCross(overWeekList);
-		IndCrossCheckingHelper.qsddCross(overWeekList);
+		//IndCrossCheckingHelper.qsddCross(overWeekList);
 		IndCrossCheckingHelper.shenXianCross12(overWeekList);
 	}
 }

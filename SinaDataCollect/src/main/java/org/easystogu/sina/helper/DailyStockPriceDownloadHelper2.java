@@ -11,7 +11,7 @@ import net.sf.json.JSONObject;
 
 import org.easystogu.config.Constants;
 import org.easystogu.config.FileConfigurationService;
-import org.easystogu.sina.common.SinaQuotesServiceVO;
+import org.easystogu.sina.common.SinaQuoteStockPriceVO;
 import org.easystogu.utils.Strings;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
@@ -27,16 +27,16 @@ public class DailyStockPriceDownloadHelper2 {
             + numberPerPage + "&sort=symbol&asc=1&node=hs_a";
     private static FileConfigurationService configure = FileConfigurationService.getInstance();
 
-    public List<SinaQuotesServiceVO> fetchAllStockPriceFromWeb() {
-        List<SinaQuotesServiceVO> list = new ArrayList<SinaQuotesServiceVO>();
+    public List<SinaQuoteStockPriceVO> fetchAllStockPriceFromWeb() {
+        List<SinaQuoteStockPriceVO> list = new ArrayList<SinaQuoteStockPriceVO>();
         for (int pageNumber = 1; pageNumber <= totalNumberPage; pageNumber++) {
             list.addAll(this.fetchAPageDataFromWeb(pageNumber));
         }
         return list;
     }
 
-    private List<SinaQuotesServiceVO> fetchAPageDataFromWeb(int pageNumber) {
-        List<SinaQuotesServiceVO> list = new ArrayList<SinaQuotesServiceVO>();
+    private List<SinaQuoteStockPriceVO> fetchAPageDataFromWeb(int pageNumber) {
+        List<SinaQuoteStockPriceVO> list = new ArrayList<SinaQuoteStockPriceVO>();
         try {
 
             String url = baseUrl.replaceFirst("page=1", "page=" + pageNumber);
@@ -69,8 +69,8 @@ public class DailyStockPriceDownloadHelper2 {
 
             for (int i = 0; i < jsonArray.size(); i++) {
                 jsonObject = jsonArray.getJSONObject(i);
-                pojoValue = JSONObject.toBean(jsonObject, SinaQuotesServiceVO.class);
-                list.add((SinaQuotesServiceVO) pojoValue);
+                pojoValue = JSONObject.toBean(jsonObject, SinaQuoteStockPriceVO.class);
+                list.add((SinaQuoteStockPriceVO) pojoValue);
             }
 
             System.out.print(", result size= " + jsonArray.size());
@@ -83,8 +83,8 @@ public class DailyStockPriceDownloadHelper2 {
 
     public static void main(String[] args) {
         DailyStockPriceDownloadHelper2 ins = new DailyStockPriceDownloadHelper2();
-        List<SinaQuotesServiceVO> list = ins.fetchAllStockPriceFromWeb();
-        SinaQuotesServiceVO vo = list.get(list.size() - 1);
+        List<SinaQuoteStockPriceVO> list = ins.fetchAllStockPriceFromWeb();
+        SinaQuoteStockPriceVO vo = list.get(list.size() - 1);
         System.out.println(list.size());
         System.out.println(vo);
     }

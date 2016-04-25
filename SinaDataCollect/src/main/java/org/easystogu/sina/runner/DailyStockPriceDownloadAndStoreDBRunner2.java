@@ -8,7 +8,7 @@ import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.table.CompanyInfoVO;
 import org.easystogu.db.table.StockPriceVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
-import org.easystogu.sina.common.SinaQuotesServiceVO;
+import org.easystogu.sina.common.SinaQuoteStockPriceVO;
 import org.easystogu.sina.helper.DailyStockPriceDownloadHelper2;
 import org.easystogu.utils.Strings;
 
@@ -51,8 +51,8 @@ public class DailyStockPriceDownloadAndStoreDBRunner2 implements Runnable {
 
         System.out.println("Get stock price for " + this.latestDate);
 
-        List<SinaQuotesServiceVO> sqsList = sinaHelper2.fetchAllStockPriceFromWeb();
-        for (SinaQuotesServiceVO sqvo : sqsList) {
+        List<SinaQuoteStockPriceVO> sqsList = sinaHelper2.fetchAllStockPriceFromWeb();
+        for (SinaQuoteStockPriceVO sqvo : sqsList) {
             //to check if the stockId is a new on board one, if so, insert to companyInfo table
             if (companyInfoTable.getCompanyId(sqvo.code) == null) {
                 CompanyInfoVO cinvo = new CompanyInfoVO(sqvo.code, sqvo.name);
@@ -63,7 +63,7 @@ public class DailyStockPriceDownloadAndStoreDBRunner2 implements Runnable {
         }
     }
 
-    public void saveIntoDB(SinaQuotesServiceVO sqvo) {
+    public void saveIntoDB(SinaQuoteStockPriceVO sqvo) {
         try {
             //update stock price into table
             StockPriceVO vo = new StockPriceVO();
