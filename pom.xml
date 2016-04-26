@@ -27,9 +27,7 @@
 				<module>CommonLib</module>
 				<module>DatabaseLib</module>
 				<module>DataCollect</module>
-				<module>SinaDataCollect</module>
 				<module>EasyMoneyCollect</module>
-				<module>YahooDataCollect</module>
 				<module>Indicator</module>
 				<module>Analyse</module>
 				<module>Portal</module>
