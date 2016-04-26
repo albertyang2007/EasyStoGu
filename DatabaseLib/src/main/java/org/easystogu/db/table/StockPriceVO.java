@@ -16,7 +16,15 @@ public class StockPriceVO {
     public double lastClose;
 
     public StockPriceVO() {
-
+        this.name = "";
+        this.stockId = "";
+        this.date = "";
+        this.open = 0;
+        this.close = 0;
+        this.lastClose = 0;
+        this.low = 0;
+        this.high = 0;
+        this.volume = 0;
     }
 
     public StockPriceVO(String line) {
