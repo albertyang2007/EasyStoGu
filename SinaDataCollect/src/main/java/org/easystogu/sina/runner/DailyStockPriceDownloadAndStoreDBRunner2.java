@@ -54,7 +54,7 @@ public class DailyStockPriceDownloadAndStoreDBRunner2 implements Runnable {
         List<SinaQuoteStockPriceVO> sqsList = sinaHelper2.fetchAllStockPriceFromWeb();
         for (SinaQuoteStockPriceVO sqvo : sqsList) {
             //to check if the stockId is a new on board one, if so, insert to companyInfo table
-            if (companyInfoTable.getCompanyId(sqvo.code) == null) {
+            if (companyInfoTable.getCompanyInfoByStockId(sqvo.code) == null) {
                 CompanyInfoVO cinvo = new CompanyInfoVO(sqvo.code, sqvo.name);
                 companyInfoTable.insert(cinvo);
             }
