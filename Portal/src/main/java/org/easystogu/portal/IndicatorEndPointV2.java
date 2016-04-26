@@ -10,6 +10,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
 import org.easystogu.db.access.ChuQuanChuXiPriceHelper;
+import org.easystogu.db.access.FuQuanStockPriceTableHelper;
 import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.table.BollVO;
 import org.easystogu.db.table.KDJVO;
@@ -33,6 +34,7 @@ import com.google.common.primitives.Doubles;
 public class IndicatorEndPointV2 {
 	protected static String HHmmss = "00:00:00";
 	protected StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
+	private FuQuanStockPriceTableHelper fuquanStockPriceTable = FuQuanStockPriceTableHelper.getInstance();
 	protected MACDHelper macdHelper = new MACDHelper();
 	protected KDJHelper kdjHelper = new KDJHelper();
 	protected ShenXianHelper shenXianHelper = new ShenXianHelper();

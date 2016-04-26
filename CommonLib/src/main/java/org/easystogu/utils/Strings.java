@@ -50,6 +50,15 @@ public class Strings {
 		return num;
 	}
 
+	public static double convert2ScaleDecimal(double num, int scale) {
+		if (Double.isNaN(num) || Double.isInfinite(num)) {
+			return 0;
+		}
+		BigDecimal bd = new BigDecimal(num);
+		num = bd.setScale(scale, BigDecimal.ROUND_HALF_UP).doubleValue();
+		return num;
+	}
+
 	// convert from string to date and then to time
 	// dateStr is like:yyyy-MM-dd HH:mm:ss
 	public static long stringToTime(String dateStr) {

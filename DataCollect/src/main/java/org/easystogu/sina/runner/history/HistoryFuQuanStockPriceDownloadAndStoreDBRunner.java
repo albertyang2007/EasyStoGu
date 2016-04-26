@@ -10,6 +10,7 @@ import org.easystogu.config.Constants;
 import org.easystogu.config.FileConfigurationService;
 import org.easystogu.db.access.CompanyInfoTableHelper;
 import org.easystogu.db.access.FuQuanStockPriceTableHelper;
+import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.table.StockPriceVO;
 import org.easystogu.utils.Strings;
 import org.easystogu.utils.WeekdayUtil;
@@ -21,6 +22,7 @@ public class HistoryFuQuanStockPriceDownloadAndStoreDBRunner {
 	private static String baseUrl = "http://vip.stock.finance.sina.com.cn/api/json_v2.php/BasicStockSrv.getStockFuQuanData?symbol=stockId&type=hfq";
 	private static FileConfigurationService configure = FileConfigurationService.getInstance();
 	private FuQuanStockPriceTableHelper fuquanStockPriceTable = FuQuanStockPriceTableHelper.getInstance();
+	private StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
 	private CompanyInfoTableHelper companyInfoTable = CompanyInfoTableHelper.getInstance();
 
 	public List<StockPriceVO> fetchFuQuanStockPriceFromWeb(List<String> stockIds) {
@@ -107,11 +109,25 @@ public class HistoryFuQuanStockPriceDownloadAndStoreDBRunner {
 		System.out.println("Delete fuquan stock price for " + stockId);
 		this.fuquanStockPriceTable.delete(stockId);
 		// fetch all history price from sohu api
-		List<StockPriceVO> spList = this.fetchFuQuanStockPriceFromWeb(stockId);
-		System.out.println("Save to database size=" + spList.size());
+		// FuQuan data is in date order desc
+		List<StockPriceVO> fqspList = this.fetchFuQuanStockPriceFromWeb(stockId);
+		System.out.println("Save to database size=" + fqspList.size());
 		// save to db
-		for (StockPriceVO spvo : spList) {
-			fuquanStockPriceTable.insert(spvo);
+		for (StockPriceVO fqspvo : fqspList) {
+			StockPriceVO spvo = this.stockPriceTable.getStockPriceByIdAndDate(stockId, fqspvo.date);
+			if (spvo != null) {
+				double rate = fqspvo.close / spvo.close;
+				fqspvo.close = Strings.convert2ScaleDecimal(fqspvo.close);
+				fqspvo.open = Strings.convert2ScaleDecimal(spvo.open * rate);
+				fqspvo.low = Strings.convert2ScaleDecimal(spvo.low * rate);
+				fqspvo.high = Strings.convert2ScaleDecimal(spvo.high * rate);
+				fqspvo.volume = spvo.volume;
+				fuquanStockPriceTable.insert(fqspvo);
+			} else {
+				// sohu data is not so correct, shift!!!
+				// System.out.println("Missging StockPrice for " + stockId +
+				// " at " + fqspvo.date);
+			}
 		}
 	}
 
@@ -130,11 +146,11 @@ public class HistoryFuQuanStockPriceDownloadAndStoreDBRunner {
 		HistoryFuQuanStockPriceDownloadAndStoreDBRunner runner = new HistoryFuQuanStockPriceDownloadAndStoreDBRunner();
 		List<String> stockIds = runner.companyInfoTable.getAllCompanyStockId();
 		// for all stockIds
-		runner.countAndSave(stockIds);
+		// runner.countAndSave(stockIds);
 		// for specify stockId
-		// runner.countAndSave("002609");
+		runner.countAndSave("002609");
 
 		// finally re run for failure
-		runner.reRunOnFailure();
+		// runner.reRunOnFailure();
 	}
 }

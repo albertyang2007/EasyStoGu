@@ -376,6 +376,8 @@ public class StockPriceTableHelper {
 			StockPriceVO vo = this.namedParameterJdbcTemplate.queryForObject(QUERY_BY_STOCKID_DATE_SQL,
 					namedParameters, new StockPriceVOMapper());
 			return vo;
+		} catch (EmptyResultDataAccessException ee) {
+			return null;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
