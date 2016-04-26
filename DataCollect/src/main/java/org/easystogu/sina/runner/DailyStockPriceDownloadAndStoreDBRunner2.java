@@ -94,6 +94,7 @@ public class DailyStockPriceDownloadAndStoreDBRunner2 implements Runnable {
 
 			boolean chuQuanEvent = false;
 			// if lastClose is not equal, then chuQuan happends!
+			// is it enough to check this chuQuan ???
 			if (yesterday_spvo.close != spvo.lastClose) {
 				chuQuanEvent = true;
 			}
