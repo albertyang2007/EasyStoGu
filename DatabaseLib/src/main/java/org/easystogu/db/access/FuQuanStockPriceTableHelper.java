@@ -61,7 +61,7 @@ public class FuQuanStockPriceTableHelper extends StockPriceTableHelper {
 		DELETE_BY_STOCKID_SQL = "DELETE FROM " + tableName + " WHERE stockId = :stockId";
 		DELETE_BY_STOCKID_AND_DATE_SQL = "DELETE FROM " + tableName + " WHERE stockId = :stockId AND date = :date";
 		DELETE_BY_DATE_SQL = "DELETE FROM " + tableName + " WHERE date = :date";
-		COUNT_DAYS_BETWEEN_DATE1_DATE2 = "SELECT COUNT(*) FROM " + tableName
+		COUNT_DAYS_BETWEEN_DATE1_DATE2 = "SELECT COUNT(*) AS rtn FROM " + tableName
 				+ " WHERE stockId = :stockId AND DATE >= :date1 AND DATE <= :date2";
 		QUERY_DAYS_BETWEEN_DATE1_DATE2 = "SELECT date AS rtn FROM " + tableName
 				+ " WHERE stockId = :stockId AND DATE >= :date1 AND DATE <= :date2";

@@ -10,7 +10,7 @@ public class ChuQuanChuXiPriceHelper {
 
 	protected EventChuQuanChuXiTableHelper chuQuanChuXiTable = EventChuQuanChuXiTableHelper.getInstance();
 
-	public void updateAllPrice(String stockId, List<StockPriceVO> priceList) {
+	public void updatePrice(String stockId, List<StockPriceVO> priceList) {
 		List<ChuQuanChuXiVO> list = chuQuanChuXiTable.getAllChuQuanChuXiVO(stockId);
 		// list is order by date
 		for (ChuQuanChuXiVO chuQuanVO : list) {
@@ -25,7 +25,9 @@ public class ChuQuanChuXiPriceHelper {
 		}
 	}
 
-	public void updatePrice(String stockId, List<StockPriceVO> priceList) {
+	// only update price based on the first chuquan is not correct, delete this
+	// method
+	public void updatePrice_TBD(String stockId, List<StockPriceVO> priceList) {
 		List<ChuQuanChuXiVO> list = chuQuanChuXiTable.getNDateChuQuanChuXiVO(stockId, 1);
 
 		if (list == null || list.size() == 0)
@@ -83,8 +85,13 @@ public class ChuQuanChuXiPriceHelper {
 	}
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
+		String stockId = "002609";
+		StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
+		List<StockPriceVO> spList = stockPriceTable.getStockPriceById(stockId);
+		ChuQuanChuXiPriceHelper helper = new ChuQuanChuXiPriceHelper();
+		helper.updatePrice(stockId, spList);
+		for (StockPriceVO vo : spList) {
+			System.out.println(vo);
+		}
 	}
-
 }

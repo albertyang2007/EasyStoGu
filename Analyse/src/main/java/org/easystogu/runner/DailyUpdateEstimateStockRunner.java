@@ -23,7 +23,7 @@ public class DailyUpdateEstimateStockRunner implements Runnable {
 		// day (must download all stockIds price!)
 		DailyStockPriceDownloadAndStoreDBRunner.main(args);
 		// chuquan
-		ChuQuanChuXiCheckerRunner.main(args);
+		new ChuQuanChuXiCheckerRunner().dailyCheckChuQuanEvent(estimateStockIds);
 
 		currentDate = stockPriceTable.getLatestStockDate();
 		estimateStockIds = estimateStockTable.getAllEstimateStockIdsByDate(currentDate);

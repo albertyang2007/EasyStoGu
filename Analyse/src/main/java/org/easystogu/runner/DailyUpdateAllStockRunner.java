@@ -24,7 +24,7 @@ public class DailyUpdateAllStockRunner implements Runnable {
 		// day (download all stockIds price)
 		DailyStockPriceDownloadAndStoreDBRunner.main(args);
 		// chuquan
-		ChuQuanChuXiCheckerRunner.main(args);
+		new ChuQuanChuXiCheckerRunner().dailyCheckChuQuanEvent(allStockIds);;
 		// day ind
 		new AllDailyIndCountAndSaveDBRunner().runDailyIndForStockIds(allStockIds);
 		// week

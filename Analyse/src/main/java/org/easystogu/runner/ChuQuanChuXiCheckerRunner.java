@@ -1,5 +1,6 @@
 package org.easystogu.runner;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.easystogu.db.access.EventChuQuanChuXiTableHelper;
@@ -18,8 +19,49 @@ public class ChuQuanChuXiCheckerRunner implements Runnable {
 	protected EventChuQuanChuXiTableHelper chuQuanChuXiTable = EventChuQuanChuXiTableHelper.getInstance();
 	protected CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 
-	private void checkIfGaoSongZhuanExist(String stockId) {
+	public void historyCheckChuQuanEvent(String stockId) {
+		// get all vo
+		// list is order by date
+		List<StockPriceVO> list = stockPriceTable.getStockPriceById(stockId);
+		// revert the list order. now order by date desc
+		Collections.reverse(list);
+
+		// first delete old data
+		chuQuanChuXiTable.delete(stockId);
+
+		for (int index = 0; index < list.size() - 1; index++) {
+			StockPriceVO cur = list.get(index);
+			StockPriceVO pre = list.get(index + 1);
+			// System.out.println(cur);
+			// System.out.println(pre);
+			if (cur.lastClose != 0 && cur.lastClose != pre.close) {
+				// chuQuan happen!
+				ChuQuanChuXiVO vo = new ChuQuanChuXiVO();
+				vo.setStockId(cur.stockId);
+				vo.setDate(cur.date);
+				vo.setRate(cur.lastClose / pre.close);
+				vo.setAlreadyUpdatePrice(false);
+
+				System.out.println("ChuQuan happen for " + vo);
+				chuQuanChuXiTable.insert(vo);
+			}
+		}
+	}
+
+	public void historyCheckChuQuanEvent(List<String> stockIds) {
+		System.out.println("Run chuQuan for all stocks.");
+		for (String stockId : stockIds) {
+			if (stockId.equals(stockConfig.getSZZSStockIdForDB()) || stockId.equals(stockConfig.getSZCZStockIdForDB())
+					|| stockId.equals(stockConfig.getCYBZStockIdForDB())) {
+				continue;
+			}
+			this.dailyCheckChuQuanEvent(stockId);
+		}
+	}
+
+	public void dailyCheckChuQuanEvent(String stockId) {
 		// get latest two day vo
+		// list is order by date desc
 		List<StockPriceVO> list = stockPriceTable.getNdateStockPriceById(stockId, 2);
 		if (list != null && list.size() == 2) {
 			StockPriceVO cur = list.get(0);
@@ -44,30 +86,30 @@ public class ChuQuanChuXiCheckerRunner implements Runnable {
 
 	}
 
-	private void checkIfChuQuanChuXiExist(List<String> stockIds) {
+	public void dailyCheckChuQuanEvent(List<String> stockIds) {
 		System.out.println("Run chuQuan for all stocks.");
 		for (String stockId : stockIds) {
-			if (stockId.equals(stockConfig.getSZZSStockIdForDB()) 
-					|| stockId.equals(stockConfig.getSZCZStockIdForDB())
+			if (stockId.equals(stockConfig.getSZZSStockIdForDB()) || stockId.equals(stockConfig.getSZCZStockIdForDB())
 					|| stockId.equals(stockConfig.getCYBZStockIdForDB())) {
 				continue;
 			}
-			this.checkIfGaoSongZhuanExist(stockId);
+			this.dailyCheckChuQuanEvent(stockId);
 		}
 	}
 
 	public void runForStockIds(List<String> stockIds) {
-		checkIfChuQuanChuXiExist(stockIds);
+		dailyCheckChuQuanEvent(stockIds);
 	}
 
 	public void run() {
-		checkIfChuQuanChuXiExist(stockConfig.getAllStockId());
+		dailyCheckChuQuanEvent(stockConfig.getAllStockId());
 	}
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 		ChuQuanChuXiCheckerRunner runner = new ChuQuanChuXiCheckerRunner();
-		runner.checkIfChuQuanChuXiExist(stockConfig.getAllStockId());
+		runner.historyCheckChuQuanEvent("002609");
+		//(stockConfig.getAllStockId());
 	}
 }

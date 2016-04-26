@@ -78,7 +78,8 @@ public class DailyStockPriceDownloadAndStoreDBRunner2 implements Runnable {
 			vo.open = sqvo.open;
 			vo.low = sqvo.low;
 			vo.high = sqvo.high;
-			vo.volume = sqvo.volume;
+			vo.volume = sqvo.volume / 100;// sina data is 100 then sohu history
+											// data
 			vo.lastClose = sqvo.trade - sqvo.pricechange;
 
 			this.totalSize++;

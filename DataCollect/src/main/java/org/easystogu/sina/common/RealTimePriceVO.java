@@ -112,7 +112,7 @@ public class RealTimePriceVO {
 		vo.setClose(current);
 		vo.setLow(low);
 		vo.setDate(date);
-		vo.setVolume(volume);
+		vo.setVolume(volume / 100);// sina data is 100 then sohu history data
 		vo.lastClose = this.lastClose;
 		return vo;
 	}
