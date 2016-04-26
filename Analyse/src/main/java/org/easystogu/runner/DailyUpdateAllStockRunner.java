@@ -2,7 +2,6 @@ package org.easystogu.runner;
 
 import java.util.List;
 
-import org.easystogu.easymoney.runner.DailyDDXRunner;
 import org.easystogu.easymoney.runner.DailyZiJinLiuRunner;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.indicator.runner.AllDailyIndCountAndSaveDBRunner;
@@ -13,7 +12,7 @@ public class DailyUpdateAllStockRunner implements Runnable {
 	private CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 	private List<String> allStockIds = stockConfig.getAllStockId();
 	private DailySelectionRunner dailySelectionRunner = null;
-	public boolean isGetZiJinLiu = true;
+	public boolean isGetZiJinLiu = false;
 
 	public DailyUpdateAllStockRunner(boolean isGetZiJinLiu) {
 		this.isGetZiJinLiu = isGetZiJinLiu;
@@ -40,7 +39,7 @@ public class DailyUpdateAllStockRunner implements Runnable {
 		}
 
 		// ddx
-		new DailyDDXRunner().countAndSaved(allStockIds);
+		//new DailyDDXRunner().countAndSaved(allStockIds);
 
 		// analyse
 		dailySelectionRunner = new DailySelectionRunner();

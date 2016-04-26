@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.easystogu.db.access.EstimateStockTableHelper;
 import org.easystogu.db.access.StockPriceTableHelper;
-import org.easystogu.easymoney.runner.DailyDDXRunner;
 import org.easystogu.indicator.runner.AllDailyIndCountAndSaveDBRunner;
 import org.easystogu.sina.runner.DailyStockPriceDownloadAndStoreDBRunner;
 import org.easystogu.sina.runner.DailyWeeklyStockPriceCountAndSaveDBRunner;
@@ -41,10 +40,10 @@ public class DailyUpdateEstimateStockRunner implements Runnable {
 		// only get realTime zijinliu for checkpoint that satisfy
 		// DailyZiJinLiuRunner.main(args);
 		// ddx
-		new DailyDDXRunner().countAndSaved(estimateStockIds);
+		// new DailyDDXRunner().countAndSaved(estimateStockIds);
 
 		// analyse
-		dailySelectionRunner.setFetchRealTimeZiJinLiu(true);
+		dailySelectionRunner.setFetchRealTimeZiJinLiu(false);
 		dailySelectionRunner.runForStockIds(estimateStockIds);
 
 		System.out.println("stop using " + (System.currentTimeMillis() - st) / 1000 + " seconds");

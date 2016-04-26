@@ -2,7 +2,7 @@ package org.easystogu.runner;
 
 public class DailyOverAllRunner implements Runnable {
 
-	public boolean isGetZiJinLiu = true;
+	public boolean isGetZiJinLiu = false;
 
 	public DailyOverAllRunner(boolean isGetZiJinLiu) {
 		this.isGetZiJinLiu = isGetZiJinLiu;
@@ -16,6 +16,6 @@ public class DailyOverAllRunner implements Runnable {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		new DailyOverAllRunner(true).run();
+		new DailyOverAllRunner(false).run();
 	}
 }
