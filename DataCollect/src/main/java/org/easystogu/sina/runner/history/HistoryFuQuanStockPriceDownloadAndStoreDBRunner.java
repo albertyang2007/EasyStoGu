@@ -146,11 +146,11 @@ public class HistoryFuQuanStockPriceDownloadAndStoreDBRunner {
 		HistoryFuQuanStockPriceDownloadAndStoreDBRunner runner = new HistoryFuQuanStockPriceDownloadAndStoreDBRunner();
 		List<String> stockIds = runner.companyInfoTable.getAllCompanyStockId();
 		// for all stockIds
-		// runner.countAndSave(stockIds);
+		runner.countAndSave(stockIds);
 		// for specify stockId
-		runner.countAndSave("002609");
+		// runner.countAndSave("002609");
 
 		// finally re run for failure
-		// runner.reRunOnFailure();
+		runner.reRunOnFailure();
 	}
 }

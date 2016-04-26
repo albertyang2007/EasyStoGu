@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.easystogu.db.access.CompanyInfoTableHelper;
+import org.easystogu.db.access.FuQuanStockPriceTableHelper;
 import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.table.CompanyInfoVO;
 import org.easystogu.db.table.StockPriceVO;
@@ -20,6 +21,7 @@ public class DailyStockPriceDownloadAndStoreDBRunner2 implements Runnable {
 	// LogHelper.getLogger(DailyStockPriceDownloadAndStoreDBRunner2.class);
 	private CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 	private StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
+	private FuQuanStockPriceTableHelper fuquanStockPriceTable = FuQuanStockPriceTableHelper.getInstance();
 	private CompanyInfoTableHelper companyInfoTable = CompanyInfoTableHelper.getInstance();
 	private DailyStockPriceDownloadAndStoreDBRunner runner1 = new DailyStockPriceDownloadAndStoreDBRunner();
 	private DailyStockPriceDownloadHelper2 sinaHelper2 = new DailyStockPriceDownloadHelper2();
@@ -68,29 +70,60 @@ public class DailyStockPriceDownloadAndStoreDBRunner2 implements Runnable {
 	public void saveIntoDB(SinaQuoteStockPriceVO sqvo) {
 		try {
 			// update stock price into table
-			StockPriceVO vo = new StockPriceVO();
-			vo.stockId = sqvo.code;
-			vo.name = sqvo.name;
+			StockPriceVO spvo = new StockPriceVO();
+			spvo.stockId = sqvo.code;
+			spvo.name = sqvo.name;
 			// important: this json do not contain date information,
 			// just time is not enough, so we must get it form hq.sinajs.cn
-			vo.date = this.latestDate;
-			vo.close = sqvo.trade;
-			vo.open = sqvo.open;
-			vo.low = sqvo.low;
-			vo.high = sqvo.high;
-			vo.volume = sqvo.volume / 100;// sina data is 100 then sohu history
+			spvo.date = this.latestDate;
+			spvo.close = sqvo.trade;
+			spvo.open = sqvo.open;
+			spvo.low = sqvo.low;
+			spvo.high = sqvo.high;
+			spvo.volume = sqvo.volume / 100;// sina data is 100 then sohu
+											// history
 											// data
-			vo.lastClose = sqvo.trade - sqvo.pricechange;
+			spvo.lastClose = sqvo.trade - sqvo.pricechange;
+
+			// delete if today old data is exist
+			this.stockPriceTable.delete(spvo.stockId, spvo.date);
+			StockPriceVO yesterday_spvo = this.stockPriceTable.getNdateStockPriceById(spvo.stockId, 1).get(0);
+
+			// System.out.println("saving into DB, vo=" + vo);
+			this.stockPriceTable.insert(spvo);
+
+			boolean chuQuanEvent = false;
+			// if lastClose is not equal, then chuQuan happends!
+			if (yesterday_spvo.close != spvo.lastClose) {
+				chuQuanEvent = true;
+			}
+
+			// update fuquan stockprice table by manually, assume there is no
+			// chuquan event at this date
+			// delete if today old data is exist
+			// how about if chuquan happends today ??? TBD
+			if (!chuQuanEvent) {
+				this.fuquanStockPriceTable.delete(spvo.stockId, spvo.date);
+				StockPriceVO yesterday_fqspvo = this.fuquanStockPriceTable.getNdateStockPriceById(spvo.stockId, 1).get(
+						0);
+
+				double rate = yesterday_fqspvo.close / yesterday_spvo.close;
+				StockPriceVO fqspvo = new StockPriceVO();
+				fqspvo.close = Strings.convert2ScaleDecimal(spvo.close * rate);
+				fqspvo.open = Strings.convert2ScaleDecimal(spvo.open * rate);
+				fqspvo.low = Strings.convert2ScaleDecimal(spvo.low * rate);
+				fqspvo.high = Strings.convert2ScaleDecimal(spvo.high * rate);
+				fqspvo.volume = spvo.volume;
+
+				System.out.println("saving fuquan into DB, vo=" + fqspvo);
+				this.fuquanStockPriceTable.insert(spvo);
+			} else {
+				System.out.println("Import chuQuan event for " + spvo.stockId
+						+ ", must manually update fuquan StockPrice!!!");
+			}
 
 			this.totalSize++;
 
-			if (vo.isValidated()) {
-				// System.out.println("saving into DB, vo=" + vo);
-				stockPriceTable.delete(vo.stockId, vo.date);
-				stockPriceTable.insert(vo);
-			} else {
-				System.out.println("vo invalidate: " + vo);
-			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
