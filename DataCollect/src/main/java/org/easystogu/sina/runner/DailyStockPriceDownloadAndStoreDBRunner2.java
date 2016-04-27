@@ -95,33 +95,37 @@ public class DailyStockPriceDownloadAndStoreDBRunner2 implements Runnable {
 			boolean chuQuanEvent = false;
 			// if lastClose is not equal, then chuQuan happends!
 			// is it enough to check this chuQuan ???
-			if (yesterday_spvo.close != spvo.lastClose) {
+			// condiction: +-10% zhang die ting ban
+			double newRate = 1.0;
+			if ((spvo.close > 0 && yesterday_spvo.close > 0) && (spvo.close / yesterday_spvo.close <= 0.85)) {
 				chuQuanEvent = true;
+				newRate = yesterday_spvo.close / spvo.lastClose;
+			}
+
+			if (chuQuanEvent) {
+				System.out.println("Import chuQuan event for " + spvo.stockId + ", new rate=" + newRate
+						+ ", must manually update fuquan StockPrice!!!");
 			}
 
 			// update fuquan stockprice table by manually, assume there is no
 			// chuquan event at this date
 			// delete if today old data is exist
-			// how about if chuquan happends today ??? TBD
-			if (!chuQuanEvent) {
-				this.fuquanStockPriceTable.delete(spvo.stockId, spvo.date);
-				StockPriceVO yesterday_fqspvo = this.fuquanStockPriceTable.getNdateStockPriceById(spvo.stockId, 1).get(
-						0);
+			this.fuquanStockPriceTable.delete(spvo.stockId, spvo.date);
+			StockPriceVO yesterday_fqspvo = this.fuquanStockPriceTable.getNdateStockPriceById(spvo.stockId, 1).get(0);
 
-				double rate = yesterday_fqspvo.close / yesterday_spvo.close;
-				StockPriceVO fqspvo = new StockPriceVO();
-				fqspvo.close = Strings.convert2ScaleDecimal(spvo.close * rate);
-				fqspvo.open = Strings.convert2ScaleDecimal(spvo.open * rate);
-				fqspvo.low = Strings.convert2ScaleDecimal(spvo.low * rate);
-				fqspvo.high = Strings.convert2ScaleDecimal(spvo.high * rate);
-				fqspvo.volume = spvo.volume;
+			double lastRate = yesterday_fqspvo.close / yesterday_spvo.close;
+			
+			StockPriceVO fqspvo = new StockPriceVO();
+			fqspvo.date = spvo.date;
+			fqspvo.stockId = spvo.stockId;
+			fqspvo.close = Strings.convert2ScaleDecimal(spvo.close * lastRate * newRate);
+			fqspvo.open = Strings.convert2ScaleDecimal(spvo.open * lastRate * newRate);
+			fqspvo.low = Strings.convert2ScaleDecimal(spvo.low * lastRate * newRate);
+			fqspvo.high = Strings.convert2ScaleDecimal(spvo.high * lastRate * newRate);
+			fqspvo.volume = spvo.volume;
 
-				System.out.println("saving fuquan into DB, vo=" + fqspvo);
-				this.fuquanStockPriceTable.insert(spvo);
-			} else {
-				System.out.println("Import chuQuan event for " + spvo.stockId
-						+ ", must manually update fuquan StockPrice!!!");
-			}
+			System.out.println("saving fuquan into DB, vo=" + fqspvo);
+			this.fuquanStockPriceTable.insert(fqspvo);
 
 			this.totalSize++;
 
