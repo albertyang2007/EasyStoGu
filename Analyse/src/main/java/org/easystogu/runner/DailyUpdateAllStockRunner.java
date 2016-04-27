@@ -5,7 +5,7 @@ import java.util.List;
 import org.easystogu.easymoney.runner.DailyZiJinLiuRunner;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.indicator.runner.AllDailyIndCountAndSaveDBRunner;
-import org.easystogu.sina.runner.DailyStockPriceDownloadAndStoreDBRunner;
+import org.easystogu.sina.runner.DailyStockPriceDownloadAndStoreDBRunner2;
 import org.easystogu.sina.runner.DailyWeeklyStockPriceCountAndSaveDBRunner;
 
 public class DailyUpdateAllStockRunner implements Runnable {
@@ -22,7 +22,8 @@ public class DailyUpdateAllStockRunner implements Runnable {
 		String[] args = null;
 		long st = System.currentTimeMillis();
 		// day (download all stockIds price)
-		DailyStockPriceDownloadAndStoreDBRunner.main(args);
+		//DailyStockPriceDownloadAndStoreDBRunner.main(args);
+		DailyStockPriceDownloadAndStoreDBRunner2.main(args);
 		// chuquan
 		new ChuQuanChuXiCheckerRunner().dailyCheckChuQuanEvent(allStockIds);;
 		// day ind

@@ -103,7 +103,7 @@ public class DailyStockPriceDownloadAndStoreDBRunner2 implements Runnable {
 			}
 
 			if (chuQuanEvent) {
-				System.out.println("Import chuQuan event for " + spvo.stockId + ", new rate=" + newRate
+				System.out.println("Important, chuQuan event for " + spvo.stockId + ", new rate=" + newRate
 						+ ", must manually update fuquan StockPrice!!!");
 			}
 
@@ -114,7 +114,7 @@ public class DailyStockPriceDownloadAndStoreDBRunner2 implements Runnable {
 			StockPriceVO yesterday_fqspvo = this.fuquanStockPriceTable.getNdateStockPriceById(spvo.stockId, 1).get(0);
 
 			double lastRate = yesterday_fqspvo.close / yesterday_spvo.close;
-			
+
 			StockPriceVO fqspvo = new StockPriceVO();
 			fqspvo.date = spvo.date;
 			fqspvo.stockId = spvo.stockId;
@@ -124,7 +124,7 @@ public class DailyStockPriceDownloadAndStoreDBRunner2 implements Runnable {
 			fqspvo.high = Strings.convert2ScaleDecimal(spvo.high * lastRate * newRate);
 			fqspvo.volume = spvo.volume;
 
-			System.out.println("saving fuquan into DB, vo=" + fqspvo);
+			// System.out.println("saving fuquan into DB, vo=" + fqspvo);
 			this.fuquanStockPriceTable.insert(fqspvo);
 
 			this.totalSize++;

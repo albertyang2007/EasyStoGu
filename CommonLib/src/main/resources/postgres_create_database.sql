@@ -759,3 +759,27 @@ GRANT ALL ON TABLE company_info TO public;
 GRANT ALL ON TABLE company_info TO postgres;
 COMMENT ON TABLE company_info
   IS 'STOCK Company Base Info';
+
+  
+-- Table: schedule_action
+
+-- DROP TABLE schedule_action;
+
+CREATE TABLE schedule_action
+(
+  stockid text NOT NULL,
+  run_date text NOT NULL,
+  create_date text NOT NULL,
+  action text NOT NULL,
+  params text NOT NULL,
+  CONSTRAINT schedule_action_primary PRIMARY KEY (stockid, run_date, action)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE schedule_action
+  OWNER TO postgres;
+GRANT ALL ON TABLE schedule_action TO public;
+GRANT ALL ON TABLE schedule_action TO postgres;
+COMMENT ON TABLE schedule_action
+  IS 'Schedule action that will be run later';  
