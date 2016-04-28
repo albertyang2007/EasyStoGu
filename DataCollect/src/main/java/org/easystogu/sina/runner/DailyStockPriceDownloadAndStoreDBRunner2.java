@@ -87,34 +87,42 @@ public class DailyStockPriceDownloadAndStoreDBRunner2 implements Runnable {
 
 			// delete if today old data is exist
 			this.stockPriceTable.delete(spvo.stockId, spvo.date);
-			StockPriceVO yesterday_spvo = this.stockPriceTable.getNdateStockPriceById(spvo.stockId, 1).get(0);
-
+			List<StockPriceVO> nDaySpList = this.stockPriceTable.getNdateStockPriceById(spvo.stockId, 1);
 			// System.out.println("saving into DB, vo=" + vo);
 			this.stockPriceTable.insert(spvo);
 
-			boolean chuQuanEvent = false;
-			// if lastClose is not equal, then chuQuan happends!
-			// is it enough to check this chuQuan ???
-			// condiction: +-10% zhang die ting ban
 			double newRate = 1.0;
-			if ((spvo.close > 0 && yesterday_spvo.close > 0) && (spvo.close / yesterday_spvo.close <= 0.85)) {
-				chuQuanEvent = true;
-				newRate = yesterday_spvo.close / spvo.lastClose;
+			double lastRate = 1.0;
+			// if this is not a new on board company, do check chuquan event
+			if (nDaySpList.size() >= 1) {
+				// already has history data
+				StockPriceVO yesterday_spvo = nDaySpList.get(0);
+				boolean chuQuanEvent = false;
+				// if lastClose is not equal, then chuQuan happends!
+				// is it enough to check this chuQuan ???
+				// condiction: +-10% zhang die ting ban
+				if ((spvo.close > 0 && yesterday_spvo.close > 0) && (spvo.close / yesterday_spvo.close <= 0.85)) {
+					chuQuanEvent = true;
+					newRate = yesterday_spvo.close / spvo.lastClose;
+				}
+
+				if (chuQuanEvent) {
+					System.out.println("Important, chuQuan event for " + spvo.stockId + ", new rate=" + newRate
+							+ ", must manually update fuquan StockPrice!!!");
+				}
+
+				// update fuquan stockprice table by manually, assume there is
+				// no
+				// chuquan event at this date
+				// delete if today old data is exist
+				this.fuquanStockPriceTable.delete(spvo.stockId, spvo.date);
+				List<StockPriceVO> nDayFuQuanSpList = this.stockPriceTable.getNdateStockPriceById(spvo.stockId, 1);
+				if (nDayFuQuanSpList.size() >= 1) {
+					StockPriceVO yesterday_fqspvo = nDayFuQuanSpList.get(0);
+					lastRate = yesterday_fqspvo.close / yesterday_spvo.close;
+				}
 			}
-
-			if (chuQuanEvent) {
-				System.out.println("Important, chuQuan event for " + spvo.stockId + ", new rate=" + newRate
-						+ ", must manually update fuquan StockPrice!!!");
-			}
-
-			// update fuquan stockprice table by manually, assume there is no
-			// chuquan event at this date
-			// delete if today old data is exist
-			this.fuquanStockPriceTable.delete(spvo.stockId, spvo.date);
-			StockPriceVO yesterday_fqspvo = this.fuquanStockPriceTable.getNdateStockPriceById(spvo.stockId, 1).get(0);
-
-			double lastRate = yesterday_fqspvo.close / yesterday_spvo.close;
-
+			// insert fuquan stock price
 			StockPriceVO fqspvo = new StockPriceVO();
 			fqspvo.date = spvo.date;
 			fqspvo.stockId = spvo.stockId;
