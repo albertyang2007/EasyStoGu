@@ -1,10 +1,15 @@
 package org.easystogu.db.table;
 
 public class ScheduleActionVO {
+
+	public static enum ActionDo {
+		refresh_fuquan_history_stockprice
+	}
+
 	public String stockId;
 	public String runDate;
 	public String createDate;
-	public String action;
+	public String actionDo;
 	public String params;
 
 	public String getStockId() {
@@ -31,12 +36,12 @@ public class ScheduleActionVO {
 		this.createDate = createDate;
 	}
 
-	public String getAction() {
-		return action;
+	public String getActionDo() {
+		return actionDo;
 	}
 
-	public void setAction(String action) {
-		this.action = action;
+	public void setActionDo(String action) {
+		this.actionDo = action;
 	}
 
 	public String getParams() {
@@ -46,5 +51,4 @@ public class ScheduleActionVO {
 	public void setParams(String params) {
 		this.params = params;
 	}
-
 }

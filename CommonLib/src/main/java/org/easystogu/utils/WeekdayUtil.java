@@ -214,6 +214,31 @@ public class WeekdayUtil {
 		return "";
 	}
 
+	public static String nextDate(String today) {
+		try {
+			long minSecondsPerDay = 24 * 60 * 60 * 1000;
+			// System.out.println("today is " + today);
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			Calendar calT = Calendar.getInstance();
+			Date todayD = sdf.parse(today);
+			Date nextDate = null;
+			// check if today is working day or weeken
+			calT.setTime(todayD);
+
+			nextDate = new Date(todayD.getTime() + 1 * minSecondsPerDay);
+
+			// System.out.println("todayD is " + todayD);
+			// System.out.println("nextWorkingD is " + nextWorkingD);
+			// System.out.println(sdf.format(nextWorkingD));
+			return sdf.format(nextDate);
+
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return "";
+	}
+
 	// 返回某日后若干个工作日
 	public static List<String> nextWorkingDateList(String today, int length) {
 		List<String> list = new ArrayList<String>();
@@ -257,8 +282,6 @@ public class WeekdayUtil {
 	}
 
 	public static void main(String[] args) {
-		List<String> list = WeekdayUtil.getWorkingDatesBetween("2016-04-01", "2016-04-28");
-		for (String date : list)
-			System.out.println(date);
+		System.out.println(WeekdayUtil.nextDate("2016-04-30"));
 	}
 }

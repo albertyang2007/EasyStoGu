@@ -768,11 +768,11 @@ COMMENT ON TABLE company_info
 CREATE TABLE schedule_action
 (
   stockid text NOT NULL,
-  run_date text NOT NULL,
-  create_date text NOT NULL,
-  action text NOT NULL,
-  params text NOT NULL,
-  CONSTRAINT schedule_action_primary PRIMARY KEY (stockid, run_date, action)
+  runDate text NOT NULL,
+  createDate text NOT NULL,
+  actionDo text NOT NULL,
+  params text NULL,
+  CONSTRAINT schedule_action_primary PRIMARY KEY (stockid, runDate, actionDo)
 )
 WITH (
   OIDS=FALSE

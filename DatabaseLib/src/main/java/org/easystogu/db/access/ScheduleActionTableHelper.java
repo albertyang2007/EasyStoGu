@@ -9,6 +9,7 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
+import org.easystogu.db.table.ScheduleActionVO;
 import org.easystogu.db.table.XueShi2VO;
 import org.easystogu.log.LogHelper;
 import org.slf4j.Logger;
@@ -24,17 +25,20 @@ public class ScheduleActionTableHelper {
 	private static ScheduleActionTableHelper instance = null;
 	protected DataSource dataSource = PostgreSqlDataSourceFactory.createDataSource();
 	protected String tableName = "SCHEDULE_ACTION";
-	protected String INSERT_SQL = "INSERT INTO " + tableName
-			+ " (stockId, date, up, dn) VALUES (:stockId, :date, :up, :dn)";
-	protected String QUERY_BY_ID_AND_DATE_SQL = "SELECT * FROM " + tableName
-			+ " WHERE stockId = :stockId AND date = :date";
-	protected String QUERY_ALL_BY_ID_SQL = "SELECT * FROM " + tableName + " WHERE stockId = :stockId ORDER BY date";
-	protected String QUERY_LATEST_N_BY_ID_SQL = "SELECT * FROM " + tableName
-			+ " WHERE stockId = :stockId ORDER BY date DESC LIMIT :limit";
+	protected String INSERT_SQL = "INSERT INTO "
+			+ tableName
+			+ " (stockId, runDate, createDate, actionDo, params) VALUES (:stockId, :runDate, :createDate, :actionDo, :params)";
+	protected String QUERY_BY_ID_AND_RUNDATE_SQL = "SELECT * FROM " + tableName
+			+ " WHERE stockId = :stockId AND runDate = :runDate";
+	protected String QUERY_ALL_BY_RUNDATE_SQL = "SELECT * FROM " + tableName + " WHERE runDate = :runDate";
+	protected String QUERY_ALL_SHOULD_RUNDATE_SQL = "SELECT * FROM " + tableName + " WHERE runDate <= :runDate";
+	protected String QUERY_ALL_BY_ID_AND_ACTION_SQL = "SELECT * FROM " + tableName
+			+ " WHERE stockId = :stockId AND actionDo = :actionDo";
 	protected String DELETE_BY_STOCKID_SQL = "DELETE FROM " + tableName + " WHERE stockId = :stockId";
-	protected String DELETE_BY_STOCKID_AND_DATE_SQL = "DELETE FROM " + tableName
-			+ " WHERE stockId = :stockId AND date = :date";
-	protected String DELETE_BY_DATE_SQL = "DELETE FROM " + tableName + " WHERE date = :date";
+	protected String DELETE_BY_STOCKID_AND_RUNDATE_SQL = "DELETE FROM " + tableName
+			+ " WHERE stockId = :stockId AND runDate = :runDate";
+	protected String DELETE_BY_STOCKID_AND_RUNDATE_AND_ACTION_SQL = "DELETE FROM " + tableName
+			+ " WHERE stockId = :stockId AND runDate = :runDate AND actionDo = :actionDo";
 
 	protected NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
@@ -49,13 +53,14 @@ public class ScheduleActionTableHelper {
 		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
 	}
 
-	private static final class XueShi2VOMapper implements RowMapper<XueShi2VO> {
-		public XueShi2VO mapRow(ResultSet rs, int rowNum) throws SQLException {
-			XueShi2VO vo = new XueShi2VO();
+	private static final class ScheduleActionVOMapper implements RowMapper<ScheduleActionVO> {
+		public ScheduleActionVO mapRow(ResultSet rs, int rowNum) throws SQLException {
+			ScheduleActionVO vo = new ScheduleActionVO();
 			vo.setStockId(rs.getString("stockId"));
-			vo.setDate(rs.getString("date"));
-			vo.setUp(rs.getDouble("up"));
-			vo.setDn(rs.getDouble("dn"));
+			vo.setRunDate(rs.getString("runDate"));
+			vo.setCreateDate(rs.getString("createDate"));
+			vo.setActionDo(rs.getString("actionDo"));
+			vo.setParams(rs.getString("params"));
 			return vo;
 		}
 	}
@@ -66,15 +71,16 @@ public class ScheduleActionTableHelper {
 		}
 	}
 
-	public void insert(XueShi2VO vo) {
+	public void insert(ScheduleActionVO vo) {
 		logger.debug("insert for {}", vo);
 
 		try {
 			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 			namedParameters.addValue("stockId", vo.getStockId());
-			namedParameters.addValue("date", vo.getDate());
-			namedParameters.addValue("up", vo.getUp());
-			namedParameters.addValue("dn", vo.getDn());
+			namedParameters.addValue("runDate", vo.getRunDate());
+			namedParameters.addValue("createDate", vo.getCreateDate());
+			namedParameters.addValue("actionDo", vo.getActionDo());
+			namedParameters.addValue("params", vo.getParams());
 
 			namedParameterJdbcTemplate.execute(INSERT_SQL, namedParameters, new DefaultPreparedStatementCallback());
 		} catch (Exception e) {
@@ -83,8 +89,8 @@ public class ScheduleActionTableHelper {
 		}
 	}
 
-	public void insert(List<XueShi2VO> list) throws Exception {
-		for (XueShi2VO vo : list) {
+	public void insert(List<ScheduleActionVO> list) throws Exception {
+		for (ScheduleActionVO vo : list) {
 			this.insert(vo);
 		}
 	}
@@ -100,38 +106,40 @@ public class ScheduleActionTableHelper {
 		}
 	}
 
-	public void delete(String stockId, String date) {
+	public void delete(String stockId, String runDate) {
 		try {
 			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 			namedParameters.addValue("stockId", stockId);
-			namedParameters.addValue("date", date);
-			namedParameterJdbcTemplate.execute(DELETE_BY_STOCKID_AND_DATE_SQL, namedParameters,
+			namedParameters.addValue("runDate", runDate);
+			namedParameterJdbcTemplate.execute(DELETE_BY_STOCKID_AND_RUNDATE_SQL, namedParameters,
 					new DefaultPreparedStatementCallback());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	public void deleteByDate(String date) {
+	public void delete(String stockId, String runDate, String actionDo) {
 		try {
 			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
-			namedParameters.addValue("date", date);
-			namedParameterJdbcTemplate.execute(DELETE_BY_DATE_SQL, namedParameters,
+			namedParameters.addValue("stockId", stockId);
+			namedParameters.addValue("runDate", runDate);
+			namedParameters.addValue("actionDo", actionDo);
+			namedParameterJdbcTemplate.execute(DELETE_BY_STOCKID_AND_RUNDATE_AND_ACTION_SQL, namedParameters,
 					new DefaultPreparedStatementCallback());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	public XueShi2VO getXueShi2(String stockId, String date) {
+	public ScheduleActionVO getScheduleActionVO(String stockId, String runDate) {
 		try {
 
 			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 			namedParameters.addValue("stockId", stockId);
-			namedParameters.addValue("date", date);
+			namedParameters.addValue("runDate", runDate);
 
-			XueShi2VO vo = this.namedParameterJdbcTemplate.queryForObject(QUERY_BY_ID_AND_DATE_SQL, namedParameters,
-					new XueShi2VOMapper());
+			ScheduleActionVO vo = this.namedParameterJdbcTemplate.queryForObject(QUERY_BY_ID_AND_RUNDATE_SQL,
+					namedParameters, new ScheduleActionVOMapper());
 
 			return vo;
 		} catch (EmptyResultDataAccessException ee) {
@@ -142,38 +150,52 @@ public class ScheduleActionTableHelper {
 		return null;
 	}
 
-	public List<XueShi2VO> getAllXueShi2(String stockId) {
+	public List<ScheduleActionVO> getByIDAndAction(String stockId, String actionDo) {
 		try {
 
 			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 			namedParameters.addValue("stockId", stockId);
+			namedParameters.addValue("actionDo", actionDo);
 
-			List<XueShi2VO> list = this.namedParameterJdbcTemplate.query(QUERY_ALL_BY_ID_SQL, namedParameters,
-					new XueShi2VOMapper());
+			List<ScheduleActionVO> list = this.namedParameterJdbcTemplate.query(QUERY_ALL_BY_ID_AND_ACTION_SQL,
+					namedParameters, new ScheduleActionVOMapper());
 
 			return list;
 		} catch (Exception e) {
-			logger.error("exception meets for getAllKDJ stockId=" + stockId, e);
 			e.printStackTrace();
-			return new ArrayList<XueShi2VO>();
+			return new ArrayList<ScheduleActionVO>();
 		}
 	}
 
-	// 最近几天的，必须使用时间倒序的SQL
-	public List<XueShi2VO> getNDateXueShi2(String stockId, int day) {
+	public List<ScheduleActionVO> getAllByRunDate(String runDate) {
 		try {
 
 			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
-			namedParameters.addValue("stockId", stockId);
-			namedParameters.addValue("limit", day);
+			namedParameters.addValue("runDate", runDate);
 
-			List<XueShi2VO> list = this.namedParameterJdbcTemplate.query(QUERY_LATEST_N_BY_ID_SQL, namedParameters,
-					new XueShi2VOMapper());
+			List<ScheduleActionVO> list = this.namedParameterJdbcTemplate.query(QUERY_ALL_BY_RUNDATE_SQL,
+					namedParameters, new ScheduleActionVOMapper());
 
 			return list;
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new ArrayList<XueShi2VO>();
+			return new ArrayList<ScheduleActionVO>();
+		}
+	}
+
+	public List<ScheduleActionVO> getAllShouldRunDate(String runDate) {
+		try {
+
+			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+			namedParameters.addValue("runDate", runDate);
+
+			List<ScheduleActionVO> list = this.namedParameterJdbcTemplate.query(QUERY_ALL_SHOULD_RUNDATE_SQL,
+					namedParameters, new ScheduleActionVOMapper());
+
+			return list;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ArrayList<ScheduleActionVO>();
 		}
 	}
 
@@ -181,14 +203,7 @@ public class ScheduleActionTableHelper {
 		// TODO Auto-generated method stub
 		ScheduleActionTableHelper ins = new ScheduleActionTableHelper();
 		try {
-			// just for UT
-			XueShi2VO vo = new XueShi2VO();
-			vo.setUp(2.22);
-			vo.setDn(3.33);
-			vo.setStockId("000979");
-			vo.setDate("2015-05-22");
-			// ins.insert(vo);
-			System.out.println(ins.getXueShi2("000979", "2015-05-22"));
+
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

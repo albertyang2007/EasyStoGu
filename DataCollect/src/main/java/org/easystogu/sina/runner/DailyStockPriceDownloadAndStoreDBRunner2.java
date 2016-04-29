@@ -5,13 +5,16 @@ import java.util.List;
 
 import org.easystogu.db.access.CompanyInfoTableHelper;
 import org.easystogu.db.access.FuQuanStockPriceTableHelper;
+import org.easystogu.db.access.ScheduleActionTableHelper;
 import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.table.CompanyInfoVO;
+import org.easystogu.db.table.ScheduleActionVO;
 import org.easystogu.db.table.StockPriceVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.sina.common.SinaQuoteStockPriceVO;
 import org.easystogu.sina.helper.DailyStockPriceDownloadHelper2;
 import org.easystogu.utils.Strings;
+import org.easystogu.utils.WeekdayUtil;
 
 //daily get real time stock price from http://vip.stock.finance.sina.com.cn/quotes_service/api/
 //it will get all the stockId from the web, including the new on board stockId
@@ -22,6 +25,7 @@ public class DailyStockPriceDownloadAndStoreDBRunner2 implements Runnable {
 	private CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 	private StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
 	private FuQuanStockPriceTableHelper fuquanStockPriceTable = FuQuanStockPriceTableHelper.getInstance();
+	private ScheduleActionTableHelper scheduleActionTable = ScheduleActionTableHelper.getInstance();
 	private CompanyInfoTableHelper companyInfoTable = CompanyInfoTableHelper.getInstance();
 	private DailyStockPriceDownloadAndStoreDBRunner runner1 = new DailyStockPriceDownloadAndStoreDBRunner();
 	private DailyStockPriceDownloadHelper2 sinaHelper2 = new DailyStockPriceDownloadHelper2();
@@ -69,7 +73,7 @@ public class DailyStockPriceDownloadAndStoreDBRunner2 implements Runnable {
 
 	public void saveIntoDB(SinaQuoteStockPriceVO sqvo) {
 		try {
-			// update stock price into table
+			// update stockprice into table
 			StockPriceVO spvo = new StockPriceVO();
 			spvo.stockId = sqvo.code;
 			spvo.name = sqvo.name;
@@ -80,9 +84,8 @@ public class DailyStockPriceDownloadAndStoreDBRunner2 implements Runnable {
 			spvo.open = sqvo.open;
 			spvo.low = sqvo.low;
 			spvo.high = sqvo.high;
-			spvo.volume = sqvo.volume / 100;// sina data is 100 then sohu
-											// history
-											// data
+			// sina data is 100 then sohu history data
+			spvo.volume = sqvo.volume / 100;
 			spvo.lastClose = sqvo.trade - sqvo.pricechange;
 
 			// delete if today old data is exist
@@ -91,11 +94,14 @@ public class DailyStockPriceDownloadAndStoreDBRunner2 implements Runnable {
 			// System.out.println("saving into DB, vo=" + vo);
 			this.stockPriceTable.insert(spvo);
 
+			// update fuquan_stockprice table
 			double newRate = 1.0;
 			double lastRate = 1.0;
 			// if this is not a new on board company, do check chuquan event
+			// delete if today old data is exist
+			this.fuquanStockPriceTable.delete(spvo.stockId, spvo.date);
 			if (nDaySpList.size() >= 1) {
-				// already has history data
+				// already has history data, it is not a new on board company
 				StockPriceVO yesterday_spvo = nDaySpList.get(0);
 				boolean chuQuanEvent = false;
 				// if lastClose is not equal, then chuQuan happends!
@@ -108,15 +114,22 @@ public class DailyStockPriceDownloadAndStoreDBRunner2 implements Runnable {
 
 				if (chuQuanEvent) {
 					System.out.println("Important, chuQuan event for " + spvo.stockId + ", new rate=" + newRate
-							+ ", must manually update fuquan StockPrice!!!");
+							+ ", insert to scheduleAction table for later to update history fuquan stockprice.");
+					ScheduleActionVO savo = new ScheduleActionVO();
+					savo.stockId = spvo.stockId;
+					savo.runDate = WeekdayUtil.nextDate(spvo.date);
+					savo.createDate = spvo.date;
+					savo.actionDo = ScheduleActionVO.ActionDo.refresh_fuquan_history_stockprice.name();
+					savo.params = "";
+
+					this.scheduleActionTable.delete(savo.stockId, savo.runDate, savo.actionDo);
+					this.scheduleActionTable.insert(savo);
 				}
 
 				// update fuquan stockprice table by manually, assume there is
-				// no
-				// chuquan event at this date
-				// delete if today old data is exist
-				this.fuquanStockPriceTable.delete(spvo.stockId, spvo.date);
-				List<StockPriceVO> nDayFuQuanSpList = this.stockPriceTable.getNdateStockPriceById(spvo.stockId, 1);
+				// no chuquan event at this date
+				List<StockPriceVO> nDayFuQuanSpList = this.fuquanStockPriceTable
+						.getNdateStockPriceById(spvo.stockId, 1);
 				if (nDayFuQuanSpList.size() >= 1) {
 					StockPriceVO yesterday_fqspvo = nDayFuQuanSpList.get(0);
 					lastRate = yesterday_fqspvo.close / yesterday_spvo.close;
