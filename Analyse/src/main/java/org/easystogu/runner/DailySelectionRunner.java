@@ -145,6 +145,11 @@ public class DailySelectionRunner implements Runnable {
 
 	private void setZiJinLiuVO(StockSuperVO superVO) {
 
+		boolean justReturn = true;
+		if (justReturn) {
+			return;
+		}
+
 		// if real time zijinliu is not collect, then find it from total range
 		// zijinliu (59 pages)
 		if (this.fetchRealTimeZiJinLiu) {

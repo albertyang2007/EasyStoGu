@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.easystogu.db.access.CompanyInfoTableHelper;
 import org.easystogu.db.table.CompanyInfoVO;
 import org.easystogu.file.TextFileSourceHelper;
 import org.easystogu.log.LogHelper;
@@ -31,15 +32,7 @@ public class CompanyInfoFileHelper {
 	}
 
 	protected CompanyInfoFileHelper() {
-		String[] lines = fileSource.loadContent(fileName).split("\n");
-		for (int index = 1; index < lines.length; index++) {
-			String line = lines[index];
-			if (Strings.isNotEmpty(line)) {
-				CompanyInfoVO vo = new CompanyInfoVO(line);
-				companyMap.put(vo.stockId, vo);
-				// System.out.println(vo);
-			}
-		}
+		this.loadDataFromDatabase();
 
 		// add special stockId and name
 		CompanyInfoVO vo1 = new CompanyInfoVO("999999", "上证指数");
@@ -50,6 +43,27 @@ public class CompanyInfoFileHelper {
 
 		CompanyInfoVO vo3 = new CompanyInfoVO("399006", "创业板指");
 		companyMap.put(vo3.stockId, vo3);
+	}
+
+	// do not use this method now, since it need manually update
+	private void loadDataFromFile() {
+		String[] lines = fileSource.loadContent(fileName).split("\n");
+		for (int index = 1; index < lines.length; index++) {
+			String line = lines[index];
+			if (Strings.isNotEmpty(line)) {
+				CompanyInfoVO vo = new CompanyInfoVO(line);
+				companyMap.put(vo.stockId, vo);
+				// System.out.println(vo);
+			}
+		}
+	}
+
+	private void loadDataFromDatabase() {
+		CompanyInfoTableHelper table = CompanyInfoTableHelper.getInstance();
+		List<CompanyInfoVO> list = table.getAllCompanyInfo();
+		for (CompanyInfoVO vo : list) {
+			companyMap.put(vo.stockId, vo);
+		}
 	}
 
 	public CompanyInfoVO getByStockId(String stockId) {

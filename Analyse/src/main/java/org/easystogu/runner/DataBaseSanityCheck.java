@@ -7,11 +7,8 @@ import org.easystogu.db.access.IndKDJTableHelper;
 import org.easystogu.db.access.IndMacdTableHelper;
 import org.easystogu.db.access.IndQSDDTableHelper;
 import org.easystogu.db.access.IndShenXianTableHelper;
-import org.easystogu.db.access.IndWeekBollTableHelper;
 import org.easystogu.db.access.IndWeekKDJTableHelper;
 import org.easystogu.db.access.IndWeekMacdTableHelper;
-import org.easystogu.db.access.IndWeekQSDDTableHelper;
-import org.easystogu.db.access.IndWeekShenXianTableHelper;
 import org.easystogu.db.access.IndYiMengBSTableHelper;
 import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.access.WeekStockPriceTableHelper;
@@ -28,11 +25,8 @@ import org.easystogu.indicator.runner.history.HistoryKDJCountAndSaveDBRunner;
 import org.easystogu.indicator.runner.history.HistoryMacdCountAndSaveDBRunner;
 import org.easystogu.indicator.runner.history.HistoryQSDDCountAndSaveDBRunner;
 import org.easystogu.indicator.runner.history.HistoryShenXianCountAndSaveDBRunner;
-import org.easystogu.indicator.runner.history.HistoryWeeklyBollCountAndSaveDBRunner;
 import org.easystogu.indicator.runner.history.HistoryWeeklyKDJCountAndSaveDBRunner;
 import org.easystogu.indicator.runner.history.HistoryWeeklyMacdCountAndSaveDBRunner;
-import org.easystogu.indicator.runner.history.HistoryWeeklyQSDDCountAndSaveDBRunner;
-import org.easystogu.indicator.runner.history.HistoryWeeklyShenXianCountAndSaveDBRunner;
 import org.easystogu.indicator.runner.history.HistoryYiMengBSCountAndSaveDBRunner;
 
 public class DataBaseSanityCheck implements Runnable {
@@ -40,26 +34,24 @@ public class DataBaseSanityCheck implements Runnable {
 	protected IndMacdTableHelper macdTable = IndMacdTableHelper.getInstance();
 	protected IndKDJTableHelper kdjTable = IndKDJTableHelper.getInstance();
 	protected IndBollTableHelper bollTable = IndBollTableHelper.getInstance();
-	// protected IndMai1Mai2TableHelper mai1mai2Table =
-	// IndMai1Mai2TableHelper.getInstance();
 	protected IndShenXianTableHelper shenXianTable = IndShenXianTableHelper.getInstance();
-	// protected IndXueShi2TableHelper xueShi2Table =
-	// IndXueShi2TableHelper.getInstance();
 	protected IndYiMengBSTableHelper ymbsTable = IndYiMengBSTableHelper.getInstance();
-	// protected IndZhuliJinChuTableHelper zhuliJinChuTable =
-	// IndZhuliJinChuTableHelper.getInstance();
 	protected IndQSDDTableHelper qsddTable = IndQSDDTableHelper.getInstance();
 
 	protected WeekStockPriceTableHelper weekStockPriceTable = WeekStockPriceTableHelper.getInstance();
 	protected IndWeekMacdTableHelper macdWeekTable = IndWeekMacdTableHelper.getInstance();
 	protected IndWeekKDJTableHelper kdjWeekTable = IndWeekKDJTableHelper.getInstance();
-	protected IndWeekBollTableHelper bollWeekTable = IndWeekBollTableHelper.getInstance();
+
+	// protected IndWeekBollTableHelper bollWeekTable =
+	// IndWeekBollTableHelper.getInstance();
 	// protected IndWeekMai1Mai2TableHelper mai1mai2WeekTable =
 	// IndWeekMai1Mai2TableHelper.getInstance();
-	protected IndWeekShenXianTableHelper shenXianWeekTable = IndWeekShenXianTableHelper.getInstance();
+	// protected IndWeekShenXianTableHelper shenXianWeekTable =
+	// IndWeekShenXianTableHelper.getInstance();
 	// protected IndWeekYiMengBSTableHelper yiMengBSWeekTable =
 	// IndWeekYiMengBSTableHelper.getInstance();
-	protected IndWeekQSDDTableHelper qsddWeekTable = IndWeekQSDDTableHelper.getInstance();
+	// protected IndWeekQSDDTableHelper qsddWeekTable =
+	// IndWeekQSDDTableHelper.getInstance();
 
 	public void sanityDailyCheck(List<String> stockIds) {
 		int index = 0;
@@ -87,8 +79,8 @@ public class DataBaseSanityCheck implements Runnable {
 		// List<ZhuliJinChuVO> zhuliJinChuList =
 		// zhuliJinChuTable.getAllZhuliJinChu(stockId);
 
-		//if (spList.size() <= 108)
-		//	return;
+		// if (spList.size() <= 108)
+		// return;
 
 		if ((spList.size() != macdList.size())) {
 			System.out.println(stockId + " size of macd is not equal:" + spList.size() + "!=" + macdList.size());
@@ -147,16 +139,17 @@ public class DataBaseSanityCheck implements Runnable {
 		List<StockPriceVO> spList = weekStockPriceTable.getStockPriceById(stockId);
 		List<MacdVO> macdList = macdWeekTable.getAllMacd(stockId);
 		List<KDJVO> kdjList = kdjWeekTable.getAllKDJ(stockId);
-		List<ShenXianVO> shenXianList = shenXianWeekTable.getAllShenXian(stockId);
-		List<QSDDVO> qsddList = qsddWeekTable.getAllQSDD(stockId);
-		List<BollVO> bollList = bollWeekTable.getAllBoll(stockId);
+		// List<ShenXianVO> shenXianList =
+		// shenXianWeekTable.getAllShenXian(stockId);
+		// List<QSDDVO> qsddList = qsddWeekTable.getAllQSDD(stockId);
+		// List<BollVO> bollList = bollWeekTable.getAllBoll(stockId);
 		// List<Mai1Mai2VO> mai1mai2List =
 		// mai1mai2WeekTable.getAllMai1Mai2(stockId);
 		// List<YiMengBSVO> yiMengBSList =
 		// yiMengBSWeekTable.getAllYiMengBS(stockId);
 
-		//if (spList.size() <= 108)
-		//	return;
+		// if (spList.size() <= 108)
+		// return;
 
 		if ((spList.size() != macdList.size())) {
 			System.out.println(stockId + " size of week macd is not equal:" + spList.size() + "!=" + macdList.size());
@@ -172,26 +165,32 @@ public class DataBaseSanityCheck implements Runnable {
 			kdjWeekTable.delete(stockId);
 			HistoryWeeklyKDJCountAndSaveDBRunner runner = new HistoryWeeklyKDJCountAndSaveDBRunner();
 			runner.countAndSaved(stockId);
-		}		
-		if ((spList.size() != shenXianList.size())) {
-			System.out.println(stockId + " size of week shenXian is not equal:" + spList.size() + "!="
-					+ shenXianList.size());
-			shenXianWeekTable.delete(stockId);
-			HistoryWeeklyShenXianCountAndSaveDBRunner runner = new HistoryWeeklyShenXianCountAndSaveDBRunner();
-			runner.countAndSaved(stockId);
 		}
-		if ((spList.size() != qsddList.size())) {
-			System.out.println(stockId + " size of week QSDD is not equal:" + spList.size() + "!=" + qsddList.size());
-			qsddWeekTable.delete(stockId);
-			HistoryWeeklyQSDDCountAndSaveDBRunner runner = new HistoryWeeklyQSDDCountAndSaveDBRunner();
-			runner.countAndSaved(stockId);
-		}		
-		if ((spList.size() != bollList.size())) {
-			System.out.println(stockId + " size of week boll is not equal:" + spList.size() + "!=" + bollList.size());
-			bollWeekTable.delete(stockId);
-			HistoryWeeklyBollCountAndSaveDBRunner runner = new HistoryWeeklyBollCountAndSaveDBRunner();
-			runner.countAndSaved(stockId);
-		}
+		// if ((spList.size() != shenXianList.size())) {
+		// System.out.println(stockId + " size of week shenXian is not equal:" +
+		// spList.size() + "!="
+		// + shenXianList.size());
+		// shenXianWeekTable.delete(stockId);
+		// HistoryWeeklyShenXianCountAndSaveDBRunner runner = new
+		// HistoryWeeklyShenXianCountAndSaveDBRunner();
+		// runner.countAndSaved(stockId);
+		// }
+		// if ((spList.size() != qsddList.size())) {
+		// System.out.println(stockId + " size of week QSDD is not equal:" +
+		// spList.size() + "!=" + qsddList.size());
+		// qsddWeekTable.delete(stockId);
+		// HistoryWeeklyQSDDCountAndSaveDBRunner runner = new
+		// HistoryWeeklyQSDDCountAndSaveDBRunner();
+		// runner.countAndSaved(stockId);
+		// }
+		// if ((spList.size() != bollList.size())) {
+		// System.out.println(stockId + " size of week boll is not equal:" +
+		// spList.size() + "!=" + bollList.size());
+		// bollWeekTable.delete(stockId);
+		// HistoryWeeklyBollCountAndSaveDBRunner runner = new
+		// HistoryWeeklyBollCountAndSaveDBRunner();
+		// runner.countAndSaved(stockId);
+		// }
 	}
 
 	public void figureOutDifferenceDate(List<StockPriceVO> spList, List<MacdVO> macdList) {
