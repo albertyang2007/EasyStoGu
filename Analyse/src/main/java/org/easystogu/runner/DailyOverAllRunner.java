@@ -9,13 +9,12 @@ public class DailyOverAllRunner implements Runnable {
 	}
 
 	public void run() {
-		// TODO Auto-generated method stub
+		new DailyScheduleActionRunner().run();
 		new DailyUpdateAllStockRunner(this.isGetZiJinLiu).run();
 		new RecentlySelectionRunner().run();
 	}
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		new DailyOverAllRunner(false).run();
 	}
 }

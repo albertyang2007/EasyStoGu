@@ -71,6 +71,10 @@ public class StockPriceTableHelper {
 	protected String DELETE_BY_STOCKID_SQL = "DELETE FROM " + tableName + " WHERE stockId = :stockId";
 	protected String DELETE_BY_STOCKID_AND_DATE_SQL = "DELETE FROM " + tableName
 			+ " WHERE stockId = :stockId AND date = :date";
+	protected String DELETE_BY_STOCKID_AND_AFTER_DATE_SQL = "DELETE FROM " + tableName
+			+ " WHERE stockId = :stockId AND date >= :date";
+	protected String DELETE_BY_STOCKID_AND_BETWEEN_DATE_SQL = "DELETE FROM " + tableName
+			+ " WHERE stockId = :stockId AND date >= :date1 AND date <= :date2";
 	protected String DELETE_BY_DATE_SQL = "DELETE FROM " + tableName + " WHERE date = :date";
 	protected String COUNT_DAYS_BETWEEN_DATE1_DATE2 = "SELECT COUNT(*) AS rtn FROM " + tableName
 			+ " WHERE stockId = :stockId AND DATE >= :date1 AND DATE <= :date2";
@@ -194,6 +198,31 @@ public class StockPriceTableHelper {
 			namedParameters.addValue("stockId", stockId);
 			namedParameters.addValue("date", date);
 			namedParameterJdbcTemplate.execute(DELETE_BY_STOCKID_AND_DATE_SQL, namedParameters,
+					new DefaultPreparedStatementCallback());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void deleteAfterDate(String stockId, String date) {
+		try {
+			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+			namedParameters.addValue("stockId", stockId);
+			namedParameters.addValue("date", date);
+			namedParameterJdbcTemplate.execute(DELETE_BY_STOCKID_AND_AFTER_DATE_SQL, namedParameters,
+					new DefaultPreparedStatementCallback());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void deleteBetweenDate(String stockId, String startDate, String endDate) {
+		try {
+			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+			namedParameters.addValue("stockId", stockId);
+			namedParameters.addValue("date1", startDate);
+			namedParameters.addValue("date2", endDate);
+			namedParameterJdbcTemplate.execute(DELETE_BY_STOCKID_AND_BETWEEN_DATE_SQL, namedParameters,
 					new DefaultPreparedStatementCallback());
 		} catch (Exception e) {
 			e.printStackTrace();

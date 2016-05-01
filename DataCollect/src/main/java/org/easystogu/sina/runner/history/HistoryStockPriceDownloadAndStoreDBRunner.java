@@ -25,8 +25,8 @@ import org.springframework.web.client.RestTemplate;
 //history stock price from sohu, json format
 public class HistoryStockPriceDownloadAndStoreDBRunner {
 	// before 1997, there is no +-10%
-	private String startDate = "19970101";
-	private String endDate = WeekdayUtil.currentDate().replaceAll("-", "");
+	private String startDate = "1997-01-01";
+	private String endDate = WeekdayUtil.currentDate();
 	private static String baseUrl = "http://q.stock.sohu.com/hisHq?code=cn_stockId&start=startDate&end=endDate&order=D&period=d&rt=json";
 	private static FileConfigurationService configure = FileConfigurationService.getInstance();
 	private StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
@@ -38,8 +38,8 @@ public class HistoryStockPriceDownloadAndStoreDBRunner {
 	}
 
 	public HistoryStockPriceDownloadAndStoreDBRunner(String startDate, String endDate) {
-		this.startDate = startDate.replaceAll("-", "");
-		this.endDate = endDate.replaceAll("-", "");
+		this.startDate = startDate;
+		this.endDate = endDate;
 	}
 
 	public List<StockPriceVO> fetchStockPriceFromWeb(List<String> stockIds) {
@@ -69,8 +69,8 @@ public class HistoryStockPriceDownloadAndStoreDBRunner {
 			}
 
 			String url = baseUrl.replaceFirst("cn_stockId", queryStr);
-			url = url.replaceFirst("startDate", this.startDate);
-			url = url.replaceFirst("endDate", this.endDate);
+			url = url.replaceFirst("startDate", this.startDate.replaceAll("-", ""));
+			url = url.replaceFirst("endDate", this.endDate.replaceAll("-", ""));
 
 			System.out.println("Fetch Sohu History Data for " + stockId);
 
@@ -89,7 +89,7 @@ public class HistoryStockPriceDownloadAndStoreDBRunner {
 			// System.out.println("url=" + urlStr.toString());
 			String contents = restTemplate.getForObject(url.toString(), String.class).trim();
 
-			if (Strings.isEmpty(contents)) {
+			if (Strings.isEmpty(contents) || contents.trim().length() <= 2) {
 				System.out.println("Contents is empty");
 				return spList;
 			}
@@ -136,8 +136,9 @@ public class HistoryStockPriceDownloadAndStoreDBRunner {
 
 	public void countAndSave(String stockId) {
 		// first delete all price for this stockId
-		System.out.println("Delete stock price for " + stockId);
-		this.stockPriceTable.delete(stockId);
+		System.out
+				.println("Delete stock price for " + stockId + " that between " + this.startDate + "~" + this.endDate);
+		this.stockPriceTable.deleteBetweenDate(stockId, this.startDate, this.endDate);
 		// fetch all history price from sohu api
 		List<StockPriceVO> spList = this.fetchStockPriceFromWeb(stockId);
 		System.out.println("Save to database size=" + spList.size());
