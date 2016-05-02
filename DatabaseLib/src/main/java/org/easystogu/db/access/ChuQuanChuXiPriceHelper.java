@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.easystogu.db.table.ChuQuanChuXiVO;
 import org.easystogu.db.table.StockPriceVO;
-import org.easystogu.db.table.StockSuperVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.utils.Strings;
 
@@ -12,6 +11,15 @@ public class ChuQuanChuXiPriceHelper {
 	private CompanyInfoFileHelper companyInfoHelper = CompanyInfoFileHelper.getInstance();
 	private EventChuQuanChuXiTableHelper chuQuanChuXiTable = EventChuQuanChuXiTableHelper.getInstance();
 	private FuQuanStockPriceTableHelper fuquanStockPriceTable = FuQuanStockPriceTableHelper.getInstance();
+	private StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
+	private static ChuQuanChuXiPriceHelper instance = null;
+
+	public static ChuQuanChuXiPriceHelper getInstance() {
+		if (instance == null) {
+			instance = new ChuQuanChuXiPriceHelper();
+		}
+		return instance;
+	}
 
 	// priceList is order by date
 	// using hou fuquan stockprce to count the qian fuquan stockprice
@@ -64,21 +72,6 @@ public class ChuQuanChuXiPriceHelper {
 		}
 	}
 
-	public void updatePrice_NotUsedThisMethod(String stockId, List<StockPriceVO> priceList) {
-		List<ChuQuanChuXiVO> list = chuQuanChuXiTable.getAllChuQuanChuXiVO(stockId);
-		// list is order by date
-		for (ChuQuanChuXiVO chuQuanVO : list) {
-			for (StockPriceVO priceVO : priceList) {
-				if (priceVO.date.compareTo(chuQuanVO.date) < 0) {
-					priceVO.close = priceVO.close * chuQuanVO.rate;
-					priceVO.open = priceVO.open * chuQuanVO.rate;
-					priceVO.high = priceVO.high * chuQuanVO.rate;
-					priceVO.low = priceVO.low * chuQuanVO.rate;
-				}
-			}
-		}
-	}
-
 	public void updateWeekPrice(String stockId, List<StockPriceVO> priceList, String firstDate, String lastDate) {
 		List<ChuQuanChuXiVO> list = chuQuanChuXiTable.getNDateChuQuanChuXiVO(stockId, 1);
 
@@ -96,24 +89,6 @@ public class ChuQuanChuXiPriceHelper {
 					priceVO.high = priceVO.high * chuQuanVO.rate;
 					priceVO.low = priceVO.low * chuQuanVO.rate;
 				}
-			}
-		}
-	}
-
-	public void updateSuperPrice(String stockId, List<StockSuperVO> superList) {
-		List<ChuQuanChuXiVO> list = chuQuanChuXiTable.getNDateChuQuanChuXiVO(stockId, 1);
-
-		if (list == null || list.size() == 0)
-			return;
-
-		ChuQuanChuXiVO chuQuanVO = list.get(0);
-
-		for (StockSuperVO superVO : superList) {
-			if (superVO.priceVO.date.compareTo(chuQuanVO.date) < 0) {
-				superVO.priceVO.close = superVO.priceVO.close * chuQuanVO.rate;
-				superVO.priceVO.open = superVO.priceVO.open * chuQuanVO.rate;
-				superVO.priceVO.high = superVO.priceVO.high * chuQuanVO.rate;
-				superVO.priceVO.low = superVO.priceVO.low * chuQuanVO.rate;
 			}
 		}
 	}

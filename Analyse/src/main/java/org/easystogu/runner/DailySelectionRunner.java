@@ -69,22 +69,13 @@ public class DailySelectionRunner implements Runnable {
 
 	public void doAnalyse(String stockId) {
 		try {
-			// LatestN is reverse in date order desc
-			List<StockSuperVO> overDayList = stockOverAllHelper.getLatestNStockSuperVO(stockId, 120);
-			List<StockSuperVO> overWeekList = weekStockOverAllHelper.getLatestNStockSuperVO(stockId, 30);
+			List<StockSuperVO> overDayList = stockOverAllHelper.getAllStockSuperVO(stockId);
+			List<StockSuperVO> overWeekList = weekStockOverAllHelper.getAllStockSuperVO(stockId);
 
 			if (overDayList.size() == 0) {
 				// System.out.println("No stockprice data for " + stockId);
 				return;
 			}
-
-			// so must reverse in date order
-			Collections.reverse(overDayList);
-			Collections.reverse(overWeekList);
-
-			// update price based on chuQuanChuXi event
-			chuQuanChuXiPriceHelper.updateSuperPrice(stockId, overDayList);
-			chuQuanChuXiPriceHelper.updateSuperPrice(stockId, overWeekList);
 
 			IndProcessHelper.processDayList(overDayList);
 			IndProcessHelper.processWeekList(overWeekList);

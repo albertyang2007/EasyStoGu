@@ -3,10 +3,8 @@ package org.easystogu.db.access;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.easystogu.db.table.BollVO;
 import org.easystogu.db.table.KDJVO;
 import org.easystogu.db.table.MacdVO;
-import org.easystogu.db.table.ShenXianVO;
 import org.easystogu.db.table.StockPriceVO;
 import org.easystogu.db.table.StockSuperVO;
 
@@ -15,44 +13,11 @@ public class WeekStockSuperVOHelper extends StockSuperVOHelper {
 		stockPriceTable = WeekStockPriceTableHelper.getInstance();
 		macdTable = IndWeekMacdTableHelper.getInstance();
 		kdjTable = IndWeekKDJTableHelper.getInstance();
-		bollTable = IndWeekBollTableHelper.getInstance();
+		// bollTable = IndWeekBollTableHelper.getInstance();
+		// shenXianTable = IndWeekShenXianTableHelper.getInstance();
 		// xueShi2Table = IndWeekXueShi2TableHelper.getInstance();
 		// mai1mai2Table = IndWeekMai1Mai2TableHelper.getInstance();
 		// yiMengBSTable = IndWeekYiMengBSTableHelper.getInstance();
-		shenXianTable = IndWeekShenXianTableHelper.getInstance();
-	}
-
-	@Override
-	public List<StockSuperVO> getLatestNStockSuperVO(String stockId, int day) {
-		// merge them into one overall VO
-		List<StockSuperVO> overList = new ArrayList<StockSuperVO>();
-
-		List<StockPriceVO> spList = stockPriceTable.getNdateStockPriceById(stockId, day);
-		List<MacdVO> macdList = macdTable.getNDateMacd(stockId, day);
-		List<KDJVO> kdjList = kdjTable.getNDateKDJ(stockId, day);
-		// List<BollVO> bollList = bollTable.getNDateBoll(stockId, day);
-		// List<ShenXianVO> shenXianList =
-		// shenXianTable.getNDateShenXian(stockId, day);
-
-		if ((spList.size() != day) || (macdList.size() != day) || (kdjList.size() != day)) {
-			return overList;
-		}
-
-		if (!spList.get(0).date.equals(macdList.get(0).date) || !spList.get(0).date.equals(kdjList.get(0).date)) {
-			return overList;
-		}
-
-		if (!spList.get(day - 1).date.equals(macdList.get(day - 1).date)
-				|| !spList.get(day - 1).date.equals(kdjList.get(day - 1).date)) {
-			return overList;
-		}
-
-		for (int index = 0; index < spList.size(); index++) {
-			StockSuperVO superVO = new StockSuperVO(spList.get(index), macdList.get(index), kdjList.get(index), null);
-			overList.add(superVO);
-		}
-
-		return overList;
 	}
 
 	@Override

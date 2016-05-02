@@ -40,7 +40,6 @@ public class HistoryAnalyseReport {
 			.getInstance();
 	private String specifySelectCheckPoint = config.getString("specify_Select_CheckPoint", "");
 	private String[] specifySelectCheckPoints = specifySelectCheckPoint.split(";");
-	private ChuQuanChuXiPriceHelper chuQuanChuXiPriceHelper = new ChuQuanChuXiPriceHelper();
 	private String[] generalCheckPoints = config.getString("general_CheckPoint", "").split(";");
 	// date, count
 	private Map<String, Integer> generalCheckPointStatisticsMap = new HashMap<String, Integer>();
@@ -60,10 +59,6 @@ public class HistoryAnalyseReport {
 		List<StockSuperVO> overDayList = stockOverAllHelper.getAllStockSuperVO(stockId);
 		List<StockSuperVO> overWeekList = weekStockOverAllHelper.getAllStockSuperVO(stockId);
 
-		// fliter the history data, set the startDate and endDate
-		// overDayList = this.getSubDayVOList(overDayList, "2014-04-01",
-		// "9999-99-99");
-
 		if (overDayList.size() == 0) {
 			// System.out.println("doAnalyseReport overDayList size=0 for " +
 			// stockId);
@@ -75,10 +70,6 @@ public class HistoryAnalyseReport {
 			// stockId);
 			return historyReportList;
 		}
-
-		// update price based on chuQuanChuXi event
-		chuQuanChuXiPriceHelper.updateSuperPrice(stockId, overDayList);
-		chuQuanChuXiPriceHelper.updateSuperPrice(stockId, overWeekList);
 
 		IndProcessHelper.processDayList(overDayList);
 		IndProcessHelper.processWeekList(overWeekList);
@@ -162,10 +153,6 @@ public class HistoryAnalyseReport {
 		List<StockSuperVO> overDayList = stockOverAllHelper.getAllStockSuperVO(stockId);
 		List<StockSuperVO> overWeekList = weekStockOverAllHelper.getAllStockSuperVO(stockId);
 
-		// fliter the history data, set the startDate and endDate
-		// overDayList = this.getSubDayVOList(overDayList, "2014-04-01",
-		// "9999-99-99");
-
 		if (overDayList.size() == 0) {
 			// System.out.println("doAnalyseReport overDayList size=0 for " +
 			// stockId);
@@ -177,10 +164,6 @@ public class HistoryAnalyseReport {
 			// stockId);
 			return historyReportList;
 		}
-
-		// update price based on chuQuanChuXi event
-		chuQuanChuXiPriceHelper.updateSuperPrice(stockId, overDayList);
-		chuQuanChuXiPriceHelper.updateSuperPrice(stockId, overWeekList);
 
 		IndProcessHelper.processDayList(overDayList);
 		IndProcessHelper.processWeekList(overWeekList);
@@ -320,7 +303,7 @@ public class HistoryAnalyseReport {
 
 		for (String stockId : stockIds) {
 
-			// if (!stockId.equals("600036"))
+			// if (!stockId.equals("002609"))
 			// continue;
 
 			if (index++ % 100 == 0) {
@@ -348,6 +331,7 @@ public class HistoryAnalyseReport {
 			cpdsvo.date = entry.getKey().toString();
 			cpdsvo.count = (Integer) entry.getValue();
 
+			// System.out.println(cpdsvo);
 			checkPointDailyStatisticsTable.insert(cpdsvo);
 		}
 	}
