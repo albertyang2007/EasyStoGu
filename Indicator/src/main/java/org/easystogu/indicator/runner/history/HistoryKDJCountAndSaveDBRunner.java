@@ -51,10 +51,10 @@ public class HistoryKDJCountAndSaveDBRunner {
 
 		for (int i = 0; i < KDJ[0].length; i++) {
 			KDJVO vo = new KDJVO();
-			vo.setK(Strings.convert2ScaleDecimal(KDJ[0][i]));
-			vo.setD(Strings.convert2ScaleDecimal(KDJ[1][i]));
-			vo.setJ(Strings.convert2ScaleDecimal(KDJ[2][i]));
-			vo.setRsv(Strings.convert2ScaleDecimal(KDJ[3][i]));
+			vo.setK(Strings.convert2ScaleDecimal(KDJ[0][i], 3));
+			vo.setD(Strings.convert2ScaleDecimal(KDJ[1][i], 3));
+			vo.setJ(Strings.convert2ScaleDecimal(KDJ[2][i], 3));
+			vo.setRsv(Strings.convert2ScaleDecimal(KDJ[3][i], 3));
 			vo.setStockId(stockId);
 			vo.setDate(priceList.get(i).date);
 

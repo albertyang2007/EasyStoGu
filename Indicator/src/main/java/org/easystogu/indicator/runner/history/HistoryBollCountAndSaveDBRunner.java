@@ -53,9 +53,9 @@ public class HistoryBollCountAndSaveDBRunner {
 			double[][] boll = bollHelper.getBOLLList(close, 20, 2, 2);
 
 			for (index = priceList.size() - 1; index >= 0; index--) {
-				double up = Strings.convert2ScaleDecimal(boll[0][index]);
-				double mb = Strings.convert2ScaleDecimal(boll[1][index]);
-				double dn = Strings.convert2ScaleDecimal(boll[2][index]);
+				double up = Strings.convert2ScaleDecimal(boll[0][index], 3);
+				double mb = Strings.convert2ScaleDecimal(boll[1][index], 3);
+				double dn = Strings.convert2ScaleDecimal(boll[2][index], 3);
 				// System.out.println("MB=" + mb);
 				// System.out.println("UP=" + up);
 				// System.out.println("DN=" + dn);

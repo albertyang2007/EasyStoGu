@@ -50,9 +50,9 @@ public class HistoryQSDDCountAndSaveDBRunner {
 
 		for (int i = 0; i < qsdd[0].length; i++) {
 			QSDDVO vo = new QSDDVO();
-			vo.setLonTerm(Strings.convert2ScaleDecimal(qsdd[0][i]));
-			vo.setShoTerm(Strings.convert2ScaleDecimal(qsdd[1][i]));
-			vo.setMidTerm(Strings.convert2ScaleDecimal(qsdd[2][i]));
+			vo.setLonTerm(Strings.convert2ScaleDecimal(qsdd[0][i], 3));
+			vo.setShoTerm(Strings.convert2ScaleDecimal(qsdd[1][i], 3));
+			vo.setMidTerm(Strings.convert2ScaleDecimal(qsdd[2][i], 3));
 			vo.setStockId(stockId);
 			vo.setDate(priceList.get(i).date);
 

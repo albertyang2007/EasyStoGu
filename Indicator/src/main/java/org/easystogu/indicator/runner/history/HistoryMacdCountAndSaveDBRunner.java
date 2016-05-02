@@ -63,9 +63,9 @@ public class HistoryMacdCountAndSaveDBRunner {
 				MacdVO macdVo = new MacdVO();
 				macdVo.setStockId(stockId);
 				macdVo.setDate(priceList.get(index).date);
-				macdVo.setDif(Strings.convert2ScaleDecimal(dif));
-				macdVo.setDea(Strings.convert2ScaleDecimal(dea));
-				macdVo.setMacd(Strings.convert2ScaleDecimal(macdRtn));
+				macdVo.setDif(Strings.convert2ScaleDecimal(dif, 3));
+				macdVo.setDea(Strings.convert2ScaleDecimal(dea, 3));
+				macdVo.setMacd(Strings.convert2ScaleDecimal(macdRtn, 3));
 
 				// if (macdVo.date.compareTo("2015-06-29") >= 0)
 				// if (macdTable.getMacd(macdVo.stockId, macdVo.date) == null) {

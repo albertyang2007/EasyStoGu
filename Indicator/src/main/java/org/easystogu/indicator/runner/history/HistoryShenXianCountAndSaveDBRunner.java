@@ -49,9 +49,9 @@ public class HistoryShenXianCountAndSaveDBRunner {
 
 		for (int i = 0; i < shenXian[0].length; i++) {
 			ShenXianVO vo = new ShenXianVO();
-			vo.setH1(Strings.convert2ScaleDecimal(shenXian[0][i]));
-			vo.setH2(Strings.convert2ScaleDecimal(shenXian[1][i]));
-			vo.setH3(Strings.convert2ScaleDecimal(shenXian[2][i]));
+			vo.setH1(Strings.convert2ScaleDecimal(shenXian[0][i], 3));
+			vo.setH2(Strings.convert2ScaleDecimal(shenXian[1][i], 3));
+			vo.setH3(Strings.convert2ScaleDecimal(shenXian[2][i], 3));
 			vo.setStockId(stockId);
 			vo.setDate(priceList.get(i).date);
 

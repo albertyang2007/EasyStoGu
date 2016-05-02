@@ -53,8 +53,8 @@ public class HistoryMai1Mai2CountAndSaveDBRunner {
 
 		for (int i = 0; i < mai1mai2[0].length; i++) {
 			Mai1Mai2VO vo = new Mai1Mai2VO();
-			vo.setSd(Strings.convert2ScaleDecimal(mai1mai2[0][i]));
-			vo.setSk(Strings.convert2ScaleDecimal(mai1mai2[1][i]));
+			vo.setSd(Strings.convert2ScaleDecimal(mai1mai2[0][i], 3));
+			vo.setSk(Strings.convert2ScaleDecimal(mai1mai2[1][i], 3));
 			vo.setStockId(stockId);
 			vo.setDate(priceList.get(i).date);
 
