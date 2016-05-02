@@ -13,7 +13,7 @@ public class IndProcessHelper {
 		IndCrossCheckingHelper.rsvCross(overDayList);
 		IndCrossCheckingHelper.shenXianCross12(overDayList);
 		IndCrossCheckingHelper.qsddCross(overDayList);
-		IndCrossCheckingHelper.yiMengBSCross(overDayList);
+		//IndCrossCheckingHelper.yiMengBSCross(overDayList);
 		VolumeCheckingHelper.volumeIncreasePuls(overDayList);
 		VolumeCheckingHelper.avgVolume5(overDayList);
 		PriceCheckingHelper.priceHigherThanNday(overDayList, 15);
@@ -28,6 +28,6 @@ public class IndProcessHelper {
 		IndCrossCheckingHelper.macdCross(overWeekList);
 		IndCrossCheckingHelper.kdjCross(overWeekList);
 		//IndCrossCheckingHelper.qsddCross(overWeekList);
-		IndCrossCheckingHelper.shenXianCross12(overWeekList);
+		//IndCrossCheckingHelper.shenXianCross12(overWeekList);
 	}
 }

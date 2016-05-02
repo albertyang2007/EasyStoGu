@@ -18,6 +18,7 @@ public class HistoryBollCountAndSaveDBRunner {
 	protected StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
 	private BOLLHelper bollHelper = new BOLLHelper();
 	protected ChuQuanChuXiPriceHelper chuQuanChuXiPriceHelper = new ChuQuanChuXiPriceHelper();
+	protected boolean needChuQuan = true;// week do not need chuQuan
 
 	public void deleteBoll(String stockId) {
 		bollTable.delete(stockId);
@@ -42,7 +43,8 @@ public class HistoryBollCountAndSaveDBRunner {
 			}
 
 			// update price based on chuQuanChuXi event
-			chuQuanChuXiPriceHelper.updateQianFuQianPriceBasedOnHouFuQuan(stockId, priceList);
+			if (needChuQuan)
+				chuQuanChuXiPriceHelper.updateQianFuQianPriceBasedOnHouFuQuan(stockId, priceList);
 
 			double[] close = new double[length];
 			int index = 0;

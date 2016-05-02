@@ -18,8 +18,9 @@ public class HistoryShenXianCountAndSaveDBRunner {
 
 	protected StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
 	protected IndShenXianTableHelper shenXianTable = IndShenXianTableHelper.getInstance();
-	private ShenXianHelper shenXianHelper = new ShenXianHelper();
+	protected ShenXianHelper shenXianHelper = new ShenXianHelper();
 	protected ChuQuanChuXiPriceHelper chuQuanChuXiPriceHelper = new ChuQuanChuXiPriceHelper();
+	protected boolean needChuQuan = true;// week do not need chuQuan
 
 	public void deleteShenXian(String stockId) {
 		shenXianTable.delete(stockId);
@@ -41,7 +42,8 @@ public class HistoryShenXianCountAndSaveDBRunner {
 		}
 
 		// update price based on chuQuanChuXi event
-		chuQuanChuXiPriceHelper.updateQianFuQianPriceBasedOnHouFuQuan(stockId, priceList);
+		if (needChuQuan)
+			chuQuanChuXiPriceHelper.updateQianFuQianPriceBasedOnHouFuQuan(stockId, priceList);
 
 		List<Double> close = StockPriceFetcher.getClosePrice(priceList);
 

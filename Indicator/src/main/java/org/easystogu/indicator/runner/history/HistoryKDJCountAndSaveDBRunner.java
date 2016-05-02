@@ -19,6 +19,7 @@ public class HistoryKDJCountAndSaveDBRunner {
 	protected IndKDJTableHelper kdjTable = IndKDJTableHelper.getInstance();
 	private KDJHelper kdjHelper = new KDJHelper();
 	protected ChuQuanChuXiPriceHelper chuQuanChuXiPriceHelper = new ChuQuanChuXiPriceHelper();
+	protected boolean needChuQuan = true;// week do not need chuQuan
 
 	public void deleteKDJ(String stockId) {
 		kdjTable.delete(stockId);
@@ -41,7 +42,8 @@ public class HistoryKDJCountAndSaveDBRunner {
 		}
 
 		// update price based on chuQuanChuXi event
-		chuQuanChuXiPriceHelper.updateQianFuQianPriceBasedOnHouFuQuan(stockId, priceList);
+		if (needChuQuan)
+			chuQuanChuXiPriceHelper.updateQianFuQianPriceBasedOnHouFuQuan(stockId, priceList);
 
 		List<Double> close = StockPriceFetcher.getClosePrice(priceList);
 		List<Double> low = StockPriceFetcher.getLowPrice(priceList);

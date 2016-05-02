@@ -18,6 +18,7 @@ public class HistoryMacdCountAndSaveDBRunner {
 	protected StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
 	protected MACDHelper macdHelper = new MACDHelper();
 	protected ChuQuanChuXiPriceHelper chuQuanChuXiPriceHelper = new ChuQuanChuXiPriceHelper();
+	protected boolean needChuQuan = true;// week do not need chuQuan
 
 	public void deleteMacd(String stockId) {
 		macdTable.delete(stockId);
@@ -42,7 +43,8 @@ public class HistoryMacdCountAndSaveDBRunner {
 			}
 
 			// update price based on chuQuanChuXi event
-			chuQuanChuXiPriceHelper.updateQianFuQianPriceBasedOnHouFuQuan(stockId, priceList);
+			if (needChuQuan)
+				chuQuanChuXiPriceHelper.updateQianFuQianPriceBasedOnHouFuQuan(stockId, priceList);
 
 			double[] close = new double[length];
 			int index = 0;

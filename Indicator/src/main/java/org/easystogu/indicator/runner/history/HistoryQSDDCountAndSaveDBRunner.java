@@ -19,6 +19,7 @@ public class HistoryQSDDCountAndSaveDBRunner {
 	protected IndQSDDTableHelper qsddTable = IndQSDDTableHelper.getInstance();
 	protected QSDDHelper qsddHelper = new QSDDHelper();
 	protected ChuQuanChuXiPriceHelper chuQuanChuXiPriceHelper = new ChuQuanChuXiPriceHelper();
+	protected boolean needChuQuan = true;// week do not need chuQuan
 
 	public void deleteQSDD(String stockId) {
 		qsddTable.delete(stockId);
@@ -40,7 +41,8 @@ public class HistoryQSDDCountAndSaveDBRunner {
 		}
 
 		// update price based on chuQuanChuXi event
-		chuQuanChuXiPriceHelper.updateQianFuQianPriceBasedOnHouFuQuan(stockId, priceList);
+		if (needChuQuan)
+			chuQuanChuXiPriceHelper.updateQianFuQianPriceBasedOnHouFuQuan(stockId, priceList);
 
 		List<Double> close = StockPriceFetcher.getClosePrice(priceList);
 		List<Double> low = StockPriceFetcher.getLowPrice(priceList);
