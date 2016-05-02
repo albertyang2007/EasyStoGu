@@ -148,7 +148,7 @@ public class HistoryFuQuanStockPriceDownloadAndStoreDBRunner {
 		// for all stockIds
 		runner.countAndSave(stockIds);
 		// for specify stockId
-		// runner.countAndSave("603889");
+		// runner.countAndSave("000038");
 
 		// finally re run for failure
 		runner.reRunOnFailure();

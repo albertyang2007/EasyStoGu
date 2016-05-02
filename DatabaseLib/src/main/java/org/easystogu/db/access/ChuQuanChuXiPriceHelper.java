@@ -5,10 +5,11 @@ import java.util.List;
 import org.easystogu.db.table.ChuQuanChuXiVO;
 import org.easystogu.db.table.StockPriceVO;
 import org.easystogu.db.table.StockSuperVO;
+import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.utils.Strings;
 
 public class ChuQuanChuXiPriceHelper {
-
+	private CompanyInfoFileHelper companyInfoHelper = CompanyInfoFileHelper.getInstance();
 	private EventChuQuanChuXiTableHelper chuQuanChuXiTable = EventChuQuanChuXiTableHelper.getInstance();
 	private FuQuanStockPriceTableHelper fuquanStockPriceTable = FuQuanStockPriceTableHelper.getInstance();
 
@@ -16,6 +17,10 @@ public class ChuQuanChuXiPriceHelper {
 	// using hou fuquan stockprce to count the qian fuquan stockprice
 	// 使用后复权的数据计算前复权的价格数据
 	public void updateQianFuQianPriceBasedOnHouFuQuan(String stockId, List<StockPriceVO> spList) {
+		if (companyInfoHelper.isStockIdAMajorZhiShu(stockId)) {
+			return;
+		}
+
 		List<StockPriceVO> fq_spList = fuquanStockPriceTable.getStockPriceById(stockId);
 		if (fq_spList.size() != spList.size()) {
 			System.out.println("Fatel error for " + stockId + ", fuquan StockPrice length is not same as StockPrice");
@@ -114,7 +119,7 @@ public class ChuQuanChuXiPriceHelper {
 	}
 
 	public static void main(String[] args) {
-		String stockId = "002510";
+		String stockId = "002356";// "000038"
 		StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
 		List<StockPriceVO> spList = stockPriceTable.getStockPriceById(stockId);
 		ChuQuanChuXiPriceHelper helper = new ChuQuanChuXiPriceHelper();

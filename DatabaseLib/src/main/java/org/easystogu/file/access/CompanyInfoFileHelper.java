@@ -211,6 +211,16 @@ public class CompanyInfoFileHelper {
 		return "999999";
 	}
 
+	public boolean isStockIdAMajorZhiShu(String stockId) {
+		if (stockId.equals(getSZCZStockIdForDB()))
+			return true;
+		if (stockId.equals(getCYBZStockIdForDB()))
+			return true;
+		if (stockId.equals(getSZZSStockIdForDB()))
+			return true;
+		return false;
+	}
+
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		CompanyInfoFileHelper ins = new CompanyInfoFileHelper();

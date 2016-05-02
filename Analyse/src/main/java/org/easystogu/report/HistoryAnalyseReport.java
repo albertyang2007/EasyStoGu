@@ -219,7 +219,7 @@ public class HistoryAnalyseReport {
 	// original analyse all stockId for checkPoint
 	// count buyDate, sellDate, maxEarn, minEarn etc, save data into
 	// checkpoint_history_selection
-	public void searchAllStockIdAnalyseHistoryCheckPoint(DailyCombineCheckPoint checkPoint) {
+	public void searchAllStockIdAnalyseHistoryBuySellCheckPoint(DailyCombineCheckPoint checkPoint) {
 
 		this.checkPointHistorySelectionTable.deleteByCheckPoint(checkPoint.name());
 
@@ -236,8 +236,8 @@ public class HistoryAnalyseReport {
 
 		for (String stockId : stockIds) {
 
-			 //if (!stockId.equals("002609"))
-			 //continue;
+			// if (!stockId.equals("002609"))
+			// continue;
 
 			List<HistoryReportDetailsVO> historyReportList = this.doAnalyseBuySellDate(stockId, checkPoint);
 			for (HistoryReportDetailsVO reportVO : historyReportList) {
@@ -263,7 +263,7 @@ public class HistoryAnalyseReport {
 					} else {
 						// for completed VO
 						// remove it from daily selection
-						//System.out.println("Completed: " + reportVO);
+						// System.out.println("Completed: " + reportVO);
 						this.checkPointDailySelectionTable.delete(stockId, reportVO.buyPriceVO.date,
 								checkPoint.toString());
 						// save case into history DB
@@ -405,6 +405,13 @@ public class HistoryAnalyseReport {
 		// reporter.searchAllStockIdAnalyseHistoryCheckPoint(checkPoint);
 		// }
 		// }
-		reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.ShenXian_Dead);
+		reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.Trend_PhaseI_GuanCha);
+		reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.Trend_PhaseII_JianCang);
+		reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.Trend_PhaseIII_ChiGu);
+		reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.Trend_PhaseVI_JianCang);
+
+		reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.QSDD_Bottom_Area);
+		reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.QSDD_Bottom_Gordon);
+		reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.QSDD_Top_Area);
 	}
 }
