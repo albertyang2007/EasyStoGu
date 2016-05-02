@@ -37,9 +37,9 @@ public class HistoryMacdCountAndSaveDBRunner {
 
 			int length = priceList.size();
 
-	        if (length < 1) {
-	            return;
-	        }
+			if (length < 1) {
+				return;
+			}
 
 			// update price based on chuQuanChuXi event
 			chuQuanChuXiPriceHelper.updateQianFuQianPriceBasedOnHouFuQuan(stockId, priceList);
@@ -68,9 +68,9 @@ public class HistoryMacdCountAndSaveDBRunner {
 				macdVo.setMacd(Strings.convert2ScaleDecimal(macdRtn));
 
 				// if (macdVo.date.compareTo("2015-06-29") >= 0)
-				if (macdTable.getMacd(macdVo.stockId, macdVo.date) == null) {
-					macdTable.insert(macdVo);
-				}
+				// if (macdTable.getMacd(macdVo.stockId, macdVo.date) == null) {
+				macdTable.insert(macdVo);
+				// }
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -82,6 +82,7 @@ public class HistoryMacdCountAndSaveDBRunner {
 		for (String stockId : stockIds) {
 			if (index++ % 100 == 0)
 				System.out.println("MACD countAndSaved: " + stockId + " " + (index) + "/" + stockIds.size());
+			this.deleteMacd(stockId);
 			this.countAndSaved(stockId);
 		}
 	}

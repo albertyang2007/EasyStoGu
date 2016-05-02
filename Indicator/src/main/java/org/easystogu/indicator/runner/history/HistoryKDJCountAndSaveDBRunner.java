@@ -60,9 +60,9 @@ public class HistoryKDJCountAndSaveDBRunner {
 
 			try {
 				// if (vo.date.compareTo("2015-06-29") >= 0)
-				if (kdjTable.getKDJ(vo.stockId, vo.date) == null) {
-					kdjTable.insert(vo);
-				}
+				// if (kdjTable.getKDJ(vo.stockId, vo.date) == null) {
+				kdjTable.insert(vo);
+				// }
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -75,6 +75,7 @@ public class HistoryKDJCountAndSaveDBRunner {
 		for (String stockId : stockIds) {
 			if (index++ % 100 == 0)
 				System.out.println("KDJ countAndSaved: " + stockId + " " + (index) + " of " + stockIds.size());
+			this.deleteKDJ(stockId);
 			this.countAndSaved(stockId);
 		}
 	}

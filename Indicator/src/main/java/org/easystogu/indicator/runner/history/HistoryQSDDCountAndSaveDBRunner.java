@@ -35,9 +35,9 @@ public class HistoryQSDDCountAndSaveDBRunner {
 	public void countAndSaved(String stockId) {
 		List<StockPriceVO> priceList = stockPriceTable.getStockPriceById(stockId);
 
-        if (priceList.size() < 1) {
-            return;
-        }
+		if (priceList.size() < 1) {
+			return;
+		}
 
 		// update price based on chuQuanChuXi event
 		chuQuanChuXiPriceHelper.updateQianFuQianPriceBasedOnHouFuQuan(stockId, priceList);
@@ -58,9 +58,9 @@ public class HistoryQSDDCountAndSaveDBRunner {
 
 			try {
 				// if (vo.date.compareTo("2015-06-29") >= 0)
-				if (qsddTable.getQSDD(vo.stockId, vo.date) == null) {
-					qsddTable.insert(vo);
-				}
+				// if (qsddTable.getQSDD(vo.stockId, vo.date) == null) {
+				qsddTable.insert(vo);
+				// }
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -72,6 +72,7 @@ public class HistoryQSDDCountAndSaveDBRunner {
 		for (String stockId : stockIds) {
 			if (index++ % 100 == 0)
 				System.out.println("QSDD countAndSaved: " + stockId + " " + (index) + " of " + stockIds.size());
+			this.deleteQSDD(stockId);
 			this.countAndSaved(stockId);
 		}
 	}

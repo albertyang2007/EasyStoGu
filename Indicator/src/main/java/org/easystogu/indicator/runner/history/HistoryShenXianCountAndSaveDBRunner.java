@@ -36,9 +36,9 @@ public class HistoryShenXianCountAndSaveDBRunner {
 	public void countAndSaved(String stockId) {
 		List<StockPriceVO> priceList = stockPriceTable.getStockPriceById(stockId);
 
-        if (priceList.size() < 1) {
-            return;
-        }
+		if (priceList.size() < 1) {
+			return;
+		}
 
 		// update price based on chuQuanChuXi event
 		chuQuanChuXiPriceHelper.updateQianFuQianPriceBasedOnHouFuQuan(stockId, priceList);
@@ -56,9 +56,9 @@ public class HistoryShenXianCountAndSaveDBRunner {
 			vo.setDate(priceList.get(i).date);
 
 			try {
-				if (shenXianTable.getShenXian(vo.stockId, vo.date) == null) {
-					shenXianTable.insert(vo);
-				}
+				// if (shenXianTable.getShenXian(vo.stockId, vo.date) == null) {
+				shenXianTable.insert(vo);
+				// }
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -71,6 +71,7 @@ public class HistoryShenXianCountAndSaveDBRunner {
 		for (String stockId : stockIds) {
 			if (index++ % 100 == 0)
 				System.out.println("ShenXian countAndSaved: " + stockId + " " + (index) + " of " + stockIds.size());
+			this.deleteShenXian(stockId);
 			this.countAndSaved(stockId);
 		}
 	}

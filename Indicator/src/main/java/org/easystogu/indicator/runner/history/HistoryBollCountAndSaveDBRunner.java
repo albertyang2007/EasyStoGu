@@ -19,15 +19,27 @@ public class HistoryBollCountAndSaveDBRunner {
 	private BOLLHelper bollHelper = new BOLLHelper();
 	protected ChuQuanChuXiPriceHelper chuQuanChuXiPriceHelper = new ChuQuanChuXiPriceHelper();
 
+	public void deleteBoll(String stockId) {
+		bollTable.delete(stockId);
+	}
+
+	public void deleteBoll(List<String> stockIds) {
+		int index = 0;
+		for (String stockId : stockIds) {
+			System.out.println("Delete Boll for " + stockId + " " + (++index) + " of " + stockIds.size());
+			this.deleteBoll(stockId);
+		}
+	}
+
 	public void countAndSaved(String stockId) {
 		try {
 			List<StockPriceVO> priceList = stockPriceTable.getStockPriceById(stockId);
 
 			int length = priceList.size();
 
-	        if (length < 1) {
-	            return;
-	        }
+			if (length < 1) {
+				return;
+			}
 
 			// update price based on chuQuanChuXi event
 			chuQuanChuXiPriceHelper.updateQianFuQianPriceBasedOnHouFuQuan(stockId, priceList);
@@ -56,9 +68,9 @@ public class HistoryBollCountAndSaveDBRunner {
 				bollVO.setDn(dn);
 
 				// if (bollVO.date.compareTo("2015-06-29") >= 0)
-				if (bollTable.getBoll(bollVO.stockId, bollVO.date) == null) {
-					bollTable.insert(bollVO);
-				}
+				// if (bollTable.getBoll(bollVO.stockId, bollVO.date) == null) {
+				bollTable.insert(bollVO);
+				// }
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -70,6 +82,7 @@ public class HistoryBollCountAndSaveDBRunner {
 		for (String stockId : stockIds) {
 			if (index++ % 100 == 0)
 				System.out.println("Boll countAndSaved: " + stockId + " " + (index) + "/" + stockIds.size());
+			this.deleteBoll(stockId);
 			this.countAndSaved(stockId);
 		}
 	}

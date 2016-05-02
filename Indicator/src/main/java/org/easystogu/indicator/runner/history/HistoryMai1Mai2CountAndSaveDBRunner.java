@@ -60,9 +60,9 @@ public class HistoryMai1Mai2CountAndSaveDBRunner {
 
 			try {
 				// if (vo.date.compareTo("2015-06-29") >= 0)
-				if (mai1mai2Table.getMai1Mai2(vo.stockId, vo.date) == null) {
+				//if (mai1mai2Table.getMai1Mai2(vo.stockId, vo.date) == null) {
 					mai1mai2Table.insert(vo);
-				}
+				//}
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -75,6 +75,7 @@ public class HistoryMai1Mai2CountAndSaveDBRunner {
 		for (String stockId : stockIds) {
 			if (index++ % 100 == 0)
 				System.out.println("Mai1Mai2 countAndSaved: " + stockId + " " + (index) + " of " + stockIds.size());
+			this.deleteMai1Mai2(stockId);
 			this.countAndSaved(stockId);
 		}
 	}
