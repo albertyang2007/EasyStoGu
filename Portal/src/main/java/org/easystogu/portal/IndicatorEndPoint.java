@@ -24,7 +24,7 @@ import org.easystogu.db.table.ShenXianVO;
 import org.easystogu.indicator.LuZaoHelper;
 import org.easystogu.utils.Strings;
 
-//V1, query indicator from DB
+//V1, query indicator from DB, qian FuQuan
 public class IndicatorEndPoint {
 	protected StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
 	protected IndKDJTableHelper kdjTable = IndKDJTableHelper.getInstance();

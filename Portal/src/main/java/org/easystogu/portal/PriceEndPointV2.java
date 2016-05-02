@@ -9,15 +9,19 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
+import org.easystogu.db.access.FuQuanStockPriceTableHelper;
 import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.table.StockPriceVO;
+import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.utils.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 
-//v1, qian FuQuan stockprice data
-public class PriceEndPoint {
+//v2, hou FuQuan stockprice 
+public class PriceEndPointV2 {
 	protected static String HHmmss = "00:00:00";
-	private StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
+	protected CompanyInfoFileHelper companyInfoHelper = CompanyInfoFileHelper.getInstance();
+	protected StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
+	protected FuQuanStockPriceTableHelper fuquanStockPriceTable = FuQuanStockPriceTableHelper.getInstance();
 	@Autowired
 	protected ProcessRequestParmsInPostBody postParmsProcess;
 	private String dateRegex = "[0-9]{4}-[0-9]{2}-[0-9]{2}";
@@ -28,14 +32,23 @@ public class PriceEndPoint {
 	@Produces("application/json")
 	public List<StockPriceVO> queryDayPriceById(@PathParam("stockId") String stockIdParm,
 			@PathParam("date") String dateParm) {
+
 		List<StockPriceVO> spList = new ArrayList<StockPriceVO>();
 		if (Pattern.matches(fromToRegex, dateParm)) {
 			String date1 = dateParm.split("_")[0];
 			String date2 = dateParm.split("_")[1];
-			spList = stockPriceTable.getStockPriceByIdAndBetweenDate(stockIdParm, date1, date2);
+			if (companyInfoHelper.isStockIdAMajorZhiShu(stockIdParm)) {
+				spList = stockPriceTable.getStockPriceByIdAndBetweenDate(stockIdParm, date1, date2);
+			} else {
+				spList = fuquanStockPriceTable.getStockPriceByIdAndBetweenDate(stockIdParm, date1, date2);
+			}
 		}
 		if (Pattern.matches(dateRegex, dateParm) || Strings.isEmpty(dateParm)) {
-			spList.add(stockPriceTable.getStockPriceByIdAndDate(stockIdParm, dateParm));
+			if (companyInfoHelper.isStockIdAMajorZhiShu(stockIdParm)) {
+				spList.add(stockPriceTable.getStockPriceByIdAndDate(stockIdParm, dateParm));
+			} else {
+				spList.add(fuquanStockPriceTable.getStockPriceByIdAndDate(stockIdParm, dateParm));
+			}
 		}
 
 		return spList;

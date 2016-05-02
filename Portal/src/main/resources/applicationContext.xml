@@ -27,7 +27,7 @@
 
 	<bean id="portalServicePriceEndPoint" class="org.easystogu.portal.PriceEndPoint">
 	</bean>
-	<jaxrs:server id="cxfrsservice_PriceEndPoint" address="/price">
+	<jaxrs:server id="cxfrsservice_PriceEndPoint" address="/pricev1">
 		<jaxrs:serviceBeans>
 			<ref bean="portalServicePriceEndPoint" />
 		</jaxrs:serviceBeans>
@@ -36,9 +36,31 @@
 		</jaxrs:providers>
 	</jaxrs:server>
 
+	<bean id="portalServicePriceEndPointV2" class="org.easystogu.portal.PriceEndPointV2">
+	</bean>
+	<jaxrs:server id="cxfrsservice_PriceEndPointV2" address="/pricev2">
+		<jaxrs:serviceBeans>
+			<ref bean="portalServicePriceEndPointV2" />
+		</jaxrs:serviceBeans>
+		<jaxrs:providers>
+			<bean class="com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider" />
+		</jaxrs:providers>
+	</jaxrs:server>
+
+	<bean id="portalServicePriceEndPointV3" class="org.easystogu.portal.PriceEndPointV3">
+	</bean>
+	<jaxrs:server id="cxfrsservice_PriceEndPointV3" address="/pricev3">
+		<jaxrs:serviceBeans>
+			<ref bean="portalServicePriceEndPointV3" />
+		</jaxrs:serviceBeans>
+		<jaxrs:providers>
+			<bean class="com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider" />
+		</jaxrs:providers>
+	</jaxrs:server>
+
 	<bean id="portalServiceIndicatorEndPoint" class="org.easystogu.portal.IndicatorEndPoint">
 	</bean>
-	<jaxrs:server id="cxfrsservice_IndicatorEndPoint" address="/ind1">
+	<jaxrs:server id="cxfrsservice_IndicatorEndPoint" address="/indv1">
 		<jaxrs:serviceBeans>
 			<ref bean="portalServiceIndicatorEndPoint" />
 		</jaxrs:serviceBeans>
@@ -50,7 +72,7 @@
 	<bean id="portalServiceIndicatorEndPointV2" class="org.easystogu.portal.IndicatorEndPointV2">
 	</bean>
 	<jaxrs:server id="cxfrsservice_IndicatorEndPointV2"
-		address="/ind2">
+		address="/indv2">
 		<jaxrs:serviceBeans>
 			<ref bean="portalServiceIndicatorEndPointV2" />
 		</jaxrs:serviceBeans>
@@ -62,7 +84,7 @@
 	<bean id="portalServiceIndicatorEndPointV3" class="org.easystogu.portal.IndicatorEndPointV3">
 	</bean>
 	<jaxrs:server id="cxfrsservice_IndicatorEndPointV3"
-		address="/ind3">
+		address="/indv3">
 		<jaxrs:serviceBeans>
 			<ref bean="portalServiceIndicatorEndPointV3" />
 		</jaxrs:serviceBeans>
@@ -93,10 +115,11 @@
 			<bean class="com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider" />
 		</jaxrs:providers>
 	</jaxrs:server>
-	
+
 	<bean id="portalStatisticsEndPoint" class="org.easystogu.portal.CheckPointStatisticsEndPoint">
 	</bean>
-	<jaxrs:server id="cxfrsservice_StatisticsEndPoint" address="/statistics">
+	<jaxrs:server id="cxfrsservice_StatisticsEndPoint"
+		address="/statistics">
 		<jaxrs:serviceBeans>
 			<ref bean="portalStatisticsEndPoint" />
 		</jaxrs:serviceBeans>

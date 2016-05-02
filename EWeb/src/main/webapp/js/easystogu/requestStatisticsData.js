@@ -5,18 +5,14 @@
  */
 function loadLuZaoStatistics(version, stockId, dateFrom, dateTo) {
 	var seriesCounter = 0, date_price = [], volume = [], data_ma19 = [], data_ma43 = [], data_ma86 = [], data_1_guancha = [], data_2_jiancang = [], data_3_chigu = [], data_4_jiancang = [];
-	var v = "1";
-	if (version == 'v2') {
-		v = "2";
-	}
 
 	/**
 	 * Load StocPrice and display OHLC
 	 * 
 	 * @returns {undefined}
 	 */
-	var url_price = "http://localhost:8080/portal/price/" + stockId + "/"
-			+ dateFrom + "_" + dateTo;
+	var url_price = "http://localhost:8080/portal/price" + version + "/"
+			+ stockId + "/" + dateFrom + "_" + dateTo;
 	$.getJSON(url_price, function(data) {
 		i = 0;
 		for (i; i < data.length; i += 1) {
@@ -41,8 +37,8 @@ function loadLuZaoStatistics(version, stockId, dateFrom, dateTo) {
 	 * 
 	 * @returns {undefined}
 	 */
-	var url_ind = "http://localhost:8080/portal/ind" + v + "/luzao/" + stockId
-			+ "/" + dateFrom + "_" + dateTo;
+	var url_ind = "http://localhost:8080/portal/ind" + version + "/luzao/"
+			+ stockId + "/" + dateFrom + "_" + dateTo;
 	$.getJSON(url_ind, function(data) {
 		i = 0;
 		for (i; i < data.length; i += 1) {
@@ -97,18 +93,14 @@ function loadLuZaoStatistics(version, stockId, dateFrom, dateTo) {
  */
 function loadQsddStatistics(version, stockId, dateFrom, dateTo) {
 	var seriesCounter = 0, date_price = [], volume = [], data_lonTerm = [], data_midTerm = [], data_shoTerm = [], date_topArea = [], date_bottomArea = [], data_bottomGordon = [];
-	var v = "1";
-	if (version == 'v2') {
-		v = "2";
-	}
 
 	/**
 	 * Load StocPrice and display OHLC
 	 * 
 	 * @returns {undefined}
 	 */
-	var url_price = "http://localhost:8080/portal/price/" + stockId + "/"
-			+ dateFrom + "_" + dateTo;
+	var url_price = "http://localhost:8080/portal/price" + version + "/"
+			+ stockId + "/" + dateFrom + "_" + dateTo;
 	$.getJSON(url_price, function(data) {
 		i = 0;
 		for (i; i < data.length; i += 1) {
@@ -133,8 +125,8 @@ function loadQsddStatistics(version, stockId, dateFrom, dateTo) {
 	 * 
 	 * @returns {undefined}
 	 */
-	var url_ind = "http://localhost:8080/portal/ind" + v + "/qsdd/" + stockId
-			+ "/" + dateFrom + "_" + dateTo;
+	var url_ind = "http://localhost:8080/portal/ind" + version + "/qsdd/"
+			+ stockId + "/" + dateFrom + "_" + dateTo;
 	$.getJSON(url_ind, function(data) {
 		i = 0;
 		for (i; i < data.length; i += 1) {
@@ -188,17 +180,13 @@ function loadQsddStatistics(version, stockId, dateFrom, dateTo) {
  */
 function loadShenXianStatistics(version, stockId, dateFrom, dateTo) {
 	var seriesCounter = 0, date_price = [], volume = [], data_h1 = [], data_h2 = [], data_h3 = [], data_gordon = [], data_dead = [];
-	var v = "1";
-	if (version == 'v2') {
-		v = "2";
-	}
 	/**
 	 * Load StocPrice and display OHLC
 	 * 
 	 * @returns {undefined}
 	 */
-	var url_price = "http://localhost:8080/portal/price/" + stockId + "/"
-			+ dateFrom + "_" + dateTo;
+	var url_price = "http://localhost:8080/portal/price" + version + "/"
+			+ stockId + "/" + dateFrom + "_" + dateTo;
 	$.getJSON(url_price, function(data) {
 		i = 0;
 		for (i; i < data.length; i += 1) {
@@ -222,7 +210,7 @@ function loadShenXianStatistics(version, stockId, dateFrom, dateTo) {
 	 * 
 	 * @returns {undefined}
 	 */
-	var url_ind = "http://localhost:8080/portal/ind" + v + "/shenxian/"
+	var url_ind = "http://localhost:8080/portal/ind" + version + "/shenxian/"
 			+ stockId + "/" + dateFrom + "_" + dateTo;
 	$.getJSON(url_ind, function(data) {
 		i = 0;

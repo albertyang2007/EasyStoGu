@@ -11,7 +11,6 @@ public class ChuQuanChuXiPriceHelper {
 	private CompanyInfoFileHelper companyInfoHelper = CompanyInfoFileHelper.getInstance();
 	private EventChuQuanChuXiTableHelper chuQuanChuXiTable = EventChuQuanChuXiTableHelper.getInstance();
 	private FuQuanStockPriceTableHelper fuquanStockPriceTable = FuQuanStockPriceTableHelper.getInstance();
-	private StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
 	private static ChuQuanChuXiPriceHelper instance = null;
 
 	public static ChuQuanChuXiPriceHelper getInstance() {

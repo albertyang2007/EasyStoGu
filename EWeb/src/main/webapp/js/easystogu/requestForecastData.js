@@ -5,14 +5,14 @@
  */
 function loadLuZaoWithReqParms(stockId, dateFrom, dateTo, reqParms) {
 	var seriesCounter = 0, date_price = [], volume = [], data_ma19 = [], data_ma43 = [], data_ma86 = [];
-	var v = "3";
+	var version = "v3";
 
 	/*
 	 * POST forecast sotck price and fetch back full price data
 	 */
 	// post forecast stock price data and fetch back with full data
-	var url_price = "http://localhost:8080/portal/price/forecast/" + stockId
-			+ "/" + dateFrom + "_" + dateTo;
+	var url_price = "http://localhost:8080/portal/price" + version + "/"
+			+ stockId + "/" + dateFrom + "_" + dateTo;
 	$.ajax({
 		type : "POST",
 		url : url_price,
@@ -34,8 +34,8 @@ function loadLuZaoWithReqParms(stockId, dateFrom, dateTo, reqParms) {
 	/*
 	 * POST forecast sotck price and fetch back full price data
 	 */
-	var url_ind = "http://localhost:8080/portal/ind" + v + "/luzao/" + stockId
-			+ "/" + dateFrom + "_" + dateTo;
+	var url_ind = "http://localhost:8080/portal/ind" + version + "/luzao/"
+			+ stockId + "/" + dateFrom + "_" + dateTo;
 	$.ajax({
 		type : "POST",
 		url : url_ind,
@@ -70,14 +70,14 @@ function loadLuZaoWithReqParms(stockId, dateFrom, dateTo, reqParms) {
  */
 function loadShenXianWithReqParms(stockId, dateFrom, dateTo, reqParms) {
 	var seriesCounter = 0, date_price = [], volume = [], data_h1 = [], data_h2 = [], data_h3 = [];
-	var v = "3";
+	var version = "v3";
 
 	/*
 	 * POST forecast sotck price and fetch back full price data
 	 */
 	// post forecast stock price data and fetch back with full data
-	var url_price = "http://localhost:8080/portal/price/forecast/" + stockId
-			+ "/" + dateFrom + "_" + dateTo;
+	var url_price = "http://localhost:8080/portal/price" + version + "/"
+			+ stockId + "/" + dateFrom + "_" + dateTo;
 	$.ajax({
 		type : "POST",
 		url : url_price,
@@ -99,7 +99,7 @@ function loadShenXianWithReqParms(stockId, dateFrom, dateTo, reqParms) {
 	/*
 	 * POST forecast sotck price and fetch back full price data
 	 */
-	var url_ind = "http://localhost:8080/portal/ind" + v + "/shenxian/"
+	var url_ind = "http://localhost:8080/portal/ind" + version + "/shenxian/"
 			+ stockId + "/" + dateFrom + "_" + dateTo;
 	$.ajax({
 		type : "POST",
@@ -135,13 +135,13 @@ function loadShenXianWithReqParms(stockId, dateFrom, dateTo, reqParms) {
  */
 function loadBollWithReqParms(stockId, dateFrom, dateTo, reqParms) {
 	var seriesCounter = 0, date_price = [], volume = [], data_mb = [], data_up = [], data_dn = [];
-	var v = "3";
+	var version = "v3";
 
 	/*
 	 * POST forecast sotck price and fetch back full price data
 	 */
 	// post forecast stock price data and fetch back with full data
-	var url_price = "http://localhost:8080/portal/price/forecast/" + stockId
+	var url_price = "http://localhost:8080/portal/price" + version + "/" + stockId
 			+ "/" + dateFrom + "_" + dateTo;
 	$.ajax({
 		type : "POST",
@@ -164,7 +164,7 @@ function loadBollWithReqParms(stockId, dateFrom, dateTo, reqParms) {
 	/*
 	 * POST forecast sotck price and fetch back full price data
 	 */
-	var url_ind = "http://localhost:8080/portal/ind" + v + "/boll/" + stockId
+	var url_ind = "http://localhost:8080/portal/ind" + version + "/boll/" + stockId
 			+ "/" + dateFrom + "_" + dateTo;
 	$.ajax({
 		type : "POST",
@@ -200,13 +200,13 @@ function loadBollWithReqParms(stockId, dateFrom, dateTo, reqParms) {
  */
 function loadMacdWithReqParms(stockId, dateFrom, dateTo, reqParms) {
 	var seriesCounter = 0, date_price = [], volume = [], data_dif = [], data_dea = [], data_macd = [];
-	var v = "3";
+	var version = "v3";
 
 	/*
 	 * POST forecast sotck price and fetch back full price data
 	 */
 	// post forecast stock price data and fetch back with full data
-	var url_price = "http://localhost:8080/portal/price/forecast/" + stockId
+	var url_price = "http://localhost:8080/portal/price" + version + "/" + stockId
 			+ "/" + dateFrom + "_" + dateTo;
 	$.ajax({
 		type : "POST",
@@ -229,7 +229,7 @@ function loadMacdWithReqParms(stockId, dateFrom, dateTo, reqParms) {
 	/*
 	 * POST forecast sotck price and fetch back full price data
 	 */
-	var url_ind = "http://localhost:8080/portal/ind" + v + "/macd/" + stockId
+	var url_ind = "http://localhost:8080/portal/ind" + version + "/macd/" + stockId
 			+ "/" + dateFrom + "_" + dateTo;
 	$.ajax({
 		type : "POST",
@@ -265,13 +265,13 @@ function loadMacdWithReqParms(stockId, dateFrom, dateTo, reqParms) {
  */
 function loadQsddWithReqParms(stockId, dateFrom, dateTo, reqParms) {
 	var seriesCounter = 0, date_price = [], volume = [], data_lonTerm = [], data_midTerm = [], data_shoTerm = [];
-	var v = "3";
+	var version = "v3";
 
 	/*
 	 * POST forecast sotck price and fetch back full price data
 	 */
 	// post forecast stock price data and fetch back with full data
-	var url_price = "http://localhost:8080/portal/price/forecast/" + stockId
+	var url_price = "http://localhost:8080/portal/price" + version + "/" + stockId
 			+ "/" + dateFrom + "_" + dateTo;
 	$.ajax({
 		type : "POST",
@@ -294,7 +294,7 @@ function loadQsddWithReqParms(stockId, dateFrom, dateTo, reqParms) {
 	/*
 	 * POST forecast sotck price and fetch back full price data
 	 */
-	var url_ind = "http://localhost:8080/portal/ind" + v + "/qsdd/" + stockId
+	var url_ind = "http://localhost:8080/portal/ind" + version + "/qsdd/" + stockId
 			+ "/" + dateFrom + "_" + dateTo;
 	$.ajax({
 		type : "POST",

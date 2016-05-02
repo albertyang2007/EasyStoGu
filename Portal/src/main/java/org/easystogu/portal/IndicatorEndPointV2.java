@@ -9,7 +9,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
-import org.easystogu.db.access.ChuQuanChuXiPriceHelper;
 import org.easystogu.db.access.FuQuanStockPriceTableHelper;
 import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.table.BollVO;
@@ -19,6 +18,7 @@ import org.easystogu.db.table.MacdVO;
 import org.easystogu.db.table.QSDDVO;
 import org.easystogu.db.table.ShenXianVO;
 import org.easystogu.db.table.StockPriceVO;
+import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.indicator.BOLLHelper;
 import org.easystogu.indicator.KDJHelper;
 import org.easystogu.indicator.LuZaoHelper;
@@ -30,18 +30,18 @@ import org.easystogu.utils.Strings;
 
 import com.google.common.primitives.Doubles;
 
-//V2, query price and count in real time
+//V2, query price and count in real time, hou FuQuan
 public class IndicatorEndPointV2 {
 	protected static String HHmmss = "00:00:00";
+	protected CompanyInfoFileHelper companyInfoHelper = CompanyInfoFileHelper.getInstance();
 	protected StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
-	private FuQuanStockPriceTableHelper fuquanStockPriceTable = FuQuanStockPriceTableHelper.getInstance();
+	protected FuQuanStockPriceTableHelper fuquanStockPriceTable = FuQuanStockPriceTableHelper.getInstance();
 	protected MACDHelper macdHelper = new MACDHelper();
 	protected KDJHelper kdjHelper = new KDJHelper();
 	protected ShenXianHelper shenXianHelper = new ShenXianHelper();
 	protected QSDDHelper qsddHelper = new QSDDHelper();
 	protected BOLLHelper bollHelper = new BOLLHelper();
 	protected LuZaoHelper luzaoHelper = new LuZaoHelper();
-	protected ChuQuanChuXiPriceHelper chuQuanChuXiPriceHelper = new ChuQuanChuXiPriceHelper();
 	protected String dateRegex = "[0-9]{4}-[0-9]{2}-[0-9]{2}";
 	protected String fromToRegex = dateRegex + "_" + dateRegex;
 
@@ -189,11 +189,10 @@ public class IndicatorEndPointV2 {
 
 	// common function to fetch price from stockPrice table
 	protected List<StockPriceVO> fetchAllPrices(String stockid) {
-		List<StockPriceVO> spList = null;
-		spList = stockPriceTable.getStockPriceById(stockid);
-		// update price based on chuQuanChuXi event
-		chuQuanChuXiPriceHelper.updateQianFuQianPriceBasedOnHouFuQuan(stockid, spList);
-		return spList;
+		if (companyInfoHelper.isStockIdAMajorZhiShu(stockid))
+			return stockPriceTable.getStockPriceById(stockid);
+		// for company, get hou fuquan stockprice data
+		return this.fuquanStockPriceTable.getStockPriceById(stockid);
 	}
 
 	protected boolean isStockDateSelected(String date, String aDate) {

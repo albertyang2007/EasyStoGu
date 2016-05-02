@@ -57,8 +57,7 @@ function getAllTrendModeNames() {
 
 /*
  * get the query parameters from http GET request, for example
- * http://localhost:8080/query?name=value
- * return value
+ * http://localhost:8080/query?name=value return value
  */
 function getQueryString(name) {
 	var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
@@ -73,9 +72,9 @@ function getQueryString(name) {
  * 
  * @returns {undefined}
  */
-function loadStockPrice(stockId, dateFrom, dateTo) {
-	var url_price = "http://localhost:8080/portal/price/" + stockId + "/"
-			+ dateFrom + "_" + dateTo;
+function loadStockPrice(version, stockId, dateFrom, dateTo) {
+	var url_price = "http://localhost:8080/portal/price" + version + "/"
+			+ stockId + "/" + dateFrom + "_" + dateTo;
 	var data_price = [];
 	$.getJSON(url_price, function(data) {
 		data_price = data;
