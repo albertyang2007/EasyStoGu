@@ -5,13 +5,9 @@ import java.util.List;
 import org.easystogu.db.access.IndWeekQSDDTableHelper;
 import org.easystogu.db.access.WeekStockPriceTableHelper;
 import org.easystogu.file.access.CompanyInfoFileHelper;
-import org.easystogu.multirunner.MultThreadRunner;
 import org.easystogu.utils.WeekdayUtil;
 
 public class DailyWeekQSDDCountAndSaveDBRunner extends DailyQSDDCountAndSaveDBRunner {
-	public DailyWeekQSDDCountAndSaveDBRunner(MultThreadRunner parentRunner) {
-		super(parentRunner);
-	}
 
 	public DailyWeekQSDDCountAndSaveDBRunner() {
 		stockPriceTable = WeekStockPriceTableHelper.getInstance();

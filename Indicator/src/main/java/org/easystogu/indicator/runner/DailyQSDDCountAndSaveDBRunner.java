@@ -10,7 +10,6 @@ import org.easystogu.db.table.StockPriceVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.indicator.QSDDHelper;
 import org.easystogu.indicator.runner.utils.StockPriceFetcher;
-import org.easystogu.multirunner.MultThreadRunner;
 import org.easystogu.utils.Strings;
 
 import com.google.common.primitives.Doubles;
@@ -21,15 +20,10 @@ public class DailyQSDDCountAndSaveDBRunner implements Runnable {
 	protected IndQSDDTableHelper qsddTable = IndQSDDTableHelper.getInstance();
 	protected ChuQuanChuXiPriceHelper chuQuanChuXiPriceHelper = new ChuQuanChuXiPriceHelper();
 	protected CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
-	protected MultThreadRunner parentRunner;
+
 
 	public DailyQSDDCountAndSaveDBRunner() {
 
-	}
-
-	public DailyQSDDCountAndSaveDBRunner(MultThreadRunner parentRunner) {
-		this.parentRunner = parentRunner;
-		this.parentRunner.newTaskInfo(this.getClass().getSimpleName());
 	}
 
 	public void deleteQSDD(String stockId, String date) {
@@ -79,9 +73,7 @@ public class DailyQSDDCountAndSaveDBRunner implements Runnable {
 	}
 
 	public void run() {
-		this.parentRunner.startTaskInfo(this.getClass().getSimpleName());
-		countAndSaved(stockConfig.getAllStockId());
-		this.parentRunner.stopTaskInfo(this.getClass().getSimpleName());
+
 	}
 
 	public static void main(String[] args) {

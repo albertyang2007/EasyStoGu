@@ -9,7 +9,6 @@ import org.easystogu.db.table.StockPriceVO;
 import org.easystogu.db.table.ZhuliJinChuVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.indicator.ZhuliJinChuHelper;
-import org.easystogu.multirunner.MultThreadRunner;
 import org.easystogu.utils.Strings;
 
 public class DailyZhuliJinChuCountAndSaveDBRunner implements Runnable {
@@ -19,15 +18,9 @@ public class DailyZhuliJinChuCountAndSaveDBRunner implements Runnable {
 	private ZhuliJinChuHelper zhuliJinChuHelper = new ZhuliJinChuHelper();
 	protected ChuQuanChuXiPriceHelper chuQuanChuXiPriceHelper = new ChuQuanChuXiPriceHelper();
 	protected CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
-	protected MultThreadRunner parentRunner;
 
 	public DailyZhuliJinChuCountAndSaveDBRunner() {
 
-	}
-
-	public DailyZhuliJinChuCountAndSaveDBRunner(MultThreadRunner parentRunner) {
-		this.parentRunner = parentRunner;
-		this.parentRunner.newTaskInfo(this.getClass().getSimpleName());
 	}
 
 	public void deleteZhuliJinChu(String stockId, String date) {
@@ -90,9 +83,6 @@ public class DailyZhuliJinChuCountAndSaveDBRunner implements Runnable {
 	}
 
 	public void run() {
-		this.parentRunner.startTaskInfo(this.getClass().getSimpleName());
-		countAndSaved(stockConfig.getAllStockId());
-		this.parentRunner.stopTaskInfo(this.getClass().getSimpleName());
 	}
 
 	// TODO Auto-generated method stub

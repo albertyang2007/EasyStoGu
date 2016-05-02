@@ -10,7 +10,6 @@ import org.easystogu.db.table.StockPriceVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.indicator.KDJHelper;
 import org.easystogu.indicator.runner.utils.StockPriceFetcher;
-import org.easystogu.multirunner.MultThreadRunner;
 import org.easystogu.utils.Strings;
 
 import com.google.common.primitives.Doubles;
@@ -21,15 +20,9 @@ public class DailyKDJCountAndSaveDBRunner implements Runnable {
 	protected IndKDJTableHelper kdjTable = IndKDJTableHelper.getInstance();
 	protected ChuQuanChuXiPriceHelper chuQuanChuXiPriceHelper = new ChuQuanChuXiPriceHelper();
 	protected CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
-	protected MultThreadRunner parentRunner;
 
 	public DailyKDJCountAndSaveDBRunner() {
 
-	}
-
-	public DailyKDJCountAndSaveDBRunner(MultThreadRunner parentRunner) {
-		this.parentRunner = parentRunner;
-		this.parentRunner.newTaskInfo(this.getClass().getSimpleName());
 	}
 
 	public void deleteKDJ(String stockId, String date) {
@@ -82,9 +75,6 @@ public class DailyKDJCountAndSaveDBRunner implements Runnable {
 	}
 
 	public void run() {
-		this.parentRunner.startTaskInfo(this.getClass().getSimpleName());
-		countAndSaved(stockConfig.getAllStockId());
-		this.parentRunner.stopTaskInfo(this.getClass().getSimpleName());
 	}
 
 	public static void main(String[] args) {

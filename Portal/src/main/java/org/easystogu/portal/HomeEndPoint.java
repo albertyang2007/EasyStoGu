@@ -9,7 +9,6 @@ import org.easystogu.easymoney.runner.DailyZiJinLiuRunner;
 import org.easystogu.runner.DailyOverAllRunner;
 import org.easystogu.runner.DailySelectionRunner;
 import org.easystogu.runner.DailyUpdateAllStockRunner;
-import org.easystogu.runner.DailyUpdateEstimateStockRunner;
 import org.easystogu.runner.DataBaseSanityCheck;
 import org.easystogu.runner.PreEstimateStockPriceRunner;
 import org.easystogu.runner.RecentlySelectionRunner;
@@ -21,7 +20,6 @@ public class HomeEndPoint {
 	public Response test() {
 		StringBuffer sb = new StringBuffer();
 		sb.append("<a href='DailyUpdateAllStockRunner'>DailyUpdateAllStockRunner</a><br>");
-		sb.append("<a href='DailyUpdateEstimateStockRunner'>DailyUpdateEstimateStockRunner</a><br>");
 		sb.append("<a href='PreEstimateStockPriceRunner'>PreEstimateStockPriceRunner</a><br>");
 		sb.append("<a href='DailyOverAllRunner'>DailyOverAllRunner</a><br>");
 		sb.append("<a href='FastDailyOverAllRunner'>FastDailyOverAllRunner</a><br>");
@@ -31,14 +29,6 @@ public class HomeEndPoint {
 		sb.append("<a href='DataBaseSanityCheck'>DataBaseSanityCheck</a><br>");
 		sb.append("<a href='RecentlySelectionRunner'>RecentlySelectionRunner</a><br>");
 		return Response.ok().entity(sb.toString()).build();
-	}
-
-	@GET
-	@Path("/DailyUpdateEstimateStockRunner")
-	public String dailyUpdateEstimateStockRunner() {
-		Thread t = new Thread(new DailyUpdateEstimateStockRunner());
-		t.start();
-		return "DailyUpdateEstimateStockRunner already running, please check DB result.";
 	}
 
 	@GET

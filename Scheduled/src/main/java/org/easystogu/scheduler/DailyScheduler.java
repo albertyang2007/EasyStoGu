@@ -5,7 +5,6 @@ import org.easystogu.easymoney.runner.DailyZiJinLiuRunner;
 import org.easystogu.log.LogHelper;
 import org.easystogu.runner.DailyOverAllRunner;
 import org.easystogu.runner.DailyUpdateAllStockRunner;
-import org.easystogu.runner.DailyUpdateEstimateStockRunner;
 import org.easystogu.runner.DataBaseSanityCheck;
 import org.easystogu.runner.PreEstimateStockPriceRunner;
 import org.slf4j.Logger;
@@ -66,12 +65,6 @@ public class DailyScheduler implements SchedulingConfigurer {
 	public void _0_DataBaseSanityCheck() {
 		logger.info("DataBaseSanityCheck already running.");
 		Thread t = new Thread(new DataBaseSanityCheck());
-		t.start();
-	}
-
-	private void DailyUpdateEstimateStockRunner() {
-		logger.info("DailyUpdateEstimateStockRunner already running, please check folder result.");
-		Thread t = new Thread(new DailyUpdateEstimateStockRunner());
 		t.start();
 	}
 

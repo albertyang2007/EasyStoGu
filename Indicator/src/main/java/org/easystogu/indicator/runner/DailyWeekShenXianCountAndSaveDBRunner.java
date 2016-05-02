@@ -5,13 +5,9 @@ import java.util.List;
 import org.easystogu.db.access.IndWeekShenXianTableHelper;
 import org.easystogu.db.access.WeekStockPriceTableHelper;
 import org.easystogu.file.access.CompanyInfoFileHelper;
-import org.easystogu.multirunner.MultThreadRunner;
 import org.easystogu.utils.WeekdayUtil;
 
 public class DailyWeekShenXianCountAndSaveDBRunner extends DailyShenXianCountAndSaveDBRunner {
-    public DailyWeekShenXianCountAndSaveDBRunner(MultThreadRunner parentRunner) {
-        super(parentRunner);
-    }
     
 	public DailyWeekShenXianCountAndSaveDBRunner() {
 		stockPriceTable = WeekStockPriceTableHelper.getInstance();

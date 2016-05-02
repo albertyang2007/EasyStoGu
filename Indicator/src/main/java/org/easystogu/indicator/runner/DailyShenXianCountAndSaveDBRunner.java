@@ -10,7 +10,6 @@ import org.easystogu.db.table.StockPriceVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.indicator.ShenXianHelper;
 import org.easystogu.indicator.runner.utils.StockPriceFetcher;
-import org.easystogu.multirunner.MultThreadRunner;
 import org.easystogu.utils.Strings;
 
 import com.google.common.primitives.Doubles;
@@ -21,16 +20,12 @@ public class DailyShenXianCountAndSaveDBRunner implements Runnable {
 	private ShenXianHelper shenXianHelper = new ShenXianHelper();
 	protected ChuQuanChuXiPriceHelper chuQuanChuXiPriceHelper = new ChuQuanChuXiPriceHelper();
 	protected CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
-	protected MultThreadRunner parentRunner;
+
 
 	public DailyShenXianCountAndSaveDBRunner() {
 
 	}
 
-	public DailyShenXianCountAndSaveDBRunner(MultThreadRunner parentRunner) {
-		this.parentRunner = parentRunner;
-		this.parentRunner.newTaskInfo(this.getClass().getSimpleName());
-	}
 
 	public void deleteShenXian(String stockId, String date) {
 		shenXianTable.delete(stockId, date);
@@ -88,9 +83,7 @@ public class DailyShenXianCountAndSaveDBRunner implements Runnable {
 	}
 
 	public void run() {
-		this.parentRunner.startTaskInfo(this.getClass().getSimpleName());
-		countAndSaved(stockConfig.getAllStockId());
-		this.parentRunner.stopTaskInfo(this.getClass().getSimpleName());
+
 	}
 
 	// TODO Auto-generated method stub

@@ -9,7 +9,6 @@ import org.easystogu.db.table.BollVO;
 import org.easystogu.db.table.StockPriceVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.indicator.BOLLHelper;
-import org.easystogu.multirunner.MultThreadRunner;
 import org.easystogu.utils.Strings;
 
 //每日根据最新数据计算当天的boll值，每天运行一次
@@ -19,15 +18,9 @@ public class DailyBollCountAndSaveDBRunner implements Runnable {
 	private BOLLHelper bollHelper = new BOLLHelper();
 	protected ChuQuanChuXiPriceHelper chuQuanChuXiPriceHelper = new ChuQuanChuXiPriceHelper();
 	protected CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
-	protected MultThreadRunner parentRunner;
 
 	public DailyBollCountAndSaveDBRunner() {
 
-	}
-
-	public DailyBollCountAndSaveDBRunner(MultThreadRunner parentRunner) {
-		this.parentRunner = parentRunner;
-		this.parentRunner.newTaskInfo(this.getClass().getSimpleName());
 	}
 
 	public void deleteBoll(String stockId, String date) {
@@ -86,9 +79,8 @@ public class DailyBollCountAndSaveDBRunner implements Runnable {
 	}
 
 	public void run() {
-		this.parentRunner.startTaskInfo(this.getClass().getSimpleName());
-		countAndSaved(stockConfig.getAllStockId());
-		this.parentRunner.stopTaskInfo(this.getClass().getSimpleName());
+		// TODO Auto-generated method stub
+
 	}
 
 	public static void main(String[] args) {

@@ -9,7 +9,6 @@ import org.easystogu.db.table.StockPriceVO;
 import org.easystogu.db.table.XueShi2VO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.indicator.TALIBWraper;
-import org.easystogu.multirunner.MultThreadRunner;
 import org.easystogu.utils.Strings;
 
 public class DailyXueShi2CountAndSaveDBRunner implements Runnable {
@@ -18,15 +17,9 @@ public class DailyXueShi2CountAndSaveDBRunner implements Runnable {
 	private TALIBWraper talib = new TALIBWraper();
 	protected ChuQuanChuXiPriceHelper chuQuanChuXiPriceHelper = new ChuQuanChuXiPriceHelper();
 	protected CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
-	protected MultThreadRunner parentRunner;
 
 	public DailyXueShi2CountAndSaveDBRunner() {
 
-	}
-
-	public DailyXueShi2CountAndSaveDBRunner(MultThreadRunner parentRunner) {
-		this.parentRunner = parentRunner;
-		this.parentRunner.newTaskInfo(this.getClass().getSimpleName());
 	}
 
 	public void deleteXueShi2(String stockId, String date) {
@@ -96,9 +89,7 @@ public class DailyXueShi2CountAndSaveDBRunner implements Runnable {
 	}
 
 	public void run() {
-		this.parentRunner.startTaskInfo(this.getClass().getSimpleName());
-		countAndSaved(stockConfig.getAllStockId());
-		this.parentRunner.stopTaskInfo(this.getClass().getSimpleName());
+
 	}
 
 	public static void main(String[] args) {
