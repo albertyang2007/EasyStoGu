@@ -46,7 +46,7 @@ public class DailyKDJCountAndSaveDBRunner implements Runnable {
 		}
 
 		// update price based on chuQuanChuXi event
-		chuQuanChuXiPriceHelper.updatePrice(stockId, priceList);
+		chuQuanChuXiPriceHelper.updateQianFuQianPriceBasedOnHouFuQuan(stockId, priceList);
 
 		List<Double> close = StockPriceFetcher.getClosePrice(priceList);
 		List<Double> low = StockPriceFetcher.getLowPrice(priceList);
@@ -65,7 +65,7 @@ public class DailyKDJCountAndSaveDBRunner implements Runnable {
 		vo.setStockId(stockId);
 		vo.setDate(priceList.get(length - 1).date);
 
-		//System.out.println(vo);
+		System.out.println(vo);
 		this.deleteKDJ(stockId, vo.date);
 		kdjTable.insert(vo);
 
@@ -92,6 +92,6 @@ public class DailyKDJCountAndSaveDBRunner implements Runnable {
 		CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 		DailyKDJCountAndSaveDBRunner runner = new DailyKDJCountAndSaveDBRunner();
 		runner.countAndSaved(stockConfig.getAllStockId());
-		//runner.countAndSaved("999999");
+		// runner.countAndSaved("002609");
 	}
 }

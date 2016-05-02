@@ -56,7 +56,7 @@ public class DailyShenXianCountAndSaveDBRunner implements Runnable {
         }
 
 		// update price based on chuQuanChuXi event
-		chuQuanChuXiPriceHelper.updatePrice(stockId, priceList);
+		chuQuanChuXiPriceHelper.updateQianFuQianPriceBasedOnHouFuQuan(stockId, priceList);
 
 		List<Double> close = StockPriceFetcher.getClosePrice(priceList);
 

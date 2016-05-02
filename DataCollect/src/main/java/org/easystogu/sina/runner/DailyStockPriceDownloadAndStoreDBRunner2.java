@@ -125,9 +125,9 @@ public class DailyStockPriceDownloadAndStoreDBRunner2 implements Runnable {
 					this.scheduleActionTable.delete(savo.stockId, savo.runDate, savo.actionDo);
 					this.scheduleActionTable.insert(savo);
 				}
-
-				// update fuquan stockprice table by manually, assume there is
-				// no chuquan event at this date
+				
+				// update fuquan stockprice table by manually, assume there
+				// is no chuquan event at this date
 				List<StockPriceVO> nDayFuQuanSpList = this.fuquanStockPriceTable
 						.getNdateStockPriceById(spvo.stockId, 1);
 				if (nDayFuQuanSpList.size() >= 1) {

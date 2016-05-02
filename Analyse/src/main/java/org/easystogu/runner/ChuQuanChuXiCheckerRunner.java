@@ -30,16 +30,17 @@ public class ChuQuanChuXiCheckerRunner implements Runnable {
 		chuQuanChuXiTable.delete(stockId);
 
 		for (int index = 0; index < list.size() - 1; index++) {
-			StockPriceVO cur = list.get(index);
-			StockPriceVO pre = list.get(index + 1);
+			StockPriceVO spvo = list.get(index);
+			StockPriceVO yesterday_spvo = list.get(index + 1);
 			// System.out.println(cur);
 			// System.out.println(pre);
-			if (cur.lastClose != 0 && cur.lastClose != pre.close) {
+
+			if ((spvo.close > 0 && yesterday_spvo.close > 0) && (spvo.close / yesterday_spvo.close <= 0.85)) {
 				// chuQuan happen!
 				ChuQuanChuXiVO vo = new ChuQuanChuXiVO();
-				vo.setStockId(cur.stockId);
-				vo.setDate(cur.date);
-				vo.setRate(cur.lastClose / pre.close);
+				vo.setStockId(spvo.stockId);
+				vo.setDate(spvo.date);
+				vo.setRate(spvo.lastClose / yesterday_spvo.close);
 				vo.setAlreadyUpdatePrice(false);
 
 				System.out.println("ChuQuan happen for " + vo);
@@ -109,7 +110,7 @@ public class ChuQuanChuXiCheckerRunner implements Runnable {
 		// TODO Auto-generated method stub
 		CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 		ChuQuanChuXiCheckerRunner runner = new ChuQuanChuXiCheckerRunner();
-		runner.historyCheckChuQuanEvent("002609");
-		//(stockConfig.getAllStockId());
+		runner.historyCheckChuQuanEvent(stockConfig.getAllStockId());
+		//runner.historyCheckChuQuanEvent("002609");
 	}
 }

@@ -48,7 +48,7 @@ public class DailyMacdCountAndSaveDBRunner implements Runnable {
         }
 
         // update price based on chuQuanChuXi event
-        chuQuanChuXiPriceHelper.updatePrice(stockId, priceList);
+        chuQuanChuXiPriceHelper.updateQianFuQianPriceBasedOnHouFuQuan(stockId, priceList);
 
         double[] close = new double[length];
         int index = 0;

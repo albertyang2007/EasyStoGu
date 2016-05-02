@@ -35,8 +35,9 @@ public class DataBaseSanityCheck implements Runnable {
 	protected IndKDJTableHelper kdjTable = IndKDJTableHelper.getInstance();
 	protected IndBollTableHelper bollTable = IndBollTableHelper.getInstance();
 	protected IndShenXianTableHelper shenXianTable = IndShenXianTableHelper.getInstance();
-	protected IndYiMengBSTableHelper ymbsTable = IndYiMengBSTableHelper.getInstance();
 	protected IndQSDDTableHelper qsddTable = IndQSDDTableHelper.getInstance();
+	// protected IndYiMengBSTableHelper ymbsTable =
+	// IndYiMengBSTableHelper.getInstance();
 
 	protected WeekStockPriceTableHelper weekStockPriceTable = WeekStockPriceTableHelper.getInstance();
 	protected IndWeekMacdTableHelper macdWeekTable = IndWeekMacdTableHelper.getInstance();
@@ -71,8 +72,8 @@ public class DataBaseSanityCheck implements Runnable {
 		List<KDJVO> kdjList = kdjTable.getAllKDJ(stockId);
 		List<BollVO> bollList = bollTable.getAllBoll(stockId);
 		List<ShenXianVO> shenXianList = shenXianTable.getAllShenXian(stockId);
-		List<YiMengBSVO> ymbsList = ymbsTable.getAllYiMengBS(stockId);
 		List<QSDDVO> qsddList = qsddTable.getAllQSDD(stockId);
+		// List<YiMengBSVO> ymbsList = ymbsTable.getAllYiMengBS(stockId);
 		// List<XueShi2VO> xueShie2List = xueShi2Table.getAllXueShi2(stockId);
 		// List<Mai1Mai2VO> mai1mai2List =
 		// mai1mai2Table.getAllMai1Mai2(stockId);
@@ -116,12 +117,14 @@ public class DataBaseSanityCheck implements Runnable {
 			HistoryQSDDCountAndSaveDBRunner runner = new HistoryQSDDCountAndSaveDBRunner();
 			runner.countAndSaved(stockId);
 		}
-		if ((spList.size() != ymbsList.size())) {
-			System.out.println(stockId + " size of YiMeng is not equal:" + spList.size() + "!=" + ymbsList.size());
-			ymbsTable.delete(stockId);
-			HistoryYiMengBSCountAndSaveDBRunner runner = new HistoryYiMengBSCountAndSaveDBRunner();
-			runner.countAndSaved(stockId);
-		}
+		// if ((spList.size() != ymbsList.size())) {
+		// System.out.println(stockId + " size of YiMeng is not equal:" +
+		// spList.size() + "!=" + ymbsList.size());
+		// ymbsTable.delete(stockId);
+		// HistoryYiMengBSCountAndSaveDBRunner runner = new
+		// HistoryYiMengBSCountAndSaveDBRunner();
+		// runner.countAndSaved(stockId);
+		// }
 	}
 
 	public void sanityWeekCheck(List<String> stockIds) {

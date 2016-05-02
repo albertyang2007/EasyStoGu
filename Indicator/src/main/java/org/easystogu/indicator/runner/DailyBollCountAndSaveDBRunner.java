@@ -1,6 +1,5 @@
 package org.easystogu.indicator.runner;
 
-import java.util.Collections;
 import java.util.List;
 
 import org.easystogu.db.access.ChuQuanChuXiPriceHelper;
@@ -35,21 +34,18 @@ public class DailyBollCountAndSaveDBRunner implements Runnable {
 		bollTable.delete(stockId, date);
 	}
 
-	public BollVO countAndSaved(String stockId) {
+	public void countAndSaved(String stockId) {
 
-		// List<StockPriceVO> list =
-		// stockPriceTable.getStockPriceById(stockId);
-		List<StockPriceVO> priceList = stockPriceTable.getNdateStockPriceById(stockId, 20);
-		Collections.reverse(priceList);
+		List<StockPriceVO> priceList = stockPriceTable.getStockPriceById(stockId);
 
 		int length = priceList.size();
 
-        if (priceList.size() < 1) {
-            return null;
-        }
+		if (priceList.size() < 1) {
+			return;
+		}
 
 		// update price based on chuQuanChuXi event
-		chuQuanChuXiPriceHelper.updatePrice(stockId, priceList);
+		chuQuanChuXiPriceHelper.updateQianFuQianPriceBasedOnHouFuQuan(stockId, priceList);
 
 		double[] close = new double[length];
 		int index = 0;
@@ -77,7 +73,6 @@ public class DailyBollCountAndSaveDBRunner implements Runnable {
 		// System.out.println(vo);
 		this.deleteBoll(stockId, vo.date);
 		bollTable.insert(vo);
-		return vo;
 	}
 
 	public void countAndSaved(List<String> stockIds) {

@@ -56,7 +56,7 @@ public class DailyMai1Mai2CountAndSaveDBRunner implements Runnable {
 		}
 
 		// update price based on chuQuanChuXi event
-		chuQuanChuXiPriceHelper.updatePrice(stockId, priceList);
+		chuQuanChuXiPriceHelper.updateQianFuQianPriceBasedOnHouFuQuan(stockId, priceList);
 
 		// list is order by date
 		int length = priceList.size();

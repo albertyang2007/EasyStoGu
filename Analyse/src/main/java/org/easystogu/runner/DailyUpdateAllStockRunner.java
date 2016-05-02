@@ -22,10 +22,10 @@ public class DailyUpdateAllStockRunner implements Runnable {
 		String[] args = null;
 		long st = System.currentTimeMillis();
 		// day (download all stockIds price)
-		//DailyStockPriceDownloadAndStoreDBRunner.main(args);
+		// DailyStockPriceDownloadAndStoreDBRunner.main(args);
 		DailyStockPriceDownloadAndStoreDBRunner2.main(args);
 		// chuquan
-		new ChuQuanChuXiCheckerRunner().dailyCheckChuQuanEvent(allStockIds);;
+		// new ChuQuanChuXiCheckerRunner().dailyCheckChuQuanEvent(allStockIds);;
 		// day ind
 		new AllDailyIndCountAndSaveDBRunner().runDailyIndForStockIds(allStockIds);
 		// week
@@ -36,11 +36,11 @@ public class DailyUpdateAllStockRunner implements Runnable {
 		// zijinliu
 		if (isGetZiJinLiu) {
 			DailyZiJinLiuRunner.main(args);
-			//DailyZhuLiJingLiuRuRunner.main(args);
+			// DailyZhuLiJingLiuRuRunner.main(args);
 		}
 
 		// ddx
-		//new DailyDDXRunner().countAndSaved(allStockIds);
+		// new DailyDDXRunner().countAndSaved(allStockIds);
 
 		// analyse
 		dailySelectionRunner = new DailySelectionRunner();

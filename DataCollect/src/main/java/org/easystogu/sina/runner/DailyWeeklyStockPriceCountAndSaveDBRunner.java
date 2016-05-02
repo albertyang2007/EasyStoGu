@@ -47,7 +47,7 @@ public class DailyWeeklyStockPriceCountAndSaveDBRunner implements Runnable {
 			if ((spList != null) && (spList.size() >= 1)) {
 
 				// update price based on chuQuanChuXi event
-				chuQuanChuXiPriceHelper.updatePrice(stockId, spList);
+				chuQuanChuXiPriceHelper.updateQianFuQianPriceBasedOnHouFuQuan(stockId, spList);
 
 				int last = spList.size() - 1;
 				// first day

@@ -1,6 +1,5 @@
 package org.easystogu.indicator.runner;
 
-import java.util.Collections;
 import java.util.List;
 
 import org.easystogu.db.access.ChuQuanChuXiPriceHelper;
@@ -34,12 +33,9 @@ public class DailyXueShi2CountAndSaveDBRunner implements Runnable {
 		xueShi2Table.delete(stockId, date);
 	}
 
-	public XueShi2VO countAndSaved(String stockId) {
+	public void countAndSaved(String stockId) {
 
-		// List<StockPriceVO> list =
-		// stockPriceTable.getStockPriceById(stockId);
-		List<StockPriceVO> priceList = stockPriceTable.getNdateStockPriceById(stockId, 60);
-		Collections.reverse(priceList);
+		List<StockPriceVO> priceList = stockPriceTable.getStockPriceById(stockId);
 
 		int length = priceList.size();
 
@@ -47,11 +43,11 @@ public class DailyXueShi2CountAndSaveDBRunner implements Runnable {
 			// System.out.println(stockId
 			// +
 			// " price data is not enough to count XueShi2, please wait until it has at least 60 days. Skip");
-			return null;
+			return;
 		}
 
 		// update price based on chuQuanChuXi event
-		chuQuanChuXiPriceHelper.updatePrice(stockId, priceList);
+		chuQuanChuXiPriceHelper.updateQianFuQianPriceBasedOnHouFuQuan(stockId, priceList);
 
 		double[] close = new double[length];
 		int index = 0;
@@ -87,8 +83,6 @@ public class DailyXueShi2CountAndSaveDBRunner implements Runnable {
 
 		this.deleteXueShi2(stockId, xueShi2VO.date);
 		xueShi2Table.insert(xueShi2VO);
-
-		return xueShi2VO;
 	}
 
 	public void countAndSaved(List<String> stockIds) {

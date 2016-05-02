@@ -70,7 +70,10 @@ public class DailyStockPriceDownloadHelper2 {
 			for (int i = 0; i < jsonArray.size(); i++) {
 				jsonObject = jsonArray.getJSONObject(i);
 				pojoValue = JSONObject.toBean(jsonObject, SinaQuoteStockPriceVO.class);
-				list.add((SinaQuoteStockPriceVO) pojoValue);
+				SinaQuoteStockPriceVO sqspvo = (SinaQuoteStockPriceVO) pojoValue;
+				if (sqspvo.high > 0 && sqspvo.low > 0 && sqspvo.open > 0) {
+					list.add(sqspvo);
+				}
 			}
 
 			System.out.println(", result size= " + jsonArray.size());

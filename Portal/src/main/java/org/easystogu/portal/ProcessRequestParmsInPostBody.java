@@ -88,7 +88,7 @@ public class ProcessRequestParmsInPostBody {
 		List<StockPriceVO> spList = null;
 		spList = stockPriceTable.getStockPriceById(stockid);
 		// update price based on chuQuanChuXi event
-		chuQuanChuXiPriceHelper.updatePrice(stockid, spList);
+		chuQuanChuXiPriceHelper.updateQianFuQianPriceBasedOnHouFuQuan(stockid, spList);
 		return spList;
 	}
 
