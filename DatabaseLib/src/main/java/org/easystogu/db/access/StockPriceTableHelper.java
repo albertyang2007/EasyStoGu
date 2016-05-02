@@ -103,6 +103,7 @@ public class StockPriceTableHelper {
 	// to check if a date is in deal time, to exclude the holiday
 	protected String IS_DATE_IN_DEAL = "SELECT count(*) AS rtn FROM " + tableName
 			+ " WHERE stockid='999999' AND DATE = :date";
+	protected String COUNT_BY_ID_SQL = "SELECT COUNT(*) AS rtn FROM " + tableName + " WHERE stockId = :stockId";
 
 	protected NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
@@ -654,6 +655,23 @@ public class StockPriceTableHelper {
 			e.printStackTrace();
 		}
 		return false;
+	}
+
+	public int countByStockId(String stockId) {
+		try {
+			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+			namedParameters.addValue("stockId", stockId);
+
+			int rtn = this.namedParameterJdbcTemplate.queryForObject(COUNT_BY_ID_SQL, namedParameters,
+					new IntVOMapper());
+
+			return rtn;
+		} catch (EmptyResultDataAccessException ee) {
+			return 0;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return 0;
 	}
 
 	public int countTuplesByIDAndBetweenDate(String stockId, String start, String end) {

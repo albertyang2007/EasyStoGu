@@ -91,6 +91,7 @@ public class FuQuanStockPriceTableHelper extends StockPriceTableHelper {
 
 		// to check if a date is in deal time, to exclude the holiday
 		IS_DATE_IN_DEAL = "SELECT count(*) AS rtn FROM " + tableName + " WHERE stockid='999999' AND DATE = :date";
+		COUNT_BY_ID_SQL = "SELECT COUNT(*) AS rtn FROM " + tableName + " WHERE stockId = :stockId";
 
 		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
 	}
