@@ -62,7 +62,6 @@ public class DailySelectionRunner implements Runnable {
 	private StringBuffer recommandStr = new StringBuffer();
 	// StockPriceVO, CheckPoint list
 	private Map<StockSuperVO, List<DailyCombineCheckPoint>> selectedMaps = new HashMap<StockSuperVO, List<DailyCombineCheckPoint>>();
-	private ChuQuanChuXiPriceHelper chuQuanChuXiPriceHelper = new ChuQuanChuXiPriceHelper();
 	private Map<String, ZiJinLiuVO> realTimeZiJinLiuMap = new HashMap<String, ZiJinLiuVO>();
 	private Map<DailyCombineCheckPoint, List<String>> generalCheckPointGordonMap = new HashMap<DailyCombineCheckPoint, List<String>>();
 	private boolean fetchRealTimeZiJinLiu = false;
