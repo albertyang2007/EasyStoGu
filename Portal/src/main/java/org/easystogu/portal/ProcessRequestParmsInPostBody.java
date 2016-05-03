@@ -85,8 +85,7 @@ public class ProcessRequestParmsInPostBody {
 
 	// common function to fetch price from stockPrice table
 	private List<StockPriceVO> fetchAllPrices(String stockid) {
-		List<StockPriceVO> spList = null;
-		spList = stockPriceTable.getStockPriceById(stockid);
+		List<StockPriceVO> spList = stockPriceTable.getStockPriceById(stockid);
 		// update price based on chuQuanChuXi event
 		chuQuanChuXiPriceHelper.updateQianFuQianPriceBasedOnHouFuQuan(stockid, spList);
 		return spList;
