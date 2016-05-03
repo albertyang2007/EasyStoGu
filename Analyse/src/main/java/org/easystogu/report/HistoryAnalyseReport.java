@@ -14,7 +14,6 @@ import org.easystogu.db.access.CheckPointDailySelectionTableHelper;
 import org.easystogu.db.access.CheckPointDailyStatisticsTableHelper;
 import org.easystogu.db.access.CheckPointHistoryAnalyseTableHelper;
 import org.easystogu.db.access.CheckPointHistorySelectionTableHelper;
-import org.easystogu.db.access.ChuQuanChuXiPriceHelper;
 import org.easystogu.db.access.StockSuperVOHelper;
 import org.easystogu.db.access.WeekStockSuperVOHelper;
 import org.easystogu.db.table.CheckPointDailySelectionVO;

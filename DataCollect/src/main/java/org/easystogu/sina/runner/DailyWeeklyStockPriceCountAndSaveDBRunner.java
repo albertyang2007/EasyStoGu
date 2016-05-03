@@ -1,5 +1,6 @@
 package org.easystogu.sina.runner;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.easystogu.db.access.ChuQuanChuXiPriceHelper;
@@ -43,11 +44,8 @@ public class DailyWeeklyStockPriceCountAndSaveDBRunner implements Runnable {
 		if ((dates != null) && (dates.size() >= 1)) {
 			String firstDate = dates.get(0);
 			String lastDate = dates.get(dates.size() - 1);
-			List<StockPriceVO> spList = stockPriceTable.getStockPriceByIdAndBetweenDate(stockId, firstDate, lastDate);
+			List<StockPriceVO> spList = this.getStockPriceByIdAndBetweenDate(stockId, firstDate, lastDate);
 			if ((spList != null) && (spList.size() >= 1)) {
-
-				// update price based on chuQuanChuXi event
-				chuQuanChuXiPriceHelper.updateQianFuQianPriceBasedOnHouFuQuan(stockId, spList);
 
 				int last = spList.size() - 1;
 				// first day
@@ -72,6 +70,19 @@ public class DailyWeeklyStockPriceCountAndSaveDBRunner implements Runnable {
 				weekStockPriceTable.insert(mergeVO);
 			}
 		}
+	}
+
+	private List<StockPriceVO> getStockPriceByIdAndBetweenDate(String stockId, String firstDate, String lastDate) {
+		List<StockPriceVO> rtnList = new ArrayList<StockPriceVO>();
+		List<StockPriceVO> spList = stockPriceTable.getStockPriceByIdAndBetweenDate(stockId, firstDate, lastDate);
+		// update price based on chuQuanChuXi event
+		chuQuanChuXiPriceHelper.updateQianFuQianPriceBasedOnHouFuQuan(stockId, spList);
+		for (StockPriceVO vo : spList) {
+			if (vo.date.compareTo(firstDate) >= 0 && vo.date.compareTo(lastDate) <= 0) {
+				rtnList.add(vo);
+			}
+		}
+		return rtnList;
 	}
 
 	public void run() {

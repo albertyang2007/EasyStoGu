@@ -16,7 +16,6 @@ import org.easystogu.checkpoint.DailyCombineCheckPoint;
 import org.easystogu.config.FileConfigurationService;
 import org.easystogu.db.access.CheckPointDailySelectionTableHelper;
 import org.easystogu.db.access.CheckPointDailyStatisticsTableHelper;
-import org.easystogu.db.access.ChuQuanChuXiPriceHelper;
 import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.access.StockSuperVOHelper;
 import org.easystogu.db.access.WeekStockSuperVOHelper;
@@ -71,19 +70,53 @@ public class DailySelectionRunner implements Runnable {
 			List<StockSuperVO> overDayList = stockOverAllHelper.getAllStockSuperVO(stockId);
 			List<StockSuperVO> overWeekList = weekStockOverAllHelper.getAllStockSuperVO(stockId);
 
+			// LatestN is reverse in date order desc. 120 is enough to save much
+			// time
+			// List<StockSuperVO> overDayList =
+			// stockOverAllHelper.getLatestNStockSuperVO(stockId, 120);
+			// List<StockSuperVO> overWeekList =
+			// weekStockOverAllHelper.getLatestNStockSuperVO(stockId, 30);
 			if (overDayList.size() == 0) {
 				// System.out.println("No stockprice data for " + stockId);
 				return;
 			}
 
+			if (overWeekList.size() == 0) {
+				// System.out.println("No stockprice data for " + stockId);
+				return;
+			}
+
+			int dayListLen = overDayList.size();
+			if (dayListLen >= 120)
+				overDayList = overDayList.subList(dayListLen - 120, dayListLen);
+
+			int weekListLen = overWeekList.size();
+			if (weekListLen >= 24)
+				overWeekList = overWeekList.subList(weekListLen - 24, weekListLen);
+
+			// so must reverse in date order
+			// Collections.reverse(overDayList);
+			// Collections.reverse(overWeekList);
+
 			IndProcessHelper.processDayList(overDayList);
 			IndProcessHelper.processWeekList(overWeekList);
 
-			int index = overDayList.size() - 1;
-			StockSuperVO superVO = overDayList.get(index);
+			StockSuperVO superVO = overDayList.get(overDayList.size() - 1);
+			StockSuperVO weekSuperVO = overWeekList.get(overWeekList.size() - 1);
 
+			if (!superVO.priceVO.date.equals(weekSuperVO.priceVO.date)) {
+				// System.out.println(stockId + " DayPrice VO date (" +
+				// superVO.priceVO.date
+				// + ") is not equal WeekPrice VO date (" +
+				// weekSuperVO.priceVO.date + ")");
+				return;
+			}
+
+			// exclude ting pai
 			if (!superVO.priceVO.date.equals(latestDate)) {
-				// System.out.println("priveVO date is not equal latestDate");
+				// System.out.println(stockId + " priveVO date (" +
+				// superVO.priceVO.date + " ) is not equal latestDate ("
+				// + latestDate + ")");
 				return;
 			}
 
@@ -379,7 +412,7 @@ public class DailySelectionRunner implements Runnable {
 	public void runForStockIds(List<String> stockIds) {
 		int index = 0;
 		for (String stockId : stockIds) {
-			// if (!stockId.equals("002609"))
+			// if (!stockId.equals("600881"))
 			// continue;
 			if (index++ % 500 == 0) {
 				System.out.println("Analyse of " + index + "/" + stockIds.size());

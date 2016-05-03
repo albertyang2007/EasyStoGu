@@ -2,6 +2,7 @@ package org.easystogu.runner;
 
 import java.util.List;
 
+import org.easystogu.db.access.FuQuanStockPriceTableHelper;
 import org.easystogu.db.access.IndBollTableHelper;
 import org.easystogu.db.access.IndKDJTableHelper;
 import org.easystogu.db.access.IndMacdTableHelper;
@@ -9,7 +10,6 @@ import org.easystogu.db.access.IndQSDDTableHelper;
 import org.easystogu.db.access.IndShenXianTableHelper;
 import org.easystogu.db.access.IndWeekKDJTableHelper;
 import org.easystogu.db.access.IndWeekMacdTableHelper;
-import org.easystogu.db.access.IndYiMengBSTableHelper;
 import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.access.WeekStockPriceTableHelper;
 import org.easystogu.db.table.BollVO;
@@ -18,7 +18,6 @@ import org.easystogu.db.table.MacdVO;
 import org.easystogu.db.table.QSDDVO;
 import org.easystogu.db.table.ShenXianVO;
 import org.easystogu.db.table.StockPriceVO;
-import org.easystogu.db.table.YiMengBSVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.indicator.runner.history.HistoryBollCountAndSaveDBRunner;
 import org.easystogu.indicator.runner.history.HistoryKDJCountAndSaveDBRunner;
@@ -27,10 +26,11 @@ import org.easystogu.indicator.runner.history.HistoryQSDDCountAndSaveDBRunner;
 import org.easystogu.indicator.runner.history.HistoryShenXianCountAndSaveDBRunner;
 import org.easystogu.indicator.runner.history.HistoryWeeklyKDJCountAndSaveDBRunner;
 import org.easystogu.indicator.runner.history.HistoryWeeklyMacdCountAndSaveDBRunner;
-import org.easystogu.indicator.runner.history.HistoryYiMengBSCountAndSaveDBRunner;
+import org.easystogu.utils.Strings;
 
 public class DataBaseSanityCheck implements Runnable {
 	protected StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
+	protected FuQuanStockPriceTableHelper fuquanStockPriceTable = FuQuanStockPriceTableHelper.getInstance();
 	protected IndMacdTableHelper macdTable = IndMacdTableHelper.getInstance();
 	protected IndKDJTableHelper kdjTable = IndKDJTableHelper.getInstance();
 	protected IndBollTableHelper bollTable = IndBollTableHelper.getInstance();
@@ -68,6 +68,7 @@ public class DataBaseSanityCheck implements Runnable {
 	public void sanityDailyCheck(String stockId) {
 
 		List<StockPriceVO> spList = stockPriceTable.getStockPriceById(stockId);
+		List<StockPriceVO> fuquan_spList = fuquanStockPriceTable.getStockPriceById(stockId);
 		List<MacdVO> macdList = macdTable.getAllMacd(stockId);
 		List<KDJVO> kdjList = kdjTable.getAllKDJ(stockId);
 		List<BollVO> bollList = bollTable.getAllBoll(stockId);
@@ -82,6 +83,29 @@ public class DataBaseSanityCheck implements Runnable {
 
 		// if (spList.size() <= 108)
 		// return;
+		boolean refresh = false;
+		for (StockPriceVO vo : spList) {
+			if (vo.close == 0 || vo.open == 0 || vo.high == 0 || vo.low == 0 || Strings.isEmpty(vo.date)) {
+				System.out.println("Sanity Delete StockPrice " + vo);
+				this.stockPriceTable.delete(vo.stockId, vo.date);
+				refresh = true;
+			}
+		}
+		// refresh if above delete vo
+		if (refresh)
+			spList = stockPriceTable.getStockPriceById(stockId);
+
+		boolean fq_refresh = false;
+		for (StockPriceVO vo : fuquan_spList) {
+			if (vo.close == 0 || vo.open == 0 || vo.high == 0 || vo.low == 0 || Strings.isEmpty(vo.date)) {
+				System.out.println("Sanity Delete FuQuanStockPrice " + vo);
+				this.fuquanStockPriceTable.delete(vo.stockId, vo.date);
+				fq_refresh = true;
+			}
+		}
+		// refresh if above delete vo
+		if (fq_refresh)
+			fuquan_spList = fuquanStockPriceTable.getStockPriceById(stockId);
 
 		if ((spList.size() != macdList.size())) {
 			System.out.println(stockId + " size of macd is not equal:" + spList.size() + "!=" + macdList.size());
@@ -153,6 +177,17 @@ public class DataBaseSanityCheck implements Runnable {
 
 		// if (spList.size() <= 108)
 		// return;
+		boolean refresh = false;
+		for (StockPriceVO vo : spList) {
+			if (vo.close == 0 || vo.open == 0 || vo.high == 0 || vo.low == 0 || Strings.isEmpty(vo.date)) {
+				System.out.println("Sanity Delete WeekStockPrice " + vo);
+				this.weekStockPriceTable.delete(vo.stockId, vo.date);
+				refresh = true;
+			}
+		}
+		// refresh if above delete vo
+		if (refresh)
+			spList = weekStockPriceTable.getStockPriceById(stockId);
 
 		if ((spList.size() != macdList.size())) {
 			System.out.println(stockId + " size of week macd is not equal:" + spList.size() + "!=" + macdList.size());
