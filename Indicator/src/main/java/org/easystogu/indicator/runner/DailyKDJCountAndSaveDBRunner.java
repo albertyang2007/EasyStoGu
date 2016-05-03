@@ -58,7 +58,7 @@ public class DailyKDJCountAndSaveDBRunner implements Runnable {
 		vo.setStockId(stockId);
 		vo.setDate(priceList.get(length - 1).date);
 
-		System.out.println(vo);
+		//System.out.println(vo);
 		this.deleteKDJ(stockId, vo.date);
 		kdjTable.insert(vo);
 
