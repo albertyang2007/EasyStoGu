@@ -31,7 +31,7 @@ public class ChuQuanChuXiPriceHelper {
         List<StockPriceVO> fq_spList = fuquanStockPriceTable.getStockPriceById(stockId);
         if (fq_spList.size() != spList.size()) {
             System.out.println("Fatel error for " + stockId + ", fuquan StockPrice length (" + fq_spList.size()
-                    + ")is not same as StockPrice (" + spList.size() + ")");
+                    + ") is not same as StockPrice (" + spList.size() + ")");
             return;
         }
 
