@@ -74,7 +74,7 @@ public class DailyWeeklyStockPriceCountAndSaveDBRunner implements Runnable {
 
 	private List<StockPriceVO> getStockPriceByIdAndBetweenDate(String stockId, String firstDate, String lastDate) {
 		List<StockPriceVO> rtnList = new ArrayList<StockPriceVO>();
-		List<StockPriceVO> spList = stockPriceTable.getStockPriceByIdAndBetweenDate(stockId, firstDate, lastDate);
+		List<StockPriceVO> spList = stockPriceTable.getStockPriceById(stockId);
 		// update price based on chuQuanChuXi event
 		chuQuanChuXiPriceHelper.updateQianFuQianPriceBasedOnHouFuQuan(stockId, spList);
 		for (StockPriceVO vo : spList) {

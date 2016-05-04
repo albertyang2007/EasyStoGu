@@ -3,13 +3,11 @@ package org.easystogu.db.util;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.easystogu.db.access.ChuQuanChuXiPriceHelper;
 import org.easystogu.db.table.StockPriceVO;
 import org.easystogu.utils.WeekdayUtil;
 
 //merge days price vo into week price vo
 public class MergeNDaysPriceUtil {
-	protected ChuQuanChuXiPriceHelper chuQuanChuXiPriceHelper = new ChuQuanChuXiPriceHelper();
 
 	public List<StockPriceVO> generateAllWeekPriceVO(String stockId, List<StockPriceVO> spList) {
 		List<StockPriceVO> spWeekList = new ArrayList<StockPriceVO>();
@@ -25,9 +23,6 @@ public class MergeNDaysPriceUtil {
 					// lastDate);
 					List<StockPriceVO> spSubList = this.getSubList(spList, firstDate, lastDate);
 					if ((spSubList != null) && (spSubList.size() >= 1)) {
-
-						// update price based on chuQuanChuXi event
-						chuQuanChuXiPriceHelper.updateWeekPrice(stockId, spSubList, firstDate, lastDate);
 
 						int last = spSubList.size() - 1;
 						// first day
