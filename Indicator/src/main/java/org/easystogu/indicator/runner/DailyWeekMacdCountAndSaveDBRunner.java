@@ -12,6 +12,7 @@ public class DailyWeekMacdCountAndSaveDBRunner extends DailyMacdCountAndSaveDBRu
     public DailyWeekMacdCountAndSaveDBRunner() {
         macdTable = IndWeekMacdTableHelper.getInstance();
         stockPriceTable = WeekStockPriceTableHelper.getInstance();
+        needChuQuan = false;
     }
 
     @Override

@@ -12,6 +12,7 @@ public class DailyWeekYiMengBSCountAndSaveDBRunner extends DailyYiMengBSCountAnd
 	public DailyWeekYiMengBSCountAndSaveDBRunner() {
 		stockPriceTable = WeekStockPriceTableHelper.getInstance();
 		yiMengBSTable = IndWeekYiMengBSTableHelper.getInstance();
+		needChuQuan = false;
 	}
 
 	@Override

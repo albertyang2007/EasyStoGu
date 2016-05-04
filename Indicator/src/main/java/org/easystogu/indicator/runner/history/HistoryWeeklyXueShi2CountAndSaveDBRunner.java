@@ -8,6 +8,7 @@ public class HistoryWeeklyXueShi2CountAndSaveDBRunner extends HistoryXueShi2Coun
 	public HistoryWeeklyXueShi2CountAndSaveDBRunner() {
 		xueShi2Table = IndWeekXueShi2TableHelper.getInstance();
 		stockPriceTable = WeekStockPriceTableHelper.getInstance();
+		needChuQuan = false;
 	}
 
 	public static void main(String[] args) {

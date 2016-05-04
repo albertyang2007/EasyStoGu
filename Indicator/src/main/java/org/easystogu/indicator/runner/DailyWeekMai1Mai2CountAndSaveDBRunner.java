@@ -12,6 +12,7 @@ public class DailyWeekMai1Mai2CountAndSaveDBRunner extends DailyMai1Mai2CountAnd
 	public DailyWeekMai1Mai2CountAndSaveDBRunner() {
 		stockPriceTable = WeekStockPriceTableHelper.getInstance();
 		mai1mai2Table = IndWeekMai1Mai2TableHelper.getInstance();
+		needChuQuan = false;
 	}
 
 	@Override

@@ -8,6 +8,7 @@ public class HistoryWeeklyYiMengBSCountAndSaveDBRunner extends HistoryYiMengBSCo
 	public HistoryWeeklyYiMengBSCountAndSaveDBRunner() {
 		yiMengBSTable = IndWeekYiMengBSTableHelper.getInstance();
 		stockPriceTable = WeekStockPriceTableHelper.getInstance();
+		needChuQuan = false;
 	}
 
 	public static void main(String[] args) {

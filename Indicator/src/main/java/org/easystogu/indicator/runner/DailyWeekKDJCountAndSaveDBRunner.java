@@ -11,6 +11,7 @@ public class DailyWeekKDJCountAndSaveDBRunner extends DailyKDJCountAndSaveDBRunn
     public DailyWeekKDJCountAndSaveDBRunner() {
         stockPriceTable = WeekStockPriceTableHelper.getInstance();
         kdjTable = IndWeekKDJTableHelper.getInstance();
+        needChuQuan = false;
     }
 
     @Override

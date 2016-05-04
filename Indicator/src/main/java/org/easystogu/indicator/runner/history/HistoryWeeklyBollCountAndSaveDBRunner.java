@@ -8,6 +8,7 @@ public class HistoryWeeklyBollCountAndSaveDBRunner extends HistoryBollCountAndSa
     public HistoryWeeklyBollCountAndSaveDBRunner() {
         bollTable = IndWeekBollTableHelper.getInstance();
         stockPriceTable = WeekStockPriceTableHelper.getInstance();
+        needChuQuan = false;
     }
 
     public static void main(String[] args) {

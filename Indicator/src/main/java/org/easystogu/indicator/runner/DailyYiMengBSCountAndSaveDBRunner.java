@@ -15,85 +15,87 @@ import org.easystogu.utils.Strings;
 import com.google.common.primitives.Doubles;
 
 public class DailyYiMengBSCountAndSaveDBRunner implements Runnable {
-	protected StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
-	protected IndYiMengBSTableHelper yiMengBSTable = IndYiMengBSTableHelper.getInstance();
-	private YiMengBSHelper yiMengBSHelper = new YiMengBSHelper();
-	protected ChuQuanChuXiPriceHelper chuQuanChuXiPriceHelper = new ChuQuanChuXiPriceHelper();
-	protected CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
+    protected StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
+    protected IndYiMengBSTableHelper yiMengBSTable = IndYiMengBSTableHelper.getInstance();
+    private YiMengBSHelper yiMengBSHelper = new YiMengBSHelper();
+    protected ChuQuanChuXiPriceHelper chuQuanChuXiPriceHelper = new ChuQuanChuXiPriceHelper();
+    protected CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
+    protected boolean needChuQuan = true;// week do not need chuQuan
 
-	public DailyYiMengBSCountAndSaveDBRunner() {
+    public DailyYiMengBSCountAndSaveDBRunner() {
 
-	}
+    }
 
-	public void deleteYiMengBS(String stockId, String date) {
-		yiMengBSTable.delete(stockId, date);
-	}
+    public void deleteYiMengBS(String stockId, String date) {
+        yiMengBSTable.delete(stockId, date);
+    }
 
-	public void deleteYiMengBS(String stockId) {
-		yiMengBSTable.delete(stockId);
-	}
+    public void deleteYiMengBS(String stockId) {
+        yiMengBSTable.delete(stockId);
+    }
 
-	public void deleteYiMengBS(List<String> stockIds) {
-		int index = 0;
-		for (String stockId : stockIds) {
-			System.out.println("Delete YiMengBS for " + stockId + " " + (++index) + "/" + stockIds.size());
-			this.deleteYiMengBS(stockId);
-		}
-	}
+    public void deleteYiMengBS(List<String> stockIds) {
+        int index = 0;
+        for (String stockId : stockIds) {
+            System.out.println("Delete YiMengBS for " + stockId + " " + (++index) + "/" + stockIds.size());
+            this.deleteYiMengBS(stockId);
+        }
+    }
 
-	public void countAndSaved(String stockId) {
-		List<StockPriceVO> priceList = stockPriceTable.getStockPriceById(stockId);
+    public void countAndSaved(String stockId) {
+        List<StockPriceVO> priceList = stockPriceTable.getStockPriceById(stockId);
 
-		if (priceList.size() <= 108) {
-			// System.out.println("StockPrice data is less than 108, skip " +
-			// stockId);
-			return;
-		}
+        if (priceList.size() <= 108) {
+            // System.out.println("StockPrice data is less than 108, skip " +
+            // stockId);
+            return;
+        }
 
-		// update price based on chuQuanChuXi event
-		chuQuanChuXiPriceHelper.updateQianFuQianPriceBasedOnHouFuQuan(stockId, priceList);
+        // update price based on chuQuanChuXi event
+        if (this.needChuQuan)
+            chuQuanChuXiPriceHelper.updateQianFuQianPriceBasedOnHouFuQuan(stockId, priceList);
 
-		List<Double> close = StockPriceFetcher.getClosePrice(priceList);
-		List<Double> low = StockPriceFetcher.getLowPrice(priceList);
-		List<Double> high = StockPriceFetcher.getHighPrice(priceList);
+        List<Double> close = StockPriceFetcher.getClosePrice(priceList);
+        List<Double> low = StockPriceFetcher.getLowPrice(priceList);
+        List<Double> high = StockPriceFetcher.getHighPrice(priceList);
 
-		double[][] yiMeng = yiMengBSHelper.getYiMengBSList(Doubles.toArray(close), Doubles.toArray(low),
-				Doubles.toArray(high));
+        double[][] yiMeng = yiMengBSHelper.getYiMengBSList(Doubles.toArray(close), Doubles.toArray(low),
+                Doubles.toArray(high));
 
-		int length = yiMeng[0].length;
+        int length = yiMeng[0].length;
 
-		YiMengBSVO vo = new YiMengBSVO();
-		vo.setX2(Strings.convert2ScaleDecimal(yiMeng[0][length - 1]));
-		vo.setX3(Strings.convert2ScaleDecimal(yiMeng[1][length - 1]));
-		vo.setStockId(stockId);
-		vo.setDate(priceList.get(length - 1).date);
+        YiMengBSVO vo = new YiMengBSVO();
+        vo.setX2(Strings.convert2ScaleDecimal(yiMeng[0][length - 1]));
+        vo.setX3(Strings.convert2ScaleDecimal(yiMeng[1][length - 1]));
+        vo.setStockId(stockId);
+        vo.setDate(priceList.get(length - 1).date);
 
-		this.deleteYiMengBS(stockId, vo.date);
-		yiMengBSTable.insert(vo);
+        this.deleteYiMengBS(stockId, vo.date);
+        yiMengBSTable.insert(vo);
 
-	}
+    }
 
-	public void countAndSaved(List<String> stockIds) {
-		int index = 0;
-		for (String stockId : stockIds) {
-			if (index++ % 500 == 0) {
-				System.out.println("YiMengBS countAndSaved: " + stockId + " " + (index) + "/" + stockIds.size());
-			}
-			this.countAndSaved(stockId);
-		}
-	}
+    public void countAndSaved(List<String> stockIds) {
+        int index = 0;
+        for (String stockId : stockIds) {
+            if (index++ % 500 == 0) {
+                System.out.println("YiMengBS countAndSaved: " + stockId + " " + (index) + "/" + stockIds.size());
+            }
+            this.countAndSaved(stockId);
+        }
+    }
 
-	public void run() {
+    public void run() {
 
-	}
+    }
 
-	// TODO Auto-generated method stub
-	public static void main(String[] args) {
-		CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
-		List<String> stockIds = stockConfig.getAllStockId();
-		DailyYiMengBSCountAndSaveDBRunner runner = new DailyYiMengBSCountAndSaveDBRunner();
-		runner.countAndSaved(stockIds);
-		// runner.countAndSaved("002194");
-	}
+    // TODO Auto-generated method stub
+    public static void main(String[] args) {
+        CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
+        List<String> stockIds = stockConfig.getAllStockId();
+        DailyYiMengBSCountAndSaveDBRunner runner = new DailyYiMengBSCountAndSaveDBRunner();
+        runner.countAndSaved(stockIds);
+        // runner.countAndSaved("002194");
+    }
 
 }

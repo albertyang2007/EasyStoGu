@@ -12,91 +12,93 @@ import org.easystogu.indicator.TALIBWraper;
 import org.easystogu.utils.Strings;
 
 public class DailyXueShi2CountAndSaveDBRunner implements Runnable {
-	protected IndXueShi2TableHelper xueShi2Table = IndXueShi2TableHelper.getInstance();
-	protected StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
-	private TALIBWraper talib = new TALIBWraper();
-	protected ChuQuanChuXiPriceHelper chuQuanChuXiPriceHelper = new ChuQuanChuXiPriceHelper();
-	protected CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
+    protected IndXueShi2TableHelper xueShi2Table = IndXueShi2TableHelper.getInstance();
+    protected StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
+    private TALIBWraper talib = new TALIBWraper();
+    protected ChuQuanChuXiPriceHelper chuQuanChuXiPriceHelper = new ChuQuanChuXiPriceHelper();
+    protected CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
+    protected boolean needChuQuan = true;// week do not need chuQuan
 
-	public DailyXueShi2CountAndSaveDBRunner() {
+    public DailyXueShi2CountAndSaveDBRunner() {
 
-	}
+    }
 
-	public void deleteXueShi2(String stockId, String date) {
-		xueShi2Table.delete(stockId, date);
-	}
+    public void deleteXueShi2(String stockId, String date) {
+        xueShi2Table.delete(stockId, date);
+    }
 
-	public void countAndSaved(String stockId) {
+    public void countAndSaved(String stockId) {
 
-		List<StockPriceVO> priceList = stockPriceTable.getStockPriceById(stockId);
+        List<StockPriceVO> priceList = stockPriceTable.getStockPriceById(stockId);
 
-		int length = priceList.size();
+        int length = priceList.size();
 
-		if (length < 60) {
-			// System.out.println(stockId
-			// +
-			// " price data is not enough to count XueShi2, please wait until it has at least 60 days. Skip");
-			return;
-		}
+        if (length < 60) {
+            // System.out.println(stockId
+            // +
+            // " price data is not enough to count XueShi2, please wait until it has at least 60 days. Skip");
+            return;
+        }
 
-		// update price based on chuQuanChuXi event
-		chuQuanChuXiPriceHelper.updateQianFuQianPriceBasedOnHouFuQuan(stockId, priceList);
+        // update price based on chuQuanChuXi event
+        if (this.needChuQuan)
+            chuQuanChuXiPriceHelper.updateQianFuQianPriceBasedOnHouFuQuan(stockId, priceList);
 
-		double[] close = new double[length];
-		int index = 0;
-		for (StockPriceVO vo : priceList) {
-			close[index++] = vo.close;
-		}
+        double[] close = new double[length];
+        int index = 0;
+        for (StockPriceVO vo : priceList) {
+            close[index++] = vo.close;
+        }
 
-		double[] var = talib.getEma(close, 9);
+        double[] var = talib.getEma(close, 9);
 
-		double[] varUpper = new double[var.length];
-		for (int i = 0; i < var.length; i++) {
-			varUpper[i] = var[i] * 1.14;
-		}
+        double[] varUpper = new double[var.length];
+        for (int i = 0; i < var.length; i++) {
+            varUpper[i] = var[i] * 1.14;
+        }
 
-		double[] varLower = new double[var.length];
-		for (int i = 0; i < var.length; i++) {
-			varLower[i] = var[i] * 0.86;
-		}
+        double[] varLower = new double[var.length];
+        for (int i = 0; i < var.length; i++) {
+            varLower[i] = var[i] * 0.86;
+        }
 
-		double[] xueShi2Upper = talib.getEma(varUpper, 5);
-		double[] xueShi2Low = talib.getEma(varLower, 5);
+        double[] xueShi2Upper = talib.getEma(varUpper, 5);
+        double[] xueShi2Low = talib.getEma(varLower, 5);
 
-		double up = xueShi2Upper[length - 1];
-		double dn = xueShi2Low[length - 1];
-		// System.out.println("UP=" + up);
-		// System.out.println("DN=" + dn);
+        double up = xueShi2Upper[length - 1];
+        double dn = xueShi2Low[length - 1];
+        // System.out.println("UP=" + up);
+        // System.out.println("DN=" + dn);
 
-		XueShi2VO xueShi2VO = new XueShi2VO();
-		xueShi2VO.setStockId(stockId);
-		xueShi2VO.setDate(priceList.get(length - 1).date);
-		xueShi2VO.setUp(Strings.convert2ScaleDecimal(up));
-		xueShi2VO.setDn(Strings.convert2ScaleDecimal(dn));
+        XueShi2VO xueShi2VO = new XueShi2VO();
+        xueShi2VO.setStockId(stockId);
+        xueShi2VO.setDate(priceList.get(length - 1).date);
+        xueShi2VO.setUp(Strings.convert2ScaleDecimal(up));
+        xueShi2VO.setDn(Strings.convert2ScaleDecimal(dn));
 
-		this.deleteXueShi2(stockId, xueShi2VO.date);
-		xueShi2Table.insert(xueShi2VO);
-	}
+        this.deleteXueShi2(stockId, xueShi2VO.date);
+        xueShi2Table.insert(xueShi2VO);
+    }
 
-	public void countAndSaved(List<String> stockIds) {
-		int index = 0;
-		for (String stockId : stockIds) {
-			if (index++ % 500 == 0) {
-				System.out.println("Boll countAndSaved: " + stockId + " " + (index) + "/" + stockIds.size());
-			}
-			this.countAndSaved(stockId);
-		}
-	}
+    public void countAndSaved(List<String> stockIds) {
+        int index = 0;
+        for (String stockId : stockIds) {
+            if (index++ % 500 == 0) {
+                System.out.println("Boll countAndSaved: " + stockId + " " + (index) + "/" + stockIds.size());
+            }
+            this.countAndSaved(stockId);
+        }
+    }
 
-	public void run() {
+    public void run() {
 
-	}
+    }
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
-		DailyXueShi2CountAndSaveDBRunner runner = new DailyXueShi2CountAndSaveDBRunner();
-		runner.countAndSaved(stockConfig.getAllStockId());
-		// runner.countAndSaved("000979");
-	}
+    public static void main(String[] args) {
+        // TODO Auto-generated method stub
+        CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
+        DailyXueShi2CountAndSaveDBRunner runner = new DailyXueShi2CountAndSaveDBRunner();
+        runner.countAndSaved(stockConfig.getAllStockId());
+        // runner.countAndSaved("000979");
+    }
 }

@@ -12,6 +12,7 @@ public class DailyWeekShenXianCountAndSaveDBRunner extends DailyShenXianCountAnd
 	public DailyWeekShenXianCountAndSaveDBRunner() {
 		stockPriceTable = WeekStockPriceTableHelper.getInstance();
 		shenXianTable = IndWeekShenXianTableHelper.getInstance();
+		needChuQuan = false;
 	}
 
 	@Override

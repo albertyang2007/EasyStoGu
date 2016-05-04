@@ -13,84 +13,86 @@ import org.easystogu.utils.Strings;
 
 public class DailyZhuliJinChuCountAndSaveDBRunner implements Runnable {
 
-	protected StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
-	protected IndZhuliJinChuTableHelper zhuliJinChuTable = IndZhuliJinChuTableHelper.getInstance();
-	private ZhuliJinChuHelper zhuliJinChuHelper = new ZhuliJinChuHelper();
-	protected ChuQuanChuXiPriceHelper chuQuanChuXiPriceHelper = new ChuQuanChuXiPriceHelper();
-	protected CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
+    protected StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
+    protected IndZhuliJinChuTableHelper zhuliJinChuTable = IndZhuliJinChuTableHelper.getInstance();
+    private ZhuliJinChuHelper zhuliJinChuHelper = new ZhuliJinChuHelper();
+    protected ChuQuanChuXiPriceHelper chuQuanChuXiPriceHelper = new ChuQuanChuXiPriceHelper();
+    protected CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
+    protected boolean needChuQuan = true;// week do not need chuQuan
 
-	public DailyZhuliJinChuCountAndSaveDBRunner() {
+    public DailyZhuliJinChuCountAndSaveDBRunner() {
 
-	}
+    }
 
-	public void deleteZhuliJinChu(String stockId, String date) {
-		zhuliJinChuTable.delete(stockId, date);
-	}
+    public void deleteZhuliJinChu(String stockId, String date) {
+        zhuliJinChuTable.delete(stockId, date);
+    }
 
-	public void deleteZhuliJinChu(String stockId) {
-		zhuliJinChuTable.delete(stockId);
-	}
+    public void deleteZhuliJinChu(String stockId) {
+        zhuliJinChuTable.delete(stockId);
+    }
 
-	public void deleteMai1Mai2(List<String> stockIds) {
-		int index = 0;
-		for (String stockId : stockIds) {
-			System.out.println("Delete ZhuliJinChu for " + stockId + " " + (++index) + "/" + stockIds.size());
-			this.deleteZhuliJinChu(stockId);
-		}
-	}
+    public void deleteMai1Mai2(List<String> stockIds) {
+        int index = 0;
+        for (String stockId : stockIds) {
+            System.out.println("Delete ZhuliJinChu for " + stockId + " " + (++index) + "/" + stockIds.size());
+            this.deleteZhuliJinChu(stockId);
+        }
+    }
 
-	public void countAndSaved(String stockId) {
-		List<StockPriceVO> priceList = stockPriceTable.getStockPriceById(stockId);
+    public void countAndSaved(String stockId) {
+        List<StockPriceVO> priceList = stockPriceTable.getStockPriceById(stockId);
 
-		if (priceList.size() <= 34) {
-			// System.out.println("StockPrice data is less than 34, skip " +
-			// stockId);
-			return;
-		}
+        if (priceList.size() <= 34) {
+            // System.out.println("StockPrice data is less than 34, skip " +
+            // stockId);
+            return;
+        }
 
-		// update price based on chuQuanChuXi event
-		chuQuanChuXiPriceHelper.updateQianFuQianPriceBasedOnHouFuQuan(stockId, priceList);
+        // update price based on chuQuanChuXi event
+        if (this.needChuQuan)
+            chuQuanChuXiPriceHelper.updateQianFuQianPriceBasedOnHouFuQuan(stockId, priceList);
 
-		// list is order by date
-		int length = priceList.size();
-		double[] var1 = new double[length];
-		int index = 0;
-		for (StockPriceVO vo : priceList) {
-			var1[index++] = (2 * vo.close + vo.high + vo.low) / 4;
-		}
+        // list is order by date
+        int length = priceList.size();
+        double[] var1 = new double[length];
+        int index = 0;
+        for (StockPriceVO vo : priceList) {
+            var1[index++] = (2 * vo.close + vo.high + vo.low) / 4;
+        }
 
-		double[][] zhuliJinChu = zhuliJinChuHelper.getZhuliJinChuList(var1);
+        double[][] zhuliJinChu = zhuliJinChuHelper.getZhuliJinChuList(var1);
 
-		ZhuliJinChuVO vo = new ZhuliJinChuVO();
-		vo.setDuofang(Strings.convert2ScaleDecimal(zhuliJinChu[0][length - 1]));
-		vo.setKongfang(Strings.convert2ScaleDecimal(zhuliJinChu[1][length - 1]));
-		vo.setStockId(stockId);
-		vo.setDate(priceList.get(length - 1).date);
+        ZhuliJinChuVO vo = new ZhuliJinChuVO();
+        vo.setDuofang(Strings.convert2ScaleDecimal(zhuliJinChu[0][length - 1]));
+        vo.setKongfang(Strings.convert2ScaleDecimal(zhuliJinChu[1][length - 1]));
+        vo.setStockId(stockId);
+        vo.setDate(priceList.get(length - 1).date);
 
-		this.deleteZhuliJinChu(stockId, vo.date);
-		zhuliJinChuTable.insert(vo);
+        this.deleteZhuliJinChu(stockId, vo.date);
+        zhuliJinChuTable.insert(vo);
 
-	}
+    }
 
-	public void countAndSaved(List<String> stockIds) {
-		int index = 0;
-		for (String stockId : stockIds) {
-			if (index++ % 500 == 0) {
-				System.out.println("ZhuliJinChu countAndSaved: " + stockId + " " + (index) + "/" + stockIds.size());
-			}
-			this.countAndSaved(stockId);
-		}
-	}
+    public void countAndSaved(List<String> stockIds) {
+        int index = 0;
+        for (String stockId : stockIds) {
+            if (index++ % 500 == 0) {
+                System.out.println("ZhuliJinChu countAndSaved: " + stockId + " " + (index) + "/" + stockIds.size());
+            }
+            this.countAndSaved(stockId);
+        }
+    }
 
-	public void run() {
-	}
+    public void run() {
+    }
 
-	// TODO Auto-generated method stub
-	public static void main(String[] args) {
-		CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
-		DailyZhuliJinChuCountAndSaveDBRunner runner = new DailyZhuliJinChuCountAndSaveDBRunner();
-		runner.countAndSaved(stockConfig.getAllStockId());
-		// runner.countAndSaved("600000");
-	}
+    // TODO Auto-generated method stub
+    public static void main(String[] args) {
+        CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
+        DailyZhuliJinChuCountAndSaveDBRunner runner = new DailyZhuliJinChuCountAndSaveDBRunner();
+        runner.countAndSaved(stockConfig.getAllStockId());
+        // runner.countAndSaved("600000");
+    }
 
 }

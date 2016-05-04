@@ -8,6 +8,7 @@ public class HistoryWeeklyMai1Mai2CountAndSaveDBRunner extends HistoryMai1Mai2Co
 	public HistoryWeeklyMai1Mai2CountAndSaveDBRunner() {
 		mai1mai2Table = IndWeekMai1Mai2TableHelper.getInstance();
 		stockPriceTable = WeekStockPriceTableHelper.getInstance();
+		needChuQuan = false;
 	}
 
 	public static void main(String[] args) {

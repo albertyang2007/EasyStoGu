@@ -12,6 +12,7 @@ public class DailyWeekQSDDCountAndSaveDBRunner extends DailyQSDDCountAndSaveDBRu
 	public DailyWeekQSDDCountAndSaveDBRunner() {
 		stockPriceTable = WeekStockPriceTableHelper.getInstance();
 		qsddTable = IndWeekQSDDTableHelper.getInstance();
+		needChuQuan = false;
 	}
 
 	@Override

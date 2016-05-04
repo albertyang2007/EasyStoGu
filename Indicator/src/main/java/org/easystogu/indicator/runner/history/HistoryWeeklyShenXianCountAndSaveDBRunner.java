@@ -8,6 +8,7 @@ public class HistoryWeeklyShenXianCountAndSaveDBRunner extends HistoryShenXianCo
 	public HistoryWeeklyShenXianCountAndSaveDBRunner() {
         shenXianTable = IndWeekShenXianTableHelper.getInstance();
         stockPriceTable = WeekStockPriceTableHelper.getInstance();
+        needChuQuan = false;
     }
 
     public static void main(String[] args) {

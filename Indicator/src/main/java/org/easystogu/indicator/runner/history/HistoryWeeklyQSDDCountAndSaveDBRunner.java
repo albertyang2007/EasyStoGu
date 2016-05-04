@@ -8,6 +8,7 @@ public class HistoryWeeklyQSDDCountAndSaveDBRunner extends HistoryQSDDCountAndSa
 	public HistoryWeeklyQSDDCountAndSaveDBRunner() {
 		qsddTable = IndWeekQSDDTableHelper.getInstance();
 		stockPriceTable = WeekStockPriceTableHelper.getInstance();
+		needChuQuan = false;
 	}
 
 	public static void main(String[] args) {
