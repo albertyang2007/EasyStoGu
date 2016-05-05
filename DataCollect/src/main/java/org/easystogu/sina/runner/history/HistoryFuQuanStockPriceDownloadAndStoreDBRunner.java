@@ -9,7 +9,7 @@ import java.util.List;
 import org.easystogu.config.Constants;
 import org.easystogu.config.FileConfigurationService;
 import org.easystogu.db.access.CompanyInfoTableHelper;
-import org.easystogu.db.access.FuQuanStockPriceTableHelper;
+import org.easystogu.db.access.HouFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.table.StockPriceVO;
 import org.easystogu.utils.Strings;
@@ -21,7 +21,7 @@ import org.springframework.web.client.RestTemplate;
 public class HistoryFuQuanStockPriceDownloadAndStoreDBRunner {
 	private static String baseUrl = "http://vip.stock.finance.sina.com.cn/api/json_v2.php/BasicStockSrv.getStockFuQuanData?symbol=stockId&type=hfq";
 	private static FileConfigurationService configure = FileConfigurationService.getInstance();
-	private FuQuanStockPriceTableHelper fuquanStockPriceTable = FuQuanStockPriceTableHelper.getInstance();
+	private HouFuQuanStockPriceTableHelper houfuquanStockPriceTable = HouFuQuanStockPriceTableHelper.getInstance();
 	private StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
 	private CompanyInfoTableHelper companyInfoTable = CompanyInfoTableHelper.getInstance();
 
@@ -107,7 +107,7 @@ public class HistoryFuQuanStockPriceDownloadAndStoreDBRunner {
 	public void countAndSave(String stockId) {
 		// first delete all price for this stockId
 		System.out.println("Delete fuquan stock price for " + stockId);
-		this.fuquanStockPriceTable.delete(stockId);
+		this.houfuquanStockPriceTable.delete(stockId);
 		// fetch all history price from sohu api
 		// FuQuan data is in date order desc
 		List<StockPriceVO> fqspList = this.fetchFuQuanStockPriceFromWeb(stockId);
@@ -122,7 +122,7 @@ public class HistoryFuQuanStockPriceDownloadAndStoreDBRunner {
 				fqspvo.low = Strings.convert2ScaleDecimal(spvo.low * rate);
 				fqspvo.high = Strings.convert2ScaleDecimal(spvo.high * rate);
 				fqspvo.volume = spvo.volume;
-				fuquanStockPriceTable.insert(fqspvo);
+				houfuquanStockPriceTable.insert(fqspvo);
 			} else {
 				// sohu data is not so correct, shift!!!
 				// System.out.println("Missging StockPrice for " + stockId +
@@ -134,7 +134,7 @@ public class HistoryFuQuanStockPriceDownloadAndStoreDBRunner {
 	public void reRunOnFailure() {
 		List<String> stockIds = companyInfoTable.getAllCompanyStockId();
 		for (String stockId : stockIds) {
-			if (this.fuquanStockPriceTable.countTuplesByIDAndBetweenDate(stockId, "1997-01-01",
+			if (this.houfuquanStockPriceTable.countTuplesByIDAndBetweenDate(stockId, "1997-01-01",
 					WeekdayUtil.currentDate()) <= 0) {
 				System.out.println("Re run for " + stockId);
 				this.countAndSave(stockId);

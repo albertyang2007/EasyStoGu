@@ -9,7 +9,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
-import org.easystogu.db.access.FuQuanStockPriceTableHelper;
+import org.easystogu.db.access.HouFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.table.BollVO;
 import org.easystogu.db.table.KDJVO;
@@ -35,7 +35,7 @@ public class IndicatorEndPointV2 {
 	protected static String HHmmss = "00:00:00";
 	protected CompanyInfoFileHelper companyInfoHelper = CompanyInfoFileHelper.getInstance();
 	protected StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
-	protected FuQuanStockPriceTableHelper fuquanStockPriceTable = FuQuanStockPriceTableHelper.getInstance();
+	protected HouFuQuanStockPriceTableHelper houfuquanStockPriceTable = HouFuQuanStockPriceTableHelper.getInstance();
 	protected MACDHelper macdHelper = new MACDHelper();
 	protected KDJHelper kdjHelper = new KDJHelper();
 	protected ShenXianHelper shenXianHelper = new ShenXianHelper();
@@ -192,7 +192,7 @@ public class IndicatorEndPointV2 {
 		if (companyInfoHelper.isStockIdAMajorZhiShu(stockid))
 			return stockPriceTable.getStockPriceById(stockid);
 		// for company, get hou fuquan stockprice data
-		return this.fuquanStockPriceTable.getStockPriceById(stockid);
+		return this.houfuquanStockPriceTable.getStockPriceById(stockid);
 	}
 
 	protected boolean isStockDateSelected(String date, String aDate) {

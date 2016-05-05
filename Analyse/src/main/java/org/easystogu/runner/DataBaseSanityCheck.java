@@ -2,7 +2,7 @@ package org.easystogu.runner;
 
 import java.util.List;
 
-import org.easystogu.db.access.FuQuanStockPriceTableHelper;
+import org.easystogu.db.access.HouFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.IndBollTableHelper;
 import org.easystogu.db.access.IndKDJTableHelper;
 import org.easystogu.db.access.IndMacdTableHelper;
@@ -30,7 +30,7 @@ import org.easystogu.utils.Strings;
 
 public class DataBaseSanityCheck implements Runnable {
 	protected StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
-	protected FuQuanStockPriceTableHelper fuquanStockPriceTable = FuQuanStockPriceTableHelper.getInstance();
+	protected HouFuQuanStockPriceTableHelper houfuquanStockPriceTable = HouFuQuanStockPriceTableHelper.getInstance();
 	protected IndMacdTableHelper macdTable = IndMacdTableHelper.getInstance();
 	protected IndKDJTableHelper kdjTable = IndKDJTableHelper.getInstance();
 	protected IndBollTableHelper bollTable = IndBollTableHelper.getInstance();
@@ -68,7 +68,7 @@ public class DataBaseSanityCheck implements Runnable {
 	public void sanityDailyCheck(String stockId) {
 
 		List<StockPriceVO> spList = stockPriceTable.getStockPriceById(stockId);
-		List<StockPriceVO> fuquan_spList = fuquanStockPriceTable.getStockPriceById(stockId);
+		List<StockPriceVO> fuquan_spList = houfuquanStockPriceTable.getStockPriceById(stockId);
 		List<MacdVO> macdList = macdTable.getAllMacd(stockId);
 		List<KDJVO> kdjList = kdjTable.getAllKDJ(stockId);
 		List<BollVO> bollList = bollTable.getAllBoll(stockId);
@@ -99,13 +99,13 @@ public class DataBaseSanityCheck implements Runnable {
 		for (StockPriceVO vo : fuquan_spList) {
 			if (vo.close == 0 || vo.open == 0 || vo.high == 0 || vo.low == 0 || Strings.isEmpty(vo.date)) {
 				System.out.println("Sanity Delete FuQuanStockPrice " + vo);
-				this.fuquanStockPriceTable.delete(vo.stockId, vo.date);
+				this.houfuquanStockPriceTable.delete(vo.stockId, vo.date);
 				fq_refresh = true;
 			}
 		}
 		// refresh if above delete vo
 		if (fq_refresh)
-			fuquan_spList = fuquanStockPriceTable.getStockPriceById(stockId);
+			fuquan_spList = houfuquanStockPriceTable.getStockPriceById(stockId);
 
 		if ((spList.size() != macdList.size())) {
 			System.out.println(stockId + " size of macd is not equal:" + spList.size() + "!=" + macdList.size());

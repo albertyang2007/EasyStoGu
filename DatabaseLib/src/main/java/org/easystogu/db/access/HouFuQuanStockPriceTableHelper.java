@@ -3,21 +3,20 @@ package org.easystogu.db.access;
 import java.util.List;
 
 import org.easystogu.db.table.StockPriceVO;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
-public class FuQuanStockPriceTableHelper extends StockPriceTableHelper {
-	private static FuQuanStockPriceTableHelper instance = null;
+public class HouFuQuanStockPriceTableHelper extends StockPriceTableHelper {
+	private static HouFuQuanStockPriceTableHelper instance = null;
 
-	public static FuQuanStockPriceTableHelper getInstance() {
+	public static HouFuQuanStockPriceTableHelper getInstance() {
 		if (instance == null) {
-			instance = new FuQuanStockPriceTableHelper();
+			instance = new HouFuQuanStockPriceTableHelper();
 		}
 		return instance;
 	}
 
-	protected FuQuanStockPriceTableHelper() {
-		super();
-		tableName = "FUQUAN_STOCKPRICE";
+	protected HouFuQuanStockPriceTableHelper() {
+		//super();
+		tableName = "HOU_FUQUAN_STOCKPRICE";
 		// please modify this SQL in superClass
 		INSERT_SQL = "INSERT INTO "
 				+ tableName
@@ -92,16 +91,16 @@ public class FuQuanStockPriceTableHelper extends StockPriceTableHelper {
 		// to check if a date is in deal time, to exclude the holiday
 		IS_DATE_IN_DEAL = "SELECT count(*) AS rtn FROM " + tableName + " WHERE stockid='999999' AND DATE = :date";
 		COUNT_BY_ID_SQL = "SELECT COUNT(*) AS rtn FROM " + tableName + " WHERE stockId = :stockId";
+		COUNT_ALL_SQL = "SELECT count(*) AS rtn from " + tableName;
 
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+		//this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
 	}
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		FuQuanStockPriceTableHelper ins = new FuQuanStockPriceTableHelper();
+		HouFuQuanStockPriceTableHelper ins = new HouFuQuanStockPriceTableHelper();
 		try {
-			List<StockPriceVO> list = ins.getStockPriceByIdAndBetweenDate("002336", "2015-04-03", "2015-04-25");
-			System.out.println(list.get(0));
+			List<StockPriceVO> list = ins.getStockPriceByIdAndBetweenDate("002609", "2016-04-03", "2016-05-25");
 			System.out.println(list.get(list.size() - 1));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
