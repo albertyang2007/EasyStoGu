@@ -9,7 +9,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
-import org.easystogu.db.access.FuQuanStockPriceTableHelper;
+import org.easystogu.db.access.HouFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.table.StockPriceVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
@@ -21,7 +21,7 @@ public class PriceEndPointV2 {
 	protected static String HHmmss = "00:00:00";
 	protected CompanyInfoFileHelper companyInfoHelper = CompanyInfoFileHelper.getInstance();
 	protected StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
-	protected FuQuanStockPriceTableHelper fuquanStockPriceTable = FuQuanStockPriceTableHelper.getInstance();
+	protected HouFuQuanStockPriceTableHelper houfuquanStockPriceTable = HouFuQuanStockPriceTableHelper.getInstance();
 	@Autowired
 	protected ProcessRequestParmsInPostBody postParmsProcess;
 	private String dateRegex = "[0-9]{4}-[0-9]{2}-[0-9]{2}";
@@ -40,14 +40,14 @@ public class PriceEndPointV2 {
 			if (companyInfoHelper.isStockIdAMajorZhiShu(stockIdParm)) {
 				spList = stockPriceTable.getStockPriceByIdAndBetweenDate(stockIdParm, date1, date2);
 			} else {
-				spList = fuquanStockPriceTable.getStockPriceByIdAndBetweenDate(stockIdParm, date1, date2);
+				spList = houfuquanStockPriceTable.getStockPriceByIdAndBetweenDate(stockIdParm, date1, date2);
 			}
 		}
 		if (Pattern.matches(dateRegex, dateParm) || Strings.isEmpty(dateParm)) {
 			if (companyInfoHelper.isStockIdAMajorZhiShu(stockIdParm)) {
 				spList.add(stockPriceTable.getStockPriceByIdAndDate(stockIdParm, dateParm));
 			} else {
-				spList.add(fuquanStockPriceTable.getStockPriceByIdAndDate(stockIdParm, dateParm));
+				spList.add(houfuquanStockPriceTable.getStockPriceByIdAndDate(stockIdParm, dateParm));
 			}
 		}
 

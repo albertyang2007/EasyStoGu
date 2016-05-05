@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.easystogu.db.access.CompanyInfoTableHelper;
-import org.easystogu.db.access.FuQuanStockPriceTableHelper;
+import org.easystogu.db.access.HouFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.ScheduleActionTableHelper;
 import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.table.CompanyInfoVO;
@@ -24,7 +24,7 @@ public class DailyStockPriceDownloadAndStoreDBRunner2 implements Runnable {
 	// LogHelper.getLogger(DailyStockPriceDownloadAndStoreDBRunner2.class);
 	private CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 	private StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
-	private FuQuanStockPriceTableHelper fuquanStockPriceTable = FuQuanStockPriceTableHelper.getInstance();
+	private HouFuQuanStockPriceTableHelper houfuquanStockPriceTable = HouFuQuanStockPriceTableHelper.getInstance();
 	private ScheduleActionTableHelper scheduleActionTable = ScheduleActionTableHelper.getInstance();
 	private CompanyInfoTableHelper companyInfoTable = CompanyInfoTableHelper.getInstance();
 	private DailyStockPriceDownloadAndStoreDBRunner runner1 = new DailyStockPriceDownloadAndStoreDBRunner();
@@ -94,12 +94,12 @@ public class DailyStockPriceDownloadAndStoreDBRunner2 implements Runnable {
 			// System.out.println("saving into DB, vo=" + vo);
 			this.stockPriceTable.insert(spvo);
 
-			// update fuquan_stockprice table
+			// update hou fuquan stockprice table
 			double newRate = 1.0;
 			double lastRate = 1.0;
 			// if this is not a new on board company, do check chuquan event
 			// delete if today old data is exist
-			this.fuquanStockPriceTable.delete(spvo.stockId, spvo.date);
+			this.houfuquanStockPriceTable.delete(spvo.stockId, spvo.date);
 			if (nDaySpList.size() >= 1) {
 				// already has history data, it is not a new on board company
 				StockPriceVO yesterday_spvo = nDaySpList.get(0);
@@ -119,7 +119,7 @@ public class DailyStockPriceDownloadAndStoreDBRunner2 implements Runnable {
 					savo.stockId = spvo.stockId;
 					savo.runDate = WeekdayUtil.nextDate(spvo.date);
 					savo.createDate = spvo.date;
-					savo.actionDo = ScheduleActionVO.ActionDo.refresh_fuquan_history_stockprice.name();
+					savo.actionDo = ScheduleActionVO.ActionDo.refresh_hou_fuquan_history_stockprice.name();
 					savo.params = "";
 
 					this.scheduleActionTable.delete(savo.stockId, savo.runDate, savo.actionDo);
@@ -128,14 +128,14 @@ public class DailyStockPriceDownloadAndStoreDBRunner2 implements Runnable {
 				
 				// update fuquan stockprice table by manually, assume there
 				// is no chuquan event at this date
-				List<StockPriceVO> nDayFuQuanSpList = this.fuquanStockPriceTable
+				List<StockPriceVO> nDayFuQuanSpList = this.houfuquanStockPriceTable
 						.getNdateStockPriceById(spvo.stockId, 1);
 				if (nDayFuQuanSpList.size() >= 1) {
 					StockPriceVO yesterday_fqspvo = nDayFuQuanSpList.get(0);
 					lastRate = yesterday_fqspvo.close / yesterday_spvo.close;
 				}
 			}
-			// insert fuquan stock price
+			// insert hou fuquan stock price
 			StockPriceVO fqspvo = new StockPriceVO();
 			fqspvo.date = spvo.date;
 			fqspvo.stockId = spvo.stockId;
@@ -145,8 +145,8 @@ public class DailyStockPriceDownloadAndStoreDBRunner2 implements Runnable {
 			fqspvo.high = Strings.convert2ScaleDecimal(spvo.high * lastRate * newRate);
 			fqspvo.volume = spvo.volume;
 
-			// System.out.println("saving fuquan into DB, vo=" + fqspvo);
-			this.fuquanStockPriceTable.insert(fqspvo);
+			// System.out.println("saving hou fuquan into DB, vo=" + fqspvo);
+			this.houfuquanStockPriceTable.insert(fqspvo);
 
 			this.totalSize++;
 

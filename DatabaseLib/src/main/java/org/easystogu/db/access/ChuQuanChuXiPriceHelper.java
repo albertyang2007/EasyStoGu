@@ -2,7 +2,6 @@ package org.easystogu.db.access;
 
 import java.util.List;
 
-import org.easystogu.db.table.ChuQuanChuXiVO;
 import org.easystogu.db.table.StockPriceVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.utils.Strings;
@@ -10,7 +9,7 @@ import org.easystogu.utils.Strings;
 public class ChuQuanChuXiPriceHelper {
     private CompanyInfoFileHelper companyInfoHelper = CompanyInfoFileHelper.getInstance();
     private EventChuQuanChuXiTableHelper chuQuanChuXiTable = EventChuQuanChuXiTableHelper.getInstance();
-    private FuQuanStockPriceTableHelper fuquanStockPriceTable = FuQuanStockPriceTableHelper.getInstance();
+    private HouFuQuanStockPriceTableHelper houfuquanStockPriceTable = HouFuQuanStockPriceTableHelper.getInstance();
     private static ChuQuanChuXiPriceHelper instance = null;
 
     public static ChuQuanChuXiPriceHelper getInstance() {
@@ -28,7 +27,7 @@ public class ChuQuanChuXiPriceHelper {
             return;
         }
 
-        List<StockPriceVO> fq_spList = fuquanStockPriceTable.getStockPriceById(stockId);
+        List<StockPriceVO> fq_spList = houfuquanStockPriceTable.getStockPriceById(stockId);
         if (fq_spList.size() != spList.size()) {
             System.out.println("Fatel error for " + stockId + ", fuquan StockPrice length (" + fq_spList.size()
                     + ") is not same as StockPrice (" + spList.size() + ")");
