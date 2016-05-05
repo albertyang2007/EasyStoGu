@@ -113,7 +113,7 @@ function loadQsddStatistics(version, stockId, dateFrom, dateTo) {
 		}
 
 		seriesCounter += 1;
-		if (seriesCounter === 3) {
+		if (seriesCounter === 2) {
 			createChart_Qsdd_Statistics(stockId, date_price, volume,
 					data_lonTerm, data_midTerm, data_shoTerm, date_topArea,
 					date_bottomArea, data_bottomGordon);
@@ -125,6 +125,7 @@ function loadQsddStatistics(version, stockId, dateFrom, dateTo) {
 	 * 
 	 * @returns {undefined}
 	 */
+	/*
 	var url_ind = "http://localhost:8080/portal/ind" + version + "/qsdd/"
 			+ stockId + "/" + dateFrom + "_" + dateTo;
 	$.getJSON(url_ind, function(data) {
@@ -145,7 +146,7 @@ function loadQsddStatistics(version, stockId, dateFrom, dateTo) {
 					data_lonTerm, data_midTerm, data_shoTerm, date_topArea,
 					date_bottomArea, data_bottomGordon);
 		}
-	});
+	});*/	
 
 	/**
 	 * Load qsdd top bottom statistics and display
@@ -165,7 +166,7 @@ function loadQsddStatistics(version, stockId, dateFrom, dateTo) {
 		}
 
 		seriesCounter += 1;
-		if (seriesCounter === 3) {
+		if (seriesCounter === 2) {
 			createChart_Qsdd_Statistics(stockId, date_price, volume,
 					data_lonTerm, data_midTerm, data_shoTerm, date_topArea,
 					date_bottomArea, data_bottomGordon);
