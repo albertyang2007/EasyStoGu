@@ -219,10 +219,6 @@ function createChart_LuZao_Gordon_Statistics(stockId, date_price, volume,
 			name : 'MA86',
 			data : data_ma86
 		}, {
-			name : '跌到山脚数目',
-			data : data_1_gordon0,
-			yAxis : 1
-		}, {
 			name : '升越良山数目',
 			data : data_2_gordon1,
 			yAxis : 1
@@ -236,7 +232,11 @@ function createChart_LuZao_Gordon_Statistics(stockId, date_price, volume,
 			yAxis : 1
 		}, {
 			name : '跌到山腰数目',
-			data : data_4_dead2,
+			data : data_5_dead2,
+			yAxis : 1
+		}, {
+			name : '跌到山脚数目',
+			data : data_1_gordon0,
 			yAxis : 1
 		} ]
 	});
