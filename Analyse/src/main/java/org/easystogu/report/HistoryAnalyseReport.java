@@ -99,7 +99,7 @@ public class HistoryAnalyseReport {
 				if (combineAanalyserHelper.isConditionSatisfy(checkPoint, subOverDayList, subOverWeekList)) {
 					reportVO = new HistoryReportDetailsVO(overDayList);
 					reportVO.setBuyPriceVO(superVO.priceVO);
-					System.out.println(superVO.priceVO.date + " buy");
+					// System.out.println(superVO.priceVO.date + " buy");
 					continue;
 				}
 			}
@@ -218,8 +218,8 @@ public class HistoryAnalyseReport {
 
 		for (String stockId : stockIds) {
 
-			// if (!stockId.equals("002609"))
-			// continue;
+			if (!stockId.equals("002444"))
+				continue;
 
 			List<HistoryReportDetailsVO> historyReportList = this.doAnalyseBuySellDate(stockId, checkPoint);
 			for (HistoryReportDetailsVO reportVO : historyReportList) {
@@ -236,7 +236,7 @@ public class HistoryAnalyseReport {
 					}
 
 					if (!reportVO.completed) {
-						System.out.println("Not Completed: " + reportVO);
+						// System.out.println("Not Completed: " + reportVO);
 						// save to checkpint daily selection table
 						if (isCheckPointSelected(checkPoint)) {
 							this.saveToCheckPointDailySelectionDB(reportVO.stockId, reportVO.buyPriceVO.date,
@@ -380,7 +380,7 @@ public class HistoryAnalyseReport {
 
 	public static void main(String[] args) {
 		HistoryAnalyseReport reporter = new HistoryAnalyseReport();
-		FileConfigurationService config = FileConfigurationService.getInstance();
+		//FileConfigurationService config = FileConfigurationService.getInstance();
 		// for (DailyCombineCheckPoint checkPoint :
 		// DailyCombineCheckPoint.values()) {
 		// if (config.getString("general_CheckPoint",
@@ -388,13 +388,13 @@ public class HistoryAnalyseReport {
 		// reporter.searchAllStockIdAnalyseHistoryCheckPoint(checkPoint);
 		// }
 		// }
-		//reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.Trend_PhaseI_GuanCha);
-		//reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.Trend_PhaseII_JianCang);
-		reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.Trend_PhaseIII_ChiGu);
-		reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.Trend_PhaseVI_JianCang);
+		// reporter.searchAllStockIdAnalyseHistoryBuySellCheckPoint(DailyCombineCheckPoint.LuZao_GordonO_MA43_DownCross_MA86);
 
-		//reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.QSDD_Bottom_Area);
-		//reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.QSDD_Bottom_Gordon);
-		//reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.QSDD_Top_Area);
+		//reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.LuZao_GordonO_MA43_DownCross_MA86);
+		//reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.LuZao_GordonI_MA19_UpCross_MA43);
+		//reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.LuZao_GordonII_MA19_UpCross_MA86);
+		//reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.LuZao_DeadI_MA43_UpCross_MA86);
+		//reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.LuZao_DeadII_MA19_DownCross_MA43);
+
 	}
 }

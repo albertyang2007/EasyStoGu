@@ -23,9 +23,9 @@ public class CheckPointStatisticsEndPoint {
 	private String fromToRegex = dateRegex + "_" + dateRegex;
 
 	@GET
-	@Path("/luzao/{date}")
+	@Path("/luzao/trend/{date}")
 	@Produces("application/json")
-	public List<StatisticsVO> queryLuZaoStatistics(@PathParam("date") String dateParm) {
+	public List<StatisticsVO> queryLuZaoTrendStatistics(@PathParam("date") String dateParm) {
 		List<StatisticsVO> list = new ArrayList<StatisticsVO>();
 		if (Pattern.matches(fromToRegex, dateParm)) {
 			String date1 = dateParm.split("_")[0];
@@ -43,6 +43,36 @@ public class CheckPointStatisticsEndPoint {
 						DailyCombineCheckPoint.Trend_PhaseIII_ChiGu.name());
 				vo.count4 = checkPointStatisticsTable.countByDateAndCheckPoint(date,
 						DailyCombineCheckPoint.Trend_PhaseVI_JianCang.name());
+				list.add(vo);
+			}
+		}
+
+		return list;
+	}
+
+	@GET
+	@Path("/luzao/gordon/{date}")
+	@Produces("application/json")
+	public List<StatisticsVO> queryLuZaoGordonStatistics(@PathParam("date") String dateParm) {
+		List<StatisticsVO> list = new ArrayList<StatisticsVO>();
+		if (Pattern.matches(fromToRegex, dateParm)) {
+			String date1 = dateParm.split("_")[0];
+			String date2 = dateParm.split("_")[1];
+
+			List<String> dateList = stockPriceTable.getDayListByIdAndBetweenDates("999999", date1, date2);
+			for (String date : dateList) {
+				StatisticsVO vo = new StatisticsVO();
+				vo.date = date;
+				vo.count1 = checkPointStatisticsTable.countByDateAndCheckPoint(date,
+						DailyCombineCheckPoint.LuZao_GordonO_MA43_DownCross_MA86.name());
+				vo.count2 = checkPointStatisticsTable.countByDateAndCheckPoint(date,
+						DailyCombineCheckPoint.LuZao_GordonI_MA19_UpCross_MA43.name());
+				vo.count3 = checkPointStatisticsTable.countByDateAndCheckPoint(date,
+						DailyCombineCheckPoint.LuZao_GordonII_MA19_UpCross_MA86.name());
+				vo.count4 = checkPointStatisticsTable.countByDateAndCheckPoint(date,
+						DailyCombineCheckPoint.LuZao_DeadI_MA43_UpCross_MA86.name());
+				vo.count5 = checkPointStatisticsTable.countByDateAndCheckPoint(date,
+						DailyCombineCheckPoint.LuZao_DeadII_MA19_DownCross_MA43.name());
 				list.add(vo);
 			}
 		}

@@ -6,4 +6,5 @@ public class StatisticsVO {
 	public int count2;
 	public int count3;
 	public int count4;
+	public int count5;
 }

@@ -1238,6 +1238,55 @@ public class CombineAnalyseHelper {
 			}
 			break;
 		}
+		// ma19<ma43, ma19<ma86, ma43 down cross ma86
+		case LuZao_GordonO_MA43_DownCross_MA86: {
+			if (curSuperDayVO.avgMA19 < curSuperDayVO.avgMA43 && curSuperDayVO.avgMA19 < curSuperDayVO.avgMA86) {
+				if (pre1SuperDayVO.avgMA43 > pre1SuperDayVO.avgMA86 && curSuperDayVO.avgMA43 <= curSuperDayVO.avgMA86) {
+					return true;
+				}
+			}
+			break;
+		}
+
+		// ma19<ma86, ma43<ma86 ma19 up cross ma43
+		case LuZao_GordonI_MA19_UpCross_MA43: {
+			if (curSuperDayVO.avgMA19 < curSuperDayVO.avgMA86 && curSuperDayVO.avgMA43 < curSuperDayVO.avgMA86) {
+				if (pre1SuperDayVO.avgMA19 < pre1SuperDayVO.avgMA43 && curSuperDayVO.avgMA19 >= curSuperDayVO.avgMA43) {
+					return true;
+				}
+			}
+			break;
+		}
+
+		// ma19>ma43, ma86>ma43, ma19 up cross ma86
+		case LuZao_GordonII_MA19_UpCross_MA86: {
+			if (curSuperDayVO.avgMA19 > curSuperDayVO.avgMA43 && curSuperDayVO.avgMA86 > curSuperDayVO.avgMA43) {
+				if (pre1SuperDayVO.avgMA19 < pre1SuperDayVO.avgMA86 && curSuperDayVO.avgMA19 >= curSuperDayVO.avgMA86) {
+					return true;
+				}
+			}
+			break;
+		}
+
+		// ma19>ma43, ma19>ma86 ma43 up corss ma86
+		case LuZao_DeadI_MA43_UpCross_MA86: {
+			if (curSuperDayVO.avgMA19 > curSuperDayVO.avgMA43 && curSuperDayVO.avgMA19 > curSuperDayVO.avgMA86) {
+				if (pre1SuperDayVO.avgMA43 < pre1SuperDayVO.avgMA86 && curSuperDayVO.avgMA43 >= curSuperDayVO.avgMA86) {
+					return true;
+				}
+			}
+			break;
+		}
+
+		// ma86<ma19, ma86<ma43, ma19 downcross ma43
+		case LuZao_DeadII_MA19_DownCross_MA43: {
+			if (curSuperDayVO.avgMA86 < curSuperDayVO.avgMA19 && curSuperDayVO.avgMA86 < curSuperDayVO.avgMA43) {
+				if (pre1SuperDayVO.avgMA19 > pre1SuperDayVO.avgMA43 && curSuperDayVO.avgMA19 <= curSuperDayVO.avgMA43) {
+					return true;
+				}
+			}
+			break;
+		}
 
 		// qsdd top
 		case QSDD_Top_Area: {
