@@ -218,8 +218,8 @@ public class HistoryAnalyseReport {
 
 		for (String stockId : stockIds) {
 
-			if (!stockId.equals("002444"))
-				continue;
+			//if (!stockId.equals("002444"))
+			//	continue;
 
 			List<HistoryReportDetailsVO> historyReportList = this.doAnalyseBuySellDate(stockId, checkPoint);
 			for (HistoryReportDetailsVO reportVO : historyReportList) {
@@ -380,7 +380,8 @@ public class HistoryAnalyseReport {
 
 	public static void main(String[] args) {
 		HistoryAnalyseReport reporter = new HistoryAnalyseReport();
-		//FileConfigurationService config = FileConfigurationService.getInstance();
+		// FileConfigurationService config =
+		// FileConfigurationService.getInstance();
 		// for (DailyCombineCheckPoint checkPoint :
 		// DailyCombineCheckPoint.values()) {
 		// if (config.getString("general_CheckPoint",
@@ -390,11 +391,11 @@ public class HistoryAnalyseReport {
 		// }
 		// reporter.searchAllStockIdAnalyseHistoryBuySellCheckPoint(DailyCombineCheckPoint.LuZao_GordonO_MA43_DownCross_MA86);
 
-		//reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.LuZao_GordonO_MA43_DownCross_MA86);
-		//reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.LuZao_GordonI_MA19_UpCross_MA43);
-		//reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.LuZao_GordonII_MA19_UpCross_MA86);
-		//reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.LuZao_DeadI_MA43_UpCross_MA86);
-		//reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.LuZao_DeadII_MA19_DownCross_MA43);
+		reporter.searchAllStockIdAnalyseHistoryBuySellCheckPoint(DailyCombineCheckPoint.LuZao_GordonO_MA43_DownCross_MA86);
+		reporter.searchAllStockIdAnalyseHistoryBuySellCheckPoint(DailyCombineCheckPoint.LuZao_GordonI_MA19_UpCross_MA43);
+		reporter.searchAllStockIdAnalyseHistoryBuySellCheckPoint(DailyCombineCheckPoint.LuZao_GordonII_MA19_UpCross_MA86);
+		reporter.searchAllStockIdAnalyseHistoryBuySellCheckPoint(DailyCombineCheckPoint.LuZao_DeadI_MA43_UpCross_MA86);
+		reporter.searchAllStockIdAnalyseHistoryBuySellCheckPoint(DailyCombineCheckPoint.LuZao_DeadII_MA19_DownCross_MA43);
 
 	}
 }
