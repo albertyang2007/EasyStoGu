@@ -34,7 +34,7 @@ public class HomeEndPoint {
 	@GET
 	@Path("/DailyUpdateAllStockRunner")
 	public String dailyUpdateOverAllRunner() {
-		boolean isGetZiJinLiu = true;
+		boolean isGetZiJinLiu = false;
 		Thread t = new Thread(new DailyUpdateAllStockRunner(isGetZiJinLiu));
 		t.start();
 		return "DailyUpdateAllStockRunner already running, please check folder result.";
