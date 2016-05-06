@@ -257,3 +257,43 @@ Avg hold stock days when sell point: 11
 Avg hold stock days when high price: 7
 Total high earn between (25, 50): 86
 Total low  earn between (10, 10): 267
+
+===============================LuZao_GordonO_MA43_DownCross_MA86 (sellPoint:KDJ_Dead)==========================
+Total satisfy: 35379	 earnPercent[close]=0.754935769332193	 earnPercent[high]=8.321215515919537	 earnPercent[low]=-5.082795172044807
+oldEarn=99.0
+Avg hold stock days when sell point: 9
+Avg hold stock days when high price: 5
+Total high earn between (25, 50): 239
+Total low  earn between (10, 10): 1860
+
+===============================LuZao_GordonI_MA19_UpCross_MA43 (sellPoint:KDJ_Dead)==========================
+Total satisfy: 53973	 earnPercent[close]=0.3189640543019735	 earnPercent[high]=7.696425601088016	 earnPercent[low]=-5.208626992652977
+oldEarn=99.0
+Avg hold stock days when sell point: 8
+Avg hold stock days when high price: 4
+Total high earn between (25, 50): 286
+Total low  earn between (10, 10): 3528
+
+===============================LuZao_GordonII_MA19_UpCross_MA86 (sellPoint:KDJ_Dead)==========================
+Total satisfy: 38824	 earnPercent[close]=0.6475463230870852	 earnPercent[high]=7.872323935226211	 earnPercent[low]=-5.038581713023661
+oldEarn=99.0
+Avg hold stock days when sell point: 8
+Avg hold stock days when high price: 4
+Total high earn between (25, 50): 283
+Total low  earn between (10, 10): 1806
+
+===============================LuZao_DeadI_MA43_UpCross_MA86 (sellPoint:KDJ_Dead)==========================
+Total satisfy: 35421	 earnPercent[close]=0.8194324278979713	 earnPercent[high]=8.235885160476647	 earnPercent[low]=-5.09710714412303
+oldEarn=99.0
+Avg hold stock days when sell point: 8
+Avg hold stock days when high price: 5
+Total high earn between (25, 50): 267
+Total low  earn between (10, 10): 1547
+
+===============================LuZao_DeadII_MA19_DownCross_MA43 (sellPoint:KDJ_Dead)==========================
+Total satisfy: 53435	 earnPercent[close]=0.7173868505456021	 earnPercent[high]=9.071400993378518	 earnPercent[low]=-5.474564323383045
+oldEarn=99.0
+Avg hold stock days when sell point: 9
+Avg hold stock days when high price: 5
+Total high earn between (25, 50): 660
+Total low  earn between (10, 10): 3322
