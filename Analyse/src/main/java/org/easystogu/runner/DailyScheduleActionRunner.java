@@ -23,7 +23,7 @@ public class DailyScheduleActionRunner implements Runnable {
         List<ScheduleActionVO> actions = this.scheduleActionTable.getAllShouldRunDate(currentDate);
         for (ScheduleActionVO savo : actions) {
             if (savo.actionDo.equals(ScheduleActionVO.ActionDo.refresh_fuquan_history_stockprice.name())) {
-                System.out.println("refresh_hou_fuquan_history_stockprice for " + savo.stockId);
+                System.out.println("refresh_fuquan_history_stockprice for " + savo.stockId);
                 // fetch hou ququan history data
                 this.historyHouFuQuanRunner.countAndSave(savo.stockId);
                 // delete schedule action if success
