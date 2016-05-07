@@ -14,6 +14,7 @@ import org.easystogu.db.access.IndKDJTableHelper;
 import org.easystogu.db.access.IndMacdTableHelper;
 import org.easystogu.db.access.IndQSDDTableHelper;
 import org.easystogu.db.access.IndShenXianTableHelper;
+import org.easystogu.db.access.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.table.BollVO;
 import org.easystogu.db.table.KDJVO;
@@ -26,7 +27,7 @@ import org.easystogu.utils.Strings;
 
 //V1, query indicator from DB, qian FuQuan
 public class IndicatorEndPoint {
-	protected StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
+	protected StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
 	protected IndKDJTableHelper kdjTable = IndKDJTableHelper.getInstance();
 	protected IndMacdTableHelper macdTable = IndMacdTableHelper.getInstance();
 	protected IndBollTableHelper bollTable = IndBollTableHelper.getInstance();

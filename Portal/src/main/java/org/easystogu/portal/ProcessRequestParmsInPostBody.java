@@ -2,11 +2,11 @@ package org.easystogu.portal;
 
 import java.util.List;
 
-import org.easystogu.db.access.ChuQuanChuXiPriceHelper;
 import org.easystogu.db.access.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.table.StockPriceVO;
 import org.easystogu.db.util.MergeNDaysPriceUtil;
+import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.portal.init.TrendModeLoader;
 import org.easystogu.trendmode.vo.SimplePriceVO;
 import org.easystogu.trendmode.vo.TrendModeVO;
@@ -23,7 +23,9 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ProcessRequestParmsInPostBody {
+	protected StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
 	protected StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
+	protected CompanyInfoFileHelper companyInfoHelper = CompanyInfoFileHelper.getInstance();
 	protected MergeNDaysPriceUtil mergeNdaysPriceHeloer = new MergeNDaysPriceUtil();
 	@Autowired
 	protected TrendModeLoader trendModeLoader;
@@ -85,8 +87,10 @@ public class ProcessRequestParmsInPostBody {
 
 	// common function to fetch price from stockPrice table
 	private List<StockPriceVO> fetchAllPrices(String stockid) {
-		List<StockPriceVO> spList = qianFuQuanStockPriceTable.getStockPriceById(stockid);
-		return spList;
+		if (companyInfoHelper.isStockIdAMajorZhiShu(stockid))
+			return stockPriceTable.getStockPriceById(stockid);
+		// for company, get hou fuquan stockprice data
+		return this.qianFuQuanStockPriceTable.getStockPriceById(stockid);
 	}
 
 }

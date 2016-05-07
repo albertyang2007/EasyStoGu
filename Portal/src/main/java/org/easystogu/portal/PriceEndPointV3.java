@@ -10,17 +10,18 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
 import org.easystogu.db.access.HouFuQuanStockPriceTableHelper;
+import org.easystogu.db.access.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.table.StockPriceVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.utils.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 
-//v3, with forecast data, query stockprice and count in real time
+//v3, with forecast data, query qian fuquan stockprice and count in real time
 public class PriceEndPointV3 {
 	protected static String HHmmss = "00:00:00";
 	protected CompanyInfoFileHelper companyInfoHelper = CompanyInfoFileHelper.getInstance();
-	protected StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
+	protected StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
 	protected HouFuQuanStockPriceTableHelper houfuquanStockPriceTable = HouFuQuanStockPriceTableHelper.getInstance();
 	@Autowired
 	protected ProcessRequestParmsInPostBody postParmsProcess;

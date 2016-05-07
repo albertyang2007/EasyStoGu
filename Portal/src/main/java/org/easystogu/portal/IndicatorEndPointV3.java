@@ -10,7 +10,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
 import org.easystogu.db.access.ChuQuanChuXiPriceHelper;
-import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.table.BollVO;
 import org.easystogu.db.table.KDJVO;
 import org.easystogu.db.table.LuZaoVO;
@@ -30,10 +29,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.common.primitives.Doubles;
 
-//V3, with forecast data, query price and count in real time
+//V3, with forecast data, query from qian fuquan stock price and count in real time
 public class IndicatorEndPointV3 {
 	protected static String HHmmss = "00:00:00";
-	protected StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
 	protected MACDHelper macdHelper = new MACDHelper();
 	protected KDJHelper kdjHelper = new KDJHelper();
 	protected ShenXianHelper shenXianHelper = new ShenXianHelper();
