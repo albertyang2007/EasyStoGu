@@ -124,7 +124,7 @@ public class DailyStockPriceDownloadAndStoreDBRunner2 implements Runnable {
 					savo.stockId = spvo.stockId;
 					savo.runDate = WeekdayUtil.nextDate(spvo.date);
 					savo.createDate = spvo.date;
-					savo.actionDo = ScheduleActionVO.ActionDo.refresh_hou_fuquan_history_stockprice.name();
+					savo.actionDo = ScheduleActionVO.ActionDo.refresh_fuquan_history_stockprice.name();
 					savo.params = "";
 
 					// insert hou qufuan

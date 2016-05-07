@@ -2,7 +2,6 @@ package org.easystogu.indicator.runner.history;
 
 import java.util.List;
 
-import org.easystogu.db.access.ChuQuanChuXiPriceHelper;
 import org.easystogu.db.access.IndMai1Mai2TableHelper;
 import org.easystogu.db.access.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.StockPriceTableHelper;
@@ -31,6 +30,8 @@ public class HistoryMai1Mai2CountAndSaveDBRunner {
 	}
 
 	public void countAndSaved(String stockId) {
+        this.deleteMai1Mai2(stockId);
+        
 		List<StockPriceVO> priceList = qianFuQuanStockPriceTable.getStockPriceById(stockId);
 
 		if (priceList.size() <= 20) {
@@ -72,7 +73,6 @@ public class HistoryMai1Mai2CountAndSaveDBRunner {
 		for (String stockId : stockIds) {
 			if (index++ % 100 == 0)
 				System.out.println("Mai1Mai2 countAndSaved: " + stockId + " " + (index) + " of " + stockIds.size());
-			this.deleteMai1Mai2(stockId);
 			this.countAndSaved(stockId);
 		}
 	}

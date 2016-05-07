@@ -10,7 +10,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
 import org.easystogu.db.access.HouFuQuanStockPriceTableHelper;
-import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.table.BollVO;
 import org.easystogu.db.table.KDJVO;
 import org.easystogu.db.table.LuZaoVO;
@@ -34,7 +33,6 @@ import com.google.common.primitives.Doubles;
 public class IndicatorEndPointV2 {
 	protected static String HHmmss = "00:00:00";
 	protected CompanyInfoFileHelper companyInfoHelper = CompanyInfoFileHelper.getInstance();
-	protected StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
 	protected HouFuQuanStockPriceTableHelper houfuquanStockPriceTable = HouFuQuanStockPriceTableHelper.getInstance();
 	protected MACDHelper macdHelper = new MACDHelper();
 	protected KDJHelper kdjHelper = new KDJHelper();
@@ -189,9 +187,6 @@ public class IndicatorEndPointV2 {
 
 	// common function to fetch price from stockPrice table
 	protected List<StockPriceVO> fetchAllPrices(String stockid) {
-		if (companyInfoHelper.isStockIdAMajorZhiShu(stockid))
-			return stockPriceTable.getStockPriceById(stockid);
-		// for company, get hou fuquan stockprice data
 		return this.houfuquanStockPriceTable.getStockPriceById(stockid);
 	}
 

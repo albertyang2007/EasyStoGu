@@ -34,6 +34,8 @@ public class HistoryKDJCountAndSaveDBRunner {
 	}
 
 	public void countAndSaved(String stockId) {
+        this.deleteKDJ(stockId);
+        
 		List<StockPriceVO> priceList = qianFuQuanStockPriceTable.getStockPriceById(stockId);
 
 		if (priceList.size() <= 9) {
@@ -73,7 +75,6 @@ public class HistoryKDJCountAndSaveDBRunner {
 		for (String stockId : stockIds) {
 			if (index++ % 100 == 0)
 				System.out.println("KDJ countAndSaved: " + stockId + " " + (index) + " of " + stockIds.size());
-			this.deleteKDJ(stockId);
 			this.countAndSaved(stockId);
 		}
 	}

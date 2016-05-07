@@ -33,6 +33,8 @@ public class HistoryYiMengBSCountAndSaveDBRunner {
     }
 
     public void countAndSaved(String stockId) {
+        deleteYiMengBS(stockId);
+
         List<StockPriceVO> priceList = qianFuQuanStockPriceTable.getStockPriceById(stockId);
 
         if (priceList.size() <= 108) {
@@ -55,9 +57,9 @@ public class HistoryYiMengBSCountAndSaveDBRunner {
             vo.setDate(priceList.get(i).date);
 
             try {
-                if (yiMengBSTable.getYiMengBS(vo.stockId, vo.date) == null) {
-                    yiMengBSTable.insert(vo);
-                }
+                //if (yiMengBSTable.getYiMengBS(vo.stockId, vo.date) == null) {
+                yiMengBSTable.insert(vo);
+                //}
             } catch (Exception e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();

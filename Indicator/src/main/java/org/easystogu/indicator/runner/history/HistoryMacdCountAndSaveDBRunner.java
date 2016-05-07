@@ -31,6 +31,8 @@ public class HistoryMacdCountAndSaveDBRunner {
 	}
 
 	public void countAndSaved(String stockId) {
+        this.deleteMacd(stockId);
+        
 		try {
 			List<StockPriceVO> priceList = qianFuQuanStockPriceTable.getStockPriceById(stockId);
 
@@ -78,7 +80,6 @@ public class HistoryMacdCountAndSaveDBRunner {
 		for (String stockId : stockIds) {
 			if (index++ % 100 == 0)
 				System.out.println("MACD countAndSaved: " + stockId + " " + (index) + "/" + stockIds.size());
-			this.deleteMacd(stockId);
 			this.countAndSaved(stockId);
 		}
 	}

@@ -3,7 +3,7 @@ package org.easystogu.db.table;
 public class ScheduleActionVO {
 
 	public static enum ActionDo {
-		refresh_hou_fuquan_history_stockprice, refresh_qian_fuquan_history_stockprice
+		refresh_fuquan_history_stockprice
 	}
 
 	public String stockId;

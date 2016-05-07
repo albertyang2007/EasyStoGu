@@ -30,6 +30,8 @@ public class HistoryZhuliJinChuCountAndSaveDBRunner {
     }
 
     public void countAndSaved(String stockId) {
+        deleteZhuliJinChu(stockId);
+
         List<StockPriceVO> priceList = qianFuQuanStockPriceTable.getStockPriceById(stockId);
 
         if (priceList.size() <= 34) {
@@ -56,9 +58,9 @@ public class HistoryZhuliJinChuCountAndSaveDBRunner {
 
             try {
                 // if (vo.date.compareTo("2015-06-29") >= 0)
-                if (zhuliJinChuTable.getZhuliJinChu(vo.stockId, vo.date) == null) {
-                    zhuliJinChuTable.insert(vo);
-                }
+                //if (zhuliJinChuTable.getZhuliJinChu(vo.stockId, vo.date) == null) {
+                zhuliJinChuTable.insert(vo);
+                //}
             } catch (Exception e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();

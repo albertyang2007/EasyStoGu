@@ -33,6 +33,8 @@ public class HistoryShenXianCountAndSaveDBRunner {
 	}
 
 	public void countAndSaved(String stockId) {
+        this.deleteShenXian(stockId);
+        
 		List<StockPriceVO> priceList = qianFuQuanStockPriceTable.getStockPriceById(stockId);
 
 		if (priceList.size() < 1) {
@@ -67,7 +69,6 @@ public class HistoryShenXianCountAndSaveDBRunner {
 		for (String stockId : stockIds) {
 			if (index++ % 100 == 0)
 				System.out.println("ShenXian countAndSaved: " + stockId + " " + (index) + " of " + stockIds.size());
-			this.deleteShenXian(stockId);
 			this.countAndSaved(stockId);
 		}
 	}

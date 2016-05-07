@@ -17,7 +17,21 @@ public class HistoryXueShi2CountAndSaveDBRunner {
     protected StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
     protected TALIBWraper talib = new TALIBWraper();
 
+    public void deleteXueShi2(String stockId) {
+        xueShi2Table.delete(stockId);
+    }
+
+    public void deleteXueShi2(List<String> stockIds) {
+        int index = 0;
+        for (String stockId : stockIds) {
+            System.out.println("Delete YiMengBS for " + stockId + " " + (++index) + " of " + stockIds.size());
+            this.deleteXueShi2(stockId);
+        }
+    }
+
     public void countAndSaved(String stockId) {
+        deleteXueShi2(stockId);
+
         try {
             List<StockPriceVO> priceList = qianFuQuanStockPriceTable.getStockPriceById(stockId);
 
@@ -64,9 +78,9 @@ public class HistoryXueShi2CountAndSaveDBRunner {
                 xueShi2VO.setDn(Strings.convert2ScaleDecimal(dn));
 
                 // if (xueShi2VO.date.compareTo("2015-06-29") >= 0)
-                if (xueShi2Table.getXueShi2(xueShi2VO.stockId, xueShi2VO.date) == null) {
-                    xueShi2Table.insert(xueShi2VO);
-                }
+                //if (xueShi2Table.getXueShi2(xueShi2VO.stockId, xueShi2VO.date) == null) {
+                xueShi2Table.insert(xueShi2VO);
+                //}
             }
         } catch (Exception e) {
             e.printStackTrace();

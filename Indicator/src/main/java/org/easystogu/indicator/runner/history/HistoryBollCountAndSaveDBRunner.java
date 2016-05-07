@@ -33,6 +33,8 @@ public class HistoryBollCountAndSaveDBRunner {
 	}
 
 	public void countAndSaved(String stockId) {
+        this.deleteBoll(stockId);
+        
 		try {
 			List<StockPriceVO> priceList = qianFuQuanStockPriceTable.getStockPriceById(stockId);
 
@@ -80,7 +82,6 @@ public class HistoryBollCountAndSaveDBRunner {
 		for (String stockId : stockIds) {
 			if (index++ % 100 == 0)
 				System.out.println("Boll countAndSaved: " + stockId + " " + (index) + "/" + stockIds.size());
-			this.deleteBoll(stockId);
 			this.countAndSaved(stockId);
 		}
 	}

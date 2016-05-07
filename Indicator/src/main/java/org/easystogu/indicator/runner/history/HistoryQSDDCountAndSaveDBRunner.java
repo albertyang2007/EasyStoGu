@@ -32,6 +32,8 @@ public class HistoryQSDDCountAndSaveDBRunner {
 	}
 
 	public void countAndSaved(String stockId) {
+        this.deleteQSDD(stockId);
+        
 		List<StockPriceVO> priceList = qianFuQuanStockPriceTable.getStockPriceById(stockId);
 
 		if (priceList.size() < 1) {
@@ -68,7 +70,6 @@ public class HistoryQSDDCountAndSaveDBRunner {
 		for (String stockId : stockIds) {
 			if (index++ % 100 == 0)
 				System.out.println("QSDD countAndSaved: " + stockId + " " + (index) + " of " + stockIds.size());
-			this.deleteQSDD(stockId);
 			this.countAndSaved(stockId);
 		}
 	}

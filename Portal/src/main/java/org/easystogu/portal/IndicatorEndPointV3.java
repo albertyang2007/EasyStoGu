@@ -9,7 +9,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
-import org.easystogu.db.access.ChuQuanChuXiPriceHelper;
 import org.easystogu.db.table.BollVO;
 import org.easystogu.db.table.KDJVO;
 import org.easystogu.db.table.LuZaoVO;
@@ -38,7 +37,6 @@ public class IndicatorEndPointV3 {
 	protected QSDDHelper qsddHelper = new QSDDHelper();
 	protected BOLLHelper bollHelper = new BOLLHelper();
 	protected LuZaoHelper luzaoHelper = new LuZaoHelper();
-	protected ChuQuanChuXiPriceHelper chuQuanChuXiPriceHelper = new ChuQuanChuXiPriceHelper();
 	@Autowired
 	protected ProcessRequestParmsInPostBody postParmsProcess;
 	protected String dateRegex = "[0-9]{4}-[0-9]{2}-[0-9]{2}";

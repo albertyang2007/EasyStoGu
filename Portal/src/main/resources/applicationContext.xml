@@ -25,11 +25,22 @@
 		</jaxrs:providers>
 	</jaxrs:server>
 
-	<bean id="portalServicePriceEndPoint" class="org.easystogu.portal.PriceEndPoint">
+	<bean id="portalServicePriceEndPointV0" class="org.easystogu.portal.PriceEndPointV0">
 	</bean>
-	<jaxrs:server id="cxfrsservice_PriceEndPoint" address="/pricev1">
+	<jaxrs:server id="cxfrsservice_PriceEndPointV0" address="/pricev0">
 		<jaxrs:serviceBeans>
-			<ref bean="portalServicePriceEndPoint" />
+			<ref bean="portalServicePriceEndPointV0" />
+		</jaxrs:serviceBeans>
+		<jaxrs:providers>
+			<bean class="com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider" />
+		</jaxrs:providers>
+	</jaxrs:server>
+
+	<bean id="portalServicePriceEndPointV1" class="org.easystogu.portal.PriceEndPointV1">
+	</bean>
+	<jaxrs:server id="cxfrsservice_PriceEndPointV1" address="/pricev1">
+		<jaxrs:serviceBeans>
+			<ref bean="portalServicePriceEndPointV1" />
 		</jaxrs:serviceBeans>
 		<jaxrs:providers>
 			<bean class="com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider" />
@@ -58,11 +69,24 @@
 		</jaxrs:providers>
 	</jaxrs:server>
 
-	<bean id="portalServiceIndicatorEndPoint" class="org.easystogu.portal.IndicatorEndPoint">
+	<bean id="portalServiceIndicatorEndPointV0" class="org.easystogu.portal.IndicatorEndPointV0">
 	</bean>
-	<jaxrs:server id="cxfrsservice_IndicatorEndPoint" address="/indv1">
+	<jaxrs:server id="cxfrsservice_IndicatorEndPointV0"
+		address="/indv0">
 		<jaxrs:serviceBeans>
-			<ref bean="portalServiceIndicatorEndPoint" />
+			<ref bean="portalServiceIndicatorEndPointV0" />
+		</jaxrs:serviceBeans>
+		<jaxrs:providers>
+			<bean class="com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider" />
+		</jaxrs:providers>
+	</jaxrs:server>
+
+	<bean id="portalServiceIndicatorEndPointV1" class="org.easystogu.portal.IndicatorEndPointV1">
+	</bean>
+	<jaxrs:server id="cxfrsservice_IndicatorEndPointV1"
+		address="/indv1">
+		<jaxrs:serviceBeans>
+			<ref bean="portalServiceIndicatorEndPointV1" />
 		</jaxrs:serviceBeans>
 		<jaxrs:providers>
 			<bean class="com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider" />

@@ -23,74 +23,70 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ProcessRequestParmsInPostBody {
-	protected StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
-	protected StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
-	protected CompanyInfoFileHelper companyInfoHelper = CompanyInfoFileHelper.getInstance();
-	protected MergeNDaysPriceUtil mergeNdaysPriceHeloer = new MergeNDaysPriceUtil();
-	@Autowired
-	protected TrendModeLoader trendModeLoader;
+    protected StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
+    protected CompanyInfoFileHelper companyInfoHelper = CompanyInfoFileHelper.getInstance();
+    protected MergeNDaysPriceUtil mergeNdaysPriceHeloer = new MergeNDaysPriceUtil();
+    @Autowired
+    protected TrendModeLoader trendModeLoader;
 
-	public List<StockPriceVO> updateStockPriceAccordingToRequest(String stockId, String postBody) {
-		List<StockPriceVO> spList = fetchAllPrices(stockId);
-		if (Strings.isEmpty(postBody))
-			return spList;
+    public List<StockPriceVO> updateStockPriceAccordingToRequest(String stockId, String postBody) {
+        List<StockPriceVO> spList = fetchAllPrices(stockId);
+        if (Strings.isEmpty(postBody))
+            return spList;
 
-		try {
-			JSONObject jsonParm = new JSONObject(postBody);
-			// parms has process priority, do not change the order
-			String nDays = jsonParm.getString("nDays");
-			if (Strings.isNotEmpty(nDays) && Strings.isNumeric(nDays)) {
-				spList = this.mergeNDaysPrice(Integer.parseInt(nDays), spList);
-			}
+        try {
+            JSONObject jsonParm = new JSONObject(postBody);
+            // parms has process priority, do not change the order
+            String nDays = jsonParm.getString("nDays");
+            if (Strings.isNotEmpty(nDays) && Strings.isNumeric(nDays)) {
+                spList = this.mergeNDaysPrice(Integer.parseInt(nDays), spList);
+            }
 
-			String trendModeName = jsonParm.getString("trendModeName");
-			if (Strings.isNotEmpty(trendModeName)) {
-				spList = this.appendTrendModePrice(trendModeName, spList);
-			}
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+            String trendModeName = jsonParm.getString("trendModeName");
+            if (Strings.isNotEmpty(trendModeName)) {
+                spList = this.appendTrendModePrice(trendModeName, spList);
+            }
+        } catch (JSONException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
-		// finally return the updated spList
-		return spList;
-	}
+        // finally return the updated spList
+        return spList;
+    }
 
-	private List<StockPriceVO> mergeNDaysPrice(int nDays, List<StockPriceVO> spList) {
-		return mergeNdaysPriceHeloer.generateNDaysPriceVOInDescOrder(nDays, spList);
-	}
+    private List<StockPriceVO> mergeNDaysPrice(int nDays, List<StockPriceVO> spList) {
+        return mergeNdaysPriceHeloer.generateNDaysPriceVOInDescOrder(nDays, spList);
+    }
 
-	private List<StockPriceVO> appendTrendModePrice(String trendModeName, List<StockPriceVO> spList) {
-		// parse the forecast body and add back to spList
-		StockPriceVO curSPVO = spList.get(spList.size() - 1);
-		TrendModeVO tmo = trendModeLoader.loadTrendMode(trendModeName);
-		List<String> nextWorkingDateList = WeekdayUtil.nextWorkingDateList(curSPVO.date, tmo.prices.size());
+    private List<StockPriceVO> appendTrendModePrice(String trendModeName, List<StockPriceVO> spList) {
+        // parse the forecast body and add back to spList
+        StockPriceVO curSPVO = spList.get(spList.size() - 1);
+        TrendModeVO tmo = trendModeLoader.loadTrendMode(trendModeName);
+        List<String> nextWorkingDateList = WeekdayUtil.nextWorkingDateList(curSPVO.date, tmo.prices.size());
 
-		for (int i = 0; i < tmo.prices.size(); i++) {
-			SimplePriceVO svo = tmo.prices.get(i);
-			StockPriceVO spvo = new StockPriceVO();
-			spvo.setDate(nextWorkingDateList.get(i));
-			spvo.setStockId(curSPVO.stockId);
-			spvo.setLastClose(curSPVO.close);
-			spvo.setOpen(Strings.convert2ScaleDecimal(spvo.lastClose * (1.0 + svo.getOpen() / 100.0)));
-			spvo.setClose(Strings.convert2ScaleDecimal(spvo.lastClose * (1.0 + svo.getClose() / 100.0)));
-			spvo.setLow(Strings.convert2ScaleDecimal(spvo.lastClose * (1.0 + svo.getLow() / 100.0)));
-			spvo.setHigh(Strings.convert2ScaleDecimal(spvo.lastClose * (1.0 + svo.getHigh() / 100.0)));
-			spvo.setVolume((long) (curSPVO.volume * svo.getVolume()));
+        for (int i = 0; i < tmo.prices.size(); i++) {
+            SimplePriceVO svo = tmo.prices.get(i);
+            StockPriceVO spvo = new StockPriceVO();
+            spvo.setDate(nextWorkingDateList.get(i));
+            spvo.setStockId(curSPVO.stockId);
+            spvo.setLastClose(curSPVO.close);
+            spvo.setOpen(Strings.convert2ScaleDecimal(spvo.lastClose * (1.0 + svo.getOpen() / 100.0)));
+            spvo.setClose(Strings.convert2ScaleDecimal(spvo.lastClose * (1.0 + svo.getClose() / 100.0)));
+            spvo.setLow(Strings.convert2ScaleDecimal(spvo.lastClose * (1.0 + svo.getLow() / 100.0)));
+            spvo.setHigh(Strings.convert2ScaleDecimal(spvo.lastClose * (1.0 + svo.getHigh() / 100.0)));
+            spvo.setVolume((long) (curSPVO.volume * svo.getVolume()));
 
-			spList.add(spvo);
-			curSPVO = spvo;
-		}
+            spList.add(spvo);
+            curSPVO = spvo;
+        }
 
-		return spList;
-	}
+        return spList;
+    }
 
-	// common function to fetch price from stockPrice table
-	private List<StockPriceVO> fetchAllPrices(String stockid) {
-		if (companyInfoHelper.isStockIdAMajorZhiShu(stockid))
-			return stockPriceTable.getStockPriceById(stockid);
-		// for company, get hou fuquan stockprice data
-		return this.qianFuQuanStockPriceTable.getStockPriceById(stockid);
-	}
+    // common function to fetch price from stockPrice table
+    private List<StockPriceVO> fetchAllPrices(String stockid) {
+        return this.qianFuQuanStockPriceTable.getStockPriceById(stockid);
+    }
 
 }
