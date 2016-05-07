@@ -165,9 +165,9 @@ public class HistoryStockPriceDownloadAndStoreDBRunner {
 				endDate);
 		List<String> stockIds = runner.companyInfoTable.getAllCompanyStockId();
 		// for major zhi shu
-		runner.countAndSave("999999");
-		runner.countAndSave("399001");
-		runner.countAndSave("399006");
+		//runner.countAndSave("999999");
+		//runner.countAndSave("399001");
+		//runner.countAndSave("399006");
 		// for all stockIds
 		runner.countAndSave(stockIds);
 		// for specify stockId

@@ -2,7 +2,6 @@ package org.easystogu.sina.runner.history;
 
 import java.util.List;
 
-import org.easystogu.db.access.CompanyInfoTableHelper;
 import org.easystogu.db.access.HouFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.StockPriceTableHelper;
@@ -14,7 +13,6 @@ public class HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner {
 	private HouFuQuanStockPriceTableHelper houfuquanStockPriceTable = HouFuQuanStockPriceTableHelper.getInstance();
 	private QianFuQuanStockPriceTableHelper qianfuquanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
 	private StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
-	private CompanyInfoTableHelper companyInfoTable = CompanyInfoTableHelper.getInstance();
 	private CompanyInfoFileHelper companyInfoHelper = CompanyInfoFileHelper.getInstance();
 
 	// priceList is order by date
@@ -91,12 +89,11 @@ public class HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner {
 
 	public static void main(String[] args) {
 		HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner runner = new HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner();
+		//must include major indicator
 		List<String> stockIds = runner.companyInfoHelper.getAllStockId();
 		// for all stockIds
 		runner.countAndSave(stockIds);
 		// for specify stockId
-		// runner.countAndSave("399006");
-		// runner.countAndSave("399001");
-		// runner.countAndSave("999999");
+		//runner.countAndSave("399006");
 	}
 }

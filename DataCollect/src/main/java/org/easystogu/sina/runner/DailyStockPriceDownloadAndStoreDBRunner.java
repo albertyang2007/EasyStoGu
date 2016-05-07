@@ -17,6 +17,7 @@ public class DailyStockPriceDownloadAndStoreDBRunner implements Runnable {
     private CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
     private StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
     private DailyStockPriceDownloadHelper sinaHelper = new DailyStockPriceDownloadHelper();
+    private CompanyInfoFileHelper companyInfoHelper = CompanyInfoFileHelper.getInstance();
     private int totalError = 0;
     private int totalSize = 0;
 
@@ -49,6 +50,11 @@ public class DailyStockPriceDownloadAndStoreDBRunner implements Runnable {
             if (vo.isValidated()) {
                 // System.out.println("saving into DB, vo=" + vo);
                 stockPriceTable.delete(vo.stockId, vo.date);
+
+                if (vo.stockId.equals(this.companyInfoHelper.getSZCZStockIdForDB())
+                        || vo.stockId.equals(this.companyInfoHelper.getCYBZStockIdForDB()))
+                    vo.volume = vo.volume / 100;
+
                 stockPriceTable.insert(vo);
             } else {
                 System.out.println("vo invalidate: " + vo);
