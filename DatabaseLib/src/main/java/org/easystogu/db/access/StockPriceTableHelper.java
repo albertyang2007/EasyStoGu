@@ -713,7 +713,7 @@ public class StockPriceTableHelper {
         // TODO Auto-generated method stub
         StockPriceTableHelper ins = new StockPriceTableHelper();
         try {
-            int n = ins.countTuplesByIDAndBetweenDate("002749", "1997-01-01", "2016-12-31");
+            String n = ins.getLatestStockDate();
             System.out.println(n);
         } catch (Exception e) {
             // TODO Auto-generated catch block

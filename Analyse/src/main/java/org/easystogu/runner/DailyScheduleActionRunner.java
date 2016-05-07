@@ -5,14 +5,14 @@ import java.util.List;
 import org.easystogu.db.access.HouFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.ScheduleActionTableHelper;
 import org.easystogu.db.table.ScheduleActionVO;
-import org.easystogu.sina.runner.history.HistoryFuQuanStockPriceDownloadAndStoreDBRunner;
+import org.easystogu.sina.runner.history.HistoryHouFuQuanStockPriceDownloadAndStoreDBRunner;
 import org.easystogu.utils.WeekdayUtil;
 
 public class DailyScheduleActionRunner implements Runnable {
 	private String currentDate = WeekdayUtil.currentDate();
 	private ScheduleActionTableHelper scheduleActionTable = ScheduleActionTableHelper.getInstance();
 	private HouFuQuanStockPriceTableHelper houfuquanStockPriceTable = HouFuQuanStockPriceTableHelper.getInstance();
-	private HistoryFuQuanStockPriceDownloadAndStoreDBRunner historyFuQuanRunner = new HistoryFuQuanStockPriceDownloadAndStoreDBRunner();
+	private HistoryHouFuQuanStockPriceDownloadAndStoreDBRunner historyFuQuanRunner = new HistoryHouFuQuanStockPriceDownloadAndStoreDBRunner();
 
 	public void runAllScheduleAction() {
 		List<ScheduleActionVO> actions = this.scheduleActionTable.getAllShouldRunDate(currentDate);
