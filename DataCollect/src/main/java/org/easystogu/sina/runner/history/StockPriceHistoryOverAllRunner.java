@@ -1,6 +1,6 @@
 package org.easystogu.sina.runner.history;
 
-public class HistoryOverAllRunner {
+public class StockPriceHistoryOverAllRunner {
 
     public static void main(String[] args) {
         //had better clean all the data from DB

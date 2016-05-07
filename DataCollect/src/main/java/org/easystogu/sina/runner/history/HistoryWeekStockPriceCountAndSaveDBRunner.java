@@ -37,10 +37,11 @@ public class HistoryWeekStockPriceCountAndSaveDBRunner {
 
     public void countAndSave(String stockId) {
         // update price based on chuQuanChuXi event
+        weekStockPriceTable.delete(stockId);
+        
         List<StockPriceVO> spList = qianFuQuanStockPriceTable.getStockPriceById(stockId);
         List<StockPriceVO> spWeekList = weekPriceMergeUtil.generateAllWeekPriceVO(stockId, spList);
         for (StockPriceVO mergeVO : spWeekList) {
-            weekStockPriceTable.delete(mergeVO.stockId, mergeVO.date);
             weekStockPriceTable.insert(mergeVO);
         }
     }

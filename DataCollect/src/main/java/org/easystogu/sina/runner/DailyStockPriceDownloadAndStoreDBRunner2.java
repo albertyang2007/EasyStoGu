@@ -130,12 +130,6 @@ public class DailyStockPriceDownloadAndStoreDBRunner2 implements Runnable {
 					// insert hou qufuan
 					this.scheduleActionTable.delete(savo.stockId, savo.runDate, savo.actionDo);
 					this.scheduleActionTable.insert(savo);
-
-					// insert qian qufuan
-					savo.actionDo = ScheduleActionVO.ActionDo.refresh_qian_fuquan_history_stockprice.name();
-					this.scheduleActionTable.delete(savo.stockId, savo.runDate, savo.actionDo);
-					this.scheduleActionTable.insert(savo);
-
 				}
 
 				// update fuquan stockprice table by manually, assume there
