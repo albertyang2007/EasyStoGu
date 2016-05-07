@@ -14,6 +14,11 @@ public class WeekdayUtil {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		return sdf.format(new Date()).toString();
 	}
+	
+	public static String currentDateTime() {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
+		return sdf.format(new Date()).toString();
+	}
 
 	public static int currentYear() {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
@@ -282,6 +287,6 @@ public class WeekdayUtil {
 	}
 
 	public static void main(String[] args) {
-		System.out.println(WeekdayUtil.nextDate("2016-04-30"));
+		System.out.println(WeekdayUtil.currentDateTime());
 	}
 }
