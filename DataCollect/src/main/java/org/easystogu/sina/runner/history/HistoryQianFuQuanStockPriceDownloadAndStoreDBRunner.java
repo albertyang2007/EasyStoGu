@@ -89,11 +89,13 @@ public class HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner {
 
 	public static void main(String[] args) {
 		HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner runner = new HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner();
-		//must include major indicator
+		// must include major indicator
 		List<String> stockIds = runner.companyInfoHelper.getAllStockId();
 		// for all stockIds
 		runner.countAndSave(stockIds);
 		// for specify stockId
-		//runner.countAndSave("399006");
+		// runner.countAndSave("999999");
+		// runner.countAndSave("399001");
+		// runner.countAndSave("399006");
 	}
 }
