@@ -2,7 +2,7 @@ package org.easystogu.sina.runner.history;
 
 import java.util.List;
 
-import org.easystogu.db.access.ChuQuanChuXiPriceHelper;
+import org.easystogu.db.access.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.access.WeekStockPriceTableHelper;
 import org.easystogu.db.table.StockPriceVO;
@@ -11,10 +11,9 @@ import org.easystogu.file.access.CompanyInfoFileHelper;
 
 //手动将2009年之后的stockprice分成每周入库，weeksotckprice，一次性运行
 public class HistoryWeekStockPriceCountAndSaveDBRunner {
-    private StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
+    private StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
     private MergeNDaysPriceUtil weekPriceMergeUtil = new MergeNDaysPriceUtil();
     private WeekStockPriceTableHelper weekStockPriceTable = WeekStockPriceTableHelper.getInstance();
-    private ChuQuanChuXiPriceHelper chuQuanChuXiPriceHelper = new ChuQuanChuXiPriceHelper();
 
     public void deleteStockPrice(String stockId) {
         weekStockPriceTable.delete(stockId);
@@ -38,8 +37,7 @@ public class HistoryWeekStockPriceCountAndSaveDBRunner {
 
     public void countAndSave(String stockId) {
         // update price based on chuQuanChuXi event
-        List<StockPriceVO> spList = stockPriceTable.getStockPriceById(stockId);
-        chuQuanChuXiPriceHelper.updateQianFuQianPriceBasedOnHouFuQuan(stockId, spList);
+        List<StockPriceVO> spList = qianFuQuanStockPriceTable.getStockPriceById(stockId);
         List<StockPriceVO> spWeekList = weekPriceMergeUtil.generateAllWeekPriceVO(stockId, spList);
         for (StockPriceVO mergeVO : spWeekList) {
             weekStockPriceTable.delete(mergeVO.stockId, mergeVO.date);

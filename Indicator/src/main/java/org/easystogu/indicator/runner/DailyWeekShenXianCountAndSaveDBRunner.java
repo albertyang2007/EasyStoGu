@@ -10,9 +10,8 @@ import org.easystogu.utils.WeekdayUtil;
 public class DailyWeekShenXianCountAndSaveDBRunner extends DailyShenXianCountAndSaveDBRunner {
     
 	public DailyWeekShenXianCountAndSaveDBRunner() {
-		stockPriceTable = WeekStockPriceTableHelper.getInstance();
+		qianFuQuanStockPriceTable = WeekStockPriceTableHelper.getInstance();
 		shenXianTable = IndWeekShenXianTableHelper.getInstance();
-		needChuQuan = false;
 	}
 
 	@Override

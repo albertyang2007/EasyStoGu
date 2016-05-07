@@ -2,8 +2,8 @@ package org.easystogu.indicator.runner;
 
 import java.util.List;
 
-import org.easystogu.db.access.ChuQuanChuXiPriceHelper;
 import org.easystogu.db.access.IndMai1Mai2TableHelper;
+import org.easystogu.db.access.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.table.Mai1Mai2VO;
 import org.easystogu.db.table.StockPriceVO;
@@ -13,12 +13,10 @@ import org.easystogu.utils.Strings;
 
 public class DailyMai1Mai2CountAndSaveDBRunner implements Runnable {
 
-    protected StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
+    protected StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
     protected IndMai1Mai2TableHelper mai1mai2Table = IndMai1Mai2TableHelper.getInstance();
     private Mai1Mai2Helper mai1mai2Helper = new Mai1Mai2Helper();
-    protected ChuQuanChuXiPriceHelper chuQuanChuXiPriceHelper = new ChuQuanChuXiPriceHelper();
     protected CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
-    protected boolean needChuQuan = true;// week do not need chuQuan
 
     public DailyMai1Mai2CountAndSaveDBRunner() {
 
@@ -41,17 +39,13 @@ public class DailyMai1Mai2CountAndSaveDBRunner implements Runnable {
     }
 
     public void countAndSaved(String stockId) {
-        List<StockPriceVO> priceList = stockPriceTable.getStockPriceById(stockId);
+        List<StockPriceVO> priceList = qianFuQuanStockPriceTable.getStockPriceById(stockId);
 
         if (priceList.size() <= 20) {
             // System.out.println("StockPrice data is less than 20, skip " +
             // stockId);
             return;
         }
-
-        // update price based on chuQuanChuXi event
-        if (this.needChuQuan)
-            chuQuanChuXiPriceHelper.updateQianFuQianPriceBasedOnHouFuQuan(stockId, priceList);
 
         // list is order by date
         int length = priceList.size();

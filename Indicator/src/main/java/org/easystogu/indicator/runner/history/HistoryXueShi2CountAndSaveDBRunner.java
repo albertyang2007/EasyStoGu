@@ -2,8 +2,8 @@ package org.easystogu.indicator.runner.history;
 
 import java.util.List;
 
-import org.easystogu.db.access.ChuQuanChuXiPriceHelper;
 import org.easystogu.db.access.IndXueShi2TableHelper;
+import org.easystogu.db.access.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.table.StockPriceVO;
 import org.easystogu.db.table.XueShi2VO;
@@ -14,14 +14,12 @@ import org.easystogu.utils.Strings;
 public class HistoryXueShi2CountAndSaveDBRunner {
 
     protected IndXueShi2TableHelper xueShi2Table = IndXueShi2TableHelper.getInstance();
-    protected StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
-    private TALIBWraper talib = new TALIBWraper();
-    protected ChuQuanChuXiPriceHelper chuQuanChuXiPriceHelper = new ChuQuanChuXiPriceHelper();
-    protected boolean needChuQuan = true;// week do not need chuQuan
+    protected StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
+    protected TALIBWraper talib = new TALIBWraper();
 
     public void countAndSaved(String stockId) {
         try {
-            List<StockPriceVO> priceList = stockPriceTable.getStockPriceById(stockId);
+            List<StockPriceVO> priceList = qianFuQuanStockPriceTable.getStockPriceById(stockId);
 
             int length = priceList.size();
 
@@ -31,10 +29,6 @@ public class HistoryXueShi2CountAndSaveDBRunner {
                                 + " price data is not enough to count XueShi2, please wait until it has at least 60 days. Skip");
                 return;
             }
-
-            // update price based on chuQuanChuXi event
-            if (this.needChuQuan)
-                chuQuanChuXiPriceHelper.updateQianFuQianPriceBasedOnHouFuQuan(stockId, priceList);
 
             double[] close = new double[length];
             int index = 0;

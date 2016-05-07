@@ -2,8 +2,8 @@ package org.easystogu.indicator.runner.history;
 
 import java.util.List;
 
-import org.easystogu.db.access.ChuQuanChuXiPriceHelper;
 import org.easystogu.db.access.IndMacdTableHelper;
+import org.easystogu.db.access.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.table.MacdVO;
 import org.easystogu.db.table.StockPriceVO;
@@ -15,10 +15,8 @@ import org.easystogu.utils.Strings;
 public class HistoryMacdCountAndSaveDBRunner {
 
 	protected IndMacdTableHelper macdTable = IndMacdTableHelper.getInstance();
-	protected StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
+	protected StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
 	protected MACDHelper macdHelper = new MACDHelper();
-	protected ChuQuanChuXiPriceHelper chuQuanChuXiPriceHelper = new ChuQuanChuXiPriceHelper();
-	protected boolean needChuQuan = true;// week do not need chuQuan
 
 	public void deleteMacd(String stockId) {
 		macdTable.delete(stockId);
@@ -34,17 +32,13 @@ public class HistoryMacdCountAndSaveDBRunner {
 
 	public void countAndSaved(String stockId) {
 		try {
-			List<StockPriceVO> priceList = stockPriceTable.getStockPriceById(stockId);
+			List<StockPriceVO> priceList = qianFuQuanStockPriceTable.getStockPriceById(stockId);
 
 			int length = priceList.size();
 
 			if (length < 1) {
 				return;
 			}
-
-			// update price based on chuQuanChuXi event
-			if (needChuQuan)
-				chuQuanChuXiPriceHelper.updateQianFuQianPriceBasedOnHouFuQuan(stockId, priceList);
 
 			double[] close = new double[length];
 			int index = 0;

@@ -2,8 +2,8 @@ package org.easystogu.indicator.runner;
 
 import java.util.List;
 
-import org.easystogu.db.access.ChuQuanChuXiPriceHelper;
 import org.easystogu.db.access.IndBollTableHelper;
+import org.easystogu.db.access.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.table.BollVO;
 import org.easystogu.db.table.StockPriceVO;
@@ -14,11 +14,9 @@ import org.easystogu.utils.Strings;
 //每日根据最新数据计算当天的boll值，每天运行一次
 public class DailyBollCountAndSaveDBRunner implements Runnable {
     protected IndBollTableHelper bollTable = IndBollTableHelper.getInstance();
-    protected StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
-    private BOLLHelper bollHelper = new BOLLHelper();
-    protected ChuQuanChuXiPriceHelper chuQuanChuXiPriceHelper = new ChuQuanChuXiPriceHelper();
+    protected StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
+    protected BOLLHelper bollHelper = new BOLLHelper();
     protected CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
-    protected boolean needChuQuan = true;// week do not need chuQuan
 
     public DailyBollCountAndSaveDBRunner() {
 
@@ -30,17 +28,13 @@ public class DailyBollCountAndSaveDBRunner implements Runnable {
 
     public void countAndSaved(String stockId) {
 
-        List<StockPriceVO> priceList = stockPriceTable.getStockPriceById(stockId);
+        List<StockPriceVO> priceList = qianFuQuanStockPriceTable.getStockPriceById(stockId);
 
         int length = priceList.size();
 
         if (priceList.size() < 1) {
             return;
         }
-
-        // update price based on chuQuanChuXi event
-        if (this.needChuQuan)
-            chuQuanChuXiPriceHelper.updateQianFuQianPriceBasedOnHouFuQuan(stockId, priceList);
 
         double[] close = new double[length];
         int index = 0;

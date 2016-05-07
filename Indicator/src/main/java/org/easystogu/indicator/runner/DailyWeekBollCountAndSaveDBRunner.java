@@ -11,8 +11,7 @@ public class DailyWeekBollCountAndSaveDBRunner extends DailyBollCountAndSaveDBRu
 
 	public DailyWeekBollCountAndSaveDBRunner() {
 		bollTable = IndWeekBollTableHelper.getInstance();
-		stockPriceTable = WeekStockPriceTableHelper.getInstance();
-		needChuQuan = false;
+		qianFuQuanStockPriceTable = WeekStockPriceTableHelper.getInstance();
 	}
 
 	@Override

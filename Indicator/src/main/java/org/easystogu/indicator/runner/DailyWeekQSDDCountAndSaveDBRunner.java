@@ -10,9 +10,8 @@ import org.easystogu.utils.WeekdayUtil;
 public class DailyWeekQSDDCountAndSaveDBRunner extends DailyQSDDCountAndSaveDBRunner {
 
 	public DailyWeekQSDDCountAndSaveDBRunner() {
-		stockPriceTable = WeekStockPriceTableHelper.getInstance();
+		qianFuQuanStockPriceTable = WeekStockPriceTableHelper.getInstance();
 		qsddTable = IndWeekQSDDTableHelper.getInstance();
-		needChuQuan = false;
 	}
 
 	@Override

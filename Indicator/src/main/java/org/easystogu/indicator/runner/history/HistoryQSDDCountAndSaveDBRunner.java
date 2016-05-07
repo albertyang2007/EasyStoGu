@@ -2,8 +2,8 @@ package org.easystogu.indicator.runner.history;
 
 import java.util.List;
 
-import org.easystogu.db.access.ChuQuanChuXiPriceHelper;
 import org.easystogu.db.access.IndQSDDTableHelper;
+import org.easystogu.db.access.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.table.QSDDVO;
 import org.easystogu.db.table.StockPriceVO;
@@ -15,11 +15,9 @@ import org.easystogu.utils.Strings;
 import com.google.common.primitives.Doubles;
 
 public class HistoryQSDDCountAndSaveDBRunner {
-	protected StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
+	protected StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
 	protected IndQSDDTableHelper qsddTable = IndQSDDTableHelper.getInstance();
 	protected QSDDHelper qsddHelper = new QSDDHelper();
-	protected ChuQuanChuXiPriceHelper chuQuanChuXiPriceHelper = new ChuQuanChuXiPriceHelper();
-	protected boolean needChuQuan = true;// week do not need chuQuan
 
 	public void deleteQSDD(String stockId) {
 		qsddTable.delete(stockId);
@@ -34,15 +32,11 @@ public class HistoryQSDDCountAndSaveDBRunner {
 	}
 
 	public void countAndSaved(String stockId) {
-		List<StockPriceVO> priceList = stockPriceTable.getStockPriceById(stockId);
+		List<StockPriceVO> priceList = qianFuQuanStockPriceTable.getStockPriceById(stockId);
 
 		if (priceList.size() < 1) {
 			return;
 		}
-
-		// update price based on chuQuanChuXi event
-		if (needChuQuan)
-			chuQuanChuXiPriceHelper.updateQianFuQianPriceBasedOnHouFuQuan(stockId, priceList);
 
 		List<Double> close = StockPriceFetcher.getClosePrice(priceList);
 		List<Double> low = StockPriceFetcher.getLowPrice(priceList);

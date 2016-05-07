@@ -10,9 +10,8 @@ import org.easystogu.utils.WeekdayUtil;
 public class DailyWeekYiMengBSCountAndSaveDBRunner extends DailyYiMengBSCountAndSaveDBRunner {
 
 	public DailyWeekYiMengBSCountAndSaveDBRunner() {
-		stockPriceTable = WeekStockPriceTableHelper.getInstance();
+		qianFuQuanStockPriceTable = WeekStockPriceTableHelper.getInstance();
 		yiMengBSTable = IndWeekYiMengBSTableHelper.getInstance();
-		needChuQuan = false;
 	}
 
 	@Override

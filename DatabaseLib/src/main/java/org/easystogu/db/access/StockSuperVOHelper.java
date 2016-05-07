@@ -13,14 +13,13 @@ import org.easystogu.db.table.StockSuperVO;
 
 public class StockSuperVOHelper {
 
-	protected StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
+	protected StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
 	protected IndMacdTableHelper macdTable = IndMacdTableHelper.getInstance();
 	protected IndKDJTableHelper kdjTable = IndKDJTableHelper.getInstance();
 	protected IndBollTableHelper bollTable = IndBollTableHelper.getInstance();
 	protected IndShenXianTableHelper shenXianTable = IndShenXianTableHelper.getInstance();
 	protected IndDDXTableHelper ddxTable = IndDDXTableHelper.getInstance();
 	protected IndQSDDTableHelper qsddTable = IndQSDDTableHelper.getInstance();
-	protected ChuQuanChuXiPriceHelper chuQuanChuXiHelper = ChuQuanChuXiPriceHelper.getInstance();
 
 	// protected IndYiMengBSTableHelper ymbsTable =
 	// IndYiMengBSTableHelper.getInstance();
@@ -29,15 +28,13 @@ public class StockSuperVOHelper {
 		// merge them into one overall VO
 		List<StockSuperVO> overList = new ArrayList<StockSuperVO>();
 
-		List<StockPriceVO> spList = stockPriceTable.getStockPriceById(stockId);
+		List<StockPriceVO> spList = qianFuQuanStockPriceTable.getStockPriceById(stockId);
 		List<MacdVO> macdList = macdTable.getAllMacd(stockId);
 		List<KDJVO> kdjList = kdjTable.getAllKDJ(stockId);
 		List<BollVO> bollList = bollTable.getAllBoll(stockId);
 		List<ShenXianVO> shenXianList = shenXianTable.getAllShenXian(stockId);
 		List<QSDDVO> qsddList = qsddTable.getAllQSDD(stockId);
 		// List<YiMengBSVO> ymbsList = ymbsTable.getAllYiMengBS(stockId);
-
-		chuQuanChuXiHelper.updateQianFuQianPriceBasedOnHouFuQuan(stockId, spList);
 
 		if ((spList.size() != macdList.size()) || (macdList.size() != kdjList.size())
 				|| (kdjList.size() != spList.size()) || (bollList.size() != spList.size())
@@ -74,7 +71,7 @@ public class StockSuperVOHelper {
 		// merge them into one overall VO
 		List<StockSuperVO> overList = new ArrayList<StockSuperVO>();
 
-		List<StockPriceVO> spList = stockPriceTable.getNdateStockPriceById(stockId, day);
+		List<StockPriceVO> spList = qianFuQuanStockPriceTable.getNdateStockPriceById(stockId, day);
 		List<MacdVO> macdList = macdTable.getNDateMacd(stockId, day);
 		List<KDJVO> kdjList = kdjTable.getNDateKDJ(stockId, day);
 		List<BollVO> bollList = bollTable.getNDateBoll(stockId, day);

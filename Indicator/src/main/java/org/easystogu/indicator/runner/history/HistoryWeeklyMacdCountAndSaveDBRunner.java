@@ -8,8 +8,7 @@ public class HistoryWeeklyMacdCountAndSaveDBRunner extends HistoryMacdCountAndSa
 
 	public HistoryWeeklyMacdCountAndSaveDBRunner() {
 		macdTable = IndWeekMacdTableHelper.getInstance();
-		stockPriceTable = WeekStockPriceTableHelper.getInstance();
-		needChuQuan = false;
+		qianFuQuanStockPriceTable = WeekStockPriceTableHelper.getInstance();
 	}
 
 	public static void main(String[] args) {

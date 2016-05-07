@@ -10,7 +10,7 @@ import org.easystogu.db.table.StockSuperVO;
 
 public class WeekStockSuperVOHelper extends StockSuperVOHelper {
 	public WeekStockSuperVOHelper() {
-		stockPriceTable = WeekStockPriceTableHelper.getInstance();
+		qianFuQuanStockPriceTable = WeekStockPriceTableHelper.getInstance();
 		macdTable = IndWeekMacdTableHelper.getInstance();
 		kdjTable = IndWeekKDJTableHelper.getInstance();
 		// bollTable = IndWeekBollTableHelper.getInstance();
@@ -25,7 +25,7 @@ public class WeekStockSuperVOHelper extends StockSuperVOHelper {
 		// merge them into one overall VO
 		List<StockSuperVO> overList = new ArrayList<StockSuperVO>();
 
-		List<StockPriceVO> spList = stockPriceTable.getStockPriceById(stockId);
+		List<StockPriceVO> spList = qianFuQuanStockPriceTable.getStockPriceById(stockId);
 		List<MacdVO> macdList = macdTable.getAllMacd(stockId);
 		List<KDJVO> kdjList = kdjTable.getAllKDJ(stockId);
 		// List<BollVO> bollList = bollTable.getAllBoll(stockId);
@@ -58,7 +58,7 @@ public class WeekStockSuperVOHelper extends StockSuperVOHelper {
 		// merge them into one overall VO
 		List<StockSuperVO> overList = new ArrayList<StockSuperVO>();
 
-		List<StockPriceVO> spList = stockPriceTable.getNdateStockPriceById(stockId, day);
+		List<StockPriceVO> spList = qianFuQuanStockPriceTable.getNdateStockPriceById(stockId, day);
 		List<MacdVO> macdList = macdTable.getNDateMacd(stockId, day);
 		List<KDJVO> kdjList = kdjTable.getNDateKDJ(stockId, day);
 

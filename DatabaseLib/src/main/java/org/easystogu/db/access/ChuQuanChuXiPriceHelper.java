@@ -22,7 +22,7 @@ public class ChuQuanChuXiPriceHelper {
 	// priceList is order by date
 	// using hou fuquan stockprce to count the qian fuquan stockprice
 	// 使用后复权的数据计算前复权的价格数据
-	public void updateQianFuQianPriceBasedOnHouFuQuan(String stockId, List<StockPriceVO> spList) {
+	private void updateQianFuQianPriceBasedOnHouFuQuan(String stockId, List<StockPriceVO> spList) {
 		if (companyInfoHelper.isStockIdAMajorZhiShu(stockId)) {
 			return;
 		}

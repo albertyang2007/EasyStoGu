@@ -2,8 +2,8 @@ package org.easystogu.indicator.runner;
 
 import java.util.List;
 
-import org.easystogu.db.access.ChuQuanChuXiPriceHelper;
 import org.easystogu.db.access.IndKDJTableHelper;
+import org.easystogu.db.access.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.table.KDJVO;
 import org.easystogu.db.table.StockPriceVO;
@@ -16,11 +16,9 @@ import com.google.common.primitives.Doubles;
 
 public class DailyKDJCountAndSaveDBRunner implements Runnable {
     private KDJHelper kdjHelper = new KDJHelper();
-    protected StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
+    protected StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
     protected IndKDJTableHelper kdjTable = IndKDJTableHelper.getInstance();
-    protected ChuQuanChuXiPriceHelper chuQuanChuXiPriceHelper = new ChuQuanChuXiPriceHelper();
     protected CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
-    protected boolean needChuQuan = true;// week do not need chuQuan
 
     public DailyKDJCountAndSaveDBRunner() {
 
@@ -31,17 +29,13 @@ public class DailyKDJCountAndSaveDBRunner implements Runnable {
     }
 
     public void countAndSaved(String stockId) {
-        List<StockPriceVO> priceList = stockPriceTable.getStockPriceById(stockId);
+        List<StockPriceVO> priceList = qianFuQuanStockPriceTable.getStockPriceById(stockId);
 
         if (priceList.size() <= 9) {
             // System.out.println("StockPrice data is less than 9, skip " +
             // stockId);
             return;
         }
-
-        // update price based on chuQuanChuXi event
-        if (this.needChuQuan)
-            chuQuanChuXiPriceHelper.updateQianFuQianPriceBasedOnHouFuQuan(stockId, priceList);
 
         List<Double> close = StockPriceFetcher.getClosePrice(priceList);
         List<Double> low = StockPriceFetcher.getLowPrice(priceList);

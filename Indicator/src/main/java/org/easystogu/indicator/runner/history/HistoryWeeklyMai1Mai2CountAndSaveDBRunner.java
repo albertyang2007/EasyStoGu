@@ -7,8 +7,7 @@ import org.easystogu.file.access.CompanyInfoFileHelper;
 public class HistoryWeeklyMai1Mai2CountAndSaveDBRunner extends HistoryMai1Mai2CountAndSaveDBRunner {
 	public HistoryWeeklyMai1Mai2CountAndSaveDBRunner() {
 		mai1mai2Table = IndWeekMai1Mai2TableHelper.getInstance();
-		stockPriceTable = WeekStockPriceTableHelper.getInstance();
-		needChuQuan = false;
+		qianFuQuanStockPriceTable = WeekStockPriceTableHelper.getInstance();
 	}
 
 	public static void main(String[] args) {

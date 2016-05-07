@@ -7,8 +7,7 @@ import org.easystogu.file.access.CompanyInfoFileHelper;
 public class HistoryWeeklyYiMengBSCountAndSaveDBRunner extends HistoryYiMengBSCountAndSaveDBRunner {
 	public HistoryWeeklyYiMengBSCountAndSaveDBRunner() {
 		yiMengBSTable = IndWeekYiMengBSTableHelper.getInstance();
-		stockPriceTable = WeekStockPriceTableHelper.getInstance();
-		needChuQuan = false;
+		qianFuQuanStockPriceTable = WeekStockPriceTableHelper.getInstance();
 	}
 
 	public static void main(String[] args) {

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.easystogu.db.access.ChuQuanChuXiPriceHelper;
+import org.easystogu.db.access.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.access.WeekStockPriceTableHelper;
 import org.easystogu.db.table.StockPriceVO;
@@ -12,9 +13,9 @@ import org.easystogu.utils.WeekdayUtil;
 
 //每日stockprice入库之后计算本周的stockprice，入库
 public class DailyWeeklyStockPriceCountAndSaveDBRunner implements Runnable {
-	private StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
+	private StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
 	private WeekStockPriceTableHelper weekStockPriceTable = WeekStockPriceTableHelper.getInstance();
-	private String latestDate = stockPriceTable.getLatestStockDate();
+	private String latestDate = qianFuQuanStockPriceTable.getLatestStockDate();
 	protected ChuQuanChuXiPriceHelper chuQuanChuXiPriceHelper = new ChuQuanChuXiPriceHelper();
 	protected CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 
@@ -74,9 +75,7 @@ public class DailyWeeklyStockPriceCountAndSaveDBRunner implements Runnable {
 
 	private List<StockPriceVO> getStockPriceByIdAndBetweenDate(String stockId, String firstDate, String lastDate) {
 		List<StockPriceVO> rtnList = new ArrayList<StockPriceVO>();
-		List<StockPriceVO> spList = stockPriceTable.getStockPriceById(stockId);
-		// update price based on chuQuanChuXi event
-		chuQuanChuXiPriceHelper.updateQianFuQianPriceBasedOnHouFuQuan(stockId, spList);
+		List<StockPriceVO> spList = qianFuQuanStockPriceTable.getStockPriceById(stockId);
 		for (StockPriceVO vo : spList) {
 			if (vo.date.compareTo(firstDate) >= 0 && vo.date.compareTo(lastDate) <= 0) {
 				rtnList.add(vo);

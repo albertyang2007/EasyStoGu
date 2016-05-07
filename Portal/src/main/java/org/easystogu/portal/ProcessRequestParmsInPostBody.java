@@ -3,6 +3,7 @@ package org.easystogu.portal;
 import java.util.List;
 
 import org.easystogu.db.access.ChuQuanChuXiPriceHelper;
+import org.easystogu.db.access.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.table.StockPriceVO;
 import org.easystogu.db.util.MergeNDaysPriceUtil;
@@ -22,8 +23,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ProcessRequestParmsInPostBody {
-	protected StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
-	protected ChuQuanChuXiPriceHelper chuQuanChuXiPriceHelper = new ChuQuanChuXiPriceHelper();
+	protected StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
 	protected MergeNDaysPriceUtil mergeNdaysPriceHeloer = new MergeNDaysPriceUtil();
 	@Autowired
 	protected TrendModeLoader trendModeLoader;
@@ -85,9 +85,7 @@ public class ProcessRequestParmsInPostBody {
 
 	// common function to fetch price from stockPrice table
 	private List<StockPriceVO> fetchAllPrices(String stockid) {
-		List<StockPriceVO> spList = stockPriceTable.getStockPriceById(stockid);
-		// update price based on chuQuanChuXi event
-		chuQuanChuXiPriceHelper.updateQianFuQianPriceBasedOnHouFuQuan(stockid, spList);
+		List<StockPriceVO> spList = qianFuQuanStockPriceTable.getStockPriceById(stockid);
 		return spList;
 	}
 

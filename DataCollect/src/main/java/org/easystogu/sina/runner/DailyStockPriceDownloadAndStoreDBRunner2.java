@@ -96,6 +96,7 @@ public class DailyStockPriceDownloadAndStoreDBRunner2 implements Runnable {
 			// System.out.println("saving into DB, vo=" + vo);
 			this.stockPriceTable.insert(spvo);
 			// also insert the qian fuquan stockprice
+			this.qianfuquanStockPriceTable.delete(spvo.stockId, spvo.date);
 			this.qianfuquanStockPriceTable.insert(spvo);
 
 			// update hou fuquan stockprice table

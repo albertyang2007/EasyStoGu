@@ -10,8 +10,7 @@ import org.easystogu.utils.WeekdayUtil;
 public class DailyWeekXueShi2CountAndSaveDBRunner extends DailyXueShi2CountAndSaveDBRunner {
 	public DailyWeekXueShi2CountAndSaveDBRunner() {
 		xueShi2Table = IndWeekXueShi2TableHelper.getInstance();
-		stockPriceTable = WeekStockPriceTableHelper.getInstance();
-		needChuQuan = false;
+		qianFuQuanStockPriceTable = WeekStockPriceTableHelper.getInstance();
 	}
 
 	@Override

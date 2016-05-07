@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.easystogu.db.access.ChuQuanChuXiPriceHelper;
 import org.easystogu.db.access.IndBollTableHelper;
+import org.easystogu.db.access.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.table.BollVO;
 import org.easystogu.db.table.StockPriceVO;
@@ -15,10 +16,9 @@ import org.easystogu.utils.Strings;
 public class HistoryBollCountAndSaveDBRunner {
 
 	protected IndBollTableHelper bollTable = IndBollTableHelper.getInstance();
-	protected StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
+	protected StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
 	private BOLLHelper bollHelper = new BOLLHelper();
 	protected ChuQuanChuXiPriceHelper chuQuanChuXiPriceHelper = new ChuQuanChuXiPriceHelper();
-	protected boolean needChuQuan = true;// week do not need chuQuan
 
 	public void deleteBoll(String stockId) {
 		bollTable.delete(stockId);
@@ -34,17 +34,13 @@ public class HistoryBollCountAndSaveDBRunner {
 
 	public void countAndSaved(String stockId) {
 		try {
-			List<StockPriceVO> priceList = stockPriceTable.getStockPriceById(stockId);
+			List<StockPriceVO> priceList = qianFuQuanStockPriceTable.getStockPriceById(stockId);
 
 			int length = priceList.size();
 
 			if (length < 1) {
 				return;
 			}
-
-			// update price based on chuQuanChuXi event
-			if (needChuQuan)
-				chuQuanChuXiPriceHelper.updateQianFuQianPriceBasedOnHouFuQuan(stockId, priceList);
 
 			double[] close = new double[length];
 			int index = 0;

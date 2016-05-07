@@ -9,9 +9,8 @@ import org.easystogu.utils.WeekdayUtil;
 
 public class DailyWeekKDJCountAndSaveDBRunner extends DailyKDJCountAndSaveDBRunner {   
     public DailyWeekKDJCountAndSaveDBRunner() {
-        stockPriceTable = WeekStockPriceTableHelper.getInstance();
+        qianFuQuanStockPriceTable = WeekStockPriceTableHelper.getInstance();
         kdjTable = IndWeekKDJTableHelper.getInstance();
-        needChuQuan = false;
     }
 
     @Override

@@ -7,8 +7,7 @@ import org.easystogu.file.access.CompanyInfoFileHelper;
 public class HistoryWeeklyShenXianCountAndSaveDBRunner extends HistoryShenXianCountAndSaveDBRunner {
 	public HistoryWeeklyShenXianCountAndSaveDBRunner() {
         shenXianTable = IndWeekShenXianTableHelper.getInstance();
-        stockPriceTable = WeekStockPriceTableHelper.getInstance();
-        needChuQuan = false;
+        qianFuQuanStockPriceTable = WeekStockPriceTableHelper.getInstance();
     }
 
     public static void main(String[] args) {
