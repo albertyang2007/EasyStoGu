@@ -43,7 +43,7 @@ public class HouFuQuanStockPriceTableHelper extends StockPriceTableHelper {
 		// query price by Id and date
 		QUERY_BY_STOCKID_DATE_SQL = "SELECT * FROM " + tableName + " WHERE stockId = :stockId AND date = :date";
 		// query the last date
-		GET_LATEST_STOCK_DATE = "SELECT date as rtn FROM " + tableName + " ORDER BY DATE DESC limit 1";
+		GET_LATEST_STOCK_DATE = "SELECT date as rtn FROM " + tableName + " WHERE stockId = :stockId ORDER BY DATE DESC limit 1";
 		// query the latest N date price
 		QUERY_LATEST_PRICE_N_DATE_STOCKID_SQL = "SELECT * FROM " + tableName
 				+ " WHERE stockId = :stockId ORDER BY date DESC LIMIT :limit";

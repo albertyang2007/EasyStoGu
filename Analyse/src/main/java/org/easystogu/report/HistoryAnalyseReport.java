@@ -391,11 +391,11 @@ public class HistoryAnalyseReport {
 		// }
 		// reporter.searchAllStockIdAnalyseHistoryBuySellCheckPoint(DailyCombineCheckPoint.LuZao_GordonO_MA43_DownCross_MA86);
 
-		reporter.searchAllStockIdAnalyseHistoryBuySellCheckPoint(DailyCombineCheckPoint.LuZao_GordonO_MA43_DownCross_MA86);
-		reporter.searchAllStockIdAnalyseHistoryBuySellCheckPoint(DailyCombineCheckPoint.LuZao_GordonI_MA19_UpCross_MA43);
-		reporter.searchAllStockIdAnalyseHistoryBuySellCheckPoint(DailyCombineCheckPoint.LuZao_GordonII_MA19_UpCross_MA86);
-		reporter.searchAllStockIdAnalyseHistoryBuySellCheckPoint(DailyCombineCheckPoint.LuZao_DeadI_MA43_UpCross_MA86);
-		reporter.searchAllStockIdAnalyseHistoryBuySellCheckPoint(DailyCombineCheckPoint.LuZao_DeadII_MA19_DownCross_MA43);
+		reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.LuZao_GordonO_MA43_DownCross_MA86);
+		reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.LuZao_GordonI_MA19_UpCross_MA43);
+		reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.LuZao_GordonII_MA19_UpCross_MA86);
+		reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.LuZao_DeadI_MA43_UpCross_MA86);
+		reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.LuZao_DeadII_MA19_DownCross_MA43);
 
 	}
 }

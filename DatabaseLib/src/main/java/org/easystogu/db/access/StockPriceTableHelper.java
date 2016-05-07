@@ -55,7 +55,7 @@ public class StockPriceTableHelper {
     protected String QUERY_BY_STOCKID_DATE_SQL = "SELECT * FROM " + tableName
             + " WHERE stockId = :stockId AND date = :date";
     // query the last date
-    protected String GET_LATEST_STOCK_DATE = "SELECT date as rtn FROM " + tableName + " ORDER BY DATE DESC limit 1";
+    protected String GET_LATEST_STOCK_DATE = "SELECT date as rtn FROM " + tableName + " WHERE stockId = :stockId ORDER BY DATE DESC limit 1";
     // query the latest N date price
     protected String QUERY_LATEST_PRICE_N_DATE_STOCKID_SQL = "SELECT * FROM " + tableName
             + " WHERE stockId = :stockId ORDER BY date DESC LIMIT :limit";
@@ -483,7 +483,8 @@ public class StockPriceTableHelper {
         try {
 
             MapSqlParameterSource namedParameters = new MapSqlParameterSource();
-
+            namedParameters.addValue("stockId", "999999");
+            
             String date = this.namedParameterJdbcTemplate.queryForObject(GET_LATEST_STOCK_DATE, namedParameters,
                     new StringVOMapper());
 
