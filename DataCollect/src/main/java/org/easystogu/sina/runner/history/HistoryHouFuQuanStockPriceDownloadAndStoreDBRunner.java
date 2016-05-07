@@ -171,7 +171,7 @@ public class HistoryHouFuQuanStockPriceDownloadAndStoreDBRunner {
 		// runner.countAndSave("000038");
 
 		// for major indicator
-		// runner.countAndSavevForMajorIndicator();
+		runner.countAndSavevForMajorIndicator();
 		// finally re run for failure
 		// runner.reRunOnFailure();
 	}
