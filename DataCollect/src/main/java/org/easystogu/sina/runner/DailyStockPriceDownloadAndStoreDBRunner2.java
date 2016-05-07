@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.easystogu.db.access.CompanyInfoTableHelper;
 import org.easystogu.db.access.HouFuQuanStockPriceTableHelper;
+import org.easystogu.db.access.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.ScheduleActionTableHelper;
 import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.table.CompanyInfoVO;
@@ -25,6 +26,7 @@ public class DailyStockPriceDownloadAndStoreDBRunner2 implements Runnable {
 	private CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 	private StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
 	private HouFuQuanStockPriceTableHelper houfuquanStockPriceTable = HouFuQuanStockPriceTableHelper.getInstance();
+	private QianFuQuanStockPriceTableHelper qianfuquanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
 	private ScheduleActionTableHelper scheduleActionTable = ScheduleActionTableHelper.getInstance();
 	private CompanyInfoTableHelper companyInfoTable = CompanyInfoTableHelper.getInstance();
 	private DailyStockPriceDownloadAndStoreDBRunner runner1 = new DailyStockPriceDownloadAndStoreDBRunner();
@@ -93,6 +95,8 @@ public class DailyStockPriceDownloadAndStoreDBRunner2 implements Runnable {
 			List<StockPriceVO> nDaySpList = this.stockPriceTable.getNdateStockPriceById(spvo.stockId, 1);
 			// System.out.println("saving into DB, vo=" + vo);
 			this.stockPriceTable.insert(spvo);
+			// also insert the qian fuquan stockprice
+			this.qianfuquanStockPriceTable.insert(spvo);
 
 			// update hou fuquan stockprice table
 			double newRate = 1.0;
@@ -122,14 +126,21 @@ public class DailyStockPriceDownloadAndStoreDBRunner2 implements Runnable {
 					savo.actionDo = ScheduleActionVO.ActionDo.refresh_hou_fuquan_history_stockprice.name();
 					savo.params = "";
 
+					// insert hou qufuan
 					this.scheduleActionTable.delete(savo.stockId, savo.runDate, savo.actionDo);
 					this.scheduleActionTable.insert(savo);
+
+					// insert qian qufuan
+					savo.actionDo = ScheduleActionVO.ActionDo.refresh_qian_fuquan_history_stockprice.name();
+					this.scheduleActionTable.delete(savo.stockId, savo.runDate, savo.actionDo);
+					this.scheduleActionTable.insert(savo);
+
 				}
-				
+
 				// update fuquan stockprice table by manually, assume there
 				// is no chuquan event at this date
-				List<StockPriceVO> nDayFuQuanSpList = this.houfuquanStockPriceTable
-						.getNdateStockPriceById(spvo.stockId, 1);
+				List<StockPriceVO> nDayFuQuanSpList = this.houfuquanStockPriceTable.getNdateStockPriceById(
+						spvo.stockId, 1);
 				if (nDayFuQuanSpList.size() >= 1) {
 					StockPriceVO yesterday_fqspvo = nDayFuQuanSpList.get(0);
 					lastRate = yesterday_fqspvo.close / yesterday_spvo.close;
