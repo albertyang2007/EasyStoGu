@@ -391,6 +391,7 @@ public class HistoryAnalyseReport {
 		// }
 		// reporter.searchAllStockIdAnalyseHistoryBuySellCheckPoint(DailyCombineCheckPoint.LuZao_GordonO_MA43_DownCross_MA86);
 
+		/*
 		reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.Trend_PhaseI_GuanCha);
         reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.Trend_PhaseII_JianCang);
         reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.Trend_PhaseIII_ChiGu);
@@ -405,6 +406,11 @@ public class HistoryAnalyseReport {
 		reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.LuZao_GordonII_MA19_UpCross_MA86);
 		reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.LuZao_DeadI_MA43_UpCross_MA86);
 		reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.LuZao_DeadII_MA19_DownCross_MA43);
-
+        */
+		reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.ShenXian_Gordon);
+        reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.ShenXian_Dead);
+        
+        reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.MACD_Gordon);
+        reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.MACD_Dead);
 	}
 }
