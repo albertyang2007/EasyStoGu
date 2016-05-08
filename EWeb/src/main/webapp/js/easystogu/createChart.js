@@ -534,6 +534,72 @@ function createChart_Macd(stockId, date_price, volume, data_dif, data_dea,
 }
 
 /**
+ * Create the StockPrice and macd statistics chart
+ * 
+ * @returns {undefined}
+ */
+function createChart_Macd_Statistics(stockId, date_price, volume, data_dif,
+		data_dea, data_macd, data_gordon, data_dead) {
+	$('#container').highcharts('StockChart', {
+
+		rangeSelector : {
+			selected : 1
+		},
+
+		title : {
+			text : stockId
+		},
+
+		plotOptions : {
+			candlestick : {
+				color : '#00ff00',// Green
+				upColor : '#ff0000'// Red
+			}
+		},
+
+		yAxis : [ {
+			labels : {
+				align : 'right',
+				x : -3
+			},
+			title : {
+				text : 'Price'
+			},
+			height : '60%',
+			lineWidth : 2
+		}, {
+			labels : {
+				align : 'right',
+				x : -3
+			},
+			title : {
+				text : 'Statistics'
+			},
+			top : '65%',
+			height : '35%',
+			offset : 0,
+			lineWidth : 2
+		} ],
+
+		series : [ {
+			type : 'candlestick',
+			name : 'OHLC',
+			data : date_price
+		}, {
+			name : '金叉个股数目',
+			data : data_gordon,
+			yAxis : 1
+		}, {
+			name : '死叉个股数目',
+			data : data_dead,
+			yAxis : 1
+		} ]
+	});
+
+	chart = $('#container').highcharts();
+}
+
+/**
  * Create the StockPrice and qsdd chart
  * 
  * @returns {undefined}

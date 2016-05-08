@@ -56,6 +56,8 @@ demo
          loadLuZaoGordonStatistics(data.version, data.stockId, data.dateFrom, data.dateTo);  
       }else if(data.indicator == "qsdd"){ 
          loadQsddStatistics(data.version, data.stockId, data.dateFrom, data.dateTo);
+      }else if(data.indicator == "macd"){ 
+         loadMacdStatistics(data.version, data.stockId, data.dateFrom, data.dateTo);
       }
     },
     
@@ -70,6 +72,7 @@ demo
                         <option value='luzaoTrend'>luzaoTrend</option>
                         <option value='luzaoGordon'>luzaoGordon</option>
                         <option value='shenxian'>shenxian</option>
+                        <option value='macd'>shenxian</option>
                         </select>&nbsp;&nbsp;
 
                         <label>Version:</label>

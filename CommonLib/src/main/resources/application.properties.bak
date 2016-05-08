@@ -1,0 +1,80 @@
+###http proxy
+#http.proxy.server=www-proxy.e3.se
+#http.proxy.port=8080
+
+###realtime display stock list
+realtime.display.stock.list=sh000001,sz399001,sz399006,sh601318,sz000002,sh601857
+
+##analyse select stock list
+analyse.select.stock.list=sh600900,sh600021,sz300085,sz000835,sz300153,sz002466,sz002460,sz300028,sh603866,sh000001
+
+#postgres jdbc
+jdbc.driver=org.postgresql.Driver
+jdbc.url=jdbc:postgresql://localhost:5432/easystogu
+jdbc.user=postgres
+jdbc.password=postgres
+jdbc.maxActive=200
+jdbc.maxIdle=100
+
+#When select using the checkPoint
+minEarnPercent_Select_CheckPoint=8.0
+
+#specify the check point, this setting will ignore the minEarnPercent_Select_CheckPoint, must contains ';'
+#those are buypoint directly
+specify_Select_CheckPoint=
+#HengPan_3_Weeks_MA_RongHe_Break_Platform;\
+#HengPan_3_Weeks_MA_RongHe_Break_Platform_Orig;\
+#HengPan_2_Weeks_MA_RongHe_Break_Platform;\
+#HengPang_Ready_To_Break_Platform_MA30_Support_MA_RongHe_XiangShang;\
+#HengPang_Ready_To_Break_Platform_MA20_Support_MA_RongHe_XiangShang;\
+#HengPang_Ready_To_Break_Platform_BollUp_BollXueShi2_Dn_Gordon;\
+#HengPang_Ready_To_Break_Platform_MACD_Gordon_Week_KDJ_Gordon;\
+#DuoTou_HuiTiao_MA30_Support_MA_RongHe_XiangShang;\
+#DuoTou_HuiTiao_MA20_Support_MA_RongHe_XiangShang;\
+#DuoTou_Pre_2_Days_Green_Red_KDJ_Zero_MA30_Support_MA_RongHe_XiangShang;\
+#SuoLiang_HuiTiao_ShenXiao_Gordon;
+
+
+#those are buypoint when other buypoint already happens
+#for example, when HengPan_3_Weeks_MA5_MA10_MA20_MA30_RongHe_Break_Platform_Orig happens for one stockid at date1
+#then today Close_Higher_BollUp_BollXueShi2_Dn_Gordon is also happen for that stockid, then display and select it
+specify_Depend_CheckPoint=
+#Close_Higher_BollUp_BollXueShi2_Dn_Gordon;
+
+
+#those general checkpoint are for DaPan over status summary
+general_CheckPoint=\
+Trend_PhaseI_GuanCha;Trend_PhaseII_JianCang;Trend_PhaseIII_ChiGu;Trend_PhaseVI_JianCang;\
+QSDD_Top_Area;QSDD_Bottom_Area;QSDD_Bottom_Gordon;\
+LuZao_GordonO_MA43_DownCross_MA86;LuZao_GordonI_MA19_UpCross_MA43;LuZao_GordonII_MA19_UpCross_MA86;LuZao_DeadI_MA43_UpCross_MA86;LuZao_DeadII_MA19_DownCross_MA43;
+
+#do history analyze in daily selection
+do_History_Analyze_In_Daily_Selection=false
+
+#total zijinliu page is 59 for all stockIds
+real_Time_Get_ZiJin_Liu_PageNumber=20
+
+#for pre-estimate next working day price, example increase 2%,4%,6%,8%
+nextDatePriceIncPercent=1.10
+
+#insert length of mock price data when count the indicator
+#since some of the stock price will have less data, not enough to count the indicator
+insert_length_mock_price_count_indicator=0
+
+##local csv file path
+yahoo.csv.file.path=F:/Stock/EasyStoGuProject/CSVData1/
+
+##local sina history data path
+sina.history.file.path=F:/Stock/EasyStoGu/SinaHistoryData/
+
+##trend mode json save folder
+trendmode.json.file.path=F:/github/EasyStoGu/Portal/src/main/resources/TrendMode/
+
+##report analyse to html file
+report.analyse.html.file=C:/myFolder/EasyStoGu/report_currentDate.html
+report.estimate.html.file=C:/myFolder/EasyStoGu/estimate_nextDate.html
+report.estimate.both.html.file=C:/myFolder/EasyStoGu/estimate_both_currentDate.html
+report.recent.analyse.html.file=C:/myFolder/EasyStoGu/report_recent_currentDate.html
+
+##file path to store stockPrice
+stockPrice.import_export.file.path = C:/Users/eyaweiw/github/EasyStoGu/CommonLib/src/main/resources/stockPrice/
