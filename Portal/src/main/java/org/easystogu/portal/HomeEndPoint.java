@@ -10,7 +10,6 @@ import org.easystogu.runner.DailyOverAllRunner;
 import org.easystogu.runner.DailySelectionRunner;
 import org.easystogu.runner.DailyUpdateAllStockRunner;
 import org.easystogu.runner.DataBaseSanityCheck;
-import org.easystogu.runner.PreEstimateStockPriceRunner;
 import org.easystogu.runner.RecentlySelectionRunner;
 import org.easystogu.sina.runner.RealtimeDisplayStockPriceRunner;
 
@@ -20,7 +19,6 @@ public class HomeEndPoint {
 	public Response test() {
 		StringBuffer sb = new StringBuffer();
 		sb.append("<a href='DailyUpdateAllStockRunner'>DailyUpdateAllStockRunner</a><br>");
-		sb.append("<a href='PreEstimateStockPriceRunner'>PreEstimateStockPriceRunner</a><br>");
 		sb.append("<a href='DailyOverAllRunner'>DailyOverAllRunner</a><br>");
 		sb.append("<a href='FastDailyOverAllRunner'>FastDailyOverAllRunner</a><br>");
 		sb.append("<a href='DailySelectionRunner'>DailySelectionRunner</a><br>");
@@ -38,14 +36,6 @@ public class HomeEndPoint {
 		Thread t = new Thread(new DailyUpdateAllStockRunner(isGetZiJinLiu));
 		t.start();
 		return "DailyUpdateAllStockRunner already running, please check folder result.";
-	}
-
-	@GET
-	@Path("/PreEstimateStockPriceRunner")
-	public String preEstimateStockPriceRunner() {
-		Thread t = new Thread(new PreEstimateStockPriceRunner());
-		t.start();
-		return "PreEstimateStockPriceRunner already running, please check folder result.";
 	}
 
 	@GET

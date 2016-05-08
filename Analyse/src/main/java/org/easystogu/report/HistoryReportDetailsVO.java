@@ -2,6 +2,7 @@ package org.easystogu.report;
 
 import java.util.List;
 
+import org.easystogu.db.access.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.table.CheckPointHistorySelectionVO;
 import org.easystogu.db.table.StockPriceVO;
@@ -9,7 +10,7 @@ import org.easystogu.db.table.StockSuperVO;
 
 public class HistoryReportDetailsVO {
 
-	private StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
+	private StockPriceTableHelper stockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
 	public List<StockSuperVO> overDayList;
 
 	public String stockId;

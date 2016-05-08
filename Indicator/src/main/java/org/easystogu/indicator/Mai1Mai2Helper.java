@@ -2,6 +2,7 @@ package org.easystogu.indicator;
 
 import java.util.List;
 
+import org.easystogu.db.access.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.table.StockPriceVO;
 
@@ -52,7 +53,7 @@ public class Mai1Mai2Helper {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
+		StockPriceTableHelper stockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
 		List<StockPriceVO> list = stockPriceTable.getStockPriceById("600359");
 		Mai1Mai2Helper ins = new Mai1Mai2Helper();
 

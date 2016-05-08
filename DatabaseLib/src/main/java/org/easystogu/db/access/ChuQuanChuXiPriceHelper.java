@@ -73,7 +73,7 @@ public class ChuQuanChuXiPriceHelper {
 
 	public static void main(String[] args) {
 		String stockId = "002356";// "000038"
-		StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
+		StockPriceTableHelper stockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
 		List<StockPriceVO> spList = stockPriceTable.getStockPriceById(stockId);
 		ChuQuanChuXiPriceHelper helper = new ChuQuanChuXiPriceHelper();
 		helper.updateQianFuQianPriceBasedOnHouFuQuan(stockId, spList);

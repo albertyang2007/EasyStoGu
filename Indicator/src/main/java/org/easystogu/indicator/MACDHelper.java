@@ -2,6 +2,7 @@ package org.easystogu.indicator;
 
 import java.util.List;
 
+import org.easystogu.db.access.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.StockPriceTableHelper;
 
 import com.google.common.primitives.Doubles;
@@ -35,7 +36,7 @@ public class MACDHelper extends IND {
 	}
 
 	public static void main(String[] args) {
-		StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
+		StockPriceTableHelper stockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
 		MACDHelper ins = new MACDHelper();
 		String stockId = "002789";
 		List<Double> close = stockPriceTable.getAllClosePrice(stockId);

@@ -7,6 +7,7 @@ import java.util.List;
 import net.sf.json.JSONObject;
 
 import org.easystogu.config.FileConfigurationService;
+import org.easystogu.db.access.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.table.StockPriceVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
@@ -17,7 +18,7 @@ import org.easystogu.utils.Strings;
 public class ModeGenerator {
 	private FileConfigurationService config = FileConfigurationService.getInstance();
 	private CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
-	private StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
+	private StockPriceTableHelper stockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
 	private String trendModeJsonFilePath = config.getString("trendmode.json.file.path");
 
 	// select range prices for one stock and return json str

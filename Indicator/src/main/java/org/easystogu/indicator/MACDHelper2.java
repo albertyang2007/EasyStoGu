@@ -2,13 +2,14 @@ package org.easystogu.indicator;
 
 import java.util.List;
 
+import org.easystogu.db.access.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.table.StockPriceVO;
 
 public class MACDHelper2 {
 
 	public static void main(String[] args) {
-		StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
+		StockPriceTableHelper stockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
 		List<StockPriceVO> list = stockPriceTable.getStockPriceById("002673");
 		TALIBWraper talib = new TALIBWraper();
 
