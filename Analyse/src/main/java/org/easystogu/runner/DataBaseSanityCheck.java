@@ -10,6 +10,7 @@ import org.easystogu.db.access.IndQSDDTableHelper;
 import org.easystogu.db.access.IndShenXianTableHelper;
 import org.easystogu.db.access.IndWeekKDJTableHelper;
 import org.easystogu.db.access.IndWeekMacdTableHelper;
+import org.easystogu.db.access.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.access.WeekStockPriceTableHelper;
 import org.easystogu.db.table.BollVO;
@@ -26,16 +27,21 @@ import org.easystogu.indicator.runner.history.HistoryQSDDCountAndSaveDBRunner;
 import org.easystogu.indicator.runner.history.HistoryShenXianCountAndSaveDBRunner;
 import org.easystogu.indicator.runner.history.HistoryWeeklyKDJCountAndSaveDBRunner;
 import org.easystogu.indicator.runner.history.HistoryWeeklyMacdCountAndSaveDBRunner;
+import org.easystogu.sina.runner.history.HistoryHouFuQuanStockPriceDownloadAndStoreDBRunner;
+import org.easystogu.sina.runner.history.HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner;
 import org.easystogu.utils.Strings;
 
 public class DataBaseSanityCheck implements Runnable {
 	protected StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
 	protected HouFuQuanStockPriceTableHelper houfuquanStockPriceTable = HouFuQuanStockPriceTableHelper.getInstance();
+	protected QianFuQuanStockPriceTableHelper qianfuquanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
 	protected IndMacdTableHelper macdTable = IndMacdTableHelper.getInstance();
 	protected IndKDJTableHelper kdjTable = IndKDJTableHelper.getInstance();
 	protected IndBollTableHelper bollTable = IndBollTableHelper.getInstance();
 	protected IndShenXianTableHelper shenXianTable = IndShenXianTableHelper.getInstance();
 	protected IndQSDDTableHelper qsddTable = IndQSDDTableHelper.getInstance();
+	protected HistoryHouFuQuanStockPriceDownloadAndStoreDBRunner historyHouFuQuanRunner = new HistoryHouFuQuanStockPriceDownloadAndStoreDBRunner();
+	protected HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner historyQianFuQuanRunner = new HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner();
 	// protected IndYiMengBSTableHelper ymbsTable =
 	// IndYiMengBSTableHelper.getInstance();
 
@@ -68,7 +74,8 @@ public class DataBaseSanityCheck implements Runnable {
 	public void sanityDailyCheck(String stockId) {
 
 		List<StockPriceVO> spList = stockPriceTable.getStockPriceById(stockId);
-		List<StockPriceVO> fuquan_spList = houfuquanStockPriceTable.getStockPriceById(stockId);
+		List<StockPriceVO> houfuquan_spList = houfuquanStockPriceTable.getStockPriceById(stockId);
+		List<StockPriceVO> qianfuquan_spList = qianfuquanStockPriceTable.getStockPriceById(stockId);
 		List<MacdVO> macdList = macdTable.getAllMacd(stockId);
 		List<KDJVO> kdjList = kdjTable.getAllKDJ(stockId);
 		List<BollVO> bollList = bollTable.getAllBoll(stockId);
@@ -84,6 +91,17 @@ public class DataBaseSanityCheck implements Runnable {
 		// if (spList.size() <= 108)
 		// return;
 		boolean refresh = false;
+		
+		if (spList.size() != houfuquan_spList.size()) {
+			System.out.println(stockId + " StockPrice Length is not equal to Hou FuQuan StockPrice");
+			this.historyHouFuQuanRunner.countAndSave(stockId);
+		}
+
+		if (spList.size() != qianfuquan_spList.size()) {
+			System.out.println(stockId + " StockPrice Length is not equal to Qian FuQuan StockPrice");
+			this.historyQianFuQuanRunner.countAndSave(stockId);
+		}
+
 		for (StockPriceVO vo : spList) {
 			if (vo.close == 0 || vo.open == 0 || vo.high == 0 || vo.low == 0 || Strings.isEmpty(vo.date)) {
 				System.out.println("Sanity Delete StockPrice " + vo);
@@ -96,7 +114,7 @@ public class DataBaseSanityCheck implements Runnable {
 			spList = stockPriceTable.getStockPriceById(stockId);
 
 		boolean fq_refresh = false;
-		for (StockPriceVO vo : fuquan_spList) {
+		for (StockPriceVO vo : houfuquan_spList) {
 			if (vo.close == 0 || vo.open == 0 || vo.high == 0 || vo.low == 0 || Strings.isEmpty(vo.date)) {
 				System.out.println("Sanity Delete FuQuanStockPrice " + vo);
 				this.houfuquanStockPriceTable.delete(vo.stockId, vo.date);
@@ -105,7 +123,7 @@ public class DataBaseSanityCheck implements Runnable {
 		}
 		// refresh if above delete vo
 		if (fq_refresh)
-			fuquan_spList = houfuquanStockPriceTable.getStockPriceById(stockId);
+			houfuquan_spList = houfuquanStockPriceTable.getStockPriceById(stockId);
 
 		if ((spList.size() != macdList.size())) {
 			System.out.println(stockId + " size of macd is not equal:" + spList.size() + "!=" + macdList.size());
