@@ -6,7 +6,6 @@ import org.easystogu.log.LogHelper;
 import org.easystogu.runner.DailyOverAllRunner;
 import org.easystogu.runner.DailyUpdateAllStockRunner;
 import org.easystogu.runner.DataBaseSanityCheck;
-import org.easystogu.runner.PreEstimateStockPriceRunner;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -84,13 +83,6 @@ public class DailyScheduler implements SchedulingConfigurer {
 		DailyZhuLiJingLiuRuRunner runner2 = new DailyZhuLiJingLiuRuRunner();
 		Thread t2 = new Thread(runner2);
 		t2.start();
-	}
-
-	private void PreEstimateStockPriceRunner() {
-		logger.info("PreEstimateStockPriceRunner already running, please check DB result.");
-		PreEstimateStockPriceRunner runner = new PreEstimateStockPriceRunner();
-		Thread t = new Thread(runner);
-		t.start();
 	}
 
 	private void DailyOverAllRunner(boolean isGetZiJinLiu) {
