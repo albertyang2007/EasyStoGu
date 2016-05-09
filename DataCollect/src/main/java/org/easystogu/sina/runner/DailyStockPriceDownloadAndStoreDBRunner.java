@@ -3,6 +3,8 @@ package org.easystogu.sina.runner;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.easystogu.db.access.HouFuQuanStockPriceTableHelper;
+import org.easystogu.db.access.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.table.StockPriceVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
@@ -16,6 +18,8 @@ public class DailyStockPriceDownloadAndStoreDBRunner implements Runnable {
     // LogHelper.getLogger(DailyStockPriceDownloadAndStoreDBRunner.class);
     private CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
     private StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
+    private StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
+    private StockPriceTableHelper houFuQuanStockPriceTable = HouFuQuanStockPriceTableHelper.getInstance();
     private DailyStockPriceDownloadHelper sinaHelper = new DailyStockPriceDownloadHelper();
     private CompanyInfoFileHelper companyInfoHelper = CompanyInfoFileHelper.getInstance();
     private int totalError = 0;
@@ -50,12 +54,16 @@ public class DailyStockPriceDownloadAndStoreDBRunner implements Runnable {
             if (vo.isValidated()) {
                 // System.out.println("saving into DB, vo=" + vo);
                 stockPriceTable.delete(vo.stockId, vo.date);
+                qianFuQuanStockPriceTable.delete(vo.stockId, vo.date);
+                houFuQuanStockPriceTable.delete(vo.stockId, vo.date);
 
                 if (vo.stockId.equals(this.companyInfoHelper.getSZCZStockIdForDB())
                         || vo.stockId.equals(this.companyInfoHelper.getCYBZStockIdForDB()))
                     vo.volume = vo.volume / 100;
 
                 stockPriceTable.insert(vo);
+                qianFuQuanStockPriceTable.insert(vo);
+                houFuQuanStockPriceTable.insert(vo);
             } else {
                 System.out.println("vo invalidate: " + vo);
             }

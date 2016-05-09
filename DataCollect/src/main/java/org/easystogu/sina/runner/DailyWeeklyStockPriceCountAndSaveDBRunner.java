@@ -93,6 +93,6 @@ public class DailyWeeklyStockPriceCountAndSaveDBRunner implements Runnable {
 		CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 		DailyWeeklyStockPriceCountAndSaveDBRunner runner = new DailyWeeklyStockPriceCountAndSaveDBRunner();
 		runner.countAndSave(stockConfig.getAllStockId());
-		// runner.countAndSaved("002327");
+		//runner.countAndSaved("999999");
 	}
 }
