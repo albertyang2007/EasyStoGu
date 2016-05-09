@@ -413,8 +413,8 @@ public class DailySelectionRunner implements Runnable {
     public void runForStockIds(List<String> stockIds) {
         int index = 0;
         for (String stockId : stockIds) {
-            if (!stockId.equals("002609"))
-                continue;
+            //if (!stockId.equals("002609"))
+            //   continue;
             if (index++ % 500 == 0) {
                 System.out.println("Analyse of " + index + "/" + stockIds.size());
             }
