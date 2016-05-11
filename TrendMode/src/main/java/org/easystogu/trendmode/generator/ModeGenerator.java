@@ -76,7 +76,8 @@ public class ModeGenerator {
 		saveToFile(generateTrendMode("Break_Platform_1", "长平台整理,阶梯上升", "600021", "2015-01-20", "2015-04-17"));
 		saveToFile(generateTrendMode("Break_Platform_2", "短平台整理,阶梯上升", "000979", "2015-02-25", "2015-04-14"));
 		saveToFile(generateTrendMode("Break_Platform_3", "短平台整理,阶梯上升", "300216", "2015-03-06", "2015-04-28"));
-		saveToFile(generateTrendMode("ZiMaKaiHua", "芝麻开花,节节高", "600408", "2015-02-06", "2015-03-24"));		
+		saveToFile(generateTrendMode("ZiMaKaiHua", "芝麻开花,节节高", "600408", "2015-02-06", "2015-03-24"));	
+		saveToFile(generateTrendMode("ZiMaKaiHua2", "芝麻开花,节节高", "603866", "2016-04-22", "2016-05-11"));    
 	}
 
 	public static void main(String[] args) {
