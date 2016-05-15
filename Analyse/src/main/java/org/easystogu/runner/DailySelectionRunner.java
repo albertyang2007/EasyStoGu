@@ -388,7 +388,8 @@ public class DailySelectionRunner implements Runnable {
             cpdsvo.checkPoint = checkPoint.name();
             cpdsvo.count = stockIds.size();
             // update
-            CheckPointDailyStatisticsVO lastVO = checkPointDailyStatisticsTable.getByCheckPointAndDate(cpdsvo.date,
+            String previousDate = this.stockPriceTable.getPreviousStockDate(latestDate);
+            CheckPointDailyStatisticsVO lastVO = checkPointDailyStatisticsTable.getByCheckPointAndDate(previousDate,
                     cpdsvo.checkPoint);
             checkPointDailyStatisticsTable.delete(cpdsvo.date, cpdsvo.checkPoint);
             checkPointDailyStatisticsTable.insert(cpdsvo);

@@ -55,7 +55,8 @@ public class StockPriceTableHelper {
     protected String QUERY_BY_STOCKID_DATE_SQL = "SELECT * FROM " + tableName
             + " WHERE stockId = :stockId AND date = :date";
     // query the last date
-    protected String GET_LATEST_STOCK_DATE = "SELECT date as rtn FROM " + tableName + " WHERE stockId = :stockId ORDER BY DATE DESC limit 1";
+    protected String GET_LATEST_STOCK_DATE = "SELECT date as rtn FROM " + tableName
+            + " WHERE stockId = :stockId ORDER BY DATE DESC limit 1";
     // query the latest N date price
     protected String QUERY_LATEST_PRICE_N_DATE_STOCKID_SQL = "SELECT * FROM " + tableName
             + " WHERE stockId = :stockId ORDER BY date DESC LIMIT :limit";
@@ -80,6 +81,8 @@ public class StockPriceTableHelper {
             + " WHERE stockId = :stockId AND DATE >= :date1 AND DATE <= :date2";
     protected String QUERY_DAYS_BETWEEN_DATE1_DATE2 = "SELECT date AS rtn FROM " + tableName
             + " WHERE stockId = :stockId AND DATE >= :date1 AND DATE <= :date2";
+    protected String QUERY_PREVIOUS_DATE_SQL = "SELECT date as rtn FROM " + tableName
+            + " WHERE stockId = :stockId  AND date < :date ORDER BY DATE DESC limit 1";
     // only use for weekPrice, query the weekPrice based on date
     // protected String QUERY_BY_STOCKID_AND_BETWEEN_DATE = "SELECT * FROM " +
     // tableName
@@ -484,11 +487,30 @@ public class StockPriceTableHelper {
 
             MapSqlParameterSource namedParameters = new MapSqlParameterSource();
             namedParameters.addValue("stockId", "999999");
-            
+
             String date = this.namedParameterJdbcTemplate.queryForObject(GET_LATEST_STOCK_DATE, namedParameters,
                     new StringVOMapper());
 
             return date;
+        } catch (EmptyResultDataAccessException ee) {
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    public String getPreviousStockDate(String date) {
+        try {
+
+            MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+            namedParameters.addValue("stockId", "999999");
+            namedParameters.addValue("date", date);
+
+            String rtc = this.namedParameterJdbcTemplate.queryForObject(QUERY_PREVIOUS_DATE_SQL, namedParameters,
+                    new StringVOMapper());
+
+            return rtc;
         } catch (EmptyResultDataAccessException ee) {
 
         } catch (Exception e) {
@@ -713,7 +735,7 @@ public class StockPriceTableHelper {
         // TODO Auto-generated method stub
         StockPriceTableHelper ins = new StockPriceTableHelper();
         try {
-            String n = ins.getLatestStockDate();
+            String n = ins.getPreviousStockDate("2016-05-09");
             System.out.println(n);
         } catch (Exception e) {
             // TODO Auto-generated catch block

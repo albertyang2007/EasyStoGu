@@ -1,6 +1,5 @@
 package org.easystogu.db.access;
 
-
 public class QianFuQuanStockPriceTableHelper extends StockPriceTableHelper {
     private static QianFuQuanStockPriceTableHelper instance = null;
 
@@ -40,7 +39,8 @@ public class QianFuQuanStockPriceTableHelper extends StockPriceTableHelper {
         // query price by Id and date
         QUERY_BY_STOCKID_DATE_SQL = "SELECT * FROM " + tableName + " WHERE stockId = :stockId AND date = :date";
         // query the last date
-        GET_LATEST_STOCK_DATE = "SELECT date as rtn FROM " + tableName + " WHERE stockId = :stockId ORDER BY DATE DESC limit 1";
+        GET_LATEST_STOCK_DATE = "SELECT date as rtn FROM " + tableName
+                + " WHERE stockId = :stockId ORDER BY DATE DESC limit 1";
         // query the latest N date price
         QUERY_LATEST_PRICE_N_DATE_STOCKID_SQL = "SELECT * FROM " + tableName
                 + " WHERE stockId = :stockId ORDER BY date DESC LIMIT :limit";
@@ -65,6 +65,8 @@ public class QianFuQuanStockPriceTableHelper extends StockPriceTableHelper {
                 + " WHERE stockId = :stockId AND DATE >= :date1 AND DATE <= :date2";
         QUERY_DAYS_BETWEEN_DATE1_DATE2 = "SELECT date AS rtn FROM " + tableName
                 + " WHERE stockId = :stockId AND DATE >= :date1 AND DATE <= :date2";
+        QUERY_PREVIOUS_DATE_SQL = "SELECT date as rtn FROM " + tableName
+                + " WHERE stockId = :stockId  AND date < :date ORDER BY DATE DESC limit 1";
         // only use for weekPrice, query the weekPrice based on date
         // QUERY_BY_STOCKID_AND_BETWEEN_DATE = "SELECT * FROM " +
         // tableName
