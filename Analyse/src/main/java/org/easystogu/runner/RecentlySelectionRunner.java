@@ -300,7 +300,7 @@ public class RecentlySelectionRunner implements Runnable {
 		fetchRecentDaysCheckPointFromDB();
 		fetchRecentZiJinLiuFromDB();
 		fetchRecentZhuLiJingLiuRuFromDB();
-		//fetchLiuTongShiZhiFromDB();
+		fetchLiuTongShiZhiFromDB();
 		printRecentCheckPointToHtml();
 	}
 
@@ -310,7 +310,7 @@ public class RecentlySelectionRunner implements Runnable {
 		runner.fetchRecentDaysCheckPointFromDB();
 		runner.fetchRecentZiJinLiuFromDB();
 		runner.fetchRecentZhuLiJingLiuRuFromDB();
-		//runner.fetchLiuTongShiZhiFromDB();
+		runner.fetchLiuTongShiZhiFromDB();
 		runner.printRecentCheckPointToHtml();
 	}
 }
