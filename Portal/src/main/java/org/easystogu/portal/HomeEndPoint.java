@@ -2,6 +2,7 @@ package org.easystogu.portal;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
 import org.easystogu.easymoney.runner.DailyZhuLiJingLiuRuRunner;
@@ -48,6 +49,7 @@ public class HomeEndPoint {
 
 	@GET
 	@Path("/RealtimeDisplayStockPriceRunner")
+	@Produces("text/html; charset=UTF-8")
 	public String realtimeDisplayStockPriceRunner() {
 		return new RealtimeDisplayStockPriceRunner().printRealTimeOutput();
 	}
