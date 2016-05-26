@@ -297,3 +297,11 @@ Avg hold stock days when sell point: 9
 Avg hold stock days when high price: 5
 Total high earn between (25, 50): 660
 Total low  earn between (10, 10): 3322
+
+===============================WR_4_Days_SameValue_XianShang (sellPoint:KDJ_Dead)==========================
+Total satisfy: 2923	 earnPercent[close]=0.29193326434263633	 earnPercent[high]=8.352084348563702	 earnPercent[low]=-6.079868582328845
+oldEarn=0.0
+Avg hold stock days when sell point: 9
+Avg hold stock days when high price: 6
+Total high earn between (25, 50): 22
+Total low  earn between (10, 10): 187
