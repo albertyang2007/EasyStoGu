@@ -219,8 +219,8 @@ public class HistoryAnalyseReport {
 
 		for (String stockId : stockIds) {
 
-			if (!stockId.equals("000673"))
-				continue;
+			//if (!stockId.equals("000673"))
+			//	continue;
 
 			List<HistoryReportDetailsVO> historyReportList = this.doAnalyseBuySellDate(stockId, checkPoint);
 			for (HistoryReportDetailsVO reportVO : historyReportList) {
@@ -246,7 +246,7 @@ public class HistoryAnalyseReport {
 					} else {
 						// for completed VO
 						// remove it from daily selection
-						System.out.println("Completed: " + reportVO);
+						//System.out.println("Completed: " + reportVO);
 						this.checkPointDailySelectionTable.delete(stockId, reportVO.buyPriceVO.date,
 								checkPoint.toString());
 						// save case into history DB

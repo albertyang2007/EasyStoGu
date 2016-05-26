@@ -1334,7 +1334,7 @@ public class CombineAnalyseHelper {
 					&& (pre2SuperDayVO.wrVO.lonTerm == pre2SuperDayVO.wrVO.shoTerm)
 					&& (pre3SuperDayVO.wrVO.lonTerm == pre3SuperDayVO.wrVO.shoTerm)) {
 				if (curSuperDayVO.wrVO.lonTerm > 20 && pre1SuperDayVO.wrVO.lonTerm < 20
-						&& pre2SuperDayVO.wrVO.lonTerm > pre3SuperDayVO.wrVO.lonTerm) {
+						&& pre2SuperDayVO.wrVO.lonTerm > 20 && pre3SuperDayVO.wrVO.lonTerm > 20) {
 					return true;
 				}
 			}
