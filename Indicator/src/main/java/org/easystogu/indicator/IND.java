@@ -127,6 +127,24 @@ public class IND {
 		return rtn;
 	}
 
+	// return n - double[]
+	public double[] SUB(int n, double[] b) {
+		double[] rtn = new double[b.length];
+		for (int index = 0; index < b.length; index++) {
+			rtn[index] = n - b[index];
+		}
+		return rtn;
+	}
+
+	// return double[] - n
+	public double[] SUB(double[] b, int n) {
+		double[] rtn = new double[b.length];
+		for (int index = 0; index < b.length; index++) {
+			rtn[index] = b[index] - n;
+		}
+		return rtn;
+	}
+
 	// return double[] * double[]
 	public double[] MUL(double[] a, double[] b) {
 		double[] rtn = new double[a.length];
@@ -143,6 +161,11 @@ public class IND {
 			rtn[index] = a[index] * n;
 		}
 		return rtn;
+	}
+
+	// return N * double[]
+	public double[] MUL(int n, double[] a) {
+		return this.MUL(a, n);
 	}
 
 	// return double[] / double[]

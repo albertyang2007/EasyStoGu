@@ -10,6 +10,7 @@ import org.easystogu.db.table.QSDDVO;
 import org.easystogu.db.table.ShenXianVO;
 import org.easystogu.db.table.StockPriceVO;
 import org.easystogu.db.table.StockSuperVO;
+import org.easystogu.db.table.WRVO;
 
 public class StockSuperVOHelper {
 
@@ -20,6 +21,7 @@ public class StockSuperVOHelper {
 	protected IndShenXianTableHelper shenXianTable = IndShenXianTableHelper.getInstance();
 	protected IndDDXTableHelper ddxTable = IndDDXTableHelper.getInstance();
 	protected IndQSDDTableHelper qsddTable = IndQSDDTableHelper.getInstance();
+	protected IndWRTableHelper wrTable = IndWRTableHelper.getInstance();
 
 	// protected IndYiMengBSTableHelper ymbsTable =
 	// IndYiMengBSTableHelper.getInstance();
@@ -34,23 +36,24 @@ public class StockSuperVOHelper {
 		List<BollVO> bollList = bollTable.getAllBoll(stockId);
 		List<ShenXianVO> shenXianList = shenXianTable.getAllShenXian(stockId);
 		List<QSDDVO> qsddList = qsddTable.getAllQSDD(stockId);
-		// List<YiMengBSVO> ymbsList = ymbsTable.getAllYiMengBS(stockId);
+		List<WRVO> wrList = wrTable.getAllWR(stockId);
 
 		if ((spList.size() != macdList.size()) || (macdList.size() != kdjList.size())
 				|| (kdjList.size() != spList.size()) || (bollList.size() != spList.size())
-				|| (shenXianList.size() != spList.size()) || (qsddList.size() != spList.size())) {
+				|| (shenXianList.size() != spList.size()) || (qsddList.size() != spList.size())
+				|| (wrList.size() != spList.size())) {
 			return overList;
 		}
 
 		if ((spList.size() == 0) || (macdList.size() == 0) || (kdjList.size() == 0) || (bollList.size() == 0)
-				|| (shenXianList.size() == 0) || (qsddList.size() == 0)) {
+				|| (shenXianList.size() == 0) || (qsddList.size() == 0) || (wrList.size() == 0)) {
 			return overList;
 		}
 
 		if (!spList.get(0).date.equals(macdList.get(0).date) || !spList.get(0).date.equals(kdjList.get(0).date)
 				|| !spList.get(0).date.equals(bollList.get(0).date)
 				|| !spList.get(0).date.equals(shenXianList.get(0).date)
-				|| !spList.get(0).date.equals(qsddList.get(0).date)) {
+				|| !spList.get(0).date.equals(qsddList.get(0).date) || !spList.get(0).date.equals(wrList.get(0).date)) {
 			return overList;
 		}
 
@@ -58,7 +61,7 @@ public class StockSuperVOHelper {
 			StockSuperVO superVO = new StockSuperVO(spList.get(index), macdList.get(index), kdjList.get(index),
 					bollList.get(index));
 			superVO.setShenXianVO(shenXianList.get(index));
-			// superVO.setYiMengBSVO(ymbsList.get(index));
+			superVO.setWRVO(wrList.get(index));
 			superVO.setDdxVO(ddxTable.getDDX(superVO.priceVO.stockId, superVO.priceVO.date));
 			superVO.setQsddVO(qsddList.get(index));
 			overList.add(superVO);
@@ -95,7 +98,8 @@ public class StockSuperVOHelper {
 				|| !spList.get(0).date.equals(qsddList.get(0).date)) {
 			// System.out.println(stockId
 			// +
-			// " date of spList, macdList and kdjList is not equal, the database must meet fatel error!");
+			// " date of spList, macdList and kdjList is not equal, the database
+			// must meet fatel error!");
 			return overList;
 		}
 

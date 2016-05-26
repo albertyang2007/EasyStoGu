@@ -810,3 +810,24 @@ GRANT ALL ON TABLE qian_fuquan_stockprice TO public;
 GRANT ALL ON TABLE qian_fuquan_stockprice TO postgres;
 COMMENT ON TABLE qian_fuquan_stockprice
   IS 'Qian Fu Quan STOCK PRICE';
+  
+-- Table: ind_wr
+
+-- DROP TABLE ind_wr;
+
+CREATE TABLE ind_wr
+(
+  stockid text NOT NULL,
+  date text NOT NULL,
+  lonterm numeric,
+  shoterm numeric,
+  midterm numeric,
+  CONSTRAINT ind_wr_primary_key PRIMARY KEY (stockid, date)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE ind_wr
+  OWNER TO postgres;
+GRANT ALL ON TABLE ind_wr TO public;
+GRANT ALL ON TABLE ind_wr TO postgres;

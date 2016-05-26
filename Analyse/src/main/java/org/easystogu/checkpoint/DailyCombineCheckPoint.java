@@ -45,7 +45,7 @@ public enum DailyCombineCheckPoint {
             SellPointType.KDJ_Dead, 0, 99.0), LuZao_GordonII_MA19_UpCross_MA86(SellPointType.KDJ_Dead, 0, 99.0), LuZao_DeadI_MA43_UpCross_MA86(
             SellPointType.KDJ_Dead, 0, 99.0), LuZao_DeadII_MA19_DownCross_MA43(SellPointType.KDJ_Dead, 0, 99.0), QSDD_Top_Area(
             SellPointType.KDJ_Dead, 0, 99.0), QSDD_Bottom_Area(SellPointType.KDJ_Dead, 11848, 10.8), QSDD_Bottom_Gordon(
-            SellPointType.KDJ_Dead, 5055, 12.0);
+            SellPointType.KDJ_Dead, 5055, 12.0), WR_4_Days_SameValue_XianShang(SellPointType.KDJ_Dead,0,0);
 
     private FileConfigurationService config = FileConfigurationService.getInstance();
     private double minEarnPercent = config.getDouble("minEarnPercent_Select_CheckPoint");

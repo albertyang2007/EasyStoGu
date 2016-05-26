@@ -17,6 +17,7 @@ public class StockSuperVO {
 	public Mai1Mai2VO mai1mai2VO;
 	public ZhuliJinChuVO zhuliJinChuVO;
 	public YiMengBSVO yiMengBSVO;
+	public WRVO wrVO;
 	public DDXVO ddxVO;
 	public ZiJinLiuVO zhiJinLiuVO;
 	public QSDDVO qsddVO;
@@ -80,6 +81,10 @@ public class StockSuperVO {
 
 	public void setYiMengBSVO(YiMengBSVO vo) {
 		this.yiMengBSVO = vo;
+	}
+	
+	public void setWRVO(WRVO vo) {
+		this.wrVO = vo;
 	}
 
 	@Override

@@ -1,0 +1,26 @@
+80,COLOR996699;
+20,COLORGREEN;
+底:10,COLORCC6633,LINETHICK2;
+90,COLOR9966FF,LINETHICK2;
+50,COLORRED;
+A:= MA(-100*(HHV(HIGH,34)-CLOSE)/(HHV(HIGH,34)-LLV(LOW,34)),19);
+B:=    -100*(HHV(HIGH,14)-CLOSE)/(HHV(HIGH,14)-LLV(LOW,14));
+D:=EMA(-100*(HHV(HIGH,34)-CLOSE)/(HHV(HIGH,34)-LLV(LOW,34)),4);
+
+长期线:A+100,COLOR9900FF;
+短期线:B+100,COLOR888888;
+中期线:D+100,COLORYELLOW,LINETHICK2;
+见顶:=((REF(中期线,1)>85 AND  REF(短期线,1)>85 AND REF(长期线,1)>65) AND CROSS(长期线,短期线));
+顶部区域:(中期线<REF(中期线,1) AND REF(中期线,1)>80) AND (REF(短期线,1)>95 OR REF(短期线,2)>95 ) AND 长期线>60 AND 短期线<83.5
+AND 短期线<中期线 AND 短期线<长期线+4,COLORGREEN;
+顶部:=FILTER(顶部区域,4);
+STICKLINE( {见顶 OR} 顶部,99,103,20,1 ),COLORRED,LINETHICK2;
+底部区域:(长期线<12 AND 中期线<8 AND (短期线<7.2 OR REF(短期线,1)<5) AND (中期线>REF(中期线,1) OR 短期线>REF(短期线,1)))
+OR (长期线<8 AND 中期线<7 AND 短期线<15 AND 短期线>REF(短期线,1)) OR (长期线<10 AND 中期线<7 AND 短期线<1) ,COLORGREEN;
+STICKLINE( 底部区域,-4,0,22,0 ),COLORGREEN;
+低位金叉:50*(长期线<15 AND REF(长期线,1)<15 AND 中期线<18 AND 短期线>REF(短期线,1) AND CROSS(短期线,长期线) AND 短期线>中期线
+AND (REF(短期线,1)<5 OR REF(短期线,2)<5 )  AND (中期线>=长期线 OR REF( 短期线,1)<1 )),COLORRED;
+
+
+底10: IF(HHV(底部区域,10), 1, 0);
+金叉10: IF(HHV(低位金叉,10), 1, 0);
