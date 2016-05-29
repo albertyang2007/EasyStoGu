@@ -1,5 +1,6 @@
 package org.easystogu.sina.runner.history;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.easystogu.db.access.HouFuQuanStockPriceTableHelper;
@@ -15,9 +16,9 @@ public class HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner {
 	private StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
 	private CompanyInfoFileHelper companyInfoHelper = CompanyInfoFileHelper.getInstance();
 
-	// priceList is order by date
+	// priceList is order by date from stockPrice
 	// using hou fuquan stockprce to count the qian fuquan stockprice
-	// 使用后复权的数据计算前复权的价格数据
+	// 使用后复权的数据计算前复权的价格数据,依据后除权数据一定要正确，否则出错
 	private void updateQianFuQianPriceBasedOnHouFuQuan(String stockId, List<StockPriceVO> spList) {
 		if (companyInfoHelper.isStockIdAMajorZhiShu(stockId)) {
 			return;
@@ -34,14 +35,13 @@ public class HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner {
 		StockPriceVO fq_spvo = fq_spList.get(fq_spList.size() - 1);
 
 		if (!fq_spvo.date.equals(spvo.date)) {
-			System.out.println("Fatel error for " + stockId
-					+ ", hou fuquan StockPrice latest date is not same as StockPrice");
+			System.out.println(
+					"Fatel error for " + stockId + ", hou fuquan StockPrice latest date is not same as StockPrice");
 			return;
 		}
 
 		double rate = spvo.close / fq_spvo.close;
-		// System.out.println(stockId + " at " + spvo.date + " fuquan rate= " +
-		// rate);
+		System.out.println(stockId + " at " + spvo.date + " fuquan rate= " + rate);
 		// count the qian fuquan stockprice for stockid from the latest chuquan
 		// event
 		int chuquan_index = spList.size() - 1;
@@ -50,8 +50,7 @@ public class HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner {
 			StockPriceVO prevo = spList.get(index - 1);
 			if (vo.lastClose != 0 && prevo.close != 0 && vo.lastClose != prevo.close) {
 				chuquan_index = index - 1;
-				// System.out.println("chuquan index= " + chuquan_index + " at "
-				// + prevo.date);
+				System.out.println("chuquan index= " + chuquan_index + " at " + prevo.date);
 				break;
 			}
 		}
@@ -64,7 +63,50 @@ public class HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner {
 			vo.close = Strings.convert2ScaleDecimal(fq_prevo.close * rate);
 			vo.low = Strings.convert2ScaleDecimal(fq_prevo.low * rate);
 			vo.high = Strings.convert2ScaleDecimal(fq_prevo.high * rate);
+			if (vo.date.contains("2016-05")) {
+				System.out.println("fq " + fq_prevo);
+				System.out.println("   " + vo);
+			}
 		}
+	}
+
+	// priceList is order by date from stockPrice
+	// scan stockprce to count chuquan event and count the qian fuquan
+	// stockprice
+	// 使用除权事件计算前除权数据
+	private List<StockPriceVO> updateQianFuQianPriceBasedOnChuQuanEvent(String stockId, List<StockPriceVO> spList) {
+		if (companyInfoHelper.isStockIdAMajorZhiShu(stockId)) {
+			return spList;
+		}
+
+		List<StockPriceVO> chuQuanSPList = new ArrayList<StockPriceVO>();
+
+		// count the qian fuquan stockprice for stockid from the latest chuquan
+		// event
+		int chuquan_index = spList.size() - 1;
+		double sumRate = 1.0;
+		for (int index = spList.size() - 1; index >= 1; index--) {
+			StockPriceVO vo = spList.get(index);
+			StockPriceVO prevo = spList.get(index - 1);
+			double rate = 1.0;
+			if (vo.lastClose != 0 && prevo.close != 0 && vo.lastClose != prevo.close) {
+				chuquan_index = index - 1;
+				rate = prevo.close / vo.lastClose;
+				//System.out.println("chuquan index= " + chuquan_index + " at " + prevo.date + " rate=" + rate);
+			}
+			// add the chuQuan VO
+			StockPriceVO cqVO = vo.copy();
+			cqVO.open = Strings.convert2ScaleDecimal(vo.open / sumRate);
+			cqVO.close = Strings.convert2ScaleDecimal(vo.close / sumRate);
+			cqVO.low = Strings.convert2ScaleDecimal(vo.low / sumRate);
+			cqVO.high = Strings.convert2ScaleDecimal(vo.high / sumRate);
+			chuQuanSPList.add(cqVO);
+
+			// update the sumRate
+			sumRate = rate * sumRate;
+		}
+
+		return chuQuanSPList;
 	}
 
 	public void countAndSave(List<String> stockIds) {
@@ -79,9 +121,9 @@ public class HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner {
 	public void countAndSave(String stockId) {
 		try {
 			List<StockPriceVO> spList = stockPriceTable.getStockPriceById(stockId);
-			this.updateQianFuQianPriceBasedOnHouFuQuan(stockId, spList);
+			List<StockPriceVO> chuQUanSPList = this.updateQianFuQianPriceBasedOnChuQuanEvent(stockId, spList);
 			this.qianfuquanStockPriceTable.delete(stockId);
-			this.qianfuquanStockPriceTable.insert(spList);
+			this.qianfuquanStockPriceTable.insert(chuQUanSPList);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -96,6 +138,6 @@ public class HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner {
 		// for specify stockId
 		// runner.countAndSave("999999");
 		// runner.countAndSave("399001");
-		// runner.countAndSave("399006");
+		// runner.countAndSave("002253");
 	}
 }

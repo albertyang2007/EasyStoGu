@@ -40,15 +40,16 @@ public class DailyWRCountAndSaveDBRunner implements Runnable {
 		List<Double> low = StockPriceFetcher.getLowPrice(priceList);
 		List<Double> high = StockPriceFetcher.getHighPrice(priceList);
 
-		double[][] wr = wrHelper.getWRList(Doubles.toArray(close), Doubles.toArray(low), Doubles.toArray(high), 42, 21);
+		double[][] wr = wrHelper.getWRList(Doubles.toArray(close), Doubles.toArray(low), Doubles.toArray(high), 19, 43,
+				86);
 
 		int length = wr[0].length;
 
 		// for (int i = 0; i < KDJ[0].length; i++) {
 		WRVO vo = new WRVO();
-		vo.setLonTerm(Strings.convert2ScaleDecimal(wr[0][length - 1]));
-		vo.setShoTerm(Strings.convert2ScaleDecimal(wr[1][length - 1]));
-		// vo.setMidTerm(Strings.convert2ScaleDecimal(wr[2][length - 1]));
+		vo.setShoTerm(Strings.convert2ScaleDecimal(wr[0][length - 1]));
+		vo.setMidTerm(Strings.convert2ScaleDecimal(wr[1][length - 1]));
+		vo.setLonTerm(Strings.convert2ScaleDecimal(wr[2][length - 1]));
 		vo.setStockId(stockId);
 		vo.setDate(priceList.get(length - 1).date);
 

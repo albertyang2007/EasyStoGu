@@ -50,6 +50,8 @@ public class StockSuperVO {
 	public double avgMA60;
 	public double avgMA86;
 	public double avgMA120;
+	public double llvlow43;
+	public double llvdif43;
 
 	public int hengPanWeekLen;// hengPan week length
 

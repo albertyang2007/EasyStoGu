@@ -297,6 +297,10 @@ public class IndCrossCheckingHelper {
 			}
 		}
 	}
+	
+	public static void wrCross(List<StockSuperVO> overList) {
+		
+	}
 
 	// Line1 Cross Line2 ? true: false;
 	private static boolean cross(double preLine1, double preLine2, double line1, double line2) {

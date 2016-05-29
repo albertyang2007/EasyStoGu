@@ -159,4 +159,32 @@ public class CheckPointStatisticsEndPoint {
 
 		return list;
 	}
+	
+	@GET
+	@Path("/wr/{date}")
+	@Produces("application/json")
+	public List<StatisticsVO> queryWRStatistics(@PathParam("date") String dateParm) {
+		List<StatisticsVO> list = new ArrayList<StatisticsVO>();
+		if (Pattern.matches(fromToRegex, dateParm)) {
+			String date1 = dateParm.split("_")[0];
+			String date2 = dateParm.split("_")[1];
+
+			List<String> dateList = WeekdayUtil.getWorkingDatesBetween(date1, date2);
+			for (String date : dateList) {
+				if (stockPriceTable.isDateInDealDate(date)) {
+					StatisticsVO vo = new StatisticsVO();
+					vo.date = date;
+					vo.count1 = checkPointStatisticsTable.countByDateAndCheckPoint(date,
+							DailyCombineCheckPoint.WR_Top_Area.name());
+					vo.count2 = checkPointStatisticsTable.countByDateAndCheckPoint(date,
+							DailyCombineCheckPoint.WR_Bottom_Area.name());
+					vo.count3 = checkPointStatisticsTable.countByDateAndCheckPoint(date,
+							DailyCombineCheckPoint.WR_Bottom_Gordon.name());
+					list.add(vo);
+				}
+			}
+		}
+
+		return list;
+	}
 }

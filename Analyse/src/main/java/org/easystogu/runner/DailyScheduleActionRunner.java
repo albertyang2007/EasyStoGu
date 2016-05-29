@@ -29,14 +29,11 @@ public class DailyScheduleActionRunner implements Runnable {
 				System.out.println("refresh_fuquan_history_stockprice for " + savo.stockId);
 				// fetch hou ququan history data
 				this.historyHouFuQuanRunner.countAndSave(savo.stockId);
-				// delete schedule action if success
-				if (this.houfuquanStockPriceTable.countByStockId(savo.stockId) > 0) {
-					this.scheduleActionTable.delete(savo.stockId, savo.runDate, savo.actionDo);
-				}
 				// for qian fuquan
 				this.historyQianFuQuanRunner.countAndSave(savo.stockId);
 				// delete schedule action if success
-				if (this.qianfuquanStockPriceTable.countByStockId(savo.stockId) > 0) {
+				if (this.qianfuquanStockPriceTable.countByStockId(savo.stockId) > 0
+						&& this.houfuquanStockPriceTable.countByStockId(savo.stockId) > 0) {
 					this.scheduleActionTable.delete(savo.stockId, savo.runDate, savo.actionDo);
 				}
 

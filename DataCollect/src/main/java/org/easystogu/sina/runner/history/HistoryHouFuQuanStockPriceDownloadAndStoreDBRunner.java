@@ -18,7 +18,7 @@ import org.easystogu.utils.WeekdayUtil;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
-//get fuquan history stock price from sina
+//get hou fuquan history stock price from sina
 public class HistoryHouFuQuanStockPriceDownloadAndStoreDBRunner {
 	private static String baseUrl = "http://vip.stock.finance.sina.com.cn/api/json_v2.php/BasicStockSrv.getStockFuQuanData?symbol=stockId&type=hfq";
 	private static FileConfigurationService configure = FileConfigurationService.getInstance();

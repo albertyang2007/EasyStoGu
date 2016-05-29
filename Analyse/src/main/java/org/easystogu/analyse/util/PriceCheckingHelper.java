@@ -82,6 +82,10 @@ public class PriceCheckingHelper {
         }
         return 0.0;
     }
+    
+    public static void countLLV43(List<StockSuperVO> subList){
+    	
+    }
 
     // platform checking 平台整理和突破
     public static void platformChecking(List<StockSuperVO> overList) {

@@ -446,3 +446,86 @@ function loadMacdStatistics(version, stockId, dateFrom, dateTo) {
 		}
 	});
 }
+
+/**
+ * Load WR and Top Bottom Satistics
+ * 
+ * @returns {undefined}
+ */
+function loadWRStatistics(version, stockId, dateFrom, dateTo) {
+	var seriesCounter = 0, date_price = [], volume = [], data_lonTerm = [], data_midTerm = [], data_shoTerm = [], date_topArea = [], date_bottomArea = [], data_bottomGordon = [];
+
+	/**
+	 * Load StocPrice and display OHLC
+	 * 
+	 * @returns {undefined}
+	 */
+	var url_price = "http://localhost:8080/portal/price" + version + "/"
+			+ stockId + "/" + dateFrom + "_" + dateTo;
+	$.getJSON(url_price, function(data) {
+		i = 0;
+		for (i; i < data.length; i += 1) {
+			var dateStr = data[i]['date'] + " 15:00:00";
+			var dateD = new Date(Date.parse(dateStr.replace(/-/g, "/")));
+			date_price.push([ dateD.getTime(), data[i]['open'],
+					data[i]['high'], data[i]['low'], data[i]['close'] ]);
+
+			volume.push([ dateD.getTime(), data[i]['volume'] ]);
+		}
+
+		seriesCounter += 1;
+		if (seriesCounter === 2) {
+			createChart_WR_Statistics(stockId, date_price, volume,
+					data_lonTerm, data_midTerm, data_shoTerm, date_topArea,
+					date_bottomArea, data_bottomGordon);
+		}
+	});
+
+	/**
+	 * Load WR Indicator and display
+	 * 
+	 * @returns {undefined}
+	 */
+	/*
+	 * var url_ind = "http://localhost:8080/portal/ind" + version + "/wr/" +
+	 * stockId + "/" + dateFrom + "_" + dateTo; $.getJSON(url_ind,
+	 * function(data) { i = 0; for (i; i < data.length; i += 1) { var dateStr =
+	 * data[i]['date'] + " 15:00:00"; var dateD = new
+	 * Date(Date.parse(dateStr.replace(/-/g, "/"))); data_lonTerm.push([
+	 * dateD.getTime(), data[i]['lonTerm'] ]);
+	 * 
+	 * data_midTerm.push([ dateD.getTime(), data[i]['midTerm'] ]);
+	 * 
+	 * data_shoTerm.push([ dateD.getTime(), data[i]['shoTerm'] ]); }
+	 * 
+	 * seriesCounter += 1; if (seriesCounter === 3) {
+	 * createChart_WR_Statistics(stockId, date_price, volume, data_lonTerm,
+	 * data_midTerm, data_shoTerm, date_topArea, date_bottomArea,
+	 * data_bottomGordon); } });
+	 */
+
+	/**
+	 * Load wr top bottom statistics and display
+	 * 
+	 * @returns {undefined}
+	 */
+	var url_ind = "http://localhost:8080/portal/statistics/wr/" + dateFrom
+			+ "_" + dateTo;
+	$.getJSON(url_ind, function(data) {
+		i = 0;
+		for (i; i < data.length; i += 1) {
+			var dateStr = data[i]['date'] + " 15:00:00";
+			var dateD = new Date(Date.parse(dateStr.replace(/-/g, "/")));
+			date_topArea.push([ dateD.getTime(), data[i]['count1'] ]);
+			date_bottomArea.push([ dateD.getTime(), data[i]['count2'] ]);
+			data_bottomGordon.push([ dateD.getTime(), data[i]['count3'] ]);
+		}
+
+		seriesCounter += 1;
+		if (seriesCounter === 2) {
+			createChart_WR_Statistics(stockId, date_price, volume,
+					data_lonTerm, data_midTerm, data_shoTerm, date_topArea,
+					date_bottomArea, data_bottomGordon);
+		}
+	});
+}

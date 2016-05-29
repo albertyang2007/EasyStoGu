@@ -1311,17 +1311,48 @@ public class CombineAnalyseHelper {
 			break;
 		}
 
-		// qsdd top
+		// qsdd bottom
 		case QSDD_Bottom_Area: {
 			if (curSuperDayVO.qsddBottomArea)
 				return true;
 			break;
 		}
 
-		// qsdd top
+		// qsdd bottom
 		case QSDD_Bottom_Gordon: {
 			if (curSuperDayVO.qsddBottomCrossType == CrossType.GORDON)
 				return true;
+			break;
+		}
+
+		// wr bottom
+		// short, middle and long term is less than 5 and trend is down
+		case WR_Bottom_Area: {
+			if (curSuperDayVO.wrVO.shoTerm <= 5.0 && curSuperDayVO.wrVO.midTerm <= 5.0
+					&& curSuperDayVO.wrVO.lonTerm <= 5.0)
+				if (curSuperDayVO.wrVO.shoTerm < pre1SuperDayVO.wrVO.shoTerm
+						&& curSuperDayVO.wrVO.midTerm < pre1SuperDayVO.wrVO.midTerm
+						&& curSuperDayVO.wrVO.lonTerm < pre1SuperDayVO.wrVO.lonTerm) {
+					return true;
+				}
+			break;
+		}
+
+		// wr bottom
+		case WR_Top_Area: {
+			if (curSuperDayVO.wrVO.shoTerm >= 95.0 && curSuperDayVO.wrVO.midTerm >= 95.0
+					&& curSuperDayVO.wrVO.lonTerm >= 95.0)
+				if (curSuperDayVO.wrVO.shoTerm > pre1SuperDayVO.wrVO.shoTerm
+						&& curSuperDayVO.wrVO.midTerm > pre1SuperDayVO.wrVO.midTerm
+						&& curSuperDayVO.wrVO.lonTerm > pre1SuperDayVO.wrVO.lonTerm) {
+					return true;
+				}
+			break;
+		}
+
+		// macd di bei li
+		case MACD_DI_BeiLi: {
+
 			break;
 		}
 

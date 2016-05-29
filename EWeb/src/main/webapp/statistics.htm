@@ -58,6 +58,8 @@ demo
          loadQsddStatistics(data.version, data.stockId, data.dateFrom, data.dateTo);
       }else if(data.indicator == "macd"){ 
          loadMacdStatistics(data.version, data.stockId, data.dateFrom, data.dateTo);
+      }else if(data.indicator == "wr"){ 
+         loadWRStatistics(data.version, data.stockId, data.dateFrom, data.dateTo);
       }
     },
     
@@ -73,6 +75,7 @@ demo
                         <option value='luzaoGordon'>luzaoGordon</option>
                         <option value='shenxian'>shenxian</option>
                         <option value='macd'>macd</option>
+                        <option value='wr'>wr</option>
                         </select>&nbsp;&nbsp;
 
                         <label>Version:</label>

@@ -826,3 +826,99 @@ function createChart_Candlestick(stockId, date_price, volume) {
 
 	chart = $('#container').highcharts();
 }
+
+/**
+ * Create the StockPrice and wr chart, and qsdd statistics (Top and Bottom)
+ * chart.
+ * 
+ * @returns {undefined}
+ */
+function createChart_WR_Statistics(stockId, date_price, volume, data_lonTerm,
+		data_midTerm, data_shoTerm, date_topArea, date_bottomArea,
+		date_bottomGordon) {
+	$('#container').highcharts('StockChart', {
+
+		rangeSelector : {
+			selected : 1
+		},
+
+		title : {
+			text : stockId
+		},
+
+		plotOptions : {
+			candlestick : {
+				color : '#00ff00',// Green
+				upColor : '#ff0000'// Red
+			}
+		},
+
+		yAxis : [ {
+			labels : {
+				align : 'right',
+				x : -3
+			},
+			title : {
+				text : 'Price'
+			},
+			height : '60%',
+			lineWidth : 2
+		}, {
+			labels : {
+				align : 'right',
+				x : -3
+			},
+			title : {
+				text : 'WR'
+			},
+			top : '65%',
+			height : '35%',
+			offset : 0,
+			lineWidth : 2
+		}, {
+			labels : {
+				align : 'right',
+				x : -3
+			},
+			title : {
+				text : 'QSDD'
+			},
+			top : '65%',
+			height : '35%',
+			offset : 0,
+			lineWidth : 2
+		} ],
+
+		series : [ {
+			type : 'candlestick',
+			name : 'OHLC',
+			data : date_price
+		}, {
+			name : '短期线',
+			data : data_shoTerm,
+			yAxis : 1
+		}, {
+			name : '中期线',
+			data : data_midTerm,
+			yAxis : 1
+		}, {
+			name : '长期线',
+			data : data_lonTerm,
+			yAxis : 1
+		}, {
+			name : '见顶个股数目',
+			data : date_topArea,
+			yAxis : 2
+		}, {
+			name : '见底个股数目',
+			data : date_bottomArea,
+			yAxis : 2
+		}, {
+			name : '金叉个股数目',
+			data : date_bottomGordon,
+			yAxis : 2
+		} ]
+	});
+
+	chart = $('#container').highcharts();
+}

@@ -45,14 +45,14 @@ public class HistoryWRCountAndSaveDBRunner {
 		List<Double> low = StockPriceFetcher.getLowPrice(priceList);
 		List<Double> high = StockPriceFetcher.getHighPrice(priceList);
 
-		double[][] wr = wrHelper.getWRList(Doubles.toArray(close), Doubles.toArray(low), Doubles.toArray(high), 42,
-				21);
+		double[][] wr = wrHelper.getWRList(Doubles.toArray(close), Doubles.toArray(low), Doubles.toArray(high), 19, 43,
+				86);
 
 		for (int i = 0; i < wr[0].length; i++) {
 			WRVO vo = new WRVO();
-			vo.setLonTerm(Strings.convert2ScaleDecimal(wr[0][i], 3));
-			vo.setShoTerm(Strings.convert2ScaleDecimal(wr[1][i], 3));
-			//vo.setMidTerm(Strings.convert2ScaleDecimal(wr[2][i], 3));
+			vo.setShoTerm(Strings.convert2ScaleDecimal(wr[0][i], 3));
+			vo.setMidTerm(Strings.convert2ScaleDecimal(wr[1][i], 3));
+			vo.setLonTerm(Strings.convert2ScaleDecimal(wr[2][i], 3));
 			vo.setStockId(stockId);
 			vo.setDate(priceList.get(i).date);
 
@@ -82,7 +82,7 @@ public class HistoryWRCountAndSaveDBRunner {
 		CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 		HistoryWRCountAndSaveDBRunner runner = new HistoryWRCountAndSaveDBRunner();
 		runner.countAndSaved(stockConfig.getAllStockId());
-		//runner.countAndSaved("000673");
+		//runner.countAndSaved("600422");
 	}
 
 }

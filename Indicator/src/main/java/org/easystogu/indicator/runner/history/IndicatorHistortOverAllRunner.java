@@ -10,6 +10,7 @@ public class IndicatorHistortOverAllRunner {
         new HistoryBollCountAndSaveDBRunner().countAndSaved(stockIds);
         new HistoryShenXianCountAndSaveDBRunner().countAndSaved(stockIds);
         new HistoryQSDDCountAndSaveDBRunner().countAndSaved(stockIds);
+        new HistoryWRCountAndSaveDBRunner().countAndSaved(stockIds);
         //week
         new HistoryWeeklyMacdCountAndSaveDBRunner().countAndSaved(stockIds);
         new HistoryWeeklyMacdCountAndSaveDBRunner().countAndSaved(stockIds);
@@ -22,6 +23,7 @@ public class IndicatorHistortOverAllRunner {
         new HistoryBollCountAndSaveDBRunner().countAndSaved(stockId);
         new HistoryShenXianCountAndSaveDBRunner().countAndSaved(stockId);
         new HistoryQSDDCountAndSaveDBRunner().countAndSaved(stockId);
+        new HistoryWRCountAndSaveDBRunner().countAndSaved(stockId);
         //week
         new HistoryWeeklyMacdCountAndSaveDBRunner().countAndSaved(stockId);
         new HistoryWeeklyMacdCountAndSaveDBRunner().countAndSaved(stockId);
@@ -34,6 +36,7 @@ public class IndicatorHistortOverAllRunner {
         HistoryBollCountAndSaveDBRunner.main(args);
         HistoryShenXianCountAndSaveDBRunner.main(args);
         HistoryQSDDCountAndSaveDBRunner.main(args);
+        HistoryWRCountAndSaveDBRunner.main(args);
         // week
         HistoryWeeklyMacdCountAndSaveDBRunner.main(args);
         HistoryWeeklyKDJCountAndSaveDBRunner.main(args);
