@@ -105,7 +105,7 @@ public class DataBaseSanityCheck implements Runnable {
 		if ((spList.size() != macdList.size())) {
 			System.out.println(stockId + " size of macd is not equal:" + spList.size() + "!=" + macdList.size());
 
-			figureOutDifferenceDate(spList, macdList);
+			//figureOutDifferenceDate(spList, macdList);
 
 			macdTable.delete(stockId);
 			HistoryMacdCountAndSaveDBRunner runner = new HistoryMacdCountAndSaveDBRunner();

@@ -19,7 +19,7 @@ public class HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner {
 	// priceList is order by date from stockPrice
 	// using hou fuquan stockprce to count the qian fuquan stockprice
 	// 使用后复权的数据计算前复权的价格数据,依据后除权数据一定要正确，否则出错
-	//not use this method now
+	// not use this method now
 	private void updateQianFuQianPriceBasedOnHouFuQuan(String stockId, List<StockPriceVO> spList) {
 		if (companyInfoHelper.isStockIdAMajorZhiShu(stockId)) {
 			return;
@@ -93,7 +93,8 @@ public class HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner {
 			if (vo.lastClose != 0 && prevo.close != 0 && vo.lastClose != prevo.close) {
 				chuquan_index = index - 1;
 				rate = prevo.close / vo.lastClose;
-				//System.out.println("chuquan index= " + chuquan_index + " at " + prevo.date + " rate=" + rate);
+				// System.out.println("chuquan index= " + chuquan_index + " at "
+				// + prevo.date + " rate=" + rate);
 			}
 			// add the chuQuan VO
 			StockPriceVO cqVO = vo.copy();
@@ -106,6 +107,9 @@ public class HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner {
 			// update the sumRate
 			sumRate = rate * sumRate;
 		}
+		// fix a bug
+		// add the first vo
+		chuQuanSPList.add(spList.get(0));
 
 		return chuQuanSPList;
 	}
@@ -139,6 +143,6 @@ public class HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner {
 		// for specify stockId
 		// runner.countAndSave("999999");
 		// runner.countAndSave("399001");
-		// runner.countAndSave("002253");
+		//runner.countAndSave("600050");
 	}
 }
