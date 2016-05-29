@@ -9,7 +9,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
-import org.easystogu.db.access.HouFuQuanStockPriceTableHelper;
+import org.easystogu.db.access.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.table.StockPriceVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.utils.Strings;
@@ -19,7 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class PriceEndPointV2 {
     protected static String HHmmss = "00:00:00";
     protected CompanyInfoFileHelper companyInfoHelper = CompanyInfoFileHelper.getInstance();
-    protected HouFuQuanStockPriceTableHelper houfuquanStockPriceTable = HouFuQuanStockPriceTableHelper.getInstance();
+    protected QianFuQuanStockPriceTableHelper qianfuquanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
     @Autowired
     protected ProcessRequestParmsInPostBody postParmsProcess;
     private String dateRegex = "[0-9]{4}-[0-9]{2}-[0-9]{2}";
@@ -36,10 +36,10 @@ public class PriceEndPointV2 {
         if (Pattern.matches(fromToRegex, dateParm)) {
             String date1 = dateParm.split("_")[0];
             String date2 = dateParm.split("_")[1];
-            spList = houfuquanStockPriceTable.getStockPriceByIdAndBetweenDate(stockIdParm, date1, date2);
+            spList = qianfuquanStockPriceTable.getStockPriceByIdAndBetweenDate(stockIdParm, date1, date2);
         }
         if (Pattern.matches(dateRegex, dateParm) || Strings.isEmpty(dateParm)) {
-            spList.add(houfuquanStockPriceTable.getStockPriceByIdAndDate(stockIdParm, dateParm));
+            spList.add(qianfuquanStockPriceTable.getStockPriceByIdAndDate(stockIdParm, dateParm));
         }
 
         return spList;

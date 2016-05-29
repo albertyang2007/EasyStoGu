@@ -2,7 +2,6 @@ package org.easystogu.runner;
 
 import java.util.List;
 
-import org.easystogu.db.access.HouFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.IndBollTableHelper;
 import org.easystogu.db.access.IndKDJTableHelper;
 import org.easystogu.db.access.IndMacdTableHelper;
@@ -33,7 +32,6 @@ import org.easystogu.utils.Strings;
 
 public class DataBaseSanityCheck implements Runnable {
 	protected StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
-	protected HouFuQuanStockPriceTableHelper houfuquanStockPriceTable = HouFuQuanStockPriceTableHelper.getInstance();
 	protected QianFuQuanStockPriceTableHelper qianfuquanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
 	protected IndMacdTableHelper macdTable = IndMacdTableHelper.getInstance();
 	protected IndKDJTableHelper kdjTable = IndKDJTableHelper.getInstance();
@@ -74,7 +72,7 @@ public class DataBaseSanityCheck implements Runnable {
 	public void sanityDailyCheck(String stockId) {
 
 		List<StockPriceVO> spList = stockPriceTable.getStockPriceById(stockId);
-		List<StockPriceVO> houfuquan_spList = houfuquanStockPriceTable.getStockPriceById(stockId);
+		//List<StockPriceVO> houfuquan_spList = houfuquanStockPriceTable.getStockPriceById(stockId);
 		List<StockPriceVO> qianfuquan_spList = qianfuquanStockPriceTable.getStockPriceById(stockId);
 		List<MacdVO> macdList = macdTable.getAllMacd(stockId);
 		List<KDJVO> kdjList = kdjTable.getAllKDJ(stockId);
@@ -90,40 +88,19 @@ public class DataBaseSanityCheck implements Runnable {
 
 		// if (spList.size() <= 108)
 		// return;
-		boolean refresh = false;
-		
-		if (spList.size() != houfuquan_spList.size()) {
-			System.out.println(stockId + " StockPrice Length is not equal to Hou FuQuan StockPrice");
-			this.historyHouFuQuanRunner.countAndSave(stockId);
-		}
-
-		if (spList.size() != qianfuquan_spList.size()) {
-			System.out.println(stockId + " StockPrice Length is not equal to Qian FuQuan StockPrice");
-			this.historyQianFuQuanRunner.countAndSave(stockId);
-		}
 
 		for (StockPriceVO vo : spList) {
 			if (vo.close == 0 || vo.open == 0 || vo.high == 0 || vo.low == 0 || Strings.isEmpty(vo.date)) {
 				System.out.println("Sanity Delete StockPrice " + vo);
 				this.stockPriceTable.delete(vo.stockId, vo.date);
-				refresh = true;
 			}
 		}
-		// refresh if above delete vo
-		if (refresh)
-			spList = stockPriceTable.getStockPriceById(stockId);
+		
+		if (spList.size() != qianfuquan_spList.size()) {
+			System.out.println(stockId + " StockPrice Length is not equal to Qian FuQuan StockPrice");
+			this.historyQianFuQuanRunner.countAndSave(stockId);
+		}
 
-		boolean fq_refresh = false;
-		for (StockPriceVO vo : houfuquan_spList) {
-			if (vo.close == 0 || vo.open == 0 || vo.high == 0 || vo.low == 0 || Strings.isEmpty(vo.date)) {
-				System.out.println("Sanity Delete FuQuanStockPrice " + vo);
-				this.houfuquanStockPriceTable.delete(vo.stockId, vo.date);
-				fq_refresh = true;
-			}
-		}
-		// refresh if above delete vo
-		if (fq_refresh)
-			houfuquan_spList = houfuquanStockPriceTable.getStockPriceById(stockId);
 
 		if ((spList.size() != macdList.size())) {
 			System.out.println(stockId + " size of macd is not equal:" + spList.size() + "!=" + macdList.size());

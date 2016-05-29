@@ -3,7 +3,6 @@ package org.easystogu.sina.runner;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.easystogu.db.access.ChuQuanChuXiPriceHelper;
 import org.easystogu.db.access.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.access.WeekStockPriceTableHelper;
@@ -16,7 +15,6 @@ public class DailyWeeklyStockPriceCountAndSaveDBRunner implements Runnable {
 	private StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
 	private WeekStockPriceTableHelper weekStockPriceTable = WeekStockPriceTableHelper.getInstance();
 	private String latestDate = qianFuQuanStockPriceTable.getLatestStockDate();
-	protected ChuQuanChuXiPriceHelper chuQuanChuXiPriceHelper = new ChuQuanChuXiPriceHelper();
 	protected CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 
 	public void deleteWeekStockPrice(String stockId, String date) {

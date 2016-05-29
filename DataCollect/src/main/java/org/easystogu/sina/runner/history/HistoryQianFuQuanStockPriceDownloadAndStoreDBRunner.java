@@ -19,6 +19,7 @@ public class HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner {
 	// priceList is order by date from stockPrice
 	// using hou fuquan stockprce to count the qian fuquan stockprice
 	// 使用后复权的数据计算前复权的价格数据,依据后除权数据一定要正确，否则出错
+	//not use this method now
 	private void updateQianFuQianPriceBasedOnHouFuQuan(String stockId, List<StockPriceVO> spList) {
 		if (companyInfoHelper.isStockIdAMajorZhiShu(stockId)) {
 			return;
@@ -121,9 +122,9 @@ public class HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner {
 	public void countAndSave(String stockId) {
 		try {
 			List<StockPriceVO> spList = stockPriceTable.getStockPriceById(stockId);
-			List<StockPriceVO> chuQUanSPList = this.updateQianFuQianPriceBasedOnChuQuanEvent(stockId, spList);
+			List<StockPriceVO> chuQuanSPList = this.updateQianFuQianPriceBasedOnChuQuanEvent(stockId, spList);
 			this.qianfuquanStockPriceTable.delete(stockId);
-			this.qianfuquanStockPriceTable.insert(chuQUanSPList);
+			this.qianfuquanStockPriceTable.insert(chuQuanSPList);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

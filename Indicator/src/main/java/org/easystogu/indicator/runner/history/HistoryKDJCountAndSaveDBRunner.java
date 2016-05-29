@@ -2,7 +2,6 @@ package org.easystogu.indicator.runner.history;
 
 import java.util.List;
 
-import org.easystogu.db.access.ChuQuanChuXiPriceHelper;
 import org.easystogu.db.access.IndKDJTableHelper;
 import org.easystogu.db.access.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.StockPriceTableHelper;
@@ -19,7 +18,6 @@ public class HistoryKDJCountAndSaveDBRunner {
 	protected StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
 	protected IndKDJTableHelper kdjTable = IndKDJTableHelper.getInstance();
 	protected KDJHelper kdjHelper = new KDJHelper();
-	protected ChuQuanChuXiPriceHelper chuQuanChuXiPriceHelper = new ChuQuanChuXiPriceHelper();
 
 	public void deleteKDJ(String stockId) {
 		kdjTable.delete(stockId);

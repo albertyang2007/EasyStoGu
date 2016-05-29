@@ -9,7 +9,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
-import org.easystogu.db.access.HouFuQuanStockPriceTableHelper;
+import org.easystogu.db.access.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.table.BollVO;
 import org.easystogu.db.table.KDJVO;
 import org.easystogu.db.table.LuZaoVO;
@@ -29,11 +29,11 @@ import org.easystogu.utils.Strings;
 
 import com.google.common.primitives.Doubles;
 
-//V2, query price and count in real time, hou FuQuan
+//V2, query price and count in real time, qian FuQuan
 public class IndicatorEndPointV2 {
 	protected static String HHmmss = "00:00:00";
 	protected CompanyInfoFileHelper companyInfoHelper = CompanyInfoFileHelper.getInstance();
-	protected HouFuQuanStockPriceTableHelper houfuquanStockPriceTable = HouFuQuanStockPriceTableHelper.getInstance();
+	protected QianFuQuanStockPriceTableHelper qianfuquanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
 	protected MACDHelper macdHelper = new MACDHelper();
 	protected KDJHelper kdjHelper = new KDJHelper();
 	protected ShenXianHelper shenXianHelper = new ShenXianHelper();
@@ -187,7 +187,7 @@ public class IndicatorEndPointV2 {
 
 	// common function to fetch price from stockPrice table
 	protected List<StockPriceVO> fetchAllPrices(String stockid) {
-		return this.houfuquanStockPriceTable.getStockPriceById(stockid);
+		return this.qianfuquanStockPriceTable.getStockPriceById(stockid);
 	}
 
 	protected boolean isStockDateSelected(String date, String aDate) {

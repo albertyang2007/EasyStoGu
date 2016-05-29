@@ -2,7 +2,6 @@ package org.easystogu.runner;
 
 import java.util.List;
 
-import org.easystogu.db.access.HouFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.ScheduleActionTableHelper;
 import org.easystogu.db.table.ScheduleActionVO;
@@ -15,7 +14,7 @@ import org.easystogu.utils.WeekdayUtil;
 public class DailyScheduleActionRunner implements Runnable {
 	private String currentDate = WeekdayUtil.currentDate();
 	private ScheduleActionTableHelper scheduleActionTable = ScheduleActionTableHelper.getInstance();
-	private HouFuQuanStockPriceTableHelper houfuquanStockPriceTable = HouFuQuanStockPriceTableHelper.getInstance();
+	//private HouFuQuanStockPriceTableHelper houfuquanStockPriceTable = HouFuQuanStockPriceTableHelper.getInstance();
 	private QianFuQuanStockPriceTableHelper qianfuquanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
 	private HistoryHouFuQuanStockPriceDownloadAndStoreDBRunner historyHouFuQuanRunner = new HistoryHouFuQuanStockPriceDownloadAndStoreDBRunner();
 	private HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner historyQianFuQuanRunner = new HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner();
@@ -32,8 +31,7 @@ public class DailyScheduleActionRunner implements Runnable {
 				// for qian fuquan
 				this.historyQianFuQuanRunner.countAndSave(savo.stockId);
 				// delete schedule action if success
-				if (this.qianfuquanStockPriceTable.countByStockId(savo.stockId) > 0
-						&& this.houfuquanStockPriceTable.countByStockId(savo.stockId) > 0) {
+				if (this.qianfuquanStockPriceTable.countByStockId(savo.stockId) > 0) {
 					this.scheduleActionTable.delete(savo.stockId, savo.runDate, savo.actionDo);
 				}
 

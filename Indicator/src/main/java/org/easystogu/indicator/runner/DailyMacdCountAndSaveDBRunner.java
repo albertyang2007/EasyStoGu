@@ -2,7 +2,6 @@ package org.easystogu.indicator.runner;
 
 import java.util.List;
 
-import org.easystogu.db.access.ChuQuanChuXiPriceHelper;
 import org.easystogu.db.access.IndMacdTableHelper;
 import org.easystogu.db.access.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.StockPriceTableHelper;
@@ -17,7 +16,6 @@ public class DailyMacdCountAndSaveDBRunner implements Runnable {
     protected IndMacdTableHelper macdTable = IndMacdTableHelper.getInstance();
     protected StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
     protected MACDHelper macdHelper = new MACDHelper();
-    protected ChuQuanChuXiPriceHelper chuQuanChuXiPriceHelper = new ChuQuanChuXiPriceHelper();
     protected CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 
     public DailyMacdCountAndSaveDBRunner() {

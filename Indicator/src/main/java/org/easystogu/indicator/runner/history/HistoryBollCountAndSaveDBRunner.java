@@ -2,7 +2,6 @@ package org.easystogu.indicator.runner.history;
 
 import java.util.List;
 
-import org.easystogu.db.access.ChuQuanChuXiPriceHelper;
 import org.easystogu.db.access.IndBollTableHelper;
 import org.easystogu.db.access.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.StockPriceTableHelper;
@@ -18,7 +17,6 @@ public class HistoryBollCountAndSaveDBRunner {
 	protected IndBollTableHelper bollTable = IndBollTableHelper.getInstance();
 	protected StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
 	private BOLLHelper bollHelper = new BOLLHelper();
-	protected ChuQuanChuXiPriceHelper chuQuanChuXiPriceHelper = new ChuQuanChuXiPriceHelper();
 
 	public void deleteBoll(String stockId) {
 		bollTable.delete(stockId);
