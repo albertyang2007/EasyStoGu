@@ -1339,6 +1339,12 @@ public class CombineAnalyseHelper {
 		}
 
 		// wr bottom
+		case WR_Bottom_Gordon: {
+			// to be done
+			break;
+		}
+
+		// wr bottom
 		case WR_Top_Area: {
 			if (curSuperDayVO.wrVO.shoTerm >= 95.0 && curSuperDayVO.wrVO.midTerm >= 95.0
 					&& curSuperDayVO.wrVO.lonTerm >= 95.0)
