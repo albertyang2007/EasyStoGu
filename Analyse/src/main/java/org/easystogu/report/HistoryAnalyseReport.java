@@ -218,14 +218,20 @@ public class HistoryAnalyseReport {
 
 		for (String stockId : stockIds) {
 
-			// if (!stockId.equals("399001"))
-			// continue;
+			if (!stockId.equals("600252"))
+		    continue;
 
 			List<HistoryReportDetailsVO> historyReportList = this.doAnalyseBuySellDate(stockId, checkPoint);
 			for (HistoryReportDetailsVO reportVO : historyReportList) {
 				// analyse the original buy and sell data
 				if (reportVO.sellPriceVO != null) {
 					reportVO.countData();
+
+					// skip the abmornal data
+					if (reportVO.earnPercent[1] >= 1000.0) {
+						continue;
+					}
+
 					// print the high earn percent if larger than 25%
 					if ((reportVO.earnPercent[1] >= 50.0) && (reportVO.earnPercent[0] >= 25.0)) {
 						totalHighCount++;
@@ -444,7 +450,7 @@ public class HistoryAnalyseReport {
 		// }
 		// }
 
-		// reporter.searchAllStockIdAnalyseHistoryBuySellCheckPoint(DailyCombineCheckPoint.WR_Bottom_Gordon);
+		reporter.searchAllStockIdAnalyseHistoryBuySellCheckPoint(DailyCombineCheckPoint.WR_Bottom_Gordon);
 		// reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.WR_Bottom_Gordon);
 
 	}
