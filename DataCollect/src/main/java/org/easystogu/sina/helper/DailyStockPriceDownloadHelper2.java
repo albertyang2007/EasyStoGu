@@ -32,6 +32,7 @@ public class DailyStockPriceDownloadHelper2 {
 		for (int pageNumber = 1; pageNumber <= totalNumberPage; pageNumber++) {
 			list.addAll(this.fetchAPageDataFromWeb(pageNumber));
 		}
+		System.out.print("Total fetch size=" + list.size());
 		return list;
 	}
 
@@ -47,8 +48,8 @@ public class DailyStockPriceDownloadHelper2 {
 			requestFactory.setReadTimeout(10000);
 
 			if (Strings.isNotEmpty(configure.getString(Constants.httpProxyServer))) {
-				Proxy proxy = new Proxy(Type.HTTP, new InetSocketAddress(
-						configure.getString(Constants.httpProxyServer), configure.getInt(Constants.httpProxyPort)));
+				Proxy proxy = new Proxy(Type.HTTP, new InetSocketAddress(configure.getString(Constants.httpProxyServer),
+						configure.getInt(Constants.httpProxyPort)));
 				requestFactory.setProxy(proxy);
 			}
 
