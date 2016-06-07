@@ -60,14 +60,14 @@ public class HistoryAnalyseReport {
 		List<StockSuperVO> overWeekList = weekStockOverAllHelper.getAllStockSuperVO(stockId);
 
 		if (overDayList.size() == 0) {
-			 //System.out.println("doAnalyseReport overDayList size=0 for " +
-			 //stockId);
+			// System.out.println("doAnalyseReport overDayList size=0 for " +
+			// stockId);
 			return historyReportList;
 		}
 
 		if (overWeekList.size() == 0) {
-			 //System.out.println("doAnalyseReport overWeekList size=0 for " +
-			 //stockId);
+			// System.out.println("doAnalyseReport overWeekList size=0 for " +
+			// stockId);
 			return historyReportList;
 		}
 
@@ -218,8 +218,8 @@ public class HistoryAnalyseReport {
 
 		for (String stockId : stockIds) {
 
-			 //if (!stockId.equals("399001"))
-			 //continue;
+			// if (!stockId.equals("399001"))
+			// continue;
 
 			List<HistoryReportDetailsVO> historyReportList = this.doAnalyseBuySellDate(stockId, checkPoint);
 			for (HistoryReportDetailsVO reportVO : historyReportList) {
@@ -378,6 +378,60 @@ public class HistoryAnalyseReport {
 		return subList;
 	}
 
+	public void countAllStockIdAnalyseHistoryBuySellCheckPoint() {
+		searchAllStockIdAnalyseHistoryBuySellCheckPoint(DailyCombineCheckPoint.Trend_PhaseI_GuanCha);
+		searchAllStockIdAnalyseHistoryBuySellCheckPoint(DailyCombineCheckPoint.Trend_PhaseII_JianCang);
+		searchAllStockIdAnalyseHistoryBuySellCheckPoint(DailyCombineCheckPoint.Trend_PhaseIII_ChiGu);
+		searchAllStockIdAnalyseHistoryBuySellCheckPoint(DailyCombineCheckPoint.Trend_PhaseVI_JianCang);
+
+		searchAllStockIdAnalyseHistoryBuySellCheckPoint(DailyCombineCheckPoint.QSDD_Top_Area);
+		searchAllStockIdAnalyseHistoryBuySellCheckPoint(DailyCombineCheckPoint.QSDD_Bottom_Area);
+		searchAllStockIdAnalyseHistoryBuySellCheckPoint(DailyCombineCheckPoint.QSDD_Bottom_Gordon);
+
+		searchAllStockIdAnalyseHistoryBuySellCheckPoint(DailyCombineCheckPoint.LuZao_GordonO_MA43_DownCross_MA86);
+		searchAllStockIdAnalyseHistoryBuySellCheckPoint(DailyCombineCheckPoint.LuZao_GordonI_MA19_UpCross_MA43);
+		searchAllStockIdAnalyseHistoryBuySellCheckPoint(DailyCombineCheckPoint.LuZao_GordonII_MA19_UpCross_MA86);
+		searchAllStockIdAnalyseHistoryBuySellCheckPoint(DailyCombineCheckPoint.LuZao_DeadI_MA43_UpCross_MA86);
+		searchAllStockIdAnalyseHistoryBuySellCheckPoint(DailyCombineCheckPoint.LuZao_DeadII_MA19_DownCross_MA43);
+
+		searchAllStockIdAnalyseHistoryBuySellCheckPoint(DailyCombineCheckPoint.ShenXian_Gordon);
+		searchAllStockIdAnalyseHistoryBuySellCheckPoint(DailyCombineCheckPoint.ShenXian_Dead);
+
+		searchAllStockIdAnalyseHistoryBuySellCheckPoint(DailyCombineCheckPoint.MACD_Gordon);
+		searchAllStockIdAnalyseHistoryBuySellCheckPoint(DailyCombineCheckPoint.MACD_Dead);
+
+		searchAllStockIdAnalyseHistoryBuySellCheckPoint(DailyCombineCheckPoint.WR_Bottom_Area);
+		searchAllStockIdAnalyseHistoryBuySellCheckPoint(DailyCombineCheckPoint.WR_Top_Area);
+		searchAllStockIdAnalyseHistoryBuySellCheckPoint(DailyCombineCheckPoint.WR_Bottom_Gordon);
+	}
+
+	public void countAllStockIdStatisticsCheckPoint() {
+		searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.Trend_PhaseI_GuanCha);
+		searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.Trend_PhaseII_JianCang);
+		searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.Trend_PhaseIII_ChiGu);
+		searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.Trend_PhaseVI_JianCang);
+
+		searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.QSDD_Top_Area);
+		searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.QSDD_Bottom_Area);
+		searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.QSDD_Bottom_Gordon);
+
+		searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.LuZao_GordonO_MA43_DownCross_MA86);
+		searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.LuZao_GordonI_MA19_UpCross_MA43);
+		searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.LuZao_GordonII_MA19_UpCross_MA86);
+		searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.LuZao_DeadI_MA43_UpCross_MA86);
+		searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.LuZao_DeadII_MA19_DownCross_MA43);
+
+		searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.ShenXian_Gordon);
+		searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.ShenXian_Dead);
+
+		searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.MACD_Gordon);
+		searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.MACD_Dead);
+
+		searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.WR_Bottom_Area);
+		searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.WR_Top_Area);
+		searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.WR_Bottom_Gordon);
+	}
+
 	public static void main(String[] args) {
 		HistoryAnalyseReport reporter = new HistoryAnalyseReport();
 		// FileConfigurationService config =
@@ -389,33 +443,9 @@ public class HistoryAnalyseReport {
 		// reporter.searchAllStockIdAnalyseHistoryCheckPoint(checkPoint);
 		// }
 		// }
-		// reporter.searchAllStockIdAnalyseHistoryBuySellCheckPoint(DailyCombineCheckPoint.LuZao_GordonO_MA43_DownCross_MA86);
 
-		//reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.Trend_PhaseI_GuanCha);
-		//reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.Trend_PhaseII_JianCang);
-		//reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.Trend_PhaseIII_ChiGu);
-		//reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.Trend_PhaseVI_JianCang);
+		// reporter.searchAllStockIdAnalyseHistoryBuySellCheckPoint(DailyCombineCheckPoint.WR_Bottom_Gordon);
+		// reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.WR_Bottom_Gordon);
 
-		//reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.QSDD_Top_Area);
-		//reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.QSDD_Bottom_Area);
-		//reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.QSDD_Bottom_Gordon);
-
-		//reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.LuZao_GordonO_MA43_DownCross_MA86);
-		//reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.LuZao_GordonI_MA19_UpCross_MA43);
-		//reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.LuZao_GordonII_MA19_UpCross_MA86);
-		//reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.LuZao_DeadI_MA43_UpCross_MA86);
-		//reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.LuZao_DeadII_MA19_DownCross_MA43);
-
-		//reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.ShenXian_Gordon);
-		//reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.ShenXian_Dead);
-
-		//reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.MACD_Gordon);
-		//reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.MACD_Dead);
-		
-		//reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.WR_Bottom_Area);
-		//reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.WR_Top_Area);
-		
-		reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.WR_Bottom_Gordon);
-		
 	}
 }
