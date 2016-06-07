@@ -307,9 +307,9 @@ Total high earn between (25, 50): 22
 Total low  earn between (10, 10): 187
 
 ===============================WR_Bottom_Gordon (sellPoint:KDJ_Dead)==========================
-Total satisfy: 72113	 earnPercent[close]=0.8443007444725751	 earnPercent[high]=10.241975823037626	 earnPercent[low]=-7.033375210231892
-oldEarn=0.0
+Total satisfy: 74303	 earnPercent[close]=0.8055302366214371	 earnPercent[high]=9.560541609096926	 earnPercent[low]=-6.704707548673555
+oldEarn=10.17
 Avg hold stock days when sell point: 11
-Avg hold stock days when high price: 7
-Total high earn between (25, 50): 867
-Total low  earn between (10, 10): 7380
+Avg hold stock days when high price: 6
+Total high earn between (25, 50): 823
+Total low  earn between (10, 10): 6427

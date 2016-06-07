@@ -1,6 +1,7 @@
 package org.easystogu.file.access;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +11,7 @@ import org.easystogu.db.access.CompanyInfoTableHelper;
 import org.easystogu.db.table.CompanyInfoVO;
 import org.easystogu.file.TextFileSourceHelper;
 import org.easystogu.log.LogHelper;
+import org.easystogu.utils.StringComparator;
 import org.easystogu.utils.Strings;
 import org.slf4j.Logger;
 
@@ -78,6 +80,7 @@ public class CompanyInfoFileHelper {
 		return "N/A";
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<String> getAllStockId() {
 		List<String> stockIds = new ArrayList<String>();
 		Set<String> set = this.companyMap.keySet();
@@ -85,6 +88,9 @@ public class CompanyInfoFileHelper {
 		stockIds.add(getSZZSStockIdForDB());
 		stockIds.add(getSZCZStockIdForDB());
 		stockIds.add(getCYBZStockIdForDB());
+		
+		Collections.sort(stockIds, new StringComparator());
+		
 		return stockIds;
 	}
 

@@ -211,15 +211,17 @@ public class HistoryAnalyseReport {
 		long totalCount = 0;
 		int totalHighCount = 0;
 		int totalLowCount = 0;
+		int index = 0;
 		List<String> stockIds = stockConfig.getAllStockId();
 
 		System.out.println("\n===============================" + checkPoint + " (sellPoint:"
 				+ checkPoint.getSellPointType() + ")==========================");
 
 		for (String stockId : stockIds) {
-
-			if (!stockId.equals("600252"))
-		    continue;
+			index++;
+			
+			// if (!stockId.equals("600252"))
+			// continue;
 
 			List<HistoryReportDetailsVO> historyReportList = this.doAnalyseBuySellDate(stockId, checkPoint);
 			for (HistoryReportDetailsVO reportVO : historyReportList) {
@@ -232,6 +234,13 @@ public class HistoryAnalyseReport {
 						continue;
 					}
 
+					totalCount++;
+					earnPercent[0] += reportVO.earnPercent[0];
+					earnPercent[1] += reportVO.earnPercent[1];
+					earnPercent[2] += reportVO.earnPercent[2];
+					holdDays += reportVO.holdDays;
+					holdDaysWhenHighPrice += reportVO.holdDaysWhenHighPrice;
+
 					// print the high earn percent if larger than 25%
 					if ((reportVO.earnPercent[1] >= 50.0) && (reportVO.earnPercent[0] >= 25.0)) {
 						totalHighCount++;
@@ -242,7 +251,8 @@ public class HistoryAnalyseReport {
 					}
 
 					if (!reportVO.completed) {
-						System.out.println("Not Completed: " + reportVO);
+						System.out.println("Not Completed: " + reportVO + "\tIndex=" + index + "\tCurrent highPercent="
+								+ (earnPercent[1] / totalCount));
 						// save to checkpint daily selection table
 						if (isCheckPointSelected(checkPoint)) {
 							this.saveToCheckPointDailySelectionDB(reportVO.stockId, reportVO.buyPriceVO.date,
@@ -258,13 +268,6 @@ public class HistoryAnalyseReport {
 						checkPointHistorySelectionTable
 								.insert(reportVO.convertToHistoryReportVO(checkPoint.toString()));
 					}
-
-					totalCount++;
-					earnPercent[0] += reportVO.earnPercent[0];
-					earnPercent[1] += reportVO.earnPercent[1];
-					earnPercent[2] += reportVO.earnPercent[2];
-					holdDays += reportVO.holdDays;
-					holdDaysWhenHighPrice += reportVO.holdDaysWhenHighPrice;
 				}
 			}
 		}
@@ -450,8 +453,8 @@ public class HistoryAnalyseReport {
 		// }
 		// }
 
-		reporter.searchAllStockIdAnalyseHistoryBuySellCheckPoint(DailyCombineCheckPoint.WR_Bottom_Gordon);
-		// reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.WR_Bottom_Gordon);
+		//reporter.searchAllStockIdAnalyseHistoryBuySellCheckPoint(DailyCombineCheckPoint.WR_Bottom_Gordon);
+		reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.WR_Bottom_Gordon);
 
 	}
 }
