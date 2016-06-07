@@ -14,6 +14,7 @@ public class IndProcessHelper {
 		IndCrossCheckingHelper.shenXianCross12(overDayList);
 		IndCrossCheckingHelper.qsddCross(overDayList);
 		//IndCrossCheckingHelper.yiMengBSCross(overDayList);
+		IndCountHelper.countAvgWR(overDayList);
 		VolumeCheckingHelper.volumeIncreasePuls(overDayList);
 		VolumeCheckingHelper.avgVolume5(overDayList);
 		PriceCheckingHelper.priceHigherThanNday(overDayList, 15);

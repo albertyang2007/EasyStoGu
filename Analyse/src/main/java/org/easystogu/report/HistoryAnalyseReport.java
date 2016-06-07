@@ -60,14 +60,14 @@ public class HistoryAnalyseReport {
 		List<StockSuperVO> overWeekList = weekStockOverAllHelper.getAllStockSuperVO(stockId);
 
 		if (overDayList.size() == 0) {
-			// System.out.println("doAnalyseReport overDayList size=0 for " +
-			// stockId);
+			 //System.out.println("doAnalyseReport overDayList size=0 for " +
+			 //stockId);
 			return historyReportList;
 		}
 
 		if (overWeekList.size() == 0) {
-			// System.out.println("doAnalyseReport overWeekList size=0 for " +
-			// stockId);
+			 //System.out.println("doAnalyseReport overWeekList size=0 for " +
+			 //stockId);
 			return historyReportList;
 		}
 
@@ -77,7 +77,6 @@ public class HistoryAnalyseReport {
 		HistoryReportDetailsVO reportVO = null;
 		for (int index = 120; index < overDayList.size(); index++) {
 			StockSuperVO superVO = overDayList.get(index);
-
 			// buy point
 			if (reportVO == null) {
 				String startDate = overDayList.get(index - 120).priceVO.date;
@@ -219,8 +218,8 @@ public class HistoryAnalyseReport {
 
 		for (String stockId : stockIds) {
 
-			// if (!stockId.equals("600794"))
-			// continue;
+			 //if (!stockId.equals("399001"))
+			 //continue;
 
 			List<HistoryReportDetailsVO> historyReportList = this.doAnalyseBuySellDate(stockId, checkPoint);
 			for (HistoryReportDetailsVO reportVO : historyReportList) {
@@ -413,8 +412,10 @@ public class HistoryAnalyseReport {
 		//reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.MACD_Gordon);
 		//reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.MACD_Dead);
 		
-		reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.WR_Bottom_Area);
-		reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.WR_Top_Area);
+		//reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.WR_Bottom_Area);
+		//reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.WR_Top_Area);
+		
+		reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.WR_Bottom_Gordon);
 		
 	}
 }

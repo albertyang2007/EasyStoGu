@@ -25,6 +25,7 @@ public class StockSuperVO {
 	public ZhuLiJingLiuRuVO zhuLiJingLiuRuVO = null;
 	public double volumeIncreasePercent;// äº¤æ˜“çš„volumeè¾ƒå‰�ä¸€æ—¥çš„å¢žé‡�ç™¾åˆ†æ¯”
 	public long avgVol5;// avg of 5 days volume
+	public double avgWR;// avg of shortTerm and middleTerm and longTerm
 	public CrossType macdCorssType;
 	public CrossType kdjCorssType;
 	public CrossType rsvCorssType;
@@ -84,7 +85,7 @@ public class StockSuperVO {
 	public void setYiMengBSVO(YiMengBSVO vo) {
 		this.yiMengBSVO = vo;
 	}
-	
+
 	public void setWRVO(WRVO vo) {
 		this.wrVO = vo;
 	}

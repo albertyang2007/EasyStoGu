@@ -1338,9 +1338,48 @@ public class CombineAnalyseHelper {
 			break;
 		}
 
-		// wr bottom
+		// wr bottom gordon
+		// pre1 avgTerm is the lowest value within 43 days
+		// curr avgTerm is bigger then pre1's
 		case WR_Bottom_Gordon: {
-			// to be done
+			if (curSuperDayVO.avgWR > pre1SuperDayVO.avgWR) {
+				// pre1 avgWR is the LLV of 19, 43 and 86 days
+				// pre1 shortWR is the LLV of 19
+				int[] periods = { 19, 43, 86 };
+
+				double llvAvgWR = pre1SuperDayVO.avgWR;
+				//check shortTerm
+				double llvShortTermWR = pre1SuperDayVO.wrVO.shoTerm;
+				for (int i = overDayList.size() - 1; i >= overDayList.size() - periods[0]; i--) {
+					StockSuperVO tmpVO = overDayList.get(i);
+					if (llvAvgWR > tmpVO.avgWR) {
+						return false;
+					}
+					if (llvShortTermWR > tmpVO.wrVO.shoTerm) {
+						return false;
+					}
+				}
+
+				//check middTerm
+				for (int i = overDayList.size() - 1; i >= overDayList.size() - periods[1]; i--) {
+					StockSuperVO tmpVO = overDayList.get(i);
+					if (llvAvgWR > tmpVO.avgWR) {
+						return false;
+					}
+				}
+
+
+				//check longTerm
+				for (int i = overDayList.size() - 1; i >= overDayList.size() - periods[2]; i--) {
+					StockSuperVO tmpVO = overDayList.get(i);
+					if (llvAvgWR > tmpVO.avgWR) {
+						return false;
+					}
+				}
+				// all above are satisfy
+				return true;
+			}
+
 			break;
 		}
 
