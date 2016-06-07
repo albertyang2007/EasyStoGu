@@ -81,7 +81,7 @@ public class HomeEndPoint {
 	@GET
 	@Path("/DailyOverAllRunner")
 	public String dailyOverAllRunner() {
-		boolean isGetZiJinLiu = true;
+		boolean isGetZiJinLiu = false;
 		Thread t = new Thread(new DailyOverAllRunner(isGetZiJinLiu));
 		t.start();
 		return "DailyOverAllRunner already running, please check DB result.";
