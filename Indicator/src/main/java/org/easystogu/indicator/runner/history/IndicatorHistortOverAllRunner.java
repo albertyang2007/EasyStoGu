@@ -13,7 +13,7 @@ public class IndicatorHistortOverAllRunner {
         new HistoryWRCountAndSaveDBRunner().countAndSaved(stockIds);
         //week
         new HistoryWeeklyMacdCountAndSaveDBRunner().countAndSaved(stockIds);
-        new HistoryWeeklyMacdCountAndSaveDBRunner().countAndSaved(stockIds);
+        new HistoryWeeklyKDJCountAndSaveDBRunner().countAndSaved(stockIds);
     }
     
     public void countAndSave(String stockId) {
@@ -26,7 +26,7 @@ public class IndicatorHistortOverAllRunner {
         new HistoryWRCountAndSaveDBRunner().countAndSaved(stockId);
         //week
         new HistoryWeeklyMacdCountAndSaveDBRunner().countAndSaved(stockId);
-        new HistoryWeeklyMacdCountAndSaveDBRunner().countAndSaved(stockId);
+        new HistoryWeeklyKDJCountAndSaveDBRunner().countAndSaved(stockId);
     }
 
     public static void main(String[] args) {
