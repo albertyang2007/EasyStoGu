@@ -168,7 +168,7 @@ public class HistoryHouFuQuanStockPriceDownloadAndStoreDBRunner {
 		// for all stockIds
 		runner.countAndSave(stockIds);
 		// for specify stockId
-		// runner.countAndSave("000038");
+		//runner.countAndSave("601388");
 
 		// for major indicator
 		runner.countAndSavevForMajorIndicator();

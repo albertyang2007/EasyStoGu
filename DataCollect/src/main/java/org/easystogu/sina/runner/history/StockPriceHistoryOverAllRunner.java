@@ -7,7 +7,7 @@ public class StockPriceHistoryOverAllRunner {
         //history stock price
         HistoryStockPriceDownloadAndStoreDBRunner.main(args);
         //hou fuquan history price
-        HistoryHouFuQuanStockPriceDownloadAndStoreDBRunner.main(args);
+        //HistoryHouFuQuanStockPriceDownloadAndStoreDBRunner.main(args);
         //qian fuquan history price
         HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner.main(args);
         //count week price
