@@ -159,7 +159,7 @@ public class HistoryStockPriceDownloadAndStoreDBRunner {
 	}
 
 	public static void main(String[] args) {
-		String startDate = "1997-01-01";
+		String startDate = "2016-06-08";
 		String endDate = WeekdayUtil.currentDate();
 		HistoryStockPriceDownloadAndStoreDBRunner runner = new HistoryStockPriceDownloadAndStoreDBRunner(startDate,
 				endDate);
