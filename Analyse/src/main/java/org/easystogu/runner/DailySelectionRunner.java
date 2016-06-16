@@ -86,7 +86,7 @@ public class DailySelectionRunner implements Runnable {
 				return;
 			}
 
-			int dayListLen = overDayList.size();
+			int dayListLen = this.getDateIndex(this.latestDate, overDayList) + 1;
 			if (dayListLen >= 120)
 				overDayList = overDayList.subList(dayListLen - 120, dayListLen);
 
@@ -404,6 +404,19 @@ public class DailySelectionRunner implements Runnable {
 		}
 	}
 
+	// get the index which is equal date, if date == LatestDate, it should
+	// return size - 1, overList is ORDER BY DATE
+	private int getDateIndex(String date, List<StockSuperVO> overList) {
+
+		for (int index = 0; index < overList.size(); index++) {
+			StockSuperVO vo = overList.get(index);
+			if (vo.priceVO.date.equals(date)) {
+				return index;
+			}
+		}
+		return overList.size() - 1;
+	}
+
 	// sort by avgHighEarnPercent
 	@SuppressWarnings("unchecked")
 	public void sortRangeHistoryReport(List<RangeHistoryReportVO> rangeList) {
@@ -439,9 +452,16 @@ public class DailySelectionRunner implements Runnable {
 		List<String> stockIds = stockConfig.getAllStockId();
 		this.runForStockIds(stockIds);
 	}
+	
+	public void runForDate(String date){
+		this.latestDate = date;
+		List<String> stockIds = stockConfig.getAllStockId();
+		this.runForStockIds(stockIds);
+	}
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		new DailySelectionRunner().run();
+		//new DailySelectionRunner().runForDate("2016-06-13");
 	}
 }
