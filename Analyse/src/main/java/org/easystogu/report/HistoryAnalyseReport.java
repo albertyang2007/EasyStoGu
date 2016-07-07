@@ -220,8 +220,8 @@ public class HistoryAnalyseReport {
 		for (String stockId : stockIds) {
 			index++;
 			
-			// if (!stockId.equals("600252"))
-			// continue;
+			 //if (!stockId.equals("600372"))
+			 //continue;
 
 			List<HistoryReportDetailsVO> historyReportList = this.doAnalyseBuySellDate(stockId, checkPoint);
 			for (HistoryReportDetailsVO reportVO : historyReportList) {
@@ -251,8 +251,8 @@ public class HistoryAnalyseReport {
 					}
 
 					if (!reportVO.completed) {
-						System.out.println("Not Completed: " + reportVO + "\tIndex=" + index + "\tCurrent highPercent="
-								+ (earnPercent[1] / totalCount));
+						//System.out.println("Not Completed: " + reportVO + "\tIndex=" + index + "\tCurrent highPercent="
+						//		+ (earnPercent[1] / totalCount));
 						// save to checkpint daily selection table
 						if (isCheckPointSelected(checkPoint)) {
 							this.saveToCheckPointDailySelectionDB(reportVO.stockId, reportVO.buyPriceVO.date,
@@ -261,7 +261,7 @@ public class HistoryAnalyseReport {
 					} else {
 						// for completed VO
 						// remove it from daily selection
-						// System.out.println("Completed: " + reportVO);
+						//System.out.println("Completed: " + reportVO);
 						this.checkPointDailySelectionTable.delete(stockId, reportVO.buyPriceVO.date,
 								checkPoint.toString());
 						// save case into history DB
@@ -454,7 +454,7 @@ public class HistoryAnalyseReport {
 		// }
 
 		//reporter.searchAllStockIdAnalyseHistoryBuySellCheckPoint(DailyCombineCheckPoint.WR_Bottom_Gordon);
-		reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.WR_Bottom_Gordon);
+		reporter.searchAllStockIdAnalyseHistoryBuySellCheckPoint(DailyCombineCheckPoint.WR_Ready_To_ZhangTing);
 
 	}
 }

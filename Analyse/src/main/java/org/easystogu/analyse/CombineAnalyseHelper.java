@@ -1375,6 +1375,41 @@ public class CombineAnalyseHelper {
 			break;
 		}
 
+		case WR_Ready_To_ZhangTing: {
+			// two of wr are same and the remain one is uppger near to the both
+			// case1: shortTerm and middleTerm are same value, higher than 70,
+			// longTerm is bigger than yesterday, near to the shortTerm and
+			// middleTerm. Example 600372 @2016-07-01
+			// case2: middleTerm and longTerm are same value, higher than 70,
+			// shortTerm is bigger than yesterday, near to the middleTerm and
+			// longTerm. Example 002211 @2016-07-05
+
+			if (curSuperDayVO.avgMA5 < curSuperDayVO.avgMA10 || curSuperDayVO.avgMA5 < pre1SuperDayVO.avgMA5
+					|| curSuperDayVO.priceVO.close < curSuperDayVO.avgMA5) {
+				return false;
+			}
+
+			// case1:
+			if (curSuperDayVO.wrVO.shoTerm == curSuperDayVO.wrVO.midTerm && curSuperDayVO.wrVO.shoTerm >= 70
+					&& curSuperDayVO.wrVO.lonTerm > pre1SuperDayVO.wrVO.lonTerm) {
+				double diff = 100 * (curSuperDayVO.wrVO.shoTerm - curSuperDayVO.wrVO.lonTerm)
+						/ curSuperDayVO.wrVO.shoTerm;
+				if (diff > 0 && diff < 5.0) {
+					return true;
+				}
+			}
+
+			// case2:
+			if (curSuperDayVO.wrVO.lonTerm == curSuperDayVO.wrVO.midTerm && curSuperDayVO.wrVO.lonTerm >= 70
+					&& curSuperDayVO.wrVO.shoTerm > pre1SuperDayVO.wrVO.shoTerm) {
+				double diff = 100 * (curSuperDayVO.wrVO.lonTerm - curSuperDayVO.wrVO.shoTerm)
+						/ curSuperDayVO.wrVO.lonTerm;
+				if (diff > 0 && diff < 5.0) {
+					return true;
+				}
+			}
+		}
+
 		// macd di bei li
 		case MACD_DI_BeiLi: {
 

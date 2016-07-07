@@ -313,3 +313,11 @@ Avg hold stock days when sell point: 11
 Avg hold stock days when high price: 6
 Total high earn between (25, 50): 823
 Total low  earn between (10, 10): 6427
+
+===============================WR_Ready_To_ZhangTing (sellPoint:KDJ_Dead)==========================
+Total satisfy: 17027	 earnPercent[close]=0.831536689862429	 earnPercent[high]=8.224467602843797	 earnPercent[low]=-6.095101905890649
+oldEarn=0.0
+Avg hold stock days when sell point: 6
+Avg hold stock days when high price: 3
+Total high earn between (25, 50): 172
+Total low  earn between (10, 10): 594
