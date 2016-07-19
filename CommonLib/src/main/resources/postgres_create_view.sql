@@ -217,3 +217,24 @@ ALTER TABLE "wr_shoTerm_midTerm_same"
   OWNER TO postgres;
 GRANT ALL ON TABLE "wr_shoTerm_midTerm_same" TO public;
 GRANT ALL ON TABLE "wr_shoTerm_midTerm_same" TO postgres;
+
+-- View: wr_daily_compare
+
+-- DROP VIEW wr_daily_compare;
+
+CREATE OR REPLACE VIEW wr_daily_compare AS 
+ SELECT ind_wr.stockid,
+    ind_wr.date,
+    ind_wr.lonterm,
+    ind_wr.shoterm,
+    ind_wr.midterm,
+    ind_wr.shoterm - lead(ind_wr.shoterm) OVER (ORDER BY ind_wr.date DESC) AS shoterm_diff,
+    ind_wr.midterm - lead(ind_wr.midterm) OVER (ORDER BY ind_wr.date DESC) AS midterm_diff,
+    ind_wr.lonterm - lead(ind_wr.lonterm) OVER (ORDER BY ind_wr.date DESC) AS lonterm_diff
+   FROM ind_wr
+  ORDER BY ind_wr.date DESC;
+
+ALTER TABLE wr_daily_compare
+  OWNER TO postgres;
+GRANT ALL ON TABLE wr_daily_compare TO public;
+GRANT ALL ON TABLE wr_daily_compare TO postgres;
