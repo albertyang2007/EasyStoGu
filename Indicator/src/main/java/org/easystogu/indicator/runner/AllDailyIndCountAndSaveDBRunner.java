@@ -11,6 +11,7 @@ public class AllDailyIndCountAndSaveDBRunner {
 		new DailyShenXianCountAndSaveDBRunner().countAndSaved(stockIds);
 		new DailyQSDDCountAndSaveDBRunner().countAndSaved(stockIds);
 		new DailyWRCountAndSaveDBRunner().countAndSaved(stockIds);
+		new DailyMACountAndSaveDBRunner().countAndSaved(stockIds);
 		// new DailyYiMengBSCountAndSaveDBRunner().countAndSaved(stockIds);
 		// new DailyMai1Mai2CountAndSaveDBRunner().countAndSaved(stockIds);
 		// new DailyXueShi2CountAndSaveDBRunner().countAndSaved(stockIds);

@@ -831,3 +831,33 @@ ALTER TABLE ind_wr
   OWNER TO postgres;
 GRANT ALL ON TABLE ind_wr TO public;
 GRANT ALL ON TABLE ind_wr TO postgres;
+
+-- Table: ind_ma
+
+-- DROP TABLE ind_ma;
+
+CREATE TABLE ind_ma
+(
+  stockid text NOT NULL,
+  date text NOT NULL,
+  ma5 numeric,
+  ma10 numeric,
+  ma19 numeric,
+  ma20 numeric,
+  ma30 numeric,
+  ma43 numeric,
+  ma60 numeric,
+  ma86 numeric,
+  ma120 numeric,
+  ma250 numeric,
+  close numeric,
+  CONSTRAINT ind_ma_primary_key PRIMARY KEY (stockid, date)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE ind_ma
+  OWNER TO postgres;
+GRANT ALL ON TABLE ind_ma TO public;
+GRANT ALL ON TABLE ind_ma TO postgres;
+
