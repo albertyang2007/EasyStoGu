@@ -10,6 +10,7 @@ import org.easystogu.easymoney.runner.DailyZiJinLiuRunner;
 import org.easystogu.runner.DailyOverAllRunner;
 import org.easystogu.runner.DailySelectionRunner;
 import org.easystogu.runner.DailyUpdateAllStockRunner;
+import org.easystogu.runner.DailyUpdatePriceAndIndicatorRunner;
 import org.easystogu.runner.DataBaseSanityCheck;
 import org.easystogu.runner.RecentlySelectionRunner;
 import org.easystogu.sina.runner.RealtimeDisplayStockPriceRunner;
@@ -21,6 +22,7 @@ public class HomeEndPoint {
 		StringBuffer sb = new StringBuffer();
 		sb.append("<a href='DailyUpdateAllStockRunner'>DailyUpdateAllStockRunner</a><br>");
 		sb.append("<a href='DailyOverAllRunner'>DailyOverAllRunner</a><br>");
+		sb.append("<a href='DailyUpdatePriceAndIndicatorRunner'>DailyUpdatePriceAndIndicatorRunner</a><br>");
 		sb.append("<a href='FastDailyOverAllRunner'>FastDailyOverAllRunner</a><br>");
 		sb.append("<a href='DailySelectionRunner'>DailySelectionRunner</a><br>");
 		sb.append("<a href='RealtimeDisplayStockPriceRunner'>RealtimeDisplayStockPriceRunner</a><br>");
@@ -102,5 +104,13 @@ public class HomeEndPoint {
 		Thread t = new Thread(new RecentlySelectionRunner());
 		t.start();
 		return "RecentlySelectionRunner already running, please check DB result.";
+	}
+	
+	@GET
+	@Path("/DailyUpdatePriceAndIndicatorRunner")
+	public String dailyUpdatePriceAndIndicatorRunner() {
+		Thread t = new Thread(new DailyUpdatePriceAndIndicatorRunner());
+		t.start();
+		return "DailyUpdatePriceAndIndicatorRunner already running, please check DB result.";
 	}
 }
