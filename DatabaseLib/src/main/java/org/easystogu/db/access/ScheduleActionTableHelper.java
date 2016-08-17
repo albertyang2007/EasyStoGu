@@ -10,7 +10,6 @@ import javax.sql.DataSource;
 
 import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
 import org.easystogu.db.table.ScheduleActionVO;
-import org.easystogu.db.table.XueShi2VO;
 import org.easystogu.log.LogHelper;
 import org.slf4j.Logger;
 import org.springframework.dao.DataAccessException;
@@ -39,6 +38,8 @@ public class ScheduleActionTableHelper {
 			+ " WHERE stockId = :stockId AND runDate = :runDate";
 	protected String DELETE_BY_STOCKID_AND_RUNDATE_AND_ACTION_SQL = "DELETE FROM " + tableName
 			+ " WHERE stockId = :stockId AND runDate = :runDate AND actionDo = :actionDo";
+	protected String DELETE_BY_STOCKID_AND_ACTION_SQL = "DELETE FROM " + tableName
+			+ " WHERE stockId = :stockId AND actionDo = :actionDo";
 
 	protected NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
@@ -88,6 +89,11 @@ public class ScheduleActionTableHelper {
 			e.printStackTrace();
 		}
 	}
+	
+	public void deleteIfExistAndThenInsert(ScheduleActionVO vo) {
+		this.delete(vo.stockId);
+		this.insert(vo);
+	}
 
 	public void insert(List<ScheduleActionVO> list) throws Exception {
 		for (ScheduleActionVO vo : list) {
@@ -106,18 +112,6 @@ public class ScheduleActionTableHelper {
 		}
 	}
 
-	public void delete(String stockId, String runDate) {
-		try {
-			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
-			namedParameters.addValue("stockId", stockId);
-			namedParameters.addValue("runDate", runDate);
-			namedParameterJdbcTemplate.execute(DELETE_BY_STOCKID_AND_RUNDATE_SQL, namedParameters,
-					new DefaultPreparedStatementCallback());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
 	public void delete(String stockId, String runDate, String actionDo) {
 		try {
 			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
@@ -125,6 +119,18 @@ public class ScheduleActionTableHelper {
 			namedParameters.addValue("runDate", runDate);
 			namedParameters.addValue("actionDo", actionDo);
 			namedParameterJdbcTemplate.execute(DELETE_BY_STOCKID_AND_RUNDATE_AND_ACTION_SQL, namedParameters,
+					new DefaultPreparedStatementCallback());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void delete(String stockId, String actionDo) {
+		try {
+			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+			namedParameters.addValue("stockId", stockId);
+			namedParameters.addValue("actionDo", actionDo);
+			namedParameterJdbcTemplate.execute(DELETE_BY_STOCKID_AND_ACTION_SQL, namedParameters,
 					new DefaultPreparedStatementCallback());
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -203,7 +209,12 @@ public class ScheduleActionTableHelper {
 		// TODO Auto-generated method stub
 		ScheduleActionTableHelper ins = new ScheduleActionTableHelper();
 		try {
-
+			ScheduleActionVO vo = new ScheduleActionVO();
+			vo.setActionDo(ScheduleActionVO.ActionDo.refresh_history_stockprice.name());
+			vo.setRunDate("2016-08-16");
+			vo.setCreateDate("2016-08-17");
+			vo.setStockId("603569");
+			ins.insert(vo);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

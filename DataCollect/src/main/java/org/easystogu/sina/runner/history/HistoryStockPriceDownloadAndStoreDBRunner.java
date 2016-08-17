@@ -36,6 +36,9 @@ public class HistoryStockPriceDownloadAndStoreDBRunner {
 	static {
 		classMap.put("hq", List.class);
 	}
+	
+	public HistoryStockPriceDownloadAndStoreDBRunner() {
+	}
 
 	public HistoryStockPriceDownloadAndStoreDBRunner(String startDate, String endDate) {
 		this.startDate = startDate;

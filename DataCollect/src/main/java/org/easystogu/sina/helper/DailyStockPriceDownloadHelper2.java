@@ -21,8 +21,8 @@ import org.springframework.web.client.RestTemplate;
 public class DailyStockPriceDownloadHelper2 {
 	// currently total stock number is less then 3000, if increase, then enlarge
 	// the numberPage
-	private static final int totalNumberPage = 8;
-	private static final int numberPerPage = 400;
+	private static final int totalNumberPage = 10;
+	private static final int numberPerPage = 300;
 	private static final String baseUrl = "http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/Market_Center.getHQNodeData?page=1&num="
 			+ numberPerPage + "&sort=symbol&asc=1&node=hs_a";
 	private static FileConfigurationService configure = FileConfigurationService.getInstance();
@@ -44,8 +44,8 @@ public class DailyStockPriceDownloadHelper2 {
 			System.out.print("Fetch Sina Daily Data for page= " + pageNumber);
 
 			SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
-			requestFactory.setConnectTimeout(10000);
-			requestFactory.setReadTimeout(10000);
+			requestFactory.setConnectTimeout(20000);
+			requestFactory.setReadTimeout(20000);
 
 			if (Strings.isNotEmpty(configure.getString(Constants.httpProxyServer))) {
 				Proxy proxy = new Proxy(Type.HTTP, new InetSocketAddress(configure.getString(Constants.httpProxyServer),

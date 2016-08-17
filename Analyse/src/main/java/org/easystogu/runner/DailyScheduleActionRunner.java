@@ -6,33 +6,51 @@ import org.easystogu.db.access.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.ScheduleActionTableHelper;
 import org.easystogu.db.table.ScheduleActionVO;
 import org.easystogu.indicator.runner.history.IndicatorHistortOverAllRunner;
-import org.easystogu.sina.runner.history.HistoryHouFuQuanStockPriceDownloadAndStoreDBRunner;
 import org.easystogu.sina.runner.history.HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner;
+import org.easystogu.sina.runner.history.HistoryStockPriceDownloadAndStoreDBRunner;
 import org.easystogu.sina.runner.history.HistoryWeekStockPriceCountAndSaveDBRunner;
 import org.easystogu.utils.WeekdayUtil;
 
 public class DailyScheduleActionRunner implements Runnable {
 	private String currentDate = WeekdayUtil.currentDate();
 	private ScheduleActionTableHelper scheduleActionTable = ScheduleActionTableHelper.getInstance();
-	//private HouFuQuanStockPriceTableHelper houfuquanStockPriceTable = HouFuQuanStockPriceTableHelper.getInstance();
 	private QianFuQuanStockPriceTableHelper qianfuquanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
-	private HistoryHouFuQuanStockPriceDownloadAndStoreDBRunner historyHouFuQuanRunner = new HistoryHouFuQuanStockPriceDownloadAndStoreDBRunner();
 	private HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner historyQianFuQuanRunner = new HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner();
 	private IndicatorHistortOverAllRunner indicatorHistoryRunner = new IndicatorHistortOverAllRunner();
 	private HistoryWeekStockPriceCountAndSaveDBRunner weekPriceHistoryRunner = new HistoryWeekStockPriceCountAndSaveDBRunner();
+	private HistoryStockPriceDownloadAndStoreDBRunner priceHistoryRunner = new HistoryStockPriceDownloadAndStoreDBRunner();
 
 	public void runAllScheduleAction() {
 		List<ScheduleActionVO> actions = this.scheduleActionTable.getAllShouldRunDate(currentDate);
 		for (ScheduleActionVO savo : actions) {
-			if (savo.actionDo.equals(ScheduleActionVO.ActionDo.refresh_fuquan_history_stockprice.name())) {
+
+			if (currentDate.compareTo(savo.getRunDate()) < 0)
+				continue;
+
+			if (savo.actionDo.equals(ScheduleActionVO.ActionDo.refresh_history_stockprice.name())) {
+				System.out.println("refresh_history_stockprice for " + savo.stockId);
+				// fetch original history data
+				this.priceHistoryRunner.countAndSave(savo.stockId);
+				// for qian fuquan history data
+				this.historyQianFuQuanRunner.countAndSave(savo.stockId);
+				// delete schedule action if success
+				if (this.qianfuquanStockPriceTable.countByStockId(savo.stockId) > 0) {
+					this.scheduleActionTable.delete(savo.stockId, savo.actionDo);
+				}
+
+				// update week price
+				weekPriceHistoryRunner.countAndSave(savo.stockId);
+				// update indicator
+				indicatorHistoryRunner.countAndSave(savo.stockId);
+			} else if (savo.actionDo.equals(ScheduleActionVO.ActionDo.refresh_fuquan_history_stockprice.name())) {
 				System.out.println("refresh_fuquan_history_stockprice for " + savo.stockId);
 				// fetch hou ququan history data
-				this.historyHouFuQuanRunner.countAndSave(savo.stockId);
+				// this.historyHouFuQuanRunner.countAndSave(savo.stockId);
 				// for qian fuquan
 				this.historyQianFuQuanRunner.countAndSave(savo.stockId);
 				// delete schedule action if success
 				if (this.qianfuquanStockPriceTable.countByStockId(savo.stockId) > 0) {
-					this.scheduleActionTable.delete(savo.stockId, savo.runDate, savo.actionDo);
+					this.scheduleActionTable.delete(savo.stockId, savo.actionDo);
 				}
 
 				// update week price

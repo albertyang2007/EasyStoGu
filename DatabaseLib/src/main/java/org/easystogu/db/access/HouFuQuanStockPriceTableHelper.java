@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.easystogu.db.table.StockPriceVO;
 
+//never use hou fu quan stockproce now
 public class HouFuQuanStockPriceTableHelper extends StockPriceTableHelper {
     private static HouFuQuanStockPriceTableHelper instance = null;
 

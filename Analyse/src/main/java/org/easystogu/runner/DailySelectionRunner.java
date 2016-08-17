@@ -16,6 +16,7 @@ import org.easystogu.checkpoint.DailyCombineCheckPoint;
 import org.easystogu.config.FileConfigurationService;
 import org.easystogu.db.access.CheckPointDailySelectionTableHelper;
 import org.easystogu.db.access.CheckPointDailyStatisticsTableHelper;
+import org.easystogu.db.access.ScheduleActionTableHelper;
 import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.access.StockSuperVOHelper;
 import org.easystogu.db.access.WeekStockSuperVOHelper;
@@ -25,6 +26,7 @@ import org.easystogu.db.access.ZiJinLiu5DayTableHelper;
 import org.easystogu.db.access.ZiJinLiuTableHelper;
 import org.easystogu.db.table.CheckPointDailySelectionVO;
 import org.easystogu.db.table.CheckPointDailyStatisticsVO;
+import org.easystogu.db.table.ScheduleActionVO;
 import org.easystogu.db.table.StockSuperVO;
 import org.easystogu.db.table.ZiJinLiuVO;
 import org.easystogu.easymoney.helper.RealTimeZiJinLiuFatchDataHelper;
@@ -52,6 +54,7 @@ public class DailySelectionRunner implements Runnable {
 	private ZhuLiJingLiuRuTableHelper zhuLiJingLiuRuTableHelper = ZhuLiJingLiuRuTableHelper.getInstance();
 	private ZiJinLiu3DayTableHelper ziJinLiu3DayTableHelper = ZiJinLiu3DayTableHelper.getInstance();
 	private ZiJinLiu5DayTableHelper ziJinLiu5DayTableHelper = ZiJinLiu5DayTableHelper.getInstance();
+	private ScheduleActionTableHelper scheduleActionTableHelper = ScheduleActionTableHelper.getInstance();
 	private HistoryAnalyseReport historyReportHelper = new HistoryAnalyseReport();
 	private CombineAnalyseHelper combineAnalyserHelper = new CombineAnalyseHelper();
 	private boolean doHistoryAnalyzeInDailySelection = config.getBoolean("do_History_Analyze_In_Daily_Selection", true);
@@ -77,12 +80,24 @@ public class DailySelectionRunner implements Runnable {
 			// List<StockSuperVO> overWeekList =
 			// weekStockOverAllHelper.getLatestNStockSuperVO(stockId, 30);
 			if (overDayList.size() == 0) {
-				System.out.println("No stockprice data for " + stockId);
+				System.out.println("No stockprice data for " + stockId + ", add to Schedule Action.");
+				//next action should be fetch all the data from web, it must be a new board id
+				ScheduleActionVO vo = new ScheduleActionVO();
+				vo.setActionDo(ScheduleActionVO.ActionDo.refresh_history_stockprice.name());
+				vo.setStockId(stockId);
+				vo.setCreateDate(this.latestDate);
+				this.scheduleActionTableHelper.deleteIfExistAndThenInsert(vo);
 				return;
 			}
 
 			if (overWeekList.size() == 0) {
-				System.out.println("No stockprice data for " + stockId);
+				System.out.println("No stockprice data for " + stockId + ", add to Schedule Action.");
+				//next action should be fetch all the data from web, it must be a new board id
+				ScheduleActionVO vo = new ScheduleActionVO();
+				vo.setActionDo(ScheduleActionVO.ActionDo.refresh_history_stockprice.name());
+				vo.setStockId(stockId);
+				vo.setCreateDate(this.latestDate);
+				this.scheduleActionTableHelper.deleteIfExistAndThenInsert(vo);
 				return;
 			}
 
