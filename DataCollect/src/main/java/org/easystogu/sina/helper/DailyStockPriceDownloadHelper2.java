@@ -11,6 +11,7 @@ import net.sf.json.JSONObject;
 
 import org.easystogu.config.Constants;
 import org.easystogu.config.FileConfigurationService;
+import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.sina.common.SinaQuoteStockPriceVO;
 import org.easystogu.utils.Strings;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
@@ -19,10 +20,11 @@ import org.springframework.web.client.RestTemplate;
 //get real time stock price from http://vip.stock.finance.sina.com.cn/quotes_service/api/
 //it will get all the stockId from the web, including the new on board stockId
 public class DailyStockPriceDownloadHelper2 {
+	private StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
 	// currently total stock number is less then 3000, if increase, then enlarge
 	// the numberPage
-	private static final int totalNumberPage = 10;
 	private static final int numberPerPage = 300;
+	private int totalNumberPage = this.stockPriceTable.getDistinctStockIDs().size() / numberPerPage + 1;
 	private static final String baseUrl = "http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/Market_Center.getHQNodeData?page=1&num="
 			+ numberPerPage + "&sort=symbol&asc=1&node=hs_a";
 	private static FileConfigurationService configure = FileConfigurationService.getInstance();

@@ -86,6 +86,7 @@ public class DailySelectionRunner implements Runnable {
 				vo.setActionDo(ScheduleActionVO.ActionDo.refresh_history_stockprice.name());
 				vo.setStockId(stockId);
 				vo.setCreateDate(this.latestDate);
+				vo.setRunDate(this.latestDate);
 				this.scheduleActionTableHelper.deleteIfExistAndThenInsert(vo);
 				return;
 			}
@@ -97,6 +98,7 @@ public class DailySelectionRunner implements Runnable {
 				vo.setActionDo(ScheduleActionVO.ActionDo.refresh_history_stockprice.name());
 				vo.setStockId(stockId);
 				vo.setCreateDate(this.latestDate);
+				vo.setRunDate(this.latestDate);
 				this.scheduleActionTableHelper.deleteIfExistAndThenInsert(vo);
 				return;
 			}
