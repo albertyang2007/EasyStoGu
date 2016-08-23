@@ -1351,6 +1351,10 @@ public class CombineAnalyseHelper {
 				double llvAvgWR = pre1SuperDayVO.avgWR;
 				// check shortTerm
 				for (int i = overDayList.size() - 1; i >= overDayList.size() - period; i--) {
+
+					if (i < 0 || i > overDayList.size())
+						return false;
+
 					StockSuperVO tmpVO = overDayList.get(i);
 					if (llvAvgWR > tmpVO.avgWR) {
 						return false;
