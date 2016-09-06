@@ -33,23 +33,33 @@ public class ShenXianHelper extends IND {
 
 		return shenXian;
 	}
+	
+	//HC5:(MA(HIGH-H1, 3)+H1)*1.01;
+	//sell point: = IF(H1>H2 AND HIGH>HC5,1,0);
+	public double[] getShenXianSellPointList(double[] CLOSE, double[] HIGH) {
+		double[][] H = this.getShenXianList(CLOSE);
+		double[] HC5 = MUL(ADD(MA(SUB(HIGH , H[0]), 3), H[0]), 1.01);
+
+		return HC5;
+	}
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		StockPriceTableHelper stockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
 		ShenXianHelper ins = new ShenXianHelper();
 
-		String stockId = "002789";
+		String stockId = "000559";
 		List<Double> close = stockPriceTable.getAllClosePrice(stockId);
+		List<Double> high = stockPriceTable.getAllHighPrice(stockId);
+		
+		double[][] h = ins.getShenXianList(Doubles.toArray(close));
 
-		double[][] sx = ins.getShenXianList(Doubles.toArray(close));
-		System.out.println("H1=" + (sx[0][close.size() - 1]));
-		System.out.println("H2=" + (sx[1][close.size() - 1]));
-		System.out.println("H3=" + (sx[2][close.size() - 1]));
-
-		System.out.println("H1=" + (sx[0][0]));
-		System.out.println("H2=" + (sx[1][0]));
-		System.out.println("H3=" + (sx[2][0]));
+		double[] sp = ins.getShenXianSellPointList(Doubles.toArray(close), Doubles.toArray(high));
+		System.out.println("H1 =" + h[0][close.size() - 1]);
+		System.out.println("H2 =" + h[1][close.size() - 1]);
+		System.out.println("HC5=" + (sp[close.size() - 1]));
+		System.out.println("HC5=" + (sp[close.size() - 2]));
+		System.out.println("HC5=" + (sp[close.size() - 3]));
 	}
 
 }
