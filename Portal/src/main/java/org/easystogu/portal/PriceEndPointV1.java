@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 
 import org.easystogu.db.access.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.StockPriceTableHelper;
@@ -28,7 +30,8 @@ public class PriceEndPointV1 {
 	@Path("/{stockId}/{date}")
 	@Produces("application/json")
 	public List<StockPriceVO> queryDayPriceById(@PathParam("stockId") String stockIdParm,
-			@PathParam("date") String dateParm) {
+			@PathParam("date") String dateParm, @Context HttpServletResponse response) {
+		response.addHeader("Access-Control-Allow-Origin", "*");
 		List<StockPriceVO> spList = new ArrayList<StockPriceVO>();
 		if (Pattern.matches(fromToRegex, dateParm)) {
 			String date1 = dateParm.split("_")[0];

@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 
 import org.easystogu.db.access.IndBollTableHelper;
 import org.easystogu.db.access.IndKDJTableHelper;
@@ -41,7 +43,9 @@ public class IndicatorEndPointV1 {
 	@GET
 	@Path("/macd/{stockId}/{date}")
 	@Produces("application/json")
-	public List<MacdVO> queryMACDById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm) {
+	public List<MacdVO> queryMACDById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
+			@Context HttpServletResponse response) {
+		response.addHeader("Access-Control-Allow-Origin", "*");
 		if (Pattern.matches(fromToRegex, dateParm)) {
 			String date1 = dateParm.split("_")[0];
 			String date2 = dateParm.split("_")[1];
@@ -58,7 +62,9 @@ public class IndicatorEndPointV1 {
 	@GET
 	@Path("/kdj/{stockId}/{date}")
 	@Produces("application/json")
-	public List<KDJVO> queryKDJById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm) {
+	public List<KDJVO> queryKDJById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
+			@Context HttpServletResponse response) {
+		response.addHeader("Access-Control-Allow-Origin", "*");
 		if (Pattern.matches(fromToRegex, dateParm)) {
 			String date1 = dateParm.split("_")[0];
 			String date2 = dateParm.split("_")[1];
@@ -75,7 +81,9 @@ public class IndicatorEndPointV1 {
 	@GET
 	@Path("/boll/{stockId}/{date}")
 	@Produces("application/json")
-	public List<BollVO> queryBollById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm) {
+	public List<BollVO> queryBollById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
+			@Context HttpServletResponse response) {
+		response.addHeader("Access-Control-Allow-Origin", "*");
 		if (Pattern.matches(fromToRegex, dateParm)) {
 			String date1 = dateParm.split("_")[0];
 			String date2 = dateParm.split("_")[1];
@@ -94,7 +102,8 @@ public class IndicatorEndPointV1 {
 	@Path("/shenxian/{stockId}/{date}")
 	@Produces("application/json")
 	public List<ShenXianVO> queryShenXianById(@PathParam("stockId") String stockIdParm,
-			@PathParam("date") String dateParm) {
+			@PathParam("date") String dateParm, @Context HttpServletResponse response) {
+		response.addHeader("Access-Control-Allow-Origin", "*");
 		if (Pattern.matches(fromToRegex, dateParm)) {
 			String date1 = dateParm.split("_")[0];
 			String date2 = dateParm.split("_")[1];
@@ -111,7 +120,9 @@ public class IndicatorEndPointV1 {
 	@GET
 	@Path("/luzao/{stockId}/{date}")
 	@Produces("application/json")
-	public List<LuZaoVO> queryLuZaoById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm) {
+	public List<LuZaoVO> queryLuZaoById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
+			@Context HttpServletResponse response) {
+		response.addHeader("Access-Control-Allow-Origin", "*");
 		// currently there is no DB for luzao, please count it when use!
 		List<LuZaoVO> list = new ArrayList<LuZaoVO>();
 		return list;
@@ -120,7 +131,9 @@ public class IndicatorEndPointV1 {
 	@GET
 	@Path("/qsdd/{stockId}/{date}")
 	@Produces("application/json")
-	public List<QSDDVO> queryQSDDById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm) {
+	public List<QSDDVO> queryQSDDById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
+			@Context HttpServletResponse response) {
+		response.addHeader("Access-Control-Allow-Origin", "*");
 		if (Pattern.matches(fromToRegex, dateParm)) {
 			String date1 = dateParm.split("_")[0];
 			String date2 = dateParm.split("_")[1];

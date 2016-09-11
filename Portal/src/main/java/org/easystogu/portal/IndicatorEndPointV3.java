@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 
 import org.easystogu.db.table.BollVO;
 import org.easystogu.db.table.KDJVO;
@@ -46,7 +48,8 @@ public class IndicatorEndPointV3 {
 	@Path("/macd/{stockId}/{date}")
 	@Produces("application/json")
 	public List<MacdVO> queryMACDById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
-			String postBody) {
+			String postBody, @Context HttpServletResponse response) {
+		response.addHeader("Access-Control-Allow-Origin", "*");
 		List<MacdVO> list = new ArrayList<MacdVO>();
 		List<StockPriceVO> spList = postParmsProcess.updateStockPriceAccordingToRequest(stockIdParm, postBody);
 
@@ -70,7 +73,8 @@ public class IndicatorEndPointV3 {
 	@Path("/kdj/{stockId}/{date}")
 	@Produces("application/json")
 	public List<KDJVO> queryKDJById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
-			String postBody) {
+			String postBody, @Context HttpServletResponse response) {
+		response.addHeader("Access-Control-Allow-Origin", "*");
 		List<KDJVO> list = new ArrayList<KDJVO>();
 		List<StockPriceVO> spList = postParmsProcess.updateStockPriceAccordingToRequest(stockIdParm, postBody);
 
@@ -97,7 +101,8 @@ public class IndicatorEndPointV3 {
 	@Path("/boll/{stockId}/{date}")
 	@Produces("application/json")
 	public List<BollVO> queryBollById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
-			String postBody) {
+			String postBody, @Context HttpServletResponse response) {
+		response.addHeader("Access-Control-Allow-Origin", "*");
 		List<BollVO> list = new ArrayList<BollVO>();
 		List<StockPriceVO> spList = postParmsProcess.updateStockPriceAccordingToRequest(stockIdParm, postBody);
 
@@ -122,7 +127,8 @@ public class IndicatorEndPointV3 {
 	@Path("/shenxian/{stockId}/{date}")
 	@Produces("application/json")
 	public List<ShenXianVO> queryShenXian2ById(@PathParam("stockId") String stockIdParm,
-			@PathParam("date") String dateParm, String postBody) {
+			@PathParam("date") String dateParm, String postBody, @Context HttpServletResponse response) {
+		response.addHeader("Access-Control-Allow-Origin", "*");
 		List<ShenXianVO> list = new ArrayList<ShenXianVO>();
 		List<StockPriceVO> spList = postParmsProcess.updateStockPriceAccordingToRequest(stockIdParm, postBody);
 
@@ -147,7 +153,8 @@ public class IndicatorEndPointV3 {
 	@Path("/luzao/{stockId}/{date}")
 	@Produces("application/json")
 	public List<LuZaoVO> queryLuZaoById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
-			String postBody) {
+			String postBody, @Context HttpServletResponse response) {
+		response.addHeader("Access-Control-Allow-Origin", "*");
 		List<LuZaoVO> list = new ArrayList<LuZaoVO>();
 		List<StockPriceVO> spList = postParmsProcess.updateStockPriceAccordingToRequest(stockIdParm, postBody);
 
@@ -172,7 +179,8 @@ public class IndicatorEndPointV3 {
 	@Path("/qsdd/{stockId}/{date}")
 	@Produces("application/json")
 	public List<QSDDVO> queryQSDDById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
-			String postBody) {
+			String postBody, @Context HttpServletResponse response) {
+		response.addHeader("Access-Control-Allow-Origin", "*");
 		List<QSDDVO> list = new ArrayList<QSDDVO>();
 		List<StockPriceVO> spList = postParmsProcess.updateStockPriceAccordingToRequest(stockIdParm, postBody);
 

@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 
 import org.easystogu.checkpoint.DailyCombineCheckPoint;
 import org.easystogu.db.access.CheckPointDailyStatisticsTableHelper;
@@ -25,7 +27,9 @@ public class CheckPointStatisticsEndPoint {
 	@GET
 	@Path("/luzao/trend/{date}")
 	@Produces("application/json")
-	public List<StatisticsVO> queryLuZaoTrendStatistics(@PathParam("date") String dateParm) {
+	public List<StatisticsVO> queryLuZaoTrendStatistics(@PathParam("date") String dateParm,
+			@Context HttpServletResponse response) {
+		response.addHeader("Access-Control-Allow-Origin", "*");
 		List<StatisticsVO> list = new ArrayList<StatisticsVO>();
 		if (Pattern.matches(fromToRegex, dateParm)) {
 			String date1 = dateParm.split("_")[0];
@@ -53,7 +57,9 @@ public class CheckPointStatisticsEndPoint {
 	@GET
 	@Path("/luzao/gordon/{date}")
 	@Produces("application/json")
-	public List<StatisticsVO> queryLuZaoGordonStatistics(@PathParam("date") String dateParm) {
+	public List<StatisticsVO> queryLuZaoGordonStatistics(@PathParam("date") String dateParm,
+			@Context HttpServletResponse response) {
+		response.addHeader("Access-Control-Allow-Origin", "*");
 		List<StatisticsVO> list = new ArrayList<StatisticsVO>();
 		if (Pattern.matches(fromToRegex, dateParm)) {
 			String date1 = dateParm.split("_")[0];
@@ -83,7 +89,9 @@ public class CheckPointStatisticsEndPoint {
 	@GET
 	@Path("/qsdd/{date}")
 	@Produces("application/json")
-	public List<StatisticsVO> queryQsddStatistics(@PathParam("date") String dateParm) {
+	public List<StatisticsVO> queryQsddStatistics(@PathParam("date") String dateParm,
+			@Context HttpServletResponse response) {
+		response.addHeader("Access-Control-Allow-Origin", "*");
 		List<StatisticsVO> list = new ArrayList<StatisticsVO>();
 		if (Pattern.matches(fromToRegex, dateParm)) {
 			String date1 = dateParm.split("_")[0];
@@ -111,7 +119,9 @@ public class CheckPointStatisticsEndPoint {
 	@GET
 	@Path("/shenxian/{date}")
 	@Produces("application/json")
-	public List<StatisticsVO> queryShenXianStatistics(@PathParam("date") String dateParm) {
+	public List<StatisticsVO> queryShenXianStatistics(@PathParam("date") String dateParm,
+			@Context HttpServletResponse response) {
+		response.addHeader("Access-Control-Allow-Origin", "*");
 		List<StatisticsVO> list = new ArrayList<StatisticsVO>();
 		if (Pattern.matches(fromToRegex, dateParm)) {
 			String date1 = dateParm.split("_")[0];
@@ -137,7 +147,9 @@ public class CheckPointStatisticsEndPoint {
 	@GET
 	@Path("/macd/{date}")
 	@Produces("application/json")
-	public List<StatisticsVO> queryMACDStatistics(@PathParam("date") String dateParm) {
+	public List<StatisticsVO> queryMACDStatistics(@PathParam("date") String dateParm,
+			@Context HttpServletResponse response) {
+		response.addHeader("Access-Control-Allow-Origin", "*");
 		List<StatisticsVO> list = new ArrayList<StatisticsVO>();
 		if (Pattern.matches(fromToRegex, dateParm)) {
 			String date1 = dateParm.split("_")[0];
@@ -159,11 +171,13 @@ public class CheckPointStatisticsEndPoint {
 
 		return list;
 	}
-	
+
 	@GET
 	@Path("/wr/{date}")
 	@Produces("application/json")
-	public List<StatisticsVO> queryWRStatistics(@PathParam("date") String dateParm) {
+	public List<StatisticsVO> queryWRStatistics(@PathParam("date") String dateParm,
+			@Context HttpServletResponse response) {
+		response.addHeader("Access-Control-Allow-Origin", "*");
 		List<StatisticsVO> list = new ArrayList<StatisticsVO>();
 		if (Pattern.matches(fromToRegex, dateParm)) {
 			String date1 = dateParm.split("_")[0];
