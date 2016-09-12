@@ -19,6 +19,7 @@ import org.easystogu.db.table.MacdVO;
 import org.easystogu.db.table.QSDDVO;
 import org.easystogu.db.table.ShenXianVO;
 import org.easystogu.db.table.StockPriceVO;
+import org.easystogu.db.table.WRVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.indicator.BOLLHelper;
 import org.easystogu.indicator.KDJHelper;
@@ -26,6 +27,7 @@ import org.easystogu.indicator.LuZaoHelper;
 import org.easystogu.indicator.MACDHelper;
 import org.easystogu.indicator.QSDDHelper;
 import org.easystogu.indicator.ShenXianHelper;
+import org.easystogu.indicator.WRHelper;
 import org.easystogu.indicator.runner.utils.StockPriceFetcher;
 import org.easystogu.utils.Strings;
 
@@ -40,6 +42,7 @@ public class IndicatorEndPointV2 {
 	protected KDJHelper kdjHelper = new KDJHelper();
 	protected ShenXianHelper shenXianHelper = new ShenXianHelper();
 	protected QSDDHelper qsddHelper = new QSDDHelper();
+	protected WRHelper wrHelper = new WRHelper();
 	protected BOLLHelper bollHelper = new BOLLHelper();
 	protected LuZaoHelper luzaoHelper = new LuZaoHelper();
 	protected String dateRegex = "[0-9]{4}-[0-9]{2}-[0-9]{2}";
@@ -189,6 +192,34 @@ public class IndicatorEndPointV2 {
 				vo.setLonTerm(Strings.convert2ScaleDecimal(qsdd[0][i]));
 				vo.setShoTerm(Strings.convert2ScaleDecimal(qsdd[1][i]));
 				vo.setMidTerm(Strings.convert2ScaleDecimal(qsdd[2][i]));
+				vo.setStockId(stockIdParm);
+				vo.setDate(spList.get(i).date);
+				list.add(vo);
+			}
+		}
+
+		return list;
+	}
+
+	@GET
+	@Path("/wr/{stockId}/{date}")
+	@Produces("application/json")
+	public List<WRVO> queryWRById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
+			@Context HttpServletResponse response) {
+		response.addHeader("Access-Control-Allow-Origin", "*");
+		List<WRVO> list = new ArrayList<WRVO>();
+		List<StockPriceVO> spList = this.fetchAllPrices(stockIdParm);
+		List<Double> close = StockPriceFetcher.getClosePrice(spList);
+		List<Double> low = StockPriceFetcher.getLowPrice(spList);
+		List<Double> high = StockPriceFetcher.getHighPrice(spList);
+		double[][] wr = wrHelper.getWRList(Doubles.toArray(close), Doubles.toArray(low), Doubles.toArray(high), 19, 43,
+				86);
+		for (int i = 0; i < wr[0].length; i++) {
+			if (this.isStockDateSelected(dateParm, spList.get(i).date)) {
+				WRVO vo = new WRVO();
+				vo.setLonTerm(Strings.convert2ScaleDecimal(wr[0][i]));
+				vo.setShoTerm(Strings.convert2ScaleDecimal(wr[1][i]));
+				vo.setMidTerm(Strings.convert2ScaleDecimal(wr[2][i]));
 				vo.setStockId(stockIdParm);
 				vo.setDate(spList.get(i).date);
 				list.add(vo);

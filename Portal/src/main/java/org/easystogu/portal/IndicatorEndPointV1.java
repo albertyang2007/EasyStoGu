@@ -16,6 +16,7 @@ import org.easystogu.db.access.IndKDJTableHelper;
 import org.easystogu.db.access.IndMacdTableHelper;
 import org.easystogu.db.access.IndQSDDTableHelper;
 import org.easystogu.db.access.IndShenXianTableHelper;
+import org.easystogu.db.access.IndWRTableHelper;
 import org.easystogu.db.access.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.StockPriceTableHelper;
 import org.easystogu.db.table.BollVO;
@@ -24,6 +25,7 @@ import org.easystogu.db.table.LuZaoVO;
 import org.easystogu.db.table.MacdVO;
 import org.easystogu.db.table.QSDDVO;
 import org.easystogu.db.table.ShenXianVO;
+import org.easystogu.db.table.WRVO;
 import org.easystogu.indicator.LuZaoHelper;
 import org.easystogu.utils.Strings;
 
@@ -34,6 +36,7 @@ public class IndicatorEndPointV1 {
 	protected IndMacdTableHelper macdTable = IndMacdTableHelper.getInstance();
 	protected IndBollTableHelper bollTable = IndBollTableHelper.getInstance();
 	protected IndQSDDTableHelper qsddTable = IndQSDDTableHelper.getInstance();
+	protected IndWRTableHelper wrTable = IndWRTableHelper.getInstance();
 	protected IndShenXianTableHelper shenXianTable = IndShenXianTableHelper.getInstance();
 	protected LuZaoHelper luzaoHelper = new LuZaoHelper();
 
@@ -145,5 +148,24 @@ public class IndicatorEndPointV1 {
 			return list;
 		}
 		return new ArrayList<QSDDVO>();
+	}
+
+	@GET
+	@Path("/wr/{stockId}/{date}")
+	@Produces("application/json")
+	public List<WRVO> queryWRById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
+			@Context HttpServletResponse response) {
+		response.addHeader("Access-Control-Allow-Origin", "*");
+		if (Pattern.matches(fromToRegex, dateParm)) {
+			String date1 = dateParm.split("_")[0];
+			String date2 = dateParm.split("_")[1];
+			return wrTable.getByIdAndBetweenDate(stockIdParm, date1, date2);
+		}
+		if (Pattern.matches(dateRegex, dateParm) || Strings.isEmpty(dateParm)) {
+			List<WRVO> list = new ArrayList<WRVO>();
+			list.add(wrTable.getWR(stockIdParm, dateParm));
+			return list;
+		}
+		return new ArrayList<WRVO>();
 	}
 }

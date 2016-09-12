@@ -72,6 +72,8 @@ demo
 	           loadMacd(data.version, data.stockId, data.dateFrom, data.dateTo);
             }else if(data.indicator == "qsdd"){ 
 	           loadQSDD(data.version, data.stockId, data.dateFrom, data.dateTo);
+            }else if(data.indicator == "wr"){ 
+	           loadWR(data.version, data.stockId, data.dateFrom, data.dateTo);
             }
 	      },
 	      
@@ -87,6 +89,7 @@ demo
                               <option value='macd'>macd</option>
                               <option value='boll'>boll</option>
                               <option value='qsdd'>qsdd</option>
+                              <option value='qsdd'>wr</option>
                               </select>&nbsp;&nbsp;
 
                               <label>Version:</label>
