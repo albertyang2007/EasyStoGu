@@ -58,6 +58,65 @@ function loadShenXian(version, stockId, dateFrom, dateTo) {
 }
 
 /**
+ * Load ShenXian Sell Point and StockPrice, H3 is replaced by HC5
+ * 
+ * @returns {undefined}
+ */
+function loadShenXianSell(version, stockId, dateFrom, dateTo) {
+	var seriesCounter = 0, date_price = [], volume = [], data_h1 = [], data_h2 = [], data_h3 = [];
+	/**
+	 * Load StocPrice and display OHLC
+	 * 
+	 * @returns {undefined}
+	 */
+	var url_price = "http://localhost:8080/portal/price" + version + "/" + stockId
+			+ "/" + dateFrom + "_" + dateTo;
+	$.getJSON(url_price, function(data) {
+		i = 0;
+		for (i; i < data.length; i += 1) {
+			var dateStr = data[i]['date'] + " 15:00:00";
+			var dateD = new Date(Date.parse(dateStr.replace(/-/g, "/")));
+			date_price.push([ dateD.getTime(), data[i]['open'],
+					data[i]['high'], data[i]['low'], data[i]['close'] ]);
+
+			volume.push([ dateD.getTime(), data[i]['volume'] ]);
+		}
+
+		seriesCounter += 1;
+		if (seriesCounter === 2) {
+			createChart_ShenXian(stockId, date_price, volume, data_h1, data_h2,
+					data_h3);
+		}
+	});
+
+	/**
+	 * Load ShenXian Sell Point Indicator and display
+	 * 
+	 * @returns {undefined}
+	 */
+	var url_ind = "http://localhost:8080/portal/ind" + version + "/shenxianSell/"
+			+ stockId + "/" + dateFrom + "_" + dateTo;
+	$.getJSON(url_ind, function(data) {
+		i = 0;
+		for (i; i < data.length; i += 1) {
+			var dateStr = data[i]['date'] + " 15:00:00";
+			var dateD = new Date(Date.parse(dateStr.replace(/-/g, "/")));
+			data_h1.push([ dateD.getTime(), data[i]['h1'] ]);
+
+			data_h2.push([ dateD.getTime(), data[i]['h2'] ]);
+
+			data_h3.push([ dateD.getTime(), data[i]['h3'] ]);
+		}
+
+		seriesCounter += 1;
+		if (seriesCounter === 2) {
+			createChart_ShenXian(stockId, date_price, volume, data_h1, data_h2,
+					data_h3);
+		}
+	});
+}
+
+/**
  * Load LuZao and StockPrice
  * 
  * @returns {undefined}

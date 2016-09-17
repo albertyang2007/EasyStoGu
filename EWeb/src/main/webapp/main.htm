@@ -64,6 +64,8 @@ demo
 	        
             if(data.indicator == "shenxian"){ 
 	           loadShenXian(data.version, data.stockId, data.dateFrom, data.dateTo);
+            }else if(data.indicator == "shenxian_sell"){ 
+	           loadShenXianSell(data.version, data.stockId, data.dateFrom, data.dateTo);
             }else if(data.indicator == "luzao"){ 
 	           loadLuZao(data.version, data.stockId, data.dateFrom, data.dateTo);
             }else if(data.indicator == "boll"){ 
@@ -84,7 +86,8 @@ demo
 			                  
                               <label>Indicator:</label>
 			                  <select name='indicator' onChange={this.handleChange}>
-                              <option value='shenxian' defaultValue>shenxian</option>
+                              <option value='shenxian_sell' defaultValue>shenxian_sell</option>
+                              <option value='shenxian'>shenxian</option>
                               <option value='luzao'>luzao</option>
                               <option value='macd'>macd</option>
                               <option value='boll'>boll</option>

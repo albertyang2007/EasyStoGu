@@ -25,9 +25,13 @@ import org.easystogu.db.table.LuZaoVO;
 import org.easystogu.db.table.MacdVO;
 import org.easystogu.db.table.QSDDVO;
 import org.easystogu.db.table.ShenXianVO;
+import org.easystogu.db.table.StockPriceVO;
 import org.easystogu.db.table.WRVO;
 import org.easystogu.indicator.LuZaoHelper;
+import org.easystogu.indicator.runner.utils.StockPriceFetcher;
 import org.easystogu.utils.Strings;
+
+import com.google.common.primitives.Doubles;
 
 //V1, query indicator from DB, qian FuQuan
 public class IndicatorEndPointV1 {
@@ -117,6 +121,17 @@ public class IndicatorEndPointV1 {
 			list.add(shenXianTable.getShenXian(stockIdParm, dateParm));
 			return list;
 		}
+		return new ArrayList<ShenXianVO>();
+	}
+
+	// since there is no table to store the HC5, just
+	// return empty result.
+	@GET
+	@Path("/shenxianSell/{stockId}/{date}")
+	@Produces("application/json")
+	public List<ShenXianVO> queryShenXianSellById(@PathParam("stockId") String stockIdParm,
+			@PathParam("date") String dateParm, @Context HttpServletResponse response) {
+		response.addHeader("Access-Control-Allow-Origin", "*");
 		return new ArrayList<ShenXianVO>();
 	}
 
