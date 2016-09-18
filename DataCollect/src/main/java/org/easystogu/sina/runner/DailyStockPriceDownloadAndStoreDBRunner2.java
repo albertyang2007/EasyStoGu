@@ -3,9 +3,9 @@ package org.easystogu.sina.runner;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.easystogu.db.access.CompanyInfoTableHelper;
-import org.easystogu.db.access.QianFuQuanStockPriceTableHelper;
-import org.easystogu.db.access.StockPriceTableHelper;
+import org.easystogu.db.access.table.CompanyInfoTableHelper;
+import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
+import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.table.CompanyInfoVO;
 import org.easystogu.db.table.StockPriceVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;

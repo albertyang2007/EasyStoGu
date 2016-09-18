@@ -11,11 +11,11 @@ import java.util.Set;
 
 import org.easystogu.checkpoint.DailyCombineCheckPoint;
 import org.easystogu.config.FileConfigurationService;
-import org.easystogu.db.access.CheckPointDailySelectionTableHelper;
-import org.easystogu.db.access.IndDDXTableHelper;
-import org.easystogu.db.access.StockPriceTableHelper;
-import org.easystogu.db.access.ZhuLiJingLiuRuTableHelper;
-import org.easystogu.db.access.ZiJinLiuTableHelper;
+import org.easystogu.db.access.table.CheckPointDailySelectionTableHelper;
+import org.easystogu.db.access.table.IndDDXTableHelper;
+import org.easystogu.db.access.table.StockPriceTableHelper;
+import org.easystogu.db.access.table.ZhuLiJingLiuRuTableHelper;
+import org.easystogu.db.access.table.ZiJinLiuTableHelper;
 import org.easystogu.db.table.CheckPointDailySelectionVO;
 import org.easystogu.db.table.CompanyInfoVO;
 import org.easystogu.db.table.DDXVO;

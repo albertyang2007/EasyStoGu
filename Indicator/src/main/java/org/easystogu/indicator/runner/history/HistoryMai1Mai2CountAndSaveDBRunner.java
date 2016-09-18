@@ -2,9 +2,9 @@ package org.easystogu.indicator.runner.history;
 
 import java.util.List;
 
-import org.easystogu.db.access.IndMai1Mai2TableHelper;
-import org.easystogu.db.access.QianFuQuanStockPriceTableHelper;
-import org.easystogu.db.access.StockPriceTableHelper;
+import org.easystogu.db.access.table.IndMai1Mai2TableHelper;
+import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
+import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.table.Mai1Mai2VO;
 import org.easystogu.db.table.StockPriceVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;

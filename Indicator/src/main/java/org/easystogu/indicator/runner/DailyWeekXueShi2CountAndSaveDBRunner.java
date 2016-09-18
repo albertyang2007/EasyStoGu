@@ -2,8 +2,8 @@ package org.easystogu.indicator.runner;
 
 import java.util.List;
 
-import org.easystogu.db.access.IndWeekXueShi2TableHelper;
-import org.easystogu.db.access.WeekStockPriceTableHelper;
+import org.easystogu.db.access.table.IndWeekXueShi2TableHelper;
+import org.easystogu.db.access.table.WeekStockPriceTableHelper;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.utils.WeekdayUtil;
 

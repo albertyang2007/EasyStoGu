@@ -3,9 +3,9 @@ package org.easystogu.easymoney.runner;
 import java.util.List;
 
 import org.easystogu.config.FileConfigurationService;
-import org.easystogu.db.access.ZiJinLiu3DayTableHelper;
-import org.easystogu.db.access.ZiJinLiu5DayTableHelper;
-import org.easystogu.db.access.ZiJinLiuTableHelper;
+import org.easystogu.db.access.table.ZiJinLiu3DayTableHelper;
+import org.easystogu.db.access.table.ZiJinLiu5DayTableHelper;
+import org.easystogu.db.access.table.ZiJinLiuTableHelper;
 import org.easystogu.db.table.ZiJinLiuVO;
 import org.easystogu.easymoney.helper.DailyZiJinLiuFatchDataHelper;
 

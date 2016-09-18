@@ -1,7 +1,7 @@
 package org.easystogu.indicator.runner.history;
 
-import org.easystogu.db.access.IndWeekKDJTableHelper;
-import org.easystogu.db.access.WeekStockPriceTableHelper;
+import org.easystogu.db.access.table.IndWeekKDJTableHelper;
+import org.easystogu.db.access.table.WeekStockPriceTableHelper;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 
 public class HistoryWeeklyKDJCountAndSaveDBRunner extends HistoryKDJCountAndSaveDBRunner {

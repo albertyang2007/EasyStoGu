@@ -1,7 +1,7 @@
 package org.easystogu.indicator.runner.history;
 
-import org.easystogu.db.access.IndWeekXueShi2TableHelper;
-import org.easystogu.db.access.WeekStockPriceTableHelper;
+import org.easystogu.db.access.table.IndWeekXueShi2TableHelper;
+import org.easystogu.db.access.table.WeekStockPriceTableHelper;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 
 public class HistoryWeeklyXueShi2CountAndSaveDBRunner extends HistoryXueShi2CountAndSaveDBRunner {

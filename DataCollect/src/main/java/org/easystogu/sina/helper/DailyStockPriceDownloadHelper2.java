@@ -11,7 +11,7 @@ import net.sf.json.JSONObject;
 
 import org.easystogu.config.Constants;
 import org.easystogu.config.FileConfigurationService;
-import org.easystogu.db.access.StockPriceTableHelper;
+import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.sina.common.SinaQuoteStockPriceVO;
 import org.easystogu.utils.Strings;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;

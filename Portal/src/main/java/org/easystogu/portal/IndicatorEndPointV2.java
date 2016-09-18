@@ -11,7 +11,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 
-import org.easystogu.db.access.QianFuQuanStockPriceTableHelper;
+import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.table.BollVO;
 import org.easystogu.db.table.KDJVO;
 import org.easystogu.db.table.LuZaoVO;

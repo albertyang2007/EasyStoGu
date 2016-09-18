@@ -11,8 +11,8 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 
-import org.easystogu.db.access.QianFuQuanStockPriceTableHelper;
-import org.easystogu.db.access.StockPriceTableHelper;
+import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
+import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.table.StockPriceVO;
 import org.easystogu.utils.Strings;
 import org.springframework.beans.factory.annotation.Autowired;

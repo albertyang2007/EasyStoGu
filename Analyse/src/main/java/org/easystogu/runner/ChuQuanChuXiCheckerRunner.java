@@ -3,8 +3,8 @@ package org.easystogu.runner;
 import java.util.Collections;
 import java.util.List;
 
-import org.easystogu.db.access.EventChuQuanChuXiTableHelper;
-import org.easystogu.db.access.StockPriceTableHelper;
+import org.easystogu.db.access.table.EventChuQuanChuXiTableHelper;
+import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.table.ChuQuanChuXiVO;
 import org.easystogu.db.table.StockPriceVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;

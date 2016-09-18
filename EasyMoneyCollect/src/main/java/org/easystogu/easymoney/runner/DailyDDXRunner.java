@@ -2,9 +2,9 @@ package org.easystogu.easymoney.runner;
 
 import java.util.List;
 
-import org.easystogu.db.access.IndDDXTableHelper;
-import org.easystogu.db.access.StockPriceTableHelper;
-import org.easystogu.db.access.ZiJinLiuTableHelper;
+import org.easystogu.db.access.table.IndDDXTableHelper;
+import org.easystogu.db.access.table.StockPriceTableHelper;
+import org.easystogu.db.access.table.ZiJinLiuTableHelper;
 import org.easystogu.db.table.CompanyInfoVO;
 import org.easystogu.db.table.DDXVO;
 import org.easystogu.db.table.StockPriceVO;

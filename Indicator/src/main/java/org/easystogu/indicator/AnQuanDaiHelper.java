@@ -3,8 +3,8 @@ package org.easystogu.indicator;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.easystogu.db.access.QianFuQuanStockPriceTableHelper;
-import org.easystogu.db.access.StockPriceTableHelper;
+import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
+import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.table.StockPriceVO;
 
 //安全带 (黑马通道)

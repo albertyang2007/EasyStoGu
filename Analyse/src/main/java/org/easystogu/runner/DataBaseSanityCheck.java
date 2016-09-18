@@ -2,17 +2,17 @@ package org.easystogu.runner;
 
 import java.util.List;
 
-import org.easystogu.db.access.IndBollTableHelper;
-import org.easystogu.db.access.IndKDJTableHelper;
-import org.easystogu.db.access.IndMATableHelper;
-import org.easystogu.db.access.IndMacdTableHelper;
-import org.easystogu.db.access.IndQSDDTableHelper;
-import org.easystogu.db.access.IndShenXianTableHelper;
-import org.easystogu.db.access.IndWeekKDJTableHelper;
-import org.easystogu.db.access.IndWeekMacdTableHelper;
-import org.easystogu.db.access.QianFuQuanStockPriceTableHelper;
-import org.easystogu.db.access.StockPriceTableHelper;
-import org.easystogu.db.access.WeekStockPriceTableHelper;
+import org.easystogu.db.access.table.IndBollTableHelper;
+import org.easystogu.db.access.table.IndKDJTableHelper;
+import org.easystogu.db.access.table.IndMATableHelper;
+import org.easystogu.db.access.table.IndMacdTableHelper;
+import org.easystogu.db.access.table.IndQSDDTableHelper;
+import org.easystogu.db.access.table.IndShenXianTableHelper;
+import org.easystogu.db.access.table.IndWeekKDJTableHelper;
+import org.easystogu.db.access.table.IndWeekMacdTableHelper;
+import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
+import org.easystogu.db.access.table.StockPriceTableHelper;
+import org.easystogu.db.access.table.WeekStockPriceTableHelper;
 import org.easystogu.db.table.BollVO;
 import org.easystogu.db.table.KDJVO;
 import org.easystogu.db.table.MAVO;

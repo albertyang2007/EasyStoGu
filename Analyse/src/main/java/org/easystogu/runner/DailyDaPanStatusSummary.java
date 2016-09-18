@@ -8,9 +8,9 @@ import java.util.Map;
 import java.util.Set;
 
 import org.easystogu.config.FileConfigurationService;
-import org.easystogu.db.access.CheckPointDailySelectionTableHelper;
-import org.easystogu.db.access.IndDDXTableHelper;
-import org.easystogu.db.access.StockPriceTableHelper;
+import org.easystogu.db.access.table.CheckPointDailySelectionTableHelper;
+import org.easystogu.db.access.table.IndDDXTableHelper;
+import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.table.CheckPointDailySelectionVO;
 import org.easystogu.db.table.DDXVO;
 import org.easystogu.report.comparator.CheckPointEventComparator;

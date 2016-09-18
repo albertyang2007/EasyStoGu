@@ -2,8 +2,8 @@ package org.easystogu.indicator;
 
 import java.util.List;
 
-import org.easystogu.db.access.QianFuQuanStockPriceTableHelper;
-import org.easystogu.db.access.StockPriceTableHelper;
+import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
+import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.table.StockPriceVO;
 
 /*买1买2 指标

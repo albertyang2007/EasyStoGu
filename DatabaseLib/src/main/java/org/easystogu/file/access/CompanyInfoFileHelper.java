@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.easystogu.db.access.CompanyInfoTableHelper;
+import org.easystogu.db.access.table.CompanyInfoTableHelper;
 import org.easystogu.db.table.CompanyInfoVO;
 import org.easystogu.file.TextFileSourceHelper;
 import org.easystogu.log.LogHelper;

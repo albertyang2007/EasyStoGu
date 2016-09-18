@@ -8,9 +8,9 @@ import java.util.List;
 
 import org.easystogu.config.Constants;
 import org.easystogu.config.FileConfigurationService;
-import org.easystogu.db.access.CompanyInfoTableHelper;
-import org.easystogu.db.access.HouFuQuanStockPriceTableHelper;
-import org.easystogu.db.access.StockPriceTableHelper;
+import org.easystogu.db.access.table.CompanyInfoTableHelper;
+import org.easystogu.db.access.table.HouFuQuanStockPriceTableHelper;
+import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.table.StockPriceVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.utils.Strings;

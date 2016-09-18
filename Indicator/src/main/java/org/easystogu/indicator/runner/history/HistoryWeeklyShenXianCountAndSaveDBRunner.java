@@ -1,7 +1,7 @@
 package org.easystogu.indicator.runner.history;
 
-import org.easystogu.db.access.IndWeekShenXianTableHelper;
-import org.easystogu.db.access.WeekStockPriceTableHelper;
+import org.easystogu.db.access.table.IndWeekShenXianTableHelper;
+import org.easystogu.db.access.table.WeekStockPriceTableHelper;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 
 public class HistoryWeeklyShenXianCountAndSaveDBRunner extends HistoryShenXianCountAndSaveDBRunner {

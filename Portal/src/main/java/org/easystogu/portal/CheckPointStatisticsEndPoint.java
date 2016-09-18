@@ -12,8 +12,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 
 import org.easystogu.checkpoint.DailyCombineCheckPoint;
-import org.easystogu.db.access.CheckPointDailyStatisticsTableHelper;
-import org.easystogu.db.access.StockPriceTableHelper;
+import org.easystogu.db.access.table.CheckPointDailyStatisticsTableHelper;
+import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.portal.vo.StatisticsVO;
 import org.easystogu.utils.WeekdayUtil;
 

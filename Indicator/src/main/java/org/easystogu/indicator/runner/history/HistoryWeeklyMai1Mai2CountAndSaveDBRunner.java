@@ -1,7 +1,7 @@
 package org.easystogu.indicator.runner.history;
 
-import org.easystogu.db.access.IndWeekMai1Mai2TableHelper;
-import org.easystogu.db.access.WeekStockPriceTableHelper;
+import org.easystogu.db.access.table.IndWeekMai1Mai2TableHelper;
+import org.easystogu.db.access.table.WeekStockPriceTableHelper;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 
 public class HistoryWeeklyMai1Mai2CountAndSaveDBRunner extends HistoryMai1Mai2CountAndSaveDBRunner {
