@@ -73,8 +73,8 @@ public class RealTimeZiJinLiuFatchDataHelper {
 				vo.smallNetPer = Double.parseDouble(xdjzb.text().substring(0, xdjzb.text().length() - 1));
 			}
 
-			// System.out.println(vo.toNetInString());
-			// System.out.println(vo.toNetPerString());
+			//System.out.println(vo.toNetInString());
+			//System.out.println(vo.toNetPerString());
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -84,6 +84,6 @@ public class RealTimeZiJinLiuFatchDataHelper {
 
 	public static void main(String[] args) {
 		RealTimeZiJinLiuFatchDataHelper runner = new RealTimeZiJinLiuFatchDataHelper();
-		runner.fetchDataFromWeb("300152");
+		runner.fetchDataFromWeb("000049");
 	}
 }

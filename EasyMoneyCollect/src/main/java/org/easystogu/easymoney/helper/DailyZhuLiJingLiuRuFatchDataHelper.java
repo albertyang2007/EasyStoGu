@@ -13,6 +13,7 @@ import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.html.HtmlTable;
 import com.gargoylesoftware.htmlunit.html.HtmlTextInput;
 
+//今日排行，5日排行，10日排行
 public class DailyZhuLiJingLiuRuFatchDataHelper {
 
     // one page contains 50 stockIds and total 2914/50=59 pages

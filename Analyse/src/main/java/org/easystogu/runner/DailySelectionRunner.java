@@ -167,13 +167,13 @@ public class DailySelectionRunner implements Runnable {
 					if (combineAnalyserHelper.isConditionSatisfy(checkPoint, overDayList, overWeekList)) {
 						// only save QSDD Bottom to daily selection table and
 						// display
-						if (checkPoint.compareTo(DailyCombineCheckPoint.QSDD_Bottom_Area) == 0
-								|| checkPoint.compareTo(DailyCombineCheckPoint.QSDD_Bottom_Gordon) == 0
-								|| checkPoint.compareTo(DailyCombineCheckPoint.WR_Bottom_Area) == 0
-								|| checkPoint.compareTo(DailyCombineCheckPoint.WR_Bottom_Gordon) == 0) {
-							this.saveToCheckPointSelectionDB(superVO, checkPoint);
-							this.addToConditionMapForReportDisplay(superVO, checkPoint);
-						}
+						//if (checkPoint.compareTo(DailyCombineCheckPoint.QSDD_Bottom_Area) == 0
+						//		|| checkPoint.compareTo(DailyCombineCheckPoint.QSDD_Bottom_Gordon) == 0
+						//		|| checkPoint.compareTo(DailyCombineCheckPoint.WR_Bottom_Area) == 0
+						//		|| checkPoint.compareTo(DailyCombineCheckPoint.WR_Bottom_Gordon) == 0) {
+						//	this.saveToCheckPointSelectionDB(superVO, checkPoint);
+						//	this.addToConditionMapForReportDisplay(superVO, checkPoint);
+						//}
 						this.addToGeneralCheckPointGordonMap(checkPoint, stockId);
 					}
 				}

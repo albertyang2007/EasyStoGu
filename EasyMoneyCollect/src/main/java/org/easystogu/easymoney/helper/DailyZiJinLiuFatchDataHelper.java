@@ -18,7 +18,7 @@ import com.gargoylesoftware.htmlunit.html.HtmlTextInput;
 import com.gargoylesoftware.htmlunit.html.HtmlUnorderedList;
 
 //compare to DailyZiJinLiuFatchDataHelper, this helper can fatch all stockIds data at one time
-//东方财富通网站全部A股资金流排名
+//东方财富通网站全部A股资金流排名，超大单，大单，中单，小单情况
 //有当天数据，3天数据，5天数据,10天数据
 //总共59页
 public class DailyZiJinLiuFatchDataHelper {
