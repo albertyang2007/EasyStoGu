@@ -10,7 +10,7 @@ function loadShenXian(version, stockId, dateFrom, dateTo) {
 	 * 
 	 * @returns {undefined}
 	 */
-	var url_price = "http://localhost:8080/portal/price" + version + "/" + stockId
+	var url_price = getEasyStoGuServerUrl() + "/portal/price" + version + "/" + stockId
 			+ "/" + dateFrom + "_" + dateTo;
 	$.getJSON(url_price, function(data) {
 		i = 0;
@@ -35,7 +35,7 @@ function loadShenXian(version, stockId, dateFrom, dateTo) {
 	 * 
 	 * @returns {undefined}
 	 */
-	var url_ind = "http://localhost:8080/portal/ind" + version + "/shenxian/"
+	var url_ind = getEasyStoGuServerUrl() + "/portal/ind" + version + "/shenxian/"
 			+ stockId + "/" + dateFrom + "_" + dateTo;
 	$.getJSON(url_ind, function(data) {
 		i = 0;
@@ -69,7 +69,7 @@ function loadShenXianSell(version, stockId, dateFrom, dateTo) {
 	 * 
 	 * @returns {undefined}
 	 */
-	var url_price = "http://localhost:8080/portal/price" + version + "/" + stockId
+	var url_price = getEasyStoGuServerUrl() + "/portal/price" + version + "/" + stockId
 			+ "/" + dateFrom + "_" + dateTo;
 	$.getJSON(url_price, function(data) {
 		i = 0;
@@ -94,7 +94,7 @@ function loadShenXianSell(version, stockId, dateFrom, dateTo) {
 	 * 
 	 * @returns {undefined}
 	 */
-	var url_ind = "http://localhost:8080/portal/ind" + version + "/shenxianSell/"
+	var url_ind = getEasyStoGuServerUrl() + "/portal/ind" + version + "/shenxianSell/"
 			+ stockId + "/" + dateFrom + "_" + dateTo;
 	$.getJSON(url_ind, function(data) {
 		i = 0;
@@ -128,7 +128,7 @@ function loadLuZao(version, stockId, dateFrom, dateTo) {
 	 * 
 	 * @returns {undefined}
 	 */
-	var url_price = "http://localhost:8080/portal/price" + version + "/"+ stockId + "/"
+	var url_price = getEasyStoGuServerUrl() + "/portal/price" + version + "/"+ stockId + "/"
 			+ dateFrom + "_" + dateTo;
 	$.getJSON(url_price, function(data) {
 		i = 0;
@@ -153,7 +153,7 @@ function loadLuZao(version, stockId, dateFrom, dateTo) {
 	 * 
 	 * @returns {undefined}
 	 */
-	var url_ind = "http://localhost:8080/portal/ind" + version + "/luzao/" + stockId
+	var url_ind = getEasyStoGuServerUrl() + "/portal/ind" + version + "/luzao/" + stockId
 			+ "/" + dateFrom + "_" + dateTo;
 	$.getJSON(url_ind, function(data) {
 		i = 0;
@@ -187,7 +187,7 @@ function loadBoll(version, stockId, dateFrom, dateTo) {
 	 * 
 	 * @returns {undefined}
 	 */
-	var url_price = "http://localhost:8080/portal/price" + version + "/"+ stockId + "/"
+	var url_price = getEasyStoGuServerUrl() + "/portal/price" + version + "/"+ stockId + "/"
 			+ dateFrom + "_" + dateTo;
 	$.getJSON(url_price, function(data) {
 		i = 0;
@@ -212,7 +212,7 @@ function loadBoll(version, stockId, dateFrom, dateTo) {
 	 * 
 	 * @returns {undefined}
 	 */
-	var url_ind = "http://localhost:8080/portal/ind" + version + "/boll/" + stockId
+	var url_ind = getEasyStoGuServerUrl() + "/portal/ind" + version + "/boll/" + stockId
 			+ "/" + dateFrom + "_" + dateTo;
 	$.getJSON(url_ind, function(data) {
 		i = 0;
@@ -246,7 +246,7 @@ function loadMacd(version, stockId, dateFrom, dateTo) {
 	 * 
 	 * @returns {undefined}
 	 */
-	var url_price = "http://localhost:8080/portal/price" + version + "/"+ stockId + "/"
+	var url_price = getEasyStoGuServerUrl() + "/portal/price" + version + "/"+ stockId + "/"
 			+ dateFrom + "_" + dateTo;
 	$.getJSON(url_price, function(data) {
 		i = 0;
@@ -271,7 +271,7 @@ function loadMacd(version, stockId, dateFrom, dateTo) {
 	 * 
 	 * @returns {undefined}
 	 */
-	var url_ind = "http://localhost:8080/portal/ind" + version + "/macd/" + stockId
+	var url_ind = getEasyStoGuServerUrl() + "/portal/ind" + version + "/macd/" + stockId
 			+ "/" + dateFrom + "_" + dateTo;
 	$.getJSON(url_ind, function(data) {
 		i = 0;
@@ -305,7 +305,7 @@ function loadQSDD(version, stockId, dateFrom, dateTo) {
 	 * 
 	 * @returns {undefined}
 	 */
-	var url_price = "http://localhost:8080/portal/price" + version + "/"+ stockId + "/"
+	var url_price = getEasyStoGuServerUrl() + "/portal/price" + version + "/"+ stockId + "/"
 			+ dateFrom + "_" + dateTo;
 	$.getJSON(url_price, function(data) {
 		i = 0;
@@ -330,7 +330,7 @@ function loadQSDD(version, stockId, dateFrom, dateTo) {
 	 * 
 	 * @returns {undefined}
 	 */
-	var url_ind = "http://localhost:8080/portal/ind" + version + "/qsdd/" + stockId
+	var url_ind = getEasyStoGuServerUrl() + "/portal/ind" + version + "/qsdd/" + stockId
 			+ "/" + dateFrom + "_" + dateTo;
 	$.getJSON(url_ind, function(data) {
 		i = 0;
@@ -364,7 +364,7 @@ function loadWR(version, stockId, dateFrom, dateTo) {
 	 * 
 	 * @returns {undefined}
 	 */
-	var url_price = "http://localhost:8080/portal/price" + version + "/"+ stockId + "/"
+	var url_price = getEasyStoGuServerUrl() + "/portal/price" + version + "/"+ stockId + "/"
 			+ dateFrom + "_" + dateTo;
 	$.getJSON(url_price, function(data) {
 		i = 0;
@@ -389,7 +389,7 @@ function loadWR(version, stockId, dateFrom, dateTo) {
 	 * 
 	 * @returns {undefined}
 	 */
-	var url_ind = "http://localhost:8080/portal/ind" + version + "/wr/" + stockId
+	var url_ind = getEasyStoGuServerUrl() + "/portal/ind" + version + "/wr/" + stockId
 			+ "/" + dateFrom + "_" + dateTo;
 	$.getJSON(url_ind, function(data) {
 		i = 0;

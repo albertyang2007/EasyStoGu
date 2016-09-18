@@ -1,10 +1,28 @@
 /**
+ * Global variable definition
+ * 
+ * @returns {undefined}
+ */
+function getEasyStoGuServerUrl() {
+	h1 = 'e';
+	h2 = 'r';
+	h3 = 'i';
+	h4 = 'c';
+	h5 = 's';
+	h6 = 's';
+	h7 = 'o';
+	h8 = 'n';
+	return "http://cn00082825." + h1 + h2 + h3 + h4 + h5 + h6 + h7 + h8
+			+ ".se:8080";
+}
+
+/**
  * Load CompanyBaseInfo
  * 
  * @returns {undefined}
  */
 function loadCompanyInfo(stockId) {
-	var url_company = "http://localhost:8080/portal/company/" + stockId;
+	var url_company = getEasyStoGuServerUrl() + "/portal/company/" + stockId;
 	var companyInfo = "N/A";
 	$.getJSON(url_company, function(data) {
 		alert(data);
@@ -19,7 +37,7 @@ function loadCompanyInfo(stockId) {
  * @returns {undefined}
  */
 function loadCompanyInfoByName(name) {
-	var url_company = "http://localhost:8080/portal/company/name=" + name;
+	var url_company = getEasyStoGuServerUrl() + "/portal/company/name=" + name;
 	var companyInfo = "N/A";
 	$.getJSON(url_company, function(data) {
 		companyInfo = data;
@@ -33,7 +51,7 @@ function loadCompanyInfoByName(name) {
  * @returns {undefined}
  */
 function loadTrendMode(name) {
-	var url_trend = "http://localhost:8080/portal/trendmode/query/" + name;
+	var url_trend = getEasyStoGuServerUrl() + "/portal/trendmode/query/" + name;
 	var prices = "[]";
 	$.getJSON(url_trend, function(data) {
 		prices = data;
@@ -47,7 +65,7 @@ function loadTrendMode(name) {
  * @returns {undefined}
  */
 function getAllTrendModeNames() {
-	var url_names = "http://localhost:8080/portal/trendmode/listnames";
+	var url_names = getEasyStoGuServerUrl() + "/portal/trendmode/listnames";
 	var names = "[]";
 	$.getJSON(url_names, function(data) {
 		names = data;
@@ -73,7 +91,7 @@ function getQueryString(name) {
  * @returns {undefined}
  */
 function loadStockPrice(version, stockId, dateFrom, dateTo) {
-	var url_price = "http://localhost:8080/portal/price" + version + "/"
+	var url_price = getEasyStoGuServerUrl() + "/portal/price" + version + "/"
 			+ stockId + "/" + dateFrom + "_" + dateTo;
 	var data_price = [];
 	$.getJSON(url_price, function(data) {

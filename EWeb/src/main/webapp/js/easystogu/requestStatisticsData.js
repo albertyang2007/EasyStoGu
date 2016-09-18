@@ -11,7 +11,7 @@ function loadLuZaoTrendStatistics(version, stockId, dateFrom, dateTo) {
 	 * 
 	 * @returns {undefined}
 	 */
-	var url_price = "http://localhost:8080/portal/price" + version + "/"
+	var url_price = getEasyStoGuServerUrl() + "/portal/price" + version + "/"
 			+ stockId + "/" + dateFrom + "_" + dateTo;
 	$.getJSON(url_price, function(data) {
 		i = 0;
@@ -37,7 +37,7 @@ function loadLuZaoTrendStatistics(version, stockId, dateFrom, dateTo) {
 	 * 
 	 * @returns {undefined}
 	 */
-	var url_ind = "http://localhost:8080/portal/ind" + version + "/luzao/"
+	var url_ind = getEasyStoGuServerUrl() + "/portal/ind" + version + "/luzao/"
 			+ stockId + "/" + dateFrom + "_" + dateTo;
 	$.getJSON(url_ind, function(data) {
 		i = 0;
@@ -64,7 +64,7 @@ function loadLuZaoTrendStatistics(version, stockId, dateFrom, dateTo) {
 	 * 
 	 * @returns {undefined}
 	 */
-	var url_ind = "http://localhost:8080/portal/statistics/luzao/trend/"
+	var url_ind = getEasyStoGuServerUrl() + "/portal/statistics/luzao/trend/"
 			+ dateFrom + "_" + dateTo;
 	$.getJSON(url_ind, function(data) {
 		i = 0;
@@ -99,7 +99,7 @@ function loadLuZaoGordonStatistics(version, stockId, dateFrom, dateTo) {
 	 * 
 	 * @returns {undefined}
 	 */
-	var url_price = "http://localhost:8080/portal/price" + version + "/"
+	var url_price = getEasyStoGuServerUrl() + "/portal/price" + version + "/"
 			+ stockId + "/" + dateFrom + "_" + dateTo;
 	$
 			.getJSON(
@@ -131,7 +131,7 @@ function loadLuZaoGordonStatistics(version, stockId, dateFrom, dateTo) {
 	 * 
 	 * @returns {undefined}
 	 */
-	var url_ind = "http://localhost:8080/portal/ind" + version + "/luzao/"
+	var url_ind = getEasyStoGuServerUrl() + "/portal/ind" + version + "/luzao/"
 			+ stockId + "/" + dateFrom + "_" + dateTo;
 	$
 			.getJSON(
@@ -166,7 +166,7 @@ function loadLuZaoGordonStatistics(version, stockId, dateFrom, dateTo) {
 	 * 
 	 * @returns {undefined}
 	 */
-	var url_ind = "http://localhost:8080/portal/statistics/luzao/gordon/"
+	var url_ind = getEasyStoGuServerUrl() + "/portal/statistics/luzao/gordon/"
 			+ dateFrom + "_" + dateTo;
 	$
 			.getJSON(
@@ -212,7 +212,7 @@ function loadQsddStatistics(version, stockId, dateFrom, dateTo) {
 	 * 
 	 * @returns {undefined}
 	 */
-	var url_price = "http://localhost:8080/portal/price" + version + "/"
+	var url_price = getEasyStoGuServerUrl() + "/portal/price" + version + "/"
 			+ stockId + "/" + dateFrom + "_" + dateTo;
 	$.getJSON(url_price, function(data) {
 		i = 0;
@@ -239,7 +239,7 @@ function loadQsddStatistics(version, stockId, dateFrom, dateTo) {
 	 * @returns {undefined}
 	 */
 	/*
-	 * var url_ind = "http://localhost:8080/portal/ind" + version + "/qsdd/" +
+	 * var url_ind = getEasyStoGuServerUrl() + "/portal/ind" + version + "/qsdd/" +
 	 * stockId + "/" + dateFrom + "_" + dateTo; $.getJSON(url_ind,
 	 * function(data) { i = 0; for (i; i < data.length; i += 1) { var dateStr =
 	 * data[i]['date'] + " 15:00:00"; var dateD = new
@@ -261,7 +261,7 @@ function loadQsddStatistics(version, stockId, dateFrom, dateTo) {
 	 * 
 	 * @returns {undefined}
 	 */
-	var url_ind = "http://localhost:8080/portal/statistics/qsdd/" + dateFrom
+	var url_ind = getEasyStoGuServerUrl() + "/portal/statistics/qsdd/" + dateFrom
 			+ "_" + dateTo;
 	$.getJSON(url_ind, function(data) {
 		i = 0;
@@ -294,7 +294,7 @@ function loadShenXianStatistics(version, stockId, dateFrom, dateTo) {
 	 * 
 	 * @returns {undefined}
 	 */
-	var url_price = "http://localhost:8080/portal/price" + version + "/"
+	var url_price = getEasyStoGuServerUrl() + "/portal/price" + version + "/"
 			+ stockId + "/" + dateFrom + "_" + dateTo;
 	$.getJSON(url_price, function(data) {
 		i = 0;
@@ -319,7 +319,7 @@ function loadShenXianStatistics(version, stockId, dateFrom, dateTo) {
 	 * 
 	 * @returns {undefined}
 	 */
-	var url_ind = "http://localhost:8080/portal/ind" + version + "/shenxian/"
+	var url_ind = getEasyStoGuServerUrl() + "/portal/ind" + version + "/shenxian/"
 			+ stockId + "/" + dateFrom + "_" + dateTo;
 	$.getJSON(url_ind, function(data) {
 		i = 0;
@@ -345,7 +345,7 @@ function loadShenXianStatistics(version, stockId, dateFrom, dateTo) {
 	 * 
 	 * @returns {undefined}
 	 */
-	var url_ind = "http://localhost:8080/portal/statistics/shenxian/"
+	var url_ind = getEasyStoGuServerUrl() + "/portal/statistics/shenxian/"
 			+ dateFrom + "_" + dateTo;
 	$.getJSON(url_ind, function(data) {
 		i = 0;
@@ -376,7 +376,7 @@ function loadMacdStatistics(version, stockId, dateFrom, dateTo) {
 	 * 
 	 * @returns {undefined}
 	 */
-	var url_price = "http://localhost:8080/portal/price" + version + "/"
+	var url_price = getEasyStoGuServerUrl() + "/portal/price" + version + "/"
 			+ stockId + "/" + dateFrom + "_" + dateTo;
 	$.getJSON(url_price, function(data) {
 		i = 0;
@@ -402,7 +402,7 @@ function loadMacdStatistics(version, stockId, dateFrom, dateTo) {
 	 * @returns {undefined}
 	 */
 	/*
-	var url_ind = "http://localhost:8080/portal/ind" + version + "/macd/"
+	var url_ind = getEasyStoGuServerUrl() + "/portal/ind" + version + "/macd/"
 			+ stockId + "/" + dateFrom + "_" + dateTo;
 	$.getJSON(url_ind, function(data) {
 		i = 0;
@@ -428,7 +428,7 @@ function loadMacdStatistics(version, stockId, dateFrom, dateTo) {
 	 * 
 	 * @returns {undefined}
 	 */
-	var url_ind = "http://localhost:8080/portal/statistics/macd/" + dateFrom
+	var url_ind = getEasyStoGuServerUrl() + "/portal/statistics/macd/" + dateFrom
 			+ "_" + dateTo;
 	$.getJSON(url_ind, function(data) {
 		i = 0;
@@ -460,7 +460,7 @@ function loadWRStatistics(version, stockId, dateFrom, dateTo) {
 	 * 
 	 * @returns {undefined}
 	 */
-	var url_price = "http://localhost:8080/portal/price" + version + "/"
+	var url_price = getEasyStoGuServerUrl() + "/portal/price" + version + "/"
 			+ stockId + "/" + dateFrom + "_" + dateTo;
 	$.getJSON(url_price, function(data) {
 		i = 0;
@@ -487,7 +487,7 @@ function loadWRStatistics(version, stockId, dateFrom, dateTo) {
 	 * @returns {undefined}
 	 */
 	/*
-	 * var url_ind = "http://localhost:8080/portal/ind" + version + "/wr/" +
+	 * var url_ind = getEasyStoGuServerUrl() + "/portal/ind" + version + "/wr/" +
 	 * stockId + "/" + dateFrom + "_" + dateTo; $.getJSON(url_ind,
 	 * function(data) { i = 0; for (i; i < data.length; i += 1) { var dateStr =
 	 * data[i]['date'] + " 15:00:00"; var dateD = new
@@ -509,7 +509,7 @@ function loadWRStatistics(version, stockId, dateFrom, dateTo) {
 	 * 
 	 * @returns {undefined}
 	 */
-	var url_ind = "http://localhost:8080/portal/statistics/wr/" + dateFrom
+	var url_ind = getEasyStoGuServerUrl() + "/portal/statistics/wr/" + dateFrom
 			+ "_" + dateTo;
 	$.getJSON(url_ind, function(data) {
 		i = 0;

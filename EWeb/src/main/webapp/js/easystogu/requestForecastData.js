@@ -11,7 +11,7 @@ function loadLuZaoWithReqParms(stockId, dateFrom, dateTo, reqParms) {
 	 * POST forecast sotck price and fetch back full price data
 	 */
 	// post forecast stock price data and fetch back with full data
-	var url_price = "http://localhost:8080/portal/price" + version + "/"
+	var url_price = getEasyStoGuServerUrl() + "/portal/price" + version + "/"
 			+ stockId + "/" + dateFrom + "_" + dateTo;
 	$.ajax({
 		type : "POST",
@@ -34,7 +34,7 @@ function loadLuZaoWithReqParms(stockId, dateFrom, dateTo, reqParms) {
 	/*
 	 * POST forecast sotck price and fetch back full price data
 	 */
-	var url_ind = "http://localhost:8080/portal/ind" + version + "/luzao/"
+	var url_ind = getEasyStoGuServerUrl() + "/portal/ind" + version + "/luzao/"
 			+ stockId + "/" + dateFrom + "_" + dateTo;
 	$.ajax({
 		type : "POST",
@@ -76,7 +76,7 @@ function loadShenXianWithReqParms(stockId, dateFrom, dateTo, reqParms) {
 	 * POST forecast sotck price and fetch back full price data
 	 */
 	// post forecast stock price data and fetch back with full data
-	var url_price = "http://localhost:8080/portal/price" + version + "/"
+	var url_price = getEasyStoGuServerUrl() + "/portal/price" + version + "/"
 			+ stockId + "/" + dateFrom + "_" + dateTo;
 	$.ajax({
 		type : "POST",
@@ -99,7 +99,7 @@ function loadShenXianWithReqParms(stockId, dateFrom, dateTo, reqParms) {
 	/*
 	 * POST forecast sotck price and fetch back full price data
 	 */
-	var url_ind = "http://localhost:8080/portal/ind" + version + "/shenxian/"
+	var url_ind = getEasyStoGuServerUrl() + "/portal/ind" + version + "/shenxian/"
 			+ stockId + "/" + dateFrom + "_" + dateTo;
 	$.ajax({
 		type : "POST",
@@ -141,7 +141,7 @@ function loadBollWithReqParms(stockId, dateFrom, dateTo, reqParms) {
 	 * POST forecast sotck price and fetch back full price data
 	 */
 	// post forecast stock price data and fetch back with full data
-	var url_price = "http://localhost:8080/portal/price" + version + "/" + stockId
+	var url_price = getEasyStoGuServerUrl() + "/portal/price" + version + "/" + stockId
 			+ "/" + dateFrom + "_" + dateTo;
 	$.ajax({
 		type : "POST",
@@ -164,7 +164,7 @@ function loadBollWithReqParms(stockId, dateFrom, dateTo, reqParms) {
 	/*
 	 * POST forecast sotck price and fetch back full price data
 	 */
-	var url_ind = "http://localhost:8080/portal/ind" + version + "/boll/" + stockId
+	var url_ind = getEasyStoGuServerUrl() + "/portal/ind" + version + "/boll/" + stockId
 			+ "/" + dateFrom + "_" + dateTo;
 	$.ajax({
 		type : "POST",
@@ -206,7 +206,7 @@ function loadMacdWithReqParms(stockId, dateFrom, dateTo, reqParms) {
 	 * POST forecast sotck price and fetch back full price data
 	 */
 	// post forecast stock price data and fetch back with full data
-	var url_price = "http://localhost:8080/portal/price" + version + "/" + stockId
+	var url_price = getEasyStoGuServerUrl() + "/portal/price" + version + "/" + stockId
 			+ "/" + dateFrom + "_" + dateTo;
 	$.ajax({
 		type : "POST",
@@ -229,7 +229,7 @@ function loadMacdWithReqParms(stockId, dateFrom, dateTo, reqParms) {
 	/*
 	 * POST forecast sotck price and fetch back full price data
 	 */
-	var url_ind = "http://localhost:8080/portal/ind" + version + "/macd/" + stockId
+	var url_ind = getEasyStoGuServerUrl() + "/portal/ind" + version + "/macd/" + stockId
 			+ "/" + dateFrom + "_" + dateTo;
 	$.ajax({
 		type : "POST",
@@ -271,7 +271,7 @@ function loadQsddWithReqParms(stockId, dateFrom, dateTo, reqParms) {
 	 * POST forecast sotck price and fetch back full price data
 	 */
 	// post forecast stock price data and fetch back with full data
-	var url_price = "http://localhost:8080/portal/price" + version + "/" + stockId
+	var url_price = getEasyStoGuServerUrl() + "/portal/price" + version + "/" + stockId
 			+ "/" + dateFrom + "_" + dateTo;
 	$.ajax({
 		type : "POST",
@@ -294,7 +294,7 @@ function loadQsddWithReqParms(stockId, dateFrom, dateTo, reqParms) {
 	/*
 	 * POST forecast sotck price and fetch back full price data
 	 */
-	var url_ind = "http://localhost:8080/portal/ind" + version + "/qsdd/" + stockId
+	var url_ind = getEasyStoGuServerUrl() + "/portal/ind" + version + "/qsdd/" + stockId
 			+ "/" + dateFrom + "_" + dateTo;
 	$.ajax({
 		type : "POST",
