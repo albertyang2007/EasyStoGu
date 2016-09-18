@@ -9,6 +9,7 @@
 <script type="text/javascript" src="js/easystogu/requestStatisticsData.js"></script>
 <script type="text/javascript" src="js/easystogu/common.js"></script>
 <script type="text/javascript" src="js/easystogu/createChart.js"></script>
+<script type="text/javascript" src="js/3pp/moment.min.js"></script>
 <style type="text/css">
 ${
 demo
@@ -23,8 +24,8 @@ demo
           stockId: "999999",
           indicator: "qsdd",
           version: "v1",
-          dateFrom:"2012-10-01",
-          dateTo:"2016-12-31",
+          dateFrom: moment().subtract(2000, 'days').format("YYYY-MM-DD"),
+          dateTo: moment().format("YYYY-MM-DD"),
       };
     },
     

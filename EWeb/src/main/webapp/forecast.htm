@@ -9,6 +9,7 @@
 <script type="text/javascript" src="js/easystogu/requestStockData.js"></script>
 <script type="text/javascript" src="js/easystogu/common.js"></script>
 <script type="text/javascript" src="js/easystogu/createChart.js"></script>
+<script type="text/javascript" src="js/3pp/moment.min.js"></script>
 <style type="text/css">
 ${
 demo
@@ -21,8 +22,8 @@ demo
 	<script type="text/jsx">
           var stockId = "999999";
           var indicator = "shenxian";
-          var dateFrom = "1997-01-01";
-          var dateTo = "2099-12-31";
+          var dateFrom = moment().subtract(2000, 'days').format("YYYY-MM-DD");
+          var dateTo = moment().format("YYYY-MM-DD");
           var trendModeName = "";
           var nDays = "1";
           
@@ -117,8 +118,8 @@ demo
 	            stockId: "999999",
 	            indicator: "shenxian",
                 version: "v1",
-	            dateFrom:"2012-10-01",
-	            dateTo:"2016-12-31",
+	            dateFrom: moment().subtract(2000, 'days').format("YYYY-MM-DD"),
+	            dateTo: moment().format("YYYY-MM-DD"),
 	        };
 	      },
 	      
