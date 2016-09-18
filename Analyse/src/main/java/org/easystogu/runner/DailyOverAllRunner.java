@@ -2,7 +2,7 @@ package org.easystogu.runner;
 
 public class DailyOverAllRunner implements Runnable {
 
-	public boolean isGetZiJinLiu = false;
+	public boolean isGetZiJinLiu = true;
 
 	public DailyOverAllRunner(boolean isGetZiJinLiu) {
 		this.isGetZiJinLiu = isGetZiJinLiu;
