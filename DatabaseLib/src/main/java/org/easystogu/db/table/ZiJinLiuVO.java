@@ -1,6 +1,7 @@
 package org.easystogu.db.table;
 
 import org.easystogu.utils.Strings;
+
 //资金流入
 public class ZiJinLiuVO {
 	public static final String RealTime = "RealTime";// real time's zijinliu
@@ -53,6 +54,9 @@ public class ZiJinLiuVO {
 		if (this.majorNetIn == 0 && this.biggestNetIn == 0 && this.bigNetIn == 0 && this.midNetIn == 0
 				&& this.smallNetIn == 0)
 			return false;
+		if (this.majorNetIn <= 0)
+			return false;
+		
 		return true;
 	}
 
