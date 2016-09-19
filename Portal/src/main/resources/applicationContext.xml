@@ -151,4 +151,15 @@
 			<bean class="com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider" />
 		</jaxrs:providers>
 	</jaxrs:server>
+	
+	<bean id="portalServiceViewEndPoint" class="org.easystogu.portal.ViewEndPoint">
+	</bean>
+	<jaxrs:server id="cxfrsservice_ViewEndPoint" address="/view">
+		<jaxrs:serviceBeans>
+			<ref bean="portalServiceViewEndPoint" />
+		</jaxrs:serviceBeans>
+		<jaxrs:providers>
+			<bean class="com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider" />
+		</jaxrs:providers>
+	</jaxrs:server>
 </beans>
