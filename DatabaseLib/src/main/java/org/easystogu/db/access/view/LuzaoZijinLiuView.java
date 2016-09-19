@@ -19,7 +19,7 @@ public class LuzaoZijinLiuView {
 	private static Logger logger = LogHelper.getLogger(LuzaoZijinLiuView.class);
 	private static LuzaoZijinLiuView instance = null;
 	protected DataSource dataSource = PostgreSqlDataSourceFactory.createDataSource();
-	protected String viewName = "LUZAO_PHASEII_ZIJINLIU_DETAILS";
+	protected String viewName = "\"luzao_phaseII_zijinliu_Details\"";
 	// please modify this SQL in all subClass
 
 	protected String QUERY_BY_DATE = "SELECT * FROM " + viewName + " WHERE date = :date";
