@@ -23,7 +23,8 @@ ${demo.css}
           var dateTo = moment().format("YYYY-MM-DD");
           var selectDate = dateTo;
           var selectStockIds = [];
-          var version = "v1";
+          var version = "v2";
+          var viewName = "luzao_phaseII_zijinliu_top300_Details";
   
 	      var ParmForm = React.createClass({
 	         getInitialState: function() {
@@ -34,20 +35,22 @@ ${demo.css}
 	            dateFrom: moment().subtract(2000, 'days').format("YYYY-MM-DD"),
 	            dateTo: moment().format("YYYY-MM-DD"),
                 selectDate: "",
+                viewOptions: [],
                 dateOptions: [],
                 stockIdOptions: []
 	        };
 	      },
-	      
-	      handleChange: function(e) {
+
+          handleChangeSelectView: function(e) {
 	         var newState = {};
 	         newState[e.target.name] = e.target.value;
 	         this.setState(newState);
+            
+             viewName = e.target.value;
 
-             //update stockIds based on selectDate
+             //update stockIds based on viewName
              $.ajaxSettings.async = false;
-             selectDate = e.target.value;
-             selectStockIds = getAllStockIdsFromView("luzao_phaseIII_zijinliu_top300_Details?date="+selectDate);
+             selectStockIds = getAllStockIdsFromView(viewName+"?date="+selectDate);
              this.state.stockIdOptions = [];
              for (var i = 0; i < selectStockIds.length; i++) {
                  this.state.stockIdOptions.push(
@@ -56,18 +59,62 @@ ${demo.css}
              }
              //set the selected stockId to first one
              stockId = selectStockIds[0].stockId;
-             //alert(stockId);
              $.ajaxSettings.async = true;
+
+             //refresh the shenxian chart using the first stockid
+             loadShenXianSell(version, stockId, dateFrom, dateTo);
+          },
+	      
+	      handleChangeSelectDate: function(e) {
+	         var newState = {};
+	         newState[e.target.name] = e.target.value;
+	         this.setState(newState);
+
+             selectDate = e.target.value;
+
+             //update stockIds based on selectDate
+             $.ajaxSettings.async = false;
+             selectStockIds = getAllStockIdsFromView(viewName+"?date="+selectDate);
+             this.state.stockIdOptions = [];
+             for (var i = 0; i < selectStockIds.length; i++) {
+                 this.state.stockIdOptions.push(
+                 <option value={selectStockIds[i].stockId}>{selectStockIds[i]}</option>
+                );
+             }
+             //set the selected stockId to first one
+             stockId = selectStockIds[0].stockId;
+             $.ajaxSettings.async = true;
+
+             //refresh the shenxian chart using the first stockid
+             loadShenXianSell(version, stockId, dateFrom, dateTo);
 	      },
 
-          handleChange2: function(e) {
+          handleChangeSelectStockId: function(e) {
 	         var newState = {};
 	         newState[e.target.name] = e.target.value;
 	         this.setState(newState);
         
              //update the stockId to selected value
-             stockId=e.target.value;
-             //loadShenXianSell(version, stockId, dateFrom, dateTo);
+             stockId = e.target.value;
+             loadShenXianSell(version, stockId, dateFrom, dateTo);
+	      },
+
+          handleChangeSelectIndicator: function(e) {
+	         var newState = {};
+	         newState[e.target.name] = e.target.value;
+	         this.setState(newState);
+        
+             //update the indicator to selected value
+             indicator = e.target.value;
+	      },
+
+          handleChangeVersion: function(e) {
+	         var newState = {};
+	         newState[e.target.name] = e.target.value;
+	         this.setState(newState);
+        
+             //update the indicator to selected value
+             version = e.target.value;
 	      },
 	
 	      handleClick: function() {
@@ -101,7 +148,7 @@ ${demo.css}
 	      
 	      render: function(){
 
-            //first option is empty
+            //initial dateOptions
             this.state.dateOptions = [];
             for (var i = 0; i <= 12; i++) {
                  var tmpDate= moment().subtract(i, 'days').format("YYYY-MM-DD");
@@ -109,22 +156,31 @@ ${demo.css}
                  <option value={tmpDate}>{tmpDate}</option>
                 );
             }
+
 			      return (<div>
+                              <label>Views:</label>
+			                  <select name='selectView' onChange={this.handleChangeSelectView}>
+                              <option value='luzao_phaseII_zijinliu_top300_Details' defaultValue>鲁兆建仓-资金前300</option>
+                              <option value='luzao_phaseIII_zijinliu_top300_Details'>鲁兆持股-资金前300</option>
+                              <option value='luzao_phaseII_wr_shoTerm_midTerm_same_Details'>鲁兆建仓-威廉短中一致</option>
+                              <option value='luzao_phaseII_wr_midTerm_lonTerm_same_Details'>鲁兆建仓-威廉中长一致</option>
+                              <option value='luzao_phaseII_wr_all_ind_same_Details'>鲁兆建仓-威廉短中长一致</option>
+                              <option value='luzao_phaseIII_wr_all_ind_same_Details'>鲁兆持股-威廉短中长一致</option>
+                              <option value='luzao_phaseIII_wr_midTerm_lonTerm_same_Details'>鲁兆持股-威廉中长一致</option>
+                              </select>&nbsp;&nbsp;
+
                               <label>RecentDate:</label>
-			                  <select name='selectDate' onChange={this.handleChange}>
+			                  <select name='selectDate' onChange={this.handleChangeSelectDate}>
                               {this.state.dateOptions}
                               </select>&nbsp;&nbsp;
 
                               <label>StockIds:</label>
-			                  <select name='selectStockId' onChange={this.handleChange2}>
+			                  <select name='selectStockId' onChange={this.handleChangeSelectStockId}>
                               {this.state.stockIdOptions}
                               </select>&nbsp;&nbsp;
-
-			                  <label>StockId:</label>
-			                  <input type="text" value={stockId} name='stockId' maxLength="6" onChange={this.handleChange} />&nbsp;&nbsp;
 			                  
                               <label>Indicator:</label>
-			                  <select name='indicator' onChange={this.handleChange}>
+			                  <select name='indicator' onChange={this.handleChangeSelectIndicator}>
                               <option value='shenxian_sell' defaultValue>shenxian_sell</option>
                               <option value='shenxian'>shenxian</option>
                               <option value='luzao'>luzao</option>
@@ -134,17 +190,11 @@ ${demo.css}
                               </select>&nbsp;&nbsp;
 
                               <label>Version:</label>
-			                  <select name='version' onChange={this.handleChange}>
+			                  <select name='version' onChange={this.handleChangeVersion}>
                               <option value='v0'>v0-不复权</option>
                               <option value='v1'>v1-前复权</option>
                               <option value='v2' defaultValue>v2-后复权</option>
                               </select>&nbsp;&nbsp;
-
-			                  <label>DateFrom:</label>
-			                  <input type="text" value={this.state.dateFrom} name='dateFrom' maxLength="10" onChange={this.handleChange} />&nbsp;&nbsp;
-			                  
-                              <label>DateTo:</label>
-			                  <input type="text" value={this.state.dateTo} name='dateTo' maxLength="10" onChange={this.handleChange} />&nbsp;&nbsp;
 			                  
                               <input type="submit" value="Submit" onClick={this.handleClick} />
 			              </div>
