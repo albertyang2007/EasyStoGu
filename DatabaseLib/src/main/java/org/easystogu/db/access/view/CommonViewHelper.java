@@ -100,7 +100,7 @@ public class CommonViewHelper {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		CommonViewHelper ins = new CommonViewHelper();
-		List<CommonViewVO> list = ins.queryByDate("luzao_phaseII_zijinliu_top300_Details", "");
+		List<CommonViewVO> list = ins.queryByDate("luzao_phaseII_zijinliu_top300_Details", "2016-09-20");
 		for (CommonViewVO vo : list) {
 			System.out.println(vo);
 		}

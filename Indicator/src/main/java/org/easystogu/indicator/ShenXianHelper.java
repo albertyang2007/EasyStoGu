@@ -65,7 +65,7 @@ public class ShenXianHelper extends IND {
 		StockPriceTableHelper stockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
 		ShenXianHelper ins = new ShenXianHelper();
 
-		String stockId = "000049";
+		String stockId = "002575";
 		List<Double> close = stockPriceTable.getAllClosePrice(stockId);
 		List<Double> high = stockPriceTable.getAllHighPrice(stockId);
 

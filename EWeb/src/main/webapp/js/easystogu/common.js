@@ -12,8 +12,8 @@ function getEasyStoGuServerUrl() {
 	h6 = 's';
 	h7 = 'o';
 	h8 = 'n';
-	return "http://cn00082825." + h1 + h2 + h3 + h4 + h5 + h6 + h7 + h8
-			+ ".se:8080";
+	//return "http://cn00082825." + h1 + h2 + h3 + h4 + h5 + h6 + h7 + h8 + ".se:8080";
+	return "http://localhost:8080";
 }
 
 /**
@@ -71,6 +71,20 @@ function getAllTrendModeNames() {
 		names = data;
 	});
 	return names;
+}
+
+/**
+ * Load all stockIds from View
+ * 
+ * @returns {undefined}
+ */
+function getAllStockIdsFromView(viewName) {
+	var url = getEasyStoGuServerUrl() + "/portal/view/" + viewName;
+	var stockIds = "[]";
+	$.getJSON(url, function(data) {
+		stockIds = data;
+	});
+	return stockIds;
 }
 
 /*

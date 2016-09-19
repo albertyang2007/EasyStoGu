@@ -11,107 +11,20 @@
 <script type="text/javascript" src="js/easystogu/createChart.js"></script>
 <script type="text/javascript" src="js/3pp/moment.min.js"></script>
 <style type="text/css">
-${
-demo
-.css
-}
+${demo.css}
 </style>
 </head>
 <body>
 	<!--add point button-->
-	<script type="text/jsx">
+	<script type="text/jsx">    
           var stockId = "999999";
-          var indicator = "shenxian";
+          var indicator = "shenxian_sell";
           var dateFrom = moment().subtract(2000, 'days').format("YYYY-MM-DD");
           var dateTo = moment().format("YYYY-MM-DD");
-          var trendModeName = "";
-          var nDays = "1";
-          
-	      var ForecastForm = React.createClass({
-	         getInitialState: function() {
-	         return {
-	            trendModeName: "",
-                nDays : "1",
-                options: []
-	        };
-	      },
-	      
-	      handleChange: function(e) {
-	         var newState = {};
-	         newState[e.target.name] = e.target.value;
-	         this.setState(newState);
-	      },
-	
-	      handleClick: function() {
-	         var data = {
-	            trendModeName  :  this.state.trendModeName,
-                nDays :  this.state.nDays
-	        };	        			   
+          var selectDate = dateTo;
+          var selectStockIds = [];
+          var version = "v1";
   
-            trendModeName = data.trendModeName;
-            nDays = data.nDays;
-
-	        var reqParms = {
-		        "trendModeName" : trendModeName,
-                "nDays" : nDays
-	        };
-
-            //reset ajax async to true when load big data from portal
-            $.ajaxSettings.async = true;
-	        
-            if(indicator == "shenxian"){ 
-	           loadShenXianWithReqParms(stockId, dateFrom, dateTo, reqParms);
-            }else if(indicator == "luzao"){ 
-	           loadLuZaoWithReqParms(stockId, dateFrom, dateTo, reqParms);
-            }else if(indicator == "boll"){ 
-	           loadBollWithReqParms(stockId, dateFrom, dateTo, reqParms);
-            }else if(indicator == "macd"){ 
-	           loadMacdWithReqParms(stockId, dateFrom, dateTo, reqParms);
-            }else if(indicator == "qsdd"){ 
-	           loadQsddWithReqParms(stockId, dateFrom, dateTo, reqParms);
-            }
-	      },
-	      
-	      render: function(){
-
-                  $.ajaxSettings.async = false;
-                  var trendModeNames = getAllTrendModeNames();
-                  $.ajaxSettings.async = true;
-                  this.state.options = [];
-
-                  //first option is empty
-	              this.state.options.push(
-                      <option value=''></option>
-                      );
-                  for (var i = 0; i < trendModeNames.length; i++) {
-                      this.state.options.push(
-                      <option value={trendModeNames[i]}>{trendModeNames[i]}</option>
-                      );
-                  }
-                  
-                  // By defaut show the 999999 luzhao data
-                  loadLuZao('v2', '999999', dateFrom, dateTo);
-
-			      return (<div>
-                              <label>nDays</label>
-			                  <input type="text" value={this.state.nDays} name='nDays' maxLength="4" onChange={this.handleChange} />&nbsp;&nbsp;
-			                  <label>TrendModeName:</label>
-			                  <select name='trendModeName' onChange={this.handleChange}>
-                              {this.state.options}
-                              </select>&nbsp;&nbsp;
-                              <input type="submit" value="Submit" onClick={this.handleClick} />&nbsp;&nbsp;
-                              <a href='./temp/popup_trendmode.htm?trendModeName=M_Tou'>open popup</a>
-			              </div>
-			              );
-			     }         
-	      });	      
-
-	      React.render(<ForecastForm />,
-	      document.getElementById("forecastForm")
-	      );
-      </script>
-      
-      <script type="text/jsx">      
 	      var ParmForm = React.createClass({
 	         getInitialState: function() {
 	         return {
@@ -120,6 +33,9 @@ demo
                 version: "v1",
 	            dateFrom: moment().subtract(2000, 'days').format("YYYY-MM-DD"),
 	            dateTo: moment().format("YYYY-MM-DD"),
+                selectDate: "",
+                dateOptions: [],
+                stockIdOptions: []
 	        };
 	      },
 	      
@@ -127,6 +43,31 @@ demo
 	         var newState = {};
 	         newState[e.target.name] = e.target.value;
 	         this.setState(newState);
+
+             //update stockIds based on selectDate
+             $.ajaxSettings.async = false;
+             selectDate = e.target.value;
+             selectStockIds = getAllStockIdsFromView("luzao_phaseIII_zijinliu_top300_Details?date="+selectDate);
+             this.state.stockIdOptions = [];
+             for (var i = 0; i < selectStockIds.length; i++) {
+                 this.state.stockIdOptions.push(
+                 <option value={selectStockIds[i].stockId}>{selectStockIds[i]}</option>
+                );
+             }
+             //set the selected stockId to first one
+             stockId = selectStockIds[0].stockId;
+             //alert(stockId);
+             $.ajaxSettings.async = true;
+	      },
+
+          handleChange2: function(e) {
+	         var newState = {};
+	         newState[e.target.name] = e.target.value;
+	         this.setState(newState);
+        
+             //update the stockId to selected value
+             stockId=e.target.value;
+             //loadShenXianSell(version, stockId, dateFrom, dateTo);
 	      },
 	
 	      handleClick: function() {
@@ -141,41 +82,46 @@ demo
             indicator = data.indicator;
             dateFrom = data.dateFrom;
             dateTo = data.dateTo;
-            stockId = data.stockId;
-
-            // set ajax async to false just to query the stock company info
-            $.ajaxSettings.async = false;
-
-            // convert the stock name to sotckId if input parm is not a stockId
-            var stockIdRegex = new RegExp('[0-9]{6}','g');
-            if(!data.stockId.match(stockIdRegex)){
-            	 var companyInfo = loadCompanyInfoByName(data.stockId);
-               data.stockId = companyInfo.stockId;
-               stockId = data.stockId;
-            }
-
-            //reset ajax async to true when load big data from portal
-            $.ajaxSettings.async = true;
+            //stockId = data.stockId;
 	        
             if(data.indicator == "shenxian"){ 
-	           loadShenXian(data.version, data.stockId, data.dateFrom, data.dateTo);
+	           loadShenXian(data.version, stockId, data.dateFrom, data.dateTo);
             }else if(data.indicator == "shenxian_sell"){ 
-	           loadShenXianSell(data.version, data.stockId, data.dateFrom, data.dateTo);
+	           loadShenXianSell(data.version, stockId, data.dateFrom, data.dateTo);
             }else if(data.indicator == "luzao"){ 
-	           loadLuZao(data.version, data.stockId, data.dateFrom, data.dateTo);
+	           loadLuZao(data.version, stockId, data.dateFrom, data.dateTo);
             }else if(data.indicator == "boll"){ 
-	           loadBoll(data.version, data.stockId, data.dateFrom, data.dateTo);
+	           loadBoll(data.version, stockId, data.dateFrom, data.dateTo);
             }else if(data.indicator == "macd"){ 
-	           loadMacd(data.version, data.stockId, data.dateFrom, data.dateTo);
+	           loadMacd(data.version, stockId, data.dateFrom, data.dateTo);
             }else if(data.indicator == "qsdd"){ 
-	           loadQSDD(data.version, data.stockId, data.dateFrom, data.dateTo);
+	           loadQSDD(data.version, stockId, data.dateFrom, data.dateTo);
             }
 	      },
 	      
 	      render: function(){
+
+            //first option is empty
+            this.state.dateOptions = [];
+            for (var i = 0; i <= 12; i++) {
+                 var tmpDate= moment().subtract(i, 'days').format("YYYY-MM-DD");
+                 this.state.dateOptions.push(
+                 <option value={tmpDate}>{tmpDate}</option>
+                );
+            }
 			      return (<div>
+                              <label>RecentDate:</label>
+			                  <select name='selectDate' onChange={this.handleChange}>
+                              {this.state.dateOptions}
+                              </select>&nbsp;&nbsp;
+
+                              <label>StockIds:</label>
+			                  <select name='selectStockId' onChange={this.handleChange2}>
+                              {this.state.stockIdOptions}
+                              </select>&nbsp;&nbsp;
+
 			                  <label>StockId:</label>
-			                  <input type="text" value={this.state.stockId} name='stockId' maxLength="6" onChange={this.handleChange} />&nbsp;&nbsp;
+			                  <input type="text" value={stockId} name='stockId' maxLength="6" onChange={this.handleChange} />&nbsp;&nbsp;
 			                  
                               <label>Indicator:</label>
 			                  <select name='indicator' onChange={this.handleChange}>
@@ -190,8 +136,8 @@ demo
                               <label>Version:</label>
 			                  <select name='version' onChange={this.handleChange}>
                               <option value='v0'>v0-不复权</option>
-                              <option value='v1' defaultValue>v1-前复权</option>
-                              <option value='v2'>v2-后复权</option>
+                              <option value='v1'>v1-前复权</option>
+                              <option value='v2' defaultValue>v2-后复权</option>
                               </select>&nbsp;&nbsp;
 
 			                  <label>DateFrom:</label>

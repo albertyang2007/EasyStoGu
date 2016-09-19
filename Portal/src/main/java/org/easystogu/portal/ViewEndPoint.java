@@ -22,10 +22,10 @@ public class ViewEndPoint {
 	@GET
 	@Path("/{viewname}")
 	@Produces("application/json")
-	public List<CommonViewVO> queryDayPriceById(@PathParam("viewname") String viewname, @PathParam("date") String date,
+	public List<CommonViewVO> queryDayPriceById(@PathParam("viewname") String viewname,
 			@Context HttpServletRequest request, @Context HttpServletResponse response) {
 		response.addHeader("Access-Control-Allow-Origin", "*");
 		logger.debug("viewName=" + viewname + ",date=" + request.getParameter("date"));
-		return this.commonViewHelper.queryByDate(viewname, date);
+		return this.commonViewHelper.queryByDate(viewname, request.getParameter("date"));
 	}
 }
