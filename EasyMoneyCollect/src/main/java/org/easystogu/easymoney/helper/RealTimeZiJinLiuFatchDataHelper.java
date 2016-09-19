@@ -2,7 +2,7 @@ package org.easystogu.easymoney.helper;
 
 import java.io.ByteArrayInputStream;
 
-import org.easystogu.db.table.ZiJinLiuVO;
+import org.easystogu.db.vo.table.ZiJinLiuVO;
 import org.easystogu.network.RestTemplateHelper;
 import org.easystogu.utils.Strings;
 import org.jsoup.Jsoup;

@@ -10,7 +10,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 
-import org.easystogu.db.table.StockPriceVO;
+import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.portal.init.TrendModeLoader;
 import org.easystogu.trendmode.vo.SimplePriceVO;
 import org.easystogu.trendmode.vo.TrendModeVO;

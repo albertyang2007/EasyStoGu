@@ -3,8 +3,8 @@ package org.easystogu.report;
 import java.util.List;
 
 import org.easystogu.checkpoint.DailyCombineCheckPoint;
-import org.easystogu.db.table.CompanyInfoVO;
-import org.easystogu.db.table.StockSuperVO;
+import org.easystogu.db.vo.table.CompanyInfoVO;
+import org.easystogu.db.vo.table.StockSuperVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 
 //�����ʷ���ͳ�Ƴ���������earnPercent�����VO

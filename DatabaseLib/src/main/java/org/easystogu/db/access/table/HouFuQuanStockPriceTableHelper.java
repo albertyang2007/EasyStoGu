@@ -2,7 +2,7 @@ package org.easystogu.db.access.table;
 
 import java.util.List;
 
-import org.easystogu.db.table.StockPriceVO;
+import org.easystogu.db.vo.table.StockPriceVO;
 
 //never use hou fu quan stockproce now
 public class HouFuQuanStockPriceTableHelper extends StockPriceTableHelper {

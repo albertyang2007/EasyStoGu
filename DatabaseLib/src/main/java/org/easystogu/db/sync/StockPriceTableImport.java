@@ -5,7 +5,7 @@ import java.util.List;
 import net.sf.json.JSONArray;
 
 import org.easystogu.db.access.table.StockPriceTableHelper;
-import org.easystogu.db.table.StockPriceVO;
+import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.file.TextFileSourceHelper;
 
 public class StockPriceTableImport {

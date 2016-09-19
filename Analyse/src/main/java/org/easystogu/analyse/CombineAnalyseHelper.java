@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.easystogu.analyse.util.StockPriceUtils;
 import org.easystogu.checkpoint.DailyCombineCheckPoint;
-import org.easystogu.db.table.StockSuperVO;
+import org.easystogu.db.vo.table.StockSuperVO;
 import org.easystogu.utils.CrossType;
 
 public class CombineAnalyseHelper {

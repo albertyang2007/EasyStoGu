@@ -8,7 +8,7 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
-import org.easystogu.db.table.CheckPointDailySelectionVO;
+import org.easystogu.db.vo.table.CheckPointDailySelectionVO;
 import org.easystogu.log.LogHelper;
 import org.slf4j.Logger;
 import org.springframework.dao.DataAccessException;

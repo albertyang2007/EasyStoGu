@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.easystogu.db.access.table.CompanyInfoTableHelper;
-import org.easystogu.db.table.CompanyInfoVO;
+import org.easystogu.db.vo.table.CompanyInfoVO;
 import org.easystogu.file.TextFileSourceHelper;
 import org.easystogu.log.LogHelper;
 import org.easystogu.utils.StringComparator;

@@ -1,4 +1,4 @@
-package org.easystogu.db.table;
+package org.easystogu.db.vo.table;
 
 import org.easystogu.utils.Strings;
 

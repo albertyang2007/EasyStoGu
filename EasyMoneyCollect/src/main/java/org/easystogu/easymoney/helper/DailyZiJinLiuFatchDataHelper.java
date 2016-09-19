@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.easystogu.db.table.ZiJinLiuVO;
+import org.easystogu.db.vo.table.ZiJinLiuVO;
 import org.easystogu.network.HtmlUnitHelper;
 
 import com.gargoylesoftware.htmlunit.WebClient;

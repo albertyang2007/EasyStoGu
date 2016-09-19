@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.table.StockPriceTableHelper;
-import org.easystogu.db.table.StockPriceVO;
+import org.easystogu.db.vo.table.StockPriceVO;
 
 /*买1买2 指标
  * Var1:=(2*CLOSE+HIGH+LOW+OPEN)/5;

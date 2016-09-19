@@ -1,6 +1,6 @@
 package org.easystogu.analyse.util;
 
-import org.easystogu.db.table.StockPriceVO;
+import org.easystogu.db.vo.table.StockPriceVO;
 
 public class StockPriceUtils {
 	// check the K line of stock: big/small red, or big/small green

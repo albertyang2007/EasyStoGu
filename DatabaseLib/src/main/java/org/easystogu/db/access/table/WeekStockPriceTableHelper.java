@@ -2,7 +2,7 @@ package org.easystogu.db.access.table;
 
 import java.util.List;
 
-import org.easystogu.db.table.StockPriceVO;
+import org.easystogu.db.vo.table.StockPriceVO;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 public class WeekStockPriceTableHelper extends StockPriceTableHelper {

@@ -3,7 +3,7 @@ package org.easystogu.sina.common;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import org.easystogu.db.table.StockPriceVO;
+import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.utils.Strings;
 
 //http://hq.sinajs.cn/list=sh601318,sz000830

@@ -5,10 +5,10 @@ import java.util.List;
 import org.easystogu.db.access.table.IndDDXTableHelper;
 import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.access.table.ZiJinLiuTableHelper;
-import org.easystogu.db.table.CompanyInfoVO;
-import org.easystogu.db.table.DDXVO;
-import org.easystogu.db.table.StockPriceVO;
-import org.easystogu.db.table.ZiJinLiuVO;
+import org.easystogu.db.vo.table.CompanyInfoVO;
+import org.easystogu.db.vo.table.DDXVO;
+import org.easystogu.db.vo.table.StockPriceVO;
+import org.easystogu.db.vo.table.ZiJinLiuVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 
 public class DailyDDXRunner implements Runnable {

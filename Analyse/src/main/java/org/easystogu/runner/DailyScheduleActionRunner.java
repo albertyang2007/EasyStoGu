@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.table.ScheduleActionTableHelper;
-import org.easystogu.db.table.ScheduleActionVO;
+import org.easystogu.db.vo.table.ScheduleActionVO;
 import org.easystogu.indicator.runner.history.IndicatorHistortOverAllRunner;
 import org.easystogu.sina.runner.history.HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner;
 import org.easystogu.sina.runner.history.HistoryStockPriceDownloadAndStoreDBRunner;

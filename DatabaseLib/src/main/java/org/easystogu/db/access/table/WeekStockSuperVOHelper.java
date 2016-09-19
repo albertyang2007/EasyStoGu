@@ -3,10 +3,10 @@ package org.easystogu.db.access.table;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.easystogu.db.table.KDJVO;
-import org.easystogu.db.table.MacdVO;
-import org.easystogu.db.table.StockPriceVO;
-import org.easystogu.db.table.StockSuperVO;
+import org.easystogu.db.vo.table.KDJVO;
+import org.easystogu.db.vo.table.MacdVO;
+import org.easystogu.db.vo.table.StockPriceVO;
+import org.easystogu.db.vo.table.StockSuperVO;
 
 public class WeekStockSuperVOHelper extends StockSuperVOHelper {
 	public WeekStockSuperVOHelper() {

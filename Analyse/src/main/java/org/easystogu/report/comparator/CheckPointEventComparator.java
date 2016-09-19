@@ -9,9 +9,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.easystogu.db.table.CheckPointDailySelectionVO;
-import org.easystogu.db.table.ZhuLiJingLiuRuVO;
-import org.easystogu.db.table.ZiJinLiuVO;
+import org.easystogu.db.vo.table.CheckPointDailySelectionVO;
+import org.easystogu.db.vo.table.ZhuLiJingLiuRuVO;
+import org.easystogu.db.vo.table.ZiJinLiuVO;
 
 public class CheckPointEventComparator {
 	public static Map<String, List<CheckPointDailySelectionVO>> sortMapByValue(final List<String> lastNDates,

@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.table.StockPriceTableHelper;
-import org.easystogu.db.table.StockPriceVO;
+import org.easystogu.db.vo.table.StockPriceVO;
 
 //安全带 (黑马通道)
 public class AnQuanDaiHelper {

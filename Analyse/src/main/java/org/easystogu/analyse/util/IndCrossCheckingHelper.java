@@ -2,16 +2,16 @@ package org.easystogu.analyse.util;
 
 import java.util.List;
 
-import org.easystogu.db.table.BollVO;
-import org.easystogu.db.table.KDJVO;
-import org.easystogu.db.table.MacdVO;
-import org.easystogu.db.table.Mai1Mai2VO;
-import org.easystogu.db.table.QSDDVO;
-import org.easystogu.db.table.ShenXianVO;
-import org.easystogu.db.table.StockSuperVO;
-import org.easystogu.db.table.XueShi2VO;
-import org.easystogu.db.table.YiMengBSVO;
-import org.easystogu.db.table.ZhuliJinChuVO;
+import org.easystogu.db.vo.table.BollVO;
+import org.easystogu.db.vo.table.KDJVO;
+import org.easystogu.db.vo.table.MacdVO;
+import org.easystogu.db.vo.table.Mai1Mai2VO;
+import org.easystogu.db.vo.table.QSDDVO;
+import org.easystogu.db.vo.table.ShenXianVO;
+import org.easystogu.db.vo.table.StockSuperVO;
+import org.easystogu.db.vo.table.XueShi2VO;
+import org.easystogu.db.vo.table.YiMengBSVO;
+import org.easystogu.db.vo.table.ZhuliJinChuVO;
 import org.easystogu.utils.CrossType;
 
 public class IndCrossCheckingHelper {

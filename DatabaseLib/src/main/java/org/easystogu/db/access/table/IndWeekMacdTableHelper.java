@@ -2,7 +2,7 @@ package org.easystogu.db.access.table;
 
 import java.util.List;
 
-import org.easystogu.db.table.MacdVO;
+import org.easystogu.db.vo.table.MacdVO;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 public class IndWeekMacdTableHelper extends IndMacdTableHelper {

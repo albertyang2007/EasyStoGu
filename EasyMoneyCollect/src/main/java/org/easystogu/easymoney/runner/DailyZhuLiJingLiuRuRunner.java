@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.easystogu.config.FileConfigurationService;
 import org.easystogu.db.access.table.ZhuLiJingLiuRuTableHelper;
-import org.easystogu.db.table.ZhuLiJingLiuRuVO;
+import org.easystogu.db.vo.table.ZhuLiJingLiuRuVO;
 import org.easystogu.easymoney.helper.DailyZhuLiJingLiuRuFatchDataHelper;
 import org.easystogu.easymoney.helper.DailyZiJinLiuFatchDataHelper;
 

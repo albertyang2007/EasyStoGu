@@ -3,7 +3,7 @@ package org.easystogu.db.util;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.easystogu.db.table.StockPriceVO;
+import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.utils.WeekdayUtil;
 
 //merge days price vo into week price vo

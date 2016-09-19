@@ -7,7 +7,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 
-import org.easystogu.db.table.CompanyInfoVO;
+import org.easystogu.db.vo.table.CompanyInfoVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 
 public class CompanyInfoEndPoint {

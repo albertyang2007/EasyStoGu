@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import javax.sql.DataSource;
 
 import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
-import org.easystogu.db.table.CheckPointHistorySelectionVO;
+import org.easystogu.db.vo.table.CheckPointHistorySelectionVO;
 import org.easystogu.log.LogHelper;
 import org.slf4j.Logger;
 import org.springframework.dao.DataAccessException;

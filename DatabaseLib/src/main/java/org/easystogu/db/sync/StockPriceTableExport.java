@@ -8,7 +8,7 @@ import net.sf.json.JSONArray;
 
 import org.easystogu.config.FileConfigurationService;
 import org.easystogu.db.access.table.StockPriceTableHelper;
-import org.easystogu.db.table.StockPriceVO;
+import org.easystogu.db.vo.table.StockPriceVO;
 
 public class StockPriceTableExport {
     private StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();

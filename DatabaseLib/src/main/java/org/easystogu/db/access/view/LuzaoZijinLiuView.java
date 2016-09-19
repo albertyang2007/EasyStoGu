@@ -8,7 +8,7 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
-import org.easystogu.db.view.LuZaoZijinliuVO;
+import org.easystogu.db.vo.view.CommonViewVO;
 import org.easystogu.log.LogHelper;
 import org.slf4j.Logger;
 import org.springframework.jdbc.core.RowMapper;
@@ -19,7 +19,7 @@ public class LuzaoZijinLiuView {
 	private static Logger logger = LogHelper.getLogger(LuzaoZijinLiuView.class);
 	private static LuzaoZijinLiuView instance = null;
 	protected DataSource dataSource = PostgreSqlDataSourceFactory.createDataSource();
-	protected String viewName = "\"luzao_phaseII_zijinliu_Details\"";
+	protected String viewName = "\"luzao_phaseII_zijinliu_top300_Details\"";
 	// please modify this SQL in all subClass
 
 	protected String QUERY_BY_DATE = "SELECT * FROM " + viewName + " WHERE date = :date";
@@ -37,33 +37,34 @@ public class LuzaoZijinLiuView {
 		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
 	}
 
-	private static final class LuZaoZijinliuVOMapper implements RowMapper<LuZaoZijinliuVO> {
-		public LuZaoZijinliuVO mapRow(ResultSet rs, int rowNum) throws SQLException {
-			LuZaoZijinliuVO vo = new LuZaoZijinliuVO();
+	private static final class CommonViewVOMapper implements RowMapper<CommonViewVO> {
+		public CommonViewVO mapRow(ResultSet rs, int rowNum) throws SQLException {
+			CommonViewVO vo = new CommonViewVO();
 			vo.setStockId(rs.getString("stockId"));
 			vo.setName(rs.getString("name"));
+			vo.setDate(rs.getString("date"));
 			return vo;
 		}
 	}
 
-	public List<LuZaoZijinliuVO> queryByDate(String date) {
+	public List<CommonViewVO> queryByDate(String date) {
 		try {
 			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 			namedParameters.addValue("date", date);
-			List<LuZaoZijinliuVO> list = this.namedParameterJdbcTemplate.query(QUERY_BY_DATE, namedParameters,
-					new LuZaoZijinliuVOMapper());
+			List<CommonViewVO> list = this.namedParameterJdbcTemplate.query(QUERY_BY_DATE, namedParameters,
+					new CommonViewVOMapper());
 			return list;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return new ArrayList<LuZaoZijinliuVO>();
+		return new ArrayList<CommonViewVO>();
 	}
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		LuzaoZijinLiuView ins = new LuzaoZijinLiuView();
-		List<LuZaoZijinliuVO> list = ins.queryByDate("2016-09-14");
-		for (LuZaoZijinliuVO vo : list) {
+		List<CommonViewVO> list = ins.queryByDate("2016-09-14");
+		for (CommonViewVO vo : list) {
 			System.out.println(vo.name);
 		}
 		try {

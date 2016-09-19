@@ -3,7 +3,7 @@ package org.easystogu.easymoney.helper;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.easystogu.db.table.ZhuLiJingLiuRuVO;
+import org.easystogu.db.vo.table.ZhuLiJingLiuRuVO;
 import org.easystogu.network.HtmlUnitHelper;
 
 import com.gargoylesoftware.htmlunit.WebClient;

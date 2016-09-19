@@ -1,8 +1,16 @@
-package org.easystogu.db.view;
+package org.easystogu.db.vo.view;
 
-public class CommonVO {
+public class CommonViewVO {
 	public String stockId;
 	public String name;
+	public String date;
+	
+	public String getDate() {
+		return date;
+	}
+	public void setDate(String date) {
+		this.date = date;
+	}
 	
 	public String getStockId() {
 		return stockId;

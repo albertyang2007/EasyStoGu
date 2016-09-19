@@ -3,7 +3,7 @@ package org.easystogu.indicator.runner.utils;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.easystogu.db.table.StockPriceVO;
+import org.easystogu.db.vo.table.StockPriceVO;
 
 public class StockPriceFetcher {
 	public static List<Double> getOpenPrice(List<StockPriceVO> priceList) {

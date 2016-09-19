@@ -6,7 +6,7 @@ import org.easystogu.config.FileConfigurationService;
 import org.easystogu.db.access.table.ZiJinLiu3DayTableHelper;
 import org.easystogu.db.access.table.ZiJinLiu5DayTableHelper;
 import org.easystogu.db.access.table.ZiJinLiuTableHelper;
-import org.easystogu.db.table.ZiJinLiuVO;
+import org.easystogu.db.vo.table.ZiJinLiuVO;
 import org.easystogu.easymoney.helper.DailyZiJinLiuFatchDataHelper;
 
 //zijinliu, ddx use this

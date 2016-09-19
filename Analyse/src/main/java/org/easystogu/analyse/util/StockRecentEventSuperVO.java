@@ -5,8 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.easystogu.db.table.CheckPointDailySelectionVO;
-import org.easystogu.db.table.ZiJinLiuVO;
+import org.easystogu.db.vo.table.CheckPointDailySelectionVO;
+import org.easystogu.db.vo.table.ZiJinLiuVO;
 
 public class StockRecentEventSuperVO {
     public List<CheckPointDailySelectionVO> checkPoints = new ArrayList<CheckPointDailySelectionVO>(); //

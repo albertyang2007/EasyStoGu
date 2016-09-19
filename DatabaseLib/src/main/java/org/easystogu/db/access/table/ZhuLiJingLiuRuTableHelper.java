@@ -11,8 +11,8 @@ import java.util.Map;
 import javax.sql.DataSource;
 
 import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
-import org.easystogu.db.table.ZhuLiJingLiuRuVO;
-import org.easystogu.db.table.ZiJinLiuVO;
+import org.easystogu.db.vo.table.ZhuLiJingLiuRuVO;
+import org.easystogu.db.vo.table.ZiJinLiuVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.log.LogHelper;
 import org.slf4j.Logger;

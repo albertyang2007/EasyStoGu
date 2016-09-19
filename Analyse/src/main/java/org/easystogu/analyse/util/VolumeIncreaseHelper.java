@@ -2,11 +2,11 @@ package org.easystogu.analyse.util;
 
 import java.util.List;
 
-import org.easystogu.db.table.StockSuperVO;
+import org.easystogu.db.vo.table.StockSuperVO;
 
 public class VolumeIncreaseHelper {
 
-	// 计算交易volume是前一日的百分比
+	// 锟斤拷锟姐交锟斤拷volume锟斤拷前一锟秸的百分憋拷
 	public static void volumeIncreasePuls(List<StockSuperVO> overList) {
 		for (int index = 0; index < overList.size() - 1; index++) {
 			StockSuperVO superVO = overList.get(index);

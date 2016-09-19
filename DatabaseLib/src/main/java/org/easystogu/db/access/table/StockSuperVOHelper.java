@@ -3,14 +3,14 @@ package org.easystogu.db.access.table;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.easystogu.db.table.BollVO;
-import org.easystogu.db.table.KDJVO;
-import org.easystogu.db.table.MacdVO;
-import org.easystogu.db.table.QSDDVO;
-import org.easystogu.db.table.ShenXianVO;
-import org.easystogu.db.table.StockPriceVO;
-import org.easystogu.db.table.StockSuperVO;
-import org.easystogu.db.table.WRVO;
+import org.easystogu.db.vo.table.BollVO;
+import org.easystogu.db.vo.table.KDJVO;
+import org.easystogu.db.vo.table.MacdVO;
+import org.easystogu.db.vo.table.QSDDVO;
+import org.easystogu.db.vo.table.ShenXianVO;
+import org.easystogu.db.vo.table.StockPriceVO;
+import org.easystogu.db.vo.table.StockSuperVO;
+import org.easystogu.db.vo.table.WRVO;
 
 public class StockSuperVOHelper {
 

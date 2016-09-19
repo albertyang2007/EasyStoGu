@@ -5,8 +5,8 @@ import java.util.List;
 
 import org.easystogu.db.access.table.EventChuQuanChuXiTableHelper;
 import org.easystogu.db.access.table.StockPriceTableHelper;
-import org.easystogu.db.table.ChuQuanChuXiVO;
-import org.easystogu.db.table.StockPriceVO;
+import org.easystogu.db.vo.table.ChuQuanChuXiVO;
+import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 
 //if table event_gaosongzhuan has update, please run this runner 
