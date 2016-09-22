@@ -63,7 +63,7 @@ function loadShenXian(version, stockId, dateFrom, dateTo) {
  * @returns {undefined}
  */
 function loadShenXianSell(version, stockId, dateFrom, dateTo) {
-	var seriesCounter = 0, date_price = [], volume = [], data_h1 = [], data_h2 = [], data_h3 = [];
+	var seriesCounter = 0, date_price = [], ddx = [], data_h1 = [], data_h2 = [], data_h3 = [];
 	/**
 	 * Load StocPrice and display OHLC
 	 * 
@@ -79,12 +79,35 @@ function loadShenXianSell(version, stockId, dateFrom, dateTo) {
 			date_price.push([ dateD.getTime(), data[i]['open'],
 					data[i]['high'], data[i]['low'], data[i]['close'] ]);
 
-			volume.push([ dateD.getTime(), data[i]['volume'] ]);
+			//replace to ddx  
+			//volume.push([ dateD.getTime(), data[i]['volume'] ]);
 		}
 
 		seriesCounter += 1;
-		if (seriesCounter === 2) {
-			createChart_ShenXian(stockId, date_price, volume, data_h1, data_h2,
+		if (seriesCounter === 3) {
+			createChart_ShenXian(stockId, date_price, ddx, data_h1, data_h2,
+					data_h3);
+		}
+	});
+	
+	/**
+	 * Load DDX Indicator and display
+	 * 
+	 * @returns {undefined}
+	 */
+	var url_ind = getEasyStoGuServerUrl() + "/portal/indv1/ddx/"
+			+ stockId + "/" + dateFrom + "_" + dateTo;
+	$.getJSON(url_ind, function(data) {
+		i = 0;
+		for (i; i < data.length; i += 1) {
+			var dateStr = data[i]['date'] + " 15:00:00";
+			var dateD = new Date(Date.parse(dateStr.replace(/-/g, "/")));
+			ddx.push([ dateD.getTime(), data[i]['ddx'] ]);
+		}
+
+		seriesCounter += 1;
+		if (seriesCounter === 3) {
+			createChart_ShenXian(stockId, date_price, ddx, data_h1, data_h2,
 					data_h3);
 		}
 	});
@@ -109,8 +132,8 @@ function loadShenXianSell(version, stockId, dateFrom, dateTo) {
 		}
 
 		seriesCounter += 1;
-		if (seriesCounter === 2) {
-			createChart_ShenXian(stockId, date_price, volume, data_h1, data_h2,
+		if (seriesCounter === 3) {
+			createChart_ShenXian(stockId, date_price, ddx, data_h1, data_h2,
 					data_h3);
 		}
 	});

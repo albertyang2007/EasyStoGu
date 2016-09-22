@@ -12,6 +12,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 
 import org.easystogu.db.access.table.IndBollTableHelper;
+import org.easystogu.db.access.table.IndDDXTableHelper;
 import org.easystogu.db.access.table.IndKDJTableHelper;
 import org.easystogu.db.access.table.IndMacdTableHelper;
 import org.easystogu.db.access.table.IndQSDDTableHelper;
@@ -20,18 +21,15 @@ import org.easystogu.db.access.table.IndWRTableHelper;
 import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.vo.table.BollVO;
+import org.easystogu.db.vo.table.DDXVO;
 import org.easystogu.db.vo.table.KDJVO;
 import org.easystogu.db.vo.table.LuZaoVO;
 import org.easystogu.db.vo.table.MacdVO;
 import org.easystogu.db.vo.table.QSDDVO;
 import org.easystogu.db.vo.table.ShenXianVO;
-import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.db.vo.table.WRVO;
 import org.easystogu.indicator.LuZaoHelper;
-import org.easystogu.indicator.runner.utils.StockPriceFetcher;
 import org.easystogu.utils.Strings;
-
-import com.google.common.primitives.Doubles;
 
 //V1, query indicator from DB, qian FuQuan
 public class IndicatorEndPointV1 {
@@ -41,6 +39,7 @@ public class IndicatorEndPointV1 {
 	protected IndBollTableHelper bollTable = IndBollTableHelper.getInstance();
 	protected IndQSDDTableHelper qsddTable = IndQSDDTableHelper.getInstance();
 	protected IndWRTableHelper wrTable = IndWRTableHelper.getInstance();
+	protected IndDDXTableHelper ddxTable = IndDDXTableHelper.getInstance();
 	protected IndShenXianTableHelper shenXianTable = IndShenXianTableHelper.getInstance();
 	protected LuZaoHelper luzaoHelper = new LuZaoHelper();
 
@@ -182,5 +181,24 @@ public class IndicatorEndPointV1 {
 			return list;
 		}
 		return new ArrayList<WRVO>();
+	}
+	
+	@GET
+	@Path("/ddx/{stockId}/{date}")
+	@Produces("application/json")
+	public List<DDXVO> queryDDXById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
+			@Context HttpServletResponse response) {
+		response.addHeader("Access-Control-Allow-Origin", "*");
+		if (Pattern.matches(fromToRegex, dateParm)) {
+			String date1 = dateParm.split("_")[0];
+			String date2 = dateParm.split("_")[1];
+			return ddxTable.getByIdAndBetweenDate(stockIdParm, date1, date2);
+		}
+		if (Pattern.matches(dateRegex, dateParm) || Strings.isEmpty(dateParm)) {
+			List<DDXVO> list = new ArrayList<DDXVO>();
+			list.add(ddxTable.getDDX(stockIdParm, dateParm));
+			return list;
+		}
+		return new ArrayList<DDXVO>();
 	}
 }

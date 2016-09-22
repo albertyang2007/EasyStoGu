@@ -36,6 +36,8 @@ public class IndDDXTableHelper {
 	protected String DELETE_BY_STOCKID_AND_DATE_SQL = "DELETE FROM " + tableName
 			+ " WHERE stockId = :stockId AND date = :date";
 	protected String DELETE_BY_DATE_SQL = "DELETE FROM " + tableName + " WHERE date = :date";
+	protected String QUERY_BY_STOCKID_AND_BETWEEN_DATE = "SELECT * FROM " + tableName
+			+ " WHERE stockId = :stockId AND DATE >= :date1 AND DATE <= :date2 ORDER BY DATE";
 
 	protected NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
@@ -178,6 +180,22 @@ public class IndDDXTableHelper {
 			e.printStackTrace();
 			return new ArrayList<DDXVO>();
 		}
+	}
+	
+	public List<DDXVO> getByIdAndBetweenDate(String stockId, String StartDate, String endDate) {
+		try {
+			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+			namedParameters.addValue("stockId", stockId);
+			namedParameters.addValue("date1", StartDate);
+			namedParameters.addValue("date2", endDate);
+
+			List<DDXVO> list = this.namedParameterJdbcTemplate.query(QUERY_BY_STOCKID_AND_BETWEEN_DATE, namedParameters,
+					new DDXVOMapper());
+			return list;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new ArrayList<DDXVO>();
 	}
 
 	public static void main(String[] args) {
