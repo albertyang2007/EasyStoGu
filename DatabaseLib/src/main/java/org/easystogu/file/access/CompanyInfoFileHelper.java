@@ -3,6 +3,7 @@ package org.easystogu.file.access;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -18,9 +19,10 @@ import org.slf4j.Logger;
 //txt file to store all company base info
 //export all data from easymoney software PC version in "分析"->"财务数据", select xls file format
 //the Table_CompanyBaseInfo.xls is saved in CommonLib\src\main\resources
-//chan conver to Table_CompanyBaseInfo.csv format
+//than conver to Table_CompanyBaseInfo.csv format
 public class CompanyInfoFileHelper {
 	private static Logger logger = LogHelper.getLogger(CompanyInfoFileHelper.class);
+	private CompanyInfoTableHelper companyInfoTable = CompanyInfoTableHelper.getInstance();
 	private static CompanyInfoFileHelper instance = null;
 	protected TextFileSourceHelper fileSource = TextFileSourceHelper.getInstance();
 	protected String fileName = "Table_CompanyInfo.csv";
@@ -48,21 +50,22 @@ public class CompanyInfoFileHelper {
 	}
 
 	// do not use this method now, since it need manually update
-	private void loadDataFromFile() {
+	private Map<String, CompanyInfoVO> loadDataFromFile() {
+		Map<String, CompanyInfoVO> companyMapFile = new HashMap<String, CompanyInfoVO>();
 		String[] lines = fileSource.loadContent(fileName).split("\n");
 		for (int index = 1; index < lines.length; index++) {
 			String line = lines[index];
 			if (Strings.isNotEmpty(line)) {
 				CompanyInfoVO vo = new CompanyInfoVO(line);
-				companyMap.put(vo.stockId, vo);
+				companyMapFile.put(vo.stockId, vo);
 				// System.out.println(vo);
 			}
 		}
+		return companyMapFile;
 	}
 
 	private void loadDataFromDatabase() {
-		CompanyInfoTableHelper table = CompanyInfoTableHelper.getInstance();
-		List<CompanyInfoVO> list = table.getAllCompanyInfo();
+		List<CompanyInfoVO> list = companyInfoTable.getAllCompanyInfo();
 		for (CompanyInfoVO vo : list) {
 			companyMap.put(vo.stockId, vo);
 		}
@@ -88,9 +91,9 @@ public class CompanyInfoFileHelper {
 		stockIds.add(getSZZSStockIdForDB());
 		stockIds.add(getSZCZStockIdForDB());
 		stockIds.add(getCYBZStockIdForDB());
-		
+
 		Collections.sort(stockIds, new StringComparator());
-		
+
 		return stockIds;
 	}
 
@@ -227,10 +230,27 @@ public class CompanyInfoFileHelper {
 		return false;
 	}
 
+	// update base company info to DB, add zhongguben, liutongguben
+	// DDX use this data
+	public void updateCompanyFromFileToDB() {
+		// TODO Auto-generated method stub
+		CompanyInfoFileHelper ins = new CompanyInfoFileHelper();
+		Map<String, CompanyInfoVO> companyMap = ins.loadDataFromFile();
+
+		Set keys = companyMap.keySet();
+		Iterator it = keys.iterator();
+
+		while (it.hasNext()) {
+			String stockId = (String) it.next();
+			CompanyInfoVO vo = (CompanyInfoVO) companyMap.get(stockId);
+			//System.out.println(vo);
+			this.companyInfoTable.insertIfNotExist(vo);
+		}
+	}
+
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		CompanyInfoFileHelper ins = new CompanyInfoFileHelper();
-
-		System.out.println(ins.getStockName("000048"));
+		ins.updateCompanyFromFileToDB();
 	}
 }
