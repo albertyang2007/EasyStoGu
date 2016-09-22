@@ -1,6 +1,7 @@
 package org.easystogu.db.vo.table;
 
 import org.easystogu.utils.Strings;
+import org.easystogu.utils.WeekdayUtil;
 
 public class CompanyInfoVO {
     public String stockId;
@@ -20,10 +21,7 @@ public class CompanyInfoVO {
     }
 
     public CompanyInfoVO(String line) {
-        // 1074,000002,万
-        // 科Ａ,2015/09/30,111亿,97.2亿,2.92万,0.62,8.05,7.69,796亿,26.06,124亿,
-        // 14.8亿,125亿,68.5亿,6.14,433亿,3.92,29.06,5708亿,5200亿,40.4亿,10.0亿,4497亿,4021亿,476亿,
-        // 78.78,889亿,15.58,83.4亿,0.75,0,13.1亿,1991/01/29
+        // 1074,000002,万科Ａ,111亿,97.2亿,
         try {
             String[] items = line.trim().split(",");
             if (items.length < 1) {
@@ -38,9 +36,9 @@ public class CompanyInfoVO {
 
             this.stockId = items[1];
             this.name = items[2];
-            this.updateTime = items[3];
-            this.totalGuBen = convert2Double(items[4]);
-            this.liuTongAGu = convert2Double(items[5]);
+            this.totalGuBen = convert2Double(items[3]);
+            this.liuTongAGu = convert2Double(items[4]);
+            this.updateTime = WeekdayUtil.currentDate();
 
         } catch (Exception e) {
             e.printStackTrace();
