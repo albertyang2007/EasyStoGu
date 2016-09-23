@@ -52,6 +52,10 @@ public class DailyDDXRunner implements Runnable {
 		}
 		System.out.println("Total count DDX:" + count);
 	}
+	
+	public void countAndSaved(){
+		countAndSaved(stockConfig.getAllStockId());
+	}
 
 	public void run() {
 		countAndSaved(stockConfig.getAllStockId());

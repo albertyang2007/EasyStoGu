@@ -38,7 +38,7 @@ public class DailyZiJinLiuRunner implements Runnable {
 
 		for (ZiJinLiuVO vo : list) {
 			if (vo.isValidated()) {
-				//zijinliuTableHelper.delete(vo.stockId, vo.date);
+				// zijinliuTableHelper.delete(vo.stockId, vo.date);
 				zijinliuTableHelper.insert(vo);
 				// System.out.println(vo.stockId + "=" + vo.name);
 			}
@@ -75,6 +75,9 @@ public class DailyZiJinLiuRunner implements Runnable {
 		countAndSaved();
 		// countAndSaved_3Day();
 		// countAndSaved_5Day();
+		//count DDX also
+		System.out.println("Count DDX for all.");
+		new DailyDDXRunner().countAndSaved();
 	}
 
 	public static void main(String[] args) {

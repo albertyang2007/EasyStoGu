@@ -32,7 +32,7 @@ public class DailyScheduler implements SchedulingConfigurer {
 	// http://www.quartz-scheduler.org/documentation/quartz-1.x/tutorials/crontrigger
 
 	// run at 10:32
-	//@Scheduled(cron = "0 32 10 * * MON-FRI")
+	// @Scheduled(cron = "0 32 10 * * MON-FRI")
 	public void _0_DailyOverAllRunner() {
 		boolean isGetZiJinLiu = false;
 		this.DailyOverAllRunner(isGetZiJinLiu);
@@ -46,7 +46,7 @@ public class DailyScheduler implements SchedulingConfigurer {
 	}
 
 	// run at 14:02
-	//@Scheduled(cron = "0 02 14 * * MON-FRI")
+	// @Scheduled(cron = "0 02 14 * * MON-FRI")
 	public void _2_DailyOverAllRunner() {
 		boolean isGetZiJinLiu = false;
 		this.DailyOverAllRunner(isGetZiJinLiu);
@@ -59,30 +59,22 @@ public class DailyScheduler implements SchedulingConfigurer {
 		this.DailyOverAllRunner(isGetZiJinLiu);
 	}
 
-	// run at 22:00
-	@Scheduled(cron = "0 00 22 * * MON-FRI")
+	// run at 21:30
+	@Scheduled(cron = "0 30 21 * * MON-FRI")
+	public void _0_DailyZiJinLiuAndDDX() {
+		logger.info("DailyZiJinLiuRunner and DDX for all StockId already running.");
+		DailyZiJinLiuRunner runner = new DailyZiJinLiuRunner();
+		runner.resetToAllPage();
+		Thread t = new Thread(runner);
+		t.start();
+	}
+
+	// run at 23:00
+	@Scheduled(cron = "0 00 23 * * MON-FRI")
 	public void _0_DataBaseSanityCheck() {
 		logger.info("DataBaseSanityCheck already running.");
 		Thread t = new Thread(new DataBaseSanityCheck());
 		t.start();
-	}
-
-	private void DailyUpdateAllStockRunner(boolean isGetZiJinLiu) {
-		logger.info("DailyUpdateAllStockRunner already running, please check folder result.");
-		Thread t = new Thread(new DailyUpdateAllStockRunner(isGetZiJinLiu));
-		t.start();
-	}
-
-	private void DailyZiJinLiuRunner() {
-		logger.info("DailyZiJinLiuRunner already running, please check DB result.");
-		DailyZiJinLiuRunner runner = new DailyZiJinLiuRunner();
-		Thread t = new Thread(runner);
-		t.start();
-
-		logger.info("DailyZhuLiJingLiuRuRunner already running, please check DB result.");
-		DailyZhuLiJingLiuRuRunner runner2 = new DailyZhuLiJingLiuRuRunner();
-		Thread t2 = new Thread(runner2);
-		t2.start();
 	}
 
 	private void DailyOverAllRunner(boolean isGetZiJinLiu) {

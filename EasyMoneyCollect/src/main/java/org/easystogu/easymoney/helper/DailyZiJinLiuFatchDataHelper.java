@@ -18,12 +18,13 @@ import com.gargoylesoftware.htmlunit.html.HtmlTextInput;
 import com.gargoylesoftware.htmlunit.html.HtmlUnorderedList;
 
 //compare to DailyZiJinLiuFatchDataHelper, this helper can fatch all stockIds data at one time
+//DDX need this data
 //东方财富通网站全部A股资金流排名，超大单，大单，中单，小单情况
 //有当天数据，3天数据，5天数据,10天数据
 //总共59页
 public class DailyZiJinLiuFatchDataHelper {
 	// one page contains 50 stockIds and total 2914/50=59 pages
-	public static final int totalPages = 59;
+	public static final int totalPages = 64;
 	private final String baseUrl = "http://data.eastmoney.com/zjlx/detail.html";
 	public String currentDate = "";
 

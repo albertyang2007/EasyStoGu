@@ -27,7 +27,8 @@ public class HomeEndPoint {
 		sb.append("<a href='./FastDailyOverAllRunner'>FastDailyOverAllRunner</a><br>");
 		sb.append("<a href='./DailySelectionRunner'>DailySelectionRunner</a><br>");
 		sb.append("<a href='./RealtimeDisplayStockPriceRunner'>RealtimeDisplayStockPriceRunner</a><br>");
-		sb.append("<a href='./DailyZiJinLiuRunner'>DailyZiJinLiuRunner (DDX need)</a><br>");
+		sb.append("<a href='./DailyZiJinLiuRunner'>DailyZiJinLiuRunner (include DDX)</a><br>");
+		sb.append("<a href='./DailyZiJinLiuRunnerForAllStockId'>DailyZiJinLiuRunnerForAllStock (includeDDX)</a><br>");
 		sb.append("<a href='./DailyDDXRunner'>DailyDDXRunner</a><br>");
 		sb.append("<a href='./DailyZiJinLiuXiangRunner'>DailyZiJinLiuXiangRunner</a><br>");
 		sb.append("<a href='./DataBaseSanityCheck'>DataBaseSanityCheck</a><br>");
@@ -63,6 +64,16 @@ public class HomeEndPoint {
 	@Path("/DailyZiJinLiuRunner")
 	public String dailyZiJinLiuRunner() {
 		Thread t = new Thread(new DailyZiJinLiuRunner());
+		t.start();
+		return "DailyZiJinLiuRunner already running, please check DB result.";
+	}
+
+	@GET
+	@Path("/DailyZiJinLiuRunnerForAllStockId")
+	public String dailyZiJinLiuRunnerForAllStockId() {
+		DailyZiJinLiuRunner runner = new DailyZiJinLiuRunner();
+		runner.resetToAllPage();
+		Thread t = new Thread(runner);
 		t.start();
 		return "DailyZiJinLiuRunner already running, please check DB result.";
 	}
@@ -108,7 +119,7 @@ public class HomeEndPoint {
 		t.start();
 		return "RecentlySelectionRunner already running, please check DB result.";
 	}
-	
+
 	@GET
 	@Path("/DailyUpdatePriceAndIndicatorRunner")
 	public String dailyUpdatePriceAndIndicatorRunner() {
@@ -116,7 +127,7 @@ public class HomeEndPoint {
 		t.start();
 		return "DailyUpdatePriceAndIndicatorRunner already running, please check DB result.";
 	}
-	
+
 	@GET
 	@Path("/DailyDDXRunner")
 	public String dailyDDXRunner() {
