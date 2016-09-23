@@ -57,11 +57,11 @@ public class HomeEndPoint {
 	}
 
 	@GET
-	@Path("/DailyZiJinLiuXiangRunner")
-	public String dailyZiJinLiuXiangRunner() {
+	@Path("/DailyZiJinLiuRunner")
+	public String dailyZiJinLiuRunner() {
 		Thread t = new Thread(new DailyZiJinLiuRunner());
 		t.start();
-		return "DailyZiJinLiuXiangRunner already running, please check DB result.";
+		return "DailyZiJinLiuRunner already running, please check DB result.";
 	}
 
 	@GET
