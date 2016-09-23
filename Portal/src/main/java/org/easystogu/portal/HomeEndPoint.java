@@ -5,6 +5,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
+import org.easystogu.easymoney.runner.DailyDDXRunner;
 import org.easystogu.easymoney.runner.DailyZhuLiJingLiuRuRunner;
 import org.easystogu.easymoney.runner.DailyZiJinLiuRunner;
 import org.easystogu.runner.DailyOverAllRunner;
@@ -26,6 +27,8 @@ public class HomeEndPoint {
 		sb.append("<a href='FastDailyOverAllRunner'>FastDailyOverAllRunner</a><br>");
 		sb.append("<a href='DailySelectionRunner'>DailySelectionRunner</a><br>");
 		sb.append("<a href='RealtimeDisplayStockPriceRunner'>RealtimeDisplayStockPriceRunner</a><br>");
+		sb.append("<a href='DailyZiJinLiuRunner'>DailyZiJinLiuRunner (DDX need)</a><br>");
+		sb.append("<a href='DailyDDXRunner'>DailyDDXRunner</a><br>");
 		sb.append("<a href='DailyZiJinLiuXiangRunner'>DailyZiJinLiuXiangRunner</a><br>");
 		sb.append("<a href='DataBaseSanityCheck'>DataBaseSanityCheck</a><br>");
 		sb.append("<a href='RecentlySelectionRunner'>RecentlySelectionRunner</a><br>");
@@ -112,5 +115,13 @@ public class HomeEndPoint {
 		Thread t = new Thread(new DailyUpdatePriceAndIndicatorRunner());
 		t.start();
 		return "DailyUpdatePriceAndIndicatorRunner already running, please check DB result.";
+	}
+	
+	@GET
+	@Path("/DailyDDXRunner")
+	public String dailyDDXRunner() {
+		Thread t = new Thread(new DailyDDXRunner());
+		t.start();
+		return "DailyDDXRunner already running, please check DB result.";
 	}
 }
