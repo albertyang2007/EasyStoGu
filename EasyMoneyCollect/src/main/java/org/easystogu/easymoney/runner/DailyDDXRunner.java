@@ -17,7 +17,7 @@ public class DailyDDXRunner implements Runnable {
 	private ZiJinLiuTableHelper zijinliuTableHelper = ZiJinLiuTableHelper.getInstance();
 	private StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
 	private IndDDXTableHelper ddxTable = IndDDXTableHelper.getInstance();
-	private String latestDate = "2016-09-22";//stockPriceTable.getLatestStockDate();
+	private String latestDate = stockPriceTable.getLatestStockDate();
 	private int count = 0;
 
 	public void countAndSaved(String stockId) {

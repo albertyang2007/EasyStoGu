@@ -21,17 +21,17 @@ public class HomeEndPoint {
 	@Path("/")
 	public Response test() {
 		StringBuffer sb = new StringBuffer();
-		sb.append("<a href='DailyUpdateAllStockRunner'>DailyUpdateAllStockRunner</a><br>");
-		sb.append("<a href='DailyOverAllRunner'>DailyOverAllRunner</a><br>");
-		sb.append("<a href='DailyUpdatePriceAndIndicatorRunner'>DailyUpdatePriceAndIndicatorRunner</a><br>");
-		sb.append("<a href='FastDailyOverAllRunner'>FastDailyOverAllRunner</a><br>");
-		sb.append("<a href='DailySelectionRunner'>DailySelectionRunner</a><br>");
-		sb.append("<a href='RealtimeDisplayStockPriceRunner'>RealtimeDisplayStockPriceRunner</a><br>");
-		sb.append("<a href='DailyZiJinLiuRunner'>DailyZiJinLiuRunner (DDX need)</a><br>");
-		sb.append("<a href='DailyDDXRunner'>DailyDDXRunner</a><br>");
-		sb.append("<a href='DailyZiJinLiuXiangRunner'>DailyZiJinLiuXiangRunner</a><br>");
-		sb.append("<a href='DataBaseSanityCheck'>DataBaseSanityCheck</a><br>");
-		sb.append("<a href='RecentlySelectionRunner'>RecentlySelectionRunner</a><br>");
+		sb.append("<a href='./DailyUpdateAllStockRunner'>DailyUpdateAllStockRunner</a><br>");
+		sb.append("<a href='./DailyOverAllRunner'>DailyOverAllRunner</a><br>");
+		sb.append("<a href='./DailyUpdatePriceAndIndicatorRunner'>DailyUpdatePriceAndIndicatorRunner</a><br>");
+		sb.append("<a href='./FastDailyOverAllRunner'>FastDailyOverAllRunner</a><br>");
+		sb.append("<a href='./DailySelectionRunner'>DailySelectionRunner</a><br>");
+		sb.append("<a href='./RealtimeDisplayStockPriceRunner'>RealtimeDisplayStockPriceRunner</a><br>");
+		sb.append("<a href='./DailyZiJinLiuRunner'>DailyZiJinLiuRunner (DDX need)</a><br>");
+		sb.append("<a href='./DailyDDXRunner'>DailyDDXRunner</a><br>");
+		sb.append("<a href='./DailyZiJinLiuXiangRunner'>DailyZiJinLiuXiangRunner</a><br>");
+		sb.append("<a href='./DataBaseSanityCheck'>DataBaseSanityCheck</a><br>");
+		sb.append("<a href='./RecentlySelectionRunner'>RecentlySelectionRunner</a><br>");
 		return Response.ok().entity(sb.toString()).build();
 	}
 
