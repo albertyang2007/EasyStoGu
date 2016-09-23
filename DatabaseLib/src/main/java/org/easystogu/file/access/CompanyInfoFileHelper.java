@@ -247,7 +247,7 @@ public class CompanyInfoFileHelper {
 			if (vo.totalGuBen != 0 && vo.liuTongAGu != 0) {
 				this.companyInfoTable.delete(vo.stockId);
 				this.companyInfoTable.insert(vo);
-				System.out.println(vo);
+				//System.out.println(vo);
 			}
 		}
 	}
