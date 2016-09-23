@@ -31,7 +31,7 @@ public class CompanyInfoTableHelper {
 	protected String QUERY_BY_STOCKID = "SELECT * FROM " + tableName + " WHERE stockId = :stockId";
 	protected String QUERY_ALL = "SELECT * FROM " + tableName;
 	protected String QUERY_ALL_STOCKID = "SELECT stockId AS rtn FROM " + tableName;
-	protected String DELETE_BY_STOCKID = "DELETE * FROM " + tableName + " WHERE stockId = :stockId";
+	protected String DELETE_BY_STOCKID = "DELETE FROM " + tableName + " WHERE stockId = :stockId";
 
 	protected NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 

@@ -243,8 +243,12 @@ public class CompanyInfoFileHelper {
 		while (it.hasNext()) {
 			String stockId = (String) it.next();
 			CompanyInfoVO vo = (CompanyInfoVO) companyMap.get(stockId);
-			//System.out.println(vo);
-			this.companyInfoTable.insertIfNotExist(vo);
+			// System.out.println(vo);
+			if (vo.totalGuBen != 0 && vo.liuTongAGu != 0) {
+				this.companyInfoTable.delete(vo.stockId);
+				this.companyInfoTable.insert(vo);
+				System.out.println(vo);
+			}
 		}
 	}
 
