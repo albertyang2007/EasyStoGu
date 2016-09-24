@@ -1,10 +1,8 @@
 package org.easystogu.scheduler;
 
-import org.easystogu.easymoney.runner.DailyZhuLiJingLiuRuRunner;
-import org.easystogu.easymoney.runner.DailyZiJinLiuRunner;
+import org.easystogu.easymoney.runner.OverAllZiJinLiuAndDDXRunner;
 import org.easystogu.log.LogHelper;
 import org.easystogu.runner.DailyOverAllRunner;
-import org.easystogu.runner.DailyUpdateAllStockRunner;
 import org.easystogu.runner.DataBaseSanityCheck;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,8 +60,8 @@ public class DailyScheduler implements SchedulingConfigurer {
 	// run at 21:30
 	@Scheduled(cron = "0 30 21 * * MON-FRI")
 	public void _0_DailyZiJinLiuAndDDX() {
-		logger.info("DailyZiJinLiuRunner and DDX for all StockId already running.");
-		DailyZiJinLiuRunner runner = new DailyZiJinLiuRunner();
+		logger.info("OverAllZiJinLiuAndDDXRunner and DDX for all StockId already running.");
+		OverAllZiJinLiuAndDDXRunner runner = new OverAllZiJinLiuAndDDXRunner();
 		runner.resetToAllPage();
 		Thread t = new Thread(runner);
 		t.start();

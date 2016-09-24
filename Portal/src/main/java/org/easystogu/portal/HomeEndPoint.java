@@ -8,6 +8,7 @@ import javax.ws.rs.core.Response;
 import org.easystogu.easymoney.runner.DailyDDXRunner;
 import org.easystogu.easymoney.runner.DailyZhuLiJingLiuRuRunner;
 import org.easystogu.easymoney.runner.DailyZiJinLiuRunner;
+import org.easystogu.easymoney.runner.OverAllZiJinLiuAndDDXRunner;
 import org.easystogu.runner.DailyOverAllRunner;
 import org.easystogu.runner.DailySelectionRunner;
 import org.easystogu.runner.DailyUpdateAllStockRunner;
@@ -27,8 +28,9 @@ public class HomeEndPoint {
 		sb.append("<a href='./FastDailyOverAllRunner'>FastDailyOverAllRunner</a><br>");
 		sb.append("<a href='./DailySelectionRunner'>DailySelectionRunner</a><br>");
 		sb.append("<a href='./RealtimeDisplayStockPriceRunner'>RealtimeDisplayStockPriceRunner</a><br>");
-		sb.append("<a href='./DailyZiJinLiuRunner'>DailyZiJinLiuRunner (include DDX)</a><br>");
-		sb.append("<a href='./DailyZiJinLiuRunnerForAllStockId'>DailyZiJinLiuRunnerForAllStock (includeDDX)</a><br>");
+		sb.append("<a href='./DailyZiJinLiuRunner'>DailyZiJinLiuRunner</a><br>");
+		sb.append("<a href='./DailyZiJinLiuRunnerForAllStockId'>DailyZiJinLiuRunnerForAllStock</a><br>");
+		sb.append("<a href='./OverAllZiJinLiuAndDDXRunner'>OverAllZiJinLiuAndDDXRunner</a><br>");
 		sb.append("<a href='./DailyDDXRunner'>DailyDDXRunner</a><br>");
 		sb.append("<a href='./DailyZiJinLiuXiangRunner'>DailyZiJinLiuXiangRunner</a><br>");
 		sb.append("<a href='./DataBaseSanityCheck'>DataBaseSanityCheck</a><br>");
@@ -66,6 +68,14 @@ public class HomeEndPoint {
 		Thread t = new Thread(new DailyZiJinLiuRunner());
 		t.start();
 		return "DailyZiJinLiuRunner already running, please check DB result.";
+	}
+	
+	@GET
+	@Path("/OverAllZiJinLiuAndDDXRunner")
+	public String overAllZiJinLiuAndDDXRunner() {
+		Thread t = new Thread(new OverAllZiJinLiuAndDDXRunner());
+		t.start();
+		return "OverAllZiJinLiuAndDDXRunner already running, please check DB result.";
 	}
 
 	@GET

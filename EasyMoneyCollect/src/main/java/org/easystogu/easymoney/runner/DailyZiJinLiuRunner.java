@@ -75,9 +75,6 @@ public class DailyZiJinLiuRunner implements Runnable {
 		countAndSaved();
 		// countAndSaved_3Day();
 		// countAndSaved_5Day();
-		//count DDX also
-		System.out.println("Count DDX for all.");
-		new DailyDDXRunner().countAndSaved();
 	}
 
 	public static void main(String[] args) {
