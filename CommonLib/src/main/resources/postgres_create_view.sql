@@ -1,21 +1,3 @@
--- View: stockprice_latest_date
-
--- DROP VIEW stockprice_latest_date;
-
-CREATE OR REPLACE VIEW stockprice_latest_date AS 
- SELECT stockprice.date
-   FROM stockprice
-  ORDER BY stockprice.date DESC
- LIMIT 1;
-
-ALTER TABLE stockprice_latest_date
-  OWNER TO postgres;
-GRANT ALL ON TABLE stockprice_latest_date TO public;
-GRANT ALL ON TABLE stockprice_latest_date TO postgres;
-COMMENT ON VIEW stockprice_latest_date
-  IS 'select the latest date from stockprice';
-
-  
 -- View: "luzao_phaseII"
 
 -- DROP VIEW "luzao_phaseII";
@@ -58,6 +40,7 @@ ALTER TABLE "luzao_phaseIII"
 GRANT ALL ON TABLE "luzao_phaseIII" TO public;
 GRANT ALL ON TABLE "luzao_phaseIII" TO postgres;
 
+
 -- View: "luzao_phaseIII_wr_all_ind_same"
 
 -- DROP VIEW "luzao_phaseIII_wr_all_ind_same";
@@ -82,6 +65,30 @@ COMMENT ON VIEW "luzao_phaseIII_wr_all_ind_same"
 WR:short Term==Middle Term == Long Term';
 
 
+-- View: "luzao_phaseIII_wr_all_ind_same_Details"
+
+-- DROP VIEW "luzao_phaseIII_wr_all_ind_same_Details";
+
+CREATE OR REPLACE VIEW "luzao_phaseIII_wr_all_ind_same_Details" AS 
+ SELECT company_info.name,
+    company_info.stockid,
+    "luzao_phaseIII_wr_all_ind_same".date,
+    round(100::numeric * (qian_fuquan_stockprice.close - qian_fuquan_stockprice.lastclose) / qian_fuquan_stockprice.lastclose, 2) AS pricediff,
+    "luzao_phaseIII_wr_all_ind_same".shoterm,
+    "luzao_phaseIII_wr_all_ind_same".midterm,
+    "luzao_phaseIII_wr_all_ind_same".lonterm
+   FROM qian_fuquan_stockprice,
+    company_info,
+    "luzao_phaseIII_wr_all_ind_same"
+  WHERE qian_fuquan_stockprice.date = "luzao_phaseIII_wr_all_ind_same".date AND qian_fuquan_stockprice.stockid = "luzao_phaseIII_wr_all_ind_same".stockid AND company_info.stockid = qian_fuquan_stockprice.stockid
+  ORDER BY round(100::numeric * (qian_fuquan_stockprice.close - qian_fuquan_stockprice.lastclose) / qian_fuquan_stockprice.lastclose, 2) DESC;
+
+ALTER TABLE "luzao_phaseIII_wr_all_ind_same_Details"
+  OWNER TO postgres;
+GRANT ALL ON TABLE "luzao_phaseIII_wr_all_ind_same_Details" TO public;
+GRANT ALL ON TABLE "luzao_phaseIII_wr_all_ind_same_Details" TO postgres;
+
+
 -- View: "luzao_phaseIII_wr_midTerm_lonTerm_same"
 
 -- DROP VIEW "luzao_phaseIII_wr_midTerm_lonTerm_same";
@@ -101,6 +108,162 @@ ALTER TABLE "luzao_phaseIII_wr_midTerm_lonTerm_same"
   OWNER TO postgres;
 GRANT ALL ON TABLE "luzao_phaseIII_wr_midTerm_lonTerm_same" TO public;
 GRANT ALL ON TABLE "luzao_phaseIII_wr_midTerm_lonTerm_same" TO postgres;
+
+
+-- View: "luzao_phaseIII_wr_midTerm_lonTerm_same_Details"
+
+-- DROP VIEW "luzao_phaseIII_wr_midTerm_lonTerm_same_Details";
+
+CREATE OR REPLACE VIEW "luzao_phaseIII_wr_midTerm_lonTerm_same_Details" AS 
+ SELECT company_info.name,
+    company_info.stockid,
+    "luzao_phaseIII_wr_midTerm_lonTerm_same".date,
+    round(100::numeric * (qian_fuquan_stockprice.close - qian_fuquan_stockprice.lastclose) / qian_fuquan_stockprice.lastclose, 2) AS pricediff,
+    "luzao_phaseIII_wr_midTerm_lonTerm_same".shoterm,
+    "luzao_phaseIII_wr_midTerm_lonTerm_same".midterm,
+    "luzao_phaseIII_wr_midTerm_lonTerm_same".lonterm
+   FROM qian_fuquan_stockprice,
+    company_info,
+    "luzao_phaseIII_wr_midTerm_lonTerm_same"
+  WHERE qian_fuquan_stockprice.date = "luzao_phaseIII_wr_midTerm_lonTerm_same".date AND qian_fuquan_stockprice.stockid = "luzao_phaseIII_wr_midTerm_lonTerm_same".stockid AND company_info.stockid = qian_fuquan_stockprice.stockid
+  ORDER BY round(100::numeric * (qian_fuquan_stockprice.close - qian_fuquan_stockprice.lastclose) / qian_fuquan_stockprice.lastclose, 2) DESC;
+
+ALTER TABLE "luzao_phaseIII_wr_midTerm_lonTerm_same_Details"
+  OWNER TO postgres;
+GRANT ALL ON TABLE "luzao_phaseIII_wr_midTerm_lonTerm_same_Details" TO public;
+GRANT ALL ON TABLE "luzao_phaseIII_wr_midTerm_lonTerm_same_Details" TO postgres;
+
+
+-- View: "luzao_phaseIII_zijinliu_3_days_top300"
+
+-- DROP VIEW "luzao_phaseIII_zijinliu_3_days_top300";
+
+CREATE OR REPLACE VIEW "luzao_phaseIII_zijinliu_3_days_top300" AS 
+ SELECT rtn2.stockid
+   FROM ( SELECT rtn.stockid,
+            count(*) AS count
+           FROM ( SELECT "luzao_phaseIII_zijinliu_top300".stockid,
+                    "luzao_phaseIII_zijinliu_top300".date
+                   FROM stockprice_latest_3_date,
+                    "luzao_phaseIII_zijinliu_top300"
+                  WHERE stockprice_latest_3_date.date = "luzao_phaseIII_zijinliu_top300".date
+                  ORDER BY "luzao_phaseIII_zijinliu_top300".stockid) rtn
+          GROUP BY rtn.stockid) rtn2
+  WHERE rtn2.count = 3;
+
+ALTER TABLE "luzao_phaseIII_zijinliu_3_days_top300"
+  OWNER TO postgres;
+GRANT ALL ON TABLE "luzao_phaseIII_zijinliu_3_days_top300" TO public;
+GRANT ALL ON TABLE "luzao_phaseIII_zijinliu_3_days_top300" TO postgres;
+COMMENT ON VIEW "luzao_phaseIII_zijinliu_3_days_top300"
+  IS '鲁兆持股，连续3天以上资金流入前300名';
+
+  
+  -- View: "luzao_phaseIII_zijinliu_3_days_top300_Details"
+
+-- DROP VIEW "luzao_phaseIII_zijinliu_3_days_top300_Details";
+
+CREATE OR REPLACE VIEW "luzao_phaseIII_zijinliu_3_days_top300_Details" AS 
+ SELECT company_info.name,
+    company_info.stockid,
+    stockprice_latest_date.date
+   FROM "luzao_phaseIII_zijinliu_3_days_top300",
+    company_info,
+    stockprice_latest_date
+  WHERE company_info.stockid = "luzao_phaseIII_zijinliu_3_days_top300".stockid;
+
+ALTER TABLE "luzao_phaseIII_zijinliu_3_days_top300_Details"
+  OWNER TO postgres;
+GRANT ALL ON TABLE "luzao_phaseIII_zijinliu_3_days_top300_Details" TO public;
+GRANT ALL ON TABLE "luzao_phaseIII_zijinliu_3_days_top300_Details" TO postgres;
+COMMENT ON VIEW "luzao_phaseIII_zijinliu_3_days_top300_Details"
+  IS '鲁兆持股，连续3天以上资金流入前300名';
+
+  
+  -- View: "luzao_phaseIII_zijinliu_3_of_5_days_top300"
+
+-- DROP VIEW "luzao_phaseIII_zijinliu_3_of_5_days_top300";
+
+CREATE OR REPLACE VIEW "luzao_phaseIII_zijinliu_3_of_5_days_top300" AS 
+ SELECT rtn2.stockid
+   FROM ( SELECT rtn.stockid,
+            count(*) AS count
+           FROM ( SELECT "luzao_phaseIII_zijinliu_top300".stockid,
+                    "luzao_phaseIII_zijinliu_top300".date
+                   FROM stockprice_latest_5_date,
+                    "luzao_phaseIII_zijinliu_top300"
+                  WHERE stockprice_latest_5_date.date = "luzao_phaseIII_zijinliu_top300".date
+                  ORDER BY "luzao_phaseIII_zijinliu_top300".stockid) rtn
+          GROUP BY rtn.stockid) rtn2
+  WHERE rtn2.count >= 3;
+
+ALTER TABLE "luzao_phaseIII_zijinliu_3_of_5_days_top300"
+  OWNER TO postgres;
+GRANT ALL ON TABLE "luzao_phaseIII_zijinliu_3_of_5_days_top300" TO public;
+GRANT ALL ON TABLE "luzao_phaseIII_zijinliu_3_of_5_days_top300" TO postgres;
+COMMENT ON VIEW "luzao_phaseIII_zijinliu_3_of_5_days_top300"
+  IS '鲁兆持股, 5天中有3天资金排名前300';
+
+  
+  -- View: "luzao_phaseIII_zijinliu_3_of_5_days_top300_Details"
+
+-- DROP VIEW "luzao_phaseIII_zijinliu_3_of_5_days_top300_Details";
+
+CREATE OR REPLACE VIEW "luzao_phaseIII_zijinliu_3_of_5_days_top300_Details" AS 
+ SELECT company_info.name,
+    company_info.stockid,
+    stockprice_latest_date.date
+   FROM "luzao_phaseIII_zijinliu_3_of_5_days_top300",
+    company_info,
+    stockprice_latest_date
+  WHERE company_info.stockid = "luzao_phaseIII_zijinliu_3_of_5_days_top300".stockid;
+
+ALTER TABLE "luzao_phaseIII_zijinliu_3_of_5_days_top300_Details"
+  OWNER TO postgres;
+GRANT ALL ON TABLE "luzao_phaseIII_zijinliu_3_of_5_days_top300_Details" TO public;
+GRANT ALL ON TABLE "luzao_phaseIII_zijinliu_3_of_5_days_top300_Details" TO postgres;
+COMMENT ON VIEW "luzao_phaseIII_zijinliu_3_of_5_days_top300_Details"
+  IS '鲁兆持股，5天中有3天以上资金排名前300';
+
+  
+  -- View: "luzao_phaseIII_zijinliu_top300"
+
+-- DROP VIEW "luzao_phaseIII_zijinliu_top300";
+
+CREATE OR REPLACE VIEW "luzao_phaseIII_zijinliu_top300" AS 
+ SELECT ind_ma.stockid,
+    ind_ma.date,
+    zijinliu.rate
+   FROM ind_ma,
+    zijinliu
+  WHERE ind_ma.date = zijinliu.date AND ind_ma.stockid = zijinliu.stockid AND zijinliu.rate <= 300 AND zijinliu.majornetin > 0::numeric AND ind_ma.close > ind_ma.ma19 AND ind_ma.ma43 < ind_ma.ma19 AND ind_ma.ma86 > ind_ma.ma43
+  ORDER BY zijinliu.rate;
+
+ALTER TABLE "luzao_phaseIII_zijinliu_top300"
+  OWNER TO postgres;
+GRANT ALL ON TABLE "luzao_phaseIII_zijinliu_top300" TO public;
+GRANT ALL ON TABLE "luzao_phaseIII_zijinliu_top300" TO postgres;
+COMMENT ON VIEW "luzao_phaseIII_zijinliu_top300"
+  IS '鲁兆持股，资金流入排名前300名';
+
+  
+  -- View: "luzao_phaseIII_zijinliu_top300_Details"
+
+-- DROP VIEW "luzao_phaseIII_zijinliu_top300_Details";
+
+CREATE OR REPLACE VIEW "luzao_phaseIII_zijinliu_top300_Details" AS 
+ SELECT company_info.name,
+    company_info.stockid,
+    "luzao_phaseIII_zijinliu_top300".date,
+    "luzao_phaseIII_zijinliu_top300".rate
+   FROM "luzao_phaseIII_zijinliu_top300",
+    company_info
+  WHERE company_info.stockid = "luzao_phaseIII_zijinliu_top300".stockid;
+
+ALTER TABLE "luzao_phaseIII_zijinliu_top300_Details"
+  OWNER TO postgres;
+GRANT ALL ON TABLE "luzao_phaseIII_zijinliu_top300_Details" TO public;
+GRANT ALL ON TABLE "luzao_phaseIII_zijinliu_top300_Details" TO postgres;
 
 
 -- View: "luzao_phaseII_wr_all_ind_same"
@@ -127,6 +290,30 @@ COMMENT ON VIEW "luzao_phaseII_wr_all_ind_same"
 WR: short Term == Middle Term == Long Term';
 
 
+-- View: "luzao_phaseII_wr_all_ind_same_Details"
+
+-- DROP VIEW "luzao_phaseII_wr_all_ind_same_Details";
+
+CREATE OR REPLACE VIEW "luzao_phaseII_wr_all_ind_same_Details" AS 
+ SELECT company_info.name,
+    company_info.stockid,
+    "luzao_phaseII_wr_all_ind_same".date,
+    round(100::numeric * (qian_fuquan_stockprice.close - qian_fuquan_stockprice.lastclose) / qian_fuquan_stockprice.lastclose, 2) AS pricediff,
+    "luzao_phaseII_wr_all_ind_same".shoterm,
+    "luzao_phaseII_wr_all_ind_same".midterm,
+    "luzao_phaseII_wr_all_ind_same".lonterm
+   FROM qian_fuquan_stockprice,
+    company_info,
+    "luzao_phaseII_wr_all_ind_same"
+  WHERE qian_fuquan_stockprice.date = "luzao_phaseII_wr_all_ind_same".date AND qian_fuquan_stockprice.stockid = "luzao_phaseII_wr_all_ind_same".stockid AND company_info.stockid = qian_fuquan_stockprice.stockid
+  ORDER BY round(100::numeric * (qian_fuquan_stockprice.close - qian_fuquan_stockprice.lastclose) / qian_fuquan_stockprice.lastclose, 2) DESC;
+
+ALTER TABLE "luzao_phaseII_wr_all_ind_same_Details"
+  OWNER TO postgres;
+GRANT ALL ON TABLE "luzao_phaseII_wr_all_ind_same_Details" TO public;
+GRANT ALL ON TABLE "luzao_phaseII_wr_all_ind_same_Details" TO postgres;
+
+
 -- View: "luzao_phaseII_wr_midTerm_lonTerm_same"
 
 -- DROP VIEW "luzao_phaseII_wr_midTerm_lonTerm_same";
@@ -148,7 +335,297 @@ GRANT ALL ON TABLE "luzao_phaseII_wr_midTerm_lonTerm_same" TO public;
 GRANT ALL ON TABLE "luzao_phaseII_wr_midTerm_lonTerm_same" TO postgres;
 
 
--- View: wr_all_ind_same
+-- View: "luzao_phaseII_wr_midTerm_lonTerm_same_Details"
+
+-- DROP VIEW "luzao_phaseII_wr_midTerm_lonTerm_same_Details";
+
+CREATE OR REPLACE VIEW "luzao_phaseII_wr_midTerm_lonTerm_same_Details" AS 
+ SELECT company_info.name,
+    company_info.stockid,
+    "luzao_phaseII_wr_midTerm_lonTerm_same".date,
+    round(100::numeric * (qian_fuquan_stockprice.close - qian_fuquan_stockprice.lastclose) / qian_fuquan_stockprice.lastclose, 2) AS pricediff,
+    "luzao_phaseII_wr_midTerm_lonTerm_same".shoterm,
+    "luzao_phaseII_wr_midTerm_lonTerm_same".midterm,
+    "luzao_phaseII_wr_midTerm_lonTerm_same".lonterm
+   FROM qian_fuquan_stockprice,
+    company_info,
+    "luzao_phaseII_wr_midTerm_lonTerm_same"
+  WHERE qian_fuquan_stockprice.date = "luzao_phaseII_wr_midTerm_lonTerm_same".date AND qian_fuquan_stockprice.stockid = "luzao_phaseII_wr_midTerm_lonTerm_same".stockid AND company_info.stockid = qian_fuquan_stockprice.stockid
+  ORDER BY round(100::numeric * (qian_fuquan_stockprice.close - qian_fuquan_stockprice.lastclose) / qian_fuquan_stockprice.lastclose, 2) DESC;
+
+ALTER TABLE "luzao_phaseII_wr_midTerm_lonTerm_same_Details"
+  OWNER TO postgres;
+GRANT ALL ON TABLE "luzao_phaseII_wr_midTerm_lonTerm_same_Details" TO public;
+GRANT ALL ON TABLE "luzao_phaseII_wr_midTerm_lonTerm_same_Details" TO postgres;
+
+
+-- View: "luzao_phaseII_wr_shoTerm_midTerm_same"
+
+-- DROP VIEW "luzao_phaseII_wr_shoTerm_midTerm_same";
+
+CREATE OR REPLACE VIEW "luzao_phaseII_wr_shoTerm_midTerm_same" AS 
+ SELECT "wr_shoTerm_midTerm_same".stockid,
+    "wr_shoTerm_midTerm_same".date,
+    "wr_shoTerm_midTerm_same".shoterm,
+    "wr_shoTerm_midTerm_same".midterm,
+    "wr_shoTerm_midTerm_same".lonterm
+   FROM "wr_shoTerm_midTerm_same"
+  WHERE (( SELECT count(1) AS num
+           FROM "luzao_phaseII"
+          WHERE "luzao_phaseII".stockid = "wr_shoTerm_midTerm_same".stockid)) = 1;
+
+ALTER TABLE "luzao_phaseII_wr_shoTerm_midTerm_same"
+  OWNER TO postgres;
+GRANT ALL ON TABLE "luzao_phaseII_wr_shoTerm_midTerm_same" TO public;
+GRANT ALL ON TABLE "luzao_phaseII_wr_shoTerm_midTerm_same" TO postgres;
+
+
+-- View: "luzao_phaseII_wr_shoTerm_midTerm_same_Details"
+
+-- DROP VIEW "luzao_phaseII_wr_shoTerm_midTerm_same_Details";
+
+CREATE OR REPLACE VIEW "luzao_phaseII_wr_shoTerm_midTerm_same_Details" AS 
+ SELECT company_info.name,
+    company_info.stockid,
+    "luzao_phaseII_wr_shoTerm_midTerm_same".date,
+    round(100::numeric * (qian_fuquan_stockprice.close - qian_fuquan_stockprice.lastclose) / qian_fuquan_stockprice.lastclose, 2) AS pricediff,
+    "luzao_phaseII_wr_shoTerm_midTerm_same".shoterm,
+    "luzao_phaseII_wr_shoTerm_midTerm_same".midterm,
+    "luzao_phaseII_wr_shoTerm_midTerm_same".lonterm
+   FROM qian_fuquan_stockprice,
+    company_info,
+    "luzao_phaseII_wr_shoTerm_midTerm_same"
+  WHERE qian_fuquan_stockprice.date = "luzao_phaseII_wr_shoTerm_midTerm_same".date AND qian_fuquan_stockprice.stockid = "luzao_phaseII_wr_shoTerm_midTerm_same".stockid AND company_info.stockid = qian_fuquan_stockprice.stockid
+  ORDER BY round(100::numeric * (qian_fuquan_stockprice.close - qian_fuquan_stockprice.lastclose) / qian_fuquan_stockprice.lastclose, 2) DESC;
+
+ALTER TABLE "luzao_phaseII_wr_shoTerm_midTerm_same_Details"
+  OWNER TO postgres;
+GRANT ALL ON TABLE "luzao_phaseII_wr_shoTerm_midTerm_same_Details" TO public;
+GRANT ALL ON TABLE "luzao_phaseII_wr_shoTerm_midTerm_same_Details" TO postgres;
+
+
+-- View: "luzao_phaseII_zijinliu_3_days_top300"
+
+-- DROP VIEW "luzao_phaseII_zijinliu_3_days_top300";
+
+CREATE OR REPLACE VIEW "luzao_phaseII_zijinliu_3_days_top300" AS 
+ SELECT rtn2.stockid
+   FROM ( SELECT rtn.stockid,
+            count(*) AS count
+           FROM ( SELECT "luzao_phaseII_zijinliu_top300".stockid,
+                    "luzao_phaseII_zijinliu_top300".date
+                   FROM stockprice_latest_3_date,
+                    "luzao_phaseII_zijinliu_top300"
+                  WHERE stockprice_latest_3_date.date = "luzao_phaseII_zijinliu_top300".date
+                  ORDER BY "luzao_phaseII_zijinliu_top300".stockid) rtn
+          GROUP BY rtn.stockid) rtn2
+  WHERE rtn2.count = 3;
+
+ALTER TABLE "luzao_phaseII_zijinliu_3_days_top300"
+  OWNER TO postgres;
+GRANT ALL ON TABLE "luzao_phaseII_zijinliu_3_days_top300" TO public;
+GRANT ALL ON TABLE "luzao_phaseII_zijinliu_3_days_top300" TO postgres;
+COMMENT ON VIEW "luzao_phaseII_zijinliu_3_days_top300"
+  IS '鲁兆建仓，连续3天以上资金流入前300名';
+
+  
+  -- View: "luzao_phaseII_zijinliu_3_days_top300_Details"
+
+-- DROP VIEW "luzao_phaseII_zijinliu_3_days_top300_Details";
+
+CREATE OR REPLACE VIEW "luzao_phaseII_zijinliu_3_days_top300_Details" AS 
+ SELECT company_info.name,
+    company_info.stockid,
+    stockprice_latest_date.date
+   FROM "luzao_phaseII_zijinliu_3_days_top300",
+    company_info,
+    stockprice_latest_date
+  WHERE company_info.stockid = "luzao_phaseII_zijinliu_3_days_top300".stockid;
+
+ALTER TABLE "luzao_phaseII_zijinliu_3_days_top300_Details"
+  OWNER TO postgres;
+GRANT ALL ON TABLE "luzao_phaseII_zijinliu_3_days_top300_Details" TO public;
+GRANT ALL ON TABLE "luzao_phaseII_zijinliu_3_days_top300_Details" TO postgres;
+COMMENT ON VIEW "luzao_phaseII_zijinliu_3_days_top300_Details"
+  IS '鲁兆建仓，连续3天以上资金流入前300名';
+
+  
+  -- View: "luzao_phaseII_zijinliu_3_of_5_days_top300"
+
+-- DROP VIEW "luzao_phaseII_zijinliu_3_of_5_days_top300";
+
+CREATE OR REPLACE VIEW "luzao_phaseII_zijinliu_3_of_5_days_top300" AS 
+ SELECT rtn2.stockid
+   FROM ( SELECT rtn.stockid,
+            count(*) AS count
+           FROM ( SELECT "luzao_phaseII_zijinliu_top300".stockid,
+                    "luzao_phaseII_zijinliu_top300".date
+                   FROM stockprice_latest_5_date,
+                    "luzao_phaseII_zijinliu_top300"
+                  WHERE stockprice_latest_5_date.date = "luzao_phaseII_zijinliu_top300".date
+                  ORDER BY "luzao_phaseII_zijinliu_top300".stockid) rtn
+          GROUP BY rtn.stockid) rtn2
+  WHERE rtn2.count >= 3;
+
+ALTER TABLE "luzao_phaseII_zijinliu_3_of_5_days_top300"
+  OWNER TO postgres;
+GRANT ALL ON TABLE "luzao_phaseII_zijinliu_3_of_5_days_top300" TO public;
+GRANT ALL ON TABLE "luzao_phaseII_zijinliu_3_of_5_days_top300" TO postgres;
+COMMENT ON VIEW "luzao_phaseII_zijinliu_3_of_5_days_top300"
+  IS '鲁兆建仓，5天有3天以上资金排名前300';
+
+  
+  -- View: "luzao_phaseII_zijinliu_3_of_5_days_top300_Details"
+
+-- DROP VIEW "luzao_phaseII_zijinliu_3_of_5_days_top300_Details";
+
+CREATE OR REPLACE VIEW "luzao_phaseII_zijinliu_3_of_5_days_top300_Details" AS 
+ SELECT company_info.name,
+    company_info.stockid,
+    stockprice_latest_date.date
+   FROM "luzao_phaseII_zijinliu_3_of_5_days_top300",
+    company_info,
+    stockprice_latest_date
+  WHERE company_info.stockid = "luzao_phaseII_zijinliu_3_of_5_days_top300".stockid;
+
+ALTER TABLE "luzao_phaseII_zijinliu_3_of_5_days_top300_Details"
+  OWNER TO postgres;
+GRANT ALL ON TABLE "luzao_phaseII_zijinliu_3_of_5_days_top300_Details" TO public;
+GRANT ALL ON TABLE "luzao_phaseII_zijinliu_3_of_5_days_top300_Details" TO postgres;
+COMMENT ON VIEW "luzao_phaseII_zijinliu_3_of_5_days_top300_Details"
+  IS '鲁兆建仓，5天有3天资金排名前300';
+
+  
+  -- View: "luzao_phaseII_zijinliu_top300"
+
+-- DROP VIEW "luzao_phaseII_zijinliu_top300";
+
+CREATE OR REPLACE VIEW "luzao_phaseII_zijinliu_top300" AS 
+ SELECT ind_ma.stockid,
+    ind_ma.date,
+    zijinliu.rate
+   FROM ind_ma,
+    zijinliu
+  WHERE ind_ma.date = zijinliu.date AND ind_ma.stockid = zijinliu.stockid AND zijinliu.rate <= 300 AND zijinliu.majornetin > 0::numeric AND ind_ma.close > ind_ma.ma19 AND ind_ma.ma43 > ind_ma.ma19 AND ind_ma.ma86 > ind_ma.ma43
+  ORDER BY zijinliu.rate;
+
+ALTER TABLE "luzao_phaseII_zijinliu_top300"
+  OWNER TO postgres;
+GRANT ALL ON TABLE "luzao_phaseII_zijinliu_top300" TO public;
+GRANT ALL ON TABLE "luzao_phaseII_zijinliu_top300" TO postgres;
+COMMENT ON VIEW "luzao_phaseII_zijinliu_top300"
+  IS '鲁兆建仓，资金流入排名前300名';
+
+  
+  -- View: "luzao_phaseII_zijinliu_top300_Details"
+
+-- DROP VIEW "luzao_phaseII_zijinliu_top300_Details";
+
+CREATE OR REPLACE VIEW "luzao_phaseII_zijinliu_top300_Details" AS 
+ SELECT company_info.name,
+    company_info.stockid,
+    "luzao_phaseII_zijinliu_top300".date,
+    "luzao_phaseII_zijinliu_top300".rate
+   FROM "luzao_phaseII_zijinliu_top300",
+    company_info
+  WHERE company_info.stockid = "luzao_phaseII_zijinliu_top300".stockid;
+
+ALTER TABLE "luzao_phaseII_zijinliu_top300_Details"
+  OWNER TO postgres;
+GRANT ALL ON TABLE "luzao_phaseII_zijinliu_top300_Details" TO public;
+GRANT ALL ON TABLE "luzao_phaseII_zijinliu_top300_Details" TO postgres;
+
+
+-- View: stockprice_all_date
+
+-- DROP VIEW stockprice_all_date;
+
+CREATE OR REPLACE VIEW stockprice_all_date AS 
+ SELECT DISTINCT stockprice.date
+   FROM stockprice
+  ORDER BY stockprice.date DESC;
+
+ALTER TABLE stockprice_all_date
+  OWNER TO postgres;
+GRANT ALL ON TABLE stockprice_all_date TO public;
+GRANT ALL ON TABLE stockprice_all_date TO postgres;
+COMMENT ON VIEW stockprice_all_date
+  IS '所有交易日期';
+
+  
+  -- View: stockprice_latest_10_date
+
+-- DROP VIEW stockprice_latest_10_date;
+
+CREATE OR REPLACE VIEW stockprice_latest_10_date AS 
+ SELECT DISTINCT stockprice.date
+   FROM stockprice
+  ORDER BY stockprice.date DESC
+ LIMIT 10;
+
+ALTER TABLE stockprice_latest_10_date
+  OWNER TO postgres;
+GRANT ALL ON TABLE stockprice_latest_10_date TO public;
+GRANT ALL ON TABLE stockprice_latest_10_date TO postgres;
+COMMENT ON VIEW stockprice_latest_10_date
+  IS '最近10个交易日期';
+
+  
+  -- View: stockprice_latest_3_date
+
+-- DROP VIEW stockprice_latest_3_date;
+
+CREATE OR REPLACE VIEW stockprice_latest_3_date AS 
+ SELECT DISTINCT stockprice.date
+   FROM stockprice
+  ORDER BY stockprice.date DESC
+ LIMIT 3;
+
+ALTER TABLE stockprice_latest_3_date
+  OWNER TO postgres;
+GRANT ALL ON TABLE stockprice_latest_3_date TO public;
+GRANT ALL ON TABLE stockprice_latest_3_date TO postgres;
+COMMENT ON VIEW stockprice_latest_3_date
+  IS '最近3个交易日期';
+
+  
+  -- View: stockprice_latest_5_date
+
+-- DROP VIEW stockprice_latest_5_date;
+
+CREATE OR REPLACE VIEW stockprice_latest_5_date AS 
+ SELECT DISTINCT stockprice.date
+   FROM stockprice
+  ORDER BY stockprice.date DESC
+ LIMIT 5;
+
+ALTER TABLE stockprice_latest_5_date
+  OWNER TO postgres;
+GRANT ALL ON TABLE stockprice_latest_5_date TO public;
+GRANT ALL ON TABLE stockprice_latest_5_date TO postgres;
+COMMENT ON VIEW stockprice_latest_5_date
+  IS '最近5个交易日期';
+
+  
+  -- View: stockprice_latest_date
+
+-- DROP VIEW stockprice_latest_date;
+
+CREATE OR REPLACE VIEW stockprice_latest_date AS 
+ SELECT stockprice.date
+   FROM stockprice
+  ORDER BY stockprice.date DESC
+ LIMIT 1;
+
+ALTER TABLE stockprice_latest_date
+  OWNER TO postgres;
+GRANT ALL ON TABLE stockprice_latest_date TO public;
+GRANT ALL ON TABLE stockprice_latest_date TO postgres;
+COMMENT ON VIEW stockprice_latest_date
+  IS '最新交易日期';
+
+  
+  -- View: wr_all_ind_same
 
 -- DROP VIEW wr_all_ind_same;
 
@@ -173,6 +650,52 @@ COMMENT ON VIEW wr_all_ind_same
   IS 'Short Term == Middle Term == Long Term';
 
   
+  -- View: "wr_all_ind_same_Details"
+
+-- DROP VIEW "wr_all_ind_same_Details";
+
+CREATE OR REPLACE VIEW "wr_all_ind_same_Details" AS 
+ SELECT company_info.name,
+    company_info.stockid,
+    wr_all_ind_same.date,
+    round(100::numeric * (qian_fuquan_stockprice.close - qian_fuquan_stockprice.lastclose) / qian_fuquan_stockprice.lastclose, 2) AS pricediff,
+    wr_all_ind_same.shoterm,
+    wr_all_ind_same.midterm,
+    wr_all_ind_same.lonterm
+   FROM qian_fuquan_stockprice,
+    company_info,
+    wr_all_ind_same
+  WHERE qian_fuquan_stockprice.date = wr_all_ind_same.date AND qian_fuquan_stockprice.stockid = wr_all_ind_same.stockid AND company_info.stockid = qian_fuquan_stockprice.stockid
+  ORDER BY round(100::numeric * (qian_fuquan_stockprice.close - qian_fuquan_stockprice.lastclose) / qian_fuquan_stockprice.lastclose, 2) DESC;
+
+ALTER TABLE "wr_all_ind_same_Details"
+  OWNER TO postgres;
+GRANT ALL ON TABLE "wr_all_ind_same_Details" TO public;
+GRANT ALL ON TABLE "wr_all_ind_same_Details" TO postgres;
+
+
+-- View: wr_daily_compare
+
+-- DROP VIEW wr_daily_compare;
+
+CREATE OR REPLACE VIEW wr_daily_compare AS 
+ SELECT ind_wr.stockid,
+    ind_wr.date,
+    ind_wr.lonterm,
+    ind_wr.shoterm,
+    ind_wr.midterm,
+    ind_wr.shoterm - lead(ind_wr.shoterm) OVER (ORDER BY ind_wr.date DESC) AS shoterm_diff,
+    ind_wr.midterm - lead(ind_wr.midterm) OVER (ORDER BY ind_wr.date DESC) AS midterm_diff,
+    ind_wr.lonterm - lead(ind_wr.lonterm) OVER (ORDER BY ind_wr.date DESC) AS lonterm_diff
+   FROM ind_wr
+  ORDER BY ind_wr.date;
+
+ALTER TABLE wr_daily_compare
+  OWNER TO postgres;
+GRANT ALL ON TABLE wr_daily_compare TO public;
+GRANT ALL ON TABLE wr_daily_compare TO postgres;
+
+
 -- View: "wr_midTerm_lonTerm_same"
 
 -- DROP VIEW "wr_midTerm_lonTerm_same";
@@ -218,23 +741,92 @@ ALTER TABLE "wr_shoTerm_midTerm_same"
 GRANT ALL ON TABLE "wr_shoTerm_midTerm_same" TO public;
 GRANT ALL ON TABLE "wr_shoTerm_midTerm_same" TO postgres;
 
--- View: wr_daily_compare
 
--- DROP VIEW wr_daily_compare;
+-- View: zijinliu_3_days_top300
 
-CREATE OR REPLACE VIEW wr_daily_compare AS 
- SELECT ind_wr.stockid,
-    ind_wr.date,
-    ind_wr.lonterm,
-    ind_wr.shoterm,
-    ind_wr.midterm,
-    ind_wr.shoterm - lead(ind_wr.shoterm) OVER (ORDER BY ind_wr.date DESC) AS shoterm_diff,
-    ind_wr.midterm - lead(ind_wr.midterm) OVER (ORDER BY ind_wr.date DESC) AS midterm_diff,
-    ind_wr.lonterm - lead(ind_wr.lonterm) OVER (ORDER BY ind_wr.date DESC) AS lonterm_diff
-   FROM ind_wr
-  ORDER BY ind_wr.date DESC;
+-- DROP VIEW zijinliu_3_days_top300;
 
-ALTER TABLE wr_daily_compare
+CREATE OR REPLACE VIEW zijinliu_3_days_top300 AS 
+ SELECT rtn2.stockid
+   FROM ( SELECT rtn.stockid,
+            count(*) AS count
+           FROM ( SELECT zijinliu.stockid,
+                    zijinliu.date
+                   FROM stockprice_latest_3_date,
+                    zijinliu
+                  WHERE stockprice_latest_3_date.date = zijinliu.date AND zijinliu.rate <= 300
+                  ORDER BY zijinliu.stockid) rtn
+          GROUP BY rtn.stockid) rtn2
+  WHERE rtn2.count = 3;
+
+ALTER TABLE zijinliu_3_days_top300
   OWNER TO postgres;
-GRANT ALL ON TABLE wr_daily_compare TO public;
-GRANT ALL ON TABLE wr_daily_compare TO postgres;
+GRANT ALL ON TABLE zijinliu_3_days_top300 TO public;
+GRANT ALL ON TABLE zijinliu_3_days_top300 TO postgres;
+COMMENT ON VIEW zijinliu_3_days_top300
+  IS '连续3天资金排名前300';
+
+  
+  -- View: "zijinliu_3_days_top300_Details"
+
+-- DROP VIEW "zijinliu_3_days_top300_Details";
+
+CREATE OR REPLACE VIEW "zijinliu_3_days_top300_Details" AS 
+ SELECT company_info.name,
+    company_info.stockid,
+    stockprice_latest_date.date
+   FROM zijinliu_3_days_top300,
+    company_info,
+    stockprice_latest_date
+  WHERE company_info.stockid = zijinliu_3_days_top300.stockid;
+
+ALTER TABLE "zijinliu_3_days_top300_Details"
+  OWNER TO postgres;
+GRANT ALL ON TABLE "zijinliu_3_days_top300_Details" TO public;
+GRANT ALL ON TABLE "zijinliu_3_days_top300_Details" TO postgres;
+COMMENT ON VIEW "zijinliu_3_days_top300_Details"
+  IS '连续3天资金排名前300';
+
+  
+  -- View: zijinliu_3_of_5_days_top300
+
+-- DROP VIEW zijinliu_3_of_5_days_top300;
+
+CREATE OR REPLACE VIEW zijinliu_3_of_5_days_top300 AS 
+ SELECT rtn2.stockid
+   FROM ( SELECT rtn.stockid,
+            count(*) AS count
+           FROM ( SELECT zijinliu.stockid,
+                    zijinliu.date
+                   FROM stockprice_latest_5_date,
+                    zijinliu
+                  WHERE stockprice_latest_5_date.date = zijinliu.date AND zijinliu.rate <= 300
+                  ORDER BY zijinliu.stockid) rtn
+          GROUP BY rtn.stockid) rtn2
+  WHERE rtn2.count >= 3;
+
+ALTER TABLE zijinliu_3_of_5_days_top300
+  OWNER TO postgres;
+GRANT ALL ON TABLE zijinliu_3_of_5_days_top300 TO public;
+GRANT ALL ON TABLE zijinliu_3_of_5_days_top300 TO postgres;
+COMMENT ON VIEW zijinliu_3_of_5_days_top300
+  IS '5天有3天以上资金流入前300名';
+
+  
+  -- View: "zijinliu_3_of_5_days_top300_Details"
+
+-- DROP VIEW "zijinliu_3_of_5_days_top300_Details";
+
+CREATE OR REPLACE VIEW "zijinliu_3_of_5_days_top300_Details" AS 
+ SELECT company_info.name,
+    company_info.stockid,
+    stockprice_latest_date.date
+   FROM zijinliu_3_of_5_days_top300,
+    company_info,
+    stockprice_latest_date
+  WHERE company_info.stockid = zijinliu_3_of_5_days_top300.stockid;
+
+ALTER TABLE "zijinliu_3_of_5_days_top300_Details"
+  OWNER TO postgres;
+GRANT ALL ON TABLE "zijinliu_3_of_5_days_top300_Details" TO public;
+GRANT ALL ON TABLE "zijinliu_3_of_5_days_top300_Details" TO postgres;
