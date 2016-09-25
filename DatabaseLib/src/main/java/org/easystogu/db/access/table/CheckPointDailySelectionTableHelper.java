@@ -3,6 +3,7 @@ package org.easystogu.db.access.table;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -29,6 +30,8 @@ public class CheckPointDailySelectionTableHelper {
 			+ " WHERE stockid = :stockid AND date = :date AND checkpoint = :checkpoint";
 	protected String QUERY_BY_STOCKID_AND_DATE_AND_CHECKPOINT_SQL = "SELECT * FROM " + tableName
 			+ " WHERE stockid = :stockid AND date = :date AND checkpoint = :checkpoint";
+	protected String QUERY_BY_DATE_AND_CHECKPOINT_SQL = "SELECT * FROM " + tableName
+			+ " WHERE date = :date AND checkpoint = :checkpoint";
 	protected String COUNT_BY_DATE_AND_CHECKPOINT_SQL = "SELECT count(*) AS rtn FROM " + tableName
 			+ " WHERE date = :date AND checkpoint = :checkpoint";
 	protected String QUERY_BY_STOCKID_AND_DATE_SQL = "SELECT * FROM " + tableName
@@ -139,8 +142,8 @@ public class CheckPointDailySelectionTableHelper {
 			namedParameters.addValue("stockid", stockId);
 			namedParameters.addValue("date", date);
 
-			List<CheckPointDailySelectionVO> list = this.namedParameterJdbcTemplate.query(
-					QUERY_BY_STOCKID_AND_DATE_SQL, namedParameters, new IndEventVOMapper());
+			List<CheckPointDailySelectionVO> list = this.namedParameterJdbcTemplate.query(QUERY_BY_STOCKID_AND_DATE_SQL,
+					namedParameters, new IndEventVOMapper());
 
 			return list;
 		} catch (EmptyResultDataAccessException ee) {
@@ -204,6 +207,23 @@ public class CheckPointDailySelectionTableHelper {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	public List<CheckPointDailySelectionVO> queryByDateAndCheckPoint(String date, String checkPoint) {
+		try {
+
+			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+			namedParameters.addValue("date", date);
+			namedParameters.addValue("checkpoint", checkPoint);
+
+			List<CheckPointDailySelectionVO> list = this.namedParameterJdbcTemplate
+					.query(QUERY_BY_DATE_AND_CHECKPOINT_SQL, namedParameters, new IndEventVOMapper());
+
+			return list;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new ArrayList<CheckPointDailySelectionVO>();
 	}
 
 	public int countByDateAndCheckPoint(String date, String checkPoint) {
@@ -273,13 +293,9 @@ public class CheckPointDailySelectionTableHelper {
 		// TODO Auto-generated method stub
 		CheckPointDailySelectionTableHelper ins = new CheckPointDailySelectionTableHelper();
 		try {
-			CheckPointDailySelectionVO vo = new CheckPointDailySelectionVO();
-			vo.stockId = "601311";
-			vo.date = "2015-05-18";
-			vo.checkPoint = "HengPan_3_Weeks_MA5_MA10_MA20_MA30_RongHe_Break_Platform";
-			ins.insertIfNotExist(vo);
-			boolean exist = ins.isEventExist(vo.stockId, vo.date, vo.checkPoint);
-			System.out.println(exist);
+			List<CheckPointDailySelectionVO> list = ins.queryByDateAndCheckPoint("2016-09-23",
+					"luzao_phaseII_zijinliu_top300");
+			System.out.println(list.size());
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

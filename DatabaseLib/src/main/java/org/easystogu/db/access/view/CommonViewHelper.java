@@ -51,7 +51,23 @@ public class CommonViewHelper {
 		}
 	}
 
-	private boolean isViewExist(String viewName) {
+	private static final class CommonViewVOWithOutNameMapper implements RowMapper<CommonViewVO> {
+		public CommonViewVO mapRow(ResultSet rs, int rowNum) throws SQLException {
+			CommonViewVO vo = new CommonViewVO();
+			vo.setStockId(rs.getString("stockId"));
+			// vo.setName(rs.getString("name"));
+			vo.setDate(rs.getString("date"));
+			return vo;
+		}
+	}
+
+	private static final class StringVOMapper implements RowMapper<String> {
+		public String mapRow(ResultSet rs, int rowNum) throws SQLException {
+			return rs.getString("stockId");
+		}
+	}
+
+	public boolean isViewExist(String viewName) {
 		MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 		namedParameters.addValue("viewName", viewName);
 
@@ -60,47 +76,66 @@ public class CommonViewHelper {
 		return rtn > 0 ? true : false;
 	}
 
-	public List<CommonViewVO> queryByDate(String viewName, String date) {
+	public List<CommonViewVO> queryByDateForViewDirectlySearch(String viewName, String date) {
 		try {
-			if (isViewExist(viewName)) {
-				MapSqlParameterSource namedParameters = new MapSqlParameterSource();
-				StringBuffer sql = new StringBuffer();
-				sql.append("SELECT * FROM \"" + viewName + "\"");
-				if (Strings.isNotEmpty(date)) {
-					sql.append(" WHERE date = :date");
-					namedParameters.addValue("date", date);
-				}
-
-				List<CommonViewVO> list = this.namedParameterJdbcTemplate.query(sql.toString(), namedParameters,
-						new CommonViewVOMapper());
-				return list;
+			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+			StringBuffer sql = new StringBuffer();
+			sql.append("SELECT * FROM \"" + viewName + "\"");
+			if (Strings.isNotEmpty(date)) {
+				sql.append(" WHERE date = :date");
+				namedParameters.addValue("date", date);
 			}
-			logger.error("ViewName not exist:" + viewName);
+
+			List<CommonViewVO> list = this.namedParameterJdbcTemplate.query(sql.toString(), namedParameters,
+					new CommonViewVOMapper());
+			return list;
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return new ArrayList<CommonViewVO>();
 	}
 
-	public List<CommonViewVO> queryAll(String viewName) {
+	public List<CommonViewVO> queryByDateForCheckPoint(String viewName, String date) {
 		try {
 			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 			StringBuffer sql = new StringBuffer();
-			sql.append("SELECT * FROM \"" + viewName + "\" ORDER BY date DESC");
+			sql.append("SELECT * FROM \"" + viewName + "\"");
+			if (Strings.isNotEmpty(date)) {
+				sql.append(" WHERE date = :date");
+				namedParameters.addValue("date", date);
+			}
 
 			List<CommonViewVO> list = this.namedParameterJdbcTemplate.query(sql.toString(), namedParameters,
-					new CommonViewVOMapper());
+					new CommonViewVOWithOutNameMapper());
 			return list;
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return new ArrayList<CommonViewVO>();
+	}
+
+	public List<String> queryAllStockIds(String viewName) {
+		try {
+			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+			StringBuffer sql = new StringBuffer();
+			sql.append("SELECT stockId FROM \"" + viewName + "\"");
+
+			List<String> list = this.namedParameterJdbcTemplate.query(sql.toString(), namedParameters,
+					new StringVOMapper());
+			return list;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new ArrayList<String>();
 	}
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		CommonViewHelper ins = new CommonViewHelper();
-		List<CommonViewVO> list = ins.queryByDate("luzao_phaseII_zijinliu_top300_Details", "2016-09-20");
+		List<CommonViewVO> list = ins.queryByDateForViewDirectlySearch("luzao_phaseII_zijinliu_top300_Details",
+				"2016-09-20");
 		for (CommonViewVO vo : list) {
 			System.out.println(vo);
 		}

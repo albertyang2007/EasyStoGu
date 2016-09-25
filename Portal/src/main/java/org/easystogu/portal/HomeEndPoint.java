@@ -13,6 +13,7 @@ import org.easystogu.runner.DailyOverAllRunner;
 import org.easystogu.runner.DailySelectionRunner;
 import org.easystogu.runner.DailyUpdateAllStockRunner;
 import org.easystogu.runner.DailyUpdatePriceAndIndicatorRunner;
+import org.easystogu.runner.DailyViewAnalyseRunner;
 import org.easystogu.runner.DataBaseSanityCheck;
 import org.easystogu.runner.RecentlySelectionRunner;
 import org.easystogu.sina.runner.RealtimeDisplayStockPriceRunner;
@@ -22,19 +23,23 @@ public class HomeEndPoint {
 	@Path("/")
 	public Response test() {
 		StringBuffer sb = new StringBuffer();
-		sb.append("<a href='./DailyUpdateAllStockRunner'>DailyUpdateAllStockRunner</a><br>");
-		sb.append("<a href='./DailyOverAllRunner'>DailyOverAllRunner</a><br>");
-		sb.append("<a href='./DailyUpdatePriceAndIndicatorRunner'>DailyUpdatePriceAndIndicatorRunner</a><br>");
-		sb.append("<a href='./FastDailyOverAllRunner'>FastDailyOverAllRunner</a><br>");
-		sb.append("<a href='./DailySelectionRunner'>DailySelectionRunner</a><br>");
-		sb.append("<a href='./RealtimeDisplayStockPriceRunner'>RealtimeDisplayStockPriceRunner</a><br>");
-		sb.append("<a href='./DailyZiJinLiuRunner'>DailyZiJinLiuRunner</a><br>");
-		sb.append("<a href='./DailyZiJinLiuRunnerForAllStockId'>DailyZiJinLiuRunnerForAllStock</a><br>");
-		sb.append("<a href='./OverAllZiJinLiuAndDDXRunner'>OverAllZiJinLiuAndDDXRunner</a><br>");
-		sb.append("<a href='./DailyDDXRunner'>DailyDDXRunner</a><br>");
-		sb.append("<a href='./DailyZiJinLiuXiangRunner'>DailyZiJinLiuXiangRunner</a><br>");
-		sb.append("<a href='./DataBaseSanityCheck'>DataBaseSanityCheck</a><br>");
-		sb.append("<a href='./RecentlySelectionRunner'>RecentlySelectionRunner</a><br>");
+		sb.append("<a href='/portal/home/DailyUpdateAllStockRunner'>DailyUpdateAllStockRunner</a><br>");
+		sb.append("<a href='/portal/home/DailyOverAllRunner'>DailyOverAllRunner</a><br>");
+		sb.append(
+				"<a href='/portal/home/DailyUpdatePriceAndIndicatorRunner'>DailyUpdatePriceAndIndicatorRunner</a><br>");
+		sb.append("<a href='/portal/home/FastDailyOverAllRunner'>FastDailyOverAllRunner</a><br>");
+		sb.append("<a href='/portal/home/DailySelectionRunner'>DailySelectionRunner</a><br>");
+		sb.append("<a href='/portal/home/RealtimeDisplayStockPriceRunner'>RealtimeDisplayStockPriceRunner</a><br>");
+		sb.append("<a href='/portal/home/DailyZiJinLiuRunner'>DailyZiJinLiuRunner</a><br>");
+		sb.append("<a href='/portal/home/DailyZiJinLiuRunnerForAllStockId'>DailyZiJinLiuRunnerForAllStock</a><br>");
+		sb.append("<a href='/portal/home/OverAllZiJinLiuAndDDXRunner'>OverAllZiJinLiuAndDDXRunner</a><br>");
+		sb.append(
+				"<a href='/portal/home/OverAllZiJinLiuAndDDXRunnerForAllStockId'>OverAllZiJinLiuAndDDXRunnerForAllStockId</a><br>");
+		sb.append("<a href='/portal/home/DailyDDXRunner'>DailyDDXRunner</a><br>");
+		sb.append("<a href='/portal/home/DailyViewAnalyseRunner'>DailyViewAnalyseRunner</a><br>");
+		sb.append("<a href='/portal/home/DailyZiJinLiuXiangRunner'>DailyZiJinLiuXiangRunner</a><br>");
+		sb.append("<a href='/portal/home/DataBaseSanityCheck'>DataBaseSanityCheck</a><br>");
+		sb.append("<a href='/portal/home/RecentlySelectionRunner'>RecentlySelectionRunner</a><br>");
 		return Response.ok().entity(sb.toString()).build();
 	}
 
@@ -69,13 +74,23 @@ public class HomeEndPoint {
 		t.start();
 		return "DailyZiJinLiuRunner already running, please check DB result.";
 	}
-	
+
 	@GET
 	@Path("/OverAllZiJinLiuAndDDXRunner")
 	public String overAllZiJinLiuAndDDXRunner() {
 		Thread t = new Thread(new OverAllZiJinLiuAndDDXRunner());
 		t.start();
 		return "OverAllZiJinLiuAndDDXRunner already running, please check DB result.";
+	}
+
+	@GET
+	@Path("/OverAllZiJinLiuAndDDXRunnerForAllStockId")
+	public String overAllZiJinLiuAndDDXRunnerForAllStockId() {
+		OverAllZiJinLiuAndDDXRunner runner = new OverAllZiJinLiuAndDDXRunner();
+		runner.resetToAllPage();
+		Thread t = new Thread(runner);
+		t.start();
+		return "OverAllZiJinLiuAndDDXRunnerForAllStockId already running, please check DB result.";
 	}
 
 	@GET
@@ -144,5 +159,13 @@ public class HomeEndPoint {
 		Thread t = new Thread(new DailyDDXRunner());
 		t.start();
 		return "DailyDDXRunner already running, please check DB result.";
+	}
+
+	@GET
+	@Path("/DailyViewAnalyseRunner")
+	public String dailyViewAnalyseRunner() {
+		Thread t = new Thread(new DailyViewAnalyseRunner());
+		t.start();
+		return "DailyViewAnalyseRunner already running, please check folder result.";
 	}
 }

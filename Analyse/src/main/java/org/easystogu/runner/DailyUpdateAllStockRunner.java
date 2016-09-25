@@ -36,10 +36,13 @@ public class DailyUpdateAllStockRunner implements Runnable {
 			// DailyZhuLiJingLiuRuRunner.main(args);
 		}
 
-		// analyse
+		// analyse by jave code
 		dailySelectionRunner = new DailySelectionRunner();
 		dailySelectionRunner.setFetchRealTimeZiJinLiu(false);
 		dailySelectionRunner.runForStockIds(allStockIds);
+		
+		//alaylse by view names
+		new DailyViewAnalyseRunner().run();
 
 		System.out.println("stop using " + (System.currentTimeMillis() - st) / 1000 + " seconds");
 	}
