@@ -52,7 +52,7 @@ public class RecentlySelectionRunner implements Runnable {
 				.get(lastNDates.size() - 1));
 		for (CheckPointDailySelectionVO cpVO : cpList) {
 			DailyCombineCheckPoint checkPoint = DailyCombineCheckPoint.getCheckPointByName(cpVO.checkPoint);
-			if (checkPoint.isSatisfyMinEarnPercent()) {
+			if (checkPoint!=null && checkPoint.isSatisfyMinEarnPercent()) {
 				this.addCheckPointStockToMap(cpVO);
 			}
 		}
