@@ -11,7 +11,7 @@ public class DailyOverAllRunner implements Runnable {
 	public void run() {
 		new DailyScheduleActionRunner().run();
 		new DailyUpdateAllStockRunner(this.isGetZiJinLiu).run();
-		new RecentlySelectionRunner().run();
+		//new RecentlySelectionRunner().run();
 	}
 
 	public static void main(String[] args) {
