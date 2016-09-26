@@ -27,30 +27,24 @@ public class ViewEndPoint {
 	private CommonViewHelper commonViewHelper = CommonViewHelper.getInstance();
 
 	@GET
-	@Path("/view/{viewname}")
+	@Path("/{viewname}")
 	@Produces("application/json")
 	public List<CommonViewVO> queryDayPriceByIdFromAnalyseViewAtRealTime(@PathParam("viewname") String viewname,
 			@Context HttpServletRequest request, @Context HttpServletResponse response) {
 		response.addHeader("Access-Control-Allow-Origin", "*");
 		String date = request.getParameter("date");
 		logger.debug("viewName=" + viewname + ",date=" + date);
-		if (this.commonViewHelper.isViewExist(viewname)) {
-			return this.commonViewHelper.queryByDateForViewDirectlySearch(viewname, date);
+
+		if ("luzao_phaseII_zijinliu_top300".equals(viewname) || "luzao_phaseIII_zijinliu_top300".equals(viewname)) {
+			// get result from view directory, since they are fast
+			String searchViewName = viewname + "_Details";
+			return this.commonViewHelper.queryByDateForViewDirectlySearch(searchViewName, date);
 		}
-		logger.debug("viewName=" + viewname + " not exist");
-		return new ArrayList<CommonViewVO>();
-	}
 
-	@GET
-	@Path("/checkpoint/{checkpoint}")
-	@Produces("application/json")
-	public List<CommonViewVO> queryDayPriceByIdFromCheckPointTable(@PathParam("checkpoint") String checkpoint,
-			@Context HttpServletRequest request, @Context HttpServletResponse response) {
-		response.addHeader("Access-Control-Allow-Origin", "*");
-
+		// else get result for checkpoint data, since they are analyse daily and
+		// save to daily table
 		List<CommonViewVO> list = new ArrayList<CommonViewVO>();
-		String date = request.getParameter("date");
-		logger.debug("checkpoint=" + checkpoint + ",date=" + request.getParameter("date"));
+		String checkpoint = viewname;
 		List<CheckPointDailySelectionVO> cps = checkPointDailySelectionTable.queryByDateAndCheckPoint(date, checkpoint);
 		for (CheckPointDailySelectionVO cp : cps) {
 			CommonViewVO cvo = new CommonViewVO();

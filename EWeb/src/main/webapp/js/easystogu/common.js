@@ -79,21 +79,7 @@ function getAllTrendModeNames() {
  * @returns {undefined}
  */
 function getAllStockIdsFromView(viewName) {
-	var url = getEasyStoGuServerUrl() + "/portal/view/view/" + viewName;
-	var stockIds = "[]";
-	$.getJSON(url, function(data) {
-		stockIds = data;
-	});
-	return stockIds;
-}
-
-/**
- * Load all stockIds from CheckPoint
- * 
- * @returns {undefined}
- */
-function getAllStockIdsFromCheckPoint(checkpoint) {
-	var url = getEasyStoGuServerUrl() + "/portal/view/checkpoint/" + checkpoint;
+	var url = getEasyStoGuServerUrl() + "/portal/view/" + viewName;
 	var stockIds = "[]";
 	$.getJSON(url, function(data) {
 		stockIds = data;

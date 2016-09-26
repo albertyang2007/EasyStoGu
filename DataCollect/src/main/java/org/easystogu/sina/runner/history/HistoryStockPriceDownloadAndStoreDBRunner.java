@@ -36,7 +36,7 @@ public class HistoryStockPriceDownloadAndStoreDBRunner {
 	static {
 		classMap.put("hq", List.class);
 	}
-	
+
 	public HistoryStockPriceDownloadAndStoreDBRunner() {
 	}
 
@@ -82,8 +82,8 @@ public class HistoryStockPriceDownloadAndStoreDBRunner {
 			requestFactory.setReadTimeout(10000);
 
 			if (Strings.isNotEmpty(configure.getString(Constants.httpProxyServer))) {
-				Proxy proxy = new Proxy(Type.HTTP, new InetSocketAddress(
-						configure.getString(Constants.httpProxyServer), configure.getInt(Constants.httpProxyPort)));
+				Proxy proxy = new Proxy(Type.HTTP, new InetSocketAddress(configure.getString(Constants.httpProxyServer),
+						configure.getInt(Constants.httpProxyPort)));
 				requestFactory.setProxy(proxy);
 			}
 
@@ -102,6 +102,9 @@ public class HistoryStockPriceDownloadAndStoreDBRunner {
 			JSONObject jsonObject = JSONObject.fromObject(contents.substring(1, contents.length() - 1));
 			SohuQuoteStockPriceVOWrap list = (SohuQuoteStockPriceVOWrap) JSONObject.toBean(jsonObject,
 					SohuQuoteStockPriceVOWrap.class, classMap);
+
+			if (list == null || list.hq == null)
+				return spList;
 
 			for (int i = 0; i < list.hq.size(); i++) {
 				String line = list.hq.get(i).toString();
@@ -154,7 +157,8 @@ public class HistoryStockPriceDownloadAndStoreDBRunner {
 	public void reRunOnFailure() {
 		List<String> stockIds = companyInfoTable.getAllCompanyStockId();
 		for (String stockId : stockIds) {
-			if (this.stockPriceTable.countTuplesByIDAndBetweenDate(stockId, "1997-01-01", WeekdayUtil.currentDate()) <= 0) {
+			if (this.stockPriceTable.countTuplesByIDAndBetweenDate(stockId, "1997-01-01",
+					WeekdayUtil.currentDate()) <= 0) {
 				System.out.println("Re run for " + stockId);
 				this.countAndSave(stockId);
 			}

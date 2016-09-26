@@ -48,8 +48,8 @@ public class DailyViewAnalyseRunner implements Runnable {
 	}
 
 	public void run() {
-		this.fastExtractForView("luzao_phaseII_zijinliu_top300");
-		this.fastExtractForView("luzao_phaseIII_zijinliu_top300");
+		//this.fastExtractForView("luzao_phaseII_zijinliu_top300");
+		//this.fastExtractForView("luzao_phaseIII_zijinliu_top300");
 		
 		this.slowAnalyseForView("luzao_phaseII_wr_all_ind_same");
 		this.slowAnalyseForView("luzao_phaseIII_wr_all_ind_same");
