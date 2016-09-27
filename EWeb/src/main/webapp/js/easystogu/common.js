@@ -74,6 +74,20 @@ function getAllTrendModeNames() {
 }
 
 /**
+ * Load latest N date
+ * 
+ * @returns {undefined}
+ */
+function getLatestNDate(limit) {
+	var url_dates = getEasyStoGuServerUrl() + "/portal/company/latestndate/" + limit;
+	var dates = "[]";
+	$.getJSON(url_dates, function(data) {
+		dates = data;
+	});
+	return dates;
+}
+
+/**
  * Load all stockIds from View
  * 
  * @returns {undefined}

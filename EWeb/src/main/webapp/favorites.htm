@@ -148,13 +148,16 @@ ${demo.css}
 	      
 	      render: function(){
 
-            //initial dateOptions
+            $.ajaxSettings.async = false;
+            var dateOptionsTmp = getLatestNDate(10);
+            $.ajaxSettings.async = true;
+            //first option is empty
             this.state.dateOptions = [];
-            for (var i = 0; i <= 12; i++) {
-                 var tmpDate= moment().subtract(i, 'days').format("YYYY-MM-DD");
-                 this.state.dateOptions.push(
-                 <option value={tmpDate}>{tmpDate}</option>
-                );
+
+            for (var i = 0; i < dateOptionsTmp.length; i++) {
+                  this.state.dateOptions.push(
+                  <option value={dateOptionsTmp[i]}>{dateOptionsTmp[i]}</option>
+                  );
             }
 
 			      return (<div>

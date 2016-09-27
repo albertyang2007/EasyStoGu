@@ -56,6 +56,9 @@ public class StockPriceTableHelper {
 	// query the last date
 	protected String GET_LATEST_STOCK_DATE = "SELECT date as rtn FROM " + tableName
 			+ " WHERE stockId = :stockId ORDER BY DATE DESC limit 1";
+	// query the last N date
+	protected String GET_LATEST_N_STOCK_DATE = "SELECT date as rtn FROM " + tableName
+			+ " WHERE stockId = :stockId ORDER BY DATE DESC limit :limit";
 	// query the latest N date price
 	protected String QUERY_LATEST_PRICE_N_DATE_STOCKID_SQL = "SELECT * FROM " + tableName
 			+ " WHERE stockId = :stockId ORDER BY date DESC LIMIT :limit";
@@ -502,6 +505,25 @@ public class StockPriceTableHelper {
 		return "";
 	}
 
+	public List<String> getLatestNStockDate(int limit) {
+		try {
+
+			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+			namedParameters.addValue("stockId", "999999");
+			namedParameters.addValue("limit", limit);
+
+			List<String> date = this.namedParameterJdbcTemplate.query(GET_LATEST_N_STOCK_DATE, namedParameters,
+					new StringVOMapper());
+
+			return date;
+		} catch (EmptyResultDataAccessException ee) {
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new ArrayList<String>();
+	}
+
 	public String getPreviousStockDate(String date) {
 		try {
 
@@ -752,8 +774,9 @@ public class StockPriceTableHelper {
 		// TODO Auto-generated method stub
 		StockPriceTableHelper ins = new StockPriceTableHelper();
 		try {
-			List<String> n = ins.getDistinctStockIDs();
-			System.out.println(n.size());
+			List<String> dates = ins.getLatestNStockDate(3);
+			for (String date : dates)
+				System.out.println(date);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
