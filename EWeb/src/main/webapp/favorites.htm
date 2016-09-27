@@ -161,7 +161,7 @@ ${demo.css}
             }
 
 			      return (<div>
-                              <label>Views:</label>
+                              <label>View:</label>
 			                  <select name='selectView' onChange={this.handleChangeSelectView}>
                               <option value='luzao_phaseII_zijinliu_top300' defaultValue>鲁兆建仓-资金前300*</option>
                               <option value='luzao_phaseIII_zijinliu_top300'>鲁兆持股-资金前300</option>
@@ -178,12 +178,12 @@ ${demo.css}
                               <option value='zijinliu_3_of_5_days_top300'>5天有3天资金排名前300</option>
                               </select>&nbsp;&nbsp;
 
-                              <label>RecentDate:</label>
+                              <label>Date:</label>
 			                  <select name='selectDate' onChange={this.handleChangeSelectDate}>
                               {this.state.dateOptions}
                               </select>&nbsp;&nbsp;
 
-                              <label>StockIds:</label>
+                              <label>StockId:</label>
 			                  <select name='selectStockId' onChange={this.handleChangeSelectStockId}>
                               {this.state.stockIdOptions}
                               </select>&nbsp;&nbsp;
