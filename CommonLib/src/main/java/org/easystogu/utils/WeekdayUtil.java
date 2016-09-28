@@ -14,7 +14,7 @@ public class WeekdayUtil {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		return sdf.format(new Date()).toString();
 	}
-	
+
 	public static String currentDateTime() {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
 		return sdf.format(new Date()).toString();
@@ -220,6 +220,10 @@ public class WeekdayUtil {
 	}
 
 	public static String nextDate(String today) {
+		return nextNDate(today, 1);
+	}
+
+	public static String nextNDate(String today, int N) {
 		try {
 			long minSecondsPerDay = 24 * 60 * 60 * 1000;
 			// System.out.println("today is " + today);
@@ -230,7 +234,7 @@ public class WeekdayUtil {
 			// check if today is working day or weeken
 			calT.setTime(todayD);
 
-			nextDate = new Date(todayD.getTime() + 1 * minSecondsPerDay);
+			nextDate = new Date(todayD.getTime() + N * minSecondsPerDay);
 
 			// System.out.println("todayD is " + todayD);
 			// System.out.println("nextWorkingD is " + nextWorkingD);
@@ -287,6 +291,6 @@ public class WeekdayUtil {
 	}
 
 	public static void main(String[] args) {
-		System.out.println(WeekdayUtil.currentDateTime());
+		System.out.println(WeekdayUtil.nextNDate("2016-07-09", 10));
 	}
 }

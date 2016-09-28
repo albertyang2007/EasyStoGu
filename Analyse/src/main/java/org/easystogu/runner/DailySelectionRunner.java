@@ -36,6 +36,7 @@ import org.easystogu.report.HistoryReportDetailsVO;
 import org.easystogu.report.RangeHistoryReportVO;
 import org.easystogu.report.ReportTemplate;
 import org.easystogu.report.comparator.ZiJinLiuComparator;
+import org.easystogu.utils.WeekdayUtil;
 
 //daily select stock that checkpoint is satisfied
 public class DailySelectionRunner implements Runnable {
@@ -81,24 +82,26 @@ public class DailySelectionRunner implements Runnable {
 			// weekStockOverAllHelper.getLatestNStockSuperVO(stockId, 30);
 			if (overDayList.size() == 0) {
 				System.out.println("No stockprice data for " + stockId + ", add to Schedule Action.");
-				//next action should be fetch all the data from web, it must be a new board id
+				// next action should be fetch all the data from web, it must be
+				// a new board id
 				ScheduleActionVO vo = new ScheduleActionVO();
 				vo.setActionDo(ScheduleActionVO.ActionDo.refresh_history_stockprice.name());
 				vo.setStockId(stockId);
 				vo.setCreateDate(this.latestDate);
-				vo.setRunDate(this.latestDate);
+				vo.setRunDate(WeekdayUtil.nextNDate(latestDate, 20));
 				this.scheduleActionTableHelper.deleteIfExistAndThenInsert(vo);
 				return;
 			}
 
 			if (overWeekList.size() == 0) {
 				System.out.println("No stockprice data for " + stockId + ", add to Schedule Action.");
-				//next action should be fetch all the data from web, it must be a new board id
+				// next action should be fetch all the data from web, it must be
+				// a new board id
 				ScheduleActionVO vo = new ScheduleActionVO();
 				vo.setActionDo(ScheduleActionVO.ActionDo.refresh_history_stockprice.name());
 				vo.setStockId(stockId);
 				vo.setCreateDate(this.latestDate);
-				vo.setRunDate(this.latestDate);
+				vo.setRunDate(WeekdayUtil.nextNDate(latestDate, 20));
 				this.scheduleActionTableHelper.deleteIfExistAndThenInsert(vo);
 				return;
 			}
@@ -469,8 +472,8 @@ public class DailySelectionRunner implements Runnable {
 		List<String> stockIds = stockConfig.getAllStockId();
 		this.runForStockIds(stockIds);
 	}
-	
-	public void runForDate(String date){
+
+	public void runForDate(String date) {
 		this.latestDate = date;
 		List<String> stockIds = stockConfig.getAllStockId();
 		this.runForStockIds(stockIds);
@@ -479,6 +482,6 @@ public class DailySelectionRunner implements Runnable {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		new DailySelectionRunner().run();
-		//new DailySelectionRunner().runForDate("2016-06-13");
+		// new DailySelectionRunner().runForDate("2016-06-13");
 	}
 }
