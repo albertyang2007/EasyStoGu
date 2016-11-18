@@ -13,7 +13,7 @@ import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.runner.DailyOverAllRunner;
 import org.easystogu.runner.DailySelectionRunner;
 import org.easystogu.runner.DailyUpdateAllStockRunner;
-import org.easystogu.runner.DailyUpdatePriceAndIndicatorRunner;
+import org.easystogu.runner.DailyUpdateStockPriceAndIndicatorRunner;
 import org.easystogu.runner.DailyViewAnalyseRunner;
 import org.easystogu.runner.DataBaseSanityCheck;
 import org.easystogu.runner.RecentlySelectionRunner;
@@ -152,7 +152,7 @@ public class HomeEndPoint {
 	@GET
 	@Path("/DailyUpdatePriceAndIndicatorRunner")
 	public String dailyUpdatePriceAndIndicatorRunner() {
-		Thread t = new Thread(new DailyUpdatePriceAndIndicatorRunner());
+		Thread t = new Thread(new DailyUpdateStockPriceAndIndicatorRunner());
 		t.start();
 		return "DailyUpdatePriceAndIndicatorRunner already running, please check DB result.";
 	}

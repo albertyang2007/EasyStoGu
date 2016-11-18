@@ -5,8 +5,8 @@ import org.easystogu.db.access.table.WSFConfigTableHelper;
 import org.easystogu.easymoney.runner.OverAllZiJinLiuAndDDXRunner;
 import org.easystogu.log.LogHelper;
 import org.easystogu.runner.DailyOverAllRunner;
+import org.easystogu.runner.DailyUpdateStockPriceAndDDXRunner;
 import org.easystogu.runner.DataBaseSanityCheck;
-import org.easystogu.sina.runner.DailyStockPriceDownloadAndStoreDBRunner2;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -76,11 +76,12 @@ public class DailyScheduler implements SchedulingConfigurer {
 
 	// run at 15:06
 	@Scheduled(cron = "0 06 15 * * MON-FRI")
-	public void _0_DownloadStockPrice() {
-		logger.info("DownloadStockPrice already running, please check DB result.");
+	public void _0_DailyUpdateStockPriceAndDDXRunner() {
+		logger.info("DailyUpdateStockPriceAndDDXRunner already running, please check DB result.");
 		if (Constants.ZONE_ALIYUN.equalsIgnoreCase(zone)) {
-			// day (download all stockIds price)
-			DailyStockPriceDownloadAndStoreDBRunner2 runner = new DailyStockPriceDownloadAndStoreDBRunner2();
+			// daily (download all stockIds price and all zijinliu for ddx)
+			DailyUpdateStockPriceAndDDXRunner runner = new DailyUpdateStockPriceAndDDXRunner();
+			runner.setFetchAllZiJinLiu(true);
 			Thread t = new Thread(runner);
 			t.start();
 		}
