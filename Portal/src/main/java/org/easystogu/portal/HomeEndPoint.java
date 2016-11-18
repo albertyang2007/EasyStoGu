@@ -5,6 +5,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
+import org.easystogu.config.Constants;
 import org.easystogu.easymoney.runner.DailyDDXRunner;
 import org.easystogu.easymoney.runner.DailyZhuLiJingLiuRuRunner;
 import org.easystogu.easymoney.runner.DailyZiJinLiuRunner;
@@ -16,7 +17,9 @@ import org.easystogu.runner.DailyUpdatePriceAndIndicatorRunner;
 import org.easystogu.runner.DailyViewAnalyseRunner;
 import org.easystogu.runner.DataBaseSanityCheck;
 import org.easystogu.runner.RecentlySelectionRunner;
+import org.easystogu.sina.runner.DailyStockPriceDownloadAndStoreDBRunner2;
 import org.easystogu.sina.runner.RealtimeDisplayStockPriceRunner;
+import org.springframework.scheduling.annotation.Scheduled;
 
 public class HomeEndPoint {
 	@GET
@@ -40,6 +43,7 @@ public class HomeEndPoint {
 		sb.append("<a href='/portal/home/DailyZiJinLiuXiangRunner'>DailyZiJinLiuXiangRunner</a><br>");
 		sb.append("<a href='/portal/home/DataBaseSanityCheck'>DataBaseSanityCheck</a><br>");
 		sb.append("<a href='/portal/home/RecentlySelectionRunner'>RecentlySelectionRunner</a><br>");
+		sb.append("<a href='/portal/home/DownloadStockPrice'>DownloadStockPrice</a><br>");
 		return Response.ok().entity(sb.toString()).build();
 	}
 
@@ -167,5 +171,15 @@ public class HomeEndPoint {
 		Thread t = new Thread(new DailyViewAnalyseRunner());
 		t.start();
 		return "DailyViewAnalyseRunner already running, please check folder result.";
+	}
+
+	@GET
+	@Path("/DownloadStockPrice")
+	public String downloadStockPrice() {
+		// day (download all stockIds price)
+		DailyStockPriceDownloadAndStoreDBRunner2 runner = new DailyStockPriceDownloadAndStoreDBRunner2();
+		Thread t = new Thread(runner);
+		t.start();
+		return "DailyStockPriceDownloadAndStoreDBRunner2 already running, please check folder result.";
 	}
 }
