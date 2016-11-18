@@ -22,19 +22,27 @@ public class DailyDDXRunner implements Runnable {
 
 	public void countAndSaved(String stockId) {
 		ZiJinLiuVO zjlvo = zijinliuTableHelper.getZiJinLiu(stockId, latestDate);
-		if (zjlvo == null)
+		if (zjlvo == null) {
+			System.out.println("There is no ZiJinLiuVO for " + stockId + " at " + latestDate);
 			return;
+		}
 
 		StockPriceVO spvo = stockPriceTable.getStockPriceByIdAndDate(stockId, latestDate);
-		if (spvo == null)
+		if (spvo == null) {
+			System.out.println("There is no StockPriceVO for " + stockId + " at " + latestDate);
 			return;
+		}
 
 		CompanyInfoVO civo = stockConfig.getByStockId(stockId);
-		if (civo == null)
+		if (civo == null) {
+			System.out.println("There is no CompanyInfoVO for " + stockId + " at " + latestDate);
 			return;
+		}
 
-		if (civo.liuTongAGu <= 0)
+		if (civo.liuTongAGu <= 0) {
+			System.out.println("LiuTongAGu is 0 for " + stockId + " at " + latestDate);
 			return;
+		}
 
 		DDXVO ddxvo = new DDXVO();
 		ddxvo.stockId = stockId;
@@ -46,14 +54,15 @@ public class DailyDDXRunner implements Runnable {
 	}
 
 	public void countAndSaved(List<String> stockIds) {
+		System.out.println("Count ddx for all stockIds at date " + latestDate);
 		ddxTable.deleteByDate(latestDate);
 		for (String stockId : stockIds) {
 			this.countAndSaved(stockId);
 		}
 		System.out.println("Total count DDX:" + count);
 	}
-	
-	public void countAndSaved(){
+
+	public void countAndSaved() {
 		countAndSaved(stockConfig.getAllStockId());
 	}
 
