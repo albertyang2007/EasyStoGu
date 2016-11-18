@@ -5,11 +5,11 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
-import org.easystogu.config.Constants;
 import org.easystogu.easymoney.runner.DailyDDXRunner;
 import org.easystogu.easymoney.runner.DailyZhuLiJingLiuRuRunner;
 import org.easystogu.easymoney.runner.DailyZiJinLiuRunner;
 import org.easystogu.easymoney.runner.OverAllZiJinLiuAndDDXRunner;
+import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.runner.DailyOverAllRunner;
 import org.easystogu.runner.DailySelectionRunner;
 import org.easystogu.runner.DailyUpdateAllStockRunner;
@@ -19,7 +19,6 @@ import org.easystogu.runner.DataBaseSanityCheck;
 import org.easystogu.runner.RecentlySelectionRunner;
 import org.easystogu.sina.runner.DailyStockPriceDownloadAndStoreDBRunner2;
 import org.easystogu.sina.runner.RealtimeDisplayStockPriceRunner;
-import org.springframework.scheduling.annotation.Scheduled;
 
 public class HomeEndPoint {
 	@GET
@@ -44,6 +43,7 @@ public class HomeEndPoint {
 		sb.append("<a href='/portal/home/DataBaseSanityCheck'>DataBaseSanityCheck</a><br>");
 		sb.append("<a href='/portal/home/RecentlySelectionRunner'>RecentlySelectionRunner</a><br>");
 		sb.append("<a href='/portal/home/DownloadStockPrice'>DownloadStockPrice</a><br>");
+		sb.append("<a href='/portal/home/UpdateCompanyFromFileToDB'>UpdateCompanyFromFileToDB</a><br>");
 		return Response.ok().entity(sb.toString()).build();
 	}
 
@@ -181,5 +181,14 @@ public class HomeEndPoint {
 		Thread t = new Thread(runner);
 		t.start();
 		return "DailyStockPriceDownloadAndStoreDBRunner2 already running, please check folder result.";
+	}
+	
+	@GET
+	@Path("/UpdateCompanyFromFileToDB")
+	public String updateCompanyFromFileToDB() {
+		// update the total GuBen and LiuTong GuBen
+		CompanyInfoFileHelper ins = new CompanyInfoFileHelper();
+		ins.updateCompanyFromFileToDB();
+		return "UpdateCompanyFromFileToDB already running, please check folder result.";
 	}
 }

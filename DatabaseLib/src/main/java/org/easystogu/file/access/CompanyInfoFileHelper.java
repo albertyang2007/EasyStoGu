@@ -35,7 +35,7 @@ public class CompanyInfoFileHelper {
 		return instance;
 	}
 
-	protected CompanyInfoFileHelper() {
+	public CompanyInfoFileHelper() {
 		this.loadDataFromDatabase();
 
 		// add special stockId and name
