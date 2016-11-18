@@ -10,4 +10,8 @@ public class Constants {
 	public static final String JdbcPassword = "jdbc.password";
 	public static final String JdbcMaxActive = "jdbc.maxActive";
 	public static final String JdbcMaxIdle = "jdbc.maxIdle";
+
+	public static final String ZONE_OFFICE = "office";
+	public static final String ZONE_HOME = "home";
+	public static final String ZONE_ALIYUN = "aliyun";
 }
