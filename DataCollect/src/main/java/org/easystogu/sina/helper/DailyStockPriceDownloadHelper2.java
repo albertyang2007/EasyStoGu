@@ -23,8 +23,9 @@ public class DailyStockPriceDownloadHelper2 {
 	private StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
 	// currently total stock number is less then 3000, if increase, then enlarge
 	// the numberPage
+	private static final int totalNumberPage = 3000;
 	private static final int numberPerPage = 300;
-	private int totalNumberPage = this.stockPriceTable.getDistinctStockIDs().size() / numberPerPage + 1;
+	//private int totalNumberPage = this.stockPriceTable.getDistinctStockIDs().size() / numberPerPage + 1;
 	private static final String baseUrl = "http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/Market_Center.getHQNodeData?page=1&num="
 			+ numberPerPage + "&sort=symbol&asc=1&node=hs_a";
 	private static FileConfigurationService configure = FileConfigurationService.getInstance();
