@@ -1,7 +1,10 @@
 package org.easystogu.portal;
 
+import java.util.regex.Pattern;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
@@ -19,8 +22,13 @@ import org.easystogu.runner.DataBaseSanityCheck;
 import org.easystogu.runner.RecentlySelectionRunner;
 import org.easystogu.sina.runner.DailyStockPriceDownloadAndStoreDBRunner2;
 import org.easystogu.sina.runner.RealtimeDisplayStockPriceRunner;
+import org.easystogu.sina.runner.history.StockPriceHistoryOverAllRunner;
+import org.easystogu.utils.Strings;
 
 public class HomeEndPoint {
+	protected String dateRegex = "[0-9]{4}-[0-9]{2}-[0-9]{2}";
+	protected String fromToRegex = dateRegex + "_" + dateRegex;
+
 	@GET
 	@Path("/")
 	public Response test() {
@@ -44,6 +52,8 @@ public class HomeEndPoint {
 		sb.append("<a href='/portal/home/RecentlySelectionRunner'>RecentlySelectionRunner</a><br>");
 		sb.append("<a href='/portal/home/DownloadStockPrice'>DownloadStockPrice</a><br>");
 		sb.append("<a href='/portal/home/UpdateCompanyFromFileToDB'>UpdateCompanyFromFileToDB</a><br>");
+		sb.append(
+				"<a href='/portal/home/updateStockPriceHistoryOverAllRunner/2016-10-17_2016-11-23'>updateStockPriceHistoryOverAllRunnerFromStartDate</a><br>");
 		return Response.ok().entity(sb.toString()).build();
 	}
 
@@ -182,7 +192,7 @@ public class HomeEndPoint {
 		t.start();
 		return "DailyStockPriceDownloadAndStoreDBRunner2 already running, please check folder result.";
 	}
-	
+
 	@GET
 	@Path("/UpdateCompanyFromFileToDB")
 	public String updateCompanyFromFileToDB() {
@@ -190,5 +200,20 @@ public class HomeEndPoint {
 		CompanyInfoFileHelper ins = new CompanyInfoFileHelper();
 		ins.updateCompanyFromFileToDB();
 		return "UpdateCompanyFromFileToDB already running, please check folder result.";
+	}
+
+	@GET
+	@Path("/updateStockPriceHistoryOverAllRunner/{date}")
+	public String updateStockPriceHistoryOverAllRunner(@PathParam("date") String dateParm) {
+		// update the total GuBen and LiuTong GuBen
+		String startDate = null, endDate = null;
+		if (Pattern.matches(fromToRegex, dateParm)) {
+			startDate = dateParm.split("_")[0];
+			endDate = dateParm.split("_")[1];
+		}
+		StockPriceHistoryOverAllRunner runner = new StockPriceHistoryOverAllRunner(startDate, endDate);
+		Thread t = new Thread(runner);
+		t.start();
+		return "StockPriceHistoryOverAllRunner already running, startDate=" + startDate + ", endDate=" + endDate;
 	}
 }

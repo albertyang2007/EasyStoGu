@@ -166,8 +166,16 @@ public class HistoryStockPriceDownloadAndStoreDBRunner {
 	}
 
 	public static void main(String[] args) {
-		String startDate = "2016-06-08";
+		String startDate = "2016-10-17";
 		String endDate = WeekdayUtil.currentDate();
+		
+		if (args != null && args.length == 2) {
+			startDate = args[0];
+			endDate = args[1];
+		}
+		
+		System.out.println("startDate=" + startDate + " and endDate=" + endDate);
+
 		HistoryStockPriceDownloadAndStoreDBRunner runner = new HistoryStockPriceDownloadAndStoreDBRunner(startDate,
 				endDate);
 		List<String> stockIds = runner.companyInfoHelper.getAllStockId();
