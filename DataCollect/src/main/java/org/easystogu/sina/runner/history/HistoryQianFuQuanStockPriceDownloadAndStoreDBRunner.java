@@ -52,7 +52,8 @@ public class HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner {
 		}
 		// fix a bug
 		// add the first vo
-		chuQuanSPList.add(spList.get(0));
+		if (spList != null && spList.size() >= 1)
+			chuQuanSPList.add(spList.get(0));
 
 		return chuQuanSPList;
 	}
@@ -86,6 +87,6 @@ public class HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner {
 		// for specify stockId
 		// runner.countAndSave("999999");
 		// runner.countAndSave("399001");
-		//runner.countAndSave("601388");
+		// runner.countAndSave("601388");
 	}
 }
