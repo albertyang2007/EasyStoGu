@@ -15,6 +15,7 @@ import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
 import net.sf.json.JSONArray;
+import net.sf.json.JSONException;
 import net.sf.json.JSONObject;
 
 //get real time stock price from http://vip.stock.finance.sina.com.cn/quotes_service/api/
@@ -81,6 +82,8 @@ public class DailyStockPriceDownloadHelper2 {
 
 			System.out.println(", result size= " + jsonArray.size());
 
+		} catch (JSONException e) {
+			System.out.println("JSONException at fetchAPageDataFromWeb : " + e.getMessage());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
