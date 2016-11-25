@@ -4,15 +4,16 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.util.List;
 
-import net.sf.json.JSONArray;
-
-import org.easystogu.config.FileConfigurationService;
+import org.easystogu.config.ConfigurationService;
+import org.easystogu.config.DBConfigurationService;
 import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.vo.table.StockPriceVO;
 
+import net.sf.json.JSONArray;
+
 public class StockPriceTableExport {
     private StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
-    private FileConfigurationService config = FileConfigurationService.getInstance();
+    private ConfigurationService config = DBConfigurationService.getInstance();
     private String stockPriceFilePath = config.getString("stockPrice.import_export.file.path");
 
     public void exportToFile(String date) {

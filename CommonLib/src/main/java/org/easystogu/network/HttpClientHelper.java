@@ -10,6 +10,7 @@ import java.net.HttpURLConnection;
 import java.net.PasswordAuthentication;
 import java.net.URL;
 
+import org.easystogu.config.ConfigurationService;
 import org.easystogu.config.Constants;
 import org.easystogu.config.FileConfigurationService;
 import org.easystogu.utils.Strings;
@@ -17,7 +18,7 @@ import org.easystogu.utils.Strings;
 //this http client still have connect timeout
 public class HttpClientHelper {
 
-	private static FileConfigurationService configure = FileConfigurationService.getInstance();
+	private static ConfigurationService configure = FileConfigurationService.getInstance();
 
 	String proxy = configure.getString(Constants.httpProxyServer, "");
 

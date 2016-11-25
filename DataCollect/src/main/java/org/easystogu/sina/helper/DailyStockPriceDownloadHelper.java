@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.easystogu.config.ConfigurationService;
 import org.easystogu.config.Constants;
 import org.easystogu.config.FileConfigurationService;
 import org.easystogu.file.access.CompanyInfoFileHelper;
@@ -19,7 +20,7 @@ import org.springframework.web.client.RestTemplate;
 //it need sotckIds as parameter
 public class DailyStockPriceDownloadHelper {
 	private static final String baseUrl = "http://hq.sinajs.cn/list=";
-	private static FileConfigurationService configure = FileConfigurationService.getInstance();
+	private static ConfigurationService configure = FileConfigurationService.getInstance();
 	private CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 
 	// stockList is like: sh000001,sh601318

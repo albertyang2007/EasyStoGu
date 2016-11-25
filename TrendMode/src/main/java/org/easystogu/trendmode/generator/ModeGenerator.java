@@ -4,9 +4,8 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.util.List;
 
-import net.sf.json.JSONObject;
-
-import org.easystogu.config.FileConfigurationService;
+import org.easystogu.config.ConfigurationService;
+import org.easystogu.config.DBConfigurationService;
 import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.vo.table.StockPriceVO;
@@ -15,8 +14,10 @@ import org.easystogu.trendmode.vo.SimplePriceVO;
 import org.easystogu.trendmode.vo.TrendModeVO;
 import org.easystogu.utils.Strings;
 
+import net.sf.json.JSONObject;
+
 public class ModeGenerator {
-	private FileConfigurationService config = FileConfigurationService.getInstance();
+	private ConfigurationService config = DBConfigurationService.getInstance();
 	private CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 	private StockPriceTableHelper stockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
 	private String trendModeJsonFilePath = config.getString("trendmode.json.file.path");

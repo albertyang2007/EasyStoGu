@@ -6,6 +6,7 @@ import java.net.Proxy.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.easystogu.config.ConfigurationService;
 import org.easystogu.config.Constants;
 import org.easystogu.config.FileConfigurationService;
 import org.easystogu.db.access.table.CompanyInfoTableHelper;
@@ -22,7 +23,7 @@ import org.springframework.web.client.RestTemplate;
 //get hou fuquan history stock price from sina
 public class HistoryHouFuQuanStockPriceDownloadAndStoreDBRunner {
 	private static String baseUrl = "http://vip.stock.finance.sina.com.cn/api/json_v2.php/BasicStockSrv.getStockFuQuanData?symbol=stockId&type=hfq";
-	private static FileConfigurationService configure = FileConfigurationService.getInstance();
+	private static ConfigurationService configure = FileConfigurationService.getInstance();
 	private HouFuQuanStockPriceTableHelper houfuquanStockPriceTable = HouFuQuanStockPriceTableHelper.getInstance();
 	private StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
 	private CompanyInfoTableHelper companyInfoTable = CompanyInfoTableHelper.getInstance();

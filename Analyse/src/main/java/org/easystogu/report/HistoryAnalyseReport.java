@@ -9,7 +9,8 @@ import java.util.Map;
 import org.easystogu.analyse.CombineAnalyseHelper;
 import org.easystogu.analyse.util.IndProcessHelper;
 import org.easystogu.checkpoint.DailyCombineCheckPoint;
-import org.easystogu.config.FileConfigurationService;
+import org.easystogu.config.ConfigurationService;
+import org.easystogu.config.DBConfigurationService;
 import org.easystogu.db.access.table.CheckPointDailySelectionTableHelper;
 import org.easystogu.db.access.table.CheckPointDailyStatisticsTableHelper;
 import org.easystogu.db.access.table.CheckPointHistoryAnalyseTableHelper;
@@ -25,7 +26,7 @@ import org.easystogu.utils.CrossType;
 import org.easystogu.utils.SellPointType;
 
 public class HistoryAnalyseReport {
-	private FileConfigurationService config = FileConfigurationService.getInstance();
+	private ConfigurationService config = DBConfigurationService.getInstance();
 	private CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 	private CheckPointHistorySelectionTableHelper checkPointHistorySelectionTable = CheckPointHistorySelectionTableHelper
 			.getInstance();

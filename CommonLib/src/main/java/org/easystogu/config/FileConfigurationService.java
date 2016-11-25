@@ -11,9 +11,8 @@ import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 
-public class FileConfigurationService {
-	private static Logger logger = LogHelper
-			.getLogger(FileConfigurationService.class);
+public class FileConfigurationService implements ConfigurationService {
+	private static Logger logger = LogHelper.getLogger(FileConfigurationService.class);
 	private static ResourceLoader resourceLoader = new DefaultResourceLoader();
 	private final Properties properties;
 	private static FileConfigurationService instance = null;
@@ -49,8 +48,7 @@ public class FileConfigurationService {
 				is = resource.getInputStream();
 				props.load(is);
 			} catch (IOException ex) {
-				logger.info("Could not load properties from path:{}, {} ",
-						location, ex.getMessage());
+				logger.info("Could not load properties from path:{}, {} ", location, ex.getMessage());
 			} finally {
 				if (is != null) {
 					try {
@@ -63,12 +61,20 @@ public class FileConfigurationService {
 		return props;
 	}
 
-	private String getValue(String key) {
+	public String getValue(String key) {
 		String systemProperty = System.getProperty(key);
 		if (systemProperty != null) {
 			return systemProperty;
 		}
 		return properties.getProperty(key);
+	}
+
+	public String getValue(String key, String defaultValue) {
+		String v = properties.getProperty(key);
+		if (v != null) {
+			return v;
+		}
+		return defaultValue;
 	}
 
 	public boolean getBoolean(String key) {
@@ -134,10 +140,4 @@ public class FileConfigurationService {
 		}
 		return value;
 	}
-
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
-	}
-
 }

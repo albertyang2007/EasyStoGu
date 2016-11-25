@@ -2,7 +2,8 @@ package org.easystogu.easymoney.runner;
 
 import java.util.List;
 
-import org.easystogu.config.FileConfigurationService;
+import org.easystogu.config.ConfigurationService;
+import org.easystogu.config.DBConfigurationService;
 import org.easystogu.db.access.table.ZhuLiJingLiuRuTableHelper;
 import org.easystogu.db.vo.table.ZhuLiJingLiuRuVO;
 import org.easystogu.easymoney.helper.DailyZhuLiJingLiuRuFatchDataHelper;
@@ -11,7 +12,7 @@ import org.easystogu.utils.Strings;
 
 //pai ming
 public class DailyZhuLiJingLiuRuRunner implements Runnable {
-    private FileConfigurationService config = FileConfigurationService.getInstance();
+    private ConfigurationService config = DBConfigurationService.getInstance();
     private DailyZhuLiJingLiuRuFatchDataHelper fatchDataHelper = new DailyZhuLiJingLiuRuFatchDataHelper();
     private ZhuLiJingLiuRuTableHelper zhuLiJingLiuRuTableHelper = ZhuLiJingLiuRuTableHelper.getInstance();
     private int toPage = 10;

@@ -1,12 +1,13 @@
 package org.easystogu.indicator;
 
-import org.easystogu.config.FileConfigurationService;
+import org.easystogu.config.ConfigurationService;
+import org.easystogu.config.DBConfigurationService;
 
 import com.tictactec.ta.lib.Core;
 import com.tictactec.ta.lib.MInteger;
 
 public class IND {
-	private FileConfigurationService config = FileConfigurationService.getInstance();
+	private ConfigurationService config = DBConfigurationService.getInstance();
 	public int mockLength = config.getInt("insert_length_mock_price_count_indicator", 120);
 	protected static final double DEFAULT_VALUE = 0.0;
 	protected Core core = new Core();

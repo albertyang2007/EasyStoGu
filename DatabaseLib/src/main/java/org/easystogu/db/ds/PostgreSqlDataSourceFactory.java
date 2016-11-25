@@ -1,5 +1,6 @@
 package org.easystogu.db.ds;
 
+import org.easystogu.config.ConfigurationService;
 import org.easystogu.config.Constants;
 import org.easystogu.config.FileConfigurationService;
 import org.easystogu.log.LogHelper;
@@ -7,7 +8,7 @@ import org.slf4j.Logger;
 
 public class PostgreSqlDataSourceFactory {
 	private static Logger logger = LogHelper.getLogger(PostgreSqlDataSourceFactory.class);
-	private static FileConfigurationService config = FileConfigurationService.getInstance();
+	private static ConfigurationService config = FileConfigurationService.getInstance();
 	private static org.apache.tomcat.jdbc.pool.DataSource ds = null;
 
 	public static javax.sql.DataSource createDataSource() {

@@ -3,6 +3,7 @@ package org.easystogu.network;
 import java.net.URL;
 import java.util.List;
 
+import org.easystogu.config.ConfigurationService;
 import org.easystogu.config.Constants;
 import org.easystogu.config.FileConfigurationService;
 import org.easystogu.utils.Strings;
@@ -20,7 +21,7 @@ import com.gargoylesoftware.htmlunit.html.HtmlTextInput;
 import com.gargoylesoftware.htmlunit.javascript.JavaScriptEngine;
 
 public class HtmlUnitHelper {
-	private static FileConfigurationService configure = FileConfigurationService.getInstance();
+	private static ConfigurationService configure = FileConfigurationService.getInstance();
 
 	public static WebClient getWebClient() {
 		WebClient webClient = null;

@@ -1,6 +1,7 @@
 package org.easystogu.checkpoint;
 
-import org.easystogu.config.FileConfigurationService;
+import org.easystogu.config.ConfigurationService;
+import org.easystogu.config.DBConfigurationService;
 import org.easystogu.utils.SellPointType;
 import org.easystogu.utils.Strings;
 
@@ -49,7 +50,7 @@ public enum DailyCombineCheckPoint {
             SellPointType.KDJ_Dead, 74303, 9.56),WR_Top_Area(SellPointType.KDJ_Dead, 0, 0),WR_Ready_To_ZhangTing(SellPointType.KDJ_Dead, 0, 0), MACD_DI_BeiLi(
             SellPointType.KDJ_Dead, 0, 99.0),WR_4_Days_SameValue_XianShang(SellPointType.KDJ_Dead,2923,8.35);
 
-    private FileConfigurationService config = FileConfigurationService.getInstance();
+    private ConfigurationService config = DBConfigurationService.getInstance();
     private double minEarnPercent = config.getDouble("minEarnPercent_Select_CheckPoint");
 
     private String condition;
@@ -133,7 +134,7 @@ public enum DailyCombineCheckPoint {
     }
 
     public static void main(String[] args) {
-        FileConfigurationService config = FileConfigurationService.getInstance();
+    	ConfigurationService config = DBConfigurationService.getInstance();
         double minEarnPercent = config.getDouble("minEarnPercent_Select_CheckPoint");
         for (DailyCombineCheckPoint checkPoint : DailyCombineCheckPoint.values()) {
             if (checkPoint.getSampleMeet() < 10000 && checkPoint.getEarnPercent() >= 10) {

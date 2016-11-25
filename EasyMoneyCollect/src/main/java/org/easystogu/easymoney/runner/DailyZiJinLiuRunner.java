@@ -2,7 +2,8 @@ package org.easystogu.easymoney.runner;
 
 import java.util.List;
 
-import org.easystogu.config.FileConfigurationService;
+import org.easystogu.config.ConfigurationService;
+import org.easystogu.config.DBConfigurationService;
 import org.easystogu.db.access.table.ZiJinLiu3DayTableHelper;
 import org.easystogu.db.access.table.ZiJinLiu5DayTableHelper;
 import org.easystogu.db.access.table.ZiJinLiuTableHelper;
@@ -12,7 +13,7 @@ import org.easystogu.utils.Strings;
 
 //zijinliu, ddx use this
 public class DailyZiJinLiuRunner implements Runnable {
-	private FileConfigurationService config = FileConfigurationService.getInstance();
+	private ConfigurationService config = DBConfigurationService.getInstance();
 	private DailyZiJinLiuFatchDataHelper fatchDataHelper = new DailyZiJinLiuFatchDataHelper();
 	private ZiJinLiuTableHelper zijinliuTableHelper = ZiJinLiuTableHelper.getInstance();
 	private ZiJinLiu3DayTableHelper zijinliu3DayTableHelper = ZiJinLiu3DayTableHelper.getInstance();

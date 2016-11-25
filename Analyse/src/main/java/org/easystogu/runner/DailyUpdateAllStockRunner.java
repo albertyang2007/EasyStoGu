@@ -2,6 +2,8 @@ package org.easystogu.runner;
 
 import java.util.List;
 
+import org.easystogu.config.Constants;
+import org.easystogu.db.access.table.WSFConfigTableHelper;
 import org.easystogu.easymoney.runner.OverAllZiJinLiuAndDDXRunner;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.indicator.runner.AllDailyIndCountAndSaveDBRunner;
@@ -9,6 +11,8 @@ import org.easystogu.sina.runner.DailyStockPriceDownloadAndStoreDBRunner2;
 import org.easystogu.sina.runner.DailyWeeklyStockPriceCountAndSaveDBRunner;
 
 public class DailyUpdateAllStockRunner implements Runnable {
+	private WSFConfigTableHelper wsfConfig = WSFConfigTableHelper.getInstance();
+	private String zone = wsfConfig.getValue("zone", Constants.ZONE_OFFICE);
 	private CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 	private List<String> allStockIds = stockConfig.getAllStockId();
 	private DailySelectionRunner dailySelectionRunner = null;
@@ -32,16 +36,23 @@ public class DailyUpdateAllStockRunner implements Runnable {
 
 		// zijinliu
 		if (isGetZiJinLiu) {
-			new OverAllZiJinLiuAndDDXRunner().run();
-			// DailyZhuLiJingLiuRuRunner.main(args);
+			// at office, will only download top 300 zijinliu
+			if (Constants.ZONE_OFFICE.equalsIgnoreCase(zone)) {
+				new OverAllZiJinLiuAndDDXRunner().run();
+			} else if (Constants.ZONE_ALIYUN.equalsIgnoreCase(zone)) {
+				// at aliyun, download all zijinliu
+				OverAllZiJinLiuAndDDXRunner zjrunner = new OverAllZiJinLiuAndDDXRunner();
+				zjrunner.resetToAllPage();
+				zjrunner.run();
+			}
 		}
 
 		// analyse by jave code
 		dailySelectionRunner = new DailySelectionRunner();
 		dailySelectionRunner.setFetchRealTimeZiJinLiu(false);
 		dailySelectionRunner.runForStockIds(allStockIds);
-		
-		//alaylse by view names
+
+		// alaylse by view names
 		new DailyViewAnalyseRunner().run();
 
 		System.out.println("stop using " + (System.currentTimeMillis() - st) / 1000 + " seconds");

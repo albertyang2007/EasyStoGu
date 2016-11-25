@@ -8,8 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.sf.json.JSONObject;
-
+import org.easystogu.config.ConfigurationService;
 import org.easystogu.config.Constants;
 import org.easystogu.config.FileConfigurationService;
 import org.easystogu.db.access.table.CompanyInfoTableHelper;
@@ -22,13 +21,15 @@ import org.easystogu.utils.WeekdayUtil;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
+import net.sf.json.JSONObject;
+
 //history stock price from sohu, json format
 public class HistoryStockPriceDownloadAndStoreDBRunner {
 	// before 1997, there is no +-10%
 	private String startDate = "1997-01-01";
 	private String endDate = WeekdayUtil.currentDate();
 	private static String baseUrl = "http://q.stock.sohu.com/hisHq?code=cn_stockId&start=startDate&end=endDate&order=D&period=d&rt=json";
-	private static FileConfigurationService configure = FileConfigurationService.getInstance();
+	private static ConfigurationService configure = FileConfigurationService.getInstance();
 	private StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
 	private CompanyInfoFileHelper companyInfoHelper = CompanyInfoFileHelper.getInstance();
 	private CompanyInfoTableHelper companyInfoTable = CompanyInfoTableHelper.getInstance();

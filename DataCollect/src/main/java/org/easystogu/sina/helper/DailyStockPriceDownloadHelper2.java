@@ -6,6 +6,7 @@ import java.net.Proxy.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.easystogu.config.ConfigurationService;
 import org.easystogu.config.Constants;
 import org.easystogu.config.FileConfigurationService;
 import org.easystogu.db.access.table.CompanyInfoTableHelper;
@@ -28,7 +29,7 @@ public class DailyStockPriceDownloadHelper2 {
 	private int totalNumberPage = this.companyInfoTable.getAllCompanyInfo().size() / numberPerPage + 1;
 	private static final String baseUrl = "http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/Market_Center.getHQNodeData?page=1&num="
 			+ numberPerPage + "&sort=symbol&asc=1&node=hs_a";
-	private static FileConfigurationService configure = FileConfigurationService.getInstance();
+	private static ConfigurationService configure = FileConfigurationService.getInstance();
 
 	public List<SinaQuoteStockPriceVO> fetchAllStockPriceFromWeb() {
 		List<SinaQuoteStockPriceVO> list = new ArrayList<SinaQuoteStockPriceVO>();

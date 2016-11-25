@@ -2,6 +2,7 @@ package org.easystogu.sina.runner;
 
 import java.util.List;
 
+import org.easystogu.config.ConfigurationService;
 import org.easystogu.config.FileConfigurationService;
 import org.easystogu.sina.common.RealTimePriceVO;
 import org.easystogu.sina.helper.DailyStockPriceDownloadHelper;
@@ -11,7 +12,7 @@ public class RealtimeDisplayStockPriceRunner {
 	public String printRealTimeOutput() {
 		// 显示实时数据(指定的stockIds)
 		StringBuffer sb = new StringBuffer();
-		FileConfigurationService configure = FileConfigurationService
+		ConfigurationService configure = FileConfigurationService
 				.getInstance();
 		DailyStockPriceDownloadHelper ins = new DailyStockPriceDownloadHelper();
 

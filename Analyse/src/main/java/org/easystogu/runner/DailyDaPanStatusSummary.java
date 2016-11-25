@@ -7,7 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.easystogu.config.FileConfigurationService;
+import org.easystogu.config.ConfigurationService;
+import org.easystogu.config.DBConfigurationService;
 import org.easystogu.db.access.table.CheckPointDailySelectionTableHelper;
 import org.easystogu.db.access.table.IndDDXTableHelper;
 import org.easystogu.db.access.table.StockPriceTableHelper;
@@ -16,7 +17,7 @@ import org.easystogu.db.vo.table.DDXVO;
 import org.easystogu.report.comparator.CheckPointEventComparator;
 
 public class DailyDaPanStatusSummary {
-	private FileConfigurationService config = FileConfigurationService.getInstance();
+	private ConfigurationService config = DBConfigurationService.getInstance();
 	private CheckPointDailySelectionTableHelper checkPointDailySelectionTable = CheckPointDailySelectionTableHelper
 			.getInstance();
 	private StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();

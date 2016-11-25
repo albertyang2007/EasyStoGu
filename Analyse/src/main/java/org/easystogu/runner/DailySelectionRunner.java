@@ -13,7 +13,8 @@ import java.util.Set;
 import org.easystogu.analyse.CombineAnalyseHelper;
 import org.easystogu.analyse.util.IndProcessHelper;
 import org.easystogu.checkpoint.DailyCombineCheckPoint;
-import org.easystogu.config.FileConfigurationService;
+import org.easystogu.config.ConfigurationService;
+import org.easystogu.config.DBConfigurationService;
 import org.easystogu.db.access.table.CheckPointDailySelectionTableHelper;
 import org.easystogu.db.access.table.CheckPointDailyStatisticsTableHelper;
 import org.easystogu.db.access.table.ScheduleActionTableHelper;
@@ -40,7 +41,7 @@ import org.easystogu.utils.WeekdayUtil;
 
 //daily select stock that checkpoint is satisfied
 public class DailySelectionRunner implements Runnable {
-	private FileConfigurationService config = FileConfigurationService.getInstance();
+	private ConfigurationService config = DBConfigurationService.getInstance();
 	private CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 	private StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
 	private StockSuperVOHelper stockOverAllHelper = new StockSuperVOHelper();

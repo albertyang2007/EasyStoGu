@@ -73,6 +73,24 @@ public class WSFConfigTableHelper {
 		return defaultValue;
 	}
 
+	public String getValue(String name) {
+		try {
+
+			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+			namedParameters.addValue("name", name);
+
+			WSFConfigVO vo = this.namedParameterJdbcTemplate.queryForObject(QUERY_BY_NAME, namedParameters,
+					new ConfigVOMapper());
+
+			return vo.getValue();
+		} catch (EmptyResultDataAccessException ee) {
+			return null;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		WSFConfigTableHelper ins = new WSFConfigTableHelper();

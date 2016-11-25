@@ -10,7 +10,8 @@ import java.util.Map;
 import java.util.Set;
 
 import org.easystogu.checkpoint.DailyCombineCheckPoint;
-import org.easystogu.config.FileConfigurationService;
+import org.easystogu.config.ConfigurationService;
+import org.easystogu.config.DBConfigurationService;
 import org.easystogu.db.access.table.CheckPointDailySelectionTableHelper;
 import org.easystogu.db.access.table.IndDDXTableHelper;
 import org.easystogu.db.access.table.StockPriceTableHelper;
@@ -27,7 +28,7 @@ import org.easystogu.report.comparator.CheckPointEventComparator;
 
 //recently (10 days) select stock that checkpoint is satisfied
 public class RecentlySelectionRunner implements Runnable {
-	private FileConfigurationService config = FileConfigurationService.getInstance();
+	private ConfigurationService config = DBConfigurationService.getInstance();
 	private CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 	private StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
 	private ZiJinLiuTableHelper ziJinLiuTableHelper = ZiJinLiuTableHelper.getInstance();
