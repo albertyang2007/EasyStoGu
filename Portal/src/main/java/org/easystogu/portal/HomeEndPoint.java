@@ -23,7 +23,6 @@ import org.easystogu.runner.RecentlySelectionRunner;
 import org.easystogu.sina.runner.DailyStockPriceDownloadAndStoreDBRunner2;
 import org.easystogu.sina.runner.RealtimeDisplayStockPriceRunner;
 import org.easystogu.sina.runner.history.StockPriceHistoryOverAllRunner;
-import org.easystogu.utils.Strings;
 
 public class HomeEndPoint {
 	protected String dateRegex = "[0-9]{4}-[0-9]{2}-[0-9]{2}";
