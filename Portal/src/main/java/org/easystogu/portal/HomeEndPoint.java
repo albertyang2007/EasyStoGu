@@ -13,6 +13,7 @@ import org.easystogu.easymoney.runner.DailyZhuLiJingLiuRuRunner;
 import org.easystogu.easymoney.runner.DailyZiJinLiuRunner;
 import org.easystogu.easymoney.runner.OverAllZiJinLiuAndDDXRunner;
 import org.easystogu.file.access.CompanyInfoFileHelper;
+import org.easystogu.indicator.runner.history.IndicatorHistortOverAllRunner;
 import org.easystogu.runner.DailyOverAllRunner;
 import org.easystogu.runner.DailySelectionRunner;
 import org.easystogu.runner.DailyUpdateAllStockRunner;
@@ -53,6 +54,7 @@ public class HomeEndPoint {
 		sb.append("<a href='/portal/home/UpdateCompanyFromFileToDB'>UpdateCompanyFromFileToDB</a><br>");
 		sb.append(
 				"<a href='/portal/home/updateStockPriceHistoryOverAllRunner/2016-10-17_2016-11-23'>updateStockPriceHistoryOverAllRunnerFromStartDate</a><br>");
+		sb.append("<a href='/portal/home/IndicatorHistortOverAllRunner'>IndicatorHistortOverAllRunner</a><br>");
 		return Response.ok().entity(sb.toString()).build();
 	}
 
@@ -214,5 +216,13 @@ public class HomeEndPoint {
 		Thread t = new Thread(runner);
 		t.start();
 		return "StockPriceHistoryOverAllRunner already running, startDate=" + startDate + ", endDate=" + endDate;
+	}
+
+	@GET
+	@Path("/IndicatorHistortOverAllRunner")
+	public String indicatorHistortOverAllRunner() {
+		Thread t = new Thread(new IndicatorHistortOverAllRunner());
+		t.start();
+		return "IndicatorHistortOverAllRunner already running, please check folder result.";
 	}
 }
