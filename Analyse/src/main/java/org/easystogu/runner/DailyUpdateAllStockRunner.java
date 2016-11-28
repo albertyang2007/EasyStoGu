@@ -36,15 +36,7 @@ public class DailyUpdateAllStockRunner implements Runnable {
 
 		// zijinliu
 		if (isGetZiJinLiu) {
-			// at office, will only download top 300 zijinliu
-			if (Constants.ZONE_OFFICE.equalsIgnoreCase(zone)) {
-				new OverAllZiJinLiuAndDDXRunner().run();
-			} else if (Constants.ZONE_ALIYUN.equalsIgnoreCase(zone)) {
-				// at aliyun, download all zijinliu
-				OverAllZiJinLiuAndDDXRunner zjrunner = new OverAllZiJinLiuAndDDXRunner();
-				zjrunner.resetToAllPage();
-				zjrunner.run();
-			}
+			new OverAllZiJinLiuAndDDXRunner().run();
 		}
 
 		// analyse by jave code

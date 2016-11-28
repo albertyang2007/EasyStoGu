@@ -23,8 +23,8 @@ import com.gargoylesoftware.htmlunit.html.HtmlUnorderedList;
 //有当天数据，3天数据，5天数据,10天数据
 //总共59页
 public class DailyZiJinLiuFatchDataHelper {
-	// one page contains 50 stockIds and total 2914/50=59 pages
-	public static final int totalPages = 64;
+	// one page contains 50 stockIds and total 3000/50=60 pages
+	public static final int totalPages = 60;
 	private final String baseUrl = "http://data.eastmoney.com/zjlx/detail.html";
 	public String currentDate = "";
 

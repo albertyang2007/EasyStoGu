@@ -34,26 +34,22 @@ public class DailyScheduler implements SchedulingConfigurer {
 	// refer to:
 	// http://www.quartz-scheduler.org/documentation/quartz-1.x/tutorials/crontrigger
 
-	// run at 11:32
-	@Scheduled(cron = "0 32 11 * * MON-FRI")
+	// run at 11:31
+	@Scheduled(cron = "0 31 11 * * MON-FRI")
 	public void _1_DailyOverAllRunner() {
-		if (Constants.ZONE_OFFICE.equalsIgnoreCase(zone)) {
-			boolean isGetZiJinLiu = true;
-			this.DailyOverAllRunner(isGetZiJinLiu);
-		}
+		boolean isGetZiJinLiu = true;
+		this.DailyOverAllRunner(isGetZiJinLiu);
 	}
 
 	// run at 15:06
 	@Scheduled(cron = "0 06 15 * * MON-FRI")
 	public void _3_DailyOverAllRunner() {
-		if (Constants.ZONE_OFFICE.equalsIgnoreCase(zone)) {
-			boolean isGetZiJinLiu = true;
-			this.DailyOverAllRunner(isGetZiJinLiu);
-		}
+		boolean isGetZiJinLiu = true;
+		this.DailyOverAllRunner(isGetZiJinLiu);
 	}
 
-	// run at 21:30
-	@Scheduled(cron = "0 30 21 * * MON-FRI")
+	// run at 21:45
+	// @Scheduled(cron = "0 45 21 * * MON-FRI")
 	public void _0_DailyZiJinLiuAndDDX() {
 		logger.info("OverAllZiJinLiuAndDDXRunner and DDX for all StockId already running.");
 		if (Constants.ZONE_OFFICE.equalsIgnoreCase(zone)) {
@@ -67,15 +63,13 @@ public class DailyScheduler implements SchedulingConfigurer {
 	// run at 23:00
 	@Scheduled(cron = "0 00 23 * * MON-FRI")
 	public void _0_DataBaseSanityCheck() {
-		if (Constants.ZONE_OFFICE.equalsIgnoreCase(zone)) {
-			logger.info("DataBaseSanityCheck already running.");
-			Thread t = new Thread(new DataBaseSanityCheck());
-			t.start();
-		}
+		logger.info("DataBaseSanityCheck already running.");
+		Thread t = new Thread(new DataBaseSanityCheck());
+		t.start();
 	}
 
 	// run at 15:06
-	@Scheduled(cron = "0 06 15 * * MON-FRI")
+	// @Scheduled(cron = "0 06 15 * * MON-FRI")
 	public void _0_DailyUpdateStockPriceAndDDXRunner() {
 		logger.info("DailyUpdateStockPriceAndDDXRunner already running, please check DB result.");
 		if (Constants.ZONE_ALIYUN.equalsIgnoreCase(zone)) {
