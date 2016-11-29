@@ -78,11 +78,11 @@ ${demo.css}
              this.state.stockIdOptions = [];
              for (var i = 0; i < selectStockIds.length; i++) {
                  this.state.stockIdOptions.push(
-                 <option value={selectStockIds[i].stockId}>{selectStockIds[i]}</option>
+                 <option value={selectStockIds[i][0]}>{selectStockIds[i][0]}{selectStockIds[i][1]}</option>
                 );
              }
              //set the selected stockId to first one
-             stockId = selectStockIds[0].stockId;
+             stockId = selectStockIds[0][0];
              $.ajaxSettings.async = true;
 
              //refresh the shenxian chart using the first stockid
