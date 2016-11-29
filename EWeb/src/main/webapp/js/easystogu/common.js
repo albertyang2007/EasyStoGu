@@ -13,7 +13,7 @@ function getEasyStoGuServerUrl() {
 	h7 = 'o';
 	h8 = 'n';
 	//return "http://cn00082825." + h1 + h2 + h3 + h4 + h5 + h6 + h7 + h8 + ".se:8080";
-	return "http://localhost:8080";
+	return "http://www.mawaq:18080";
 }
 
 /**
