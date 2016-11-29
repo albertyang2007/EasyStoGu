@@ -4,15 +4,6 @@
  * @returns {undefined}
  */
 function getEasyStoGuServerUrl() {
-	h1 = 'e';
-	h2 = 'r';
-	h3 = 'i';
-	h4 = 'c';
-	h5 = 's';
-	h6 = 's';
-	h7 = 'o';
-	h8 = 'n';
-	//return "http://cn00082825." + h1 + h2 + h3 + h4 + h5 + h6 + h7 + h8 + ".se:8080";
 	return "http://www.mawaq:18080";
 }
 
