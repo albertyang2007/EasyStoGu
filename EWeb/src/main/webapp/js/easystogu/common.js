@@ -94,7 +94,7 @@ function getLatestNDate(limit) {
  */
 function getAllStockIdsFromView(viewName) {
 	var url = getEasyStoGuServerUrl() + "/portal/view/" + viewName;
-	var stockIds = "[]";
+	var stockIds = [];
 	$.getJSON(url, function(data) {
 		i = 0;
 		for (i; i < data.length; i += 1) {
