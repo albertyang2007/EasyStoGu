@@ -96,7 +96,10 @@ function getAllStockIdsFromView(viewName) {
 	var url = getEasyStoGuServerUrl() + "/portal/view/" + viewName;
 	var stockIds = "[]";
 	$.getJSON(url, function(data) {
-		stockIds = data;
+		i = 0;
+		for (i; i < data.length; i += 1) {
+			stockIds.push([ data[i]['stockId'], data[i]['name'] ]);
+		}		
 	});
 	return stockIds;
 }
