@@ -4,7 +4,8 @@
  * @returns {undefined}
  */
 function getEasyStoGuServerUrl() {
-	return "http://www.mawaq.com:18080";
+	//return "http://www.mawaq.com:18080";
+	return "http://www.openstock.cn:18080";
 }
 
 /**
