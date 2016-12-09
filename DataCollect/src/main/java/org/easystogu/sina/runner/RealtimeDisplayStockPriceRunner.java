@@ -3,20 +3,19 @@ package org.easystogu.sina.runner;
 import java.util.List;
 
 import org.easystogu.config.ConfigurationService;
-import org.easystogu.config.FileConfigurationService;
+import org.easystogu.config.DBConfigurationService;
 import org.easystogu.sina.common.RealTimePriceVO;
 import org.easystogu.sina.helper.DailyStockPriceDownloadHelper;
 
 public class RealtimeDisplayStockPriceRunner {
+	private ConfigurationService configure = DBConfigurationService.getInstance();
 
 	public String printRealTimeOutput() {
 		// 显示实时数据(指定的stockIds)
 		StringBuffer sb = new StringBuffer();
-		ConfigurationService configure = FileConfigurationService
-				.getInstance();
 		DailyStockPriceDownloadHelper ins = new DailyStockPriceDownloadHelper();
 
-		String strList = configure.getString("realtime.display.stock.list")
+		String strList = configure.getString("realtime.display.stock.list", "sh000001,sz399001,sz399006")
 				+ "," + configure.getString("analyse.select.stock.list");
 
 		sb.append("============Main Selected===========<br>\n");
