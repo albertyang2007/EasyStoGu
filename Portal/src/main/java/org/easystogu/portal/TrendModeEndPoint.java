@@ -10,6 +10,8 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 
+import org.easystogu.config.ConfigurationService;
+import org.easystogu.config.DBConfigurationService;
 import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.portal.init.TrendModeLoader;
 import org.easystogu.trendmode.vo.SimplePriceVO;
@@ -19,6 +21,8 @@ import org.easystogu.utils.WeekdayUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class TrendModeEndPoint {
+	private ConfigurationService config = DBConfigurationService.getInstance();
+	private String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
 	@Autowired
 	private TrendModeLoader modeLoader;
 
@@ -27,7 +31,7 @@ public class TrendModeEndPoint {
 	@Produces("application/json")
 	public List<StockPriceVO> queryTrendModeByName(@PathParam("name") String name,
 			@Context HttpServletResponse response) {
-		response.addHeader("Access-Control-Allow-Origin", "*");
+		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		List<StockPriceVO> spList = new ArrayList<StockPriceVO>();
 		TrendModeVO tmo = modeLoader.loadTrendMode(name);
 		if (tmo == null)
@@ -57,7 +61,7 @@ public class TrendModeEndPoint {
 	@Path("/listnames")
 	@Produces("application/json")
 	public List<String> queryAllTrendModeNames(@Context HttpServletResponse response) {
-		response.addHeader("Access-Control-Allow-Origin", "*");
+		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		return modeLoader.getAllNames();
 	}
 }

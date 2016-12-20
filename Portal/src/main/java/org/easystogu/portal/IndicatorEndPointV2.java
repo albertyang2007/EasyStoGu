@@ -11,6 +11,8 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 
+import org.easystogu.config.ConfigurationService;
+import org.easystogu.config.DBConfigurationService;
 import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.vo.table.BollVO;
 import org.easystogu.db.vo.table.KDJVO;
@@ -35,6 +37,8 @@ import com.google.common.primitives.Doubles;
 
 //V2, query price and count in real time, qian FuQuan
 public class IndicatorEndPointV2 {
+	private ConfigurationService config = DBConfigurationService.getInstance();
+	private String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
 	protected static String HHmmss = "00:00:00";
 	protected CompanyInfoFileHelper companyInfoHelper = CompanyInfoFileHelper.getInstance();
 	protected QianFuQuanStockPriceTableHelper qianfuquanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
@@ -53,7 +57,7 @@ public class IndicatorEndPointV2 {
 	@Produces("application/json")
 	public List<MacdVO> queryMACDById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
 			@Context HttpServletResponse response) {
-		response.addHeader("Access-Control-Allow-Origin", "*");
+		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		List<MacdVO> list = new ArrayList<MacdVO>();
 		List<StockPriceVO> spList = this.fetchAllPrices(stockIdParm);
 		List<Double> close = StockPriceFetcher.getClosePrice(spList);
@@ -77,7 +81,7 @@ public class IndicatorEndPointV2 {
 	@Produces("application/json")
 	public List<KDJVO> queryKDJById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
 			@Context HttpServletResponse response) {
-		response.addHeader("Access-Control-Allow-Origin", "*");
+		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		List<KDJVO> list = new ArrayList<KDJVO>();
 		List<StockPriceVO> spList = this.fetchAllPrices(stockIdParm);
 		List<Double> close = StockPriceFetcher.getClosePrice(spList);
@@ -104,7 +108,7 @@ public class IndicatorEndPointV2 {
 	@Produces("application/json")
 	public List<BollVO> queryBollById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
 			@Context HttpServletResponse response) {
-		response.addHeader("Access-Control-Allow-Origin", "*");
+		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		List<BollVO> list = new ArrayList<BollVO>();
 		List<StockPriceVO> spList = this.fetchAllPrices(stockIdParm);
 		List<Double> close = StockPriceFetcher.getClosePrice(spList);
@@ -129,7 +133,7 @@ public class IndicatorEndPointV2 {
 	@Produces("application/json")
 	public List<ShenXianVO> queryShenXian2ById(@PathParam("stockId") String stockIdParm,
 			@PathParam("date") String dateParm, @Context HttpServletResponse response) {
-		response.addHeader("Access-Control-Allow-Origin", "*");
+		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		List<ShenXianVO> list = new ArrayList<ShenXianVO>();
 		List<StockPriceVO> spList = this.fetchAllPrices(stockIdParm);
 		List<Double> close = StockPriceFetcher.getClosePrice(spList);
@@ -155,7 +159,7 @@ public class IndicatorEndPointV2 {
 	@Produces("application/json")
 	public List<ShenXianVO> queryShenXianSellById(@PathParam("stockId") String stockIdParm,
 			@PathParam("date") String dateParm, @Context HttpServletResponse response) {
-		response.addHeader("Access-Control-Allow-Origin", "*");
+		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		List<ShenXianVO> list = new ArrayList<ShenXianVO>();
 		List<StockPriceVO> spList = this.fetchAllPrices(stockIdParm);
 		List<Double> close = StockPriceFetcher.getClosePrice(spList);
@@ -181,7 +185,7 @@ public class IndicatorEndPointV2 {
 	@Produces("application/json")
 	public List<LuZaoVO> queryLuZaoById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
 			@Context HttpServletResponse response) {
-		response.addHeader("Access-Control-Allow-Origin", "*");
+		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		List<LuZaoVO> list = new ArrayList<LuZaoVO>();
 		List<StockPriceVO> spList = this.fetchAllPrices(stockIdParm);
 		List<Double> close = StockPriceFetcher.getClosePrice(spList);
@@ -206,7 +210,7 @@ public class IndicatorEndPointV2 {
 	@Produces("application/json")
 	public List<QSDDVO> queryQSDDById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
 			@Context HttpServletResponse response) {
-		response.addHeader("Access-Control-Allow-Origin", "*");
+		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		List<QSDDVO> list = new ArrayList<QSDDVO>();
 		List<StockPriceVO> spList = this.fetchAllPrices(stockIdParm);
 		List<Double> close = StockPriceFetcher.getClosePrice(spList);
@@ -233,7 +237,7 @@ public class IndicatorEndPointV2 {
 	@Produces("application/json")
 	public List<WRVO> queryWRById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
 			@Context HttpServletResponse response) {
-		response.addHeader("Access-Control-Allow-Origin", "*");
+		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		List<WRVO> list = new ArrayList<WRVO>();
 		List<StockPriceVO> spList = this.fetchAllPrices(stockIdParm);
 		List<Double> close = StockPriceFetcher.getClosePrice(spList);

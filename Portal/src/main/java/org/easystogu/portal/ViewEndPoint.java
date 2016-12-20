@@ -11,6 +11,8 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 
+import org.easystogu.config.ConfigurationService;
+import org.easystogu.config.DBConfigurationService;
 import org.easystogu.db.access.table.CheckPointDailySelectionTableHelper;
 import org.easystogu.db.access.view.CommonViewHelper;
 import org.easystogu.db.vo.table.CheckPointDailySelectionVO;
@@ -20,6 +22,8 @@ import org.easystogu.log.LogHelper;
 import org.slf4j.Logger;
 
 public class ViewEndPoint {
+	private ConfigurationService config = DBConfigurationService.getInstance();
+	private String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
 	private static Logger logger = LogHelper.getLogger(ViewEndPoint.class);
 	private CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 	private CheckPointDailySelectionTableHelper checkPointDailySelectionTable = CheckPointDailySelectionTableHelper
@@ -31,7 +35,7 @@ public class ViewEndPoint {
 	@Produces("application/json")
 	public List<CommonViewVO> queryDayPriceByIdFromAnalyseViewAtRealTime(@PathParam("viewname") String viewname,
 			@Context HttpServletRequest request, @Context HttpServletResponse response) {
-		response.addHeader("Access-Control-Allow-Origin", "*");
+		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		String date = request.getParameter("date");
 		logger.debug("viewName=" + viewname + ",date=" + date);
 

@@ -11,6 +11,8 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 
+import org.easystogu.config.ConfigurationService;
+import org.easystogu.config.DBConfigurationService;
 import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
@@ -19,6 +21,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 //v2, hou FuQuan stockprice 
 public class PriceEndPointV2 {
+	private ConfigurationService config = DBConfigurationService.getInstance();
+	private String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
 	protected static String HHmmss = "00:00:00";
 	protected CompanyInfoFileHelper companyInfoHelper = CompanyInfoFileHelper.getInstance();
 	protected QianFuQuanStockPriceTableHelper qianfuquanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
@@ -32,7 +36,7 @@ public class PriceEndPointV2 {
 	@Produces("application/json")
 	public List<StockPriceVO> queryDayPriceById(@PathParam("stockId") String stockIdParm,
 			@PathParam("date") String dateParm, @Context HttpServletResponse response) {
-		response.addHeader("Access-Control-Allow-Origin", "*");
+		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 
 		List<StockPriceVO> spList = new ArrayList<StockPriceVO>();
 		if (Pattern.matches(fromToRegex, dateParm)) {
