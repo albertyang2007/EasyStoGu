@@ -39,7 +39,8 @@ public class DailyZiJinLiuRunner implements Runnable {
 
 		for (ZiJinLiuVO vo : list) {
 			if (vo.isValidated()) {
-				// zijinliuTableHelper.delete(vo.stockId, vo.date);
+				//bug, do know why dup key already exit, delete it to avoid the exception
+				zijinliuTableHelper.delete(vo.stockId, vo.date);
 				zijinliuTableHelper.insert(vo);
 				// System.out.println(vo.stockId + "=" + vo.name);
 			}
