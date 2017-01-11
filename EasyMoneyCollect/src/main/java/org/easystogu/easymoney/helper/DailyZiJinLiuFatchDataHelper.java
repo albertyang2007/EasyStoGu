@@ -50,16 +50,16 @@ public class DailyZiJinLiuFatchDataHelper {
 		try {
 			HtmlPage htmlpage = webClient.getPage(baseUrl);
 			webClient.waitForBackgroundJavaScript(1000 * 10L);
-			//System.out.println(htmlpage.asXml());
+			// System.out.println(htmlpage.asXml());
 
 			// fetch current date
 			String dateTime = htmlpage.getElementById("datatime").asText().trim();
-			//System.out.println("dateTime="+dateTime);
+			// System.out.println("dateTime="+dateTime);
 			currentDate = dateTime.substring(1, dateTime.length() - 1);
 
 			// first page content
 			HtmlTable tabContent = (HtmlTable) htmlpage.getElementById("dt_1");
-			//System.out.println("tabContent=\n"+tabContent.asText());
+			// System.out.println("tabContent=\n"+tabContent.asText());
 			List<ZiJinLiuVO> rtn = this.parseOnePageStockIdsZiJinLiu(tabContent.asText());
 			System.out.println("Process 1 day ZiJinLiu Page 1 end with vo size: " + rtn.size());
 			list.addAll(rtn);
@@ -69,8 +69,14 @@ public class DailyZiJinLiuFatchDataHelper {
 				for (int page = 2; page <= toPage; page++) {
 					System.out.println("Process 1 day ZiJinLiu Page " + page);
 					HtmlDivision div = (HtmlDivision) htmlpage.getElementById("PageCont");
-					HtmlTextInput input = div.getElementById("gopage");
-					input.setValueAttribute("" + page);
+					try {
+						HtmlTextInput input = div.getElementById("gopage");
+						input.setValueAttribute("" + page);
+					} catch (Exception e) {
+						System.out.println("Exception happen, is it the last page? page=" + page + ", Error msg="
+								+ e.getLocalizedMessage());
+						//continue;???
+					}
 					List<?> links = div.getByXPath("a");
 					HtmlAnchor anchor = (HtmlAnchor) links.get(links.size() - 1);
 					htmlpage = (HtmlPage) anchor.click();
@@ -135,8 +141,8 @@ public class DailyZiJinLiuFatchDataHelper {
 					webClient.waitForBackgroundJavaScript(1000 * 10L);
 					tabContent = (HtmlTable) htmlpage.getElementById("dt_1");
 					rtn = this.parseOnePageStockIdsZiJinLiu(tabContent.asText());
-					System.out.println("Process " + DCFFITA + " day ZiJinLiu Page " + page + " end with vo size: "
-							+ rtn.size());
+					System.out.println(
+							"Process " + DCFFITA + " day ZiJinLiu Page " + page + " end with vo size: " + rtn.size());
 					list.addAll(rtn);
 				}
 			}
@@ -158,7 +164,7 @@ public class DailyZiJinLiuFatchDataHelper {
 			if (lines[i].trim().length() > 1) {
 				String line = lines[i].replaceAll("\\s{1,}", " ");
 				String[] data = line.trim().split(" ");
-				//System.out.println("len=" + data.length);
+				// System.out.println("len=" + data.length);
 				if (data.length == 17) {
 					try {
 						ZiJinLiuVO vo = new ZiJinLiuVO();
