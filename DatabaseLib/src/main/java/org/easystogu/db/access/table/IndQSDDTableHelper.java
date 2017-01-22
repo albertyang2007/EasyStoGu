@@ -20,6 +20,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 public class IndQSDDTableHelper {
 	private static Logger logger = LogHelper.getLogger(IndQSDDTableHelper.class);
 	private static IndQSDDTableHelper instance = null;
+	private static IndQSDDTableHelper configInstance = null;
 	protected String tableName = "IND_QSDD";
 	// please modify this SQL in all subClass
 	protected String INSERT_SQL = "INSERT INTO " + tableName
@@ -48,6 +49,17 @@ public class IndQSDDTableHelper {
 	protected IndQSDDTableHelper() {
 		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
 				PostgreSqlDataSourceFactory.createDataSource());
+	}
+	
+	public static IndQSDDTableHelper getConfigInstance(javax.sql.DataSource datasource) {
+		if (configInstance == null) {
+			configInstance = new IndQSDDTableHelper(datasource);
+		}
+		return configInstance;
+	}
+
+	protected IndQSDDTableHelper(javax.sql.DataSource datasource) {
+		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(datasource);
 	}
 
 	private static final class QSDDVOMapper implements RowMapper<QSDDVO> {

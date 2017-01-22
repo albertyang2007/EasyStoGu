@@ -19,6 +19,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 public class EstimateStockTableHelper {
 	private static Logger logger = LogHelper.getLogger(EstimateStockTableHelper.class);
 	private static EstimateStockTableHelper instance = null;
+	private static EstimateStockTableHelper configInstance = null;
 	protected String tableName = "ESTIMATE_STOCK";
 	// please modify this SQL in all subClass
 	protected String INSERT_SQL = "INSERT INTO " + tableName + " (stockId, date) VALUES (:stockId, :date)";
@@ -47,6 +48,17 @@ public class EstimateStockTableHelper {
 	protected EstimateStockTableHelper() {
 		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
 				PostgreSqlDataSourceFactory.createDataSource());
+	}
+	
+	public static EstimateStockTableHelper getConfigInstance(javax.sql.DataSource datasource) {
+		if (configInstance == null) {
+			configInstance = new EstimateStockTableHelper(datasource);
+		}
+		return configInstance;
+	}
+
+	protected EstimateStockTableHelper(javax.sql.DataSource datasource) {
+		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(datasource);
 	}
 
 	private static final class DefaultPreparedStatementCallback implements PreparedStatementCallback<Integer> {

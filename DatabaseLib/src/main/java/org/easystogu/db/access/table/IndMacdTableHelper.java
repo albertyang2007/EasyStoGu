@@ -20,6 +20,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 public class IndMacdTableHelper {
 	private static Logger logger = LogHelper.getLogger(IndMacdTableHelper.class);
 	private static IndMacdTableHelper instance = null;
+	private static IndMacdTableHelper configInstance = null;
 	// please modify this SQL in all subClass
 	protected String tableName = "IND_MACD";
 	protected String INSERT_SQL = "INSERT INTO " + tableName
@@ -48,6 +49,17 @@ public class IndMacdTableHelper {
 	protected IndMacdTableHelper() {
 		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
 				PostgreSqlDataSourceFactory.createDataSource());
+	}
+	
+	public static IndMacdTableHelper getConfigInstance(javax.sql.DataSource datasource) {
+		if (configInstance == null) {
+			configInstance = new IndMacdTableHelper(datasource);
+		}
+		return configInstance;
+	}
+
+	protected IndMacdTableHelper(javax.sql.DataSource datasource) {
+		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(datasource);
 	}
 
 	private static final class IndMacdVOMapper implements RowMapper<MacdVO> {

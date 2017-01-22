@@ -6,6 +6,7 @@ import org.easystogu.db.vo.table.StockPriceVO;
 
 public class WeekStockPriceTableHelper extends StockPriceTableHelper {
 	private static WeekStockPriceTableHelper instance = null;
+	private static WeekStockPriceTableHelper configInstance = null;
 
 	public static WeekStockPriceTableHelper getInstance() {
 		if (instance == null) {
@@ -14,8 +15,24 @@ public class WeekStockPriceTableHelper extends StockPriceTableHelper {
 		return instance;
 	}
 
+	public static WeekStockPriceTableHelper getConfigInstance(javax.sql.DataSource datasource) {
+		if (configInstance == null) {
+			configInstance = new WeekStockPriceTableHelper(datasource);
+		}
+		return configInstance;
+	}
+
 	protected WeekStockPriceTableHelper() {
 		super();
+		refeshTableSQL();
+	}
+
+	protected WeekStockPriceTableHelper(javax.sql.DataSource datasource) {
+		super(datasource);
+		refeshTableSQL();
+	}
+
+	private void refeshTableSQL() {
 		tableName = "WEEK_STOCKPRICE";
 		// please modify this SQL in superClass
 		INSERT_SQL = "INSERT INTO " + tableName

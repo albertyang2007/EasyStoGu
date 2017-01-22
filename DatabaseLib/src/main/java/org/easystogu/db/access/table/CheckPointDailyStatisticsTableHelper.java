@@ -19,6 +19,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 public class CheckPointDailyStatisticsTableHelper {
 	private static Logger logger = LogHelper.getLogger(CheckPointDailyStatisticsTableHelper.class);
 	private static CheckPointDailyStatisticsTableHelper instance = null;
+	private static CheckPointDailyStatisticsTableHelper configInstance = null;
 	private String tableName = "CHECKPOINT_DAILY_STATISTICS";
 	protected String INSERT_SQL = "INSERT INTO " + tableName
 			+ " (date, checkpoint, count) VALUES (:date, :checkpoint, :count)";
@@ -41,6 +42,17 @@ public class CheckPointDailyStatisticsTableHelper {
 	private CheckPointDailyStatisticsTableHelper() {
 		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
 				PostgreSqlDataSourceFactory.createDataSource());
+	}
+	
+	public static CheckPointDailyStatisticsTableHelper getConfigInstance(javax.sql.DataSource datasource) {
+		if (configInstance == null) {
+			configInstance = new CheckPointDailyStatisticsTableHelper(datasource);
+		}
+		return configInstance;
+	}
+
+	protected CheckPointDailyStatisticsTableHelper(javax.sql.DataSource datasource) {
+		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(datasource);
 	}
 
 	private static final class DefaultPreparedStatementCallback implements PreparedStatementCallback<Integer> {

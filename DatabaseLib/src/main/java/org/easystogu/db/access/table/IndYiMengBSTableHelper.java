@@ -20,6 +20,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 public class IndYiMengBSTableHelper {
 	private static Logger logger = LogHelper.getLogger(IndYiMengBSTableHelper.class);
 	private static IndYiMengBSTableHelper instance = null;
+	private static IndYiMengBSTableHelper configInstance = null;
 	protected String tableName = "IND_YIMENGBS";
 	// please modify this SQL in all subClass
 	protected String INSERT_SQL = "INSERT INTO " + tableName
@@ -46,6 +47,17 @@ public class IndYiMengBSTableHelper {
 	protected IndYiMengBSTableHelper() {
 		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
 				PostgreSqlDataSourceFactory.createDataSource());
+	}
+	
+	public static IndYiMengBSTableHelper getConfigInstance(javax.sql.DataSource datasource) {
+		if (configInstance == null) {
+			configInstance = new IndYiMengBSTableHelper(datasource);
+		}
+		return configInstance;
+	}
+
+	protected IndYiMengBSTableHelper(javax.sql.DataSource datasource) {
+		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(datasource);
 	}
 
 	private static final class YiMengBSVOMapper implements RowMapper<YiMengBSVO> {

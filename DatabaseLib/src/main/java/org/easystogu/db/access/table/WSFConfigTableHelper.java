@@ -18,6 +18,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 public class WSFConfigTableHelper {
 	private static Logger logger = LogHelper.getLogger(WSFConfigTableHelper.class);
 	private static WSFConfigTableHelper instance = null;
+	private static WSFConfigTableHelper configInstance = null;
 	protected String tableName = "WSFCONFIG";
 	// please modify this SQL in all subClass
 	protected String QUERY_BY_NAME = "SELECT * FROM " + tableName + " WHERE name = :name";
@@ -34,6 +35,17 @@ public class WSFConfigTableHelper {
 	protected WSFConfigTableHelper() {
 		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
 				PostgreSqlDataSourceFactory.createDataSource());
+	}
+	
+	public static WSFConfigTableHelper getConfigInstance(javax.sql.DataSource datasource) {
+		if (configInstance == null) {
+			configInstance = new WSFConfigTableHelper(datasource);
+		}
+		return configInstance;
+	}
+
+	protected WSFConfigTableHelper(javax.sql.DataSource datasource) {
+		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(datasource);
 	}
 
 	private static final class ConfigVOMapper implements RowMapper<WSFConfigVO> {

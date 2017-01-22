@@ -20,6 +20,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 public class IndDDXTableHelper {
 	private static Logger logger = LogHelper.getLogger(IndDDXTableHelper.class);
 	private static IndDDXTableHelper instance = null;
+	private static IndDDXTableHelper configInstance = null;
 	protected String tableName = "IND_DDX";
 	// please modify this SQL in all subClass
 	protected String INSERT_SQL = "INSERT INTO " + tableName
@@ -48,6 +49,17 @@ public class IndDDXTableHelper {
 	protected IndDDXTableHelper() {
 		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
 				PostgreSqlDataSourceFactory.createDataSource());
+	}
+	
+	public static IndDDXTableHelper getConfigInstance(javax.sql.DataSource datasource) {
+		if (configInstance == null) {
+			configInstance = new IndDDXTableHelper(datasource);
+		}
+		return configInstance;
+	}
+
+	protected IndDDXTableHelper(javax.sql.DataSource datasource) {
+		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(datasource);
 	}
 
 	private static final class DDXVOMapper implements RowMapper<DDXVO> {

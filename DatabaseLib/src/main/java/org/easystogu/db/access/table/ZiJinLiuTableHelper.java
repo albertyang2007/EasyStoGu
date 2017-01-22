@@ -8,8 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.sql.DataSource;
-
 import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
 import org.easystogu.db.vo.table.ZiJinLiuVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
@@ -25,6 +23,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 public class ZiJinLiuTableHelper {
 	private static Logger logger = LogHelper.getLogger(ZiJinLiuTableHelper.class);
 	private static ZiJinLiuTableHelper instance = null;
+	private static ZiJinLiuTableHelper configInstance = null;
 	// please modify this SQL in all subClass
 	protected String tableName = "ZIJINLIU";
 	protected String INSERT_SQL = "INSERT INTO " + tableName
@@ -52,6 +51,17 @@ public class ZiJinLiuTableHelper {
 	protected ZiJinLiuTableHelper() {
 		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
 				PostgreSqlDataSourceFactory.createDataSource());
+	}
+	
+	public static ZiJinLiuTableHelper getConfigInstance(javax.sql.DataSource datasource) {
+		if (configInstance == null) {
+			configInstance = new ZiJinLiuTableHelper(datasource);
+		}
+		return configInstance;
+	}
+
+	protected ZiJinLiuTableHelper(javax.sql.DataSource datasource) {
+		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(datasource);
 	}
 
 	private static final class ZiJinLiuVOMapper implements RowMapper<ZiJinLiuVO> {

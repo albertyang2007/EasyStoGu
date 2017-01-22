@@ -5,6 +5,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 public class ZiJinLiu3DayTableHelper extends ZiJinLiuTableHelper {
 	private static ZiJinLiu3DayTableHelper instance = null;
+	private static ZiJinLiu3DayTableHelper configInstance = null;
 
 	public static ZiJinLiu3DayTableHelper getInstance() {
 		if (instance == null) {
@@ -13,8 +14,24 @@ public class ZiJinLiu3DayTableHelper extends ZiJinLiuTableHelper {
 		return instance;
 	}
 
+	public static ZiJinLiu3DayTableHelper getConfigInstance(javax.sql.DataSource datasource) {
+		if (configInstance == null) {
+			configInstance = new ZiJinLiu3DayTableHelper(datasource);
+		}
+		return configInstance;
+	}
+
 	protected ZiJinLiu3DayTableHelper() {
 		super();
+		refeshTableSQL();
+	}
+
+	protected ZiJinLiu3DayTableHelper(javax.sql.DataSource datasource) {
+		super(datasource);
+		refeshTableSQL();
+	}
+
+	private void refeshTableSQL() {
 		// please modify this SQL in superClass
 		tableName = "ZIJINLIU_3DAY";
 		INSERT_SQL = "INSERT INTO " + tableName

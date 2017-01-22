@@ -21,6 +21,7 @@ public class IndMATableHelper {
 
 	private static Logger logger = LogHelper.getLogger(IndMATableHelper.class);
 	private static IndMATableHelper instance = null;
+	private static IndMATableHelper configInstance = null;
 	protected String tableName = "IND_MA";
 	// please modify this SQL in all subClass
 	protected String INSERT_SQL = "INSERT INTO " + tableName
@@ -49,6 +50,17 @@ public class IndMATableHelper {
 	protected IndMATableHelper() {
 		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
 				PostgreSqlDataSourceFactory.createDataSource());
+	}
+	
+	public static IndMATableHelper getConfigInstance(javax.sql.DataSource datasource) {
+		if (configInstance == null) {
+			configInstance = new IndMATableHelper(datasource);
+		}
+		return configInstance;
+	}
+
+	protected IndMATableHelper(javax.sql.DataSource datasource) {
+		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(datasource);
 	}
 
 	private static final class MAVOMapper implements RowMapper<MAVO> {

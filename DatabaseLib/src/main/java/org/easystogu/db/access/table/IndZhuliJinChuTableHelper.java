@@ -20,6 +20,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 public class IndZhuliJinChuTableHelper {
 	private static Logger logger = LogHelper.getLogger(IndZhuliJinChuTableHelper.class);
 	private static IndZhuliJinChuTableHelper instance = null;
+	private static IndZhuliJinChuTableHelper configInstance = null;
 	protected String tableName = "IND_ZHULIJINCHU";
 	// please modify this SQL in all subClass
 	protected String INSERT_SQL = "INSERT INTO " + tableName
@@ -46,6 +47,17 @@ public class IndZhuliJinChuTableHelper {
 	protected IndZhuliJinChuTableHelper() {
 		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
 				PostgreSqlDataSourceFactory.createDataSource());
+	}
+	
+	public static IndZhuliJinChuTableHelper getConfigInstance(javax.sql.DataSource datasource) {
+		if (configInstance == null) {
+			configInstance = new IndZhuliJinChuTableHelper(datasource);
+		}
+		return configInstance;
+	}
+
+	protected IndZhuliJinChuTableHelper(javax.sql.DataSource datasource) {
+		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(datasource);
 	}
 
 	private static final class ZhuliJinChuVOMapper implements RowMapper<ZhuliJinChuVO> {

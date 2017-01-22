@@ -1,8 +1,8 @@
 package org.easystogu.db.access.table;
 
 public class IndWeekQSDDTableHelper extends IndQSDDTableHelper {
-
 	private static IndWeekQSDDTableHelper instance = null;
+	private static IndWeekQSDDTableHelper configInstance = null;
 
 	public static IndWeekQSDDTableHelper getInstance() {
 		if (instance == null) {
@@ -10,10 +10,26 @@ public class IndWeekQSDDTableHelper extends IndQSDDTableHelper {
 		}
 		return instance;
 	}
+	
+	public static IndWeekQSDDTableHelper getConfigInstance(javax.sql.DataSource datasource) {
+		if (configInstance == null) {
+			configInstance = new IndWeekQSDDTableHelper(datasource);
+		}
+		return configInstance;
+	}
+	
+	protected IndWeekQSDDTableHelper(javax.sql.DataSource datasource) {
+		super(datasource);
+		refeshTableSQL();
+	}
 
 	protected IndWeekQSDDTableHelper() {
 		super();
-		String tableName = "IND_WEEK_QSDD";
+		refeshTableSQL();
+	}
+	
+	private void refeshTableSQL() {
+		tableName = "IND_WEEK_QSDD";
 		// please modify this SQL in all subClass
 		INSERT_SQL = "INSERT INTO " + tableName
 				+ " (stockId, date, lonterm, midterm, shoterm) VALUES (:stockId, :date, :lonterm, :midterm, :shoterm)";

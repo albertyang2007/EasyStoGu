@@ -17,6 +17,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 public class CheckPointHistorySelectionTableHelper {
 	private static Logger logger = LogHelper.getLogger(CheckPointHistorySelectionTableHelper.class);
 	private static CheckPointHistorySelectionTableHelper instance = null;
+	private static CheckPointHistorySelectionTableHelper configInstance = null;
 	protected String tableName = "CHECKPOINT_HISTORY_SELECTION";
 	protected String INSERT_SQL = "INSERT INTO " + tableName
 			+ " (stockId, checkPoint, buyDate, sellDate) VALUES (:stockId, :checkPoint, :buyDate, :sellDate)";
@@ -33,6 +34,17 @@ public class CheckPointHistorySelectionTableHelper {
 	protected CheckPointHistorySelectionTableHelper() {
 		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
 				PostgreSqlDataSourceFactory.createDataSource());
+	}
+	
+	public static CheckPointHistorySelectionTableHelper getConfigInstance(javax.sql.DataSource datasource) {
+		if (configInstance == null) {
+			configInstance = new CheckPointHistorySelectionTableHelper(datasource);
+		}
+		return configInstance;
+	}
+
+	protected CheckPointHistorySelectionTableHelper(javax.sql.DataSource datasource) {
+		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(datasource);
 	}
 
 	private static final class HistoryReportMapper implements RowMapper<CheckPointHistorySelectionVO> {

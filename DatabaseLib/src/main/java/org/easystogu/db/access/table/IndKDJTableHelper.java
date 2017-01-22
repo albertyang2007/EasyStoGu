@@ -21,6 +21,7 @@ public class IndKDJTableHelper {
 
 	private static Logger logger = LogHelper.getLogger(IndKDJTableHelper.class);
 	private static IndKDJTableHelper instance = null;
+	private static IndKDJTableHelper configInstance = null;
 	protected String tableName = "IND_KDJ";
 	// please modify this SQL in all subClass
 	protected String INSERT_SQL = "INSERT INTO " + tableName
@@ -49,6 +50,17 @@ public class IndKDJTableHelper {
 	protected IndKDJTableHelper() {
 		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
 				PostgreSqlDataSourceFactory.createDataSource());
+	}
+
+	public static IndKDJTableHelper getConfigInstance(javax.sql.DataSource datasource) {
+		if (configInstance == null) {
+			configInstance = new IndKDJTableHelper(datasource);
+		}
+		return configInstance;
+	}
+
+	protected IndKDJTableHelper(javax.sql.DataSource datasource) {
+		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(datasource);
 	}
 
 	private static final class KDJVOMapper implements RowMapper<KDJVO> {

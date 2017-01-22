@@ -2,6 +2,7 @@ package org.easystogu.db.access.table;
 
 public class IndWeekShenXianTableHelper extends IndShenXianTableHelper {
 	private static IndWeekShenXianTableHelper instance = null;
+	private static IndWeekShenXianTableHelper configInstance = null;
 
 	public static IndWeekShenXianTableHelper getInstance() {
 		if (instance == null) {
@@ -9,9 +10,25 @@ public class IndWeekShenXianTableHelper extends IndShenXianTableHelper {
 		}
 		return instance;
 	}
+	
+	public static IndWeekShenXianTableHelper getConfigInstance(javax.sql.DataSource datasource) {
+		if (configInstance == null) {
+			configInstance = new IndWeekShenXianTableHelper(datasource);
+		}
+		return configInstance;
+	}
+	
+	protected IndWeekShenXianTableHelper(javax.sql.DataSource datasource) {
+		super(datasource);
+		refeshTableSQL();
+	}
 
 	protected IndWeekShenXianTableHelper() {
 		super();
+		refeshTableSQL();
+	}
+	
+	private void refeshTableSQL() {
 		tableName = "IND_WEEK_SHENXIAN";
 		// please modify this SQL in superClass
 		INSERT_SQL = "INSERT INTO " + tableName

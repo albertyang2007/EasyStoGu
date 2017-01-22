@@ -1,7 +1,10 @@
 package org.easystogu.db.access.table;
 
+import org.easystogu.db.vo.table.StockPriceVO;
+
 public class QianFuQuanStockPriceTableHelper extends StockPriceTableHelper {
 	private static QianFuQuanStockPriceTableHelper instance = null;
+	private static QianFuQuanStockPriceTableHelper configInstance = null;
 
 	public static QianFuQuanStockPriceTableHelper getInstance() {
 		if (instance == null) {
@@ -10,8 +13,24 @@ public class QianFuQuanStockPriceTableHelper extends StockPriceTableHelper {
 		return instance;
 	}
 
+	public static QianFuQuanStockPriceTableHelper getConfigInstance(javax.sql.DataSource datasource) {
+		if (configInstance == null) {
+			configInstance = new QianFuQuanStockPriceTableHelper(datasource);
+		}
+		return configInstance;
+	}
+
+	protected QianFuQuanStockPriceTableHelper(javax.sql.DataSource datasource) {
+		super(datasource);
+		refeshTableSQL();
+	}
+
 	protected QianFuQuanStockPriceTableHelper() {
-		// super();
+		super();
+		refeshTableSQL();
+	}
+
+	private void refeshTableSQL() {
 		tableName = "QIAN_FUQUAN_STOCKPRICE";
 		// please modify this SQL in superClass
 		INSERT_SQL = "INSERT INTO " + tableName
@@ -96,8 +115,12 @@ public class QianFuQuanStockPriceTableHelper extends StockPriceTableHelper {
 	}
 
 	public static void main(String[] args) {
-		QianFuQuanStockPriceTableHelper table = QianFuQuanStockPriceTableHelper.getInstance();
-		int n = table.countAll();
-		System.out.println(n);
+		StockPriceTableHelper table = StockPriceTableHelper.getInstance();
+		StockPriceVO vo = table.getStockPriceByIdAndDate("000002", "2015-01-06");
+		System.out.println(vo.stockId + ";" + vo.close + ";" + vo.date);
+
+		QianFuQuanStockPriceTableHelper qiantable = QianFuQuanStockPriceTableHelper.getInstance();
+		StockPriceVO qianvo = qiantable.getStockPriceByIdAndDate("000002", "2015-01-06");
+		System.out.println(qianvo.stockId + ";" + qianvo.close + ";" + qianvo.date);
 	}
 }

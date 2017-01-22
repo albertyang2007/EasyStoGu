@@ -7,6 +7,7 @@ import org.easystogu.db.vo.table.StockPriceVO;
 //never use hou fu quan stockproce now
 public class HouFuQuanStockPriceTableHelper extends StockPriceTableHelper {
 	private static HouFuQuanStockPriceTableHelper instance = null;
+	private static HouFuQuanStockPriceTableHelper configInstance = null;
 
 	public static HouFuQuanStockPriceTableHelper getInstance() {
 		if (instance == null) {
@@ -15,8 +16,24 @@ public class HouFuQuanStockPriceTableHelper extends StockPriceTableHelper {
 		return instance;
 	}
 
+	public static HouFuQuanStockPriceTableHelper getConfigInstance(javax.sql.DataSource datasource) {
+		if (configInstance == null) {
+			configInstance = new HouFuQuanStockPriceTableHelper(datasource);
+		}
+		return configInstance;
+	}
+
 	protected HouFuQuanStockPriceTableHelper() {
-		// super();
+		super();
+		refeshTableSQL();
+	}
+
+	protected HouFuQuanStockPriceTableHelper(javax.sql.DataSource datasource) {
+		super(datasource);
+		refeshTableSQL();
+	}
+
+	private void refeshTableSQL() {
 		tableName = "HOU_FUQUAN_STOCKPRICE";
 		// please modify this SQL in superClass
 		INSERT_SQL = "INSERT INTO " + tableName

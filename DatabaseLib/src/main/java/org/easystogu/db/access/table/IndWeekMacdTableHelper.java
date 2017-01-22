@@ -6,6 +6,7 @@ import org.easystogu.db.vo.table.MacdVO;
 
 public class IndWeekMacdTableHelper extends IndMacdTableHelper {
 	private static IndWeekMacdTableHelper instance = null;
+	private static IndWeekMacdTableHelper configInstance = null;
 
 	public static IndWeekMacdTableHelper getInstance() {
 		if (instance == null) {
@@ -14,8 +15,25 @@ public class IndWeekMacdTableHelper extends IndMacdTableHelper {
 		return instance;
 	}
 
+	public static IndWeekMacdTableHelper getConfigInstance(javax.sql.DataSource datasource) {
+		if (configInstance == null) {
+			configInstance = new IndWeekMacdTableHelper(datasource);
+		}
+		return configInstance;
+	}
+
 	protected IndWeekMacdTableHelper() {
 		super();
+		refeshTableSQL();
+
+	}
+
+	protected IndWeekMacdTableHelper(javax.sql.DataSource datasource) {
+		super(datasource);
+		refeshTableSQL();
+	}
+
+	private void refeshTableSQL() {
 		tableName = "IND_WEEK_MACD";
 		// please modify this SQL in superClass
 		INSERT_SQL = "INSERT INTO " + tableName

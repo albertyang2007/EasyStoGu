@@ -20,6 +20,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 public class IndMai1Mai2TableHelper {
 	private static Logger logger = LogHelper.getLogger(IndMai1Mai2TableHelper.class);
 	private static IndMai1Mai2TableHelper instance = null;
+	private static IndMai1Mai2TableHelper configInstance = null;
 	protected String tableName = "IND_MAI1MAI2";
 	// please modify this SQL in all subClass
 	protected String INSERT_SQL = "INSERT INTO " + tableName
@@ -46,6 +47,17 @@ public class IndMai1Mai2TableHelper {
 	protected IndMai1Mai2TableHelper() {
 		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
 				PostgreSqlDataSourceFactory.createDataSource());
+	}
+	
+	public static IndMai1Mai2TableHelper getConfigInstance(javax.sql.DataSource datasource) {
+		if (configInstance == null) {
+			configInstance = new IndMai1Mai2TableHelper(datasource);
+		}
+		return configInstance;
+	}
+
+	protected IndMai1Mai2TableHelper(javax.sql.DataSource datasource) {
+		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(datasource);
 	}
 
 	private static final class Mai1Mai2VOMapper implements RowMapper<Mai1Mai2VO> {

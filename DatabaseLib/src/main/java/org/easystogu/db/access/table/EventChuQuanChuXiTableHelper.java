@@ -20,6 +20,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 public class EventChuQuanChuXiTableHelper {
 	private static Logger logger = LogHelper.getLogger(EventChuQuanChuXiTableHelper.class);
 	private static EventChuQuanChuXiTableHelper instance = null;
+	private static EventChuQuanChuXiTableHelper configInstance = null;
 	protected String tableName = "EVENT_CHUQUANCHUXI";
 	protected String INSERT_SQL = "INSERT INTO " + tableName
 			+ " (stockId, date, rate, alreadyupdateprice) VALUES (:stockId, :date, :rate, :alreadyupdateprice)";
@@ -46,6 +47,17 @@ public class EventChuQuanChuXiTableHelper {
 	protected EventChuQuanChuXiTableHelper() {
 		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
 				PostgreSqlDataSourceFactory.createDataSource());
+	}
+	
+	public static EventChuQuanChuXiTableHelper getConfigInstance(javax.sql.DataSource datasource) {
+		if (configInstance == null) {
+			configInstance = new EventChuQuanChuXiTableHelper(datasource);
+		}
+		return configInstance;
+	}
+
+	protected EventChuQuanChuXiTableHelper(javax.sql.DataSource datasource) {
+		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(datasource);
 	}
 
 	private static final class GaoSongZhuanVOMapper implements RowMapper<ChuQuanChuXiVO> {

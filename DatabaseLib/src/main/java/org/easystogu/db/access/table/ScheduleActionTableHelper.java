@@ -20,6 +20,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 public class ScheduleActionTableHelper {
 	private static Logger logger = LogHelper.getLogger(ScheduleActionTableHelper.class);
 	private static ScheduleActionTableHelper instance = null;
+	private static ScheduleActionTableHelper configInstance = null;
 	protected String tableName = "SCHEDULE_ACTION";
 	protected String INSERT_SQL = "INSERT INTO " + tableName
 			+ " (stockId, runDate, createDate, actionDo, params) VALUES (:stockId, :runDate, :createDate, :actionDo, :params)";
@@ -49,6 +50,17 @@ public class ScheduleActionTableHelper {
 	protected ScheduleActionTableHelper() {
 		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
 				PostgreSqlDataSourceFactory.createDataSource());
+	}
+	
+	public static ScheduleActionTableHelper getConfigInstance(javax.sql.DataSource datasource) {
+		if (configInstance == null) {
+			configInstance = new ScheduleActionTableHelper(datasource);
+		}
+		return configInstance;
+	}
+
+	protected ScheduleActionTableHelper(javax.sql.DataSource datasource) {
+		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(datasource);
 	}
 
 	private static final class ScheduleActionVOMapper implements RowMapper<ScheduleActionVO> {

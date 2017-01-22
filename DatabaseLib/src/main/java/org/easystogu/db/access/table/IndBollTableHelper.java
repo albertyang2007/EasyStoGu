@@ -20,6 +20,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 public class IndBollTableHelper{
 	private static Logger logger = LogHelper.getLogger(IndBollTableHelper.class);
 	private static IndBollTableHelper instance = null;
+	private static IndBollTableHelper configInstance = null;
 	protected String tableName = "IND_BOLL";
 	protected String INSERT_SQL = "INSERT INTO " + tableName
 			+ " (stockId, date, mb, up, dn) VALUES (:stockId, :date, :mb, :up, :dn)";
@@ -47,6 +48,17 @@ public class IndBollTableHelper{
 	protected IndBollTableHelper() {
 		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
 				PostgreSqlDataSourceFactory.createDataSource());
+	}
+	
+	public static IndBollTableHelper getConfigInstance(javax.sql.DataSource datasource) {
+		if (configInstance == null) {
+			configInstance = new IndBollTableHelper(datasource);
+		}
+		return configInstance;
+	}
+
+	protected IndBollTableHelper(javax.sql.DataSource datasource) {
+		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(datasource);
 	}
 
 	private static final class BollVOMapper implements RowMapper<BollVO> {

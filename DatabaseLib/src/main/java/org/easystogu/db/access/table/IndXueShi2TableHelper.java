@@ -20,6 +20,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 public class IndXueShi2TableHelper {
 	private static Logger logger = LogHelper.getLogger(IndBollTableHelper.class);
 	private static IndXueShi2TableHelper instance = null;
+	private static IndXueShi2TableHelper configInstance = null;
 	protected String tableName = "IND_XUESHI2";
 	protected String INSERT_SQL = "INSERT INTO " + tableName
 			+ " (stockId, date, up, dn) VALUES (:stockId, :date, :up, :dn)";
@@ -45,6 +46,17 @@ public class IndXueShi2TableHelper {
 	protected IndXueShi2TableHelper() {
 		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
 				PostgreSqlDataSourceFactory.createDataSource());
+	}
+	
+	public static IndXueShi2TableHelper getConfigInstance(javax.sql.DataSource datasource) {
+		if (configInstance == null) {
+			configInstance = new IndXueShi2TableHelper(datasource);
+		}
+		return configInstance;
+	}
+
+	protected IndXueShi2TableHelper(javax.sql.DataSource datasource) {
+		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(datasource);
 	}
 
 	private static final class XueShi2VOMapper implements RowMapper<XueShi2VO> {

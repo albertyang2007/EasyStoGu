@@ -2,6 +2,7 @@ package org.easystogu.db.access.table;
 
 public class IndWeekZhuliJinChuTableHelper extends IndZhuliJinChuTableHelper {
 	private static IndWeekZhuliJinChuTableHelper instance = null;
+	private static IndWeekZhuliJinChuTableHelper configInstance = null;
 
 	public static IndWeekZhuliJinChuTableHelper getInstance() {
 		if (instance == null) {
@@ -10,8 +11,24 @@ public class IndWeekZhuliJinChuTableHelper extends IndZhuliJinChuTableHelper {
 		return instance;
 	}
 
+	public static IndWeekZhuliJinChuTableHelper getConfigInstance(javax.sql.DataSource datasource) {
+		if (configInstance == null) {
+			configInstance = new IndWeekZhuliJinChuTableHelper(datasource);
+		}
+		return configInstance;
+	}
+
+	protected IndWeekZhuliJinChuTableHelper(javax.sql.DataSource datasource) {
+		super(datasource);
+		refeshTableSQL();
+	}
+
 	protected IndWeekZhuliJinChuTableHelper() {
 		super();
+		refeshTableSQL();
+	}
+
+	private void refeshTableSQL() {
 		tableName = "IND_WEEK_ZHULIJINCHU";
 		// please modify this SQL in superClass
 		INSERT_SQL = "INSERT INTO " + tableName

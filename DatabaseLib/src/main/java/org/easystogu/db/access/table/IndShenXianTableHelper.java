@@ -20,6 +20,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 public class IndShenXianTableHelper {
 	private static Logger logger = LogHelper.getLogger(IndShenXianTableHelper.class);
 	private static IndShenXianTableHelper instance = null;
+	private static IndShenXianTableHelper configInstance = null;
 	protected String tableName = "IND_SHENXIAN";
 	// please modify this SQL in all subClass
 	protected String INSERT_SQL = "INSERT INTO " + tableName
@@ -48,6 +49,17 @@ public class IndShenXianTableHelper {
 	protected IndShenXianTableHelper() {
 		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
 				PostgreSqlDataSourceFactory.createDataSource());
+	}
+	
+	public static IndShenXianTableHelper getConfigInstance(javax.sql.DataSource datasource) {
+		if (configInstance == null) {
+			configInstance = new IndShenXianTableHelper(datasource);
+		}
+		return configInstance;
+	}
+
+	protected IndShenXianTableHelper(javax.sql.DataSource datasource) {
+		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(datasource);
 	}
 
 	private static final class ShenXianVOMapper implements RowMapper<ShenXianVO> {

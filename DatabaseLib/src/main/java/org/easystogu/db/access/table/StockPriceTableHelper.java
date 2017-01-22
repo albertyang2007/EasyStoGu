@@ -21,6 +21,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 public class StockPriceTableHelper {
 	private static Logger logger = LogHelper.getLogger(StockPriceTableHelper.class);
 	private static StockPriceTableHelper instance = null;
+	private static StockPriceTableHelper configInstance = null;
 	protected String tableName = "STOCKPRICE";
 	// please modify this SQL in all subClass
 	protected String INSERT_SQL = "INSERT INTO " + tableName
@@ -123,6 +124,17 @@ public class StockPriceTableHelper {
 	protected StockPriceTableHelper() {
 		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
 				PostgreSqlDataSourceFactory.createDataSource());
+	}
+	
+	public static StockPriceTableHelper getConfigInstance(javax.sql.DataSource datasource) {
+		if (configInstance == null) {
+			configInstance = new StockPriceTableHelper(datasource);
+		}
+		return configInstance;
+	}
+
+	protected StockPriceTableHelper(javax.sql.DataSource datasource) {
+		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(datasource);
 	}
 
 	private static final class StockPriceVOMapper implements RowMapper<StockPriceVO> {

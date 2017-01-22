@@ -20,6 +20,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 public class CompanyInfoTableHelper {
 	private static Logger logger = LogHelper.getLogger(CompanyInfoTableHelper.class);
 	private static CompanyInfoTableHelper instance = null;
+	private static CompanyInfoTableHelper configInstance = null;
 	protected String tableName = "COMPANY_INFO";
 	// please modify this SQL in all subClass
 	protected String INSERT_SQL = "INSERT INTO " + tableName
@@ -41,6 +42,17 @@ public class CompanyInfoTableHelper {
 	protected CompanyInfoTableHelper() {
 		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
 				PostgreSqlDataSourceFactory.createDataSource());
+	}
+	
+	public static CompanyInfoTableHelper getConfigInstance(javax.sql.DataSource datasource) {
+		if (configInstance == null) {
+			configInstance = new CompanyInfoTableHelper(datasource);
+		}
+		return configInstance;
+	}
+
+	protected CompanyInfoTableHelper(javax.sql.DataSource datasource) {
+		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(datasource);
 	}
 
 	private static final class CompanyInfoVOMapper implements RowMapper<CompanyInfoVO> {

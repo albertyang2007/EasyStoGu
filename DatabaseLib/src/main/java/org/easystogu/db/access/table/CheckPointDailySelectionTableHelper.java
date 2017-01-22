@@ -20,6 +20,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 public class CheckPointDailySelectionTableHelper {
 	private static Logger logger = LogHelper.getLogger(CheckPointDailySelectionTableHelper.class);
 	private static CheckPointDailySelectionTableHelper instance = null;
+	private static CheckPointDailySelectionTableHelper configInstance = null;
 	private String tableName = "CHECKPOINT_DAILY_SELECTION";
 	protected String INSERT_SQL = "INSERT INTO " + tableName
 			+ " (stockid, date, checkpoint) VALUES (:stockid, :date, :checkpoint)";
@@ -52,6 +53,17 @@ public class CheckPointDailySelectionTableHelper {
 	private CheckPointDailySelectionTableHelper() {
 		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
 				PostgreSqlDataSourceFactory.createDataSource());
+	}
+	
+	public static CheckPointDailySelectionTableHelper getConfigInstance(javax.sql.DataSource datasource) {
+		if (configInstance == null) {
+			configInstance = new CheckPointDailySelectionTableHelper(datasource);
+		}
+		return configInstance;
+	}
+
+	protected CheckPointDailySelectionTableHelper(javax.sql.DataSource datasource) {
+		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(datasource);
 	}
 
 	private static final class IntVOMapper implements RowMapper<Integer> {

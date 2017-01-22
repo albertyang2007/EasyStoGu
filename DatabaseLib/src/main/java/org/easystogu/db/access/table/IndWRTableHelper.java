@@ -18,9 +18,9 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 public class IndWRTableHelper {
-
 	private static Logger logger = LogHelper.getLogger(IndQSDDTableHelper.class);
 	private static IndWRTableHelper instance = null;
+	private static IndWRTableHelper configInstance = null;
 	protected String tableName = "IND_WR";
 	// please modify this SQL in all subClass
 	protected String INSERT_SQL = "INSERT INTO " + tableName
@@ -49,6 +49,17 @@ public class IndWRTableHelper {
 	protected IndWRTableHelper() {
 		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
 				PostgreSqlDataSourceFactory.createDataSource());
+	}
+
+	public static IndWRTableHelper getConfigInstance(javax.sql.DataSource datasource) {
+		if (configInstance == null) {
+			configInstance = new IndWRTableHelper(datasource);
+		}
+		return configInstance;
+	}
+
+	protected IndWRTableHelper(javax.sql.DataSource datasource) {
+		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(datasource);
 	}
 
 	private static final class WRVOMapper implements RowMapper<WRVO> {
