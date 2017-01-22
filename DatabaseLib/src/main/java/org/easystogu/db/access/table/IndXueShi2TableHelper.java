@@ -6,8 +6,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.sql.DataSource;
-
 import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
 import org.easystogu.db.vo.table.XueShi2VO;
 import org.easystogu.log.LogHelper;
@@ -22,7 +20,6 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 public class IndXueShi2TableHelper {
 	private static Logger logger = LogHelper.getLogger(IndBollTableHelper.class);
 	private static IndXueShi2TableHelper instance = null;
-	protected DataSource dataSource = PostgreSqlDataSourceFactory.createDataSource();
 	protected String tableName = "IND_XUESHI2";
 	protected String INSERT_SQL = "INSERT INTO " + tableName
 			+ " (stockId, date, up, dn) VALUES (:stockId, :date, :up, :dn)";
@@ -46,7 +43,8 @@ public class IndXueShi2TableHelper {
 	}
 
 	protected IndXueShi2TableHelper() {
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
+				PostgreSqlDataSourceFactory.createDataSource());
 	}
 
 	private static final class XueShi2VOMapper implements RowMapper<XueShi2VO> {

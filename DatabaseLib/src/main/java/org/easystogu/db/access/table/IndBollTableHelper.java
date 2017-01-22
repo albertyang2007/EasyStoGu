@@ -6,8 +6,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.sql.DataSource;
-
 import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
 import org.easystogu.db.vo.table.BollVO;
 import org.easystogu.log.LogHelper;
@@ -19,10 +17,9 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
-public class IndBollTableHelper {
+public class IndBollTableHelper{
 	private static Logger logger = LogHelper.getLogger(IndBollTableHelper.class);
 	private static IndBollTableHelper instance = null;
-	protected DataSource dataSource = PostgreSqlDataSourceFactory.createDataSource();
 	protected String tableName = "IND_BOLL";
 	protected String INSERT_SQL = "INSERT INTO " + tableName
 			+ " (stockId, date, mb, up, dn) VALUES (:stockId, :date, :mb, :up, :dn)";
@@ -35,8 +32,8 @@ public class IndBollTableHelper {
 	protected String DELETE_BY_STOCKID_AND_DATE_SQL = "DELETE FROM " + tableName
 			+ " WHERE stockId = :stockId AND date = :date";
 	protected String DELETE_BY_DATE_SQL = "DELETE FROM " + tableName + " WHERE date = :date";
-    protected String QUERY_BY_STOCKID_AND_BETWEEN_DATE = "SELECT * FROM " + tableName
-            + " WHERE stockId = :stockId AND DATE >= :date1 AND DATE <= :date2 ORDER BY DATE";
+	protected String QUERY_BY_STOCKID_AND_BETWEEN_DATE = "SELECT * FROM " + tableName
+			+ " WHERE stockId = :stockId AND DATE >= :date1 AND DATE <= :date2 ORDER BY DATE";
 
 	protected NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
@@ -48,7 +45,8 @@ public class IndBollTableHelper {
 	}
 
 	protected IndBollTableHelper() {
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
+				PostgreSqlDataSourceFactory.createDataSource());
 	}
 
 	private static final class BollVOMapper implements RowMapper<BollVO> {
@@ -162,22 +160,22 @@ public class IndBollTableHelper {
 			return new ArrayList<BollVO>();
 		}
 	}
-	
-    public List<BollVO> getByIdAndBetweenDate(String stockId, String StartDate, String endDate) {
-        try {
-            MapSqlParameterSource namedParameters = new MapSqlParameterSource();
-            namedParameters.addValue("stockId", stockId);
-            namedParameters.addValue("date1", StartDate);
-            namedParameters.addValue("date2", endDate);
 
-            List<BollVO> list = this.namedParameterJdbcTemplate.query(QUERY_BY_STOCKID_AND_BETWEEN_DATE,
-                    namedParameters, new BollVOMapper());
-            return list;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return new ArrayList<BollVO>();
-    }
+	public List<BollVO> getByIdAndBetweenDate(String stockId, String StartDate, String endDate) {
+		try {
+			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+			namedParameters.addValue("stockId", stockId);
+			namedParameters.addValue("date1", StartDate);
+			namedParameters.addValue("date2", endDate);
+
+			List<BollVO> list = this.namedParameterJdbcTemplate.query(QUERY_BY_STOCKID_AND_BETWEEN_DATE,
+					namedParameters, new BollVOMapper());
+			return list;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new ArrayList<BollVO>();
+	}
 
 	// 最近几天的，必须使用时间倒序的SQL
 	public List<BollVO> getNDateBoll(String stockId, int day) {

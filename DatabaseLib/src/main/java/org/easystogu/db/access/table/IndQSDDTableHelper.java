@@ -6,8 +6,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.sql.DataSource;
-
 import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
 import org.easystogu.db.vo.table.QSDDVO;
 import org.easystogu.log.LogHelper;
@@ -22,7 +20,6 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 public class IndQSDDTableHelper {
 	private static Logger logger = LogHelper.getLogger(IndQSDDTableHelper.class);
 	private static IndQSDDTableHelper instance = null;
-	protected DataSource dataSource = PostgreSqlDataSourceFactory.createDataSource();
 	protected String tableName = "IND_QSDD";
 	// please modify this SQL in all subClass
 	protected String INSERT_SQL = "INSERT INTO " + tableName
@@ -49,7 +46,8 @@ public class IndQSDDTableHelper {
 	}
 
 	protected IndQSDDTableHelper() {
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
+				PostgreSqlDataSourceFactory.createDataSource());
 	}
 
 	private static final class QSDDVOMapper implements RowMapper<QSDDVO> {
@@ -182,22 +180,22 @@ public class IndQSDDTableHelper {
 		}
 	}
 
-    public List<QSDDVO> getByIdAndBetweenDate(String stockId, String StartDate, String endDate) {
-        try {
-            MapSqlParameterSource namedParameters = new MapSqlParameterSource();
-            namedParameters.addValue("stockId", stockId);
-            namedParameters.addValue("date1", StartDate);
-            namedParameters.addValue("date2", endDate);
+	public List<QSDDVO> getByIdAndBetweenDate(String stockId, String StartDate, String endDate) {
+		try {
+			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+			namedParameters.addValue("stockId", stockId);
+			namedParameters.addValue("date1", StartDate);
+			namedParameters.addValue("date2", endDate);
 
-            List<QSDDVO> list = this.namedParameterJdbcTemplate.query(QUERY_BY_STOCKID_AND_BETWEEN_DATE,
-                    namedParameters, new QSDDVOMapper());
-            return list;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return new ArrayList<QSDDVO>();
-    }
-    
+			List<QSDDVO> list = this.namedParameterJdbcTemplate.query(QUERY_BY_STOCKID_AND_BETWEEN_DATE,
+					namedParameters, new QSDDVOMapper());
+			return list;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new ArrayList<QSDDVO>();
+	}
+
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		IndQSDDTableHelper ins = new IndQSDDTableHelper();

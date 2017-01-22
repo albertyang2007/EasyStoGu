@@ -6,8 +6,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.sql.DataSource;
-
 import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
 import org.easystogu.db.vo.table.ChuQuanChuXiVO;
 import org.easystogu.log.LogHelper;
@@ -22,7 +20,6 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 public class EventChuQuanChuXiTableHelper {
 	private static Logger logger = LogHelper.getLogger(EventChuQuanChuXiTableHelper.class);
 	private static EventChuQuanChuXiTableHelper instance = null;
-	protected DataSource dataSource = PostgreSqlDataSourceFactory.createDataSource();
 	protected String tableName = "EVENT_CHUQUANCHUXI";
 	protected String INSERT_SQL = "INSERT INTO " + tableName
 			+ " (stockId, date, rate, alreadyupdateprice) VALUES (:stockId, :date, :rate, :alreadyupdateprice)";
@@ -47,7 +44,8 @@ public class EventChuQuanChuXiTableHelper {
 	}
 
 	protected EventChuQuanChuXiTableHelper() {
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
+				PostgreSqlDataSourceFactory.createDataSource());
 	}
 
 	private static final class GaoSongZhuanVOMapper implements RowMapper<ChuQuanChuXiVO> {
@@ -140,8 +138,8 @@ public class EventChuQuanChuXiTableHelper {
 			namedParameters.addValue("stockId", stockId);
 			namedParameters.addValue("limit", day);
 
-			List<ChuQuanChuXiVO> list = this.namedParameterJdbcTemplate.query(QUERY_LATEST_N_BY_ID_SQL,
-					namedParameters, new GaoSongZhuanVOMapper());
+			List<ChuQuanChuXiVO> list = this.namedParameterJdbcTemplate.query(QUERY_LATEST_N_BY_ID_SQL, namedParameters,
+					new GaoSongZhuanVOMapper());
 
 			return list;
 		} catch (Exception e) {

@@ -98,9 +98,6 @@ public class HouFuQuanStockPriceTableHelper extends StockPriceTableHelper {
 		COUNT_ALL_SQL = "SELECT count(*) AS rtn from " + tableName;
 		// select all distinct stockIDs
 		QUERY_DISTINCT_ID = "SELECT distinct(stockid) AS rtn FROM " + tableName + " order by stockid";
-
-		// this.namedParameterJdbcTemplate = new
-		// NamedParameterJdbcTemplate(dataSource);
 	}
 
 	public static void main(String[] args) {

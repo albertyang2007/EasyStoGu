@@ -6,8 +6,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.sql.DataSource;
-
 import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
 import org.easystogu.db.vo.table.WRVO;
 import org.easystogu.log.LogHelper;
@@ -23,7 +21,6 @@ public class IndWRTableHelper {
 
 	private static Logger logger = LogHelper.getLogger(IndQSDDTableHelper.class);
 	private static IndWRTableHelper instance = null;
-	protected DataSource dataSource = PostgreSqlDataSourceFactory.createDataSource();
 	protected String tableName = "IND_WR";
 	// please modify this SQL in all subClass
 	protected String INSERT_SQL = "INSERT INTO " + tableName
@@ -50,7 +47,8 @@ public class IndWRTableHelper {
 	}
 
 	protected IndWRTableHelper() {
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
+				PostgreSqlDataSourceFactory.createDataSource());
 	}
 
 	private static final class WRVOMapper implements RowMapper<WRVO> {

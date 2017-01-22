@@ -1,7 +1,5 @@
 package org.easystogu.db.access.table;
 
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-
 public class IndWeekYiMengBSTableHelper extends IndYiMengBSTableHelper {
 	private static IndWeekYiMengBSTableHelper instance = null;
 
@@ -24,8 +22,6 @@ public class IndWeekYiMengBSTableHelper extends IndYiMengBSTableHelper {
 		DELETE_BY_STOCKID_SQL = "DELETE FROM " + tableName + " WHERE stockId = :stockId";
 		DELETE_BY_STOCKID_AND_DATE_SQL = "DELETE FROM " + tableName + " WHERE stockId = :stockId AND date = :date";
 		DELETE_BY_DATE_SQL = "DELETE FROM " + tableName + " WHERE date = :date";
-
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
 	}
 
 	public static void main(String[] args) {

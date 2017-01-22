@@ -5,8 +5,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-import javax.sql.DataSource;
-
 import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
 import org.easystogu.db.vo.table.EstimateStockVO;
 import org.easystogu.log.LogHelper;
@@ -21,7 +19,6 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 public class EstimateStockTableHelper {
 	private static Logger logger = LogHelper.getLogger(EstimateStockTableHelper.class);
 	private static EstimateStockTableHelper instance = null;
-	protected DataSource dataSource = PostgreSqlDataSourceFactory.createDataSource();
 	protected String tableName = "ESTIMATE_STOCK";
 	// please modify this SQL in all subClass
 	protected String INSERT_SQL = "INSERT INTO " + tableName + " (stockId, date) VALUES (:stockId, :date)";
@@ -48,7 +45,8 @@ public class EstimateStockTableHelper {
 	}
 
 	protected EstimateStockTableHelper() {
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
+				PostgreSqlDataSourceFactory.createDataSource());
 	}
 
 	private static final class DefaultPreparedStatementCallback implements PreparedStatementCallback<Integer> {

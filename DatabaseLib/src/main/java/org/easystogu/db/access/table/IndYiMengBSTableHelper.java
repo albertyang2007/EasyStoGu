@@ -6,8 +6,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.sql.DataSource;
-
 import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
 import org.easystogu.db.vo.table.YiMengBSVO;
 import org.easystogu.log.LogHelper;
@@ -22,7 +20,6 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 public class IndYiMengBSTableHelper {
 	private static Logger logger = LogHelper.getLogger(IndYiMengBSTableHelper.class);
 	private static IndYiMengBSTableHelper instance = null;
-	protected DataSource dataSource = PostgreSqlDataSourceFactory.createDataSource();
 	protected String tableName = "IND_YIMENGBS";
 	// please modify this SQL in all subClass
 	protected String INSERT_SQL = "INSERT INTO " + tableName
@@ -47,7 +44,8 @@ public class IndYiMengBSTableHelper {
 	}
 
 	protected IndYiMengBSTableHelper() {
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
+				PostgreSqlDataSourceFactory.createDataSource());
 	}
 
 	private static final class YiMengBSVOMapper implements RowMapper<YiMengBSVO> {
@@ -125,7 +123,7 @@ public class IndYiMengBSTableHelper {
 	}
 
 	public YiMengBSVO getYiMengBS(String stockId, String date) {
-		try {		
+		try {
 			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 			namedParameters.addValue("stockId", stockId);
 			namedParameters.addValue("date", date);

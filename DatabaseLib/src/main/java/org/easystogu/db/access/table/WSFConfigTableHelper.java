@@ -4,8 +4,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import javax.sql.DataSource;
-
 import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
 import org.easystogu.db.vo.table.WSFConfigVO;
 import org.easystogu.log.LogHelper;
@@ -20,7 +18,6 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 public class WSFConfigTableHelper {
 	private static Logger logger = LogHelper.getLogger(WSFConfigTableHelper.class);
 	private static WSFConfigTableHelper instance = null;
-	protected DataSource dataSource = PostgreSqlDataSourceFactory.createDataSource();
 	protected String tableName = "WSFCONFIG";
 	// please modify this SQL in all subClass
 	protected String QUERY_BY_NAME = "SELECT * FROM " + tableName + " WHERE name = :name";
@@ -35,7 +32,8 @@ public class WSFConfigTableHelper {
 	}
 
 	protected WSFConfigTableHelper() {
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
+				PostgreSqlDataSourceFactory.createDataSource());
 	}
 
 	private static final class ConfigVOMapper implements RowMapper<WSFConfigVO> {

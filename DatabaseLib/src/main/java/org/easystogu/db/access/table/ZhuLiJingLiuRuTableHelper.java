@@ -8,8 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.sql.DataSource;
-
 import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
 import org.easystogu.db.vo.table.ZhuLiJingLiuRuVO;
 import org.easystogu.db.vo.table.ZiJinLiuVO;
@@ -26,11 +24,9 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 public class ZhuLiJingLiuRuTableHelper {
 	private static Logger logger = LogHelper.getLogger(ZhuLiJingLiuRuTableHelper.class);
 	private static ZhuLiJingLiuRuTableHelper instance = null;
-	protected DataSource dataSource = PostgreSqlDataSourceFactory.createDataSource();
 	// please modify this SQL in all subClass
 	protected String tableName = "ZHULIJINGLIURU";
-	protected String INSERT_SQL = "INSERT INTO "
-			+ tableName
+	protected String INSERT_SQL = "INSERT INTO " + tableName
 			+ " (stockId, date, rate, price, majorNetPer, incPer) VALUES (:stockId, :date, :rate, :price, :majorNetPer, :incPer)";
 	protected String QUERY_BY_ID_AND_DATE_SQL = "SELECT * FROM " + tableName
 			+ " WHERE stockId = :stockId AND date = :date";
@@ -53,7 +49,8 @@ public class ZhuLiJingLiuRuTableHelper {
 	}
 
 	protected ZhuLiJingLiuRuTableHelper() {
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
+				PostgreSqlDataSourceFactory.createDataSource());
 	}
 
 	private static final class ZhuLiJingLiuRuVOMapper implements RowMapper<ZhuLiJingLiuRuVO> {

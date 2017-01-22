@@ -6,8 +6,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.sql.DataSource;
-
 import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
 import org.easystogu.db.vo.table.ChuQuanChuXiVO;
 import org.easystogu.db.vo.table.StockPriceVO;
@@ -23,7 +21,6 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 public class StockPriceTableHelper {
 	private static Logger logger = LogHelper.getLogger(StockPriceTableHelper.class);
 	private static StockPriceTableHelper instance = null;
-	protected DataSource dataSource = PostgreSqlDataSourceFactory.createDataSource();
 	protected String tableName = "STOCKPRICE";
 	// please modify this SQL in all subClass
 	protected String INSERT_SQL = "INSERT INTO " + tableName
@@ -124,7 +121,8 @@ public class StockPriceTableHelper {
 	}
 
 	protected StockPriceTableHelper() {
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
+				PostgreSqlDataSourceFactory.createDataSource());
 	}
 
 	private static final class StockPriceVOMapper implements RowMapper<StockPriceVO> {

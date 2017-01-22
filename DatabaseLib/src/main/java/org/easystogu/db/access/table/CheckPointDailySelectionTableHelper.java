@@ -6,8 +6,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.sql.DataSource;
-
 import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
 import org.easystogu.db.vo.table.CheckPointDailySelectionVO;
 import org.easystogu.log.LogHelper;
@@ -21,7 +19,6 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 public class CheckPointDailySelectionTableHelper {
 	private static Logger logger = LogHelper.getLogger(CheckPointDailySelectionTableHelper.class);
-	private DataSource dataSource = PostgreSqlDataSourceFactory.createDataSource();
 	private static CheckPointDailySelectionTableHelper instance = null;
 	private String tableName = "CHECKPOINT_DAILY_SELECTION";
 	protected String INSERT_SQL = "INSERT INTO " + tableName
@@ -53,7 +50,8 @@ public class CheckPointDailySelectionTableHelper {
 	}
 
 	private CheckPointDailySelectionTableHelper() {
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
+				PostgreSqlDataSourceFactory.createDataSource());
 	}
 
 	private static final class IntVOMapper implements RowMapper<Integer> {

@@ -1,7 +1,5 @@
 package org.easystogu.db.access.table;
 
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-
 public class IndWeekQSDDTableHelper extends IndQSDDTableHelper {
 
 	private static IndWeekQSDDTableHelper instance = null;
@@ -28,8 +26,6 @@ public class IndWeekQSDDTableHelper extends IndQSDDTableHelper {
 		DELETE_BY_DATE_SQL = "DELETE FROM " + tableName + " WHERE date = :date";
 		QUERY_BY_STOCKID_AND_BETWEEN_DATE = "SELECT * FROM " + tableName
 				+ " WHERE stockId = :stockId AND DATE >= :date1 AND DATE <= :date2 ORDER BY DATE";
-
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
 	}
 
 	public static void main(String[] args) {

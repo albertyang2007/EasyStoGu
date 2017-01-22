@@ -25,11 +25,9 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 public class ZiJinLiuTableHelper {
 	private static Logger logger = LogHelper.getLogger(ZiJinLiuTableHelper.class);
 	private static ZiJinLiuTableHelper instance = null;
-	protected DataSource dataSource = PostgreSqlDataSourceFactory.createDataSource();
 	// please modify this SQL in all subClass
 	protected String tableName = "ZIJINLIU";
-	protected String INSERT_SQL = "INSERT INTO "
-			+ tableName
+	protected String INSERT_SQL = "INSERT INTO " + tableName
 			+ " (stockId, date, rate, incPer, majorNetIn, majorNetPer, biggestNetIn, biggestNetPer, bigNetIn, bigNetPer, midNetIn, midNetPer, smallNetIn, smallNetPer) VALUES (:stockId, :date, :rate, :incPer, :majorNetIn, :majorNetPer, :biggestNetIn, :biggestNetPer, :bigNetIn, :bigNetPer, :midNetIn, :midNetPer, :smallNetIn, :smallNetPer)";
 	protected String QUERY_BY_ID_AND_DATE_SQL = "SELECT * FROM " + tableName
 			+ " WHERE stockId = :stockId AND date = :date";
@@ -52,7 +50,8 @@ public class ZiJinLiuTableHelper {
 	}
 
 	protected ZiJinLiuTableHelper() {
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
+				PostgreSqlDataSourceFactory.createDataSource());
 	}
 
 	private static final class ZiJinLiuVOMapper implements RowMapper<ZiJinLiuVO> {

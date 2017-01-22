@@ -6,8 +6,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.sql.DataSource;
-
 import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
 import org.easystogu.db.vo.table.Mai1Mai2VO;
 import org.easystogu.log.LogHelper;
@@ -22,7 +20,6 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 public class IndMai1Mai2TableHelper {
 	private static Logger logger = LogHelper.getLogger(IndMai1Mai2TableHelper.class);
 	private static IndMai1Mai2TableHelper instance = null;
-	protected DataSource dataSource = PostgreSqlDataSourceFactory.createDataSource();
 	protected String tableName = "IND_MAI1MAI2";
 	// please modify this SQL in all subClass
 	protected String INSERT_SQL = "INSERT INTO " + tableName
@@ -47,7 +44,8 @@ public class IndMai1Mai2TableHelper {
 	}
 
 	protected IndMai1Mai2TableHelper() {
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
+				PostgreSqlDataSourceFactory.createDataSource());
 	}
 
 	private static final class Mai1Mai2VOMapper implements RowMapper<Mai1Mai2VO> {

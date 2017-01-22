@@ -6,8 +6,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.sql.DataSource;
-
 import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
 import org.easystogu.db.vo.table.ZhuliJinChuVO;
 import org.easystogu.log.LogHelper;
@@ -22,7 +20,6 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 public class IndZhuliJinChuTableHelper {
 	private static Logger logger = LogHelper.getLogger(IndZhuliJinChuTableHelper.class);
 	private static IndZhuliJinChuTableHelper instance = null;
-	protected DataSource dataSource = PostgreSqlDataSourceFactory.createDataSource();
 	protected String tableName = "IND_ZHULIJINCHU";
 	// please modify this SQL in all subClass
 	protected String INSERT_SQL = "INSERT INTO " + tableName
@@ -47,7 +44,8 @@ public class IndZhuliJinChuTableHelper {
 	}
 
 	protected IndZhuliJinChuTableHelper() {
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
+				PostgreSqlDataSourceFactory.createDataSource());
 	}
 
 	private static final class ZhuliJinChuVOMapper implements RowMapper<ZhuliJinChuVO> {
@@ -131,8 +129,8 @@ public class IndZhuliJinChuTableHelper {
 			namedParameters.addValue("stockId", stockId);
 			namedParameters.addValue("date", date);
 
-			ZhuliJinChuVO vo = this.namedParameterJdbcTemplate.queryForObject(QUERY_BY_ID_AND_DATE_SQL,
-					namedParameters, new ZhuliJinChuVOMapper());
+			ZhuliJinChuVO vo = this.namedParameterJdbcTemplate.queryForObject(QUERY_BY_ID_AND_DATE_SQL, namedParameters,
+					new ZhuliJinChuVOMapper());
 
 			return vo;
 		} catch (EmptyResultDataAccessException ee) {

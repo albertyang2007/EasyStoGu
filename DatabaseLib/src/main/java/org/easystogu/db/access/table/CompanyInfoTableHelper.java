@@ -6,8 +6,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.sql.DataSource;
-
 import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
 import org.easystogu.db.vo.table.CompanyInfoVO;
 import org.easystogu.log.LogHelper;
@@ -22,11 +20,9 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 public class CompanyInfoTableHelper {
 	private static Logger logger = LogHelper.getLogger(CompanyInfoTableHelper.class);
 	private static CompanyInfoTableHelper instance = null;
-	protected DataSource dataSource = PostgreSqlDataSourceFactory.createDataSource();
 	protected String tableName = "COMPANY_INFO";
 	// please modify this SQL in all subClass
-	protected String INSERT_SQL = "INSERT INTO "
-			+ tableName
+	protected String INSERT_SQL = "INSERT INTO " + tableName
 			+ " (stockId, name, totalguben, liutongagu, updatetime) VALUES (:stockId, :name, :totalguben, :liutongagu, :updatetime)";
 	protected String QUERY_BY_STOCKID = "SELECT * FROM " + tableName + " WHERE stockId = :stockId";
 	protected String QUERY_ALL = "SELECT * FROM " + tableName;
@@ -43,7 +39,8 @@ public class CompanyInfoTableHelper {
 	}
 
 	protected CompanyInfoTableHelper() {
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
+				PostgreSqlDataSourceFactory.createDataSource());
 	}
 
 	private static final class CompanyInfoVOMapper implements RowMapper<CompanyInfoVO> {

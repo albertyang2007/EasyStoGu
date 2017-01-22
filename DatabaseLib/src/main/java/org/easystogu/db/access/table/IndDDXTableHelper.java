@@ -6,8 +6,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.sql.DataSource;
-
 import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
 import org.easystogu.db.vo.table.DDXVO;
 import org.easystogu.log.LogHelper;
@@ -22,7 +20,6 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 public class IndDDXTableHelper {
 	private static Logger logger = LogHelper.getLogger(IndDDXTableHelper.class);
 	private static IndDDXTableHelper instance = null;
-	protected DataSource dataSource = PostgreSqlDataSourceFactory.createDataSource();
 	protected String tableName = "IND_DDX";
 	// please modify this SQL in all subClass
 	protected String INSERT_SQL = "INSERT INTO " + tableName
@@ -49,7 +46,8 @@ public class IndDDXTableHelper {
 	}
 
 	protected IndDDXTableHelper() {
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
+				PostgreSqlDataSourceFactory.createDataSource());
 	}
 
 	private static final class DDXVOMapper implements RowMapper<DDXVO> {
@@ -181,7 +179,7 @@ public class IndDDXTableHelper {
 			return new ArrayList<DDXVO>();
 		}
 	}
-	
+
 	public List<DDXVO> getByIdAndBetweenDate(String stockId, String StartDate, String endDate) {
 		try {
 			MapSqlParameterSource namedParameters = new MapSqlParameterSource();

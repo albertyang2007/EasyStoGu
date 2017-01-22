@@ -3,7 +3,6 @@ package org.easystogu.db.access.table;
 import java.util.List;
 
 import org.easystogu.db.vo.table.StockPriceVO;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 public class WeekStockPriceTableHelper extends StockPriceTableHelper {
 	private static WeekStockPriceTableHelper instance = null;
@@ -83,15 +82,13 @@ public class WeekStockPriceTableHelper extends StockPriceTableHelper {
 		COUNT_ALL_SQL = "SELECT count(*) AS rtn from " + tableName;
 		// select all distinct stockIDs
 		QUERY_DISTINCT_ID = "SELECT distinct(stockid) AS rtn FROM " + tableName + " order by stockid";
-
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
 	}
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		WeekStockPriceTableHelper ins = new WeekStockPriceTableHelper();
 		try {
-			List<StockPriceVO> list = ins.getStockPriceByIdAndBetweenDate("002336", "2015-04-03", "2015-04-25");
+			List<StockPriceVO> list = ins.getStockPriceByIdAndBetweenDate("603999", "2016-09-03", "2017-01-19");
 			System.out.println(list.get(0));
 			System.out.println(list.get(list.size() - 1));
 		} catch (Exception e) {
