@@ -1,4 +1,4 @@
-package org.easystogu.db.sync;
+package org.easystogu.database.replicate.file;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
