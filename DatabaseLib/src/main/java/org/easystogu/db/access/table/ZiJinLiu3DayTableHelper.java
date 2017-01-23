@@ -39,8 +39,5 @@ public class ZiJinLiu3DayTableHelper extends ZiJinLiuTableHelper {
 		DELETE_BY_STOCKID_AND_DATE_SQL = "DELETE FROM " + tableName + " WHERE stockId = :stockId AND date = :date";
 		DELETE_BY_DATE_SQL = "DELETE FROM " + tableName + " WHERE date = :date";
 		QUERY_BY_DATE_SQL = "SELECT * FROM " + tableName + " WHERE date = :date";
-
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
-				PostgreSqlDataSourceFactory.createDataSource());
 	}
 }

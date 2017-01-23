@@ -19,20 +19,27 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 public class CommonViewHelper {
 	private static Logger logger = LogHelper.getLogger(CommonViewHelper.class);
 	private static CommonViewHelper instance = null;
-	protected DataSource dataSource = PostgreSqlDataSourceFactory.createDataSource();
+	private static CommonViewHelper georedInstance = null;
 	protected String QUERY_BY_VIEW_NAMES = "SELECT COUNT(*) AS rtn FROM pg_views WHERE VIEWNAME = :viewName";
 
 	protected NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
 	public static CommonViewHelper getInstance() {
 		if (instance == null) {
-			instance = new CommonViewHelper();
+			instance = new CommonViewHelper(PostgreSqlDataSourceFactory.createDataSource());
 		}
 		return instance;
 	}
 
-	protected CommonViewHelper() {
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(PostgreSqlDataSourceFactory.createGeoredDataSource());
+	public static CommonViewHelper getGeoredInstance() {
+		if (georedInstance == null) {
+			georedInstance = new CommonViewHelper(PostgreSqlDataSourceFactory.createGeoredDataSource());
+		}
+		return georedInstance;
+	}
+
+	protected CommonViewHelper(javax.sql.DataSource dataSource) {
+		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
 	}
 
 	private static final class IntVOMapper implements RowMapper<Integer> {
