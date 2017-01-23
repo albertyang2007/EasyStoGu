@@ -1,34 +1,31 @@
 package org.easystogu.db.access.table;
 
+import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
+
 public class IndWeekBollTableHelper extends IndBollTableHelper {
 	private static IndWeekBollTableHelper instance = null;
-	private static IndWeekBollTableHelper configInstance = null;
+	private static IndWeekBollTableHelper georedInstance = null;
 
 	public static IndWeekBollTableHelper getInstance() {
 		if (instance == null) {
-			instance = new IndWeekBollTableHelper();
+			instance = new IndWeekBollTableHelper(PostgreSqlDataSourceFactory.createDataSource());
 		}
 		return instance;
 	}
-	
-	public static IndWeekBollTableHelper getConfigInstance(javax.sql.DataSource datasource) {
-		if (configInstance == null) {
-			configInstance = new IndWeekBollTableHelper(datasource);
+
+	public static IndWeekBollTableHelper getGeoredInstance() {
+		if (georedInstance == null) {
+			georedInstance = new IndWeekBollTableHelper(PostgreSqlDataSourceFactory.createGeoredDataSource());
 		}
-		return configInstance;
+		return georedInstance;
 	}
 
-	protected IndWeekBollTableHelper() {
-		super();
-		refeshTableSQL();
-	}
-	
 	protected IndWeekBollTableHelper(javax.sql.DataSource datasource) {
 		super(datasource);
 		refeshTableSQL();
 	}
-	
-	private void refeshTableSQL(){
+
+	private void refeshTableSQL() {
 		tableName = "IND_WEEK_BOLL";
 		INSERT_SQL = "INSERT INTO " + tableName
 				+ " (stockId, date, mb, up, dn) VALUES (:stockId, :date, :mb, :up, :dn)";

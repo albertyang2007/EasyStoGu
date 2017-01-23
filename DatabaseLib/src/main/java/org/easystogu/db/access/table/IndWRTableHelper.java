@@ -20,7 +20,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 public class IndWRTableHelper {
 	private static Logger logger = LogHelper.getLogger(IndQSDDTableHelper.class);
 	private static IndWRTableHelper instance = null;
-	private static IndWRTableHelper configInstance = null;
+	private static IndWRTableHelper georedInstance = null;
 	protected String tableName = "IND_WR";
 	// please modify this SQL in all subClass
 	protected String INSERT_SQL = "INSERT INTO " + tableName
@@ -39,27 +39,22 @@ public class IndWRTableHelper {
 
 	protected NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
+	private IndWRTableHelper(javax.sql.DataSource datasource) {
+		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(datasource);
+	}
+
 	public static IndWRTableHelper getInstance() {
 		if (instance == null) {
-			instance = new IndWRTableHelper();
+			instance = new IndWRTableHelper(PostgreSqlDataSourceFactory.createDataSource());
 		}
 		return instance;
 	}
 
-	protected IndWRTableHelper() {
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
-				PostgreSqlDataSourceFactory.createDataSource());
-	}
-
-	public static IndWRTableHelper getConfigInstance(javax.sql.DataSource datasource) {
-		if (configInstance == null) {
-			configInstance = new IndWRTableHelper(datasource);
+	public static IndWRTableHelper getGeoredInstance() {
+		if (georedInstance == null) {
+			georedInstance = new IndWRTableHelper(PostgreSqlDataSourceFactory.createGeoredDataSource());
 		}
-		return configInstance;
-	}
-
-	protected IndWRTableHelper(javax.sql.DataSource datasource) {
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(datasource);
+		return georedInstance;
 	}
 
 	private static final class WRVOMapper implements RowMapper<WRVO> {
@@ -210,7 +205,7 @@ public class IndWRTableHelper {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		IndWRTableHelper ins = new IndWRTableHelper();
+		IndWRTableHelper ins = IndWRTableHelper.getInstance();
 		try {
 			System.out.println(ins.getNDateWR("000673", 40).size());
 		} catch (Exception e) {

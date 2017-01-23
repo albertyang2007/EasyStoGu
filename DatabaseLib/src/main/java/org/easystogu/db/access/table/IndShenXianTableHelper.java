@@ -20,7 +20,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 public class IndShenXianTableHelper {
 	private static Logger logger = LogHelper.getLogger(IndShenXianTableHelper.class);
 	private static IndShenXianTableHelper instance = null;
-	private static IndShenXianTableHelper configInstance = null;
+	private static IndShenXianTableHelper georedInstance = null;
 	protected String tableName = "IND_SHENXIAN";
 	// please modify this SQL in all subClass
 	protected String INSERT_SQL = "INSERT INTO " + tableName
@@ -39,27 +39,22 @@ public class IndShenXianTableHelper {
 
 	protected NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
+	protected IndShenXianTableHelper(javax.sql.DataSource datasource) {
+		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(datasource);
+	}
+
 	public static IndShenXianTableHelper getInstance() {
 		if (instance == null) {
-			instance = new IndShenXianTableHelper();
+			instance = new IndShenXianTableHelper(PostgreSqlDataSourceFactory.createDataSource());
 		}
 		return instance;
 	}
 
-	protected IndShenXianTableHelper() {
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
-				PostgreSqlDataSourceFactory.createDataSource());
-	}
-	
-	public static IndShenXianTableHelper getConfigInstance(javax.sql.DataSource datasource) {
-		if (configInstance == null) {
-			configInstance = new IndShenXianTableHelper(datasource);
+	public static IndShenXianTableHelper getGeoredInstance() {
+		if (georedInstance == null) {
+			georedInstance = new IndShenXianTableHelper(PostgreSqlDataSourceFactory.createGeoredDataSource());
 		}
-		return configInstance;
-	}
-
-	protected IndShenXianTableHelper(javax.sql.DataSource datasource) {
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(datasource);
+		return georedInstance;
 	}
 
 	private static final class ShenXianVOMapper implements RowMapper<ShenXianVO> {
@@ -211,7 +206,7 @@ public class IndShenXianTableHelper {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		IndShenXianTableHelper ins = new IndShenXianTableHelper();
+		IndShenXianTableHelper ins = IndShenXianTableHelper.getInstance();
 		try {
 			System.out.println(ins.getAllShenXian("002194").size());
 		} catch (Exception e) {

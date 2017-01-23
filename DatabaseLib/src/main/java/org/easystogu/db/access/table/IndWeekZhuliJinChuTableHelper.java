@@ -1,30 +1,27 @@
 package org.easystogu.db.access.table;
 
+import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
+
 public class IndWeekZhuliJinChuTableHelper extends IndZhuliJinChuTableHelper {
 	private static IndWeekZhuliJinChuTableHelper instance = null;
-	private static IndWeekZhuliJinChuTableHelper configInstance = null;
+	private static IndWeekZhuliJinChuTableHelper georedInstance = null;
 
 	public static IndWeekZhuliJinChuTableHelper getInstance() {
 		if (instance == null) {
-			instance = new IndWeekZhuliJinChuTableHelper();
+			instance = new IndWeekZhuliJinChuTableHelper(PostgreSqlDataSourceFactory.createDataSource());
 		}
 		return instance;
 	}
 
-	public static IndWeekZhuliJinChuTableHelper getConfigInstance(javax.sql.DataSource datasource) {
-		if (configInstance == null) {
-			configInstance = new IndWeekZhuliJinChuTableHelper(datasource);
+	public static IndWeekZhuliJinChuTableHelper getGeoredInstance() {
+		if (georedInstance == null) {
+			georedInstance = new IndWeekZhuliJinChuTableHelper(PostgreSqlDataSourceFactory.createGeoredDataSource());
 		}
-		return configInstance;
+		return georedInstance;
 	}
 
 	protected IndWeekZhuliJinChuTableHelper(javax.sql.DataSource datasource) {
 		super(datasource);
-		refeshTableSQL();
-	}
-
-	protected IndWeekZhuliJinChuTableHelper() {
-		super();
 		refeshTableSQL();
 	}
 
@@ -44,7 +41,7 @@ public class IndWeekZhuliJinChuTableHelper extends IndZhuliJinChuTableHelper {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		IndWeekZhuliJinChuTableHelper ins = new IndWeekZhuliJinChuTableHelper();
+		IndWeekZhuliJinChuTableHelper ins = IndWeekZhuliJinChuTableHelper.getInstance();
 		try {
 			System.out.println(ins.getAllZhuliJinChu("600359").size());
 		} catch (Exception e) {

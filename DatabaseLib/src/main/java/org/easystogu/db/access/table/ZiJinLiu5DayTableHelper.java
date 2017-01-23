@@ -5,25 +5,20 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 public class ZiJinLiu5DayTableHelper extends ZiJinLiuTableHelper {
 	private static ZiJinLiu5DayTableHelper instance = null;
-	private static ZiJinLiu5DayTableHelper configInstance = null;
+	private static ZiJinLiu5DayTableHelper georedInstance = null;
 
 	public static ZiJinLiu5DayTableHelper getInstance() {
 		if (instance == null) {
-			instance = new ZiJinLiu5DayTableHelper();
+			instance = new ZiJinLiu5DayTableHelper(PostgreSqlDataSourceFactory.createDataSource());
 		}
 		return instance;
 	}
 
-	public static ZiJinLiu5DayTableHelper getConfigInstance(javax.sql.DataSource datasource) {
-		if (configInstance == null) {
-			configInstance = new ZiJinLiu5DayTableHelper(datasource);
+	public static ZiJinLiu5DayTableHelper getGeoredInstance() {
+		if (georedInstance == null) {
+			georedInstance = new ZiJinLiu5DayTableHelper(PostgreSqlDataSourceFactory.createGeoredDataSource());
 		}
-		return configInstance;
-	}
-
-	protected ZiJinLiu5DayTableHelper() {
-		super();
-		refeshTableSQL();
+		return georedInstance;
 	}
 
 	protected ZiJinLiu5DayTableHelper(javax.sql.DataSource datasource) {

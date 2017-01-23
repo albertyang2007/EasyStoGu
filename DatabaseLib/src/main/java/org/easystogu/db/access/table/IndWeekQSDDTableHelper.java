@@ -1,30 +1,27 @@
 package org.easystogu.db.access.table;
 
+import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
+
 public class IndWeekQSDDTableHelper extends IndQSDDTableHelper {
 	private static IndWeekQSDDTableHelper instance = null;
-	private static IndWeekQSDDTableHelper configInstance = null;
+	private static IndWeekQSDDTableHelper georedInstance = null;
 
 	public static IndWeekQSDDTableHelper getInstance() {
 		if (instance == null) {
-			instance = new IndWeekQSDDTableHelper();
+			instance = new IndWeekQSDDTableHelper(PostgreSqlDataSourceFactory.createDataSource());
 		}
 		return instance;
 	}
-	
-	public static IndWeekQSDDTableHelper getConfigInstance(javax.sql.DataSource datasource) {
-		if (configInstance == null) {
-			configInstance = new IndWeekQSDDTableHelper(datasource);
+
+	public static IndWeekQSDDTableHelper getGeoredInstance() {
+		if (georedInstance == null) {
+			georedInstance = new IndWeekQSDDTableHelper(PostgreSqlDataSourceFactory.createGeoredDataSource());
 		}
-		return configInstance;
-	}
-	
-	protected IndWeekQSDDTableHelper(javax.sql.DataSource datasource) {
-		super(datasource);
-		refeshTableSQL();
+		return georedInstance;
 	}
 
-	protected IndWeekQSDDTableHelper() {
-		super();
+	protected IndWeekQSDDTableHelper(javax.sql.DataSource datasource) {
+		super(datasource);
 		refeshTableSQL();
 	}
 	

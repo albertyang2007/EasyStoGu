@@ -19,7 +19,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 public class EstimateStockTableHelper {
 	private static Logger logger = LogHelper.getLogger(EstimateStockTableHelper.class);
 	private static EstimateStockTableHelper instance = null;
-	private static EstimateStockTableHelper configInstance = null;
+	private static EstimateStockTableHelper georedInstance = null;
 	protected String tableName = "ESTIMATE_STOCK";
 	// please modify this SQL in all subClass
 	protected String INSERT_SQL = "INSERT INTO " + tableName + " (stockId, date) VALUES (:stockId, :date)";
@@ -38,27 +38,23 @@ public class EstimateStockTableHelper {
 
 	protected NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
+	private EstimateStockTableHelper(javax.sql.DataSource datasource) {
+		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(datasource);
+	}
+	
 	public static EstimateStockTableHelper getInstance() {
 		if (instance == null) {
-			instance = new EstimateStockTableHelper();
+			instance = new EstimateStockTableHelper(PostgreSqlDataSourceFactory.createDataSource());
 		}
 		return instance;
 	}
 
-	protected EstimateStockTableHelper() {
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
-				PostgreSqlDataSourceFactory.createDataSource());
-	}
-	
-	public static EstimateStockTableHelper getConfigInstance(javax.sql.DataSource datasource) {
-		if (configInstance == null) {
-			configInstance = new EstimateStockTableHelper(datasource);
+	public static EstimateStockTableHelper getGeoredInstance() {
+		if (georedInstance == null) {
+			georedInstance = new EstimateStockTableHelper(
+					PostgreSqlDataSourceFactory.createGeoredDataSource());
 		}
-		return configInstance;
-	}
-
-	protected EstimateStockTableHelper(javax.sql.DataSource datasource) {
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(datasource);
+		return georedInstance;
 	}
 
 	private static final class DefaultPreparedStatementCallback implements PreparedStatementCallback<Integer> {

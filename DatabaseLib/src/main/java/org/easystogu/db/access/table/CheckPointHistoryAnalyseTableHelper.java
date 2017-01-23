@@ -17,34 +17,30 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 public class CheckPointHistoryAnalyseTableHelper {
 	private static Logger logger = LogHelper.getLogger(CheckPointHistoryAnalyseTableHelper.class);
 	private static CheckPointHistoryAnalyseTableHelper instance = null;
-	private static CheckPointHistoryAnalyseTableHelper configInstance = null;
+	private static CheckPointHistoryAnalyseTableHelper georedInstance = null;
 	protected String tableName = "CHECKPOINT_HISTORY_ANALYSE";
 	protected String INSERT_SQL = "INSERT INTO " + tableName
 			+ " (checkpoint, total_satisfy, close_earn_percent, high_earn_percent, low_earn_percent, avg_hold_days, total_high_earn) VALUES (:checkpoint, :total_satisfy, :close_earn_percent, :high_earn_percent, :low_earn_percent, :avg_hold_days, :total_high_earn)";
 	protected String DELETE_BY_CHECKPOINT = "DELETE FROM " + tableName + " WHERE checkPoint = :checkPoint";
 	protected NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
+	private CheckPointHistoryAnalyseTableHelper(javax.sql.DataSource datasource) {
+		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(datasource);
+	}
+	
 	public static CheckPointHistoryAnalyseTableHelper getInstance() {
 		if (instance == null) {
-			instance = new CheckPointHistoryAnalyseTableHelper();
+			instance = new CheckPointHistoryAnalyseTableHelper(PostgreSqlDataSourceFactory.createDataSource());
 		}
 		return instance;
 	}
 
-	protected CheckPointHistoryAnalyseTableHelper() {
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
-				PostgreSqlDataSourceFactory.createDataSource());
-	}
-	
-	public static CheckPointHistoryAnalyseTableHelper getConfigInstance(javax.sql.DataSource datasource) {
-		if (configInstance == null) {
-			configInstance = new CheckPointHistoryAnalyseTableHelper(datasource);
+	public static CheckPointHistoryAnalyseTableHelper getGeoredInstance() {
+		if (georedInstance == null) {
+			georedInstance = new CheckPointHistoryAnalyseTableHelper(
+					PostgreSqlDataSourceFactory.createGeoredDataSource());
 		}
-		return configInstance;
-	}
-
-	protected CheckPointHistoryAnalyseTableHelper(javax.sql.DataSource datasource) {
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(datasource);
+		return georedInstance;
 	}
 
 	private static final class HistoryAnalyseMapper implements RowMapper<CheckPointHistoryAnalyseVO> {

@@ -20,7 +20,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 public class IndDDXTableHelper {
 	private static Logger logger = LogHelper.getLogger(IndDDXTableHelper.class);
 	private static IndDDXTableHelper instance = null;
-	private static IndDDXTableHelper configInstance = null;
+	private static IndDDXTableHelper georedInstance = null;
 	protected String tableName = "IND_DDX";
 	// please modify this SQL in all subClass
 	protected String INSERT_SQL = "INSERT INTO " + tableName
@@ -39,27 +39,22 @@ public class IndDDXTableHelper {
 
 	protected NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
+	private IndDDXTableHelper(javax.sql.DataSource datasource) {
+		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(datasource);
+	}
+
 	public static IndDDXTableHelper getInstance() {
 		if (instance == null) {
-			instance = new IndDDXTableHelper();
+			instance = new IndDDXTableHelper(PostgreSqlDataSourceFactory.createDataSource());
 		}
 		return instance;
 	}
 
-	protected IndDDXTableHelper() {
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
-				PostgreSqlDataSourceFactory.createDataSource());
-	}
-	
-	public static IndDDXTableHelper getConfigInstance(javax.sql.DataSource datasource) {
-		if (configInstance == null) {
-			configInstance = new IndDDXTableHelper(datasource);
+	public static IndDDXTableHelper getGeoredInstance() {
+		if (georedInstance == null) {
+			georedInstance = new IndDDXTableHelper(PostgreSqlDataSourceFactory.createGeoredDataSource());
 		}
-		return configInstance;
-	}
-
-	protected IndDDXTableHelper(javax.sql.DataSource datasource) {
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(datasource);
+		return georedInstance;
 	}
 
 	private static final class DDXVOMapper implements RowMapper<DDXVO> {
@@ -210,7 +205,7 @@ public class IndDDXTableHelper {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		IndDDXTableHelper ins = new IndDDXTableHelper();
+		IndDDXTableHelper ins = IndDDXTableHelper.getInstance();
 		try {
 
 			System.out.println(ins.getNDateDDX("600589", 40).size());

@@ -21,7 +21,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 public class StockPriceTableHelper {
 	private static Logger logger = LogHelper.getLogger(StockPriceTableHelper.class);
 	private static StockPriceTableHelper instance = null;
-	private static StockPriceTableHelper configInstance = null;
+	private static StockPriceTableHelper georedInstance = null;
 	protected String tableName = "STOCKPRICE";
 	// please modify this SQL in all subClass
 	protected String INSERT_SQL = "INSERT INTO " + tableName
@@ -114,27 +114,22 @@ public class StockPriceTableHelper {
 
 	protected NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
+	protected StockPriceTableHelper(javax.sql.DataSource datasource) {
+		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(datasource);
+	}
+
 	public static StockPriceTableHelper getInstance() {
 		if (instance == null) {
-			instance = new StockPriceTableHelper();
+			instance = new StockPriceTableHelper(PostgreSqlDataSourceFactory.createDataSource());
 		}
 		return instance;
 	}
 
-	protected StockPriceTableHelper() {
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
-				PostgreSqlDataSourceFactory.createDataSource());
-	}
-	
-	public static StockPriceTableHelper getConfigInstance(javax.sql.DataSource datasource) {
-		if (configInstance == null) {
-			configInstance = new StockPriceTableHelper(datasource);
+	public static StockPriceTableHelper getGeoredInstance() {
+		if (georedInstance == null) {
+			georedInstance = new StockPriceTableHelper(PostgreSqlDataSourceFactory.createGeoredDataSource());
 		}
-		return configInstance;
-	}
-
-	protected StockPriceTableHelper(javax.sql.DataSource datasource) {
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(datasource);
+		return georedInstance;
 	}
 
 	private static final class StockPriceVOMapper implements RowMapper<StockPriceVO> {
@@ -782,7 +777,7 @@ public class StockPriceTableHelper {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		StockPriceTableHelper ins = new StockPriceTableHelper();
+		StockPriceTableHelper ins = StockPriceTableHelper.getInstance();
 		try {
 			List<String> dates = ins.getLatestNStockDate(3);
 			for (String date : dates)

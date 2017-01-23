@@ -2,30 +2,25 @@ package org.easystogu.db.access.table;
 
 import java.util.List;
 
+import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
 import org.easystogu.db.vo.table.MacdVO;
 
 public class IndWeekMacdTableHelper extends IndMacdTableHelper {
 	private static IndWeekMacdTableHelper instance = null;
-	private static IndWeekMacdTableHelper configInstance = null;
+	private static IndWeekMacdTableHelper georedInstance = null;
 
 	public static IndWeekMacdTableHelper getInstance() {
 		if (instance == null) {
-			instance = new IndWeekMacdTableHelper();
+			instance = new IndWeekMacdTableHelper(PostgreSqlDataSourceFactory.createDataSource());
 		}
 		return instance;
 	}
 
-	public static IndWeekMacdTableHelper getConfigInstance(javax.sql.DataSource datasource) {
-		if (configInstance == null) {
-			configInstance = new IndWeekMacdTableHelper(datasource);
+	public static IndWeekMacdTableHelper getGeoredInstance() {
+		if (georedInstance == null) {
+			georedInstance = new IndWeekMacdTableHelper(PostgreSqlDataSourceFactory.createGeoredDataSource());
 		}
-		return configInstance;
-	}
-
-	protected IndWeekMacdTableHelper() {
-		super();
-		refeshTableSQL();
-
+		return georedInstance;
 	}
 
 	protected IndWeekMacdTableHelper(javax.sql.DataSource datasource) {

@@ -21,7 +21,7 @@ public class IndKDJTableHelper {
 
 	private static Logger logger = LogHelper.getLogger(IndKDJTableHelper.class);
 	private static IndKDJTableHelper instance = null;
-	private static IndKDJTableHelper configInstance = null;
+	private static IndKDJTableHelper georedInstance = null;
 	protected String tableName = "IND_KDJ";
 	// please modify this SQL in all subClass
 	protected String INSERT_SQL = "INSERT INTO " + tableName
@@ -40,27 +40,22 @@ public class IndKDJTableHelper {
 
 	protected NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
+	protected IndKDJTableHelper(javax.sql.DataSource datasource) {
+		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(datasource);
+	}
+
 	public static IndKDJTableHelper getInstance() {
 		if (instance == null) {
-			instance = new IndKDJTableHelper();
+			instance = new IndKDJTableHelper(PostgreSqlDataSourceFactory.createDataSource());
 		}
 		return instance;
 	}
 
-	protected IndKDJTableHelper() {
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
-				PostgreSqlDataSourceFactory.createDataSource());
-	}
-
-	public static IndKDJTableHelper getConfigInstance(javax.sql.DataSource datasource) {
-		if (configInstance == null) {
-			configInstance = new IndKDJTableHelper(datasource);
+	public static IndKDJTableHelper getGeoredInstance() {
+		if (georedInstance == null) {
+			georedInstance = new IndKDJTableHelper(PostgreSqlDataSourceFactory.createGeoredDataSource());
 		}
-		return configInstance;
-	}
-
-	protected IndKDJTableHelper(javax.sql.DataSource datasource) {
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(datasource);
+		return georedInstance;
 	}
 
 	private static final class KDJVOMapper implements RowMapper<KDJVO> {
@@ -214,7 +209,7 @@ public class IndKDJTableHelper {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		IndKDJTableHelper ins = new IndKDJTableHelper();
+		IndKDJTableHelper ins = IndKDJTableHelper.getInstance();
 		try {
 
 			System.out.println(ins.getNDateKDJ("600589", 40).size());

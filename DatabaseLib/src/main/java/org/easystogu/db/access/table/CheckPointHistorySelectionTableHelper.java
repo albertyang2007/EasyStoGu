@@ -17,34 +17,30 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 public class CheckPointHistorySelectionTableHelper {
 	private static Logger logger = LogHelper.getLogger(CheckPointHistorySelectionTableHelper.class);
 	private static CheckPointHistorySelectionTableHelper instance = null;
-	private static CheckPointHistorySelectionTableHelper configInstance = null;
+	private static CheckPointHistorySelectionTableHelper georedInstance = null;
 	protected String tableName = "CHECKPOINT_HISTORY_SELECTION";
 	protected String INSERT_SQL = "INSERT INTO " + tableName
 			+ " (stockId, checkPoint, buyDate, sellDate) VALUES (:stockId, :checkPoint, :buyDate, :sellDate)";
 	protected String DELETE_BY_CHECKPOINT = "DELETE FROM " + tableName + " WHERE checkPoint = :checkPoint";
 	protected NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
+	private CheckPointHistorySelectionTableHelper(javax.sql.DataSource datasource) {
+		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(datasource);
+	}
+	
 	public static CheckPointHistorySelectionTableHelper getInstance() {
 		if (instance == null) {
-			instance = new CheckPointHistorySelectionTableHelper();
+			instance = new CheckPointHistorySelectionTableHelper(PostgreSqlDataSourceFactory.createDataSource());
 		}
 		return instance;
 	}
 
-	protected CheckPointHistorySelectionTableHelper() {
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
-				PostgreSqlDataSourceFactory.createDataSource());
-	}
-	
-	public static CheckPointHistorySelectionTableHelper getConfigInstance(javax.sql.DataSource datasource) {
-		if (configInstance == null) {
-			configInstance = new CheckPointHistorySelectionTableHelper(datasource);
+	public static CheckPointHistorySelectionTableHelper getGeoredInstance() {
+		if (georedInstance == null) {
+			georedInstance = new CheckPointHistorySelectionTableHelper(
+					PostgreSqlDataSourceFactory.createGeoredDataSource());
 		}
-		return configInstance;
-	}
-
-	protected CheckPointHistorySelectionTableHelper(javax.sql.DataSource datasource) {
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(datasource);
+		return georedInstance;
 	}
 
 	private static final class HistoryReportMapper implements RowMapper<CheckPointHistorySelectionVO> {

@@ -24,7 +24,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 public class ZhuLiJingLiuRuTableHelper {
 	private static Logger logger = LogHelper.getLogger(ZhuLiJingLiuRuTableHelper.class);
 	private static ZhuLiJingLiuRuTableHelper instance = null;
-	private static ZhuLiJingLiuRuTableHelper configInstance = null;
+	private static ZhuLiJingLiuRuTableHelper georedInstance = null;
 	// please modify this SQL in all subClass
 	protected String tableName = "ZHULIJINGLIURU";
 	protected String INSERT_SQL = "INSERT INTO " + tableName
@@ -42,27 +42,23 @@ public class ZhuLiJingLiuRuTableHelper {
 
 	protected NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
+	private ZhuLiJingLiuRuTableHelper(javax.sql.DataSource datasource) {
+		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(datasource);
+	}
+	
 	public static ZhuLiJingLiuRuTableHelper getInstance() {
 		if (instance == null) {
-			instance = new ZhuLiJingLiuRuTableHelper();
+			instance = new ZhuLiJingLiuRuTableHelper(PostgreSqlDataSourceFactory.createDataSource());
 		}
 		return instance;
 	}
 
-	protected ZhuLiJingLiuRuTableHelper() {
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
-				PostgreSqlDataSourceFactory.createDataSource());
-	}
-	
-	public static ZhuLiJingLiuRuTableHelper getConfigInstance(javax.sql.DataSource datasource) {
-		if (configInstance == null) {
-			configInstance = new ZhuLiJingLiuRuTableHelper(datasource);
+	public static ZhuLiJingLiuRuTableHelper getGeoredInstance() {
+		if (georedInstance == null) {
+			georedInstance = new ZhuLiJingLiuRuTableHelper(
+					PostgreSqlDataSourceFactory.createGeoredDataSource());
 		}
-		return configInstance;
-	}
-
-	protected ZhuLiJingLiuRuTableHelper(javax.sql.DataSource datasource) {
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(datasource);
+		return georedInstance;
 	}
 
 	private static final class ZhuLiJingLiuRuVOMapper implements RowMapper<ZhuLiJingLiuRuVO> {

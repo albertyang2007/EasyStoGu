@@ -9,11 +9,10 @@ import org.easystogu.db.vo.table.CompanyInfoVO;
 //Replicate the two database
 //One is Active and Other is Standby
 //Data from Active will overwrite the Standby
-public class ReplicateWorker implements Runnable {
+public class CompanyInfoReplicateWorker implements Runnable {
 
 	private CompanyInfoTableHelper companyInfoTable = CompanyInfoTableHelper.getInstance();
-	private CompanyInfoTableHelper companyInfoTableGeored = CompanyInfoTableHelper
-			.getConfigInstance(PostgreSqlDataSourceFactory.createGeoredDataSource());
+	private CompanyInfoTableHelper companyInfoTableGeored = CompanyInfoTableHelper.getGeoredInstance();
 
 	public void run() {
 		List<CompanyInfoVO> List = companyInfoTable.getAllCompanyInfo();
@@ -48,8 +47,7 @@ public class ReplicateWorker implements Runnable {
 	}
 
 	public static void main(String[] args) {
-		ReplicateWorker worker = new ReplicateWorker();
+		CompanyInfoReplicateWorker worker = new CompanyInfoReplicateWorker();
 		worker.run();
 	}
-
 }

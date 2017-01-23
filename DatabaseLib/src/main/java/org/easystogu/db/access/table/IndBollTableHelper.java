@@ -17,10 +17,10 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
-public class IndBollTableHelper{
+public class IndBollTableHelper {
 	private static Logger logger = LogHelper.getLogger(IndBollTableHelper.class);
 	private static IndBollTableHelper instance = null;
-	private static IndBollTableHelper configInstance = null;
+	private static IndBollTableHelper georedInstance = null;
 	protected String tableName = "IND_BOLL";
 	protected String INSERT_SQL = "INSERT INTO " + tableName
 			+ " (stockId, date, mb, up, dn) VALUES (:stockId, :date, :mb, :up, :dn)";
@@ -38,27 +38,22 @@ public class IndBollTableHelper{
 
 	protected NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
+	protected IndBollTableHelper(javax.sql.DataSource datasource) {
+		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(datasource);
+	}
+
 	public static IndBollTableHelper getInstance() {
 		if (instance == null) {
-			instance = new IndBollTableHelper();
+			instance = new IndBollTableHelper(PostgreSqlDataSourceFactory.createDataSource());
 		}
 		return instance;
 	}
 
-	protected IndBollTableHelper() {
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
-				PostgreSqlDataSourceFactory.createDataSource());
-	}
-	
-	public static IndBollTableHelper getConfigInstance(javax.sql.DataSource datasource) {
-		if (configInstance == null) {
-			configInstance = new IndBollTableHelper(datasource);
+	public static IndBollTableHelper getGeoredInstance() {
+		if (georedInstance == null) {
+			georedInstance = new IndBollTableHelper(PostgreSqlDataSourceFactory.createGeoredDataSource());
 		}
-		return configInstance;
-	}
-
-	protected IndBollTableHelper(javax.sql.DataSource datasource) {
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(datasource);
+		return georedInstance;
 	}
 
 	private static final class BollVOMapper implements RowMapper<BollVO> {
@@ -210,7 +205,7 @@ public class IndBollTableHelper{
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		IndBollTableHelper ins = new IndBollTableHelper();
+		IndBollTableHelper ins = IndBollTableHelper.getInstance();
 		try {
 			// just for UT
 			BollVO vo = new BollVO();

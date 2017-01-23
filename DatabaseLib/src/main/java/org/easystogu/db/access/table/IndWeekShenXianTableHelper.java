@@ -1,33 +1,30 @@
 package org.easystogu.db.access.table;
 
+import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
+
 public class IndWeekShenXianTableHelper extends IndShenXianTableHelper {
 	private static IndWeekShenXianTableHelper instance = null;
-	private static IndWeekShenXianTableHelper configInstance = null;
+	private static IndWeekShenXianTableHelper georedInstance = null;
 
 	public static IndWeekShenXianTableHelper getInstance() {
 		if (instance == null) {
-			instance = new IndWeekShenXianTableHelper();
+			instance = new IndWeekShenXianTableHelper(PostgreSqlDataSourceFactory.createDataSource());
 		}
 		return instance;
 	}
-	
-	public static IndWeekShenXianTableHelper getConfigInstance(javax.sql.DataSource datasource) {
-		if (configInstance == null) {
-			configInstance = new IndWeekShenXianTableHelper(datasource);
+
+	public static IndWeekShenXianTableHelper getGeoredInstance() {
+		if (georedInstance == null) {
+			georedInstance = new IndWeekShenXianTableHelper(PostgreSqlDataSourceFactory.createGeoredDataSource());
 		}
-		return configInstance;
+		return georedInstance;
 	}
-	
+
 	protected IndWeekShenXianTableHelper(javax.sql.DataSource datasource) {
 		super(datasource);
 		refeshTableSQL();
 	}
 
-	protected IndWeekShenXianTableHelper() {
-		super();
-		refeshTableSQL();
-	}
-	
 	private void refeshTableSQL() {
 		tableName = "IND_WEEK_SHENXIAN";
 		// please modify this SQL in superClass
@@ -46,7 +43,7 @@ public class IndWeekShenXianTableHelper extends IndShenXianTableHelper {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		IndWeekShenXianTableHelper ins = new IndWeekShenXianTableHelper();
+		IndWeekShenXianTableHelper ins = IndWeekShenXianTableHelper.getInstance();
 		try {
 			System.out.println(ins.getAllShenXian("002194").size());
 		} catch (Exception e) {

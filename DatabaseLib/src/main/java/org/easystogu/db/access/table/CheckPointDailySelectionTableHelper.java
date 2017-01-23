@@ -20,7 +20,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 public class CheckPointDailySelectionTableHelper {
 	private static Logger logger = LogHelper.getLogger(CheckPointDailySelectionTableHelper.class);
 	private static CheckPointDailySelectionTableHelper instance = null;
-	private static CheckPointDailySelectionTableHelper configInstance = null;
+	private static CheckPointDailySelectionTableHelper georedInstance = null;
 	private String tableName = "CHECKPOINT_DAILY_SELECTION";
 	protected String INSERT_SQL = "INSERT INTO " + tableName
 			+ " (stockid, date, checkpoint) VALUES (:stockid, :date, :checkpoint)";
@@ -45,25 +45,21 @@ public class CheckPointDailySelectionTableHelper {
 
 	public static CheckPointDailySelectionTableHelper getInstance() {
 		if (instance == null) {
-			instance = new CheckPointDailySelectionTableHelper();
+			instance = new CheckPointDailySelectionTableHelper(PostgreSqlDataSourceFactory.createDataSource());
 		}
 		return instance;
 	}
 
-	private CheckPointDailySelectionTableHelper() {
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
-				PostgreSqlDataSourceFactory.createDataSource());
-	}
-	
-	public static CheckPointDailySelectionTableHelper getConfigInstance(javax.sql.DataSource datasource) {
-		if (configInstance == null) {
-			configInstance = new CheckPointDailySelectionTableHelper(datasource);
-		}
-		return configInstance;
+	private CheckPointDailySelectionTableHelper(javax.sql.DataSource datasource) {
+		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(datasource);
 	}
 
-	protected CheckPointDailySelectionTableHelper(javax.sql.DataSource datasource) {
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(datasource);
+	public static CheckPointDailySelectionTableHelper getGeoredInstance() {
+		if (georedInstance == null) {
+			georedInstance = new CheckPointDailySelectionTableHelper(
+					PostgreSqlDataSourceFactory.createGeoredDataSource());
+		}
+		return georedInstance;
 	}
 
 	private static final class IntVOMapper implements RowMapper<Integer> {
@@ -301,7 +297,7 @@ public class CheckPointDailySelectionTableHelper {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		CheckPointDailySelectionTableHelper ins = new CheckPointDailySelectionTableHelper();
+		CheckPointDailySelectionTableHelper ins = CheckPointDailySelectionTableHelper.getInstance();
 		try {
 			List<CheckPointDailySelectionVO> list = ins.queryByDateAndCheckPoint("2016-09-23",
 					"luzao_phaseII_zijinliu_top300");

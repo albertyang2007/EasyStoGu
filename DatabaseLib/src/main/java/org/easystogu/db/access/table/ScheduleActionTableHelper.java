@@ -20,7 +20,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 public class ScheduleActionTableHelper {
 	private static Logger logger = LogHelper.getLogger(ScheduleActionTableHelper.class);
 	private static ScheduleActionTableHelper instance = null;
-	private static ScheduleActionTableHelper configInstance = null;
+	private static ScheduleActionTableHelper georedInstance = null;
 	protected String tableName = "SCHEDULE_ACTION";
 	protected String INSERT_SQL = "INSERT INTO " + tableName
 			+ " (stockId, runDate, createDate, actionDo, params) VALUES (:stockId, :runDate, :createDate, :actionDo, :params)";
@@ -40,27 +40,22 @@ public class ScheduleActionTableHelper {
 
 	protected NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
+	private ScheduleActionTableHelper(javax.sql.DataSource datasource) {
+		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(datasource);
+	}
+
 	public static ScheduleActionTableHelper getInstance() {
 		if (instance == null) {
-			instance = new ScheduleActionTableHelper();
+			instance = new ScheduleActionTableHelper(PostgreSqlDataSourceFactory.createDataSource());
 		}
 		return instance;
 	}
 
-	protected ScheduleActionTableHelper() {
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
-				PostgreSqlDataSourceFactory.createDataSource());
-	}
-	
-	public static ScheduleActionTableHelper getConfigInstance(javax.sql.DataSource datasource) {
-		if (configInstance == null) {
-			configInstance = new ScheduleActionTableHelper(datasource);
+	public static ScheduleActionTableHelper getGeoredInstance() {
+		if (georedInstance == null) {
+			georedInstance = new ScheduleActionTableHelper(PostgreSqlDataSourceFactory.createGeoredDataSource());
 		}
-		return configInstance;
-	}
-
-	protected ScheduleActionTableHelper(javax.sql.DataSource datasource) {
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(datasource);
+		return georedInstance;
 	}
 
 	private static final class ScheduleActionVOMapper implements RowMapper<ScheduleActionVO> {
@@ -216,7 +211,7 @@ public class ScheduleActionTableHelper {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		ScheduleActionTableHelper ins = new ScheduleActionTableHelper();
+		ScheduleActionTableHelper ins = ScheduleActionTableHelper.getInstance();
 		try {
 			ScheduleActionVO vo = new ScheduleActionVO();
 			vo.setActionDo(ScheduleActionVO.ActionDo.refresh_history_stockprice.name());

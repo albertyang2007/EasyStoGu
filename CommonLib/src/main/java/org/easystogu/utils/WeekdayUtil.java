@@ -259,6 +259,19 @@ public class WeekdayUtil {
 		return list;
 	}
 
+	// 返回某日至今天的所有工作日,both inclusive
+	public static List<String> getWorkingDateListSince(String fromDate) {
+		List<String> list = new ArrayList<String>();
+		String currDate = currentDate();
+		String date = fromDate;
+		while (date.compareTo(currDate) <= 0) {
+			list.add(date);
+			String nextDate = nextWorkingDate(date);
+			date = nextDate;
+		}
+		return list;
+	}
+
 	// 判断date1和date2之间的时间跨距, 如果是10日之内，返回true
 	public static boolean isDateBetweenNumberofDays(String date1, String date2, int len) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -291,6 +304,6 @@ public class WeekdayUtil {
 	}
 
 	public static void main(String[] args) {
-		System.out.println(WeekdayUtil.nextNDate("2016-07-09", 10));
+		System.out.println(WeekdayUtil.getWorkingDatesBetween("2016-11-20", "2016-11-21"));
 	}
 }

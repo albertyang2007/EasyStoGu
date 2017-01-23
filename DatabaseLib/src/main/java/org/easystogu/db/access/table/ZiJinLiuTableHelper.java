@@ -23,7 +23,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 public class ZiJinLiuTableHelper {
 	private static Logger logger = LogHelper.getLogger(ZiJinLiuTableHelper.class);
 	private static ZiJinLiuTableHelper instance = null;
-	private static ZiJinLiuTableHelper configInstance = null;
+	private static ZiJinLiuTableHelper georedInstance = null;
 	// please modify this SQL in all subClass
 	protected String tableName = "ZIJINLIU";
 	protected String INSERT_SQL = "INSERT INTO " + tableName
@@ -41,27 +41,23 @@ public class ZiJinLiuTableHelper {
 
 	protected NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
+	protected ZiJinLiuTableHelper(javax.sql.DataSource datasource) {
+		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(datasource);
+	}
+	
 	public static ZiJinLiuTableHelper getInstance() {
 		if (instance == null) {
-			instance = new ZiJinLiuTableHelper();
+			instance = new ZiJinLiuTableHelper(PostgreSqlDataSourceFactory.createDataSource());
 		}
 		return instance;
 	}
 
-	protected ZiJinLiuTableHelper() {
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
-				PostgreSqlDataSourceFactory.createDataSource());
-	}
-	
-	public static ZiJinLiuTableHelper getConfigInstance(javax.sql.DataSource datasource) {
-		if (configInstance == null) {
-			configInstance = new ZiJinLiuTableHelper(datasource);
+	public static ZiJinLiuTableHelper getGeoredInstance() {
+		if (georedInstance == null) {
+			georedInstance = new ZiJinLiuTableHelper(
+					PostgreSqlDataSourceFactory.createGeoredDataSource());
 		}
-		return configInstance;
-	}
-
-	protected ZiJinLiuTableHelper(javax.sql.DataSource datasource) {
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(datasource);
+		return georedInstance;
 	}
 
 	private static final class ZiJinLiuVOMapper implements RowMapper<ZiJinLiuVO> {

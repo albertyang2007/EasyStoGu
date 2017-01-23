@@ -20,7 +20,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 public class EventChuQuanChuXiTableHelper {
 	private static Logger logger = LogHelper.getLogger(EventChuQuanChuXiTableHelper.class);
 	private static EventChuQuanChuXiTableHelper instance = null;
-	private static EventChuQuanChuXiTableHelper configInstance = null;
+	private static EventChuQuanChuXiTableHelper georedInstance = null;
 	protected String tableName = "EVENT_CHUQUANCHUXI";
 	protected String INSERT_SQL = "INSERT INTO " + tableName
 			+ " (stockId, date, rate, alreadyupdateprice) VALUES (:stockId, :date, :rate, :alreadyupdateprice)";
@@ -37,27 +37,23 @@ public class EventChuQuanChuXiTableHelper {
 
 	protected NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
+	private EventChuQuanChuXiTableHelper(javax.sql.DataSource datasource) {
+		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(datasource);
+	}
+	
 	public static EventChuQuanChuXiTableHelper getInstance() {
 		if (instance == null) {
-			instance = new EventChuQuanChuXiTableHelper();
+			instance = new EventChuQuanChuXiTableHelper(PostgreSqlDataSourceFactory.createDataSource());
 		}
 		return instance;
 	}
 
-	protected EventChuQuanChuXiTableHelper() {
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
-				PostgreSqlDataSourceFactory.createDataSource());
-	}
-	
-	public static EventChuQuanChuXiTableHelper getConfigInstance(javax.sql.DataSource datasource) {
-		if (configInstance == null) {
-			configInstance = new EventChuQuanChuXiTableHelper(datasource);
+	public static EventChuQuanChuXiTableHelper getGeoredInstance() {
+		if (georedInstance == null) {
+			georedInstance = new EventChuQuanChuXiTableHelper(
+					PostgreSqlDataSourceFactory.createGeoredDataSource());
 		}
-		return configInstance;
-	}
-
-	protected EventChuQuanChuXiTableHelper(javax.sql.DataSource datasource) {
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(datasource);
+		return georedInstance;
 	}
 
 	private static final class GaoSongZhuanVOMapper implements RowMapper<ChuQuanChuXiVO> {

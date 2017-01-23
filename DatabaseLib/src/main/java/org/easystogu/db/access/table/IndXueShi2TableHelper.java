@@ -20,7 +20,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 public class IndXueShi2TableHelper {
 	private static Logger logger = LogHelper.getLogger(IndBollTableHelper.class);
 	private static IndXueShi2TableHelper instance = null;
-	private static IndXueShi2TableHelper configInstance = null;
+	private static IndXueShi2TableHelper georedInstance = null;
 	protected String tableName = "IND_XUESHI2";
 	protected String INSERT_SQL = "INSERT INTO " + tableName
 			+ " (stockId, date, up, dn) VALUES (:stockId, :date, :up, :dn)";
@@ -36,27 +36,22 @@ public class IndXueShi2TableHelper {
 
 	protected NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
+	protected IndXueShi2TableHelper(javax.sql.DataSource datasource) {
+		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(datasource);
+	}
+
 	public static IndXueShi2TableHelper getInstance() {
 		if (instance == null) {
-			instance = new IndXueShi2TableHelper();
+			instance = new IndXueShi2TableHelper(PostgreSqlDataSourceFactory.createDataSource());
 		}
 		return instance;
 	}
 
-	protected IndXueShi2TableHelper() {
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
-				PostgreSqlDataSourceFactory.createDataSource());
-	}
-	
-	public static IndXueShi2TableHelper getConfigInstance(javax.sql.DataSource datasource) {
-		if (configInstance == null) {
-			configInstance = new IndXueShi2TableHelper(datasource);
+	public static IndXueShi2TableHelper getGeoredInstance() {
+		if (georedInstance == null) {
+			georedInstance = new IndXueShi2TableHelper(PostgreSqlDataSourceFactory.createGeoredDataSource());
 		}
-		return configInstance;
-	}
-
-	protected IndXueShi2TableHelper(javax.sql.DataSource datasource) {
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(datasource);
+		return georedInstance;
 	}
 
 	private static final class XueShi2VOMapper implements RowMapper<XueShi2VO> {
@@ -189,7 +184,7 @@ public class IndXueShi2TableHelper {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		IndXueShi2TableHelper ins = new IndXueShi2TableHelper();
+		IndXueShi2TableHelper ins = IndXueShi2TableHelper.getInstance();
 		try {
 			// just for UT
 			XueShi2VO vo = new XueShi2VO();

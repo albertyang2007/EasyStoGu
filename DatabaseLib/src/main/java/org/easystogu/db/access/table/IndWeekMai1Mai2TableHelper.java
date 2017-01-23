@@ -1,33 +1,30 @@
 package org.easystogu.db.access.table;
 
+import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
+
 public class IndWeekMai1Mai2TableHelper extends IndMai1Mai2TableHelper {
 	private static IndWeekMai1Mai2TableHelper instance = null;
-	private static IndWeekMai1Mai2TableHelper configInstance = null;
+	private static IndWeekMai1Mai2TableHelper georedInstance = null;
 
 	public static IndWeekMai1Mai2TableHelper getInstance() {
 		if (instance == null) {
-			instance = new IndWeekMai1Mai2TableHelper();
+			instance = new IndWeekMai1Mai2TableHelper(PostgreSqlDataSourceFactory.createDataSource());
 		}
 		return instance;
 	}
 
-	public static IndWeekMai1Mai2TableHelper getConfigInstance(javax.sql.DataSource datasource) {
-		if (configInstance == null) {
-			configInstance = new IndWeekMai1Mai2TableHelper(datasource);
+	public static IndWeekMai1Mai2TableHelper getGeoredInstance() {
+		if (georedInstance == null) {
+			georedInstance = new IndWeekMai1Mai2TableHelper(PostgreSqlDataSourceFactory.createGeoredDataSource());
 		}
-		return configInstance;
+		return georedInstance;
 	}
-	
+
 	protected IndWeekMai1Mai2TableHelper(javax.sql.DataSource datasource) {
 		super(datasource);
 		refeshTableSQL();
 	}
-	
-	protected IndWeekMai1Mai2TableHelper() {
-		super();
-		refeshTableSQL();
-	}
-	
+
 	private void refeshTableSQL() {
 		tableName = "IND_WEEK_MAI1MAI2";
 		// please modify this SQL in superClass
@@ -43,7 +40,7 @@ public class IndWeekMai1Mai2TableHelper extends IndMai1Mai2TableHelper {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		IndWeekMai1Mai2TableHelper ins = new IndWeekMai1Mai2TableHelper();
+		IndWeekMai1Mai2TableHelper ins = IndWeekMai1Mai2TableHelper.getInstance();
 		try {
 			System.out.println(ins.getAllMai1Mai2("600359").size());
 		} catch (Exception e) {

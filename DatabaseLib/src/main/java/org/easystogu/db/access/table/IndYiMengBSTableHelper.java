@@ -20,7 +20,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 public class IndYiMengBSTableHelper {
 	private static Logger logger = LogHelper.getLogger(IndYiMengBSTableHelper.class);
 	private static IndYiMengBSTableHelper instance = null;
-	private static IndYiMengBSTableHelper configInstance = null;
+	private static IndYiMengBSTableHelper georedInstance = null;
 	protected String tableName = "IND_YIMENGBS";
 	// please modify this SQL in all subClass
 	protected String INSERT_SQL = "INSERT INTO " + tableName
@@ -37,27 +37,22 @@ public class IndYiMengBSTableHelper {
 
 	protected NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
+	protected IndYiMengBSTableHelper(javax.sql.DataSource datasource) {
+		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(datasource);
+	}
+
 	public static IndYiMengBSTableHelper getInstance() {
 		if (instance == null) {
-			instance = new IndYiMengBSTableHelper();
+			instance = new IndYiMengBSTableHelper(PostgreSqlDataSourceFactory.createDataSource());
 		}
 		return instance;
 	}
 
-	protected IndYiMengBSTableHelper() {
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
-				PostgreSqlDataSourceFactory.createDataSource());
-	}
-	
-	public static IndYiMengBSTableHelper getConfigInstance(javax.sql.DataSource datasource) {
-		if (configInstance == null) {
-			configInstance = new IndYiMengBSTableHelper(datasource);
+	public static IndYiMengBSTableHelper getGeoredInstance() {
+		if (georedInstance == null) {
+			georedInstance = new IndYiMengBSTableHelper(PostgreSqlDataSourceFactory.createGeoredDataSource());
 		}
-		return configInstance;
-	}
-
-	protected IndYiMengBSTableHelper(javax.sql.DataSource datasource) {
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(datasource);
+		return georedInstance;
 	}
 
 	private static final class YiMengBSVOMapper implements RowMapper<YiMengBSVO> {
@@ -190,7 +185,7 @@ public class IndYiMengBSTableHelper {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		IndYiMengBSTableHelper ins = new IndYiMengBSTableHelper();
+		IndYiMengBSTableHelper ins = IndYiMengBSTableHelper.getInstance();
 		try {
 			System.out.println(ins.getAllYiMengBS("002194").size());
 		} catch (Exception e) {

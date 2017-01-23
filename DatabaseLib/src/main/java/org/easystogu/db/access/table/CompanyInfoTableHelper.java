@@ -20,7 +20,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 public class CompanyInfoTableHelper {
 	private static Logger logger = LogHelper.getLogger(CompanyInfoTableHelper.class);
 	private static CompanyInfoTableHelper instance = null;
-	private static CompanyInfoTableHelper configInstance = null;
+	private static CompanyInfoTableHelper georedInstance = null;
 	protected String tableName = "COMPANY_INFO";
 	// please modify this SQL in all subClass
 	protected String INSERT_SQL = "INSERT INTO " + tableName
@@ -32,27 +32,22 @@ public class CompanyInfoTableHelper {
 
 	protected NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
+	private CompanyInfoTableHelper(javax.sql.DataSource datasource) {
+		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(datasource);
+	}
+
 	public static CompanyInfoTableHelper getInstance() {
 		if (instance == null) {
-			instance = new CompanyInfoTableHelper();
+			instance = new CompanyInfoTableHelper(PostgreSqlDataSourceFactory.createDataSource());
 		}
 		return instance;
 	}
 
-	protected CompanyInfoTableHelper() {
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
-				PostgreSqlDataSourceFactory.createDataSource());
-	}
-	
-	public static CompanyInfoTableHelper getConfigInstance(javax.sql.DataSource datasource) {
-		if (configInstance == null) {
-			configInstance = new CompanyInfoTableHelper(datasource);
+	public static CompanyInfoTableHelper getGeoredInstance() {
+		if (georedInstance == null) {
+			georedInstance = new CompanyInfoTableHelper(PostgreSqlDataSourceFactory.createGeoredDataSource());
 		}
-		return configInstance;
-	}
-
-	protected CompanyInfoTableHelper(javax.sql.DataSource datasource) {
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(datasource);
+		return georedInstance;
 	}
 
 	private static final class CompanyInfoVOMapper implements RowMapper<CompanyInfoVO> {
@@ -169,7 +164,7 @@ public class CompanyInfoTableHelper {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		CompanyInfoTableHelper ins = new CompanyInfoTableHelper();
+		CompanyInfoTableHelper ins = CompanyInfoTableHelper.getInstance();
 		List<String> stockIds = ins.getAllCompanyStockId();
 		for (String stockId : stockIds) {
 			System.out.println(stockId);

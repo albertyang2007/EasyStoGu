@@ -32,7 +32,7 @@ public class CommonViewHelper {
 	}
 
 	protected CommonViewHelper() {
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(PostgreSqlDataSourceFactory.createGeoredDataSource());
 	}
 
 	private static final class IntVOMapper implements RowMapper<Integer> {

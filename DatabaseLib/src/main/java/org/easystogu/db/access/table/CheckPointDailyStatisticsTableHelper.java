@@ -3,6 +3,7 @@ package org.easystogu.db.access.table;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
@@ -19,7 +20,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 public class CheckPointDailyStatisticsTableHelper {
 	private static Logger logger = LogHelper.getLogger(CheckPointDailyStatisticsTableHelper.class);
 	private static CheckPointDailyStatisticsTableHelper instance = null;
-	private static CheckPointDailyStatisticsTableHelper configInstance = null;
+	private static CheckPointDailyStatisticsTableHelper georedInstance = null;
 	private String tableName = "CHECKPOINT_DAILY_STATISTICS";
 	protected String INSERT_SQL = "INSERT INTO " + tableName
 			+ " (date, checkpoint, count) VALUES (:date, :checkpoint, :count)";
@@ -29,30 +30,27 @@ public class CheckPointDailyStatisticsTableHelper {
 	protected String DELETE_BY_CHECKPOINT = "DELETE FROM " + tableName + " WHERE checkPoint = :checkPoint";
 	protected String QUERY_BY_CHECKPOINT_AND_DATE = "SELECT * FROM " + tableName
 			+ " WHERE checkPoint = :checkpoint AND date = :date";
+	protected String QUERY_BY_DATE = "SELECT * FROM " + tableName + " WHERE date = :date";
 
 	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
+	private CheckPointDailyStatisticsTableHelper(javax.sql.DataSource datasource) {
+		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(datasource);
+	}
+
 	public static CheckPointDailyStatisticsTableHelper getInstance() {
 		if (instance == null) {
-			instance = new CheckPointDailyStatisticsTableHelper();
+			instance = new CheckPointDailyStatisticsTableHelper(PostgreSqlDataSourceFactory.createDataSource());
 		}
 		return instance;
 	}
 
-	private CheckPointDailyStatisticsTableHelper() {
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
-				PostgreSqlDataSourceFactory.createDataSource());
-	}
-	
-	public static CheckPointDailyStatisticsTableHelper getConfigInstance(javax.sql.DataSource datasource) {
-		if (configInstance == null) {
-			configInstance = new CheckPointDailyStatisticsTableHelper(datasource);
+	public static CheckPointDailyStatisticsTableHelper getGeoredInstance() {
+		if (georedInstance == null) {
+			georedInstance = new CheckPointDailyStatisticsTableHelper(
+					PostgreSqlDataSourceFactory.createGeoredDataSource());
 		}
-		return configInstance;
-	}
-
-	protected CheckPointDailyStatisticsTableHelper(javax.sql.DataSource datasource) {
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(datasource);
+		return georedInstance;
 	}
 
 	private static final class DefaultPreparedStatementCallback implements PreparedStatementCallback<Integer> {
@@ -94,6 +92,22 @@ public class CheckPointDailyStatisticsTableHelper {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	public List<CheckPointDailyStatisticsVO> getByDate(String date) {
+		try {
+
+			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+			namedParameters.addValue("date", date);
+
+			List<CheckPointDailyStatisticsVO> list = this.namedParameterJdbcTemplate.query(QUERY_BY_DATE,
+					namedParameters, new CheckPointDailyStatisticsVOMapper());
+
+			return list;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new ArrayList<CheckPointDailyStatisticsVO>();
 	}
 
 	public void insert(CheckPointDailyStatisticsVO vo) {
@@ -159,7 +173,7 @@ public class CheckPointDailyStatisticsTableHelper {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		CheckPointDailyStatisticsTableHelper ins = new CheckPointDailyStatisticsTableHelper();
+		CheckPointDailyStatisticsTableHelper ins = CheckPointDailyStatisticsTableHelper.getInstance();
 		try {
 			CheckPointDailyStatisticsVO vo = ins.getByCheckPointAndDate("2016-05-10", "MACD_Dead");
 			System.out.println(vo);

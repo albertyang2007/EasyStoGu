@@ -2,29 +2,25 @@ package org.easystogu.db.access.table;
 
 import java.util.List;
 
+import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
 import org.easystogu.db.vo.table.StockPriceVO;
 
 public class WeekStockPriceTableHelper extends StockPriceTableHelper {
 	private static WeekStockPriceTableHelper instance = null;
-	private static WeekStockPriceTableHelper configInstance = null;
+	private static WeekStockPriceTableHelper georedInstance = null;
 
 	public static WeekStockPriceTableHelper getInstance() {
 		if (instance == null) {
-			instance = new WeekStockPriceTableHelper();
+			instance = new WeekStockPriceTableHelper(PostgreSqlDataSourceFactory.createDataSource());
 		}
 		return instance;
 	}
 
-	public static WeekStockPriceTableHelper getConfigInstance(javax.sql.DataSource datasource) {
-		if (configInstance == null) {
-			configInstance = new WeekStockPriceTableHelper(datasource);
+	public static WeekStockPriceTableHelper getGeoredInstance() {
+		if (georedInstance == null) {
+			georedInstance = new WeekStockPriceTableHelper(PostgreSqlDataSourceFactory.createGeoredDataSource());
 		}
-		return configInstance;
-	}
-
-	protected WeekStockPriceTableHelper() {
-		super();
-		refeshTableSQL();
+		return georedInstance;
 	}
 
 	protected WeekStockPriceTableHelper(javax.sql.DataSource datasource) {
@@ -103,7 +99,7 @@ public class WeekStockPriceTableHelper extends StockPriceTableHelper {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		WeekStockPriceTableHelper ins = new WeekStockPriceTableHelper();
+		WeekStockPriceTableHelper ins = WeekStockPriceTableHelper.getInstance();
 		try {
 			List<StockPriceVO> list = ins.getStockPriceByIdAndBetweenDate("603999", "2016-09-03", "2017-01-19");
 			System.out.println(list.get(0));

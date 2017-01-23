@@ -1,32 +1,28 @@
 package org.easystogu.db.access.table;
 
+import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
 import org.easystogu.db.vo.table.StockPriceVO;
 
 public class QianFuQuanStockPriceTableHelper extends StockPriceTableHelper {
 	private static QianFuQuanStockPriceTableHelper instance = null;
-	private static QianFuQuanStockPriceTableHelper configInstance = null;
+	private static QianFuQuanStockPriceTableHelper georedInstance = null;
 
 	public static QianFuQuanStockPriceTableHelper getInstance() {
 		if (instance == null) {
-			instance = new QianFuQuanStockPriceTableHelper();
+			instance = new QianFuQuanStockPriceTableHelper(PostgreSqlDataSourceFactory.createDataSource());
 		}
 		return instance;
 	}
 
-	public static QianFuQuanStockPriceTableHelper getConfigInstance(javax.sql.DataSource datasource) {
-		if (configInstance == null) {
-			configInstance = new QianFuQuanStockPriceTableHelper(datasource);
+	public static QianFuQuanStockPriceTableHelper getGeoredInstance() {
+		if (georedInstance == null) {
+			georedInstance = new QianFuQuanStockPriceTableHelper(PostgreSqlDataSourceFactory.createGeoredDataSource());
 		}
-		return configInstance;
+		return georedInstance;
 	}
 
 	protected QianFuQuanStockPriceTableHelper(javax.sql.DataSource datasource) {
 		super(datasource);
-		refeshTableSQL();
-	}
-
-	protected QianFuQuanStockPriceTableHelper() {
-		super();
 		refeshTableSQL();
 	}
 

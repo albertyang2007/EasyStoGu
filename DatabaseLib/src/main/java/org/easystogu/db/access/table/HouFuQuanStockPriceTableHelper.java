@@ -2,30 +2,26 @@ package org.easystogu.db.access.table;
 
 import java.util.List;
 
+import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
 import org.easystogu.db.vo.table.StockPriceVO;
 
 //never use hou fu quan stockproce now
 public class HouFuQuanStockPriceTableHelper extends StockPriceTableHelper {
 	private static HouFuQuanStockPriceTableHelper instance = null;
-	private static HouFuQuanStockPriceTableHelper configInstance = null;
+	private static HouFuQuanStockPriceTableHelper georedInstance = null;
 
 	public static HouFuQuanStockPriceTableHelper getInstance() {
 		if (instance == null) {
-			instance = new HouFuQuanStockPriceTableHelper();
+			instance = new HouFuQuanStockPriceTableHelper(PostgreSqlDataSourceFactory.createDataSource());
 		}
 		return instance;
 	}
 
-	public static HouFuQuanStockPriceTableHelper getConfigInstance(javax.sql.DataSource datasource) {
-		if (configInstance == null) {
-			configInstance = new HouFuQuanStockPriceTableHelper(datasource);
+	public static HouFuQuanStockPriceTableHelper getGeoredInstance() {
+		if (georedInstance == null) {
+			georedInstance = new HouFuQuanStockPriceTableHelper(PostgreSqlDataSourceFactory.createGeoredDataSource());
 		}
-		return configInstance;
-	}
-
-	protected HouFuQuanStockPriceTableHelper() {
-		super();
-		refeshTableSQL();
+		return georedInstance;
 	}
 
 	protected HouFuQuanStockPriceTableHelper(javax.sql.DataSource datasource) {
@@ -119,7 +115,7 @@ public class HouFuQuanStockPriceTableHelper extends StockPriceTableHelper {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		HouFuQuanStockPriceTableHelper ins = new HouFuQuanStockPriceTableHelper();
+		HouFuQuanStockPriceTableHelper ins = HouFuQuanStockPriceTableHelper.getInstance();
 		try {
 			List<StockPriceVO> list = ins.getStockPriceByIdAndBetweenDate("002609", "2016-04-03", "2016-05-25");
 			System.out.println(list.get(list.size() - 1));

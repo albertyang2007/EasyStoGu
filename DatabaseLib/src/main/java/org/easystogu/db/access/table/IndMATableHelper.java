@@ -21,7 +21,7 @@ public class IndMATableHelper {
 
 	private static Logger logger = LogHelper.getLogger(IndMATableHelper.class);
 	private static IndMATableHelper instance = null;
-	private static IndMATableHelper configInstance = null;
+	private static IndMATableHelper georedInstance = null;
 	protected String tableName = "IND_MA";
 	// please modify this SQL in all subClass
 	protected String INSERT_SQL = "INSERT INTO " + tableName
@@ -40,27 +40,22 @@ public class IndMATableHelper {
 
 	protected NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
+	private IndMATableHelper(javax.sql.DataSource datasource) {
+		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(datasource);
+	}
+
 	public static IndMATableHelper getInstance() {
 		if (instance == null) {
-			instance = new IndMATableHelper();
+			instance = new IndMATableHelper(PostgreSqlDataSourceFactory.createDataSource());
 		}
 		return instance;
 	}
 
-	protected IndMATableHelper() {
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
-				PostgreSqlDataSourceFactory.createDataSource());
-	}
-	
-	public static IndMATableHelper getConfigInstance(javax.sql.DataSource datasource) {
-		if (configInstance == null) {
-			configInstance = new IndMATableHelper(datasource);
+	public static IndMATableHelper getGeoredInstance() {
+		if (georedInstance == null) {
+			georedInstance = new IndMATableHelper(PostgreSqlDataSourceFactory.createGeoredDataSource());
 		}
-		return configInstance;
-	}
-
-	protected IndMATableHelper(javax.sql.DataSource datasource) {
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(datasource);
+		return georedInstance;
 	}
 
 	private static final class MAVOMapper implements RowMapper<MAVO> {
@@ -227,7 +222,7 @@ public class IndMATableHelper {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		IndMATableHelper ins = new IndMATableHelper();
+		IndMATableHelper ins = IndMATableHelper.getInstance();
 		try {
 			System.out.println(ins.getMA("000673", "2016-07-19"));
 		} catch (Exception e) {

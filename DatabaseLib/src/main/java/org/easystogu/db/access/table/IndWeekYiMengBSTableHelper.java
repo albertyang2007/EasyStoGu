@@ -1,30 +1,27 @@
 package org.easystogu.db.access.table;
 
+import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
+
 public class IndWeekYiMengBSTableHelper extends IndYiMengBSTableHelper {
 	private static IndWeekYiMengBSTableHelper instance = null;
-	private static IndWeekYiMengBSTableHelper configInstance = null;
+	private static IndWeekYiMengBSTableHelper georedInstance = null;
 
 	public static IndWeekYiMengBSTableHelper getInstance() {
 		if (instance == null) {
-			instance = new IndWeekYiMengBSTableHelper();
+			instance = new IndWeekYiMengBSTableHelper(PostgreSqlDataSourceFactory.createDataSource());
 		}
 		return instance;
 	}
 
-	public static IndWeekYiMengBSTableHelper getConfigInstance(javax.sql.DataSource datasource) {
-		if (configInstance == null) {
-			configInstance = new IndWeekYiMengBSTableHelper(datasource);
+	public static IndWeekYiMengBSTableHelper getGeoredInstance() {
+		if (georedInstance == null) {
+			georedInstance = new IndWeekYiMengBSTableHelper(PostgreSqlDataSourceFactory.createGeoredDataSource());
 		}
-		return configInstance;
+		return georedInstance;
 	}
 
 	protected IndWeekYiMengBSTableHelper(javax.sql.DataSource datasource) {
 		super(datasource);
-		refeshTableSQL();
-	}
-
-	protected IndWeekYiMengBSTableHelper() {
-		super();
 		refeshTableSQL();
 	}
 
@@ -43,7 +40,7 @@ public class IndWeekYiMengBSTableHelper extends IndYiMengBSTableHelper {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		IndWeekYiMengBSTableHelper ins = new IndWeekYiMengBSTableHelper();
+		IndWeekYiMengBSTableHelper ins = IndWeekYiMengBSTableHelper.getInstance();
 		try {
 			System.out.println(ins.getAllYiMengBS("002194").size());
 		} catch (Exception e) {

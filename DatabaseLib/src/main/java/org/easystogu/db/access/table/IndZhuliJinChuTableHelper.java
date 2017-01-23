@@ -20,7 +20,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 public class IndZhuliJinChuTableHelper {
 	private static Logger logger = LogHelper.getLogger(IndZhuliJinChuTableHelper.class);
 	private static IndZhuliJinChuTableHelper instance = null;
-	private static IndZhuliJinChuTableHelper configInstance = null;
+	private static IndZhuliJinChuTableHelper georedInstance = null;
 	protected String tableName = "IND_ZHULIJINCHU";
 	// please modify this SQL in all subClass
 	protected String INSERT_SQL = "INSERT INTO " + tableName
@@ -37,27 +37,22 @@ public class IndZhuliJinChuTableHelper {
 
 	protected NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
+	protected IndZhuliJinChuTableHelper(javax.sql.DataSource datasource) {
+		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(datasource);
+	}
+
 	public static IndZhuliJinChuTableHelper getInstance() {
 		if (instance == null) {
-			instance = new IndZhuliJinChuTableHelper();
+			instance = new IndZhuliJinChuTableHelper(PostgreSqlDataSourceFactory.createDataSource());
 		}
 		return instance;
 	}
 
-	protected IndZhuliJinChuTableHelper() {
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
-				PostgreSqlDataSourceFactory.createDataSource());
-	}
-	
-	public static IndZhuliJinChuTableHelper getConfigInstance(javax.sql.DataSource datasource) {
-		if (configInstance == null) {
-			configInstance = new IndZhuliJinChuTableHelper(datasource);
+	public static IndZhuliJinChuTableHelper getGeoredInstance() {
+		if (georedInstance == null) {
+			georedInstance = new IndZhuliJinChuTableHelper(PostgreSqlDataSourceFactory.createGeoredDataSource());
 		}
-		return configInstance;
-	}
-
-	protected IndZhuliJinChuTableHelper(javax.sql.DataSource datasource) {
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(datasource);
+		return georedInstance;
 	}
 
 	private static final class ZhuliJinChuVOMapper implements RowMapper<ZhuliJinChuVO> {
@@ -191,7 +186,7 @@ public class IndZhuliJinChuTableHelper {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		IndMai1Mai2TableHelper ins = new IndMai1Mai2TableHelper();
+		IndMai1Mai2TableHelper ins = IndMai1Mai2TableHelper.getInstance();
 		try {
 			System.out.println(ins.getAllMai1Mai2("600000").size());
 		} catch (Exception e) {

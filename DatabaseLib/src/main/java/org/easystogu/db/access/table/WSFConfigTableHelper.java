@@ -18,34 +18,29 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 public class WSFConfigTableHelper {
 	private static Logger logger = LogHelper.getLogger(WSFConfigTableHelper.class);
 	private static WSFConfigTableHelper instance = null;
-	private static WSFConfigTableHelper configInstance = null;
+	private static WSFConfigTableHelper georedInstance = null;
 	protected String tableName = "WSFCONFIG";
 	// please modify this SQL in all subClass
 	protected String QUERY_BY_NAME = "SELECT * FROM " + tableName + " WHERE name = :name";
 
 	protected NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
+	private WSFConfigTableHelper(javax.sql.DataSource datasource) {
+		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(datasource);
+	}
+
 	public static WSFConfigTableHelper getInstance() {
 		if (instance == null) {
-			instance = new WSFConfigTableHelper();
+			instance = new WSFConfigTableHelper(PostgreSqlDataSourceFactory.createDataSource());
 		}
 		return instance;
 	}
 
-	protected WSFConfigTableHelper() {
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
-				PostgreSqlDataSourceFactory.createDataSource());
-	}
-	
-	public static WSFConfigTableHelper getConfigInstance(javax.sql.DataSource datasource) {
-		if (configInstance == null) {
-			configInstance = new WSFConfigTableHelper(datasource);
+	public static WSFConfigTableHelper getGeoredInstance() {
+		if (georedInstance == null) {
+			georedInstance = new WSFConfigTableHelper(PostgreSqlDataSourceFactory.createGeoredDataSource());
 		}
-		return configInstance;
-	}
-
-	protected WSFConfigTableHelper(javax.sql.DataSource datasource) {
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(datasource);
+		return georedInstance;
 	}
 
 	private static final class ConfigVOMapper implements RowMapper<WSFConfigVO> {
@@ -103,7 +98,7 @@ public class WSFConfigTableHelper {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		WSFConfigTableHelper ins = new WSFConfigTableHelper();
+		WSFConfigTableHelper ins = WSFConfigTableHelper.getInstance();
 		try {
 
 			System.out.println(ins.getValue("zone", "home"));
