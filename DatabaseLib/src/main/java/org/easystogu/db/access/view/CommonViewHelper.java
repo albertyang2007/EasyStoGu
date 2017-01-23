@@ -140,7 +140,7 @@ public class CommonViewHelper {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		CommonViewHelper ins = new CommonViewHelper();
+		CommonViewHelper ins = CommonViewHelper.getInstance();
 		List<CommonViewVO> list = ins.queryByDateForViewDirectlySearch("luzao_phaseII_zijinliu_top300_Details",
 				"2016-09-20");
 		for (CommonViewVO vo : list) {
