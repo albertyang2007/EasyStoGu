@@ -28,6 +28,7 @@ public class IndKDJTableHelper {
 			+ " (stockId, date, k, d, j, rsv) VALUES (:stockId, :date, :k, :d, :j, :rsv)";
 	protected String QUERY_BY_ID_AND_DATE_SQL = "SELECT * FROM " + tableName
 			+ " WHERE stockId = :stockId AND date = :date";
+	protected String QUERY_BY_DATE_SQL = "SELECT * FROM " + tableName + " WHERE date = :date";
 	protected String QUERY_ALL_BY_ID_SQL = "SELECT * FROM " + tableName + " WHERE stockId = :stockId ORDER BY date";
 	protected String QUERY_LATEST_N_BY_ID_SQL = "SELECT * FROM " + tableName
 			+ " WHERE stockId = :stockId ORDER BY date DESC LIMIT :limit";
@@ -153,6 +154,22 @@ public class IndKDJTableHelper {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	public List<KDJVO> getKDJByDate(String date) {
+		try {
+
+			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+			namedParameters.addValue("date", date);
+
+			List<KDJVO> list = this.namedParameterJdbcTemplate.query(QUERY_BY_DATE_SQL, namedParameters,
+					new KDJVOMapper());
+
+			return list;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new ArrayList<KDJVO>();
 	}
 
 	public List<KDJVO> getAllKDJ(String stockId) {

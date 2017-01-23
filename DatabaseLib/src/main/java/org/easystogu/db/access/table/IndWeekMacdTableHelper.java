@@ -35,6 +35,7 @@ public class IndWeekMacdTableHelper extends IndMacdTableHelper {
 				+ " (stockId, date, dif, dea, macd) VALUES (:stockId, :date, :dif, :dea, :macd)";
 		QUERY_BY_ID_AND_DATE_SQL = "SELECT * FROM " + tableName + " WHERE stockId = :stockId AND date = :date";
 		QUERY_ALL_BY_ID_SQL = "SELECT * FROM " + tableName + " WHERE stockId = :stockId ORDER BY date";
+		QUERY_BY_DATE_SQL = "SELECT * FROM " + tableName + " WHERE date = :date";
 		QUERY_LATEST_N_BY_ID_SQL = "SELECT * FROM " + tableName
 				+ " WHERE stockId = :stockId ORDER BY date DESC LIMIT :limit";
 		DELETE_BY_STOCKID_SQL = "DELETE FROM " + tableName + " WHERE stockId = :stockId";

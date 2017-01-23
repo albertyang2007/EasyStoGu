@@ -2,15 +2,15 @@ package org.easystogu.database.replicate;
 
 import java.util.List;
 
-import org.easystogu.db.access.table.CheckPointDailyStatisticsTableHelper;
-import org.easystogu.db.vo.table.CheckPointDailyStatisticsVO;
+import org.easystogu.db.access.table.IndKDJTableHelper;
+import org.easystogu.db.vo.table.KDJVO;
 import org.easystogu.utils.WeekdayUtil;
 
-public class DailyStatisticsReplicateWorker {
+public class IndKDJReplicateWorker {
 	public String fromDate = WeekdayUtil.currentDate();
 	public String toDate = WeekdayUtil.currentDate();
-	private CheckPointDailyStatisticsTableHelper localTable = CheckPointDailyStatisticsTableHelper.getInstance();
-	private CheckPointDailyStatisticsTableHelper georedTable = CheckPointDailyStatisticsTableHelper.getGeoredInstance();
+	private IndKDJTableHelper localTable = IndKDJTableHelper.getInstance();
+	private IndKDJTableHelper georedTable = IndKDJTableHelper.getGeoredInstance();
 
 	public void run() {
 		List<String> dates = WeekdayUtil.getWorkingDatesBetween(fromDate, toDate);
@@ -21,10 +21,10 @@ public class DailyStatisticsReplicateWorker {
 
 	public void runForDate(String date) {
 
-		System.out.println("Checking CheckPointDailyStatisticsTable at " + date);
+		System.out.println("Checking IndMacdTable at " + date);
 
-		List<CheckPointDailyStatisticsVO> localList = localTable.getByDate(date);
-		List<CheckPointDailyStatisticsVO> georedList = georedTable.getByDate(date);
+		List<KDJVO> localList = localTable.getKDJByDate(date);
+		List<KDJVO> georedList = georedTable.getKDJByDate(date);
 		// sync data from geored database to local if not match
 		if (georedList.size() > 0 && localList.size() != georedList.size()) {
 			System.out.println(date + " has different data, local size=" + localList.size() + ", geored size="
@@ -33,7 +33,7 @@ public class DailyStatisticsReplicateWorker {
 			System.out.println("delete local data @" + date + ", and sync from geored");
 			localTable.deleteByDate(date);
 
-			for (CheckPointDailyStatisticsVO vo : georedList) {
+			for (KDJVO vo : georedList) {
 				// System.out.println("insert vo:" + vo);
 				localTable.insert(vo);
 			}
@@ -41,7 +41,7 @@ public class DailyStatisticsReplicateWorker {
 	}
 
 	public static void main(String[] args) {
-		DailyStatisticsReplicateWorker worker = new DailyStatisticsReplicateWorker();
+		IndKDJReplicateWorker worker = new IndKDJReplicateWorker();
 		if (args != null && args.length == 2) {
 			worker.fromDate = args[0];
 			worker.toDate = args[1];

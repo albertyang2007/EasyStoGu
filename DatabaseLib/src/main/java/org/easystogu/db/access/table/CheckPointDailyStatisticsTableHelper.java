@@ -28,6 +28,7 @@ public class CheckPointDailyStatisticsTableHelper {
 	protected String COUNT_BY_DATE_AND_CHECKPOINT_SQL = "SELECT count AS rtn FROM " + tableName
 			+ " WHERE date = :date AND checkpoint = :checkpoint";
 	protected String DELETE_BY_CHECKPOINT = "DELETE FROM " + tableName + " WHERE checkPoint = :checkPoint";
+	protected String DELETE_BY_DATE = "DELETE FROM " + tableName + " WHERE date = :date";
 	protected String QUERY_BY_CHECKPOINT_AND_DATE = "SELECT * FROM " + tableName
 			+ " WHERE checkPoint = :checkpoint AND date = :date";
 	protected String QUERY_BY_DATE = "SELECT * FROM " + tableName + " WHERE date = :date";
@@ -68,8 +69,8 @@ public class CheckPointDailyStatisticsTableHelper {
 	private static final class CheckPointDailyStatisticsVOMapper implements RowMapper<CheckPointDailyStatisticsVO> {
 		public CheckPointDailyStatisticsVO mapRow(ResultSet rs, int rowNum) throws SQLException {
 			CheckPointDailyStatisticsVO vo = new CheckPointDailyStatisticsVO();
-			vo.setCheckPoint(rs.getString("date"));
-			vo.setDate(rs.getString("checkpoint"));
+			vo.setCheckPoint(rs.getString("checkpoint"));
+			vo.setDate(rs.getString("date"));
 			vo.setCount(rs.getInt("count"));
 			return vo;
 		}
@@ -155,6 +156,16 @@ public class CheckPointDailyStatisticsTableHelper {
 			namedParameters.addValue("checkpoint", checkpoint);
 
 			namedParameterJdbcTemplate.execute(DELETE_SQL, namedParameters, new DefaultPreparedStatementCallback());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void deleteByDate(String date) {
+		try {
+			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+			namedParameters.addValue("date", date);
+			namedParameterJdbcTemplate.execute(DELETE_BY_DATE, namedParameters, new DefaultPreparedStatementCallback());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

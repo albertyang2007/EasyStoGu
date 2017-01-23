@@ -27,6 +27,7 @@ public class IndMacdTableHelper {
 			+ " (stockId, date, dif, dea, macd) VALUES (:stockId, :date, :dif, :dea, :macd)";
 	protected String QUERY_BY_ID_AND_DATE_SQL = "SELECT * FROM " + tableName
 			+ " WHERE stockId = :stockId AND date = :date";
+	protected String QUERY_BY_DATE_SQL = "SELECT * FROM " + tableName + " WHERE date = :date";
 	protected String QUERY_ALL_BY_ID_SQL = "SELECT * FROM " + tableName + " WHERE stockId = :stockId ORDER BY date";
 	protected String QUERY_LATEST_N_BY_ID_SQL = "SELECT * FROM " + tableName
 			+ " WHERE stockId = :stockId ORDER BY date DESC LIMIT :limit";
@@ -42,7 +43,7 @@ public class IndMacdTableHelper {
 	protected IndMacdTableHelper(javax.sql.DataSource datasource) {
 		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(datasource);
 	}
-	
+
 	public static IndMacdTableHelper getInstance() {
 		if (instance == null) {
 			instance = new IndMacdTableHelper(PostgreSqlDataSourceFactory.createDataSource());
@@ -52,8 +53,7 @@ public class IndMacdTableHelper {
 
 	public static IndMacdTableHelper getGeoredInstance() {
 		if (georedInstance == null) {
-			georedInstance = new IndMacdTableHelper(
-					PostgreSqlDataSourceFactory.createGeoredDataSource());
+			georedInstance = new IndMacdTableHelper(PostgreSqlDataSourceFactory.createGeoredDataSource());
 		}
 		return georedInstance;
 	}
@@ -151,6 +151,22 @@ public class IndMacdTableHelper {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	public List<MacdVO> getMacdByDate(String date) {
+		try {
+
+			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+			namedParameters.addValue("date", date);
+
+			List<MacdVO> list = this.namedParameterJdbcTemplate.query(QUERY_BY_DATE_SQL, namedParameters,
+					new IndMacdVOMapper());
+
+			return list;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new ArrayList<MacdVO>();
 	}
 
 	public List<MacdVO> getAllMacd(String stockId) {

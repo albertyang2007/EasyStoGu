@@ -3,45 +3,32 @@ package org.easystogu.database.replicate;
 import java.util.List;
 
 import org.easystogu.db.access.table.CompanyInfoTableHelper;
-import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
 import org.easystogu.db.vo.table.CompanyInfoVO;
 
 //Replicate the two database
 //One is Active and Other is Standby
 //Data from Active will overwrite the Standby
 public class CompanyInfoReplicateWorker implements Runnable {
-
-	private CompanyInfoTableHelper companyInfoTable = CompanyInfoTableHelper.getInstance();
-	private CompanyInfoTableHelper companyInfoTableGeored = CompanyInfoTableHelper.getGeoredInstance();
+	private CompanyInfoTableHelper localTable = CompanyInfoTableHelper.getInstance();
+	private CompanyInfoTableHelper georedTable = CompanyInfoTableHelper.getGeoredInstance();
 
 	public void run() {
-		List<CompanyInfoVO> List = companyInfoTable.getAllCompanyInfo();
-		List<CompanyInfoVO> georedList = companyInfoTableGeored.getAllCompanyInfo();
 
-		for (CompanyInfoVO vo : List) {
-			boolean find = false;
-			for (CompanyInfoVO geovo : georedList) {
-				if (vo.stockId.equals(geovo.stockId)) {
-					find = true;
-					break;
-				}
-			}
-			if (!find) {
-				System.out.println(vo.stockId + " not found in geored");
-			}
-		}
+		System.out.println("Checking CompanyInfoTable.");
 
-		//
-		for (CompanyInfoVO geovo : georedList) {
-			boolean find = false;
-			for (CompanyInfoVO vo : List) {
-				if (vo.stockId.equals(geovo.stockId)) {
-					find = true;
-					break;
-				}
-			}
-			if (!find) {
-				System.out.println(geovo.stockId + " not found in local");
+		List<CompanyInfoVO> localList = localTable.getAllCompanyInfo();
+		List<CompanyInfoVO> georedList = georedTable.getAllCompanyInfo();
+		// sync data from geored database to local if not match
+		if (georedList.size() > 0 && localList.size() != georedList.size()) {
+			System.out.println(
+					"Has different data, local size=" + localList.size() + ", geored size=" + georedList.size());
+
+			System.out.println("delete local data, and sync from geored");
+
+			for (CompanyInfoVO vo : georedList) {
+				localTable.delete(vo.stockId);
+				// System.out.println("insert vo:" + vo);
+				localTable.insert(vo);
 			}
 		}
 	}
