@@ -1,4 +1,4 @@
-package org.easystogu.database.replicate;
+package org.easystogu.database.replicate.runner;
 
 import java.util.List;
 

@@ -39,7 +39,7 @@ public class DailyUpdateAllStockRunner implements Runnable {
 			new OverAllZiJinLiuAndDDXRunner().run();
 		}
 
-		// analyse by jave code
+		// analyse by java code
 		dailySelectionRunner = new DailySelectionRunner();
 		dailySelectionRunner.setFetchRealTimeZiJinLiu(false);
 		dailySelectionRunner.runForStockIds(allStockIds);
