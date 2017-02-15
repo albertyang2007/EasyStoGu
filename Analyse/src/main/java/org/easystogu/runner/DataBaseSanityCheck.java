@@ -8,6 +8,7 @@ import org.easystogu.db.access.table.IndMATableHelper;
 import org.easystogu.db.access.table.IndMacdTableHelper;
 import org.easystogu.db.access.table.IndQSDDTableHelper;
 import org.easystogu.db.access.table.IndShenXianTableHelper;
+import org.easystogu.db.access.table.IndWRTableHelper;
 import org.easystogu.db.access.table.IndWeekKDJTableHelper;
 import org.easystogu.db.access.table.IndWeekMacdTableHelper;
 import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
@@ -20,6 +21,7 @@ import org.easystogu.db.vo.table.MacdVO;
 import org.easystogu.db.vo.table.QSDDVO;
 import org.easystogu.db.vo.table.ShenXianVO;
 import org.easystogu.db.vo.table.StockPriceVO;
+import org.easystogu.db.vo.table.WRVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.indicator.runner.history.HistoryBollCountAndSaveDBRunner;
 import org.easystogu.indicator.runner.history.HistoryKDJCountAndSaveDBRunner;
@@ -27,6 +29,7 @@ import org.easystogu.indicator.runner.history.HistoryMACountAndSaveDBRunner;
 import org.easystogu.indicator.runner.history.HistoryMacdCountAndSaveDBRunner;
 import org.easystogu.indicator.runner.history.HistoryQSDDCountAndSaveDBRunner;
 import org.easystogu.indicator.runner.history.HistoryShenXianCountAndSaveDBRunner;
+import org.easystogu.indicator.runner.history.HistoryWRCountAndSaveDBRunner;
 import org.easystogu.indicator.runner.history.HistoryWeeklyKDJCountAndSaveDBRunner;
 import org.easystogu.indicator.runner.history.HistoryWeeklyMacdCountAndSaveDBRunner;
 import org.easystogu.sina.runner.history.HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner;
@@ -41,7 +44,10 @@ public class DataBaseSanityCheck implements Runnable {
 	protected IndShenXianTableHelper shenXianTable = IndShenXianTableHelper.getInstance();
 	protected IndQSDDTableHelper qsddTable = IndQSDDTableHelper.getInstance();
 	protected IndMATableHelper maTable = IndMATableHelper.getInstance();
-	//protected HistoryHouFuQuanStockPriceDownloadAndStoreDBRunner historyHouFuQuanRunner = new HistoryHouFuQuanStockPriceDownloadAndStoreDBRunner();
+	protected IndWRTableHelper wrTable = IndWRTableHelper.getInstance();
+	// protected HistoryHouFuQuanStockPriceDownloadAndStoreDBRunner
+	// historyHouFuQuanRunner = new
+	// HistoryHouFuQuanStockPriceDownloadAndStoreDBRunner();
 	protected HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner historyQianFuQuanRunner = new HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner();
 
 	protected WeekStockPriceTableHelper weekStockPriceTable = WeekStockPriceTableHelper.getInstance();
@@ -69,6 +75,7 @@ public class DataBaseSanityCheck implements Runnable {
 		List<ShenXianVO> shenXianList = shenXianTable.getAllShenXian(stockId);
 		List<QSDDVO> qsddList = qsddTable.getAllQSDD(stockId);
 		List<MAVO> maList = maTable.getAllMA(stockId);
+		List<WRVO> wrList = wrTable.getAllWR(stockId);
 
 		for (StockPriceVO vo : spList) {
 			if (vo.close == 0 || vo.open == 0 || vo.high == 0 || vo.low == 0 || Strings.isEmpty(vo.date)) {
@@ -120,6 +127,12 @@ public class DataBaseSanityCheck implements Runnable {
 			System.out.println(stockId + " size of MA is not equal:" + spList.size() + "!=" + maList.size());
 			maTable.delete(stockId);
 			HistoryMACountAndSaveDBRunner runner = new HistoryMACountAndSaveDBRunner();
+			runner.countAndSaved(stockId);
+		}
+		if ((spList.size() != wrList.size())) {
+			System.out.println(stockId + " size of WR is not equal:" + spList.size() + "!=" + wrList.size());
+			wrTable.delete(stockId);
+			HistoryWRCountAndSaveDBRunner runner = new HistoryWRCountAndSaveDBRunner();
 			runner.countAndSaved(stockId);
 		}
 
@@ -196,10 +209,10 @@ public class DataBaseSanityCheck implements Runnable {
 		DataBaseSanityCheck check = new DataBaseSanityCheck();
 		check.sanityDailyCheck(stockConfig.getAllStockId());
 		check.sanityWeekCheck(stockConfig.getAllStockId());
-		// check.sanityDailyCheck("999999");
+		// check.sanityDailyCheck("002521");
 		// check.sanityDailyCheck("399001");
 		// check.sanityDailyCheck("399006");
-		// check.sanityWeekCheck("999999");
+		// check.sanityWeekCheck("002521");
 		// check.sanityWeekCheck("399001");
 		// check.sanityWeekCheck("399006");
 	}

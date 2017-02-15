@@ -42,11 +42,13 @@ public class StockSuperVOHelper {
 				|| (kdjList.size() != spList.size()) || (bollList.size() != spList.size())
 				|| (shenXianList.size() != spList.size()) || (qsddList.size() != spList.size())
 				|| (wrList.size() != spList.size())) {
+			//System.out.println("rtn 1");
 			return overList;
 		}
 
 		if ((spList.size() == 0) || (macdList.size() == 0) || (kdjList.size() == 0) || (bollList.size() == 0)
 				|| (shenXianList.size() == 0) || (qsddList.size() == 0) || (wrList.size() == 0)) {
+			//System.out.println("rtn 2");
 			return overList;
 		}
 
@@ -54,6 +56,7 @@ public class StockSuperVOHelper {
 				|| !spList.get(0).date.equals(bollList.get(0).date)
 				|| !spList.get(0).date.equals(shenXianList.get(0).date)
 				|| !spList.get(0).date.equals(qsddList.get(0).date) || !spList.get(0).date.equals(wrList.get(0).date)) {
+			//System.out.println("rtn 3");
 			return overList;
 		}
 

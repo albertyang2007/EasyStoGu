@@ -1379,6 +1379,21 @@ public class CombineAnalyseHelper {
 			break;
 		}
 
+		// KDJ gordon & tiao kong gao kai
+		case KDJ_Gordon_TiaoKongGaoKai: {
+			if (curSuperDayVO.kdjCorssType == CrossType.GORDON || curSuperDayVO.rsvCorssType == CrossType.GORDON
+					|| pre1SuperDayVO.kdjCorssType == CrossType.GORDON
+					|| pre1SuperDayVO.rsvCorssType == CrossType.GORDON) {
+				if (curSuperDayVO.priceVO.low > pre1SuperDayVO.priceVO.high
+						&& curSuperDayVO.priceVO.close > curSuperDayVO.priceVO.open) {
+					if (curSuperDayVO.kdjVO.k <= 50) {
+						return true;
+					}
+				}
+			}
+			break;
+		}
+
 		case WR_Ready_To_ZhangTing: {
 			// two of wr are same and the remain one is uppger near to the both
 			// case1: shortTerm and middleTerm are same value, higher than 70,

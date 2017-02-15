@@ -10,7 +10,7 @@ import org.easystogu.utils.WeekdayUtil;
 
 public class HistoryReplicateRunner {
 	public static void main(String[] args) {
-		String[] myArgs = { "2016-11-20", WeekdayUtil.currentDate() };
+		String[] myArgs = { "2017-01-20", WeekdayUtil.currentDate() };
 		StockPriceReplicateWorker.main(myArgs);
 		QianFuQuanStockPriceReplicateWorker.main(myArgs);
 		ZiJinLiuReplicateWorker.main(myArgs);
