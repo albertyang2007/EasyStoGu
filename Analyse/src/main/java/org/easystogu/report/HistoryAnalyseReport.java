@@ -219,8 +219,8 @@ public class HistoryAnalyseReport {
 		for (String stockId : stockIds) {
 			index++;
 
-			if (!stockId.equals("000049"))
-				continue;
+			//if (!stockId.equals("000049"))
+			//	continue;
 
 			List<HistoryReportDetailsVO> historyReportList = this.doAnalyseBuySellDate(stockId, checkPoint);
 			for (HistoryReportDetailsVO reportVO : historyReportList) {
@@ -250,8 +250,8 @@ public class HistoryAnalyseReport {
 					}
 
 					if (!reportVO.completed) {
-						System.out.println("Not Completed: " + reportVO + "\tIndex=" + index + "\tCurrent highPercent="
-								+ (earnPercent[1] / totalCount));
+						//System.out.println("Not Completed: " + reportVO + "\tIndex=" + index + "\tCurrent highPercent="
+						//		+ (earnPercent[1] / totalCount));
 						// save to checkpint daily selection table
 						if (isCheckPointSelected(checkPoint)) {
 							this.saveToCheckPointDailySelectionDB(reportVO.stockId, reportVO.buyPriceVO.date,
@@ -260,7 +260,7 @@ public class HistoryAnalyseReport {
 					} else {
 						// for completed VO
 						// remove it from daily selection
-						System.out.println("Completed: " + reportVO);
+						//System.out.println("Completed: " + reportVO);
 						this.checkPointDailySelectionTable.delete(stockId, reportVO.buyPriceVO.date,
 								checkPoint.toString());
 						// save case into history DB
@@ -414,7 +414,7 @@ public class HistoryAnalyseReport {
 	}
 
 	public void countAllStockIdStatisticsCheckPoint() {
-		searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.Trend_PhaseI_GuanCha);
+		/*searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.Trend_PhaseI_GuanCha);
 		searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.Trend_PhaseII_JianCang);
 		searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.Trend_PhaseIII_ChiGu);
 		searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.Trend_PhaseVI_JianCang);
@@ -438,6 +438,8 @@ public class HistoryAnalyseReport {
 		searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.WR_Bottom_Area);
 		searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.WR_Top_Area);
 		searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.WR_Bottom_Gordon);
+		*/
+		searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.LuZao_KDJ_Gordon_TiaoKongGaoKai);
 	}
 
 	public static void main(String[] args) {
@@ -453,7 +455,8 @@ public class HistoryAnalyseReport {
 		// }
 
 		// reporter.searchAllStockIdAnalyseHistoryBuySellCheckPoint(DailyCombineCheckPoint.WR_Bottom_Gordon);
-		reporter.searchAllStockIdAnalyseHistoryBuySellCheckPoint(DailyCombineCheckPoint.KDJ_Gordon_TiaoKongGaoKai);
+		// reporter.searchAllStockIdAnalyseHistoryBuySellCheckPoint(DailyCombineCheckPoint.KDJ_Gordon_TiaoKongGaoKai);
+		reporter.countAllStockIdStatisticsCheckPoint();
 
 	}
 }

@@ -49,7 +49,7 @@ public enum DailyCombineCheckPoint {
             SellPointType.KDJ_Dead, 5055, 12.0), WR_Bottom_Area(SellPointType.KDJ_Dead, 0, 0), WR_Bottom_Gordon(
             SellPointType.KDJ_Dead, 74303, 9.56),WR_Top_Area(SellPointType.KDJ_Dead, 0, 0),WR_Ready_To_ZhangTing(SellPointType.KDJ_Dead, 0, 0), MACD_DI_BeiLi(
             SellPointType.KDJ_Dead, 0, 99.0),WR_4_Days_SameValue_XianShang(SellPointType.KDJ_Dead,2923,8.35), 
-    		KDJ_Gordon_TiaoKongGaoKai(SellPointType.KDJ_Dead, 0, 99.0);
+    		LuZao_KDJ_Gordon_TiaoKongGaoKai(SellPointType.KDJ_Dead, 0, 99.0);
 
     private ConfigurationService config = DBConfigurationService.getInstance();
     private double minEarnPercent = config.getDouble("minEarnPercent_Select_CheckPoint");

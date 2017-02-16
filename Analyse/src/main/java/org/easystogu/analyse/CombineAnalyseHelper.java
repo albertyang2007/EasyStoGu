@@ -1380,14 +1380,16 @@ public class CombineAnalyseHelper {
 		}
 
 		// KDJ gordon & tiao kong gao kai
-		case KDJ_Gordon_TiaoKongGaoKai: {
-			if (curSuperDayVO.kdjCorssType == CrossType.GORDON || curSuperDayVO.rsvCorssType == CrossType.GORDON
-					|| pre1SuperDayVO.kdjCorssType == CrossType.GORDON
-					|| pre1SuperDayVO.rsvCorssType == CrossType.GORDON) {
-				if (curSuperDayVO.priceVO.low > pre1SuperDayVO.priceVO.high
-						&& curSuperDayVO.priceVO.close > curSuperDayVO.priceVO.open) {
-					if (curSuperDayVO.kdjVO.k <= 50) {
-						return true;
+		case LuZao_KDJ_Gordon_TiaoKongGaoKai: {
+			if (curSuperDayVO.avgMA86 >= curSuperDayVO.avgMA43 && curSuperDayVO.avgMA43 >= curSuperDayVO.avgMA19) {
+				if (curSuperDayVO.kdjCorssType == CrossType.GORDON || curSuperDayVO.rsvCorssType == CrossType.GORDON
+						|| pre1SuperDayVO.kdjCorssType == CrossType.GORDON
+						|| pre1SuperDayVO.rsvCorssType == CrossType.GORDON) {
+					if (curSuperDayVO.priceVO.low > pre1SuperDayVO.priceVO.high
+							&& curSuperDayVO.priceVO.close > curSuperDayVO.priceVO.open) {
+						if (curSuperDayVO.kdjVO.k <= 50) {
+							return true;
+						}
 					}
 				}
 			}
