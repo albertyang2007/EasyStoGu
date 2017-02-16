@@ -174,7 +174,8 @@ public class DailySelectionRunner implements Runnable {
 						if (checkPoint.compareTo(DailyCombineCheckPoint.QSDD_Bottom_Area) == 0
 								|| checkPoint.compareTo(DailyCombineCheckPoint.QSDD_Bottom_Gordon) == 0
 								|| checkPoint.compareTo(DailyCombineCheckPoint.WR_Bottom_Area) == 0
-								|| checkPoint.compareTo(DailyCombineCheckPoint.WR_Bottom_Gordon) == 0) {
+								|| checkPoint.compareTo(DailyCombineCheckPoint.WR_Bottom_Gordon) == 0
+								|| checkPoint.compareTo(DailyCombineCheckPoint.LuZao_KDJ_Gordon_TiaoKongGaoKai) == 0) {
 							this.saveToCheckPointSelectionDB(superVO, checkPoint);
 							this.addToConditionMapForReportDisplay(superVO, checkPoint);
 						}
