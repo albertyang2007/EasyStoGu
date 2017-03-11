@@ -25,6 +25,7 @@ public class IndQSDDTableHelper {
 	// please modify this SQL in all subClass
 	protected String INSERT_SQL = "INSERT INTO " + tableName
 			+ " (stockId, date, lonterm, midterm, shoterm) VALUES (:stockId, :date, :lonterm, :midterm, :shoterm)";
+	protected String QUERY_BY_DATE_SQL = "SELECT * FROM " + tableName + " WHERE date = :date";
 	protected String QUERY_BY_ID_AND_DATE_SQL = "SELECT * FROM " + tableName
 			+ " WHERE stockId = :stockId AND date = :date";
 	protected String QUERY_ALL_BY_ID_SQL = "SELECT * FROM " + tableName + " WHERE stockId = :stockId ORDER BY date";
@@ -131,6 +132,22 @@ public class IndQSDDTableHelper {
 		for (QSDDVO vo : list) {
 			this.insert(vo);
 		}
+	}
+	
+	public List<QSDDVO> getByDate(String date) {
+		try {
+
+			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+			namedParameters.addValue("date", date);
+
+			List<QSDDVO> list = this.namedParameterJdbcTemplate.query(QUERY_BY_DATE_SQL, namedParameters,
+					new QSDDVOMapper());
+
+			return list;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new ArrayList<QSDDVO>();
 	}
 
 	public QSDDVO getQSDD(String stockId, String date) {

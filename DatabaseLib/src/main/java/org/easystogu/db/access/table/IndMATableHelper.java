@@ -26,6 +26,7 @@ public class IndMATableHelper {
 	// please modify this SQL in all subClass
 	protected String INSERT_SQL = "INSERT INTO " + tableName
 			+ " (stockId, date, ma5, ma10, ma19, ma20, ma30, ma43, ma60, ma86, ma120, ma250, close) VALUES (:stockId, :date, :ma5, :ma10, :ma19, :ma20, :ma30, :ma43, :ma60, :ma86, :ma120, :ma250, :close)";
+	protected String QUERY_BY_DATE_SQL = "SELECT * FROM " + tableName + " WHERE date = :date";
 	protected String QUERY_BY_ID_AND_DATE_SQL = "SELECT * FROM " + tableName
 			+ " WHERE stockId = :stockId AND date = :date";
 	protected String QUERY_ALL_BY_ID_SQL = "SELECT * FROM " + tableName + " WHERE stockId = :stockId ORDER BY date";
@@ -185,6 +186,23 @@ public class IndMATableHelper {
 			return new ArrayList<MAVO>();
 		}
 	}
+	
+	public List<MAVO> getByDate(String date) {
+		try {
+
+			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+			namedParameters.addValue("date", date);
+
+			List<MAVO> list = this.namedParameterJdbcTemplate.query(QUERY_BY_DATE_SQL, namedParameters,
+					new MAVOMapper());
+
+			return list;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new ArrayList<MAVO>();
+	}
+
 
 	// 最近几天的，必须使用时间倒序的SQL
 	public List<MAVO> getNDateMA(String stockId, int day) {

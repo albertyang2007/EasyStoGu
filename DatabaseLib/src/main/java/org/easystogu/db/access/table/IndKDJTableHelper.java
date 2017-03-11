@@ -156,7 +156,7 @@ public class IndKDJTableHelper {
 		return null;
 	}
 
-	public List<KDJVO> getKDJByDate(String date) {
+	public List<KDJVO> getByDate(String date) {
 		try {
 
 			MapSqlParameterSource namedParameters = new MapSqlParameterSource();

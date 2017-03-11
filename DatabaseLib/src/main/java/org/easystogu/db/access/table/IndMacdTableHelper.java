@@ -153,7 +153,7 @@ public class IndMacdTableHelper {
 		return null;
 	}
 
-	public List<MacdVO> getMacdByDate(String date) {
+	public List<MacdVO> getByDate(String date) {
 		try {
 
 			MapSqlParameterSource namedParameters = new MapSqlParameterSource();

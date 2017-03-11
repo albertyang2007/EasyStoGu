@@ -30,6 +30,7 @@ public class IndWeekShenXianTableHelper extends IndShenXianTableHelper {
 		// please modify this SQL in superClass
 		INSERT_SQL = "INSERT INTO " + tableName
 				+ " (stockId, date, h1, h2, h3) VALUES (:stockId, :date, :h1, :h2, :h3)";
+		QUERY_BY_DATE_SQL = "SELECT * FROM " + tableName + " WHERE date = :date";
 		QUERY_BY_ID_AND_DATE_SQL = "SELECT * FROM " + tableName + " WHERE stockId = :stockId AND date = :date";
 		QUERY_ALL_BY_ID_SQL = "SELECT * FROM " + tableName + " WHERE stockId = :stockId ORDER BY date";
 		QUERY_LATEST_N_BY_ID_SQL = "SELECT * FROM " + tableName

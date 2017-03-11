@@ -25,6 +25,7 @@ public class IndShenXianTableHelper {
 	// please modify this SQL in all subClass
 	protected String INSERT_SQL = "INSERT INTO " + tableName
 			+ " (stockId, date, h1, h2, h3) VALUES (:stockId, :date, :h1, :h2, :h3)";
+	protected String QUERY_BY_DATE_SQL = "SELECT * FROM " + tableName + " WHERE date = :date";
 	protected String QUERY_BY_ID_AND_DATE_SQL = "SELECT * FROM " + tableName
 			+ " WHERE stockId = :stockId AND date = :date";
 	protected String QUERY_ALL_BY_ID_SQL = "SELECT * FROM " + tableName + " WHERE stockId = :stockId ORDER BY date";
@@ -131,6 +132,22 @@ public class IndShenXianTableHelper {
 		for (ShenXianVO vo : list) {
 			this.insert(vo);
 		}
+	}
+	
+	public List<ShenXianVO> getByDate(String date) {
+		try {
+
+			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+			namedParameters.addValue("date", date);
+
+			List<ShenXianVO> list = this.namedParameterJdbcTemplate.query(QUERY_BY_DATE_SQL, namedParameters,
+					new ShenXianVOMapper());
+
+			return list;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new ArrayList<ShenXianVO>();
 	}
 
 	public ShenXianVO getShenXian(String stockId, String date) {

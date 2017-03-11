@@ -24,6 +24,7 @@ public class IndBollTableHelper {
 	protected String tableName = "IND_BOLL";
 	protected String INSERT_SQL = "INSERT INTO " + tableName
 			+ " (stockId, date, mb, up, dn) VALUES (:stockId, :date, :mb, :up, :dn)";
+	protected String QUERY_BY_DATE_SQL = "SELECT * FROM " + tableName + " WHERE date = :date";
 	protected String QUERY_BY_ID_AND_DATE_SQL = "SELECT * FROM " + tableName
 			+ " WHERE stockId = :stockId AND date = :date";
 	protected String QUERY_ALL_BY_ID_SQL = "SELECT * FROM " + tableName + " WHERE stockId = :stockId ORDER BY date";
@@ -149,6 +150,22 @@ public class IndBollTableHelper {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	public List<BollVO> getByDate(String date) {
+		try {
+
+			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+			namedParameters.addValue("date", date);
+
+			List<BollVO> list = this.namedParameterJdbcTemplate.query(QUERY_BY_DATE_SQL, namedParameters,
+					new BollVOMapper());
+
+			return list;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new ArrayList<BollVO>();
 	}
 
 	public List<BollVO> getAllBoll(String stockId) {
