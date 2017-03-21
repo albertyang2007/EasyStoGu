@@ -830,3 +830,397 @@ ALTER TABLE "zijinliu_3_of_5_days_top300_Details"
   OWNER TO postgres;
 GRANT ALL ON TABLE "zijinliu_3_of_5_days_top300_Details" TO public;
 GRANT ALL ON TABLE "zijinliu_3_of_5_days_top300_Details" TO postgres;
+
+-- add cixin views--
+-- View: "cixin_luzao_phaseIII_zijinliu_3_days_top300"
+
+-- DROP VIEW "cixin_luzao_phaseIII_zijinliu_3_days_top300";
+
+CREATE OR REPLACE VIEW "cixin_luzao_phaseIII_zijinliu_3_days_top300" AS 
+ SELECT rtn2.stockid
+   FROM ( SELECT rtn.stockid,
+            count(*) AS count
+           FROM ( SELECT "luzao_phaseIII_zijinliu_top300".stockid,
+                    "luzao_phaseIII_zijinliu_top300".date
+                   FROM stockprice_latest_3_date,
+                    "luzao_phaseIII_zijinliu_top300"
+                  WHERE stockprice_latest_3_date.date = "luzao_phaseIII_zijinliu_top300".date
+                  ORDER BY "luzao_phaseIII_zijinliu_top300".stockid) rtn
+          GROUP BY rtn.stockid) rtn2
+  WHERE rtn2.count = 3 AND (86 * 2) >= (( SELECT count(*) AS count
+           FROM stockprice
+          WHERE stockprice.stockid = rtn2.stockid));
+
+ALTER TABLE "cixin_luzao_phaseIII_zijinliu_3_days_top300"
+  OWNER TO postgres;
+GRANT ALL ON TABLE "cixin_luzao_phaseIII_zijinliu_3_days_top300" TO public;
+GRANT ALL ON TABLE "cixin_luzao_phaseIII_zijinliu_3_days_top300" TO postgres;
+
+-- View: "cixin_luzao_phaseIII_zijinliu_3_days_top300_Details"
+
+-- DROP VIEW "cixin_luzao_phaseIII_zijinliu_3_days_top300_Details";
+
+CREATE OR REPLACE VIEW "cixin_luzao_phaseIII_zijinliu_3_days_top300_Details" AS 
+ SELECT company_info.name,
+    company_info.stockid,
+    stockprice_latest_date.date
+   FROM "cixin_luzao_phaseIII_zijinliu_3_days_top300",
+    company_info,
+    stockprice_latest_date
+  WHERE company_info.stockid = "cixin_luzao_phaseIII_zijinliu_3_days_top300".stockid;
+
+ALTER TABLE "cixin_luzao_phaseIII_zijinliu_3_days_top300_Details"
+  OWNER TO postgres;
+GRANT ALL ON TABLE "cixin_luzao_phaseIII_zijinliu_3_days_top300_Details" TO public;
+GRANT ALL ON TABLE "cixin_luzao_phaseIII_zijinliu_3_days_top300_Details" TO postgres;
+
+-- View: "cixin_luzao_phaseIII_zijinliu_3_of_5_days_top300"
+
+-- DROP VIEW "cixin_luzao_phaseIII_zijinliu_3_of_5_days_top300";
+
+CREATE OR REPLACE VIEW "cixin_luzao_phaseIII_zijinliu_3_of_5_days_top300" AS 
+ SELECT rtn2.stockid
+   FROM ( SELECT rtn.stockid,
+            count(*) AS count
+           FROM ( SELECT "luzao_phaseIII_zijinliu_top300".stockid,
+                    "luzao_phaseIII_zijinliu_top300".date
+                   FROM stockprice_latest_5_date,
+                    "luzao_phaseIII_zijinliu_top300"
+                  WHERE stockprice_latest_5_date.date = "luzao_phaseIII_zijinliu_top300".date
+                  ORDER BY "luzao_phaseIII_zijinliu_top300".stockid) rtn
+          GROUP BY rtn.stockid) rtn2
+  WHERE rtn2.count >= 3 AND (86 * 2) >= (( SELECT count(*) AS count
+           FROM stockprice
+          WHERE stockprice.stockid = rtn2.stockid));
+
+ALTER TABLE "cixin_luzao_phaseIII_zijinliu_3_of_5_days_top300"
+  OWNER TO postgres;
+GRANT ALL ON TABLE "cixin_luzao_phaseIII_zijinliu_3_of_5_days_top300" TO public;
+GRANT ALL ON TABLE "cixin_luzao_phaseIII_zijinliu_3_of_5_days_top300" TO postgres;
+
+-- View: "cixin_luzao_phaseIII_zijinliu_3_of_5_days_top300_Details"
+
+-- DROP VIEW "cixin_luzao_phaseIII_zijinliu_3_of_5_days_top300_Details";
+
+CREATE OR REPLACE VIEW "cixin_luzao_phaseIII_zijinliu_3_of_5_days_top300_Details" AS 
+ SELECT company_info.name,
+    company_info.stockid,
+    stockprice_latest_date.date
+   FROM "cixin_luzao_phaseIII_zijinliu_3_of_5_days_top300",
+    company_info,
+    stockprice_latest_date
+  WHERE company_info.stockid = "cixin_luzao_phaseIII_zijinliu_3_of_5_days_top300".stockid;
+
+ALTER TABLE "cixin_luzao_phaseIII_zijinliu_3_of_5_days_top300_Details"
+  OWNER TO postgres;
+GRANT ALL ON TABLE "cixin_luzao_phaseIII_zijinliu_3_of_5_days_top300_Details" TO public;
+GRANT ALL ON TABLE "cixin_luzao_phaseIII_zijinliu_3_of_5_days_top300_Details" TO postgres;
+
+-- View: "cixin_luzao_phaseIII_zijinliu_top300"
+
+-- DROP VIEW "cixin_luzao_phaseIII_zijinliu_top300";
+
+CREATE OR REPLACE VIEW "cixin_luzao_phaseIII_zijinliu_top300" AS 
+ SELECT ind_ma.stockid,
+    ind_ma.date,
+    zijinliu.rate
+   FROM ind_ma,
+    zijinliu
+  WHERE ind_ma.date = zijinliu.date AND ind_ma.stockid = zijinliu.stockid AND zijinliu.rate <= 300 AND zijinliu.majornetin > 0::numeric AND ind_ma.close > ind_ma.ma19 AND ind_ma.ma43 < ind_ma.ma19 AND ind_ma.ma86 > ind_ma.ma43 AND (86 * 2) >= (( SELECT count(*) AS count
+           FROM stockprice
+          WHERE stockprice.stockid = ind_ma.stockid))
+  ORDER BY zijinliu.rate;
+
+ALTER TABLE "cixin_luzao_phaseIII_zijinliu_top300"
+  OWNER TO postgres;
+GRANT ALL ON TABLE "cixin_luzao_phaseIII_zijinliu_top300" TO public;
+GRANT ALL ON TABLE "cixin_luzao_phaseIII_zijinliu_top300" TO postgres;
+
+
+-- View: "cixin_luzao_phaseIII_zijinliu_top300_Details"
+
+-- DROP VIEW "cixin_luzao_phaseIII_zijinliu_top300_Details";
+
+CREATE OR REPLACE VIEW "cixin_luzao_phaseIII_zijinliu_top300_Details" AS 
+ SELECT company_info.name,
+    company_info.stockid,
+    "cixin_luzao_phaseIII_zijinliu_top300".date,
+    "cixin_luzao_phaseIII_zijinliu_top300".rate
+   FROM "cixin_luzao_phaseIII_zijinliu_top300",
+    company_info
+  WHERE company_info.stockid = "cixin_luzao_phaseIII_zijinliu_top300".stockid;
+
+ALTER TABLE "cixin_luzao_phaseIII_zijinliu_top300_Details"
+  OWNER TO postgres;
+GRANT ALL ON TABLE "cixin_luzao_phaseIII_zijinliu_top300_Details" TO public;
+GRANT ALL ON TABLE "cixin_luzao_phaseIII_zijinliu_top300_Details" TO postgres;
+
+-- View: "cixin_luzao_phaseII_ddx_2_of_5_days_bigger_05"
+
+-- DROP VIEW "cixin_luzao_phaseII_ddx_2_of_5_days_bigger_05";
+
+CREATE OR REPLACE VIEW "cixin_luzao_phaseII_ddx_2_of_5_days_bigger_05" AS 
+ SELECT rtn2.stockid
+   FROM ( SELECT rtn.stockid,
+            count(*) AS count
+           FROM ( SELECT "luzao_phaseII_ddx_bigger_05".stockid,
+                    "luzao_phaseII_ddx_bigger_05".date
+                   FROM stockprice_latest_5_date,
+                    "luzao_phaseII_ddx_bigger_05"
+                  WHERE stockprice_latest_5_date.date = "luzao_phaseII_ddx_bigger_05".date
+                  ORDER BY "luzao_phaseII_ddx_bigger_05".stockid) rtn
+          GROUP BY rtn.stockid) rtn2
+  WHERE rtn2.count >= 2 AND (86 * 2) >= (( SELECT count(*) AS count
+           FROM stockprice
+          WHERE stockprice.stockid = rtn2.stockid));
+
+ALTER TABLE "cixin_luzao_phaseII_ddx_2_of_5_days_bigger_05"
+  OWNER TO postgres;
+GRANT ALL ON TABLE "cixin_luzao_phaseII_ddx_2_of_5_days_bigger_05" TO public;
+GRANT ALL ON TABLE "cixin_luzao_phaseII_ddx_2_of_5_days_bigger_05" TO postgres;
+
+-- View: "cixin_luzao_phaseII_ddx_bigger_05"
+
+-- DROP VIEW "cixin_luzao_phaseII_ddx_bigger_05";
+
+CREATE OR REPLACE VIEW "cixin_luzao_phaseII_ddx_bigger_05" AS 
+ SELECT ind_ma.stockid,
+    ind_ma.date,
+    ind_ddx.ddx
+   FROM ind_ma,
+    ind_ddx
+  WHERE ind_ma.date = ind_ddx.date AND ind_ma.stockid = ind_ddx.stockid AND ind_ddx.ddx >= 0.5 AND ind_ma.close > ind_ma.ma19 AND ind_ma.ma43 > ind_ma.ma19 AND ind_ma.ma86 > ind_ma.ma43 AND (86 * 2) >= (( SELECT count(*) AS count
+           FROM stockprice
+          WHERE stockprice.stockid = ind_ma.stockid))
+  ORDER BY ind_ddx.ddx DESC;
+
+ALTER TABLE "cixin_luzao_phaseII_ddx_bigger_05"
+  OWNER TO postgres;
+GRANT ALL ON TABLE "cixin_luzao_phaseII_ddx_bigger_05" TO public;
+GRANT ALL ON TABLE "cixin_luzao_phaseII_ddx_bigger_05" TO postgres;
+
+-- View: "cixin_luzao_phaseII_ddx_bigger_05_Details"
+
+-- DROP VIEW "cixin_luzao_phaseII_ddx_bigger_05_Details";
+
+CREATE OR REPLACE VIEW "cixin_luzao_phaseII_ddx_bigger_05_Details" AS 
+ SELECT company_info.name,
+    company_info.stockid,
+    "cixin_luzao_phaseII_ddx_bigger_05".date,
+    "cixin_luzao_phaseII_ddx_bigger_05".ddx
+   FROM "cixin_luzao_phaseII_ddx_bigger_05",
+    company_info
+  WHERE company_info.stockid = "cixin_luzao_phaseII_ddx_bigger_05".stockid;
+
+ALTER TABLE "cixin_luzao_phaseII_ddx_bigger_05_Details"
+  OWNER TO postgres;
+GRANT ALL ON TABLE "cixin_luzao_phaseII_ddx_bigger_05_Details" TO public;
+GRANT ALL ON TABLE "cixin_luzao_phaseII_ddx_bigger_05_Details" TO postgres;
+
+-- View: "cixin_luzao_phaseII_zijinliu_3_days_top300"
+
+-- DROP VIEW "cixin_luzao_phaseII_zijinliu_3_days_top300";
+
+CREATE OR REPLACE VIEW "cixin_luzao_phaseII_zijinliu_3_days_top300" AS 
+ SELECT rtn2.stockid
+   FROM ( SELECT rtn.stockid,
+            count(*) AS count
+           FROM ( SELECT "luzao_phaseII_zijinliu_top300".stockid,
+                    "luzao_phaseII_zijinliu_top300".date
+                   FROM stockprice_latest_3_date,
+                    "luzao_phaseII_zijinliu_top300"
+                  WHERE stockprice_latest_3_date.date = "luzao_phaseII_zijinliu_top300".date
+                  ORDER BY "luzao_phaseII_zijinliu_top300".stockid) rtn
+          GROUP BY rtn.stockid) rtn2
+  WHERE rtn2.count = 3 AND (86 * 2) >= (( SELECT count(*) AS count
+           FROM stockprice
+          WHERE stockprice.stockid = rtn2.stockid));
+
+ALTER TABLE "cixin_luzao_phaseII_zijinliu_3_days_top300"
+  OWNER TO postgres;
+GRANT ALL ON TABLE "cixin_luzao_phaseII_zijinliu_3_days_top300" TO public;
+GRANT ALL ON TABLE "cixin_luzao_phaseII_zijinliu_3_days_top300" TO postgres;
+
+-- View: "cixin_luzao_phaseII_zijinliu_3_days_top300_Details"
+
+-- DROP VIEW "cixin_luzao_phaseII_zijinliu_3_days_top300_Details";
+
+CREATE OR REPLACE VIEW "cixin_luzao_phaseII_zijinliu_3_days_top300_Details" AS 
+ SELECT company_info.name,
+    company_info.stockid,
+    stockprice_latest_date.date
+   FROM "cixin_luzao_phaseII_zijinliu_3_days_top300",
+    company_info,
+    stockprice_latest_date
+  WHERE company_info.stockid = "cixin_luzao_phaseII_zijinliu_3_days_top300".stockid;
+
+ALTER TABLE "cixin_luzao_phaseII_zijinliu_3_days_top300_Details"
+  OWNER TO postgres;
+GRANT ALL ON TABLE "cixin_luzao_phaseII_zijinliu_3_days_top300_Details" TO public;
+GRANT ALL ON TABLE "cixin_luzao_phaseII_zijinliu_3_days_top300_Details" TO postgres;
+
+-- View: "cixin_luzao_phaseII_zijinliu_3_of_5_days_top300"
+
+-- DROP VIEW "cixin_luzao_phaseII_zijinliu_3_of_5_days_top300";
+
+CREATE OR REPLACE VIEW "cixin_luzao_phaseII_zijinliu_3_of_5_days_top300" AS 
+ SELECT rtn2.stockid
+   FROM ( SELECT rtn.stockid,
+            count(*) AS count
+           FROM ( SELECT "luzao_phaseII_zijinliu_top300".stockid,
+                    "luzao_phaseII_zijinliu_top300".date
+                   FROM stockprice_latest_5_date,
+                    "luzao_phaseII_zijinliu_top300"
+                  WHERE stockprice_latest_5_date.date = "luzao_phaseII_zijinliu_top300".date
+                  ORDER BY "luzao_phaseII_zijinliu_top300".stockid) rtn
+          GROUP BY rtn.stockid) rtn2
+  WHERE rtn2.count >= 3 AND (86 * 2) >= (( SELECT count(*) AS count
+           FROM stockprice
+          WHERE stockprice.stockid = rtn2.stockid));
+
+ALTER TABLE "cixin_luzao_phaseII_zijinliu_3_of_5_days_top300"
+  OWNER TO postgres;
+GRANT ALL ON TABLE "cixin_luzao_phaseII_zijinliu_3_of_5_days_top300" TO public;
+GRANT ALL ON TABLE "cixin_luzao_phaseII_zijinliu_3_of_5_days_top300" TO postgres;
+
+-- View: "cixin_luzao_phaseII_zijinliu_3_of_5_days_top300_Details"
+
+-- DROP VIEW "cixin_luzao_phaseII_zijinliu_3_of_5_days_top300_Details";
+
+CREATE OR REPLACE VIEW "cixin_luzao_phaseII_zijinliu_3_of_5_days_top300_Details" AS 
+ SELECT company_info.name,
+    company_info.stockid,
+    stockprice_latest_date.date
+   FROM "cixin_luzao_phaseII_zijinliu_3_of_5_days_top300",
+    company_info,
+    stockprice_latest_date
+  WHERE company_info.stockid = "cixin_luzao_phaseII_zijinliu_3_of_5_days_top300".stockid;
+
+ALTER TABLE "cixin_luzao_phaseII_zijinliu_3_of_5_days_top300_Details"
+  OWNER TO postgres;
+GRANT ALL ON TABLE "cixin_luzao_phaseII_zijinliu_3_of_5_days_top300_Details" TO public;
+GRANT ALL ON TABLE "cixin_luzao_phaseII_zijinliu_3_of_5_days_top300_Details" TO postgres;
+
+-- View: "cixin_luzao_phaseII_zijinliu_top300"
+
+-- DROP VIEW "cixin_luzao_phaseII_zijinliu_top300";
+
+CREATE OR REPLACE VIEW "cixin_luzao_phaseII_zijinliu_top300" AS 
+ SELECT ind_ma.stockid,
+    ind_ma.date,
+    zijinliu.rate
+   FROM ind_ma,
+    zijinliu
+  WHERE ind_ma.date = zijinliu.date AND ind_ma.stockid = zijinliu.stockid AND zijinliu.rate <= 300 AND zijinliu.majornetin > 0::numeric AND ind_ma.close > ind_ma.ma19 AND ind_ma.ma43 > ind_ma.ma19 AND ind_ma.ma86 > ind_ma.ma43 AND (86 * 2) >= (( SELECT count(*) AS count
+           FROM stockprice
+          WHERE stockprice.stockid = ind_ma.stockid))
+  ORDER BY zijinliu.rate;
+
+ALTER TABLE "cixin_luzao_phaseII_zijinliu_top300"
+  OWNER TO postgres;
+GRANT ALL ON TABLE "cixin_luzao_phaseII_zijinliu_top300" TO public;
+GRANT ALL ON TABLE "cixin_luzao_phaseII_zijinliu_top300" TO postgres;
+
+
+-- View: "cixin_luzao_phaseII_zijinliu_top300_Details"
+
+-- DROP VIEW "cixin_luzao_phaseII_zijinliu_top300_Details";
+
+CREATE OR REPLACE VIEW "cixin_luzao_phaseII_zijinliu_top300_Details" AS 
+ SELECT company_info.name,
+    company_info.stockid,
+    "cixin_luzao_phaseII_zijinliu_top300".date,
+    "cixin_luzao_phaseII_zijinliu_top300".rate
+   FROM "cixin_luzao_phaseII_zijinliu_top300",
+    company_info
+  WHERE company_info.stockid = "cixin_luzao_phaseII_zijinliu_top300".stockid;
+
+ALTER TABLE "cixin_luzao_phaseII_zijinliu_top300_Details"
+  OWNER TO postgres;
+GRANT ALL ON TABLE "cixin_luzao_phaseII_zijinliu_top300_Details" TO public;
+GRANT ALL ON TABLE "cixin_luzao_phaseII_zijinliu_top300_Details" TO postgres;
+
+-- View: cixin_zijinliu_3_days_top300
+
+-- DROP VIEW cixin_zijinliu_3_days_top300;
+
+CREATE OR REPLACE VIEW cixin_zijinliu_3_days_top300 AS 
+ SELECT rtn2.stockid
+   FROM ( SELECT rtn.stockid,
+            count(*) AS count
+           FROM ( SELECT zijinliu.stockid,
+                    zijinliu.date
+                   FROM stockprice_latest_3_date,
+                    zijinliu
+                  WHERE stockprice_latest_3_date.date = zijinliu.date AND zijinliu.rate <= 300
+                  ORDER BY zijinliu.stockid) rtn
+          GROUP BY rtn.stockid) rtn2
+  WHERE rtn2.count = 3 AND (86 * 2) >= (( SELECT count(*) AS count
+           FROM stockprice
+          WHERE stockprice.stockid = rtn2.stockid));
+
+ALTER TABLE cixin_zijinliu_3_days_top300
+  OWNER TO postgres;
+GRANT ALL ON TABLE cixin_zijinliu_3_days_top300 TO public;
+GRANT ALL ON TABLE cixin_zijinliu_3_days_top300 TO postgres;
+
+-- View: "cixin_zijinliu_3_days_top300_Details"
+
+-- DROP VIEW "cixin_zijinliu_3_days_top300_Details";
+
+CREATE OR REPLACE VIEW "cixin_zijinliu_3_days_top300_Details" AS 
+ SELECT company_info.name,
+    company_info.stockid,
+    stockprice_latest_date.date
+   FROM cixin_zijinliu_3_days_top300,
+    company_info,
+    stockprice_latest_date
+  WHERE company_info.stockid = cixin_zijinliu_3_days_top300.stockid;
+
+ALTER TABLE "cixin_zijinliu_3_days_top300_Details"
+  OWNER TO postgres;
+GRANT ALL ON TABLE "cixin_zijinliu_3_days_top300_Details" TO public;
+GRANT ALL ON TABLE "cixin_zijinliu_3_days_top300_Details" TO postgres;
+
+-- View: cixin_zijinliu_3_of_5_days_top300
+
+-- DROP VIEW cixin_zijinliu_3_of_5_days_top300;
+
+CREATE OR REPLACE VIEW cixin_zijinliu_3_of_5_days_top300 AS 
+ SELECT rtn2.stockid
+   FROM ( SELECT rtn.stockid,
+            count(*) AS count
+           FROM ( SELECT zijinliu.stockid,
+                    zijinliu.date
+                   FROM stockprice_latest_5_date,
+                    zijinliu
+                  WHERE stockprice_latest_5_date.date = zijinliu.date AND zijinliu.rate <= 300
+                  ORDER BY zijinliu.stockid) rtn
+          GROUP BY rtn.stockid) rtn2
+  WHERE rtn2.count >= 3 AND (86 * 2) >= (( SELECT count(*) AS count
+           FROM stockprice
+          WHERE stockprice.stockid = rtn2.stockid));
+
+ALTER TABLE cixin_zijinliu_3_of_5_days_top300
+  OWNER TO postgres;
+GRANT ALL ON TABLE cixin_zijinliu_3_of_5_days_top300 TO public;
+GRANT ALL ON TABLE cixin_zijinliu_3_of_5_days_top300 TO postgres;
+
+-- View: "cixin_zijinliu_3_of_5_days_top300_Details"
+
+-- DROP VIEW "cixin_zijinliu_3_of_5_days_top300_Details";
+
+CREATE OR REPLACE VIEW "cixin_zijinliu_3_of_5_days_top300_Details" AS 
+ SELECT company_info.name,
+    company_info.stockid,
+    stockprice_latest_date.date
+   FROM cixin_zijinliu_3_of_5_days_top300,
+    company_info,
+    stockprice_latest_date
+  WHERE company_info.stockid = cixin_zijinliu_3_of_5_days_top300.stockid;
+
+ALTER TABLE "cixin_zijinliu_3_of_5_days_top300_Details"
+  OWNER TO postgres;
+GRANT ALL ON TABLE "cixin_zijinliu_3_of_5_days_top300_Details" TO public;
+GRANT ALL ON TABLE "cixin_zijinliu_3_of_5_days_top300_Details" TO postgres;
+
