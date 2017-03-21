@@ -1,0 +1,59 @@
+﻿﻿
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<script type="text/javascript" src="js/reactjs_0.13.0/JSXTransformer.js"></script>
+<script type="text/javascript" src="js/reactjs_0.13.0/react.js"></script>
+<script type="text/javascript" src="js/jquery_1.8.2/jquery.min.js"></script>
+<script type="text/javascript"
+	src="js/easystogu/requestStatisticsData.js"></script>
+<script type="text/javascript" src="js/easystogu/common.js"></script>
+<script type="text/javascript" src="js/easystogu/createChart.js"></script>
+<script type="text/javascript" src="js/3pp/moment.min.js"></script>
+<script src="js/highstock_4.2.1/highstock.js"></script>
+<script src="js/highstock_4.2.1/modules/exporting.js"></script>
+<style type="text/css">
+${demo.css}
+</style>
+</head>
+<body>
+	<script type="text/javascript">
+		var indicator = "luzaoTrend";
+		var version = "v1";
+		var stockId = "999999";
+		var dateFrom = moment().subtract(2000, 'days').format("YYYY-MM-DD");
+		var dateTo = moment().format("YYYY-MM-DD");
+
+		function getQueryString(name) {
+			var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+			var r = window.location.search.substr(1).match(reg);
+			if (r != null)
+				return unescape(r[2]);
+			return null;
+		}
+
+		window.onload = function() {
+			indicator = getQueryString("indicator");
+
+			if (indicator == "shenxian") {
+				loadShenXianStatistics(version, stockId, dateFrom, dateTo);
+			} else if (indicator == "luzaoTrend") {
+				loadLuZaoTrendStatistics(version, stockId, dateFrom, dateTo);
+			} else if (indicator == "luzaoGordon") {
+				loadLuZaoGordonStatistics(version, stockId, dateFrom, dateTo);
+			} else if (indicator == "qsdd") {
+				loadQsddStatistics(version, stockId, dateFrom, dateTo);
+			} else if (indicator == "macd") {
+				loadMacdStatistics(version, stockId, dateFrom, dateTo);
+			} else if (indicator == "wr") {
+				loadWRStatistics(version, stockId, dateFrom, dateTo);
+			}
+		}
+	</script>
+	<div>
+		<div id="container"
+			style="height: 100%; min-width: 100%; position: fixed;"></div>
+	</div>
+</body>
+</html>

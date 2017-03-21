@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title></title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link>http://blog.suisuijiang.com/two-ways-communication-between-react-native-and-webview-by-native-methods/</link>
+    </head>
+    <body>
+        <div style="text-align: center">
+            <button id="button">发送数据到react native</button>
+            <p style="text-align: center">收到react native发送的数据1: <span id="data1"></span></p>
+            <p style="text-align: center">收到react native发送的数据2: <span id="data2"></span></p>
+        </div>
+        <script>
+            var data = 0;
+            function sendData(data) {
+                if (window.originalPostMessage) {
+                    window.postMessage(data);
+                } else {
+                    throw Error('postMessage接口还未注入');
+                }
+            }
+            window.onload = function() {
+                document.addEventListener('message', function(e) {
+                	var obj = eval('(' + e.data + ')');
+                    document.getElementById('data1').textContent = obj.indicator;
+                    document.getElementById('data2').textContent = obj.version;
+                });
+                document.getElementById('button').onclick = function() {
+                    data += 100;
+                    sendData(data);
+                }
+            }
+        </script>
+    </body>
+</html>
