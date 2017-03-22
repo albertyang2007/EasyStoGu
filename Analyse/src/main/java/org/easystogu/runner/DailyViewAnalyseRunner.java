@@ -51,11 +51,6 @@ public class DailyViewAnalyseRunner implements Runnable {
 		//this.fastExtractForView("luzao_phaseII_zijinliu_top300");
 		//this.fastExtractForView("luzao_phaseIII_zijinliu_top300");
 		
-		this.slowAnalyseForView("luzao_phaseII_wr_all_ind_same");
-		this.slowAnalyseForView("luzao_phaseIII_wr_all_ind_same");
-		this.slowAnalyseForView("luzao_phaseIII_wr_midTerm_lonTerm_same");
-		this.slowAnalyseForView("luzao_phaseII_wr_midTerm_lonTerm_same");
-		this.slowAnalyseForView("luzao_phaseII_wr_shoTerm_midTerm_same");
 		this.slowAnalyseForView("zijinliu_3_days_top300");
 		this.slowAnalyseForView("zijinliu_3_of_5_days_top300");
 		this.slowAnalyseForView("luzao_phaseIII_zijinliu_3_days_top300");
@@ -64,14 +59,11 @@ public class DailyViewAnalyseRunner implements Runnable {
 		this.slowAnalyseForView("luzao_phaseII_zijinliu_3_of_5_days_top300");
 		this.slowAnalyseForView("luzao_phaseII_ddx_2_of_5_days_bigger_05");
 		
-		//run for cixin gu
-		this.slowAnalyseForView("cixin_zijinliu_3_days_top300");
-		this.slowAnalyseForView("cixin_zijinliu_3_of_5_days_top300");
-		this.slowAnalyseForView("cixin_luzao_phaseIII_zijinliu_3_days_top300");
-		this.slowAnalyseForView("cixin_luzao_phaseIII_zijinliu_3_of_5_days_top300");
-		this.slowAnalyseForView("cixin_luzao_phaseII_zijinliu_3_days_top300");
-		this.slowAnalyseForView("cixin_luzao_phaseII_zijinliu_3_of_5_days_top300");
-		this.slowAnalyseForView("cixin_luzao_phaseII_ddx_2_of_5_days_bigger_05");
+		this.slowAnalyseForView("luzao_phaseII_wr_all_ind_same");
+		this.slowAnalyseForView("luzao_phaseIII_wr_all_ind_same");
+		this.slowAnalyseForView("luzao_phaseIII_wr_midTerm_lonTerm_same");
+		this.slowAnalyseForView("luzao_phaseII_wr_midTerm_lonTerm_same");
+		this.slowAnalyseForView("luzao_phaseII_wr_shoTerm_midTerm_same");
 	}
 
 	public static void main(String[] args) {

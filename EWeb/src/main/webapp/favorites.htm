@@ -30,7 +30,7 @@ ${demo.css}
 	         getInitialState: function() {
 	         return {
 	            stockId: "999999",
-	            indicator: "shenxian_sell",
+	            indicator: "luzao",
                 version: "v1",
 	            dateFrom: moment().subtract(2000, 'days').format("YYYY-MM-DD"),
 	            dateTo: moment().format("YYYY-MM-DD"),
@@ -51,6 +51,7 @@ ${demo.css}
              //update stockIds based on viewName
              $.ajaxSettings.async = false;
              selectStockIds = getAllStockIdsFromView(viewName+"?date="+selectDate);
+             $.ajaxSettings.async = true;
              this.state.stockIdOptions = [];
              for (var i = 0; i < selectStockIds.length; i++) {
                  this.state.stockIdOptions.push(
@@ -58,11 +59,12 @@ ${demo.css}
                 );
              }
              //set the selected stockId to first one
-             stockId = selectStockIds[0][0];
-             $.ajaxSettings.async = true;
+             if(selectStockIds.length > 0){
+                stockId = selectStockIds[0][0];
+             }
 
              //refresh the shenxian chart using the first stockid
-             loadShenXianSell(version, stockId, dateFrom, dateTo);
+             loadLuZao(version, stockId, dateFrom, dateTo);
           },
 	      
 	      handleChangeSelectDate: function(e) {
@@ -75,6 +77,7 @@ ${demo.css}
              //update stockIds based on selectDate
              $.ajaxSettings.async = false;
              selectStockIds = getAllStockIdsFromView(viewName+"?date="+selectDate);
+             $.ajaxSettings.async = true;
              this.state.stockIdOptions = [];
              for (var i = 0; i < selectStockIds.length; i++) {
                  this.state.stockIdOptions.push(
@@ -82,11 +85,12 @@ ${demo.css}
                 );
              }
              //set the selected stockId to first one
-             stockId = selectStockIds[0][0];
-             $.ajaxSettings.async = true;
+             if(selectStockIds.length > 0){
+                stockId = selectStockIds[0][0];
+             }
 
              //refresh the shenxian chart using the first stockid
-             loadShenXianSell(version, stockId, dateFrom, dateTo);
+             loadLuZao(version, stockId, dateFrom, dateTo);
 	      },
 
           handleChangeSelectStockId: function(e) {
@@ -96,7 +100,7 @@ ${demo.css}
         
              //update the stockId to selected value
              stockId = e.target.value;
-             loadShenXianSell(version, stockId, dateFrom, dateTo);
+             loadLuZao(version, stockId, dateFrom, dateTo);
 	      },
 
           handleChangeSelectIndicator: function(e) {
@@ -117,7 +121,7 @@ ${demo.css}
              version = e.target.value;
 	      },
 	
-	      handleClick: function() {
+	      handleSubmit: function() {
 	         var data = {
 	            stockId : this.state.stockId,
 	            indicator : this.state.indicator,
@@ -129,7 +133,7 @@ ${demo.css}
             indicator = data.indicator;
             dateFrom = data.dateFrom;
             dateTo = data.dateTo;
-            //stockId = data.stockId;
+            stockId = data.stockId;
 	        
             if(data.indicator == "shenxian"){ 
 	           loadShenXian(data.version, stockId, data.dateFrom, data.dateTo);
@@ -145,20 +149,26 @@ ${demo.css}
 	           loadQSDD(data.version, stockId, data.dateFrom, data.dateTo);
             }
 	      },
-	      
-	      render: function(){
+
+          componentDidMount: function () {
+            var newState = {};
 
             $.ajaxSettings.async = false;
             var dateOptionsTmp = getLatestNDate(10);
             $.ajaxSettings.async = true;
             //first option is empty
-            this.state.dateOptions = [];
+            tmpDateOptions = [];
 
             for (var i = 0; i < dateOptionsTmp.length; i++) {
-                  this.state.dateOptions.push(
+                  tmpDateOptions.push(
                   <option value={dateOptionsTmp[i]}>{dateOptionsTmp[i]}</option>
                   );
             }
+
+	        newState["dateOptions"] = tmpDateOptions;
+          },
+	      
+	      render: function(){
 
 			      return (<div>
 			                  <select name='selectView' onChange={this.handleChangeSelectView}>
@@ -181,7 +191,7 @@ ${demo.css}
                               {this.state.dateOptions}
                               </select>&nbsp;&nbsp;
 
-			                  <select name='selectStockId' onChange={this.handleChangeSelectStockId}>
+			                  <select name='stockId' onChange={this.handleChangeSelectStockId}>
                               {this.state.stockIdOptions}
                               </select>&nbsp;&nbsp;
 			                  
@@ -200,7 +210,7 @@ ${demo.css}
                               <option value='v2' defaultValue>v2-后复权</option>
                               </select>&nbsp;&nbsp;
 			                  
-                              <input type="submit" value="Submit" onClick={this.handleClick} />
+                              <input type="submit" value="Submit" onClick={this.handleSubmit} />
 			              </div>
 			              );
 			     }         

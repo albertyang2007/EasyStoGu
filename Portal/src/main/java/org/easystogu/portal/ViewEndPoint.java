@@ -14,11 +14,14 @@ import javax.ws.rs.core.Context;
 import org.easystogu.config.ConfigurationService;
 import org.easystogu.config.DBConfigurationService;
 import org.easystogu.db.access.table.CheckPointDailySelectionTableHelper;
+import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.access.view.CommonViewHelper;
 import org.easystogu.db.vo.table.CheckPointDailySelectionVO;
+import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.db.vo.view.CommonViewVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.log.LogHelper;
+import org.easystogu.utils.Strings;
 import org.slf4j.Logger;
 
 public class ViewEndPoint {
@@ -28,6 +31,7 @@ public class ViewEndPoint {
 	private CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 	private CheckPointDailySelectionTableHelper checkPointDailySelectionTable = CheckPointDailySelectionTableHelper
 			.getInstance();
+	protected StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
 	private CommonViewHelper commonViewHelper = CommonViewHelper.getInstance();
 
 	@GET
@@ -37,15 +41,16 @@ public class ViewEndPoint {
 			@Context HttpServletRequest request, @Context HttpServletResponse response) {
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		String date = request.getParameter("date");
-		logger.debug("viewName=" + viewname + ",date=" + date);
+		String cixin = request.getParameter("cixin");
+		logger.debug("viewName=" + viewname + ",date=" + date + ",cixin=" + cixin);
 
 		if ("luzao_phaseII_zijinliu_top300".equals(viewname) || "luzao_phaseIII_zijinliu_top300".equals(viewname)
-				|| "luzao_phaseII_ddx_bigger_05".equals(viewname) || "cixin_luzao_phaseII_zijinliu_top300".equals(viewname)
-				|| "cixin_luzao_phaseIII_zijinliu_top300".equals(viewname)
-				|| "cixin_luzao_phaseII_ddx_bigger_05".equals(viewname)) {
+				|| "luzao_phaseII_ddx_bigger_05".equals(viewname)) {
 			// get result from view directory, since they are fast
 			String searchViewName = viewname + "_Details";
-			return this.commonViewHelper.queryByDateForViewDirectlySearch(searchViewName, date);
+			List<CommonViewVO> list = this.commonViewHelper.queryByDateForViewDirectlySearch(searchViewName, date);
+
+			return this.fliterCiXinGu(cixin, list);
 		}
 
 		// else get result for checkpoint data, since they are analyse daily and
@@ -62,6 +67,24 @@ public class ViewEndPoint {
 			list.add(cvo);
 		}
 
-		return list;
+		return this.fliterCiXinGu(cixin, list);
+	}
+
+	// fliter cixin
+	private List<CommonViewVO> fliterCiXinGu(String cixin, List<CommonViewVO> originList) {
+		if ("True".equalsIgnoreCase(cixin) && originList.size() > 0) {
+			List<CommonViewVO> cixinList = new ArrayList<CommonViewVO>();
+			int cixinStockLen = config.getInt("cixin_Stock_Length", 86 * 2);
+
+			for (CommonViewVO cvo : originList) {
+				int spLength = stockPriceTable.countByStockId(cvo.stockId);
+				if (spLength <= cixinStockLen) {
+					cixinList.add(cvo);
+				}
+			}
+			return cixinList;
+		}
+
+		return originList;
 	}
 }

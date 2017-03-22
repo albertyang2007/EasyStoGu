@@ -25,14 +25,6 @@ ${demo.css}
 		var dateFrom = moment().subtract(2000, 'days').format("YYYY-MM-DD");
 		var dateTo = moment().format("YYYY-MM-DD");
 
-		function getQueryString(name) {
-			var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
-			var r = window.location.search.substr(1).match(reg);
-			if (r != null)
-				return unescape(r[2]);
-			return null;
-		}
-
 		window.onload = function() {
 			indicator = getQueryString("indicator");
 
