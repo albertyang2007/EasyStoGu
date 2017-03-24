@@ -45,7 +45,7 @@ public class ViewEndPoint {
 		logger.debug("viewName=" + viewname + ",date=" + date + ",cixin=" + cixin);
 
 		if ("luzao_phaseII_zijinliu_top300".equals(viewname) || "luzao_phaseIII_zijinliu_top300".equals(viewname)
-				|| "luzao_phaseII_ddx_bigger_05".equals(viewname)) {
+				|| "luzao_phaseII_ddx_bigger_05".equals(viewname) || "luzao_phaseIII_ddx_bigger_05".equals(viewname)) {
 			// get result from view directory, since they are fast
 			String searchViewName = viewname + "_Details";
 			List<CommonViewVO> list = this.commonViewHelper.queryByDateForViewDirectlySearch(searchViewName, date);
