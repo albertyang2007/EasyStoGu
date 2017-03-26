@@ -259,6 +259,17 @@ public class WeekdayUtil {
 		return list;
 	}
 
+	// 返回某日后若干个工作日
+	public static String nextNWorkingDate(String today, int N) {
+		List<String> list = nextWorkingDateList(today, N);
+		if (list != null && list.size() > 0) {
+			String endDate = list.get(list.size() - 1);
+			return endDate;
+		}
+
+		return "";
+	}
+
 	// 返回某日至今天的所有工作日,both inclusive
 	public static List<String> getWorkingDateListSince(String fromDate) {
 		List<String> list = new ArrayList<String>();
@@ -304,6 +315,6 @@ public class WeekdayUtil {
 	}
 
 	public static void main(String[] args) {
-		System.out.println(WeekdayUtil.nextNDate("2017-03-25", 5));
+		System.out.println(WeekdayUtil.nextNWorkingDate("2017-03-26", 12));
 	}
 }
