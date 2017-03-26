@@ -36,13 +36,23 @@ demo
 	        };
 	      },
 	      
-	      handleChange: function(e) {
+	      handleTrendModeChange: function(e) {
 	         var newState = {};
 	         newState[e.target.name] = e.target.value;
 	         this.setState(newState);
+             
+             trendModeName = e.target.value;
+	      },
+
+	      handleNDaysChange: function(e) {
+	         var newState = {};
+	         newState[e.target.name] = e.target.value;
+	         this.setState(newState);
+
+             nDays = e.target.value;
 	      },
 	
-	      handleClick: function() {
+	      handleTrendModeSubmit: function() {
 	         var data = {
 	            trendModeName  :  this.state.trendModeName,
                 nDays :  this.state.nDays
@@ -94,12 +104,12 @@ demo
 
 			      return (<div>
                               <label>nDays</label>
-			                  <input type="text" value={this.state.nDays} name='nDays' maxLength="4" onChange={this.handleChange} />&nbsp;&nbsp;
+			                  <input type="text" value={this.state.nDays} name='nDays' maxLength="4" onChange={this.handleNDaysChange} />&nbsp;&nbsp;
 			                  <label>TrendModeName:</label>
-			                  <select name='trendModeName' onChange={this.handleChange}>
+			                  <select name='trendModeName' onChange={this.handleTrendModeChange}>
                               {this.state.options}
                               </select>&nbsp;&nbsp;
-                              <input type="submit" value="Submit" onClick={this.handleClick} />&nbsp;&nbsp;
+                              <input type="submit" value="Submit" onClick={this.handleTrendModeSubmit} />&nbsp;&nbsp;
 			              </div>
 			              );
 			     }         

@@ -304,6 +304,6 @@ public class WeekdayUtil {
 	}
 
 	public static void main(String[] args) {
-		System.out.println(WeekdayUtil.getWorkingDatesBetween("2016-11-20", "2016-11-21"));
+		System.out.println(WeekdayUtil.nextNDate("2017-03-25", 5));
 	}
 }
