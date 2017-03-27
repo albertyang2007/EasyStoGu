@@ -33,21 +33,23 @@ public class ModeGenerator {
 		tmpVO.setName(name);
 
 		// change the real stock price data to percentage
-		StockPriceVO curVO = spList.get(0);
-		for (int i = 1; i < spList.size(); i++) {
-			StockPriceVO vo = spList.get(i);
+		if (spList.size() > 0) {
+			StockPriceVO curVO = spList.get(0);
+			for (int i = 1; i < spList.size(); i++) {
+				StockPriceVO vo = spList.get(i);
 
-			SimplePriceVO spvo = new SimplePriceVO();
-			spvo.close = Strings.convert2ScaleDecimal(100.0 * (vo.close - curVO.close) / curVO.close);
-			spvo.open = Strings.convert2ScaleDecimal(100.0 * (vo.open - curVO.close) / curVO.close);
-			spvo.high = Strings.convert2ScaleDecimal(100.0 * (vo.high - curVO.close) / curVO.close);
-			spvo.low = Strings.convert2ScaleDecimal(100.0 * (vo.low - curVO.close) / curVO.close);
-			spvo.volume = Strings.convert2ScaleDecimal(vo.volume * 1.0 / curVO.volume);
-			spvo.date = vo.date;
-			spvo.stockId = vo.stockId;
-			// set next vo to curVO
-			curVO = vo;
-			tmpVO.getPrices().add(spvo);
+				SimplePriceVO spvo = new SimplePriceVO();
+				spvo.close = Strings.convert2ScaleDecimal(100.0 * (vo.close - curVO.close) / curVO.close);
+				spvo.open = Strings.convert2ScaleDecimal(100.0 * (vo.open - curVO.close) / curVO.close);
+				spvo.high = Strings.convert2ScaleDecimal(100.0 * (vo.high - curVO.close) / curVO.close);
+				spvo.low = Strings.convert2ScaleDecimal(100.0 * (vo.low - curVO.close) / curVO.close);
+				spvo.volume = Strings.convert2ScaleDecimal(vo.volume * 1.0 / curVO.volume);
+				spvo.date = vo.date;
+				spvo.stockId = vo.stockId;
+				// set next vo to curVO
+				curVO = vo;
+				tmpVO.getPrices().add(spvo);
+			}
 		}
 
 		return tmpVO;
@@ -77,9 +79,10 @@ public class ModeGenerator {
 		saveToFile(generateTrendMode("Break_Platform_1", "长平台整理,阶梯上升", "600021", "2015-01-20", "2015-04-17"));
 		saveToFile(generateTrendMode("Break_Platform_2", "短平台整理,阶梯上升", "000979", "2015-02-25", "2015-04-14"));
 		saveToFile(generateTrendMode("Break_Platform_3", "短平台整理,阶梯上升", "300216", "2015-03-06", "2015-04-28"));
-		saveToFile(generateTrendMode("ZiMaKaiHua", "芝麻开花,节节高", "600408", "2015-02-06", "2015-03-24"));	
+		saveToFile(generateTrendMode("ZiMaKaiHua", "芝麻开花,节节高", "600408", "2015-02-06", "2015-03-24"));
 		saveToFile(generateTrendMode("ZiMaKaiHua2", "芝麻开花,节节高", "603866", "2016-04-22", "2016-05-11"));
 		saveToFile(generateTrendMode("SuoLiangHuiTiao", "缩量回调，20日均线支撑", "603866", "2016-03-24", "2016-05-23"));
+		saveToFile(generateTrendMode("None", "None", "999999", "2016-01-01", "2016-01-01"));
 	}
 
 	public static void main(String[] args) {

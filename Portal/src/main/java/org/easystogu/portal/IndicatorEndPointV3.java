@@ -263,8 +263,10 @@ public class IndicatorEndPointV3 {
 					String trendModeName = jsonParm.getString("trendModeName");
 					if (Strings.isNotEmpty(trendModeName)) {
 						TrendModeVO tmo = trendModeLoader.loadTrendMode(trendModeName);
-						String newEndDate = WeekdayUtil.nextNWorkingDate(endDate, tmo.length);
-						return fromDate + "_" + newEndDate;
+						if (tmo.prices.size() > 0) {
+							String newEndDate = WeekdayUtil.nextNWorkingDate(endDate, tmo.length);
+							return fromDate + "_" + newEndDate;
+						}
 					}
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block

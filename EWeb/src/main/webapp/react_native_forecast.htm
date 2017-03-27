@@ -1,0 +1,155 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<script type="text/javascript" src="js/reactjs_0.13.0/JSXTransformer.js"></script>
+<script type="text/javascript" src="js/reactjs_0.13.0/react.js"></script>
+<script type="text/javascript" src="js/jquery_1.8.2/jquery.min.js"></script>
+<script type="text/javascript" src="js/easystogu/requestForecastData.js"></script>
+<script type="text/javascript" src="js/easystogu/requestStockData.js"></script>
+<script type="text/javascript" src="js/easystogu/common.js"></script>
+<script type="text/javascript" src="js/easystogu/createChart.js"></script>
+<script type="text/javascript" src="js/3pp/moment.min.js"></script>
+<style type="text/css">
+${
+demo
+.css
+}
+</style>
+</head>
+<body>
+      <script type="text/jsx">      
+          var stockId = "999999";
+          var indicator = "luzao";
+          var dateFrom = moment().subtract(2000, 'days').format("YYYY-MM-DD");
+          var dateTo = moment().format("YYYY-MM-DD");
+          var trendModeName = "None";
+          var nDays = "1";
+
+	      var ParmForm = React.createClass({
+	         getInitialState: function() {
+	         return {
+	            stockId: "999999",
+	            indicator: "luzao",
+                version: "v2",
+	            dateFrom: moment().subtract(2000, 'days').format("YYYY-MM-DD"),
+	            dateTo: moment().format("YYYY-MM-DD"),
+	            trendModeName: "None",
+                nDays : "1" 
+	        };
+	      },
+	      
+	      handleChange: function(e) {
+	         var newState = {};
+	         newState[e.target.name] = e.target.value;
+	         this.setState(newState);
+	      },
+	
+	      handleClick: function() {
+	         var data = {
+	            stockId : this.state.stockId,
+	            indicator : this.state.indicator,
+                version: this.state.version, 
+	            dateFrom : this.state.dateFrom,
+	            dateTo : this.state.dateTo,
+	        };
+
+	        var reqParms = {
+		        "trendModeName" : this.state.trendModeName,
+                "nDays" : this.state.nDays
+	        };
+
+            // set ajax async to false just to query the stock company info
+            $.ajaxSettings.async = false;
+
+            // convert the stock name to sotckId if input parm is not a stockId
+            var stockIdRegex = new RegExp('[0-9]{6}','g');
+            if(!data.stockId.match(stockIdRegex)){
+            	 var companyInfo = loadCompanyInfoByName(data.stockId);
+               data.stockId = companyInfo.stockId;
+               stockId = data.stockId;
+            }
+
+            indicator = data.indicator;
+            dateFrom = data.dateFrom;
+            dateTo = data.dateTo;
+            stockId = data.stockId;
+
+            //reset ajax async to true when load big data from portal
+            $.ajaxSettings.async = true;
+	        
+            if(indicator == "shenxian"){ 
+	           loadShenXianWithReqParms(stockId, dateFrom, dateTo, reqParms);
+            }else if(indicator == "luzao"){ 
+	           loadLuZaoWithReqParms(stockId, dateFrom, dateTo, reqParms);
+            }else if(indicator == "boll"){ 
+	           loadBollWithReqParms(stockId, dateFrom, dateTo, reqParms);
+            }else if(indicator == "macd"){ 
+	           loadMacdWithReqParms(stockId, dateFrom, dateTo, reqParms);
+            }else if(indicator == "qsdd"){ 
+	           loadQsddWithReqParms(stockId, dateFrom, dateTo, reqParms);
+            }
+	      },
+
+          componentDidMount: function () {                 
+                  // By defaut show the 999999 luzhao data
+                  loadLuZao('v2', '999999', dateFrom, dateTo);
+          },
+	      
+	      render: function(){
+			      return (<div>
+			                  <input type="text" value={this.state.stockId} name='stockId' maxLength="6" onChange={this.handleChange} />&nbsp;&nbsp;
+			                  
+			                  <select name='indicator' onChange={this.handleChange}>
+                              <option value='luzao' defaultValue>luzao</option>
+                              <option value='shenxian'>shenxian</option>
+                              <option value='macd'>macd</option>
+                              <option value='boll'>boll</option>
+                              <option value='qsdd'>qsdd</option>
+                              </select>&nbsp;&nbsp;
+
+			                  <select name='version' onChange={this.handleChange}>
+                              <option value='v2' defaultValue>v2-后复权</option>
+                              <option value='v0'>v0-不复权</option>
+                              <option value='v1'>v1-前复权</option>
+                              </select>&nbsp;&nbsp;
+
+			                  <label>预测形态:</label>
+			                  <select name='trendModeName' onChange={this.handleChange}>
+                              <option value='None' defaultValue>None</option>
+                              <option value='BaoDie'>暴跌</option>
+                              <option value='BaoDie2'>暴跌2</option>
+                              <option value='BaoZhang'>暴涨</option>
+                              <option value='BaoZhang2'>暴涨2</option>
+                              <option value='Break_Platform_1'>平台突破</option>
+                              <option value='Break_Platform_2'>平台突破2</option>
+                              <option value='Break_Platform_3'>平台突破3</option>
+                              <option value='Platform_8'>长平台整理</option>
+                              <option value='GuoQingHangQing'>国庆行情</option>
+                              <option value='M_Tou'>M头</option>
+                              <option value='SuoLiangHuiTiao'>缩量回调</option>
+                              <option value='ZiMaKaiHua'>芝麻开花</option>
+                              <option value='ZiMaKaiHua2'>芝麻开花2</option>
+                              </select>&nbsp;&nbsp;
+			                  
+                              <input type="submit" value="Submit" onClick={this.handleClick} />
+			              </div>
+			              );
+			     }         
+	      });
+	      
+	      React.render(<ParmForm />,
+	      document.getElementById("containerForm")
+	      );
+      </script>
+
+	<script type="text/javascript" src="js/highstock_4.2.1/highstock.js"></script>
+	<script type="text/javascript"
+		src="js/highstock_4.2.1/modules/exporting.js"></script>
+	<div>
+		<div id="forecastForm"></div>
+		<div id="containerForm"></div>
+		<div id="container" style="height: 100%; min-width: 100%; position:fixed;"></div>
+	</div>
+</body>
+</html>
