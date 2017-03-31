@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.easystogu.db.access.table.cache.CacheAbleStock;
 import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
 import org.easystogu.db.vo.table.BollVO;
 import org.easystogu.log.LogHelper;
@@ -17,7 +18,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
-public class IndBollTableHelper {
+public class IndBollTableHelper implements CacheAbleStock{
 	private static Logger logger = LogHelper.getLogger(IndBollTableHelper.class);
 	private static IndBollTableHelper instance = null;
 	private static IndBollTableHelper georedInstance = null;
@@ -219,6 +220,10 @@ public class IndBollTableHelper {
 			return new ArrayList<BollVO>();
 		}
 	}
+	
+	public List queryByStockId(String stockId) {
+		return this.getAllBoll(stockId);
+	}
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -238,5 +243,4 @@ public class IndBollTableHelper {
 			e.printStackTrace();
 		}
 	}
-
 }

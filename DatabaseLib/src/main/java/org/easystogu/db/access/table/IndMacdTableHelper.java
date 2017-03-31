@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.easystogu.db.access.table.cache.CacheAbleStock;
 import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
 import org.easystogu.db.vo.table.MacdVO;
 import org.easystogu.log.LogHelper;
@@ -17,7 +18,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
-public class IndMacdTableHelper {
+public class IndMacdTableHelper implements CacheAbleStock {
 	private static Logger logger = LogHelper.getLogger(IndMacdTableHelper.class);
 	private static IndMacdTableHelper instance = null;
 	private static IndMacdTableHelper georedInstance = null;
@@ -219,6 +220,10 @@ public class IndMacdTableHelper {
 			e.printStackTrace();
 			return new ArrayList<MacdVO>();
 		}
+	}
+
+	public List queryByStockId(String stockId) {
+		return this.getAllMacd(stockId);
 	}
 
 	public static void main(String[] args) {

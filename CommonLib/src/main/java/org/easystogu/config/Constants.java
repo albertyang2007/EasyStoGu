@@ -21,4 +21,15 @@ public class Constants {
 	public static final String ZONE_OFFICE = "office";
 	public static final String ZONE_HOME = "home";
 	public static final String ZONE_ALIYUN = "aliyun";
+	
+	public static String stockPrice = "stockPrice";
+	public static String qianFuQuanStockPrice = "qianFuQuanStockPrice";
+	public static String indKDJ = "indKDJ";
+	public static String indMacd = "indMacd";
+	public static String indBoll = "indBoll";
+	public static String indMA = "indMA";
+	public static String indShenXian = "indShenXian";
+	public static String indQSDD = "indQSDD";
+	public static String indWR = "indWR";
+	public static String indDDX = "indDDX";
 }

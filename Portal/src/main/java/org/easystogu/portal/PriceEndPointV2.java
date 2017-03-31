@@ -14,38 +14,39 @@ import javax.ws.rs.core.Context;
 import org.easystogu.config.ConfigurationService;
 import org.easystogu.config.DBConfigurationService;
 import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
+import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.vo.table.StockPriceVO;
-import org.easystogu.file.access.CompanyInfoFileHelper;
+import org.easystogu.cache.StockCacheUtil;
 import org.easystogu.utils.Strings;
+import org.easystogu.config.Constants;
+import org.easystogu.cache.StockCacheUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 
-//v2, hou FuQuan stockprice 
-public class PriceEndPointV2 {
-	private ConfigurationService config = DBConfigurationService.getInstance();
-	private String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
-	protected static String HHmmss = "00:00:00";
-	protected CompanyInfoFileHelper companyInfoHelper = CompanyInfoFileHelper.getInstance();
-	protected QianFuQuanStockPriceTableHelper qianfuquanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
-	@Autowired
-	protected ProcessRequestParmsInPostBody postParmsProcess;
-	private String dateRegex = "[0-9]{4}-[0-9]{2}-[0-9]{2}";
-	private String fromToRegex = dateRegex + "_" + dateRegex;
+//v2, qian FuQuan stockprice 
+public class PriceEndPointV2 extends PriceEndPointV0{
+	protected StockPriceTableHelper stockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
 
+	@Override
 	@GET
 	@Path("/{stockId}/{date}")
 	@Produces("application/json")
 	public List<StockPriceVO> queryDayPriceById(@PathParam("stockId") String stockIdParm,
 			@PathParam("date") String dateParm, @Context HttpServletResponse response) {
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
-
 		List<StockPriceVO> spList = new ArrayList<StockPriceVO>();
+		
 		if (Pattern.matches(fromToRegex, dateParm)) {
 			String date1 = dateParm.split("_")[0];
 			String date2 = dateParm.split("_")[1];
-			spList = qianfuquanStockPriceTable.getStockPriceByIdAndBetweenDate(stockIdParm, date1, date2);
-		}
-		if (Pattern.matches(dateRegex, dateParm) || Strings.isEmpty(dateParm)) {
-			spList.add(qianfuquanStockPriceTable.getStockPriceByIdAndDate(stockIdParm, dateParm));
+			List<Object> cacheSpList = stockCacheUtil.queryByStockId(Constants.qianFuQuanStockPrice + ":" +stockIdParm);
+			for (Object obj : cacheSpList) {
+				StockPriceVO spvo = (StockPriceVO)obj;
+				if (Strings.isDateSelected(date1 + " " + HHmmss, date2 + " " + HHmmss, spvo.date + " " + HHmmss)) {
+					spList.add(spvo);
+				}
+			}
+		} else if (Pattern.matches(dateRegex, dateParm) || Strings.isEmpty(dateParm)) {
+			spList.add(stockPriceTable.getStockPriceByIdAndDate(stockIdParm, dateParm));
 		}
 
 		return spList;

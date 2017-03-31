@@ -1,5 +1,6 @@
 package org.easystogu.portal;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
@@ -12,6 +13,9 @@ import org.easystogu.trendmode.vo.SimplePriceVO;
 import org.easystogu.trendmode.vo.TrendModeVO;
 import org.easystogu.utils.Strings;
 import org.easystogu.utils.WeekdayUtil;
+import org.easystogu.cache.StockCacheUtil;
+import org.easystogu.config.Constants;
+import org.easystogu.cache.StockCacheUtil;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +30,7 @@ public class ProcessRequestParmsInPostBody {
 	protected StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
 	protected CompanyInfoFileHelper companyInfoHelper = CompanyInfoFileHelper.getInstance();
 	protected MergeNDaysPriceUtil mergeNdaysPriceHeloer = new MergeNDaysPriceUtil();
+	protected StockCacheUtil stockCacheUtil = StockCacheUtil.getInstance();
 	@Autowired
 	protected TrendModeLoader trendModeLoader;
 
@@ -63,10 +68,10 @@ public class ProcessRequestParmsInPostBody {
 		// parse the forecast body and add back to spList
 		StockPriceVO curSPVO = spList.get(spList.size() - 1);
 		TrendModeVO tmo = trendModeLoader.loadTrendMode(trendModeName);
-		
+
 		if (tmo.prices.size() == 0)
 			return spList;
-		
+
 		List<String> nextWorkingDateList = WeekdayUtil.nextWorkingDateList(curSPVO.date, tmo.prices.size());
 
 		for (int i = 0; i < tmo.prices.size(); i++) {
@@ -90,7 +95,11 @@ public class ProcessRequestParmsInPostBody {
 
 	// common function to fetch price from stockPrice table
 	private List<StockPriceVO> fetchAllPrices(String stockid) {
-		return this.qianFuQuanStockPriceTable.getStockPriceById(stockid);
+		List<StockPriceVO> spList = new ArrayList<StockPriceVO>();
+		List<Object> tmpList = this.stockCacheUtil.queryByStockId(Constants.qianFuQuanStockPrice + ":" +stockid);
+		for (Object obj : tmpList) {
+			spList.add((StockPriceVO)obj);
+		}
+		return spList;
 	}
-
 }

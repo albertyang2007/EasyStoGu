@@ -12,6 +12,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 
 import org.easystogu.config.ConfigurationService;
+import org.easystogu.config.Constants;
+import org.easystogu.cache.StockCacheUtil;
 import org.easystogu.config.DBConfigurationService;
 import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.vo.table.BollVO;
@@ -37,11 +39,11 @@ import com.google.common.primitives.Doubles;
 
 //V0, query stockprice (no chuquan) and count in real time
 public class IndicatorEndPointV0 {
-	private ConfigurationService config = DBConfigurationService.getInstance();
-	private String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
+	protected ConfigurationService config = DBConfigurationService.getInstance();
+	protected String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
 	protected static String HHmmss = "00:00:00";
 	protected CompanyInfoFileHelper companyInfoHelper = CompanyInfoFileHelper.getInstance();
-	protected StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
+	protected StockCacheUtil cacheUtil = StockCacheUtil.getInstance();
 	protected MACDHelper macdHelper = new MACDHelper();
 	protected KDJHelper kdjHelper = new KDJHelper();
 	protected ShenXianHelper shenXianHelper = new ShenXianHelper();
@@ -262,7 +264,12 @@ public class IndicatorEndPointV0 {
 
 	// common function to fetch price from stockPrice table
 	protected List<StockPriceVO> fetchAllPrices(String stockid) {
-		return this.stockPriceTable.getStockPriceById(stockid);
+		List<StockPriceVO> spList = new ArrayList<StockPriceVO>();
+		List<Object> cacheSpList = cacheUtil.queryByStockId(Constants.stockPrice + ":" +stockid);
+		for (Object obj : cacheSpList) {
+			spList.add((StockPriceVO)obj);
+		}
+		return spList;
 	}
 
 	protected boolean isStockDateSelected(String date, String aDate) {

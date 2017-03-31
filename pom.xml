@@ -36,6 +36,7 @@
 				<module>Scheduled</module>
 				<module>TrendMode</module>
 				<module>DatabaseReplicate</module>
+				<module>Cache</module>
 			</modules>
 		</profile>
 	</profiles>

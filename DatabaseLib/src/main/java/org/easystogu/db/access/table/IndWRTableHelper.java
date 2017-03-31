@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.easystogu.db.access.table.cache.CacheAbleStock;
 import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
 import org.easystogu.db.vo.table.WRVO;
 import org.easystogu.log.LogHelper;
@@ -17,7 +18,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
-public class IndWRTableHelper {
+public class IndWRTableHelper implements CacheAbleStock {
 	private static Logger logger = LogHelper.getLogger(IndQSDDTableHelper.class);
 	private static IndWRTableHelper instance = null;
 	private static IndWRTableHelper georedInstance = null;
@@ -133,7 +134,7 @@ public class IndWRTableHelper {
 			this.insert(vo);
 		}
 	}
-	
+
 	public List<WRVO> getByDate(String date) {
 		try {
 
@@ -218,6 +219,10 @@ public class IndWRTableHelper {
 			e.printStackTrace();
 		}
 		return new ArrayList<WRVO>();
+	}
+
+	public List queryByStockId(String stockId) {
+		return this.getAllWR(stockId);
 	}
 
 	public static void main(String[] args) {

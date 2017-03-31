@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.easystogu.db.access.table.cache.CacheAbleStock;
 import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
 import org.easystogu.db.vo.table.QSDDVO;
 import org.easystogu.log.LogHelper;
@@ -17,7 +18,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
-public class IndQSDDTableHelper {
+public class IndQSDDTableHelper implements CacheAbleStock{
 	private static Logger logger = LogHelper.getLogger(IndQSDDTableHelper.class);
 	private static IndQSDDTableHelper instance = null;
 	private static IndQSDDTableHelper georedInstance = null;
@@ -220,6 +221,10 @@ public class IndQSDDTableHelper {
 		return new ArrayList<QSDDVO>();
 	}
 
+	public List queryByStockId(String stockId) {
+		return this.getAllQSDD(stockId);
+	}
+	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		IndQSDDTableHelper ins = IndQSDDTableHelper.getInstance();
