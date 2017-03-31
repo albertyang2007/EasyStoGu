@@ -17,7 +17,7 @@ import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.utils.Strings;
-import org.easystogu.cache.StockCacheUtil;
+import org.easystogu.cache.StockIndicatorCache;
 import org.easystogu.config.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -27,7 +27,7 @@ public class PriceEndPointV1 {
 	private String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
 	protected static String HHmmss = "00:00:00";
 	protected StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
-	protected StockCacheUtil stockCacheUtil = StockCacheUtil.getInstance();
+	protected StockIndicatorCache indicatorCache = StockIndicatorCache.getInstance();
 
 	@Autowired
 	protected ProcessRequestParmsInPostBody postParmsProcess;
@@ -45,7 +45,7 @@ public class PriceEndPointV1 {
 		if (Pattern.matches(fromToRegex, dateParm)) {
 			String date1 = dateParm.split("_")[0];
 			String date2 = dateParm.split("_")[1];
-			List<Object> cacheSpList = stockCacheUtil.queryByStockId(Constants.qianFuQuanStockPrice + ":" +stockIdParm);
+			List<Object> cacheSpList = indicatorCache.queryByStockId(Constants.cacheQianFuQuanStockPrice + ":" +stockIdParm);
 			for (Object obj : cacheSpList) {
 				StockPriceVO spvo = (StockPriceVO)obj;
 				if (Strings.isDateSelected(date1 + " " + HHmmss, date2 + " " + HHmmss, spvo.date + " " + HHmmss)) {

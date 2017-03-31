@@ -14,12 +14,15 @@ import org.easystogu.config.DBConfigurationService;
 import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.vo.table.CompanyInfoVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
+import org.easystogu.cache.StockPriceCache;
+import org.easystogu.config.Constants;
 
 public class CompanyInfoEndPoint {
 	private ConfigurationService config = DBConfigurationService.getInstance();
 	private String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
 	private StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
 	private CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
+	private StockPriceCache stockPriceCache = StockPriceCache.getInstance();
 
 	@GET
 	@Path("/{stockId}")
@@ -42,6 +45,6 @@ public class CompanyInfoEndPoint {
 	@Produces("application/json")
 	public List<String> getLatestDate(@PathParam("limit") int limit, @Context HttpServletResponse response) {
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
-		return stockPriceTable.getLatestNStockDate(limit);
+		return this.stockPriceCache.get(Constants.cacheLatestNStockDate + ":" + limit);
 	}
 }

@@ -111,6 +111,7 @@ public class HouFuQuanStockPriceTableHelper extends StockPriceTableHelper {
 		COUNT_ALL_SQL = "SELECT count(*) AS rtn from " + tableName;
 		// select all distinct stockIDs
 		QUERY_DISTINCT_ID = "SELECT distinct(stockid) AS rtn FROM " + tableName + " order by stockid";
+		QUERY_DEAL_DATE_BY_ID = "SELECT date AS rtn FROM " + tableName + " WHERE stockId = :stockId ORDER BY date DESC";
 	}
 
 	public static void main(String[] args) {

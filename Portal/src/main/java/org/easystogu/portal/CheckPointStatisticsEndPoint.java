@@ -13,18 +13,25 @@ import javax.ws.rs.core.Context;
 
 import org.easystogu.checkpoint.DailyCombineCheckPoint;
 import org.easystogu.config.ConfigurationService;
+import org.easystogu.config.Constants;
 import org.easystogu.config.DBConfigurationService;
 import org.easystogu.db.access.table.CheckPointDailyStatisticsTableHelper;
-import org.easystogu.db.access.table.StockPriceTableHelper;
+import org.easystogu.db.vo.table.CheckPointDailyStatisticsVO;
 import org.easystogu.portal.vo.StatisticsVO;
 import org.easystogu.utils.WeekdayUtil;
+import org.easystogu.cache.StockPriceCache;
+import org.easystogu.cache.CheckPointStatisticsCache;
 
 public class CheckPointStatisticsEndPoint {
 	private ConfigurationService config = DBConfigurationService.getInstance();
 	private String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
-	private CheckPointDailyStatisticsTableHelper checkPointStatisticsTable = CheckPointDailyStatisticsTableHelper
-			.getInstance();
-	private StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
+	// private CheckPointDailyStatisticsTableHelper checkPointStatisticsTable =
+	// CheckPointDailyStatisticsTableHelper
+	// .getInstance();
+	// private StockPriceTableHelper stockPriceTable =
+	// StockPriceTableHelper.getInstance();
+	private CheckPointStatisticsCache checkPointStatisticsCache = CheckPointStatisticsCache.getInstance();
+	private StockPriceCache stockPriceCache = StockPriceCache.getInstance();
 	private String dateRegex = "[0-9]{4}-[0-9]{2}-[0-9]{2}";
 	private String fromToRegex = dateRegex + "_" + dateRegex;
 
@@ -39,18 +46,34 @@ public class CheckPointStatisticsEndPoint {
 			String date1 = dateParm.split("_")[0];
 			String date2 = dateParm.split("_")[1];
 
-			List<String> dateList = stockPriceTable.getDayListByIdAndBetweenDates("999999", date1, date2);
+			// List<String> dateList =
+			// stockPriceTable.getSZZSDayListByIdAndBetweenDates(date1, date2);
+			List<String> dateList = this.stockPriceCache
+					.get(Constants.cacheSZZSDayListByIdAndBetweenDates + ":" + date1 + ":" + date2);
+
+			List<CheckPointDailyStatisticsVO> statisticsList = checkPointStatisticsCache.get(date1 + ":" + date2);
+
 			for (String date : dateList) {
 				StatisticsVO vo = new StatisticsVO();
 				vo.date = date;
-				vo.count1 = checkPointStatisticsTable.countByDateAndCheckPoint(date,
-						DailyCombineCheckPoint.Trend_PhaseI_GuanCha.name());
-				vo.count2 = checkPointStatisticsTable.countByDateAndCheckPoint(date,
-						DailyCombineCheckPoint.Trend_PhaseII_JianCang.name());
-				vo.count3 = checkPointStatisticsTable.countByDateAndCheckPoint(date,
-						DailyCombineCheckPoint.Trend_PhaseIII_ChiGu.name());
-				vo.count4 = checkPointStatisticsTable.countByDateAndCheckPoint(date,
-						DailyCombineCheckPoint.Trend_PhaseVI_JianCang.name());
+				vo.count1 = this.getCount(statisticsList, date, DailyCombineCheckPoint.Trend_PhaseI_GuanCha.name());
+				vo.count2 = this.getCount(statisticsList, date, DailyCombineCheckPoint.Trend_PhaseII_JianCang.name());
+				vo.count3 = this.getCount(statisticsList, date, DailyCombineCheckPoint.Trend_PhaseIII_ChiGu.name());
+				vo.count4 = this.getCount(statisticsList, date, DailyCombineCheckPoint.Trend_PhaseVI_JianCang.name());
+				/*
+				 * vo.count1 =
+				 * checkPointStatisticsTable.countByDateAndCheckPoint(date,
+				 * DailyCombineCheckPoint.Trend_PhaseI_GuanCha.name());
+				 * vo.count2 =
+				 * checkPointStatisticsTable.countByDateAndCheckPoint(date,
+				 * DailyCombineCheckPoint.Trend_PhaseII_JianCang.name());
+				 * vo.count3 =
+				 * checkPointStatisticsTable.countByDateAndCheckPoint(date,
+				 * DailyCombineCheckPoint.Trend_PhaseIII_ChiGu.name());
+				 * vo.count4 =
+				 * checkPointStatisticsTable.countByDateAndCheckPoint(date,
+				 * DailyCombineCheckPoint.Trend_PhaseVI_JianCang.name());
+				 */
 				list.add(vo);
 			}
 		}
@@ -69,20 +92,45 @@ public class CheckPointStatisticsEndPoint {
 			String date1 = dateParm.split("_")[0];
 			String date2 = dateParm.split("_")[1];
 
-			List<String> dateList = stockPriceTable.getDayListByIdAndBetweenDates("999999", date1, date2);
+			// List<String> dateList =
+			// stockPriceTable.getSZZSDayListByIdAndBetweenDates(date1, date2);
+			List<String> dateList = this.stockPriceCache
+					.get(Constants.cacheSZZSDayListByIdAndBetweenDates + ":" + date1 + ":" + date2);
+			List<CheckPointDailyStatisticsVO> statisticsList = checkPointStatisticsCache.get(date1 + ":" + date2);
+
 			for (String date : dateList) {
 				StatisticsVO vo = new StatisticsVO();
 				vo.date = date;
-				vo.count1 = checkPointStatisticsTable.countByDateAndCheckPoint(date,
+
+				vo.count1 = this.getCount(statisticsList, date,
 						DailyCombineCheckPoint.LuZao_GordonO_MA43_DownCross_MA86.name());
-				vo.count2 = checkPointStatisticsTable.countByDateAndCheckPoint(date,
+				vo.count2 = this.getCount(statisticsList, date,
 						DailyCombineCheckPoint.LuZao_GordonI_MA19_UpCross_MA43.name());
-				vo.count3 = checkPointStatisticsTable.countByDateAndCheckPoint(date,
+				vo.count3 = this.getCount(statisticsList, date,
 						DailyCombineCheckPoint.LuZao_GordonII_MA19_UpCross_MA86.name());
-				vo.count4 = checkPointStatisticsTable.countByDateAndCheckPoint(date,
+				vo.count4 = this.getCount(statisticsList, date,
 						DailyCombineCheckPoint.LuZao_DeadI_MA43_UpCross_MA86.name());
-				vo.count5 = checkPointStatisticsTable.countByDateAndCheckPoint(date,
+				vo.count5 = this.getCount(statisticsList, date,
 						DailyCombineCheckPoint.LuZao_DeadII_MA19_DownCross_MA43.name());
+
+				/*
+				 * vo.count1 =
+				 * checkPointStatisticsTable.countByDateAndCheckPoint(date,
+				 * DailyCombineCheckPoint.LuZao_GordonO_MA43_DownCross_MA86.name
+				 * ()); vo.count2 =
+				 * checkPointStatisticsTable.countByDateAndCheckPoint(date,
+				 * DailyCombineCheckPoint.LuZao_GordonI_MA19_UpCross_MA43.name()
+				 * ); vo.count3 =
+				 * checkPointStatisticsTable.countByDateAndCheckPoint(date,
+				 * DailyCombineCheckPoint.LuZao_GordonII_MA19_UpCross_MA86.name(
+				 * )); vo.count4 =
+				 * checkPointStatisticsTable.countByDateAndCheckPoint(date,
+				 * DailyCombineCheckPoint.LuZao_DeadI_MA43_UpCross_MA86.name());
+				 * vo.count5 =
+				 * checkPointStatisticsTable.countByDateAndCheckPoint(date,
+				 * DailyCombineCheckPoint.LuZao_DeadII_MA19_DownCross_MA43.name(
+				 * ));
+				 */
 				list.add(vo);
 			}
 		}
@@ -101,17 +149,28 @@ public class CheckPointStatisticsEndPoint {
 			String date1 = dateParm.split("_")[0];
 			String date2 = dateParm.split("_")[1];
 
+			List<String> allDealDateList = this.stockPriceCache.get(Constants.cacheAllDealDate + ":999999");
 			List<String> dateList = WeekdayUtil.getWorkingDatesBetween(date1, date2);
+			List<CheckPointDailyStatisticsVO> statisticsList = checkPointStatisticsCache.get(date1 + ":" + date2);
+
 			for (String date : dateList) {
-				if (stockPriceTable.isDateInDealDate(date)) {
+				if (this.isDateInDealDate(allDealDateList, date)) {
 					StatisticsVO vo = new StatisticsVO();
 					vo.date = date;
-					vo.count1 = checkPointStatisticsTable.countByDateAndCheckPoint(date,
-							DailyCombineCheckPoint.QSDD_Top_Area.name());
-					vo.count2 = checkPointStatisticsTable.countByDateAndCheckPoint(date,
-							DailyCombineCheckPoint.QSDD_Bottom_Area.name());
-					vo.count3 = checkPointStatisticsTable.countByDateAndCheckPoint(date,
-							DailyCombineCheckPoint.QSDD_Bottom_Gordon.name());
+
+					vo.count1 = this.getCount(statisticsList, date, DailyCombineCheckPoint.QSDD_Top_Area.name());
+					vo.count2 = this.getCount(statisticsList, date, DailyCombineCheckPoint.QSDD_Bottom_Area.name());
+					vo.count3 = this.getCount(statisticsList, date, DailyCombineCheckPoint.QSDD_Bottom_Gordon.name());
+					/*
+					 * vo.count1 =
+					 * checkPointStatisticsTable.countByDateAndCheckPoint(date,
+					 * DailyCombineCheckPoint.QSDD_Top_Area.name()); vo.count2 =
+					 * checkPointStatisticsTable.countByDateAndCheckPoint(date,
+					 * DailyCombineCheckPoint.QSDD_Bottom_Area.name());
+					 * vo.count3 =
+					 * checkPointStatisticsTable.countByDateAndCheckPoint(date,
+					 * DailyCombineCheckPoint.QSDD_Bottom_Gordon.name());
+					 */
 					list.add(vo);
 				}
 			}
@@ -131,15 +190,25 @@ public class CheckPointStatisticsEndPoint {
 			String date1 = dateParm.split("_")[0];
 			String date2 = dateParm.split("_")[1];
 
+			List<String> allDealDateList = this.stockPriceCache.get(Constants.cacheAllDealDate + ":999999");
 			List<String> dateList = WeekdayUtil.getWorkingDatesBetween(date1, date2);
+			List<CheckPointDailyStatisticsVO> statisticsList = checkPointStatisticsCache.get(date1 + ":" + date2);
+
 			for (String date : dateList) {
-				if (stockPriceTable.isDateInDealDate(date)) {
+				if (this.isDateInDealDate(allDealDateList, date)) {
 					StatisticsVO vo = new StatisticsVO();
 					vo.date = date;
-					vo.count1 = checkPointStatisticsTable.countByDateAndCheckPoint(date,
-							DailyCombineCheckPoint.ShenXian_Gordon.name());
-					vo.count2 = checkPointStatisticsTable.countByDateAndCheckPoint(date,
-							DailyCombineCheckPoint.ShenXian_Dead.name());
+
+					vo.count1 = this.getCount(statisticsList, date, DailyCombineCheckPoint.ShenXian_Gordon.name());
+					vo.count2 = this.getCount(statisticsList, date, DailyCombineCheckPoint.ShenXian_Dead.name());
+					/*
+					 * vo.count1 =
+					 * checkPointStatisticsTable.countByDateAndCheckPoint(date,
+					 * DailyCombineCheckPoint.ShenXian_Gordon.name()); vo.count2
+					 * =
+					 * checkPointStatisticsTable.countByDateAndCheckPoint(date,
+					 * DailyCombineCheckPoint.ShenXian_Dead.name());
+					 */
 					list.add(vo);
 				}
 			}
@@ -159,15 +228,23 @@ public class CheckPointStatisticsEndPoint {
 			String date1 = dateParm.split("_")[0];
 			String date2 = dateParm.split("_")[1];
 
+			List<String> allDealDateList = this.stockPriceCache.get(Constants.cacheAllDealDate + ":999999");
 			List<String> dateList = WeekdayUtil.getWorkingDatesBetween(date1, date2);
+			List<CheckPointDailyStatisticsVO> statisticsList = checkPointStatisticsCache.get(date1 + ":" + date2);
+
 			for (String date : dateList) {
-				if (stockPriceTable.isDateInDealDate(date)) {
+				if (this.isDateInDealDate(allDealDateList, date)) {
 					StatisticsVO vo = new StatisticsVO();
 					vo.date = date;
-					vo.count1 = checkPointStatisticsTable.countByDateAndCheckPoint(date,
-							DailyCombineCheckPoint.MACD_Gordon.name());
-					vo.count2 = checkPointStatisticsTable.countByDateAndCheckPoint(date,
-							DailyCombineCheckPoint.MACD_Dead.name());
+
+					vo.count1 = this.getCount(statisticsList, date, DailyCombineCheckPoint.MACD_Gordon.name());
+					vo.count2 = this.getCount(statisticsList, date, DailyCombineCheckPoint.MACD_Dead.name());
+					// vo.count1 =
+					// checkPointStatisticsTable.countByDateAndCheckPoint(date,
+					// DailyCombineCheckPoint.MACD_Gordon.name());
+					// vo.count2 =
+					// checkPointStatisticsTable.countByDateAndCheckPoint(date,
+					// DailyCombineCheckPoint.MACD_Dead.name());
 					list.add(vo);
 				}
 			}
@@ -187,22 +264,52 @@ public class CheckPointStatisticsEndPoint {
 			String date1 = dateParm.split("_")[0];
 			String date2 = dateParm.split("_")[1];
 
+			List<String> allDealDateList = this.stockPriceCache.get(Constants.cacheAllDealDate + ":999999");
 			List<String> dateList = WeekdayUtil.getWorkingDatesBetween(date1, date2);
+			List<CheckPointDailyStatisticsVO> statisticsList = checkPointStatisticsCache.get(date1 + ":" + date2);
+
 			for (String date : dateList) {
-				if (stockPriceTable.isDateInDealDate(date)) {
+				if (this.isDateInDealDate(allDealDateList, date)) {
 					StatisticsVO vo = new StatisticsVO();
 					vo.date = date;
-					vo.count1 = checkPointStatisticsTable.countByDateAndCheckPoint(date,
-							DailyCombineCheckPoint.WR_Top_Area.name());
-					vo.count2 = checkPointStatisticsTable.countByDateAndCheckPoint(date,
-							DailyCombineCheckPoint.WR_Bottom_Area.name());
-					vo.count3 = checkPointStatisticsTable.countByDateAndCheckPoint(date,
-							DailyCombineCheckPoint.WR_Bottom_Gordon.name());
+
+					vo.count1 = this.getCount(statisticsList, date, DailyCombineCheckPoint.WR_Top_Area.name());
+					vo.count2 = this.getCount(statisticsList, date, DailyCombineCheckPoint.WR_Bottom_Area.name());
+					vo.count2 = this.getCount(statisticsList, date, DailyCombineCheckPoint.WR_Bottom_Gordon.name());
+
+					/*
+					 * vo.count1 =
+					 * checkPointStatisticsTable.countByDateAndCheckPoint(date,
+					 * DailyCombineCheckPoint.WR_Top_Area.name()); vo.count2 =
+					 * checkPointStatisticsTable.countByDateAndCheckPoint(date,
+					 * DailyCombineCheckPoint.WR_Bottom_Area.name()); vo.count3
+					 * =
+					 * checkPointStatisticsTable.countByDateAndCheckPoint(date,
+					 * DailyCombineCheckPoint.WR_Bottom_Gordon.name());
+					 */
 					list.add(vo);
 				}
 			}
 		}
 
 		return list;
+	}
+
+	private boolean isDateInDealDate(List<String> allDealDateList, String adate) {
+		for (String date : allDealDateList) {
+			if (date.equals(adate)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private int getCount(List<CheckPointDailyStatisticsVO> statisticsList, String date, String checkPoint) {
+		for (CheckPointDailyStatisticsVO cpvo : statisticsList) {
+			if (cpvo.checkPoint.equalsIgnoreCase(checkPoint) && cpvo.date.equalsIgnoreCase(date)) {
+				return cpvo.count;
+			}
+		}
+		return 0;
 	}
 }

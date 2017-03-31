@@ -112,6 +112,8 @@ public class StockPriceTableHelper implements CacheAbleStock {
 	protected String COUNT_ALL_SQL = "SELECT count(*) AS rtn from " + tableName;
 	// select all distinct stockIDs
 	protected String QUERY_DISTINCT_ID = "SELECT distinct(stockid) AS rtn FROM " + tableName + " order by stockid";
+	protected String QUERY_DEAL_DATE_BY_ID = "SELECT date AS rtn FROM " + tableName
+			+ " WHERE stockId = :stockId ORDER BY date DESC";
 
 	protected NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
@@ -493,6 +495,10 @@ public class StockPriceTableHelper implements CacheAbleStock {
 		return new ArrayList<String>();
 	}
 
+	public List<String> getSZZSDayListByIdAndBetweenDates(String date1, String date2) {
+		return this.getDayListByIdAndBetweenDates("999999", date1, date2);
+	}
+
 	public String getLatestStockDate() {
 		try {
 
@@ -646,6 +652,26 @@ public class StockPriceTableHelper implements CacheAbleStock {
 			e.printStackTrace();
 		}
 		return new ArrayList<String>();
+	}
+
+	public List<String> getAllDealDate(String stockId) {
+		try {
+
+			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+			namedParameters.addValue("stockId", stockId);
+
+			List<String> dates = this.namedParameterJdbcTemplate.query(QUERY_DEAL_DATE_BY_ID, namedParameters,
+					new StringVOMapper());
+
+			return dates;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new ArrayList<String>();
+	}
+
+	public List<String> getAllSZZSDealDate() {
+		return getAllDealDate("999999");
 	}
 
 	public List<String> getDistinctStockIDs() {

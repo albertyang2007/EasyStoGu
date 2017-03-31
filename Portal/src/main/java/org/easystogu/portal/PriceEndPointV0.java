@@ -19,7 +19,7 @@ import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.utils.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.easystogu.cache.StockCacheUtil;
+import org.easystogu.cache.StockIndicatorCache;
 import org.easystogu.config.Constants;
 
 //v0, stockprice (no chuquan)
@@ -29,7 +29,7 @@ public class PriceEndPointV0 {
 	protected static String HHmmss = "00:00:00";
 	protected CompanyInfoFileHelper companyInfoHelper = CompanyInfoFileHelper.getInstance();
 	private StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
-	protected StockCacheUtil stockCacheUtil = StockCacheUtil.getInstance();
+	protected StockIndicatorCache indicatorCache = StockIndicatorCache.getInstance();
 	@Autowired
 	protected ProcessRequestParmsInPostBody postParmsProcess;
 	protected String dateRegex = "[0-9]{4}-[0-9]{2}-[0-9]{2}";
@@ -47,7 +47,7 @@ public class PriceEndPointV0 {
 		if (Pattern.matches(fromToRegex, dateParm)) {
 			String date1 = dateParm.split("_")[0];
 			String date2 = dateParm.split("_")[1];
-			List<Object> cacheSpList = stockCacheUtil.queryByStockId(Constants.stockPrice + ":" +stockIdParm);
+			List<Object> cacheSpList = indicatorCache.queryByStockId(Constants.cacheStockPrice + ":" +stockIdParm);
 			for (Object obj : cacheSpList) {
 				StockPriceVO spvo = (StockPriceVO)obj;
 				if (Strings.isDateSelected(date1 + " " + HHmmss, date2 + " " + HHmmss, spvo.date + " " + HHmmss)) {

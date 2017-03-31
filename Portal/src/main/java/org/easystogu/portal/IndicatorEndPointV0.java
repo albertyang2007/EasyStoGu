@@ -13,7 +13,7 @@ import javax.ws.rs.core.Context;
 
 import org.easystogu.config.ConfigurationService;
 import org.easystogu.config.Constants;
-import org.easystogu.cache.StockCacheUtil;
+import org.easystogu.cache.StockIndicatorCache;
 import org.easystogu.config.DBConfigurationService;
 import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.vo.table.BollVO;
@@ -43,7 +43,7 @@ public class IndicatorEndPointV0 {
 	protected String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
 	protected static String HHmmss = "00:00:00";
 	protected CompanyInfoFileHelper companyInfoHelper = CompanyInfoFileHelper.getInstance();
-	protected StockCacheUtil cacheUtil = StockCacheUtil.getInstance();
+	protected StockIndicatorCache indicatorCache = StockIndicatorCache.getInstance();
 	protected MACDHelper macdHelper = new MACDHelper();
 	protected KDJHelper kdjHelper = new KDJHelper();
 	protected ShenXianHelper shenXianHelper = new ShenXianHelper();
@@ -265,7 +265,7 @@ public class IndicatorEndPointV0 {
 	// common function to fetch price from stockPrice table
 	protected List<StockPriceVO> fetchAllPrices(String stockid) {
 		List<StockPriceVO> spList = new ArrayList<StockPriceVO>();
-		List<Object> cacheSpList = cacheUtil.queryByStockId(Constants.stockPrice + ":" +stockid);
+		List<Object> cacheSpList = indicatorCache.queryByStockId(Constants.cacheStockPrice + ":" +stockid);
 		for (Object obj : cacheSpList) {
 			spList.add((StockPriceVO)obj);
 		}

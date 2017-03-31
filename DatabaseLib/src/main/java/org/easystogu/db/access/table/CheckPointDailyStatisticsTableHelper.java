@@ -33,6 +33,8 @@ public class CheckPointDailyStatisticsTableHelper {
 			+ " WHERE checkPoint = :checkpoint AND date = :date";
 	protected String QUERY_BY_DATE = "SELECT * FROM " + tableName + " WHERE date = :date";
 	protected String QUERY_BY_CHECK_POINT = "SELECT * FROM " + tableName + " WHERE checkpoint = :checkpoint";
+	protected String QUERY_BY_BETWEEN_DATE = "SELECT * FROM " + tableName
+			+ " WHERE date >= :startDate AND date <= :endDate";
 
 	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
@@ -111,7 +113,24 @@ public class CheckPointDailyStatisticsTableHelper {
 		}
 		return new ArrayList<CheckPointDailyStatisticsVO>();
 	}
-	
+
+	public List<CheckPointDailyStatisticsVO> getAllCheckPointBetweenDate(String startDate, String endDate) {
+		try {
+
+			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+			namedParameters.addValue("startDate", startDate);
+			namedParameters.addValue("endDate", endDate);
+
+			List<CheckPointDailyStatisticsVO> list = this.namedParameterJdbcTemplate.query(QUERY_BY_BETWEEN_DATE,
+					namedParameters, new CheckPointDailyStatisticsVOMapper());
+
+			return list;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new ArrayList<CheckPointDailyStatisticsVO>();
+	}
+
 	public List<CheckPointDailyStatisticsVO> getByCheckPoint(String checkpoint) {
 		try {
 

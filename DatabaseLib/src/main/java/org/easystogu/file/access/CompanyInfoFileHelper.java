@@ -65,6 +65,7 @@ public class CompanyInfoFileHelper {
 	}
 
 	private void loadDataFromDatabase() {
+		logger.info("loading company info from database.");
 		List<CompanyInfoVO> list = companyInfoTable.getAllCompanyInfo();
 		for (CompanyInfoVO vo : list) {
 			companyMap.put(vo.stockId, vo);
