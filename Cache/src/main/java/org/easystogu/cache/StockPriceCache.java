@@ -2,21 +2,10 @@ package org.easystogu.cache;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
 import org.easystogu.config.Constants;
-import org.easystogu.db.access.table.IndBollTableHelper;
-import org.easystogu.db.access.table.IndDDXTableHelper;
-import org.easystogu.db.access.table.IndKDJTableHelper;
-import org.easystogu.db.access.table.IndMATableHelper;
-import org.easystogu.db.access.table.IndMacdTableHelper;
-import org.easystogu.db.access.table.IndQSDDTableHelper;
-import org.easystogu.db.access.table.IndShenXianTableHelper;
-import org.easystogu.db.access.table.IndWRTableHelper;
-import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.table.StockPriceTableHelper;
-import org.easystogu.db.access.table.cache.CacheAbleStock;
 import org.easystogu.log.LogHelper;
 import org.slf4j.Logger;
 
@@ -31,7 +20,7 @@ public class StockPriceCache {
 	private LoadingCache<String, List<String>> cache;
 
 	private StockPriceCache() {
-		cache = CacheBuilder.newBuilder().maximumSize(100).expireAfterWrite(60, TimeUnit.MINUTES)
+		cache = CacheBuilder.newBuilder().maximumSize(100).expireAfterWrite(10, TimeUnit.MINUTES)
 				.build(new CacheLoader<String, List<String>>() {
 					@Override
 					// key is like: type:parms, for example:
@@ -64,6 +53,7 @@ public class StockPriceCache {
 	}
 
 	public void invalidateAll() {
+		logger.info("invalidateAll");
 		cache.invalidateAll();
 	}
 
@@ -73,7 +63,7 @@ public class StockPriceCache {
 	}
 
 	public void refreshAll() {
-		logger.info("refresh all");
+		logger.info("refreshAll");
 		for (String key : cache.asMap().keySet()) {
 			cache.refresh(key);
 		}

@@ -2,22 +2,9 @@ package org.easystogu.cache;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
-import org.easystogu.config.Constants;
 import org.easystogu.db.access.table.CheckPointDailyStatisticsTableHelper;
-import org.easystogu.db.access.table.IndBollTableHelper;
-import org.easystogu.db.access.table.IndDDXTableHelper;
-import org.easystogu.db.access.table.IndKDJTableHelper;
-import org.easystogu.db.access.table.IndMATableHelper;
-import org.easystogu.db.access.table.IndMacdTableHelper;
-import org.easystogu.db.access.table.IndQSDDTableHelper;
-import org.easystogu.db.access.table.IndShenXianTableHelper;
-import org.easystogu.db.access.table.IndWRTableHelper;
-import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
-import org.easystogu.db.access.table.StockPriceTableHelper;
-import org.easystogu.db.access.table.cache.CacheAbleStock;
 import org.easystogu.db.vo.table.CheckPointDailyStatisticsVO;
 import org.easystogu.log.LogHelper;
 import org.slf4j.Logger;
@@ -34,7 +21,7 @@ public class CheckPointStatisticsCache {
 	private LoadingCache<String, List<CheckPointDailyStatisticsVO>> cache;
 
 	private CheckPointStatisticsCache() {
-		cache = CacheBuilder.newBuilder().maximumSize(100).expireAfterWrite(60, TimeUnit.MINUTES)
+		cache = CacheBuilder.newBuilder().maximumSize(100).expireAfterWrite(10, TimeUnit.MINUTES)
 				.build(new CacheLoader<String, List<CheckPointDailyStatisticsVO>>() {
 					@Override
 					// key is date
@@ -58,6 +45,7 @@ public class CheckPointStatisticsCache {
 	}
 
 	public void invalidateAll() {
+		logger.info("invalidateAll");
 		cache.invalidateAll();
 	}
 
@@ -67,7 +55,7 @@ public class CheckPointStatisticsCache {
 	}
 
 	public void refreshAll() {
-		logger.info("refresh all");
+		logger.info("refreshAll");
 		for (String key : cache.asMap().keySet()) {
 			cache.refresh(key);
 		}

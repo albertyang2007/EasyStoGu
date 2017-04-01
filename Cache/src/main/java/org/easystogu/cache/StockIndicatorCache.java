@@ -25,6 +25,7 @@ import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 
 //refer to https://github.com/google/guava/wiki/CachesExplained
+//refer to https://bl.ocks.org/kashyapp/5309855
 public class StockIndicatorCache {
 	private static Logger logger = LogHelper.getLogger(StockIndicatorCache.class);
 	private static StockIndicatorCache instance = null;
@@ -43,7 +44,7 @@ public class StockIndicatorCache {
 		stockTablesMap.put(Constants.cacheIndWR, IndWRTableHelper.getInstance());
 		stockTablesMap.put(Constants.cacheIndDDX, IndDDXTableHelper.getInstance());
 
-		cache = CacheBuilder.newBuilder().maximumSize(100).expireAfterWrite(60, TimeUnit.MINUTES)
+		cache = CacheBuilder.newBuilder().maximumSize(100).expireAfterWrite(10, TimeUnit.MINUTES)
 				.build(new CacheLoader<String, List<Object>>() {
 					@Override
 					// key is like: type:stockId, for example:
@@ -79,6 +80,7 @@ public class StockIndicatorCache {
 	}
 
 	public void invalidateAll() {
+		logger.info("invalidateAll");
 		cache.invalidateAll();
 	}
 
@@ -88,7 +90,7 @@ public class StockIndicatorCache {
 	}
 
 	public void refreshAll() {
-		logger.info("refresh all");
+		logger.info("refreshAll");
 		for (String key : cache.asMap().keySet()) {
 			cache.refresh(key);
 		}

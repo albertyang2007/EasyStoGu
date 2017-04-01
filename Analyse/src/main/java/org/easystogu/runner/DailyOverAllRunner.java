@@ -1,5 +1,7 @@
 package org.easystogu.runner;
 
+import org.easystogu.cache.runner.AllCacheRunner;
+
 public class DailyOverAllRunner implements Runnable {
 
 	public boolean isGetZiJinLiu = true;
@@ -12,6 +14,7 @@ public class DailyOverAllRunner implements Runnable {
 		new DailyScheduleActionRunner().run();
 		new DailyUpdateAllStockRunner(this.isGetZiJinLiu).run();
 		//new RecentlySelectionRunner().run();
+		new AllCacheRunner().refreshAll();
 	}
 
 	public static void main(String[] args) {
