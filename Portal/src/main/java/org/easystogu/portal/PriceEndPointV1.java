@@ -21,7 +21,7 @@ import org.easystogu.cache.StockIndicatorCache;
 import org.easystogu.config.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 
-//v1, qian FuQuan stockprice data
+//v1, qian FuQuan stockprice data (suggest to use this v1)
 public class PriceEndPointV1 {
 	private ConfigurationService config = DBConfigurationService.getInstance();
 	private String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");

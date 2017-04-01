@@ -21,7 +21,7 @@ import org.easystogu.utils.Strings;
 import org.easystogu.config.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 
-//v2, qian FuQuan stockprice 
+//v2, qian FuQuan stockprice (v2 same as v1, can be delete?)
 public class PriceEndPointV2 extends PriceEndPointV0{
 	protected StockPriceTableHelper stockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
 

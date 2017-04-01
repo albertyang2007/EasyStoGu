@@ -39,7 +39,7 @@ import org.easystogu.utils.Strings;
 
 import com.google.common.primitives.Doubles;
 
-//V1, query indicator from DB, qian FuQuan
+//V1, query indicator from DB, qian FuQuan (suggest to use this v1)
 public class IndicatorEndPointV1 {
 	protected static String HHmmss = "00:00:00";
 	private ConfigurationService config = DBConfigurationService.getInstance();
