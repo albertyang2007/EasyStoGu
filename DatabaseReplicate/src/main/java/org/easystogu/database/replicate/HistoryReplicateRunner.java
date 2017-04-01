@@ -21,24 +21,24 @@ import org.easystogu.utils.WeekdayUtil;
 
 public class HistoryReplicateRunner {
 	public static void main(String[] args) {
-		String[] myArgs = { "2016-11-20", WeekdayUtil.currentDate() };
+		String[] myArgs = { "2017-03-01", WeekdayUtil.currentDate() };
 		CompanyInfoReplicateWorker.main(myArgs);
 		StockPriceReplicateWorker.main(myArgs);
-		WeekStockPriceReplicateWorker.main(myArgs);
 		QianFuQuanStockPriceReplicateWorker.main(myArgs);
 
 		// daily ind
-		IndMacdReplicateWorker.main(myArgs);
-		IndKDJReplicateWorker.main(myArgs);
-		IndShenXianReplicateWorker.main(myArgs);
-		IndWRReplicateWorker.main(myArgs);
-		IndMAReplicateWorker.main(myArgs);
-		IndQSDDReplicateWorker.main(myArgs);
-		IndBollReplicateWorker.main(myArgs);
+		//IndMacdReplicateWorker.main(myArgs);
+		//IndKDJReplicateWorker.main(myArgs);
+		//IndShenXianReplicateWorker.main(myArgs);
+		//IndWRReplicateWorker.main(myArgs);
+		//IndMAReplicateWorker.main(myArgs);
+		//IndQSDDReplicateWorker.main(myArgs);
+		//IndBollReplicateWorker.main(myArgs);
 
-		// week ind
-		IndWeekMacdReplicateWorker.main(myArgs);
-		IndWeekKDJReplicateWorker.main(myArgs);
+		// week
+		//WeekStockPriceReplicateWorker.main(myArgs);
+		//IndWeekMacdReplicateWorker.main(myArgs);
+		//IndWeekKDJReplicateWorker.main(myArgs);
 
 		// zijinliu & ddx
 		ZiJinLiuReplicateWorker.main(myArgs);

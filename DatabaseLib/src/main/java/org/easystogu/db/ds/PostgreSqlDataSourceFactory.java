@@ -3,6 +3,7 @@ package org.easystogu.db.ds;
 import org.easystogu.config.ConfigurationService;
 import org.easystogu.config.Constants;
 import org.easystogu.config.FileConfigurationService;
+import org.easystogu.db.access.table.WSFConfigTableHelper;
 import org.easystogu.log.LogHelper;
 import org.slf4j.Logger;
 
@@ -41,10 +42,12 @@ public class PostgreSqlDataSourceFactory {
 
 		if (georedDatasource != null)
 			return georedDatasource;
+		
+		WSFConfigTableHelper wsfconfig = WSFConfigTableHelper.getInstance();
 
 		logger.info("build postgrel Geored datasource.");
 		String driver = config.getString(Constants.GeoredJdbcDriver);
-		String url = config.getString(Constants.GeoredJdbcUrl);
+		String url = wsfconfig.getValue(Constants.GeoredJdbcUrl);
 		String user = config.getString(Constants.GeoredJdbcUser);
 		String password = config.getString(Constants.GeoredJdbcPassword);
 		int active = config.getInt(Constants.GeoredJdbcMaxActive, 200);
@@ -71,5 +74,9 @@ public class PostgreSqlDataSourceFactory {
 		if (georedDatasource != null) {
 			georedDatasource.close();
 		}
+	}
+	
+	public static void main(String[] args){
+		PostgreSqlDataSourceFactory.createGeoredDataSource();
 	}
 }
