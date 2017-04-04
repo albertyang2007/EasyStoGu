@@ -17,11 +17,9 @@ import org.easystogu.db.access.table.CheckPointDailySelectionTableHelper;
 import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.access.view.CommonViewHelper;
 import org.easystogu.db.vo.table.CheckPointDailySelectionVO;
-import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.db.vo.view.CommonViewVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.log.LogHelper;
-import org.easystogu.utils.Strings;
 import org.slf4j.Logger;
 
 public class ViewEndPoint {
