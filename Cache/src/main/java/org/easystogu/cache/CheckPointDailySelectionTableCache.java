@@ -76,4 +76,8 @@ public class CheckPointDailySelectionTableCache {
 		}
 		return new ArrayList<CheckPointDailySelectionVO>();
 	}
+
+	public List<CheckPointDailySelectionVO> queryByDateAndCheckPoint(String key) {
+		return get(key);
+	}
 }

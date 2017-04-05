@@ -74,4 +74,8 @@ public class CommonViewCache {
 		}
 		return new ArrayList<CommonViewVO>();
 	}
+
+	public List<CommonViewVO> queryByDateForViewDirectlySearch(String key) {
+		return get(key);
+	}
 }
