@@ -24,7 +24,7 @@ public class CheckPointStatisticsCache {
 		cache = CacheBuilder.newBuilder().maximumSize(100).expireAfterWrite(10, TimeUnit.MINUTES)
 				.build(new CacheLoader<String, List<CheckPointDailyStatisticsVO>>() {
 					@Override
-					// key is date
+					// key is 
 					public List<CheckPointDailyStatisticsVO> load(String key) throws Exception {
 						logger.info("load from database, key:" + key);
 						String[] parms = key.split(":");

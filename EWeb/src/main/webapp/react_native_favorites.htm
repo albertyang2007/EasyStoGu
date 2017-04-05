@@ -35,6 +35,7 @@ ${demo.css}
 	            dateFrom: moment().subtract(2000, 'days').format("YYYY-MM-DD"),
 	            dateTo: moment().format("YYYY-MM-DD"),
                 selectDate: "",
+                viewName: "",
                 viewOptions: [],
                 dateOptions: [],
                 stockIdOptions: []
@@ -50,7 +51,7 @@ ${demo.css}
 
              //update stockIds based on selectDate
              $.ajaxSettings.async = false;
-             selectStockIds = getAllStockIdsFromView(viewName+"?date="+selectDate+"&cixin="+cixin);
+             selectStockIds = getAllStockIdsFromView(this.state.viewName+"?date="+selectDate+"&cixin="+cixin);
              $.ajaxSettings.async = true;
              this.state.stockIdOptions = [];
              for (var i = 0; i < selectStockIds.length; i++) {
@@ -139,9 +140,12 @@ ${demo.css}
 
 	        newState["dateOptions"] = tmpDateOptions;
             
-            selectView = getQueryString("selectView");
+            viewName = getQueryString("selectView");
+
+            newState["viewName"] = viewName;
+
             cixin = getQueryString("cixin");
-            selectStockIds = getAllStockIdsFromView(selectView+"?date="+dateOptionsTmp[0]+"&cixin="+cixin);
+            selectStockIds = getAllStockIdsFromView(viewName+"?date="+dateOptionsTmp[0]+"&cixin="+cixin);
             $.ajaxSettings.async = true;
 
             //update stockIds based on viewName

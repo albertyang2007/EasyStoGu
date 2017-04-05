@@ -13,13 +13,14 @@ import javax.ws.rs.core.Context;
 
 import org.easystogu.config.ConfigurationService;
 import org.easystogu.config.DBConfigurationService;
-import org.easystogu.db.access.table.CheckPointDailySelectionTableHelper;
 import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.access.view.CommonViewHelper;
 import org.easystogu.db.vo.table.CheckPointDailySelectionVO;
 import org.easystogu.db.vo.view.CommonViewVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.log.LogHelper;
+import org.easystogu.cache.CheckPointDailySelectionTableCache;
+import org.easystogu.cache.CommonViewCache;
 import org.slf4j.Logger;
 
 public class ViewEndPoint {
@@ -27,10 +28,10 @@ public class ViewEndPoint {
 	private String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
 	private static Logger logger = LogHelper.getLogger(ViewEndPoint.class);
 	private CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
-	private CheckPointDailySelectionTableHelper checkPointDailySelectionTable = CheckPointDailySelectionTableHelper
+	private CheckPointDailySelectionTableCache checkPointDailySelectionCache = CheckPointDailySelectionTableCache
 			.getInstance();
 	protected StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
-	private CommonViewHelper commonViewHelper = CommonViewHelper.getInstance();
+	private CommonViewCache commonViewCache = CommonViewCache.getInstance();
 
 	@GET
 	@Path("/{viewname}")
@@ -46,7 +47,8 @@ public class ViewEndPoint {
 				|| "luzao_phaseII_ddx_bigger_05".equals(viewname) || "luzao_phaseIII_ddx_bigger_05".equals(viewname)) {
 			// get result from view directory, since they are fast
 			String searchViewName = viewname + "_Details";
-			List<CommonViewVO> list = this.commonViewHelper.queryByDateForViewDirectlySearch(searchViewName, date);
+			List<CommonViewVO> list = this.commonViewCache
+					.queryByDateForViewDirectlySearch(date + ":" + searchViewName);
 
 			return this.fliterCiXinGu(cixin, list);
 		}
@@ -55,7 +57,8 @@ public class ViewEndPoint {
 		// save to daily table
 		List<CommonViewVO> list = new ArrayList<CommonViewVO>();
 		String checkpoint = viewname;
-		List<CheckPointDailySelectionVO> cps = checkPointDailySelectionTable.queryByDateAndCheckPoint(date, checkpoint);
+		List<CheckPointDailySelectionVO> cps = checkPointDailySelectionCache
+				.queryByDateAndCheckPoint(date + ":" + checkpoint);
 		for (CheckPointDailySelectionVO cp : cps) {
 			CommonViewVO cvo = new CommonViewVO();
 			cvo.stockId = cp.stockId;

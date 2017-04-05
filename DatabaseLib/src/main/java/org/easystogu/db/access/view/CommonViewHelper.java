@@ -83,7 +83,7 @@ public class CommonViewHelper {
 		return rtn > 0 ? true : false;
 	}
 
-	public List<CommonViewVO> queryByDateForViewDirectlySearch(String viewName, String date) {
+	public List<CommonViewVO> queryByDateForViewDirectlySearch(String date, String viewName) {
 		try {
 			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 			StringBuffer sql = new StringBuffer();
@@ -141,8 +141,7 @@ public class CommonViewHelper {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		CommonViewHelper ins = CommonViewHelper.getInstance();
-		List<CommonViewVO> list = ins.queryByDateForViewDirectlySearch("luzao_phaseII_zijinliu_top300_Details",
-				"2016-09-20");
+		List<CommonViewVO> list = ins.queryByDateForViewDirectlySearch("2016-09-20", "luzao_phaseII_zijinliu_top300_Details");
 		for (CommonViewVO vo : list) {
 			System.out.println(vo);
 		}
