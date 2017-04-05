@@ -20,11 +20,12 @@ import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.utils.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.easystogu.cache.StockIndicatorCache;
+import org.easystogu.cache.ConfigurationServiceCache;
 import org.easystogu.config.Constants;
 
 //v0, stockprice (no chuquan)
 public class PriceEndPointV0 {
-	protected ConfigurationService config = DBConfigurationService.getInstance();
+	protected ConfigurationServiceCache config = ConfigurationServiceCache.getInstance();
 	protected String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
 	protected static String HHmmss = "00:00:00";
 	protected CompanyInfoFileHelper companyInfoHelper = CompanyInfoFileHelper.getInstance();

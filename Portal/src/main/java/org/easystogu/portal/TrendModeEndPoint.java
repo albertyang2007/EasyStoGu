@@ -11,6 +11,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 
 import org.easystogu.config.ConfigurationService;
+import org.easystogu.cache.ConfigurationServiceCache;
 import org.easystogu.config.DBConfigurationService;
 import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.portal.init.TrendModeLoader;

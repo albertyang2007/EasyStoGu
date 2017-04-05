@@ -14,6 +14,7 @@ import javax.ws.rs.core.Context;
 import org.easystogu.config.ConfigurationService;
 import org.easystogu.config.Constants;
 import org.easystogu.cache.StockIndicatorCache;
+import org.easystogu.cache.ConfigurationServiceCache;
 import org.easystogu.config.DBConfigurationService;
 import org.easystogu.db.access.table.IndBollTableHelper;
 import org.easystogu.db.access.table.IndDDXTableHelper;
@@ -42,8 +43,8 @@ import com.google.common.primitives.Doubles;
 //V1, query indicator from DB, qian FuQuan (suggest to use this v1)
 public class IndicatorEndPointV1 {
 	protected static String HHmmss = "00:00:00";
-	private ConfigurationService config = DBConfigurationService.getInstance();
-	private String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
+	private ConfigurationServiceCache config = ConfigurationServiceCache.getInstance();
+	protected String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
 	protected QianFuQuanStockPriceTableHelper qianfuquanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
 	protected IndKDJTableHelper kdjTable = IndKDJTableHelper.getInstance();
 	protected IndMacdTableHelper macdTable = IndMacdTableHelper.getInstance();
@@ -72,7 +73,8 @@ public class IndicatorEndPointV1 {
 			String date2 = dateParm.split("_")[1];
 			// return macdTable.getByIdAndBetweenDate(stockIdParm, date1,
 			// date2);
-			List<Object> cacheSpList = indicatorCache.queryByStockId(Constants.cacheQianFuQuanStockPrice + ":" + stockIdParm);
+			List<Object> cacheSpList = indicatorCache
+					.queryByStockId(Constants.cacheQianFuQuanStockPrice + ":" + stockIdParm);
 			for (Object obj : cacheSpList) {
 				MacdVO spvo = (MacdVO) obj;
 				if (Strings.isDateSelected(date1 + " " + HHmmss, date2 + " " + HHmmss, spvo.date + " " + HHmmss)) {
@@ -121,7 +123,7 @@ public class IndicatorEndPointV1 {
 			String date2 = dateParm.split("_")[1];
 			// return bollTable.getByIdAndBetweenDate(stockIdParm, date1,
 			// date2);
-			List<Object> cacheSpList = indicatorCache.queryByStockId(Constants.cacheIndBoll + ":" +stockIdParm);
+			List<Object> cacheSpList = indicatorCache.queryByStockId(Constants.cacheIndBoll + ":" + stockIdParm);
 			for (Object obj : cacheSpList) {
 				BollVO spvo = (BollVO) obj;
 				if (Strings.isDateSelected(date1 + " " + HHmmss, date2 + " " + HHmmss, spvo.date + " " + HHmmss)) {
@@ -147,7 +149,7 @@ public class IndicatorEndPointV1 {
 			String date2 = dateParm.split("_")[1];
 			// return shenXianTable.getByIdAndBetweenDate(stockIdParm, date1,
 			// date2);
-			List<Object> cacheSpList = indicatorCache.queryByStockId(Constants.cacheIndShenXian + ":" +stockIdParm);
+			List<Object> cacheSpList = indicatorCache.queryByStockId(Constants.cacheIndShenXian + ":" + stockIdParm);
 			for (Object obj : cacheSpList) {
 				ShenXianVO spvo = (ShenXianVO) obj;
 				if (Strings.isDateSelected(date1 + " " + HHmmss, date2 + " " + HHmmss, spvo.date + " " + HHmmss)) {
@@ -226,7 +228,7 @@ public class IndicatorEndPointV1 {
 			String date2 = dateParm.split("_")[1];
 			// return qsddTable.getByIdAndBetweenDate(stockIdParm, date1,
 			// date2);
-			List<Object> cacheSpList = indicatorCache.queryByStockId(Constants.cacheIndQSDD + ":" +stockIdParm);
+			List<Object> cacheSpList = indicatorCache.queryByStockId(Constants.cacheIndQSDD + ":" + stockIdParm);
 			for (Object obj : cacheSpList) {
 				QSDDVO spvo = (QSDDVO) obj;
 				if (Strings.isDateSelected(date1 + " " + HHmmss, date2 + " " + HHmmss, spvo.date + " " + HHmmss)) {
@@ -251,7 +253,7 @@ public class IndicatorEndPointV1 {
 			String date1 = dateParm.split("_")[0];
 			String date2 = dateParm.split("_")[1];
 			// return wrTable.getByIdAndBetweenDate(stockIdParm, date1, date2);
-			List<Object> cacheSpList = indicatorCache.queryByStockId(Constants.cacheIndWR + ":" +stockIdParm);
+			List<Object> cacheSpList = indicatorCache.queryByStockId(Constants.cacheIndWR + ":" + stockIdParm);
 			for (Object obj : cacheSpList) {
 				WRVO spvo = (WRVO) obj;
 				if (Strings.isDateSelected(date1 + " " + HHmmss, date2 + " " + HHmmss, spvo.date + " " + HHmmss)) {
@@ -275,7 +277,7 @@ public class IndicatorEndPointV1 {
 			String date1 = dateParm.split("_")[0];
 			String date2 = dateParm.split("_")[1];
 			// return ddxTable.getByIdAndBetweenDate(stockIdParm, date1, date2);
-			List<Object> cacheSpList = indicatorCache.queryByStockId(Constants.cacheIndDDX + ":" +stockIdParm);
+			List<Object> cacheSpList = indicatorCache.queryByStockId(Constants.cacheIndDDX + ":" + stockIdParm);
 			for (Object obj : cacheSpList) {
 				DDXVO spvo = (DDXVO) obj;
 				if (Strings.isDateSelected(date1 + " " + HHmmss, date2 + " " + HHmmss, spvo.date + " " + HHmmss)) {
@@ -287,13 +289,13 @@ public class IndicatorEndPointV1 {
 		}
 		return list;
 	}
-	
+
 	// common function to fetch price from stockPrice table
 	protected List<StockPriceVO> fetchAllPrices(String stockid) {
 		List<StockPriceVO> spList = new ArrayList<StockPriceVO>();
-		List<Object> cacheSpList = indicatorCache.queryByStockId(Constants.cacheQianFuQuanStockPrice + ":" +stockid);
+		List<Object> cacheSpList = indicatorCache.queryByStockId(Constants.cacheQianFuQuanStockPrice + ":" + stockid);
 		for (Object obj : cacheSpList) {
-			spList.add((StockPriceVO)obj);
+			spList.add((StockPriceVO) obj);
 		}
 		return spList;
 	}

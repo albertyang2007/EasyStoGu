@@ -18,12 +18,13 @@ import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.utils.Strings;
 import org.easystogu.cache.StockIndicatorCache;
+import org.easystogu.cache.ConfigurationServiceCache;
 import org.easystogu.config.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 
 //v1, qian FuQuan stockprice data (suggest to use this v1)
 public class PriceEndPointV1 {
-	private ConfigurationService config = DBConfigurationService.getInstance();
+	private ConfigurationServiceCache config = ConfigurationServiceCache.getInstance();
 	private String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
 	protected static String HHmmss = "00:00:00";
 	protected StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();

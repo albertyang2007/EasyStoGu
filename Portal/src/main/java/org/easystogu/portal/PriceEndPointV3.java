@@ -13,6 +13,7 @@ import javax.ws.rs.core.Context;
 
 import org.easystogu.config.ConfigurationService;
 import org.easystogu.config.DBConfigurationService;
+import org.easystogu.cache.ConfigurationServiceCache;
 import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.portal.init.TrendModeLoader;
@@ -25,7 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 //v3, with forecast data, query qian fuquan stockprice and count in real time
 public class PriceEndPointV3 {
-	private ConfigurationService config = DBConfigurationService.getInstance();
+	private ConfigurationServiceCache config = ConfigurationServiceCache.getInstance();
 	private String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
 	protected static String HHmmss = "00:00:00";
 	protected CompanyInfoFileHelper companyInfoHelper = CompanyInfoFileHelper.getInstance();

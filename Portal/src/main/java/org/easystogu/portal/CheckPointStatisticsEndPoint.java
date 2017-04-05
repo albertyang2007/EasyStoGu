@@ -21,9 +21,10 @@ import org.easystogu.portal.vo.StatisticsVO;
 import org.easystogu.utils.WeekdayUtil;
 import org.easystogu.cache.StockPriceCache;
 import org.easystogu.cache.CheckPointStatisticsCache;
+import org.easystogu.cache.ConfigurationServiceCache;
 
 public class CheckPointStatisticsEndPoint {
-	private ConfigurationService config = DBConfigurationService.getInstance();
+	private ConfigurationServiceCache config = ConfigurationServiceCache.getInstance();
 	private String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
 	// private CheckPointDailyStatisticsTableHelper checkPointStatisticsTable =
 	// CheckPointDailyStatisticsTableHelper

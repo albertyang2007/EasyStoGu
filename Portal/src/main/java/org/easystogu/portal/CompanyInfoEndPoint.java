@@ -15,10 +15,11 @@ import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.vo.table.CompanyInfoVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.cache.StockPriceCache;
+import org.easystogu.cache.ConfigurationServiceCache;
 import org.easystogu.config.Constants;
 
 public class CompanyInfoEndPoint {
-	private ConfigurationService config = DBConfigurationService.getInstance();
+	private ConfigurationServiceCache config = ConfigurationServiceCache.getInstance();
 	private String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
 	private StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
 	private CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();

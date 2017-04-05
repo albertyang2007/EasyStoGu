@@ -15,7 +15,7 @@ import org.easystogu.utils.Strings;
 import org.easystogu.utils.WeekdayUtil;
 import org.easystogu.cache.StockIndicatorCache;
 import org.easystogu.config.Constants;
-import org.easystogu.cache.StockIndicatorCache;
+import org.easystogu.cache.ConfigurationServiceCache;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;

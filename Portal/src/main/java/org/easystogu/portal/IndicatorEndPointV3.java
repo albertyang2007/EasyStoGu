@@ -13,6 +13,7 @@ import javax.ws.rs.core.Context;
 
 import org.easystogu.config.ConfigurationService;
 import org.easystogu.config.DBConfigurationService;
+import org.easystogu.cache.ConfigurationServiceCache;
 import org.easystogu.db.vo.table.BollVO;
 import org.easystogu.db.vo.table.KDJVO;
 import org.easystogu.db.vo.table.LuZaoVO;
@@ -41,8 +42,8 @@ import com.google.common.primitives.Doubles;
 
 //V3, with forecast data, query from qian fuquan stock price and count in real time
 public class IndicatorEndPointV3 {
-	private ConfigurationService config = DBConfigurationService.getInstance();
-	private String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
+	private ConfigurationServiceCache config = ConfigurationServiceCache.getInstance();
+	protected String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
 	protected static String HHmmss = "00:00:00";
 	protected MACDHelper macdHelper = new MACDHelper();
 	protected KDJHelper kdjHelper = new KDJHelper();

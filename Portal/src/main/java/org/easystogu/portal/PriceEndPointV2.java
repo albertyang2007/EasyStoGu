@@ -17,6 +17,7 @@ import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.cache.StockIndicatorCache;
+import org.easystogu.cache.ConfigurationServiceCache;
 import org.easystogu.utils.Strings;
 import org.easystogu.config.Constants;
 import org.springframework.beans.factory.annotation.Autowired;

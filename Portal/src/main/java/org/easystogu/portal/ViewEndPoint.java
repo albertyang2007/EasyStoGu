@@ -21,10 +21,11 @@ import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.log.LogHelper;
 import org.easystogu.cache.CheckPointDailySelectionTableCache;
 import org.easystogu.cache.CommonViewCache;
+import org.easystogu.cache.ConfigurationServiceCache;
 import org.slf4j.Logger;
 
 public class ViewEndPoint {
-	private ConfigurationService config = DBConfigurationService.getInstance();
+	private ConfigurationServiceCache config = ConfigurationServiceCache.getInstance();
 	private String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
 	private static Logger logger = LogHelper.getLogger(ViewEndPoint.class);
 	private CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
