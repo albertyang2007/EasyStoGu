@@ -24,8 +24,7 @@ public class CheckPointDailySelectionTableCache {
 		cache = CacheBuilder.newBuilder().maximumSize(100).expireAfterWrite(10, TimeUnit.MINUTES)
 				.build(new CacheLoader<String, List<CheckPointDailySelectionVO>>() {
 					@Override
-					// key is like: type:parms, for example:
-					// latestndate:10
+					// key is like: date + ":" + checkpoint
 					public List<CheckPointDailySelectionVO> load(String key) throws Exception {
 						logger.info("load from database, key:" + key);
 						String[] parms = key.split(":");
