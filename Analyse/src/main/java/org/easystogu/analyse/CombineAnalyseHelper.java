@@ -1455,8 +1455,9 @@ public class CombineAnalyseHelper {
 		}
 
 		// example: 002466 @2017-02-21
-		case LuZao_PhaseII_MACD_WEEK_GORDON_MACD_DAY_DIF_BIGGER_0: {
-			if (curSuperWeekVO.macdCorssType == CrossType.GORDON && curSuperDayVO.macdVO.dif >= 0) {
+		case LuZao_PhaseII_MACD_WEEK_GORDON_MACD_DAY_DIF_CROSS_0: {
+			if (curSuperWeekVO.macdCorssType == CrossType.GORDON && curSuperDayVO.macdVO.dif >= 0
+					&& pre1SuperDayVO.macdVO.dif < 0) {
 				if (curSuperDayVO.priceVO.close >= curSuperDayVO.avgMA19
 						&& curSuperDayVO.avgMA19 <= curSuperDayVO.avgMA43
 						&& curSuperDayVO.avgMA43 <= curSuperDayVO.avgMA86
@@ -1468,8 +1469,9 @@ public class CombineAnalyseHelper {
 		}
 
 		// example: 002466 @2017-02-21
-		case LuZao_PhaseIII_MACD_WEEK_GORDON_MACD_DAY_DIF_BIGGER_0: {
-			if (curSuperWeekVO.macdCorssType == CrossType.GORDON && curSuperDayVO.macdVO.dif >= 0) {
+		case LuZao_PhaseIII_MACD_WEEK_GORDON_MACD_DAY_DIF_CROSS_0: {
+			if (curSuperWeekVO.macdCorssType == CrossType.GORDON && curSuperDayVO.macdVO.dif >= 0
+					&& pre1SuperDayVO.macdVO.dif < 0) {
 				if (curSuperDayVO.priceVO.close >= curSuperDayVO.avgMA19
 						&& curSuperDayVO.avgMA19 >= curSuperDayVO.avgMA43
 						&& curSuperDayVO.avgMA43 <= curSuperDayVO.avgMA86
