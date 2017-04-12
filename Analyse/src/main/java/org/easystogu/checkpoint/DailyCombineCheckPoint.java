@@ -51,7 +51,9 @@ public enum DailyCombineCheckPoint {
             SellPointType.KDJ_Dead, 0, 99.0),WR_4_Days_SameValue_XianShang(SellPointType.KDJ_Dead,2923,8.35), 
     		LuZao_KDJ_Gordon_TiaoKongGaoKai(SellPointType.KDJ_Dead, 0, 99.0),
     		LuZao_PhaseII_MACD_WEEK_GORDON_MACD_DAY_DIF_CROSS_0(SellPointType.KDJ_Dead, 0, 99.0),
-    		LuZao_PhaseIII_MACD_WEEK_GORDON_MACD_DAY_DIF_CROSS_0(SellPointType.KDJ_Dead, 0, 99.0);
+    		LuZao_PhaseIII_MACD_WEEK_GORDON_MACD_DAY_DIF_CROSS_0(SellPointType.KDJ_Dead, 0, 99.0),
+    		LuZao_PhaseII_MACD_WEEK_GORDON_KDJ_WEEK_GORDON(SellPointType.KDJ_Dead, 0, 99.0),
+    		LuZao_PhaseIII_MACD_WEEK_GORDON_KDJ_WEEK_GORDON(SellPointType.KDJ_Dead, 0, 99.0);
 
     private ConfigurationService config = DBConfigurationService.getInstance();
     private double minEarnPercent = config.getDouble("minEarnPercent_Select_CheckPoint");
