@@ -27,7 +27,7 @@ public class DailyDaPanStatusSummary {
 	private Map<String, List<CheckPointDailySelectionVO>> stockEventsMap = new HashMap<String, List<CheckPointDailySelectionVO>>();
 
 	private void analyseDailyCheckPointEvent() {
-		List<CheckPointDailySelectionVO> list = checkPointDailySelectionTable.getDailyCheckPointByDate(latestDate);
+		List<CheckPointDailySelectionVO> list = checkPointDailySelectionTable.getCheckPointByDate(latestDate);
 		for (CheckPointDailySelectionVO checkPointSVO : list) {
 			if (generalCheckPoints.contains(checkPointSVO.checkPoint)) {
 				this.addToMap(checkPointSVO);

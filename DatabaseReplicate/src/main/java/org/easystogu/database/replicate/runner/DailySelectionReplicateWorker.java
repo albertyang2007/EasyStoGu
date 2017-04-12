@@ -23,8 +23,8 @@ public class DailySelectionReplicateWorker {
 
 		System.out.println("Checking CheckPointDailySelectionTable at " + date);
 
-		List<CheckPointDailySelectionVO> localList = localTable.getDailyCheckPointByDate(date);
-		List<CheckPointDailySelectionVO> georedList = georedTable.getDailyCheckPointByDate(date);
+		List<CheckPointDailySelectionVO> localList = localTable.getCheckPointByDate(date);
+		List<CheckPointDailySelectionVO> georedList = georedTable.getCheckPointByDate(date);
 		// sync data from geored database to local if not match
 		if (georedList.size() > 0 && localList.size() != georedList.size()) {
 			System.out.println(date + " has different data, local size=" + localList.size() + ", geored size="

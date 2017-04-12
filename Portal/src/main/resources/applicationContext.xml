@@ -163,6 +163,17 @@
 		</jaxrs:providers>
 	</jaxrs:server>
 	
+	<bean id="portalServiceFavoritesEndPoint" class="org.easystogu.portal.FavoritesEndPoint">
+	</bean>
+	<jaxrs:server id="cxfrsservice_FavoritesEndPoint" address="/favorites">
+		<jaxrs:serviceBeans>
+			<ref bean="portalServiceFavoritesEndPoint" />
+		</jaxrs:serviceBeans>
+		<jaxrs:providers>
+			<bean class="com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider" />
+		</jaxrs:providers>
+	</jaxrs:server>
+	
 	<bean id="portalServiceTestEndPoint" class="org.easystogu.portal.TestControler">
 	</bean>
 	<jaxrs:server id="cxfrsservice_TestControler" address="/">

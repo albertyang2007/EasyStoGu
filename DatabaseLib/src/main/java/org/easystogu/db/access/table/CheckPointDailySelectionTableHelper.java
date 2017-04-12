@@ -179,7 +179,7 @@ public class CheckPointDailySelectionTableHelper {
 		return null;
 	}
 
-	public List<CheckPointDailySelectionVO> getDailyCheckPointByDate(String date) {
+	public List<CheckPointDailySelectionVO> getCheckPointByDate(String date) {
 		try {
 
 			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
