@@ -98,6 +98,23 @@ function getAllStockIdsFromView(viewName) {
 	return stockIds;
 }
 
+/**
+ * Load all stockIds from View
+ * 
+ * @returns {undefined}
+ */
+function getFavoritesStockIds(date) {
+	var url = getEasyStoGuServerUrl() + "/portal/favorites?date=" + date;
+	var stockIds = [];
+	$.getJSON(url, function(data) {
+		i = 0;
+		for (i; i < data.length; i += 1) {
+			stockIds.push([ data[i]['stockId'], data[i]['name'] ]);
+		}		
+	});
+	return stockIds;
+}
+
 /*
  * get the query parameters from http GET request, for example
  * http://localhost:8080/query?name=value return value
