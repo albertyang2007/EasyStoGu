@@ -74,7 +74,7 @@ public class IndicatorEndPointV1 {
 			// return macdTable.getByIdAndBetweenDate(stockIdParm, date1,
 			// date2);
 			List<Object> cacheSpList = indicatorCache
-					.queryByStockId(Constants.cacheQianFuQuanStockPrice + ":" + stockIdParm);
+					.queryByStockId(Constants.cacheIndMacd + ":" + stockIdParm);
 			for (Object obj : cacheSpList) {
 				MacdVO spvo = (MacdVO) obj;
 				if (Strings.isDateSelected(date1 + " " + HHmmss, date2 + " " + HHmmss, spvo.date + " " + HHmmss)) {
