@@ -24,11 +24,15 @@ public class CheckPointDailySelectionTableCache {
 		cache = CacheBuilder.newBuilder().maximumSize(100).expireAfterWrite(10, TimeUnit.MINUTES)
 				.build(new CacheLoader<String, List<CheckPointDailySelectionVO>>() {
 					@Override
-					// key is like: date + ":" + checkpoint
 					public List<CheckPointDailySelectionVO> load(String key) throws Exception {
 						logger.info("load from database, key:" + key);
 						String[] parms = key.split(":");
-						return checkPointDailySelectionTable.queryByDateAndCheckPoint(parms[0], parms[1]);
+						// key is like: date + ":" + checkpoint
+						if (parms.length == 2)
+							return checkPointDailySelectionTable.queryByDateAndCheckPoint(parms[0], parms[1]);
+
+						// only date
+						return checkPointDailySelectionTable.getCheckPointByDate(key);
 					}
 				});
 	}
@@ -76,7 +80,11 @@ public class CheckPointDailySelectionTableCache {
 		return new ArrayList<CheckPointDailySelectionVO>();
 	}
 
-	public List<CheckPointDailySelectionVO> queryByDateAndCheckPoint(String key) {
+	public List<CheckPointDailySelectionVO> queryByDateAndCheckPoint(String date, String checkpoint) {
+		return get(date + ":" + checkpoint);
+	}
+
+	public List<CheckPointDailySelectionVO> getCheckPointByDate(String key) {
 		return get(key);
 	}
 }

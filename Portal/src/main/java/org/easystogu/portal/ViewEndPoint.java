@@ -59,7 +59,7 @@ public class ViewEndPoint {
 		List<CommonViewVO> list = new ArrayList<CommonViewVO>();
 		String checkpoint = viewname;
 		List<CheckPointDailySelectionVO> cps = checkPointDailySelectionCache
-				.queryByDateAndCheckPoint(date + ":" + checkpoint);
+				.queryByDateAndCheckPoint(date, checkpoint);
 		for (CheckPointDailySelectionVO cp : cps) {
 			CommonViewVO cvo = new CommonViewVO();
 			cvo.stockId = cp.stockId;
