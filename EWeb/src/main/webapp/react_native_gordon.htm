@@ -144,7 +144,7 @@ ${demo.css}
 
             newState["viewName"] = viewName;
 
-            selectStockIds = getAllStockIdsFromView(this.state.viewName+"?date="+selectDate);
+            selectStockIds = getAllStockIdsFromView(viewName+"?date="+dateOptionsTmp[0]);
             $.ajaxSettings.async = true;
 
             //update stockIds based on viewName
