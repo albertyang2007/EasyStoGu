@@ -51,7 +51,7 @@ ${demo.css}
 
              //update stockIds based on selectDate
              $.ajaxSettings.async = false;
-             selectStockIds = getFavoritesStockIds(selectDate);
+             selectStockIds = getAllStockIdsFromView(this.state.viewName+"?date="+selectDate);
              $.ajaxSettings.async = true;
              this.state.stockIdOptions = [];
              for (var i = 0; i < selectStockIds.length; i++) {
@@ -144,7 +144,7 @@ ${demo.css}
 
             newState["viewName"] = viewName;
 
-            selectStockIds = getFavoritesStockIds(dateOptionsTmp[0]);
+            selectStockIds = getAllStockIdsFromView(this.state.viewName+"?date="+selectDate);
             $.ajaxSettings.async = true;
 
             //update stockIds based on viewName
