@@ -22,9 +22,9 @@ import org.easystogu.utils.WeekdayUtil;
 public class HistoryReplicateRunner {
 	public static void main(String[] args) {
 		String[] myArgs = { "2017-04-01", WeekdayUtil.currentDate() };
-		//CompanyInfoReplicateWorker.main(myArgs);
-		//StockPriceReplicateWorker.main(myArgs);
-		//QianFuQuanStockPriceReplicateWorker.main(myArgs);
+		CompanyInfoReplicateWorker.main(myArgs);
+		StockPriceReplicateWorker.main(myArgs);
+		QianFuQuanStockPriceReplicateWorker.main(myArgs);
 
 		// daily ind
 		//IndMacdReplicateWorker.main(myArgs);

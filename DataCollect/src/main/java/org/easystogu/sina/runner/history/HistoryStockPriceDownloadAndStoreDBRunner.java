@@ -167,7 +167,7 @@ public class HistoryStockPriceDownloadAndStoreDBRunner {
 	}
 
 	public static void main(String[] args) {
-		String startDate = "2016-10-17";
+		String startDate = "1990-01-01";
 		String endDate = WeekdayUtil.currentDate();
 		
 		if (args != null && args.length == 2) {
@@ -187,7 +187,7 @@ public class HistoryStockPriceDownloadAndStoreDBRunner {
 		// for all stockIds
 		runner.countAndSave(stockIds);
 		// for specify stockId
-		// runner.countAndSave("000038");
+		//runner.countAndSave("000049");
 
 		// finally re run for failure
 		// runner.reRunOnFailure();

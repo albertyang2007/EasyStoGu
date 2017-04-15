@@ -32,11 +32,24 @@ public class ModeGenerator {
 		tmpVO.setLength(spList.size() - 1);
 		tmpVO.setName(name);
 
+		double high = 0;
+		double low = 0;
+
 		// change the real stock price data to percentage
 		if (spList.size() > 0) {
 			StockPriceVO curVO = spList.get(0);
+			high = curVO.high;
+			low = curVO.low;
+
 			for (int i = 1; i < spList.size(); i++) {
 				StockPriceVO vo = spList.get(i);
+
+				if (vo.high > high) {
+					high = vo.high;
+				}
+				if (vo.low < low) {
+					low = vo.low;
+				}
 
 				SimplePriceVO spvo = new SimplePriceVO();
 				spvo.close = Strings.convert2ScaleDecimal(100.0 * (vo.close - curVO.close) / curVO.close);
@@ -50,6 +63,11 @@ public class ModeGenerator {
 				curVO = vo;
 				tmpVO.getPrices().add(spvo);
 			}
+		}
+
+		// count the high and low percent
+		if (low > 0) {
+			tmpVO.zhengfu = (high - low) / low;
 		}
 
 		return tmpVO;
@@ -83,6 +101,15 @@ public class ModeGenerator {
 		saveToFile(generateTrendMode("ZiMaKaiHua2", "芝麻开花,节节高", "603866", "2016-04-22", "2016-05-11"));
 		saveToFile(generateTrendMode("SuoLiangHuiTiao", "缩量回调，20日均线支撑", "603866", "2016-03-24", "2016-05-23"));
 		saveToFile(generateTrendMode("None", "None", "999999", "2016-01-01", "2016-01-01"));
+		
+		//new added
+		saveToFile(generateTrendMode("Wuliang3LianBan", "无量3个一字板", "002809", "2016-08-24", "2016-08-29"));
+		saveToFile(generateTrendMode("Wuliang5LianBan", "无量5个一字板", "002809", "2016-08-24", "2016-08-31"));
+		saveToFile(generateTrendMode("Wuliang7LianBan", "无量7个一字板", "002809", "2016-08-24", "2016-09-02"));
+		saveToFile(generateTrendMode("Fangliang3LianBan", "放量3连板", "603999", "2016-09-30", "2016-10-12"));
+		saveToFile(generateTrendMode("HengPan4Zhou", "横盘四周突破", "000049", "2017-02-07", "2017-03-10"));
+		saveToFile(generateTrendMode("HengPan1Zhou", "横盘一周突破", "000423", "2017-03-10", "2017-03-17"));
+		
 	}
 
 	public static void main(String[] args) {

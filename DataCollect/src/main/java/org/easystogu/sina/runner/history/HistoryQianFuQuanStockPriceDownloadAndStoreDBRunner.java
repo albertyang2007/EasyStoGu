@@ -87,6 +87,6 @@ public class HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner {
 		// for specify stockId
 		// runner.countAndSave("999999");
 		// runner.countAndSave("399001");
-		// runner.countAndSave("601388");
+		//runner.countAndSave("000049");
 	}
 }

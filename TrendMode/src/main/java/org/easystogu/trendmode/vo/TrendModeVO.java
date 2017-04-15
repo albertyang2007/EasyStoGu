@@ -9,6 +9,8 @@ public class TrendModeVO {
 	public String name;
 	public String description;
 	public int length;
+	public double zhengfu;//振幅
+	public double zhangdie;//最终涨跌点数
 	public List<SimplePriceVO> prices = new ArrayList<SimplePriceVO>();
 
 	public String getName() {
