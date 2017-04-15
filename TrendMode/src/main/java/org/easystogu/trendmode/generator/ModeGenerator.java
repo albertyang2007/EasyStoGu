@@ -109,6 +109,7 @@ public class ModeGenerator {
 		saveToFile(generateTrendMode("Fangliang3LianBan", "放量3连板", "603999", "2016-09-30", "2016-10-12"));
 		saveToFile(generateTrendMode("HengPan4Zhou", "横盘四周突破", "000049", "2017-02-07", "2017-03-10"));
 		saveToFile(generateTrendMode("HengPan1Zhou", "横盘一周突破", "000423", "2017-03-10", "2017-03-17"));
+		saveToFile(generateTrendMode("HengPan2Zhou", "横盘两周突破", "002673", "2015-03-20", "2015-04-08"));
 		
 	}
 
