@@ -20,7 +20,7 @@ public class CommonViewCache {
 	private LoadingCache<String, List<CommonViewVO>> cache;
 
 	private CommonViewCache() {
-		cache = CacheBuilder.newBuilder().maximumSize(100).expireAfterWrite(10, TimeUnit.MINUTES)
+		cache = CacheBuilder.newBuilder().maximumSize(100).expireAfterWrite(24, TimeUnit.HOURS)
 				.build(new CacheLoader<String, List<CommonViewVO>>() {
 					@Override
 					// key is
@@ -75,7 +75,7 @@ public class CommonViewCache {
 		return new ArrayList<CommonViewVO>();
 	}
 
-	public List<CommonViewVO> queryByDateForViewDirectlySearch(String key) {
-		return get(key);
+	public List<CommonViewVO> queryByDateForViewDirectlySearch(String date, String searchViewName) {
+		return get(date + ":" + searchViewName);
 	}
 }

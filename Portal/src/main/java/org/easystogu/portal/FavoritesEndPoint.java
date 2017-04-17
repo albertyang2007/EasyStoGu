@@ -19,6 +19,7 @@ import org.easystogu.log.LogHelper;
 import org.slf4j.Logger;
 import org.easystogu.cache.ConfigurationServiceCache;
 import org.easystogu.cache.CheckPointDailySelectionTableCache;
+import org.easystogu.cache.CommonViewCache;
 
 public class FavoritesEndPoint {
 	private static Logger logger = LogHelper.getLogger(FavoritesEndPoint.class);
@@ -28,6 +29,7 @@ public class FavoritesEndPoint {
 	private CheckPointDailySelectionTableCache checkPointDailySelectionCache = CheckPointDailySelectionTableCache
 			.getInstance();
 	protected StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
+	private CommonViewCache commonViewCache = CommonViewCache.getInstance();
 
 	@GET
 	@Path("/")
@@ -43,7 +45,7 @@ public class FavoritesEndPoint {
 			// first must meets Week Gordon (macd or kdj)
 			if (isWeekGordon(cp)) {
 				// seconds must has at least one zijinliu top
-				if (isZiJinLiuRu(cps, cp.stockId)) {
+				if (isZiJinLiuRu(cps, cp.stockId, date)) {
 					CommonViewVO cvo = new CommonViewVO();
 					cvo.stockId = cp.stockId;
 					cvo.name = stockConfig.getStockName(cp.stockId);
@@ -67,7 +69,15 @@ public class FavoritesEndPoint {
 		return false;
 	}
 
-	private boolean isZiJinLiuRu(List<CheckPointDailySelectionVO> cps, String stockId) {
+	private boolean isZiJinLiuRu(List<CheckPointDailySelectionVO> cps, String stockId, String date) {
+		// first check daily view
+		if (this.isZiJinLiuRuAtDate("luzao_phaseII_zijinliu_top300", stockId, date)
+				|| this.isZiJinLiuRuAtDate("luzao_phaseIII_zijinliu_top300", stockId, date)
+				|| this.isZiJinLiuRuAtDate("luzao_phaseII_ddx_bigger_05", stockId, date)
+				|| this.isZiJinLiuRuAtDate("luzao_phaseIII_ddx_bigger_05", stockId, date)) {
+			return true;
+		}
+		// second check recent view
 		for (CheckPointDailySelectionVO cp : cps) {
 			if (cp.stockId.equals(stockId)) {
 				if (cp.checkPoint.equals("luzao_phaseII_ddx_2_of_5_days_bigger_05")
@@ -80,6 +90,18 @@ public class FavoritesEndPoint {
 						|| cp.checkPoint.equals("zijinliu_3_of_5_days_top300")) {
 					return true;
 				}
+			}
+		}
+		return false;
+	}
+
+	private boolean isZiJinLiuRuAtDate(String viewName, String stockId, String date) {
+		// get result from view directory, since they are fast
+		String searchViewName = viewName + "_Details";
+		List<CommonViewVO> list = this.commonViewCache.queryByDateForViewDirectlySearch(date, searchViewName);
+		for (CommonViewVO cvo : list) {
+			if (cvo.date.equals(date) && cvo.stockId.equals(stockId)) {
+				return true;
 			}
 		}
 		return false;

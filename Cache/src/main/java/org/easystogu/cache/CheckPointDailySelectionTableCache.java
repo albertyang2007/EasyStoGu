@@ -21,7 +21,7 @@ public class CheckPointDailySelectionTableCache {
 	private LoadingCache<String, List<CheckPointDailySelectionVO>> cache;
 
 	private CheckPointDailySelectionTableCache() {
-		cache = CacheBuilder.newBuilder().maximumSize(100).expireAfterWrite(10, TimeUnit.MINUTES)
+		cache = CacheBuilder.newBuilder().maximumSize(100).expireAfterWrite(24, TimeUnit.HOURS)
 				.build(new CacheLoader<String, List<CheckPointDailySelectionVO>>() {
 					@Override
 					public List<CheckPointDailySelectionVO> load(String key) throws Exception {

@@ -2,6 +2,7 @@ package org.easystogu.runner;
 
 import java.util.List;
 
+import org.easystogu.cache.runner.AllCacheRunner;
 import org.easystogu.db.access.table.IndBollTableHelper;
 import org.easystogu.db.access.table.IndKDJTableHelper;
 import org.easystogu.db.access.table.IndMATableHelper;
@@ -219,5 +220,6 @@ public class DataBaseSanityCheck implements Runnable {
 
 	public static void main(String[] args) {
 		new DataBaseSanityCheck().run();
+		new AllCacheRunner().refreshAll();
 	}
 }

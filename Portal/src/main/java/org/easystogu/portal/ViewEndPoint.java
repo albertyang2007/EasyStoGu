@@ -49,7 +49,7 @@ public class ViewEndPoint {
 			// get result from view directory, since they are fast
 			String searchViewName = viewname + "_Details";
 			List<CommonViewVO> list = this.commonViewCache
-					.queryByDateForViewDirectlySearch(date + ":" + searchViewName);
+					.queryByDateForViewDirectlySearch(date, searchViewName);
 
 			return this.fliterCiXinGu(cixin, list);
 		}

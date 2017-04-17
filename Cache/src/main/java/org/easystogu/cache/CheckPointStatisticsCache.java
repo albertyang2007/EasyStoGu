@@ -21,7 +21,7 @@ public class CheckPointStatisticsCache {
 	private LoadingCache<String, List<CheckPointDailyStatisticsVO>> cache;
 
 	private CheckPointStatisticsCache() {
-		cache = CacheBuilder.newBuilder().maximumSize(100).expireAfterWrite(10, TimeUnit.MINUTES)
+		cache = CacheBuilder.newBuilder().maximumSize(100).expireAfterWrite(24, TimeUnit.HOURS)
 				.build(new CacheLoader<String, List<CheckPointDailyStatisticsVO>>() {
 					@Override
 					// key is 

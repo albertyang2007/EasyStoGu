@@ -61,20 +61,6 @@ public class CheckPointStatisticsEndPoint {
 				vo.count2 = this.getCount(statisticsList, date, DailyCombineCheckPoint.Trend_PhaseII_JianCang.name());
 				vo.count3 = this.getCount(statisticsList, date, DailyCombineCheckPoint.Trend_PhaseIII_ChiGu.name());
 				vo.count4 = this.getCount(statisticsList, date, DailyCombineCheckPoint.Trend_PhaseVI_JianCang.name());
-				/*
-				 * vo.count1 =
-				 * checkPointStatisticsTable.countByDateAndCheckPoint(date,
-				 * DailyCombineCheckPoint.Trend_PhaseI_GuanCha.name());
-				 * vo.count2 =
-				 * checkPointStatisticsTable.countByDateAndCheckPoint(date,
-				 * DailyCombineCheckPoint.Trend_PhaseII_JianCang.name());
-				 * vo.count3 =
-				 * checkPointStatisticsTable.countByDateAndCheckPoint(date,
-				 * DailyCombineCheckPoint.Trend_PhaseIII_ChiGu.name());
-				 * vo.count4 =
-				 * checkPointStatisticsTable.countByDateAndCheckPoint(date,
-				 * DailyCombineCheckPoint.Trend_PhaseVI_JianCang.name());
-				 */
 				list.add(vo);
 			}
 		}
@@ -114,24 +100,6 @@ public class CheckPointStatisticsEndPoint {
 				vo.count5 = this.getCount(statisticsList, date,
 						DailyCombineCheckPoint.LuZao_DeadII_MA19_DownCross_MA43.name());
 
-				/*
-				 * vo.count1 =
-				 * checkPointStatisticsTable.countByDateAndCheckPoint(date,
-				 * DailyCombineCheckPoint.LuZao_GordonO_MA43_DownCross_MA86.name
-				 * ()); vo.count2 =
-				 * checkPointStatisticsTable.countByDateAndCheckPoint(date,
-				 * DailyCombineCheckPoint.LuZao_GordonI_MA19_UpCross_MA43.name()
-				 * ); vo.count3 =
-				 * checkPointStatisticsTable.countByDateAndCheckPoint(date,
-				 * DailyCombineCheckPoint.LuZao_GordonII_MA19_UpCross_MA86.name(
-				 * )); vo.count4 =
-				 * checkPointStatisticsTable.countByDateAndCheckPoint(date,
-				 * DailyCombineCheckPoint.LuZao_DeadI_MA43_UpCross_MA86.name());
-				 * vo.count5 =
-				 * checkPointStatisticsTable.countByDateAndCheckPoint(date,
-				 * DailyCombineCheckPoint.LuZao_DeadII_MA19_DownCross_MA43.name(
-				 * ));
-				 */
 				list.add(vo);
 			}
 		}
@@ -162,16 +130,7 @@ public class CheckPointStatisticsEndPoint {
 					vo.count1 = this.getCount(statisticsList, date, DailyCombineCheckPoint.QSDD_Top_Area.name());
 					vo.count2 = this.getCount(statisticsList, date, DailyCombineCheckPoint.QSDD_Bottom_Area.name());
 					vo.count3 = this.getCount(statisticsList, date, DailyCombineCheckPoint.QSDD_Bottom_Gordon.name());
-					/*
-					 * vo.count1 =
-					 * checkPointStatisticsTable.countByDateAndCheckPoint(date,
-					 * DailyCombineCheckPoint.QSDD_Top_Area.name()); vo.count2 =
-					 * checkPointStatisticsTable.countByDateAndCheckPoint(date,
-					 * DailyCombineCheckPoint.QSDD_Bottom_Area.name());
-					 * vo.count3 =
-					 * checkPointStatisticsTable.countByDateAndCheckPoint(date,
-					 * DailyCombineCheckPoint.QSDD_Bottom_Gordon.name());
-					 */
+
 					list.add(vo);
 				}
 			}
@@ -202,14 +161,7 @@ public class CheckPointStatisticsEndPoint {
 
 					vo.count1 = this.getCount(statisticsList, date, DailyCombineCheckPoint.ShenXian_Gordon.name());
 					vo.count2 = this.getCount(statisticsList, date, DailyCombineCheckPoint.ShenXian_Dead.name());
-					/*
-					 * vo.count1 =
-					 * checkPointStatisticsTable.countByDateAndCheckPoint(date,
-					 * DailyCombineCheckPoint.ShenXian_Gordon.name()); vo.count2
-					 * =
-					 * checkPointStatisticsTable.countByDateAndCheckPoint(date,
-					 * DailyCombineCheckPoint.ShenXian_Dead.name());
-					 */
+
 					list.add(vo);
 				}
 			}
@@ -240,12 +192,7 @@ public class CheckPointStatisticsEndPoint {
 
 					vo.count1 = this.getCount(statisticsList, date, DailyCombineCheckPoint.MACD_Gordon.name());
 					vo.count2 = this.getCount(statisticsList, date, DailyCombineCheckPoint.MACD_Dead.name());
-					// vo.count1 =
-					// checkPointStatisticsTable.countByDateAndCheckPoint(date,
-					// DailyCombineCheckPoint.MACD_Gordon.name());
-					// vo.count2 =
-					// checkPointStatisticsTable.countByDateAndCheckPoint(date,
-					// DailyCombineCheckPoint.MACD_Dead.name());
+
 					list.add(vo);
 				}
 			}
@@ -278,16 +225,6 @@ public class CheckPointStatisticsEndPoint {
 					vo.count2 = this.getCount(statisticsList, date, DailyCombineCheckPoint.WR_Bottom_Area.name());
 					vo.count2 = this.getCount(statisticsList, date, DailyCombineCheckPoint.WR_Bottom_Gordon.name());
 
-					/*
-					 * vo.count1 =
-					 * checkPointStatisticsTable.countByDateAndCheckPoint(date,
-					 * DailyCombineCheckPoint.WR_Top_Area.name()); vo.count2 =
-					 * checkPointStatisticsTable.countByDateAndCheckPoint(date,
-					 * DailyCombineCheckPoint.WR_Bottom_Area.name()); vo.count3
-					 * =
-					 * checkPointStatisticsTable.countByDateAndCheckPoint(date,
-					 * DailyCombineCheckPoint.WR_Bottom_Gordon.name());
-					 */
 					list.add(vo);
 				}
 			}
