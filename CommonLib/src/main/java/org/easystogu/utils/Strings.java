@@ -59,6 +59,18 @@ public class Strings {
 		return num;
 	}
 
+	public static String convert2ScaleDecimalAlignWithLength(double num, int scale) {
+		double d = convert2ScaleDecimal(num, scale);
+		String s = Double.toString(d);
+		String[] arr = s.split("\\.");
+		if (arr.length == 2) {
+			if (arr[1].length() == 1) {
+				return s + "0";
+			}
+		}
+		return s;
+	}
+
 	// convert from string to date and then to time
 	// dateStr is like:yyyy-MM-dd HH:mm:ss
 	public static long stringToTime(String dateStr) {
@@ -79,5 +91,9 @@ public class Strings {
 			return true;
 		}
 		return false;
+	}
+
+	public static void main(String[] args) {
+		System.out.println(convert2ScaleDecimalAlignWithLength(10.0, 2));
 	}
 }
