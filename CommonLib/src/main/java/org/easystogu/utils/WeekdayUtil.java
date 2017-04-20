@@ -159,6 +159,24 @@ public class WeekdayUtil {
 		int weekNumber = cal.get(Calendar.WEEK_OF_YEAR);
 		return getWorkingDaysOfWeek(new Date().getYear() + 1900, weekNumber);
 	}
+	
+	public static int getWeekNumber(String date){
+		Calendar cal = Calendar.getInstance();
+		String[] ymd = date.split("-");
+		cal.set(Calendar.YEAR, Integer.parseInt(ymd[0]));
+		cal.set(Calendar.MONTH, Integer.parseInt(ymd[1]) - 1);
+		cal.set(Calendar.DATE, Integer.parseInt(ymd[2]));
+		int weekNumber = cal.get(Calendar.WEEK_OF_YEAR);
+
+		if (Integer.parseInt(ymd[1]) == 12 && weekNumber == 1) {
+			weekNumber = 53;
+		}
+		return weekNumber;
+	}
+	
+	public static int getWeekNumber(){
+		return getWeekNumber(currentDate());
+	}
 
 	// date is like: 2015-02-27
 	// 返回某一日所在周的所有工作日
@@ -315,6 +333,6 @@ public class WeekdayUtil {
 	}
 
 	public static void main(String[] args) {
-		System.out.println(WeekdayUtil.nextNWorkingDate("2017-03-26", 12));
+		System.out.println(WeekdayUtil.getWeekNumber("2017-04-23"));
 	}
 }

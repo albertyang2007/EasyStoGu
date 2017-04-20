@@ -1,12 +1,19 @@
 package org.easystogu.scheduler;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.easystogu.config.Constants;
-import org.easystogu.db.access.table.WSFConfigTableHelper;
 import org.easystogu.easymoney.runner.OverAllZiJinLiuAndDDXRunner;
+import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.log.LogHelper;
 import org.easystogu.runner.DailyOverAllRunner;
 import org.easystogu.runner.DailyUpdateStockPriceAndDDXRunner;
 import org.easystogu.runner.DataBaseSanityCheck;
+import org.easystogu.sina.runner.history.HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner;
+import org.easystogu.sina.runner.history.HistoryStockPriceDownloadAndStoreDBRunner;
+import org.easystogu.sina.runner.history.HistoryWeekStockPriceCountAndSaveDBRunner;
+import org.easystogu.utils.WeekdayUtil;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -16,13 +23,16 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.scheduling.annotation.SchedulingConfigurer;
 import org.springframework.scheduling.config.ScheduledTaskRegistrar;
+import org.easystogu.cache.ConfigurationServiceCache;
 
 @Configuration
 @EnableScheduling
 public class DailyScheduler implements SchedulingConfigurer {
-	private WSFConfigTableHelper wsfConfig = WSFConfigTableHelper.getInstance();
-	private String zone = wsfConfig.getValue("zone", Constants.ZONE_OFFICE);
 	private static Logger logger = LogHelper.getLogger(DailyScheduler.class);
+	private ConfigurationServiceCache config = ConfigurationServiceCache.getInstance();
+	private String zone = config.getString("zone", Constants.ZONE_OFFICE);
+	private CompanyInfoFileHelper companyInfoHelper = CompanyInfoFileHelper.getInstance();
+
 	@Autowired
 	@Qualifier("taskScheduler")
 	private TaskScheduler taskScheduler;
@@ -86,5 +96,46 @@ public class DailyScheduler implements SchedulingConfigurer {
 		DailyOverAllRunner runner = new DailyOverAllRunner(isGetZiJinLiu);
 		Thread t = new Thread(runner);
 		t.start();
+	}
+
+	// sometime the stockprice has problem and will miss data or chuquan is not
+	// 每周更新一下stockprice，每次选择一部分
+	// please do not change the SAT-SUN, will impact the selected stockId
+	// 请不要随意更改这个时间，跟选出的stockid算法有关。
+	// run at 04:00 every SAT and SUN
+	@Scheduled(cron = "0 00 04 * * SAT-SUN")
+	private void DailyUpdateStockPriceByBatch() {
+		logger.info("DailyUpdateStockPriceByBatch already running, please check DB result.");
+		if (Constants.ZONE_ALIYUN.equalsIgnoreCase(zone)) {
+
+			List<String> allStockIds = companyInfoHelper.getAllStockId();
+			List<String> stockIds = new ArrayList<String>();
+			// weekN is 1 ~ 53
+			int weekN = WeekdayUtil.getWeekNumber();
+			// offWeekN is 0 ~ 9
+			int offWeekN = weekN % 10;
+			// because SAT-SUN is in different week, so each weekend will update
+			// 20% stockIds
+			for (String stockId : allStockIds) {
+				int lastDig = Integer.parseInt(stockId.substring(5));
+				if (lastDig == offWeekN) {
+					stockIds.add(stockId);
+					// System.out.println(stockId);
+				}
+			}
+
+			logger.info("DailyUpdateStockPriceByBatch select stockId with last dig: " + offWeekN + ", size: "
+					+ stockIds.size());
+			new HistoryStockPriceDownloadAndStoreDBRunner().countAndSave(stockIds);
+			new HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner().countAndSave(stockIds);
+			new HistoryWeekStockPriceCountAndSaveDBRunner().countAndSave(stockIds);
+			
+			//after update price, do the sanity test
+			new DataBaseSanityCheck().run();
+		}
+	}
+
+	public static void main(String[] args) {
+		new DailyScheduler().DailyUpdateStockPriceByBatch();
 	}
 }
