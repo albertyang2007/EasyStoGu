@@ -16,8 +16,10 @@ import org.easystogu.config.Constants;
 import org.easystogu.cache.StockIndicatorCache;
 import org.easystogu.cache.ConfigurationServiceCache;
 import org.easystogu.config.DBConfigurationService;
+import org.easystogu.db.access.table.IndDDXTableHelper;
 import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.vo.table.BollVO;
+import org.easystogu.db.vo.table.DDXVO;
 import org.easystogu.db.vo.table.KDJVO;
 import org.easystogu.db.vo.table.LuZaoVO;
 import org.easystogu.db.vo.table.MacdVO;
@@ -52,6 +54,7 @@ public class IndicatorEndPointV0 {
 	protected BOLLHelper bollHelper = new BOLLHelper();
 	protected LuZaoHelper luzaoHelper = new LuZaoHelper();
 	protected WRHelper wrHelper = new WRHelper();
+	protected IndDDXTableHelper ddxTable = IndDDXTableHelper.getInstance();
 	protected String dateRegex = "[0-9]{4}-[0-9]{2}-[0-9]{2}";
 	protected String fromToRegex = dateRegex + "_" + dateRegex;
 
@@ -260,6 +263,30 @@ public class IndicatorEndPointV0 {
 			}
 		}
 
+		return list;
+	}
+	
+	@GET
+	@Path("/ddx/{stockId}/{date}")
+	@Produces("application/json")
+	public List<DDXVO> queryDDXById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
+			@Context HttpServletResponse response) {
+		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
+		List<DDXVO> list = new ArrayList<DDXVO>();
+		if (Pattern.matches(fromToRegex, dateParm)) {
+			String date1 = dateParm.split("_")[0];
+			String date2 = dateParm.split("_")[1];
+			// return ddxTable.getByIdAndBetweenDate(stockIdParm, date1, date2);
+			List<Object> cacheSpList = indicatorCache.queryByStockId(Constants.cacheIndDDX + ":" + stockIdParm);
+			for (Object obj : cacheSpList) {
+				DDXVO spvo = (DDXVO) obj;
+				if (Strings.isDateSelected(date1 + " " + HHmmss, date2 + " " + HHmmss, spvo.date + " " + HHmmss)) {
+					list.add(spvo);
+				}
+			}
+		} else if (Pattern.matches(dateRegex, dateParm) || Strings.isEmpty(dateParm)) {
+			list.add(ddxTable.getDDX(stockIdParm, dateParm));
+		}
 		return list;
 	}
 

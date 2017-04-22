@@ -1,0 +1,1004 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "openstock提供API调用，查询股票价格，查询指标数据，查询指标统计，模拟股票走势，K线图下载等。",
+    "version": "1.0.0",
+    "title": "openstock",
+    "termsOfService": "http://www.openstock.cn",
+    "contact": {
+      "email": "骑牛上山"
+    },
+    "license": {
+      "name": "N/A ",
+      "url": "N/A"
+    }
+  },
+  "host": "www.openstock.cn:18080",
+  "basePath": "/portal",
+  "tags": [
+    {
+      "name": "price",
+      "description": "Stock Price",
+      "externalDocs": {
+        "description": "Stock Price",
+        "url": "http://www.openstock.cn:18080"
+      }
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/pricev0/{stockId}/{date}": {
+      "get": {
+        "tags": [
+          "StockPrice"
+        ],
+        "summary": "非复权股票价格",
+        "description": "非复权股票价格",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "stockId",
+            "description": "6位数的股票代码",
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "date",
+            "description": "日期(例如2017-01-03)或者日期区间(例如2017-01-03_2017-02-23)",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功返回"
+          }
+        }
+      }
+    },
+    "/pricev1/{stockId}/{date}": {
+      "get": {
+        "tags": [
+          "StockPrice"
+        ],
+        "summary": "前复权股票价格",
+        "description": "前复权股票价格",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "stockId",
+            "description": "6位数的股票代码",
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "date",
+            "description": "日期(例如2017-01-03)或者日期区间(例如2017-01-03_2017-02-23)",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功返回"
+          }
+        }
+      }
+    },
+    "/pricev3/{stockId}/{date}": {
+      "get": {
+        "tags": [
+          "StockPrice"
+        ],
+        "summary": "股票价格模拟",
+        "description": "股票价格模拟",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "stockId",
+            "description": "6位数的股票代码",
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "date",
+            "description": "日期(例如2017-01-03)或者日期区间(例如2017-01-03_2017-02-23)",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "nDays",
+            "description": "N个日期合并",
+            "required": false
+          },
+          {
+            "in": "body",
+            "name": "trendModeName",
+            "description": "模拟的趋势",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功返回"
+          }
+        }
+      }
+    },
+    "/indv0/macd/{stockId}/{date}": {
+      "get": {
+        "tags": [
+          "Indicator"
+        ],
+        "summary": "非复权MACD指标",
+        "description": "非复权MACD指标",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "stockId",
+            "description": "6位数的股票代码",
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "date",
+            "description": "日期(例如2017-01-03)或者日期区间(例如2017-01-03_2017-02-23)",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功返回"
+          }
+        }
+      }
+    },
+    "/indv0/kdj/{stockId}/{date}": {
+      "get": {
+        "tags": [
+          "Indicator"
+        ],
+        "summary": "非复权KDJ指标",
+        "description": "非复权KDJ指标",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "stockId",
+            "description": "6位数的股票代码",
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "date",
+            "description": "日期(例如2017-01-03)或者日期区间(例如2017-01-03_2017-02-23)",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功返回"
+          }
+        }
+      }
+    },
+    "/indv0/boll/{stockId}/{date}": {
+      "get": {
+        "tags": [
+          "Indicator"
+        ],
+        "summary": "非复权布林指标",
+        "description": "非复权布林指标",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "stockId",
+            "description": "6位数的股票代码",
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "date",
+            "description": "日期(例如2017-01-03)或者日期区间(例如2017-01-03_2017-02-23)",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功返回"
+          }
+        }
+      }
+    },
+    "/indv0/shenxian/{stockId}/{date}": {
+      "get": {
+        "tags": [
+          "Indicator"
+        ],
+        "summary": "非复权神仙大趋势指标",
+        "description": "非复权神仙大趋势指标",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "stockId",
+            "description": "6位数的股票代码",
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "date",
+            "description": "日期(例如2017-01-03)或者日期区间(例如2017-01-03_2017-02-23)",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功返回"
+          }
+        }
+      }
+    },
+    "/indv0/shenxianSell/{stockId}/{date}": {
+      "get": {
+        "tags": [
+          "Indicator"
+        ],
+        "summary": "非复权神仙大趋势买卖指标",
+        "description": "非复权神仙大趋势买卖指标",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "stockId",
+            "description": "6位数的股票代码",
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "date",
+            "description": "日期(例如2017-01-03)或者日期区间(例如2017-01-03_2017-02-23)",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功返回"
+          }
+        }
+      }
+    },
+    "/indv0/luzao/{stockId}/{date}": {
+      "get": {
+        "tags": [
+          "Indicator"
+        ],
+        "summary": "非复权鲁兆大趋势指标",
+        "description": "非复权鲁兆大趋势指标",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "stockId",
+            "description": "6位数的股票代码",
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "date",
+            "description": "日期(例如2017-01-03)或者日期区间(例如2017-01-03_2017-02-23)",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功返回"
+          }
+        }
+      }
+    },
+    "/indv0/qsdd/{stockId}/{date}": {
+      "get": {
+        "tags": [
+          "Indicator"
+        ],
+        "summary": "非复权趋势顶底指标",
+        "description": "非复权趋势顶底指标",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "stockId",
+            "description": "6位数的股票代码",
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "date",
+            "description": "日期(例如2017-01-03)或者日期区间(例如2017-01-03_2017-02-23)",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功返回"
+          }
+        }
+      }
+    },
+    "/indv0/wr/{stockId}/{date}": {
+      "get": {
+        "tags": [
+          "Indicator"
+        ],
+        "summary": "非复权威廉指标",
+        "description": "非复权威廉指标",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "stockId",
+            "description": "6位数的股票代码",
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "date",
+            "description": "日期(例如2017-01-03)或者日期区间(例如2017-01-03_2017-02-23)",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功返回"
+          }
+        }
+      }
+    },
+    "/indv0/ddx/{stockId}/{date}": {
+      "get": {
+        "tags": [
+          "Indicator"
+        ],
+        "summary": "资金流DDX指标",
+        "description": "资金流DDX指标",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "stockId",
+            "description": "6位数的股票代码",
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "date",
+            "description": "日期(例如2017-01-03)或者日期区间(例如2017-01-03_2017-02-23)",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功返回"
+          }
+        }
+      }
+    },
+    "/indv1/macd/{stockId}/{date}": {
+      "get": {
+        "tags": [
+          "Indicator"
+        ],
+        "summary": "前复权MACD指标",
+        "description": "前复权MACD指标",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "stockId",
+            "description": "6位数的股票代码",
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "date",
+            "description": "日期(例如2017-01-03)或者日期区间(例如2017-01-03_2017-02-23)",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功返回"
+          }
+        }
+      }
+    },
+    "/indv1/kdj/{stockId}/{date}": {
+      "get": {
+        "tags": [
+          "Indicator"
+        ],
+        "summary": "前复权KDJ指标",
+        "description": "前复权KDJ指标",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "stockId",
+            "description": "6位数的股票代码",
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "date",
+            "description": "日期(例如2017-01-03)或者日期区间(例如2017-01-03_2017-02-23)",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功返回"
+          }
+        }
+      }
+    },
+    "/indv1/boll/{stockId}/{date}": {
+      "get": {
+        "tags": [
+          "Indicator"
+        ],
+        "summary": "前复权布林指标",
+        "description": "前复权布林指标",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "stockId",
+            "description": "6位数的股票代码",
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "date",
+            "description": "日期(例如2017-01-03)或者日期区间(例如2017-01-03_2017-02-23)",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功返回"
+          }
+        }
+      }
+    },
+    "/indv1/shenxian/{stockId}/{date}": {
+      "get": {
+        "tags": [
+          "Indicator"
+        ],
+        "summary": "前复权神仙大趋势指标",
+        "description": "前复权神仙大趋势指标",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "stockId",
+            "description": "6位数的股票代码",
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "date",
+            "description": "日期(例如2017-01-03)或者日期区间(例如2017-01-03_2017-02-23)",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功返回"
+          }
+        }
+      }
+    },
+    "/indv1/shenxianSell/{stockId}/{date}": {
+      "get": {
+        "tags": [
+          "Indicator"
+        ],
+        "summary": "前复权神仙大趋势买卖指标",
+        "description": "前复权神仙大趋势买卖指标",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "stockId",
+            "description": "6位数的股票代码",
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "date",
+            "description": "日期(例如2017-01-03)或者日期区间(例如2017-01-03_2017-02-23)",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功返回"
+          }
+        }
+      }
+    },
+    "/indv1/luzao/{stockId}/{date}": {
+      "get": {
+        "tags": [
+          "Indicator"
+        ],
+        "summary": "前复权鲁兆大趋势指标",
+        "description": "前复权鲁兆大趋势指标",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "stockId",
+            "description": "6位数的股票代码",
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "date",
+            "description": "日期(例如2017-01-03)或者日期区间(例如2017-01-03_2017-02-23)",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功返回"
+          }
+        }
+      }
+    },
+    "/indv1/qsdd/{stockId}/{date}": {
+      "get": {
+        "tags": [
+          "Indicator"
+        ],
+        "summary": "前复权趋势顶底指标",
+        "description": "前复权趋势顶底指标",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "stockId",
+            "description": "6位数的股票代码",
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "date",
+            "description": "日期(例如2017-01-03)或者日期区间(例如2017-01-03_2017-02-23)",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功返回"
+          }
+        }
+      }
+    },
+    "/indv1/wr/{stockId}/{date}": {
+      "get": {
+        "tags": [
+          "Indicator"
+        ],
+        "summary": "前复权威廉指标",
+        "description": "前复权威廉指标",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "stockId",
+            "description": "6位数的股票代码",
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "date",
+            "description": "日期(例如2017-01-03)或者日期区间(例如2017-01-03_2017-02-23)",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功返回"
+          }
+        }
+      }
+    },
+    "/indv1/ddx/{stockId}/{date}": {
+      "get": {
+        "tags": [
+          "Indicator"
+        ],
+        "summary": "资金流DDX指标",
+        "description": "资金流DDX指标",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "stockId",
+            "description": "6位数的股票代码",
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "date",
+            "description": "日期(例如2017-01-03)或者日期区间(例如2017-01-03_2017-02-23)",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功返回"
+          }
+        }
+      }
+    },
+    "/company/{stockId}": {
+      "get": {
+        "tags": [
+          "Company"
+        ],
+        "summary": "上市公司基本信息",
+        "description": "上市公司基本信息",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "stockId",
+            "description": "6位数的股票代码",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功返回"
+          }
+        }
+      }
+    },
+    "/company/name={name}": {
+      "get": {
+        "tags": [
+          "Company"
+        ],
+        "summary": "上市公司基本信息",
+        "description": "上市公司基本信息",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "name",
+            "description": "股票名称",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功返回"
+          }
+        }
+      }
+    },
+    "/statistics/luzao/trend/{date}": {
+      "get": {
+        "tags": [
+          "Statistics"
+        ],
+        "summary": "鲁兆大趋势统计",
+        "description": "鲁兆大趋势统计",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "date",
+            "description": "日期区间(例如2017-01-03_2017-02-23)",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功返回"
+          }
+        }
+      }
+    },
+    "/statistics/luzao/gordon/{date}": {
+      "get": {
+        "tags": [
+          "Statistics"
+        ],
+        "summary": "鲁兆大金叉统计",
+        "description": "鲁兆大金叉统计",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "date",
+            "description": "日期区间(例如2017-01-03_2017-02-23)",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功返回"
+          }
+        }
+      }
+    },
+    "/statistics/qsdd/{date}": {
+      "get": {
+        "tags": [
+          "Statistics"
+        ],
+        "summary": "趋势顶底统计",
+        "description": "趋势顶底统计",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "date",
+            "description": "日期区间(例如2017-01-03_2017-02-23)",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功返回"
+          }
+        }
+      }
+    },
+    "/statistics/shenxian/{date}": {
+      "get": {
+        "tags": [
+          "Statistics"
+        ],
+        "summary": "神仙大趋势统计",
+        "description": "神仙大趋势统计",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "date",
+            "description": "日期区间(例如2017-01-03_2017-02-23)",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功返回"
+          }
+        }
+      }
+    },
+    "/statistics/macd/{date}": {
+      "get": {
+        "tags": [
+          "Statistics"
+        ],
+        "summary": "MACD统计",
+        "description": "MACD统计",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "date",
+            "description": "日期区间(例如2017-01-03_2017-02-23)",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功返回"
+          }
+        }
+      }
+    },
+    "/statistics/wr/{date}": {
+      "get": {
+        "tags": [
+          "Statistics"
+        ],
+        "summary": "威廉指标统计",
+        "description": "威廉指标统计",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "date",
+            "description": "日期区间(例如2017-01-03_2017-02-23)",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功返回"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "ApiResponse": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "type": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "externalDocs": {
+    "description": "Find out more about Swagger",
+    "url": "http://swagger.io"
+  }
+}

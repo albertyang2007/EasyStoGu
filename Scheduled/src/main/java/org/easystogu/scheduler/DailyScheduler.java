@@ -102,8 +102,8 @@ public class DailyScheduler implements SchedulingConfigurer {
 	// 每周更新一下stockprice，每次选择一部分
 	// please do not change the SAT-SUN, will impact the selected stockId
 	// 请不要随意更改这个时间，跟选出的stockid算法有关。
-	// run at 04:00 every SAT and SUN
-	@Scheduled(cron = "0 00 04 * * SAT,SUN")
+	// run at 04:00 every SAT
+	@Scheduled(cron = "0 00 04 * * SAT")
 	private void DailyUpdateStockPriceByBatch() {
 		logger.info("DailyUpdateStockPriceByBatch already running, please check DB result.");
 		if (Constants.ZONE_ALIYUN.equalsIgnoreCase(zone)) {
@@ -114,8 +114,6 @@ public class DailyScheduler implements SchedulingConfigurer {
 			int weekN = WeekdayUtil.getWeekNumber();
 			// offWeekN is 0 ~ 9
 			int offWeekN = weekN % 10;
-			// because SAT-SUN is in different week, so each weekend will update
-			// 20% stockIds
 			for (String stockId : allStockIds) {
 				int lastDig = Integer.parseInt(stockId.substring(5));
 				if (lastDig == offWeekN) {
