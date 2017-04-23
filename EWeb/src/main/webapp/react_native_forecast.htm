@@ -80,6 +80,8 @@ demo
 	        
             if(indicator == "shenxian"){ 
 	           loadShenXianWithReqParms(stockId, dateFrom, dateTo, reqParms);
+            }else if(indicator == "shenxianSell"){ 
+	           loadShenXianSellWithReqParms(stockId, dateFrom, dateTo, reqParms);
             }else if(indicator == "luzao"){ 
 	           loadLuZaoWithReqParms(stockId, dateFrom, dateTo, reqParms);
             }else if(indicator == "boll"){ 
@@ -102,6 +104,7 @@ demo
 			                  
 			                  <select name='indicator' onChange={this.handleChange}>
                               <option value='luzao' defaultValue>luzao</option>
+                              <option value='shenxianSell'>shenxianSell</option>
                               <option value='shenxian'>shenxian</option>
                               <option value='macd'>macd</option>
                               <option value='boll'>boll</option>
@@ -111,6 +114,19 @@ demo
 			                  <label>预测形态:</label>
 			                  <select name='trendModeName' onChange={this.handleChange}>
                               <option value='None' defaultValue>None</option>
+                              <option value='PingPan'>平盘 无涨跌</option>
+                              <option value='Zhang1GeDian'>涨1个点</option>
+                              <option value='Zhang2GeDian'>涨2个点</option>
+                              <option value='Zhang3GeDian'>涨3个点</option>
+                              <option value='Zhang4GeDian'>涨4个点</option>
+                              <option value='Zhang5GeDian'>涨5个点</option>
+
+                              <option value='Die1GeDian'>跌1个点</option>
+                              <option value='Die2GeDian'>跌2个点</option>
+                              <option value='Die3GeDian'>跌3个点</option>
+                              <option value='Die4GeDian'>跌4个点</option>
+                              <option value='Die5GeDian'>跌5个点</option>
+
                               <option value='Wuliang3LianBan'>无量3个一字板</option>
                               <option value='Wuliang5LianBan'>无量5个一字板</option>
                               <option value='Wuliang7LianBan'>无量7个一字板</option>

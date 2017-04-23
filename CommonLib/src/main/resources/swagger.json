@@ -3,7 +3,7 @@
   "info": {
     "description": "openstock提供API调用，查询股票价格，查询指标数据，查询指标统计，模拟股票走势，K线图下载等。",
     "version": "1.0.0",
-    "title": "openstock",
+    "title": "OpenStock",
     "termsOfService": "http://www.openstock.cn",
     "contact": {
       "email": "骑牛上山"

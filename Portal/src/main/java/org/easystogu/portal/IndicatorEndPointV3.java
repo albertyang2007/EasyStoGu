@@ -141,7 +141,7 @@ public class IndicatorEndPointV3 {
 	@POST
 	@Path("/shenxian/{stockId}/{date}")
 	@Produces("application/json")
-	public List<ShenXianVO> queryShenXian2ById(@PathParam("stockId") String stockIdParm,
+	public List<ShenXianVO> queryShenXianById(@PathParam("stockId") String stockIdParm,
 			@PathParam("date") String dateParm, String postBody, @Context HttpServletResponse response) {
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		List<ShenXianVO> list = new ArrayList<ShenXianVO>();
@@ -149,6 +149,33 @@ public class IndicatorEndPointV3 {
 
 		List<Double> close = StockPriceFetcher.getClosePrice(spList);
 		double[][] shenXian = shenXianHelper.getShenXianList(Doubles.toArray(close));
+		for (int i = 0; i < shenXian[0].length; i++) {
+			if (this.isStockDateSelected(postBody, dateParm, spList.get(i).date)) {
+				ShenXianVO vo = new ShenXianVO();
+				vo.setH1(Strings.convert2ScaleDecimal(shenXian[0][i]));
+				vo.setH2(Strings.convert2ScaleDecimal(shenXian[1][i]));
+				vo.setH3(Strings.convert2ScaleDecimal(shenXian[2][i]));
+				vo.setStockId(stockIdParm);
+				vo.setDate(spList.get(i).date);
+				list.add(vo);
+			}
+		}
+
+		return list;
+	}
+
+	@POST
+	@Path("/shenxianSell/{stockId}/{date}")
+	@Produces("application/json")
+	public List<ShenXianVO> queryShenXianSellById(@PathParam("stockId") String stockIdParm,
+			@PathParam("date") String dateParm, String postBody, @Context HttpServletResponse response) {
+		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
+		List<ShenXianVO> list = new ArrayList<ShenXianVO>();
+		List<StockPriceVO> spList = postParmsProcess.updateStockPriceAccordingToRequest(stockIdParm, postBody);
+
+		List<Double> close = StockPriceFetcher.getClosePrice(spList);
+		List<Double> high = StockPriceFetcher.getHighPrice(spList);
+		double[][] shenXian = shenXianHelper.getShenXianSellPointList(Doubles.toArray(close), Doubles.toArray(high));
 		for (int i = 0; i < shenXian[0].length; i++) {
 			if (this.isStockDateSelected(postBody, dateParm, spList.get(i).date)) {
 				ShenXianVO vo = new ShenXianVO();

@@ -129,6 +129,71 @@ function loadShenXianWithReqParms(stockId, dateFrom, dateTo, reqParms) {
 }
 
 /**
+ * load shenxianSell with forecast trendmode parms
+ * 
+ * @returns {undefined}
+ */
+function loadShenXianSellWithReqParms(stockId, dateFrom, dateTo, reqParms) {
+	var seriesCounter = 0, date_price = [], volume = [], data_h1 = [], data_h2 = [], data_h3 = [];
+	var version = "v3";
+
+	/*
+	 * POST forecast sotck price and fetch back full price data
+	 */
+	// post forecast stock price data and fetch back with full data
+	var url_price = getEasyStoGuServerUrl() + "/portal/price" + version + "/"
+			+ stockId + "/" + dateFrom + "_" + dateTo;
+	$.ajax({
+		type : "POST",
+		url : url_price,
+		processData : false,
+		contentType : 'application/json; charset=utf-8',
+		data : JSON.stringify(reqParms),
+		success : function(data) {
+			date_price = convert2Candlestick(data);
+			volume = convert2Volume(data);
+
+			seriesCounter += 1;
+			if (seriesCounter === 2) {
+				createChart_ShenXian(stockId, date_price, volume, data_h1,
+						data_h2, data_h3);
+			}
+		}
+	});
+
+	/*
+	 * POST forecast sotck price and fetch back full price data
+	 */
+	var url_ind = getEasyStoGuServerUrl() + "/portal/ind" + version + "/shenxianSell/"
+			+ stockId + "/" + dateFrom + "_" + dateTo;
+	$.ajax({
+		type : "POST",
+		url : url_ind,
+		processData : false,
+		contentType : 'application/json; charset=utf-8',
+		data : JSON.stringify(reqParms),
+		success : function(data) {
+			i = 0;
+			for (i; i < data.length; i += 1) {
+				var dateStr = data[i]['date'] + " 15:00:00";
+				var dateD = new Date(Date.parse(dateStr.replace(/-/g, "/")));
+				data_h1.push([ dateD.getTime(), data[i]['h1'] ]);
+
+				data_h2.push([ dateD.getTime(), data[i]['h2'] ]);
+
+				data_h3.push([ dateD.getTime(), data[i]['h3'] ]);
+			}
+
+			seriesCounter += 1;
+			if (seriesCounter === 2) {
+				createChart_ShenXian(stockId, date_price, volume, data_h1,
+						data_h2, data_h3);
+			}
+		}
+	});
+}
+
+/**
  * load boll with forecast trendmode parms
  * 
  * @returns {undefined}

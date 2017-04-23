@@ -34,7 +34,7 @@ public class ShenXianHelper extends IND {
 		return shenXian;
 	}
 
-	// HC5:(MA(HIGH-H1, 3)+H1)*1.01;
+	// HC5:(MA(HIGH-H1, 3)+H1)*1.0075;
 	// sell point: = IF(H1>H2 AND HIGH>HC5,1,0);
 	// h3 is replaced by HC5
 	public double[][] getShenXianSellPointList(double[] CLOSE, double[] HIGH) {
@@ -50,7 +50,7 @@ public class ShenXianHelper extends IND {
 		shenXian[1] = EMA(shenXian[0], 18);
 		// count HC5
 		// h3 is replaced by HC5
-		shenXian[2] = MUL(ADD(MA(SUB(HIGH, shenXian[0]), 3), shenXian[0]), 1.01);
+		shenXian[2] = MUL(ADD(MA(SUB(HIGH, shenXian[0]), 3), shenXian[0]), 1.0075);
 
 		// exclude the mockLength data
 		shenXian[0] = subList(shenXian[0], mockLength, length);
