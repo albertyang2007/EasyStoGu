@@ -25,6 +25,7 @@ demo
           var dateTo = moment().format("YYYY-MM-DD");
           var trendModeName = "None";
           var nDays = "1";
+          var repeatTimes = "1";
 
 	      var ParmForm = React.createClass({
 	         getInitialState: function() {
@@ -35,7 +36,8 @@ demo
 	            dateFrom: moment().subtract(2000, 'days').format("YYYY-MM-DD"),
 	            dateTo: moment().format("YYYY-MM-DD"),
 	            trendModeName: "None",
-                nDays : "1" 
+                nDays : "1",
+                repeatTimes: "1"
 	        };
 	      },
 	      
@@ -52,11 +54,14 @@ demo
                 version: this.state.version, 
 	            dateFrom : this.state.dateFrom,
 	            dateTo : this.state.dateTo,
+                nDays : this.state.nDays,
+                repeatTimes : this.state.repeatTimes
 	        };
 
 	        var reqParms = {
 		        "trendModeName" : this.state.trendModeName,
-                "nDays" : this.state.nDays
+                "nDays" : this.state.nDays,
+                "repeatTimes" : this.state.repeatTimes
 	        };
 
             // set ajax async to false just to query the stock company info
@@ -74,6 +79,8 @@ demo
             dateFrom = data.dateFrom;
             dateTo = data.dateTo;
             stockId = data.stockId;
+            repeatTimes = data.repeatTimes;
+            nDays = data.nDays;
 
             //reset ajax async to true when load big data from portal
             $.ajaxSettings.async = true;
@@ -111,7 +118,7 @@ demo
                               <option value='qsdd'>qsdd</option>
                               </select>&nbsp;&nbsp;
 
-			                  <label>预测形态:</label>
+			                  <label>走势</label>
 			                  <select name='trendModeName' onChange={this.handleChange}>
                               <option value='None' defaultValue>None</option>
                               <option value='PingPan'>平盘 无涨跌</option>
@@ -135,7 +142,6 @@ demo
                               <option value='HengPan2Zhou'>横盘两周突破</option>
                               <option value='HengPan1Zhou'>横盘一周突破</option>
 
-
                               <option value='BaoDie'>暴跌</option>
                               <option value='BaoDie2'>暴跌2</option>
                               <option value='BaoZhang'>暴涨</option>
@@ -151,6 +157,9 @@ demo
                               <option value='ZiMaKaiHua2'>芝麻开花2</option>
                               </select>&nbsp;&nbsp;
 			                  
+                              <label>重复</label>
+			                  <input type="text" value={this.state.repeatTimes} name='repeatTimes' maxLength="2" onChange={this.handleChange} />&nbsp;&nbsp;
+
                               <input type="submit" value="Submit" onClick={this.handleClick} />
 			              </div>
 			              );

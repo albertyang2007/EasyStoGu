@@ -42,15 +42,22 @@ public class ProcessRequestParmsInPostBody {
 		try {
 			JSONObject jsonParm = new JSONObject(postBody);
 			// parms has process priority, do not change the order
+			int repeatTimes = 1;
+			String repeatTimesParms = jsonParm.getString("repeatTimes");
+			if (Strings.isNotEmpty(repeatTimesParms) && Strings.isNumeric(repeatTimesParms)) {
+				repeatTimes = Integer.parseInt(repeatTimesParms);
+			}
+
+			String trendModeName = jsonParm.getString("trendModeName");
+			if (Strings.isNotEmpty(trendModeName)) {
+				spList = this.appendTrendModePrice(trendModeName, repeatTimes, spList);
+			}
+
 			String nDays = jsonParm.getString("nDays");
 			if (Strings.isNotEmpty(nDays) && Strings.isNumeric(nDays)) {
 				spList = this.mergeNDaysPrice(Integer.parseInt(nDays), spList);
 			}
 
-			String trendModeName = jsonParm.getString("trendModeName");
-			if (Strings.isNotEmpty(trendModeName)) {
-				spList = this.appendTrendModePrice(trendModeName, spList);
-			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -64,13 +71,18 @@ public class ProcessRequestParmsInPostBody {
 		return mergeNdaysPriceHeloer.generateNDaysPriceVOInDescOrder(nDays, spList);
 	}
 
-	private List<StockPriceVO> appendTrendModePrice(String trendModeName, List<StockPriceVO> spList) {
+	private List<StockPriceVO> appendTrendModePrice(String trendModeName, int repeatTimes, List<StockPriceVO> spList) {
 		// parse the forecast body and add back to spList
 		StockPriceVO curSPVO = spList.get(spList.size() - 1);
-		TrendModeVO tmo = trendModeLoader.loadTrendMode(trendModeName);
+		TrendModeVO tmo = trendModeLoader.loadTrendMode(trendModeName).copy();
 
 		if (tmo.prices.size() == 0)
 			return spList;
+
+		List<SimplePriceVO> origList = tmo.getPricesByCopy();
+		for (int i = 1; i < repeatTimes; i++) {
+			tmo.prices.addAll(origList);
+		}
 
 		List<String> nextWorkingDateList = WeekdayUtil.nextWorkingDateList(curSPVO.date, tmo.prices.size());
 
@@ -96,9 +108,9 @@ public class ProcessRequestParmsInPostBody {
 	// common function to fetch price from stockPrice table
 	private List<StockPriceVO> fetchAllPrices(String stockid) {
 		List<StockPriceVO> spList = new ArrayList<StockPriceVO>();
-		List<Object> tmpList = this.indicatorCache.queryByStockId(Constants.cacheQianFuQuanStockPrice + ":" +stockid);
+		List<Object> tmpList = this.indicatorCache.queryByStockId(Constants.cacheQianFuQuanStockPrice + ":" + stockid);
 		for (Object obj : tmpList) {
-			spList.add((StockPriceVO)obj);
+			spList.add((StockPriceVO) obj);
 		}
 		return spList;
 	}
