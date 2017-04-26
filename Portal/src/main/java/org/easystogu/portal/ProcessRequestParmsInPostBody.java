@@ -2,6 +2,7 @@ package org.easystogu.portal;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.table.StockPriceTableHelper;
@@ -113,5 +114,68 @@ public class ProcessRequestParmsInPostBody {
 			spList.add((StockPriceVO) obj);
 		}
 		return spList;
+	}
+
+	private String appendTrendModeDateToDateRange(String postBody, String date) {
+		String fromDate = WeekdayUtil.currentDate();
+		String endDate = WeekdayUtil.currentDate();
+
+		if (Pattern.matches(Constants.fromToRegex, date)) {
+			fromDate = date.split("_")[0];
+			endDate = date.split("_")[1];
+
+			// if postBody contains the trendMode, then get the dateLengh from
+			// it
+			// and append the last date to dateRange
+			if (Strings.isNotEmpty(postBody)) {
+				try {
+					JSONObject jsonParm = new JSONObject(postBody);
+					
+					int repeatTimes = 1;
+					String repeatTimesParms = jsonParm.getString("repeatTimes");
+					if (Strings.isNotEmpty(repeatTimesParms) && Strings.isNumeric(repeatTimesParms)) {
+						repeatTimes = Integer.parseInt(repeatTimesParms);
+					}
+
+					String trendModeName = jsonParm.getString("trendModeName");
+					if (Strings.isNotEmpty(trendModeName)) {
+						TrendModeVO tmo = trendModeLoader.loadTrendMode(trendModeName).copy();
+
+						List<SimplePriceVO> origList = tmo.getPricesByCopy();
+						for (int i = 1; i < repeatTimes; i++) {
+							tmo.prices.addAll(origList);
+						}
+						
+						if (tmo.prices.size() > 0) {
+							String newEndDate = WeekdayUtil.nextNWorkingDate(endDate, tmo.prices.size());
+							return fromDate + "_" + newEndDate;
+						}
+					}
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			}
+		}
+
+		// return the default data range
+		return date;
+	}
+
+	public boolean isStockDateSelected(String postBody, String date, String aDate) {
+
+		String newDate = this.appendTrendModeDateToDateRange(postBody, date);
+
+		if (Pattern.matches(Constants.fromToRegex, newDate)) {
+			String date1 = newDate.split("_")[0];
+			String date2 = newDate.split("_")[1];
+			return Strings.isDateSelected(date1 + " " + Constants.HHmmss, date2 + " " + Constants.HHmmss,
+					aDate + " " + Constants.HHmmss);
+		}
+		if (Pattern.matches(Constants.dateRegex, newDate) || Strings.isEmpty(newDate)) {
+			return aDate.equals(newDate);
+		}
+		return false;
 	}
 }

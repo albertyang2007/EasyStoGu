@@ -36,4 +36,8 @@ public class Constants {
 	public static String cacheLatestNStockDate = "latestndate";
 	public static String cacheSZZSDayListByIdAndBetweenDates = "SZZSDayListByIdAndBetweenDates";
 	public static String cacheAllDealDate = "AllDealDate";
+	
+	public static String dateRegex = "[0-9]{4}-[0-9]{2}-[0-9]{2}";
+	public static String fromToRegex = dateRegex + "_" + dateRegex;
+	public static String HHmmss = "00:00:00";
 }

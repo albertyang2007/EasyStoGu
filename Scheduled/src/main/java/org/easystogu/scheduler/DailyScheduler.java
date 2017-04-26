@@ -110,25 +110,30 @@ public class DailyScheduler implements SchedulingConfigurer {
 
 			List<String> allStockIds = companyInfoHelper.getAllStockId();
 			List<String> stockIds = new ArrayList<String>();
-			// weekN is 1 ~ 53
-			int weekN = WeekdayUtil.getWeekNumber();
-			// offWeekN is 0 ~ 9
-			int offWeekN = weekN % 10;
+			// dayN is 1 ~ 31
+			int dayN = Integer.parseInt(WeekdayUtil.currentDay());
+
+			if (dayN == 31) {
+				logger.info("Today is 31 of last day, skip process since next day will be 1.");
+				return;
+			}
+
+			// offDayN is 0 ~ 9
+			int offDayN = dayN % 10;
 			for (String stockId : allStockIds) {
 				int lastDig = Integer.parseInt(stockId.substring(5));
-				if (lastDig == offWeekN) {
+				if (lastDig == offDayN) {
 					stockIds.add(stockId);
-					// System.out.println(stockId);
 				}
 			}
 
-			logger.info("DailyUpdateStockPriceByBatch select stockId with last dig: " + offWeekN + ", size: "
+			logger.info("DailyUpdateStockPriceByBatch select stockId with last dig: " + offDayN + ", size: "
 					+ stockIds.size());
 			new HistoryStockPriceDownloadAndStoreDBRunner().countAndSave(stockIds);
 			new HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner().countAndSave(stockIds);
 			new HistoryWeekStockPriceCountAndSaveDBRunner().countAndSave(stockIds);
-			
-			//after update price, do the sanity test
+
+			// after update price, do the sanity test
 			new DataBaseSanityCheck().run();
 		}
 	}

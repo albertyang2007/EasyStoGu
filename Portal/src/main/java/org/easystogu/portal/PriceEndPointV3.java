@@ -28,14 +28,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class PriceEndPointV3 {
 	private ConfigurationServiceCache config = ConfigurationServiceCache.getInstance();
 	private String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
-	protected static String HHmmss = "00:00:00";
 	protected CompanyInfoFileHelper companyInfoHelper = CompanyInfoFileHelper.getInstance();
 	@Autowired
 	protected ProcessRequestParmsInPostBody postParmsProcess;
 	@Autowired
 	protected TrendModeLoader trendModeLoader;
-	private String dateRegex = "[0-9]{4}-[0-9]{2}-[0-9]{2}";
-	private String fromToRegex = dateRegex + "_" + dateRegex;
 
 	@POST
 	@Path("/{stockId}/{date}")
@@ -47,60 +44,11 @@ public class PriceEndPointV3 {
 		List<StockPriceVO> spList = postParmsProcess.updateStockPriceAccordingToRequest(stockIdParm, postBody);
 
 		for (StockPriceVO vo : spList) {
-			if (this.isStockDateSelected(postBody, dateParm, vo.date)) {
+			if (postParmsProcess.isStockDateSelected(postBody, dateParm, vo.date)) {
 				rtnSpList.add(vo);
 			}
 		}
 
 		return rtnSpList;
-	}
-
-	protected String appendTrendModeDateToDateRange(String postBody, String date) {
-		String fromDate = WeekdayUtil.currentDate();
-		String endDate = WeekdayUtil.currentDate();
-
-		if (Pattern.matches(fromToRegex, date)) {
-			fromDate = date.split("_")[0];
-			endDate = date.split("_")[1];
-
-			// if postBody contains the trendMode, then get the dateLengh from
-			// it
-			// and append the last date to dateRange
-			if (Strings.isNotEmpty(postBody)) {
-				try {
-					JSONObject jsonParm = new JSONObject(postBody);
-					String trendModeName = jsonParm.getString("trendModeName");
-					if (Strings.isNotEmpty(trendModeName)) {
-						TrendModeVO tmo = trendModeLoader.loadTrendMode(trendModeName);
-						if (tmo.prices.size() > 0) {
-							String newEndDate = WeekdayUtil.nextNWorkingDate(endDate, tmo.length);
-							return fromDate + "_" + newEndDate;
-						}
-					}
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-
-			}
-		}
-
-		// return the default data range
-		return date;
-	}
-
-	protected boolean isStockDateSelected(String postBody, String date, String aDate) {
-
-		String newDate = this.appendTrendModeDateToDateRange(postBody, date);
-
-		if (Pattern.matches(fromToRegex, newDate)) {
-			String date1 = newDate.split("_")[0];
-			String date2 = newDate.split("_")[1];
-			return Strings.isDateSelected(date1 + " " + HHmmss, date2 + " " + HHmmss, aDate + " " + HHmmss);
-		}
-		if (Pattern.matches(dateRegex, newDate) || Strings.isEmpty(newDate)) {
-			return aDate.equals(newDate);
-		}
-		return false;
 	}
 }

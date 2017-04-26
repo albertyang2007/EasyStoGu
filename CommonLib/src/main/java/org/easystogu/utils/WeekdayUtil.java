@@ -24,6 +24,11 @@ public class WeekdayUtil {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
 		return Integer.parseInt(sdf.format(new Date()).toString());
 	}
+	
+	public static String currentDay() {
+		SimpleDateFormat sdf = new SimpleDateFormat("dd");
+		return sdf.format(new Date()).toString();
+	}
 
 	/**
 	 * @title 判断两个日期是否在指定工作日内
@@ -333,6 +338,6 @@ public class WeekdayUtil {
 	}
 
 	public static void main(String[] args) {
-		System.out.println(WeekdayUtil.getWeekNumber("2017-04-23"));
+		System.out.println(WeekdayUtil.currentDay());
 	}
 }

@@ -47,7 +47,7 @@ demo
 	         this.setState(newState);
 	      },
 	
-	      handleClick: function() {
+	      handleSubmit: function() {
 	         var data = {
 	            stockId : this.state.stockId,
 	            indicator : this.state.indicator,
@@ -158,9 +158,9 @@ demo
                               </select>&nbsp;&nbsp;
 			                  
                               <label>重复</label>
-			                  <input type="text" value={this.state.repeatTimes} name='repeatTimes' maxLength="2" onChange={this.handleChange} />&nbsp;&nbsp;
+			                  <input type="text" value={this.state.repeatTimes} name='repeatTimes' maxLength="3" onChange={this.handleChange} />&nbsp;&nbsp;
 
-                              <input type="submit" value="Submit" onClick={this.handleClick} />
+                              <input type="submit" value="Submit" onClick={this.handleSubmit} />
 			              </div>
 			              );
 			     }         

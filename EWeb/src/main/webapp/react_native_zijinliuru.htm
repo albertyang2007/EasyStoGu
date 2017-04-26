@@ -62,6 +62,8 @@ ${demo.css}
              //set the selected stockId to first one
              if(selectStockIds.length > 0){
                 stockId = selectStockIds[0][0];
+                newState["stockId"] = stockId;
+	            this.setState(newState);
                 //refresh the chart using the first stockid
                 loadLuZao(version, stockId, dateFrom, dateTo);
              }
@@ -74,7 +76,20 @@ ${demo.css}
         
              //update the stockId to selected value
              stockId = e.target.value;
-             loadLuZao(version, stockId, dateFrom, dateTo);
+
+             if(indicator == "shenxian"){ 
+	            loadShenXian(version, stockId, dateFrom, dateTo);
+             }else if(indicator == "shenxian_sell"){ 
+	            loadShenXianSell(version, stockId, dateFrom, dateTo);
+             }else if(indicator == "luzao"){ 
+	            loadLuZao(version, stockId, dateFrom, dateTo);
+             }else if(indicator == "boll"){ 
+	            loadBoll(version, stockId, dateFrom, dateTo);
+             }else if(indicator == "macd"){ 
+	            loadMacd(version, stockId, dateFrom, dateTo);
+             }else if(indicator == "qsdd"){ 
+	            loadQSDD(version, stockId, dateFrom, dateTo);
+             }
 	      },
 
           handleChangeSelectIndicator: function(e) {
@@ -85,19 +100,19 @@ ${demo.css}
              //update the indicator to selected value
              indicator = e.target.value;
 
-            if(data.indicator == "shenxian"){ 
-	           loadShenXian(data.version, data.stockId, data.dateFrom, data.dateTo);
-            }else if(data.indicator == "shenxian_sell"){ 
-	           loadShenXianSell(data.version, data.stockId, data.dateFrom, data.dateTo);
-            }else if(data.indicator == "luzao"){ 
-	           loadLuZao(data.version, data.stockId, data.dateFrom, data.dateTo);
-            }else if(data.indicator == "boll"){ 
-	           loadBoll(data.version, data.stockId, data.dateFrom, data.dateTo);
-            }else if(data.indicator == "macd"){ 
-	           loadMacd(data.version, data.stockId, data.dateFrom, data.dateTo);
-            }else if(data.indicator == "qsdd"){ 
-	           loadQSDD(data.version, data.stockId, data.dateFrom, data.dateTo);
-            }
+             if(indicator == "shenxian"){ 
+	            loadShenXian(version, stockId, dateFrom, dateTo);
+             }else if(indicator == "shenxian_sell"){ 
+	            loadShenXianSell(version, stockId, dateFrom, dateTo);
+             }else if(indicator == "luzao"){ 
+	            loadLuZao(version, stockId, dateFrom, dateTo);
+             }else if(indicator == "boll"){ 
+	            loadBoll(version, stockId, dateFrom, dateTo);
+             }else if(indicator == "macd"){ 
+	            loadMacd(version, stockId, dateFrom, dateTo);
+             }else if(indicator == "qsdd"){ 
+	            loadQSDD(version, stockId, dateFrom, dateTo);
+             }
 	      },
 
           handleChangeVersion: function(e) {
@@ -176,6 +191,7 @@ ${demo.css}
              if(selectStockIds.length > 0){
                 stockId = selectStockIds[0][0];
                 newState["stockId"] = stockId;
+
                 loadLuZao(version, stockId, dateFrom, dateTo);
              }
 
