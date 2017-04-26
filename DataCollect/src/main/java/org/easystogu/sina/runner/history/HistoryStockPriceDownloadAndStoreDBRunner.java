@@ -142,12 +142,16 @@ public class HistoryStockPriceDownloadAndStoreDBRunner {
 	}
 
 	public void countAndSave(String stockId) {
+		// fetch all history price from sohu api
+		List<StockPriceVO> spList = this.fetchStockPriceFromWeb(stockId);
+		if (spList.size() == 0) {
+			System.out.println("Size for " + stockId + " is zero. Just return.");
+			return;
+		}
 		// first delete all price for this stockId
 		System.out
 				.println("Delete stock price for " + stockId + " that between " + this.startDate + "~" + this.endDate);
 		this.stockPriceTable.deleteBetweenDate(stockId, this.startDate, this.endDate);
-		// fetch all history price from sohu api
-		List<StockPriceVO> spList = this.fetchStockPriceFromWeb(stockId);
 		System.out.println("Save to database size=" + spList.size());
 		// save to db
 		for (StockPriceVO spvo : spList) {
@@ -169,12 +173,12 @@ public class HistoryStockPriceDownloadAndStoreDBRunner {
 	public static void main(String[] args) {
 		String startDate = "1990-01-01";
 		String endDate = WeekdayUtil.currentDate();
-		
+
 		if (args != null && args.length == 2) {
 			startDate = args[0];
 			endDate = args[1];
 		}
-		
+
 		System.out.println("startDate=" + startDate + " and endDate=" + endDate);
 
 		HistoryStockPriceDownloadAndStoreDBRunner runner = new HistoryStockPriceDownloadAndStoreDBRunner(startDate,
@@ -187,7 +191,7 @@ public class HistoryStockPriceDownloadAndStoreDBRunner {
 		// for all stockIds
 		runner.countAndSave(stockIds);
 		// for specify stockId
-		//runner.countAndSave("000049");
+		// runner.countAndSave("000049");
 
 		// finally re run for failure
 		// runner.reRunOnFailure();
