@@ -170,13 +170,16 @@ public class IndicatorEndPointV0 {
 		List<StockPriceVO> spList = this.fetchAllPrices(stockIdParm);
 		List<Double> close = StockPriceFetcher.getClosePrice(spList);
 		List<Double> high = StockPriceFetcher.getHighPrice(spList);
-		double[][] shenXian = shenXianHelper.getShenXianSellPointList(Doubles.toArray(close), Doubles.toArray(high));
+		List<Double> low = StockPriceFetcher.getLowPrice(spList);
+		double[][] shenXian = shenXianHelper.getShenXianSellPointList(Doubles.toArray(close), Doubles.toArray(high),
+				Doubles.toArray(low));
 		for (int i = 0; i < shenXian[0].length; i++) {
 			if (this.isStockDateSelected(dateParm, spList.get(i).date)) {
 				ShenXianVO vo = new ShenXianVO();
 				vo.setH1(Strings.convert2ScaleDecimal(shenXian[0][i]));
 				vo.setH2(Strings.convert2ScaleDecimal(shenXian[1][i]));
-				vo.setH3(Strings.convert2ScaleDecimal(shenXian[2][i]));
+				vo.setHc5(Strings.convert2ScaleDecimal(shenXian[2][i]));
+				vo.setHc6(Strings.convert2ScaleDecimal(shenXian[3][i]));
 				vo.setStockId(stockIdParm);
 				vo.setDate(spList.get(i).date);
 				list.add(vo);
@@ -265,7 +268,7 @@ public class IndicatorEndPointV0 {
 
 		return list;
 	}
-	
+
 	@GET
 	@Path("/ddx/{stockId}/{date}")
 	@Produces("application/json")

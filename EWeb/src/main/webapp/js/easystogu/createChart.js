@@ -317,6 +317,81 @@ function createChart_ShenXian(stockId, date_price, volume, data_h1, data_h2,
 }
 
 /**
+ * Create the StockPrice and shenxianSell chart
+ * 
+ * @returns {undefined}
+ */
+function createChart_ShenXianSell(stockId, date_price, volume, data_h1, data_h2,
+		data_hc5, data_hc6) {
+	$('#container').highcharts('StockChart', {
+
+		rangeSelector : {
+			selected : 1
+		},
+
+		title : {
+			text : stockId
+		},
+
+		plotOptions : {
+			candlestick : {
+				color : '#00ff00',// Green
+				upColor : '#ff0000'// Red
+			}
+		},
+
+		yAxis : [ {
+			labels : {
+				align : 'right',
+				x : -3
+			},
+			title : {
+				text : 'Price'
+			},
+			height : '60%',
+			lineWidth : 2
+		}, {
+			labels : {
+				align : 'right',
+				x : -3
+			},
+			title : {
+				text : 'Volume'
+			},
+			top : '65%',
+			height : '35%',
+			offset : 0,
+			lineWidth : 2
+		} ],
+
+		series : [ {
+			type : 'candlestick',
+			name : 'OHLC',
+			data : date_price
+		}, {
+			name : 'H1',
+			data : data_h1
+		}, {
+			name : 'H2',
+			data : data_h2
+		}, {
+			name : 'HC5',
+			data : data_hc5
+		}, {
+			name : 'HC6',
+			data : data_hc6
+		}, {
+			type : 'column',
+			name : 'Volume',
+			data : volume,
+			yAxis : 1
+		} ]
+	});
+
+	chart = $('#container').highcharts();
+}
+
+/**
  * Create the StockPrice and shenxian chart, and statistics chart
  * 
  * @returns {undefined}

@@ -63,7 +63,7 @@ function loadShenXian(version, stockId, dateFrom, dateTo) {
  * @returns {undefined}
  */
 function loadShenXianSell(version, stockId, dateFrom, dateTo) {
-	var seriesCounter = 0, date_price = [], ddx = [], data_h1 = [], data_h2 = [], data_h3 = [];
+	var seriesCounter = 0, date_price = [], ddx = [], data_h1 = [], data_h2 = [], data_hc5 = [], data_hc6 = [];
 	/**
 	 * Load StocPrice and display OHLC
 	 * 
@@ -85,8 +85,8 @@ function loadShenXianSell(version, stockId, dateFrom, dateTo) {
 
 		seriesCounter += 1;
 		if (seriesCounter === 3) {
-			createChart_ShenXian(stockId, date_price, ddx, data_h1, data_h2,
-					data_h3);
+			createChart_ShenXianSell(stockId, date_price, ddx, data_h1, data_h2,
+					data_hc5, data_hc6);
 		}
 	});
 	
@@ -107,8 +107,8 @@ function loadShenXianSell(version, stockId, dateFrom, dateTo) {
 
 		seriesCounter += 1;
 		if (seriesCounter === 3) {
-			createChart_ShenXian(stockId, date_price, ddx, data_h1, data_h2,
-					data_h3);
+			createChart_ShenXianSell(stockId, date_price, ddx, data_h1, data_h2,
+					data_hc5, data_hc6);
 		}
 	});
 
@@ -128,13 +128,15 @@ function loadShenXianSell(version, stockId, dateFrom, dateTo) {
 
 			data_h2.push([ dateD.getTime(), data[i]['h2'] ]);
 
-			data_h3.push([ dateD.getTime(), data[i]['h3'] ]);
+			data_hc5.push([ dateD.getTime(), data[i]['hc5'] ]);
+			
+			data_hc6.push([ dateD.getTime(), data[i]['hc6'] ]);
 		}
 
 		seriesCounter += 1;
 		if (seriesCounter === 3) {
-			createChart_ShenXian(stockId, date_price, ddx, data_h1, data_h2,
-					data_h3);
+			createChart_ShenXianSell(stockId, date_price, ddx, data_h1, data_h2,
+					data_hc5, data_hc6);
 		}
 	});
 }
