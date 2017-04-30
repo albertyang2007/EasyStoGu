@@ -71,7 +71,19 @@ ${demo.css}
                 newState["stockId"] = stockId;
 	            this.setState(newState);
                 //refresh the chart using the first stockid
-                loadLuZao(version, stockId, dateFrom, dateTo);
+                if(indicator == "shenxian"){ 
+	               loadShenXian(version, stockId, dateFrom, dateTo);
+                }else if(indicator == "shenxian_sell"){ 
+	               loadShenXianSellWithReqParms(stockId, dateFrom, dateTo, reqParms);
+                }else if(indicator == "luzao"){ 
+	               loadLuZao(version, stockId, dateFrom, dateTo);
+                }else if(indicator == "boll"){ 
+	               loadBoll(version, stockId, dateFrom, dateTo);
+                }else if(indicator == "macd"){ 
+	               loadMacd(version, stockId, dateFrom, dateTo);
+                }else if(indicator == "qsdd"){ 
+	               loadQSDD(version, stockId, dateFrom, dateTo);
+                }
              }
 	      },
 
@@ -163,7 +175,7 @@ ${demo.css}
             var newState = {};
 
             $.ajaxSettings.async = false;
-            var dateOptionsTmp = getLatestNDate(10);
+            var dateOptionsTmp = getLatestNDate(30);
             //first option is empty
             tmpDateOptions = [];
 

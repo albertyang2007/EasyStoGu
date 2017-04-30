@@ -32,15 +32,16 @@ public class FlagsAnalyseHelper {
 			VolumeVO volumevo = getVolumeVOByDate(spvo.date, volumeList);
 
 			if (sxvo != null && macdvo != null && bbivo != null && luzaovo != null && volumevo != null) {
+
+				String macdStr = macdvo.dif < 0 ? "零下" : "零上";
+
 				// 金叉
 				if (isMacdGordon(spvo.date, macdList) && isShenXianGordon(spvo.date, sxList)) {
 					sxvo.setDuoFlagsTitle("G2");
-					String s = macdvo.dif < 0 ? "零下" : "零上";
-					sxvo.setDuoFlagsText(s + "Macd金叉, 神仙金叉");
+					sxvo.setDuoFlagsText(macdStr + "Macd金叉, 神仙金叉");
 				} else if (isMacdGordon(spvo.date, macdList)) {
 					sxvo.setDuoFlagsTitle("G");
-					String s = macdvo.dif < 0 ? "零下" : "零上";
-					sxvo.setDuoFlagsText(s + " Macd金叉");
+					sxvo.setDuoFlagsText(macdStr + "Macd金叉");
 				} else if (isShenXianGordon(spvo.date, sxList)) {
 					sxvo.setDuoFlagsTitle("G");
 					sxvo.setDuoFlagsText("神仙金叉");
@@ -49,34 +50,50 @@ public class FlagsAnalyseHelper {
 				// 死叉
 				if (isMacdDead(spvo.date, macdList) && isShenXianDead(spvo.date, sxList)) {
 					sxvo.setDuoFlagsTitle("D2");
-					String s = macdvo.dif < 0 ? "零下" : "零上";
-					sxvo.setDuoFlagsText(s + "Macd死叉, 神仙死叉");
+					sxvo.setDuoFlagsText(macdStr + "Macd神仙死叉");
 				} else if (isMacdDead(spvo.date, macdList)) {
 					sxvo.setDuoFlagsTitle("D");
-					String s = macdvo.dif < 0 ? "零下" : "零上";
-					sxvo.setDuoFlagsText(s + " Macd死叉");
+					sxvo.setDuoFlagsText(macdStr + "Macd死叉");
 				} else if (isShenXianDead(spvo.date, sxList)) {
 					sxvo.setDuoFlagsTitle("D");
 					sxvo.setDuoFlagsText("神仙死叉");
 				}
 
-				// 鲁兆趋势 多头
-				// 鲁兆建仓或者持股阶段
-				if (luzaovo.ma86 >= luzaovo.ma43) {
-					if (isBBIGordon(spvo.date, bbiList)) {
-						sxvo.setDuoFlagsTitle("多");
-						if (isMacdGordon(spvo.date, macdList)) {
-							sxvo.setDuoFlagsText(spvo.low + " Macd金叉,试仓1/3");
-						} else if (isShenXianGordon(spvo.date, sxList)) {
-							sxvo.setDuoFlagsText(spvo.low + " 神仙金叉,试仓1/3");
-						} else {
-							// most of time come here
-							sxvo.setDuoFlagsText(spvo.low + " ??金叉,试仓1/3");
-						}
+				// 空头
+				if (isBBIDead(spvo.date, bbiList)) {
+					if (isMacdDead(spvo.date, macdList) && isShenXianDead(spvo.date, sxList)) {
+						sxvo.setSellFlagsTitle("死空2");
+						sxvo.setSellFlagsText(spvo.close + " " + macdStr + "Macd神仙死叉,清仓2/3");
+					} else if (isMacdDead(spvo.date, macdList)) {
+						sxvo.setSellFlagsTitle("死空");
+						sxvo.setSellFlagsText(spvo.close + " " + macdStr + "Macd死叉,清仓2/3");
+					} else if (isShenXianDead(spvo.date, sxList)) {
+						sxvo.setSellFlagsTitle("死空");
+						sxvo.setSellFlagsText(spvo.close + " 神仙死叉,清仓2/3");
+					} else {
+						sxvo.setSellFlagsTitle("空");
 					}
 				}
 
-				// 做多
+				// 多头
+				if (isBBIGordon(spvo.date, bbiList)) {
+					if (isMacdGordon(spvo.date, macdList) && isShenXianGordon(spvo.date, sxList)) {
+						sxvo.setDuoFlagsTitle("金多2");
+						sxvo.setDuoFlagsText(spvo.low + " " + macdStr + " Macd神仙金叉,试仓1/3");
+					} else if (isShenXianGordon(spvo.date, sxList)) {
+						sxvo.setDuoFlagsTitle("金多");
+						sxvo.setDuoFlagsText(spvo.low + " 神仙金叉,试仓1/3");
+					} else if (isMacdGordon(spvo.date, macdList)) {
+						sxvo.setDuoFlagsTitle("金多");
+						sxvo.setDuoFlagsText(spvo.low + " " + macdStr + " MACD金叉,试仓1/3");
+					} else {
+						// most of time come here
+						sxvo.setDuoFlagsTitle("多");
+						// sxvo.setDuoFlagsText("");
+					}
+				}
+
+				// 多头做T
 				if ((sxvo.h1 >= sxvo.h2)) {
 					// buy point
 					if (spvo.low <= sxvo.hc6) {
@@ -89,17 +106,6 @@ public class FlagsAnalyseHelper {
 						sxvo.setSellFlagsTitle("S");
 						sxvo.setSellFlagsText(sxvo.hc5 + " HC5压力, 减仓1/3");
 					}
-				}
-
-				// 死叉 减仓，清仓
-				if (isMacdDead(spvo.date, macdList)) {
-					// clear point
-					sxvo.setSellFlagsTitle("C");
-					sxvo.setSellFlagsText(spvo.close + " MACD死叉,清仓2/3");
-				} else if (isShenXianDead(spvo.date, sxList)) {
-					// clear point
-					sxvo.setSellFlagsTitle("C");
-					sxvo.setSellFlagsText(spvo.close + " 神仙 死叉,清仓2/3");
 				}
 
 				// 86天缩量
@@ -182,6 +188,21 @@ public class FlagsAnalyseHelper {
 				if (index - 1 >= 0) {
 					BBIVO prevo = indList.get(index - 1);
 					if (curvo.close > curvo.bbi && prevo.close < prevo.bbi) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+
+	private static boolean isBBIDead(String date, List<BBIVO> indList) {
+		for (int index = 0; index < indList.size(); index++) {
+			BBIVO curvo = indList.get(index);
+			if (curvo.date.equals(date)) {
+				if (index - 1 >= 0) {
+					BBIVO prevo = indList.get(index - 1);
+					if (curvo.close < curvo.bbi && prevo.close > prevo.bbi) {
 						return true;
 					}
 				}
