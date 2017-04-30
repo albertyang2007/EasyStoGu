@@ -99,8 +99,8 @@ function loadShenXianWithReqParms(stockId, dateFrom, dateTo, reqParms) {
 	/*
 	 * POST forecast sotck price and fetch back full price data
 	 */
-	var url_ind = getEasyStoGuServerUrl() + "/portal/ind" + version + "/shenxian/"
-			+ stockId + "/" + dateFrom + "_" + dateTo;
+	var url_ind = getEasyStoGuServerUrl() + "/portal/ind" + version
+			+ "/shenxian/" + stockId + "/" + dateFrom + "_" + dateTo;
 	$.ajax({
 		type : "POST",
 		url : url_ind,
@@ -134,7 +134,8 @@ function loadShenXianWithReqParms(stockId, dateFrom, dateTo, reqParms) {
  * @returns {undefined}
  */
 function loadShenXianSellWithReqParms(stockId, dateFrom, dateTo, reqParms) {
-	var seriesCounter = 0, date_price = [], volume = [], data_h1 = [], data_h2 = [], data_hc5 = [], data_hc6 = [];
+	var seriesCounter = 0, date_price = [], volume = [], data_h1 = [], data_h2 = [], data_hc5 = [], data_hc6 = [], 
+	buy_flags = [], sell_flags = [], duo_flags = [], suo_flags = [];
 	var version = "v3";
 
 	/*
@@ -156,7 +157,7 @@ function loadShenXianSellWithReqParms(stockId, dateFrom, dateTo, reqParms) {
 			seriesCounter += 1;
 			if (seriesCounter === 2) {
 				createChart_ShenXianSell(stockId, date_price, volume, data_h1,
-						data_h2, data_hc5, data_hc6);
+						data_h2, data_hc5, data_hc6, buy_flags, sell_flags, duo_flags, suo_flags);
 			}
 		}
 	});
@@ -164,8 +165,8 @@ function loadShenXianSellWithReqParms(stockId, dateFrom, dateTo, reqParms) {
 	/*
 	 * POST forecast sotck price and fetch back full price data
 	 */
-	var url_ind = getEasyStoGuServerUrl() + "/portal/ind" + version + "/shenxianSell/"
-			+ stockId + "/" + dateFrom + "_" + dateTo;
+	var url_ind = getEasyStoGuServerUrl() + "/portal/ind" + version
+			+ "/shenxianSell/" + stockId + "/" + dateFrom + "_" + dateTo;
 	$.ajax({
 		type : "POST",
 		url : url_ind,
@@ -182,14 +183,54 @@ function loadShenXianSellWithReqParms(stockId, dateFrom, dateTo, reqParms) {
 				data_h2.push([ dateD.getTime(), data[i]['h2'] ]);
 
 				data_hc5.push([ dateD.getTime(), data[i]['hc5'] ]);
-				
+
 				data_hc6.push([ dateD.getTime(), data[i]['hc6'] ]);
+
+				if (data[i]['buyFlagsTitle'] !== null
+						&& data[i]['buyFlagsTitle'].length > 0) {
+					var flagData = {
+						"x" : dateD.getTime(),
+						"title" : data[i]['buyFlagsTitle'],
+						"text" : data[i]['buyFlagsText']
+					};
+					buy_flags.push(flagData);
+				}
+
+				if (data[i]['sellFlagsTitle'] !== null
+						&& data[i]['sellFlagsTitle'].length > 0) {
+					var flagData = {
+						"x" : dateD.getTime(),
+						"title" : data[i]['sellFlagsTitle'],
+						"text" : data[i]['sellFlagsText']
+					};
+					sell_flags.push(flagData);
+				}
+				
+				if (data[i]['duoFlagsTitle'] !== null
+						&& data[i]['duoFlagsTitle'].length > 0) {
+					var flagData = {
+						"x" : dateD.getTime(),
+						"title" : data[i]['duoFlagsTitle'],
+						"text" : data[i]['duoFlagsText']
+					};
+					duo_flags.push(flagData);
+				}
+				
+				if (data[i]['suoFlagsTitle'] !== null
+						&& data[i]['suoFlagsTitle'].length > 0) {
+					var flagData = {
+						"x" : dateD.getTime(),
+						"title" : data[i]['suoFlagsTitle'],
+						"text" : data[i]['suoFlagsText']
+					};
+					suo_flags.push(flagData);
+				}
 			}
 
 			seriesCounter += 1;
 			if (seriesCounter === 2) {
 				createChart_ShenXianSell(stockId, date_price, volume, data_h1,
-						data_h2, data_hc5, data_hc6);
+						data_h2, data_hc5, data_hc6, buy_flags, sell_flags, duo_flags, suo_flags);
 			}
 		}
 	});
@@ -208,8 +249,8 @@ function loadBollWithReqParms(stockId, dateFrom, dateTo, reqParms) {
 	 * POST forecast sotck price and fetch back full price data
 	 */
 	// post forecast stock price data and fetch back with full data
-	var url_price = getEasyStoGuServerUrl() + "/portal/price" + version + "/" + stockId
-			+ "/" + dateFrom + "_" + dateTo;
+	var url_price = getEasyStoGuServerUrl() + "/portal/price" + version + "/"
+			+ stockId + "/" + dateFrom + "_" + dateTo;
 	$.ajax({
 		type : "POST",
 		url : url_price,
@@ -231,8 +272,8 @@ function loadBollWithReqParms(stockId, dateFrom, dateTo, reqParms) {
 	/*
 	 * POST forecast sotck price and fetch back full price data
 	 */
-	var url_ind = getEasyStoGuServerUrl() + "/portal/ind" + version + "/boll/" + stockId
-			+ "/" + dateFrom + "_" + dateTo;
+	var url_ind = getEasyStoGuServerUrl() + "/portal/ind" + version + "/boll/"
+			+ stockId + "/" + dateFrom + "_" + dateTo;
 	$.ajax({
 		type : "POST",
 		url : url_ind,
@@ -273,8 +314,8 @@ function loadMacdWithReqParms(stockId, dateFrom, dateTo, reqParms) {
 	 * POST forecast sotck price and fetch back full price data
 	 */
 	// post forecast stock price data and fetch back with full data
-	var url_price = getEasyStoGuServerUrl() + "/portal/price" + version + "/" + stockId
-			+ "/" + dateFrom + "_" + dateTo;
+	var url_price = getEasyStoGuServerUrl() + "/portal/price" + version + "/"
+			+ stockId + "/" + dateFrom + "_" + dateTo;
 	$.ajax({
 		type : "POST",
 		url : url_price,
@@ -296,8 +337,8 @@ function loadMacdWithReqParms(stockId, dateFrom, dateTo, reqParms) {
 	/*
 	 * POST forecast sotck price and fetch back full price data
 	 */
-	var url_ind = getEasyStoGuServerUrl() + "/portal/ind" + version + "/macd/" + stockId
-			+ "/" + dateFrom + "_" + dateTo;
+	var url_ind = getEasyStoGuServerUrl() + "/portal/ind" + version + "/macd/"
+			+ stockId + "/" + dateFrom + "_" + dateTo;
 	$.ajax({
 		type : "POST",
 		url : url_ind,
@@ -338,8 +379,8 @@ function loadQsddWithReqParms(stockId, dateFrom, dateTo, reqParms) {
 	 * POST forecast sotck price and fetch back full price data
 	 */
 	// post forecast stock price data and fetch back with full data
-	var url_price = getEasyStoGuServerUrl() + "/portal/price" + version + "/" + stockId
-			+ "/" + dateFrom + "_" + dateTo;
+	var url_price = getEasyStoGuServerUrl() + "/portal/price" + version + "/"
+			+ stockId + "/" + dateFrom + "_" + dateTo;
 	$.ajax({
 		type : "POST",
 		url : url_price,
@@ -361,8 +402,8 @@ function loadQsddWithReqParms(stockId, dateFrom, dateTo, reqParms) {
 	/*
 	 * POST forecast sotck price and fetch back full price data
 	 */
-	var url_ind = getEasyStoGuServerUrl() + "/portal/ind" + version + "/qsdd/" + stockId
-			+ "/" + dateFrom + "_" + dateTo;
+	var url_ind = getEasyStoGuServerUrl() + "/portal/ind" + version + "/qsdd/"
+			+ stockId + "/" + dateFrom + "_" + dateTo;
 	$.ajax({
 		type : "POST",
 		url : url_ind,

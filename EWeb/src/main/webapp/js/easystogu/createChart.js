@@ -318,11 +318,20 @@ function createChart_ShenXian(stockId, date_price, volume, data_h1, data_h2,
 
 /**
  * Create the StockPrice and shenxianSell chart
- * 
+ * date_price: stock price
+ * volume: volume
+ * data_h1: h2
+ * data_h2: h2
+ * data_hc5: 压力 price
+ * data_hc6: 支撑 price
+ * buy_flags: buy point
+ * sell_flags: sell point
+ * duo_flags: 金叉死叉 
+ * suo_flags: 成交量是否萎缩
  * @returns {undefined}
  */
 function createChart_ShenXianSell(stockId, date_price, volume, data_h1, data_h2,
-		data_hc5, data_hc6) {
+		data_hc5, data_hc6, buy_flags, sell_flags, duo_flags, suo_flags) {
 	$('#container').highcharts('StockChart', {
 
 		rangeSelector : {
@@ -367,7 +376,8 @@ function createChart_ShenXianSell(stockId, date_price, volume, data_h1, data_h2,
 		series : [ {
 			type : 'candlestick',
 			name : 'OHLC',
-			data : date_price
+			data : date_price,
+			id   : 'candlestick'
 		}, {
 			name : 'H1',
 			data : data_h1
@@ -376,16 +386,34 @@ function createChart_ShenXianSell(stockId, date_price, volume, data_h1, data_h2,
 			data : data_h2
 		}, {
 			name : 'HC5',
-			data : data_hc5
+			data : data_hc5,
+			id   : 'HC5'
 		}, {
 			name : 'HC6',
-			data : data_hc6
+			data : data_hc6,
+			id   : 'HC6'
+		}, {
+			type : 'flags',
+			data : sell_flags,
+			onSeries: 'HC5'
 		}, {
 			type : 'column',
 			name : 'Volume',
 			data : volume,
+			id   : 'Volume',
 			yAxis : 1
-		} ]
+		}, {
+			type : 'flags',
+			data : buy_flags,
+			onSeries: 'HC6'
+		}, {
+			type : 'flags',
+			data : duo_flags,
+			onSeries: 'HC6'
+		}, {
+			type : 'flags',
+			data : suo_flags
+		}]
 	});
 
 	chart = $('#container').highcharts();

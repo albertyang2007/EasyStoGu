@@ -36,6 +36,7 @@ import org.easystogu.db.vo.table.WRVO;
 import org.easystogu.indicator.LuZaoHelper;
 import org.easystogu.indicator.ShenXianHelper;
 import org.easystogu.indicator.runner.utils.StockPriceFetcher;
+import org.easystogu.portal.vo.ShenXianUIVO;
 import org.easystogu.utils.Strings;
 
 import com.google.common.primitives.Doubles;
@@ -166,11 +167,11 @@ public class IndicatorEndPointV1 {
 	@GET
 	@Path("/shenxianSell/{stockId}/{date}")
 	@Produces("application/json")
-	public List<ShenXianVO> queryShenXianSellById(@PathParam("stockId") String stockIdParm,
+	public List<ShenXianUIVO> queryShenXianSellById(@PathParam("stockId") String stockIdParm,
 			@PathParam("date") String dateParm, @Context HttpServletResponse response) {
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 
-		List<ShenXianVO> list = new ArrayList<ShenXianVO>();
+		List<ShenXianUIVO> list = new ArrayList<ShenXianUIVO>();
 		List<StockPriceVO> spList = this.fetchAllPrices(stockIdParm);
 		List<Double> close = StockPriceFetcher.getClosePrice(spList);
 		List<Double> high = StockPriceFetcher.getHighPrice(spList);
@@ -179,7 +180,7 @@ public class IndicatorEndPointV1 {
 				Doubles.toArray(low));
 		for (int i = 0; i < shenXian[0].length; i++) {
 			if (this.isStockDateSelected(dateParm, spList.get(i).date)) {
-				ShenXianVO vo = new ShenXianVO();
+				ShenXianUIVO vo = new ShenXianUIVO();
 				vo.setH1(Strings.convert2ScaleDecimal(shenXian[0][i]));
 				vo.setH2(Strings.convert2ScaleDecimal(shenXian[1][i]));
 				vo.setHc5(Strings.convert2ScaleDecimal(shenXian[2][i]));

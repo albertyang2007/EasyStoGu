@@ -10,8 +10,8 @@ function loadShenXian(version, stockId, dateFrom, dateTo) {
 	 * 
 	 * @returns {undefined}
 	 */
-	var url_price = getEasyStoGuServerUrl() + "/portal/price" + version + "/" + stockId
-			+ "/" + dateFrom + "_" + dateTo;
+	var url_price = getEasyStoGuServerUrl() + "/portal/price" + version + "/"
+			+ stockId + "/" + dateFrom + "_" + dateTo;
 	$.getJSON(url_price, function(data) {
 		i = 0;
 		for (i; i < data.length; i += 1) {
@@ -35,8 +35,8 @@ function loadShenXian(version, stockId, dateFrom, dateTo) {
 	 * 
 	 * @returns {undefined}
 	 */
-	var url_ind = getEasyStoGuServerUrl() + "/portal/ind" + version + "/shenxian/"
-			+ stockId + "/" + dateFrom + "_" + dateTo;
+	var url_ind = getEasyStoGuServerUrl() + "/portal/ind" + version
+			+ "/shenxian/" + stockId + "/" + dateFrom + "_" + dateTo;
 	$.getJSON(url_ind, function(data) {
 		i = 0;
 		for (i; i < data.length; i += 1) {
@@ -63,14 +63,15 @@ function loadShenXian(version, stockId, dateFrom, dateTo) {
  * @returns {undefined}
  */
 function loadShenXianSell(version, stockId, dateFrom, dateTo) {
-	var seriesCounter = 0, date_price = [], ddx = [], data_h1 = [], data_h2 = [], data_hc5 = [], data_hc6 = [];
+	var seriesCounter = 0, date_price = [], ddx = [], data_h1 = [], data_h2 = [], data_hc5 = [], data_hc6 = [], 
+	buy_flags = [], sell_flags = [], duo_flags = [], suo_flags = [];
 	/**
 	 * Load StocPrice and display OHLC
 	 * 
 	 * @returns {undefined}
 	 */
-	var url_price = getEasyStoGuServerUrl() + "/portal/price" + version + "/" + stockId
-			+ "/" + dateFrom + "_" + dateTo;
+	var url_price = getEasyStoGuServerUrl() + "/portal/price" + version + "/"
+			+ stockId + "/" + dateFrom + "_" + dateTo;
 	$.getJSON(url_price, function(data) {
 		i = 0;
 		for (i; i < data.length; i += 1) {
@@ -79,24 +80,25 @@ function loadShenXianSell(version, stockId, dateFrom, dateTo) {
 			date_price.push([ dateD.getTime(), data[i]['open'],
 					data[i]['high'], data[i]['low'], data[i]['close'] ]);
 
-			//replace to ddx  
-			//volume.push([ dateD.getTime(), data[i]['volume'] ]);
+			// replace to ddx
+			// volume.push([ dateD.getTime(), data[i]['volume'] ]);
 		}
 
 		seriesCounter += 1;
 		if (seriesCounter === 3) {
-			createChart_ShenXianSell(stockId, date_price, ddx, data_h1, data_h2,
-					data_hc5, data_hc6);
+			createChart_ShenXianSell(stockId, date_price, ddx, data_h1,
+					data_h2, data_hc5, data_hc6, buy_flags, sell_flags,
+					duo_flags, suo_flags);
 		}
 	});
-	
+
 	/**
 	 * Load DDX Indicator and display
 	 * 
 	 * @returns {undefined}
 	 */
-	var url_ind = getEasyStoGuServerUrl() + "/portal/indv1/ddx/"
-			+ stockId + "/" + dateFrom + "_" + dateTo;
+	var url_ind = getEasyStoGuServerUrl() + "/portal/indv1/ddx/" + stockId
+			+ "/" + dateFrom + "_" + dateTo;
 	$.getJSON(url_ind, function(data) {
 		i = 0;
 		for (i; i < data.length; i += 1) {
@@ -107,8 +109,9 @@ function loadShenXianSell(version, stockId, dateFrom, dateTo) {
 
 		seriesCounter += 1;
 		if (seriesCounter === 3) {
-			createChart_ShenXianSell(stockId, date_price, ddx, data_h1, data_h2,
-					data_hc5, data_hc6);
+			createChart_ShenXianSell(stockId, date_price, ddx, data_h1,
+					data_h2, data_hc5, data_hc6, buy_flags, sell_flags,
+					duo_flags, suo_flags);
 		}
 	});
 
@@ -117,8 +120,8 @@ function loadShenXianSell(version, stockId, dateFrom, dateTo) {
 	 * 
 	 * @returns {undefined}
 	 */
-	var url_ind = getEasyStoGuServerUrl() + "/portal/ind" + version + "/shenxianSell/"
-			+ stockId + "/" + dateFrom + "_" + dateTo;
+	var url_ind = getEasyStoGuServerUrl() + "/portal/ind" + version
+			+ "/shenxianSell/" + stockId + "/" + dateFrom + "_" + dateTo;
 	$.getJSON(url_ind, function(data) {
 		i = 0;
 		for (i; i < data.length; i += 1) {
@@ -129,14 +132,55 @@ function loadShenXianSell(version, stockId, dateFrom, dateTo) {
 			data_h2.push([ dateD.getTime(), data[i]['h2'] ]);
 
 			data_hc5.push([ dateD.getTime(), data[i]['hc5'] ]);
-			
+
 			data_hc6.push([ dateD.getTime(), data[i]['hc6'] ]);
+
+			if (data[i]['buyFlagsTitle'] !== null
+					&& data[i]['buyFlagsTitle'].length > 0) {
+				var flagData = {
+					"x" : dateD.getTime(),
+					"title" : data[i]['buyFlagsTitle'],
+					"text" : data[i]['buyFlagsText']
+				};
+				buy_flags.push(flagData);
+			}
+
+			if (data[i]['sellFlagsTitle'] !== null
+					&& data[i]['sellFlagsTitle'].length > 0) {
+				var flagData = {
+					"x" : dateD.getTime(),
+					"title" : data[i]['sellFlagsTitle'],
+					"text" : data[i]['sellFlagsText']
+				};
+				sell_flags.push(flagData);
+			}
+
+			if (data[i]['duoFlagsTitle'] !== null
+					&& data[i]['duoFlagsTitle'].length > 0) {
+				var flagData = {
+					"x" : dateD.getTime(),
+					"title" : data[i]['duoFlagsTitle'],
+					"text" : data[i]['duoFlagsText']
+				};
+				duo_flags.push(flagData);
+			}
+			
+			if (data[i]['suoFlagsTitle'] !== null
+					&& data[i]['suoFlagsTitle'].length > 0) {
+				var flagData = {
+					"x" : dateD.getTime(),
+					"title" : data[i]['suoFlagsTitle'],
+					"text" : data[i]['suoFlagsText']
+				};
+				suo_flags.push(flagData);
+			}
 		}
 
 		seriesCounter += 1;
 		if (seriesCounter === 3) {
-			createChart_ShenXianSell(stockId, date_price, ddx, data_h1, data_h2,
-					data_hc5, data_hc6);
+			createChart_ShenXianSell(stockId, date_price, ddx, data_h1,
+					data_h2, data_hc5, data_hc6, buy_flags, sell_flags,
+					duo_flags, suo_flags);
 		}
 	});
 }
@@ -153,8 +197,8 @@ function loadLuZao(version, stockId, dateFrom, dateTo) {
 	 * 
 	 * @returns {undefined}
 	 */
-	var url_price = getEasyStoGuServerUrl() + "/portal/price" + version + "/"+ stockId + "/"
-			+ dateFrom + "_" + dateTo;
+	var url_price = getEasyStoGuServerUrl() + "/portal/price" + version + "/"
+			+ stockId + "/" + dateFrom + "_" + dateTo;
 	$.getJSON(url_price, function(data) {
 		i = 0;
 		for (i; i < data.length; i += 1) {
@@ -178,8 +222,8 @@ function loadLuZao(version, stockId, dateFrom, dateTo) {
 	 * 
 	 * @returns {undefined}
 	 */
-	var url_ind = getEasyStoGuServerUrl() + "/portal/ind" + version + "/luzao/" + stockId
-			+ "/" + dateFrom + "_" + dateTo;
+	var url_ind = getEasyStoGuServerUrl() + "/portal/ind" + version + "/luzao/"
+			+ stockId + "/" + dateFrom + "_" + dateTo;
 	$.getJSON(url_ind, function(data) {
 		i = 0;
 		for (i; i < data.length; i += 1) {
@@ -212,8 +256,8 @@ function loadBoll(version, stockId, dateFrom, dateTo) {
 	 * 
 	 * @returns {undefined}
 	 */
-	var url_price = getEasyStoGuServerUrl() + "/portal/price" + version + "/"+ stockId + "/"
-			+ dateFrom + "_" + dateTo;
+	var url_price = getEasyStoGuServerUrl() + "/portal/price" + version + "/"
+			+ stockId + "/" + dateFrom + "_" + dateTo;
 	$.getJSON(url_price, function(data) {
 		i = 0;
 		for (i; i < data.length; i += 1) {
@@ -237,8 +281,8 @@ function loadBoll(version, stockId, dateFrom, dateTo) {
 	 * 
 	 * @returns {undefined}
 	 */
-	var url_ind = getEasyStoGuServerUrl() + "/portal/ind" + version + "/boll/" + stockId
-			+ "/" + dateFrom + "_" + dateTo;
+	var url_ind = getEasyStoGuServerUrl() + "/portal/ind" + version + "/boll/"
+			+ stockId + "/" + dateFrom + "_" + dateTo;
 	$.getJSON(url_ind, function(data) {
 		i = 0;
 		for (i; i < data.length; i += 1) {
@@ -271,8 +315,8 @@ function loadMacd(version, stockId, dateFrom, dateTo) {
 	 * 
 	 * @returns {undefined}
 	 */
-	var url_price = getEasyStoGuServerUrl() + "/portal/price" + version + "/"+ stockId + "/"
-			+ dateFrom + "_" + dateTo;
+	var url_price = getEasyStoGuServerUrl() + "/portal/price" + version + "/"
+			+ stockId + "/" + dateFrom + "_" + dateTo;
 	$.getJSON(url_price, function(data) {
 		i = 0;
 		for (i; i < data.length; i += 1) {
@@ -296,8 +340,8 @@ function loadMacd(version, stockId, dateFrom, dateTo) {
 	 * 
 	 * @returns {undefined}
 	 */
-	var url_ind = getEasyStoGuServerUrl() + "/portal/ind" + version + "/macd/" + stockId
-			+ "/" + dateFrom + "_" + dateTo;
+	var url_ind = getEasyStoGuServerUrl() + "/portal/ind" + version + "/macd/"
+			+ stockId + "/" + dateFrom + "_" + dateTo;
 	$.getJSON(url_ind, function(data) {
 		i = 0;
 		for (i; i < data.length; i += 1) {
@@ -330,8 +374,8 @@ function loadQSDD(version, stockId, dateFrom, dateTo) {
 	 * 
 	 * @returns {undefined}
 	 */
-	var url_price = getEasyStoGuServerUrl() + "/portal/price" + version + "/"+ stockId + "/"
-			+ dateFrom + "_" + dateTo;
+	var url_price = getEasyStoGuServerUrl() + "/portal/price" + version + "/"
+			+ stockId + "/" + dateFrom + "_" + dateTo;
 	$.getJSON(url_price, function(data) {
 		i = 0;
 		for (i; i < data.length; i += 1) {
@@ -355,8 +399,8 @@ function loadQSDD(version, stockId, dateFrom, dateTo) {
 	 * 
 	 * @returns {undefined}
 	 */
-	var url_ind = getEasyStoGuServerUrl() + "/portal/ind" + version + "/qsdd/" + stockId
-			+ "/" + dateFrom + "_" + dateTo;
+	var url_ind = getEasyStoGuServerUrl() + "/portal/ind" + version + "/qsdd/"
+			+ stockId + "/" + dateFrom + "_" + dateTo;
 	$.getJSON(url_ind, function(data) {
 		i = 0;
 		for (i; i < data.length; i += 1) {
@@ -389,8 +433,8 @@ function loadWR(version, stockId, dateFrom, dateTo) {
 	 * 
 	 * @returns {undefined}
 	 */
-	var url_price = getEasyStoGuServerUrl() + "/portal/price" + version + "/"+ stockId + "/"
-			+ dateFrom + "_" + dateTo;
+	var url_price = getEasyStoGuServerUrl() + "/portal/price" + version + "/"
+			+ stockId + "/" + dateFrom + "_" + dateTo;
 	$.getJSON(url_price, function(data) {
 		i = 0;
 		for (i; i < data.length; i += 1) {
@@ -414,8 +458,8 @@ function loadWR(version, stockId, dateFrom, dateTo) {
 	 * 
 	 * @returns {undefined}
 	 */
-	var url_ind = getEasyStoGuServerUrl() + "/portal/ind" + version + "/wr/" + stockId
-			+ "/" + dateFrom + "_" + dateTo;
+	var url_ind = getEasyStoGuServerUrl() + "/portal/ind" + version + "/wr/"
+			+ stockId + "/" + dateFrom + "_" + dateTo;
 	$.getJSON(url_ind, function(data) {
 		i = 0;
 		for (i; i < data.length; i += 1) {

@@ -19,10 +19,12 @@ import org.easystogu.db.vo.table.KDJVO;
 import org.easystogu.db.vo.table.LuZaoVO;
 import org.easystogu.db.vo.table.MacdVO;
 import org.easystogu.db.vo.table.QSDDVO;
+import org.easystogu.db.vo.table.BBIVO;
 import org.easystogu.db.vo.table.ShenXianVO;
 import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.db.vo.table.WRVO;
 import org.easystogu.indicator.BOLLHelper;
+import org.easystogu.indicator.BBIHelper;
 import org.easystogu.indicator.KDJHelper;
 import org.easystogu.indicator.LuZaoHelper;
 import org.easystogu.indicator.MACDHelper;
@@ -30,7 +32,9 @@ import org.easystogu.indicator.QSDDHelper;
 import org.easystogu.indicator.ShenXianHelper;
 import org.easystogu.indicator.WRHelper;
 import org.easystogu.indicator.runner.utils.StockPriceFetcher;
+import org.easystogu.portal.flags.FlagsAnalyseHelper;
 import org.easystogu.portal.init.TrendModeLoader;
+import org.easystogu.portal.vo.ShenXianUIVO;
 import org.easystogu.trendmode.vo.TrendModeVO;
 import org.easystogu.utils.Strings;
 import org.easystogu.utils.WeekdayUtil;
@@ -51,6 +55,7 @@ public class IndicatorEndPointV3 {
 	protected QSDDHelper qsddHelper = new QSDDHelper();
 	protected WRHelper wrHelper = new WRHelper();
 	protected BOLLHelper bollHelper = new BOLLHelper();
+	protected BBIHelper bbiHelper = new BBIHelper();
 	protected LuZaoHelper luzaoHelper = new LuZaoHelper();
 	@Autowired
 	protected ProcessRequestParmsInPostBody postParmsProcess;
@@ -167,31 +172,77 @@ public class IndicatorEndPointV3 {
 	@POST
 	@Path("/shenxianSell/{stockId}/{date}")
 	@Produces("application/json")
-	public List<ShenXianVO> queryShenXianSellById(@PathParam("stockId") String stockIdParm,
+	public List<ShenXianUIVO> queryShenXianSellById(@PathParam("stockId") String stockIdParm,
 			@PathParam("date") String dateParm, String postBody, @Context HttpServletResponse response) {
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
-		List<ShenXianVO> list = new ArrayList<ShenXianVO>();
+		List<ShenXianUIVO> sxList = new ArrayList<ShenXianUIVO>();
+		List<MacdVO> macdList = new ArrayList<MacdVO>();
+		List<BBIVO> bbiList = new ArrayList<BBIVO>();
+		List<LuZaoVO> luzaoList = new ArrayList<LuZaoVO>();
+		
 		List<StockPriceVO> spList = postParmsProcess.updateStockPriceAccordingToRequest(stockIdParm, postBody);
-
 		List<Double> close = StockPriceFetcher.getClosePrice(spList);
 		List<Double> high = StockPriceFetcher.getHighPrice(spList);
 		List<Double> low = StockPriceFetcher.getLowPrice(spList);
+
+		// shenxian
 		double[][] shenXian = shenXianHelper.getShenXianSellPointList(Doubles.toArray(close), Doubles.toArray(high),
 				Doubles.toArray(low));
 		for (int i = 0; i < shenXian[0].length; i++) {
 			if (postParmsProcess.isStockDateSelected(postBody, dateParm, spList.get(i).date)) {
-				ShenXianVO vo = new ShenXianVO();
+				ShenXianUIVO vo = new ShenXianUIVO();
 				vo.setH1(Strings.convert2ScaleDecimal(shenXian[0][i]));
 				vo.setH2(Strings.convert2ScaleDecimal(shenXian[1][i]));
 				vo.setHc5(Strings.convert2ScaleDecimal(shenXian[2][i]));
 				vo.setHc6(Strings.convert2ScaleDecimal(shenXian[3][i]));
 				vo.setStockId(stockIdParm);
 				vo.setDate(spList.get(i).date);
-				list.add(vo);
+				sxList.add(vo);
 			}
 		}
 
-		return list;
+		// macd
+		double[][] macd = macdHelper.getMACDList(Doubles.toArray(close));
+		for (int i = 0; i < macd[0].length; i++) {
+			if (postParmsProcess.isStockDateSelected(postBody, dateParm, spList.get(i).date)) {
+				MacdVO vo = new MacdVO();
+				vo.setDif(macd[0][i]);
+				vo.setDea(macd[1][i]);
+				vo.setMacd(macd[2][i]);
+				vo.setStockId(stockIdParm);
+				vo.setDate(spList.get(i).date);
+				macdList.add(vo);
+			}
+		}
+
+		// bbi
+		double[][] bbi = bbiHelper.getBBIList(Doubles.toArray(close));
+		for (int i = 0; i < bbi[0].length; i++) {
+			if (postParmsProcess.isStockDateSelected(postBody, dateParm, spList.get(i).date)) {
+				BBIVO vo = new BBIVO();
+				vo.setBbi(bbi[0][i]);
+				vo.setClose(bbi[1][i]);
+				vo.setStockId(stockIdParm);
+				vo.setDate(spList.get(i).date);
+				bbiList.add(vo);
+			}
+		}
+		
+		//luzhao
+		double[][] lz = luzaoHelper.getLuZaoList(Doubles.toArray(close));
+		for (int i = 0; i < lz[0].length; i++) {
+			if (postParmsProcess.isStockDateSelected(postBody, dateParm, spList.get(i).date)) {
+				LuZaoVO vo = new LuZaoVO();
+				vo.setMa19(lz[0][i]);
+				vo.setMa43(lz[1][i]);
+				vo.setMa86(lz[2][i]);
+				vo.setStockId(stockIdParm);
+				vo.setDate(spList.get(i).date);
+				luzaoList.add(vo);
+			}
+		}
+
+		return FlagsAnalyseHelper.shenXianBuySellFlagsAnalyse(spList, sxList, macdList, bbiList, luzaoList);
 	}
 
 	@POST

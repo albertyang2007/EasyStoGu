@@ -25,6 +25,12 @@ ${demo.css}
           var version = "v1";
           var viewName = "luzao_phaseII_ddx_2_of_5_days_bigger_05";
           var cixin = "False";
+
+	      var reqParms = {
+		        "trendModeName" : "None",
+                "nDays" : "1",
+                "repeatTimes" : "1"
+	        };
   
 	      var ParmForm = React.createClass({
 	         getInitialState: function() {
@@ -80,7 +86,7 @@ ${demo.css}
              if(indicator == "shenxian"){ 
 	            loadShenXian(version, stockId, dateFrom, dateTo);
              }else if(indicator == "shenxian_sell"){ 
-	            loadShenXianSell(version, stockId, dateFrom, dateTo);
+	            loadShenXianSellWithReqParms(stockId, dateFrom, dateTo, reqParms);
              }else if(indicator == "luzao"){ 
 	            loadLuZao(version, stockId, dateFrom, dateTo);
              }else if(indicator == "boll"){ 
@@ -103,7 +109,7 @@ ${demo.css}
              if(indicator == "shenxian"){ 
 	            loadShenXian(version, stockId, dateFrom, dateTo);
              }else if(indicator == "shenxian_sell"){ 
-	            loadShenXianSell(version, stockId, dateFrom, dateTo);
+	            loadShenXianSellWithReqParms(stockId, dateFrom, dateTo, reqParms);
              }else if(indicator == "luzao"){ 
 	            loadLuZao(version, stockId, dateFrom, dateTo);
              }else if(indicator == "boll"){ 
@@ -141,7 +147,7 @@ ${demo.css}
             if(data.indicator == "shenxian"){ 
 	           loadShenXian(data.version, stockId, data.dateFrom, data.dateTo);
             }else if(data.indicator == "shenxian_sell"){ 
-	           loadShenXianSell(data.version, stockId, data.dateFrom, data.dateTo);
+	           loadShenXianSellWithReqParms(stockId, data.dateFrom, data.dateTo, reqParms);
             }else if(data.indicator == "luzao"){ 
 	           loadLuZao(data.version, stockId, data.dateFrom, data.dateTo);
             }else if(data.indicator == "boll"){ 

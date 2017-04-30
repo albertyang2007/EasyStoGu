@@ -7,8 +7,6 @@ public class ShenXianVO {
 	public double h1;
 	public double h2;
 	public double h3;
-	public double hc5;
-	public double hc6;
 
 	public String getStockId() {
 		return stockId;
@@ -71,25 +69,7 @@ public class ShenXianVO {
 		sb.append(", h1:" + h1);
 		sb.append(", h2:" + h2);
 		sb.append(", h3:" + h3);
-		sb.append(", hc5:" + hc5);
-		sb.append(", hc6:" + hc6);
 		sb.append("}");
 		return sb.toString();
-	}
-
-	public double getHc5() {
-		return hc5;
-	}
-
-	public void setHc5(double hc5) {
-		this.hc5 = hc5;
-	}
-
-	public double getHc6() {
-		return hc6;
-	}
-
-	public void setHc6(double hc6) {
-		this.hc6 = hc6;
 	}
 }

@@ -106,6 +106,24 @@ public class IND {
 		return rtn;
 	}
 
+	// return double[] + double[] + double[]
+	public double[] ADD(double[] a, double[] b, double[] c) {
+		double[] rtn = new double[a.length];
+		for (int index = 0; index < a.length; index++) {
+			rtn[index] = a[index] + b[index] + c[index];
+		}
+		return rtn;
+	}
+
+	// return double[] + double[] + double[] + double[]
+	public double[] ADD(double[] a, double[] b, double[] c, double[] d) {
+		double[] rtn = new double[a.length];
+		for (int index = 0; index < a.length; index++) {
+			rtn[index] = a[index] + b[index] + c[index] + d[index];
+		}
+		return rtn;
+	}
+
 	// return double[] + double
 	public double[] ADD(double[] a, double b) {
 		double[] rtn = new double[a.length];
