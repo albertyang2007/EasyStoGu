@@ -25,6 +25,12 @@ ${demo.css}
           var version = "v1";
           var viewName = "luzao_phaseII_ddx_2_of_5_days_bigger_05";
           var cixin = "False";
+
+	      var reqParms = {
+		        "trendModeName" : "None",
+                "nDays" : "1",
+                "repeatTimes" : "1"
+	      };
   
 	      var ParmForm = React.createClass({
 	         getInitialState: function() {
@@ -62,6 +68,8 @@ ${demo.css}
              //set the selected stockId to first one
              if(selectStockIds.length > 0){
                 stockId = selectStockIds[0][0];
+                newState["stockId"] = stockId;
+	            this.setState(newState);
                 //refresh the chart using the first stockid
                 loadLuZao(version, stockId, dateFrom, dateTo);
              }
@@ -112,7 +120,7 @@ ${demo.css}
             if(data.indicator == "shenxian"){ 
 	           loadShenXian(data.version, stockId, data.dateFrom, data.dateTo);
             }else if(data.indicator == "shenxian_sell"){ 
-	           loadShenXianSell(data.version, stockId, data.dateFrom, data.dateTo);
+	           loadShenXianSellWithReqParms(stockId, data.dateFrom, data.dateTo, reqParms);
             }else if(data.indicator == "luzao"){ 
 	           loadLuZao(data.version, stockId, data.dateFrom, data.dateTo);
             }else if(data.indicator == "boll"){ 

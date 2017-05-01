@@ -13,13 +13,15 @@ import org.easystogu.indicator.MAHelper;
 import org.easystogu.log.LogHelper;
 import org.easystogu.portal.vo.ShenXianUIVO;
 import org.slf4j.Logger;
+import org.springframework.stereotype.Component;
 
 import com.google.common.primitives.Doubles;
 
+@Component
 public class FlagsAnalyseHelper {
 	private static Logger logger = LogHelper.getLogger(FlagsAnalyseHelper.class);
 
-	public static List<ShenXianUIVO> shenXianBuySellFlagsAnalyse(List<StockPriceVO> spList, List<ShenXianUIVO> sxList,
+	public List<ShenXianUIVO> shenXianBuySellFlagsAnalyse(List<StockPriceVO> spList, List<ShenXianUIVO> sxList,
 			List<MacdVO> macdList, List<BBIVO> bbiList, List<LuZaoVO> luzaoList) {
 
 		List<VolumeVO> volumeList = getMAVolumeList(spList);
@@ -119,7 +121,7 @@ public class FlagsAnalyseHelper {
 		return sxList;
 	}
 
-	private static ShenXianUIVO getShenXianIndVOByDate(String date, List<ShenXianUIVO> indList) {
+	private ShenXianUIVO getShenXianIndVOByDate(String date, List<ShenXianUIVO> indList) {
 		for (ShenXianUIVO vo : indList) {
 			if (vo.date.equals(date))
 				return vo;
@@ -127,7 +129,7 @@ public class FlagsAnalyseHelper {
 		return null;
 	}
 
-	private static MacdVO getMacdIndVOByDate(String date, List<MacdVO> indList) {
+	private MacdVO getMacdIndVOByDate(String date, List<MacdVO> indList) {
 		for (MacdVO vo : indList) {
 			if (vo.date.equals(date))
 				return vo;
@@ -135,7 +137,7 @@ public class FlagsAnalyseHelper {
 		return null;
 	}
 
-	private static LuZaoVO getLuzaoIndVOByDate(String date, List<LuZaoVO> indList) {
+	private LuZaoVO getLuzaoIndVOByDate(String date, List<LuZaoVO> indList) {
 		for (LuZaoVO vo : indList) {
 			if (vo.date.equals(date))
 				return vo;
@@ -143,7 +145,7 @@ public class FlagsAnalyseHelper {
 		return null;
 	}
 
-	private static BBIVO getBBIIndVOByDate(String date, List<BBIVO> indList) {
+	private BBIVO getBBIIndVOByDate(String date, List<BBIVO> indList) {
 		for (BBIVO vo : indList) {
 			if (vo.date.equals(date))
 				return vo;
@@ -151,7 +153,7 @@ public class FlagsAnalyseHelper {
 		return null;
 	}
 
-	private static boolean isMacdGordon(String date, List<MacdVO> indList) {
+	private boolean isMacdGordon(String date, List<MacdVO> indList) {
 		for (int index = 0; index < indList.size(); index++) {
 			MacdVO curvo = indList.get(index);
 			if (curvo.date.equals(date)) {
@@ -166,7 +168,7 @@ public class FlagsAnalyseHelper {
 		return false;
 	}
 
-	private static boolean isMacdDead(String date, List<MacdVO> indList) {
+	private boolean isMacdDead(String date, List<MacdVO> indList) {
 		for (int index = 0; index < indList.size(); index++) {
 			MacdVO curvo = indList.get(index);
 			if (curvo.date.equals(date)) {
@@ -181,7 +183,7 @@ public class FlagsAnalyseHelper {
 		return false;
 	}
 
-	private static boolean isBBIGordon(String date, List<BBIVO> indList) {
+	private boolean isBBIGordon(String date, List<BBIVO> indList) {
 		for (int index = 0; index < indList.size(); index++) {
 			BBIVO curvo = indList.get(index);
 			if (curvo.date.equals(date)) {
@@ -196,7 +198,7 @@ public class FlagsAnalyseHelper {
 		return false;
 	}
 
-	private static boolean isBBIDead(String date, List<BBIVO> indList) {
+	private boolean isBBIDead(String date, List<BBIVO> indList) {
 		for (int index = 0; index < indList.size(); index++) {
 			BBIVO curvo = indList.get(index);
 			if (curvo.date.equals(date)) {
@@ -211,7 +213,7 @@ public class FlagsAnalyseHelper {
 		return false;
 	}
 
-	private static boolean isShenXianGordon(String date, List<ShenXianUIVO> indList) {
+	private boolean isShenXianGordon(String date, List<ShenXianUIVO> indList) {
 		for (int index = 0; index < indList.size(); index++) {
 			ShenXianUIVO curvo = indList.get(index);
 			if (curvo.date.equals(date)) {
@@ -226,7 +228,7 @@ public class FlagsAnalyseHelper {
 		return false;
 	}
 
-	private static boolean isShenXianDead(String date, List<ShenXianUIVO> indList) {
+	private boolean isShenXianDead(String date, List<ShenXianUIVO> indList) {
 		for (int index = 0; index < indList.size(); index++) {
 			ShenXianUIVO curvo = indList.get(index);
 			if (curvo.date.equals(date)) {
@@ -241,7 +243,7 @@ public class FlagsAnalyseHelper {
 		return false;
 	}
 
-	private static List<VolumeVO> getMAVolumeList(List<StockPriceVO> spList) {
+	private List<VolumeVO> getMAVolumeList(List<StockPriceVO> spList) {
 		List<VolumeVO> volumesList = new ArrayList<VolumeVO>();
 		List<Double> volumes = new ArrayList<Double>();
 		for (StockPriceVO spvo : spList) {
@@ -266,7 +268,7 @@ public class FlagsAnalyseHelper {
 		return volumesList;
 	}
 
-	private static VolumeVO getVolumeVOByDate(String date, List<VolumeVO> indList) {
+	private VolumeVO getVolumeVOByDate(String date, List<VolumeVO> indList) {
 		for (VolumeVO vo : indList) {
 			if (vo.date.equals(date))
 				return vo;

@@ -61,8 +61,8 @@ public class IndicatorEndPointV3 {
 	protected ProcessRequestParmsInPostBody postParmsProcess;
 	@Autowired
 	protected TrendModeLoader trendModeLoader;
-	protected String dateRegex = "[0-9]{4}-[0-9]{2}-[0-9]{2}";
-	protected String fromToRegex = dateRegex + "_" + dateRegex;
+	@Autowired
+	FlagsAnalyseHelper flagsAnalyseHelper;
 
 	@POST
 	@Path("/macd/{stockId}/{date}")
@@ -179,7 +179,7 @@ public class IndicatorEndPointV3 {
 		List<MacdVO> macdList = new ArrayList<MacdVO>();
 		List<BBIVO> bbiList = new ArrayList<BBIVO>();
 		List<LuZaoVO> luzaoList = new ArrayList<LuZaoVO>();
-		
+
 		List<StockPriceVO> spList = postParmsProcess.updateStockPriceAccordingToRequest(stockIdParm, postBody);
 		List<Double> close = StockPriceFetcher.getClosePrice(spList);
 		List<Double> high = StockPriceFetcher.getHighPrice(spList);
@@ -227,8 +227,8 @@ public class IndicatorEndPointV3 {
 				bbiList.add(vo);
 			}
 		}
-		
-		//luzhao
+
+		// luzhao
 		double[][] lz = luzaoHelper.getLuZaoList(Doubles.toArray(close));
 		for (int i = 0; i < lz[0].length; i++) {
 			if (postParmsProcess.isStockDateSelected(postBody, dateParm, spList.get(i).date)) {
@@ -242,7 +242,7 @@ public class IndicatorEndPointV3 {
 			}
 		}
 
-		return FlagsAnalyseHelper.shenXianBuySellFlagsAnalyse(spList, sxList, macdList, bbiList, luzaoList);
+		return flagsAnalyseHelper.shenXianBuySellFlagsAnalyse(spList, sxList, macdList, bbiList, luzaoList);
 	}
 
 	@POST
