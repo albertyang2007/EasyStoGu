@@ -27,7 +27,7 @@ public class FlagsAnalyseHelper {
 	private CommonViewCache commonViewCache = CommonViewCache.getInstance();
 	private CheckPointDailySelectionTableCache checkPointDailySelectionCache = CheckPointDailySelectionTableCache
 			.getInstance();
-	private static String[] viewnames = { "luzao_phaseII_zijinliu_top300", "luzao_phaseIII_zijinliu_top300",
+	private static String[] zijinliuViewnames = { "luzao_phaseII_zijinliu_top300", "luzao_phaseIII_zijinliu_top300",
 			"luzao_phaseII_ddx_bigger_05", "luzao_phaseIII_ddx_bigger_05", "luzao_phaseII_zijinliu_3_days_top300",
 			"luzao_phaseII_zijinliu_3_of_5_days_top300", "luzao_phaseII_ddx_2_of_5_days_bigger_05",
 			"luzao_phaseIII_zijinliu_3_days_top300", "luzao_phaseIII_zijinliu_3_of_5_days_top300",
@@ -35,13 +35,15 @@ public class FlagsAnalyseHelper {
 	private static String[] weekGordonCheckPoints = { "LuZao_PhaseII_MACD_WEEK_GORDON_MACD_DAY_DIF_CROSS_0",
 			"LuZao_PhaseIII_MACD_WEEK_GORDON_MACD_DAY_DIF_CROSS_0", "LuZao_PhaseII_MACD_WEEK_GORDON_KDJ_WEEK_GORDON",
 			"LuZao_PhaseIII_MACD_WEEK_GORDON_KDJ_WEEK_GORDON" };
-	private static String[] bottomCheckPoints = { "WR_Bottom_Area", "WR_Bottom_Gordon", "QSDD_Bottom_Area",
-			"QSDD_Bottom_Gordon" };
+	private static String[] bottomAreaCheckPoints = { "WR_Bottom_Area", "QSDD_Bottom_Area", };
+	private static String[] bottomGordonCheckPoints = { "WR_Bottom_Gordon", "QSDD_Bottom_Gordon" };
 
 	public List<ShenXianUIVO> shenXianBuySellFlagsAnalyse(List<StockPriceVO> spList, List<ShenXianUIVO> sxList,
 			List<MacdVO> macdList, List<BBIVO> bbiList, List<LuZaoVO> luzaoList) {
 
+		StockPriceVO spvoF = spList.get(spList.size() - 1);
 		List<VolumeVO> volumeList = getMAVolumeList(spList);
+		List<CheckPointDailySelectionVO> checkPoints = getCheckPoints(spvoF.stockId);
 		//
 		for (StockPriceVO spvo : spList) {
 			ShenXianUIVO sxvo = getShenXianIndVOByDate(spvo.date, sxList);
@@ -133,22 +135,10 @@ public class FlagsAnalyseHelper {
 					sxvo.setSuoFlagsText("成交萎缩");
 				}
 
-				// below is much time consume, pls do not invoke them!!!
 				// below can be search from table checkpoint_daily_selection
-				// if (this.isZiJinLiuRu(spvo.date, spvo.stockId)) {
-				// sxvo.setSuoFlagsTitle("资");
-				// sxvo.setSuoFlagsText("资金流入");
-				// }
-
-				// if (this.isMacdKDJWeekGordon(spvo.date, spvo.stockId)) {
-				// sxvo.setSuoFlagsTitle("周金");
-				// sxvo.setSuoFlagsText("周线金叉共振");
-				// }
-
-				// if (this.isBottom(spvo.date, spvo.stockId)) {
-				// sxvo.setSuoFlagsTitle("底");
-				// sxvo.setSuoFlagsText("底部区间");
-				// }
+				StringBuffer[] sbs = this.checkPoints(spvo.date, checkPoints);
+				sxvo.setSuoFlagsTitle(sbs[0].toString());
+				sxvo.setSuoFlagsText(sbs[1].toString());
 
 			}
 
@@ -311,63 +301,52 @@ public class FlagsAnalyseHelper {
 		return null;
 	}
 
-	private boolean isZiJinLiuRu(String date, String stockId) {
-		for (String viewname : viewnames) {
-			// first check viewNames
-			if ("luzao_phaseII_zijinliu_top300".equals(viewname) || "luzao_phaseIII_zijinliu_top300".equals(viewname)
-					|| "luzao_phaseII_ddx_bigger_05".equals(viewname)
-					|| "luzao_phaseIII_ddx_bigger_05".equals(viewname)) {
-				// get result from view directory, since they are fast
-				String searchViewName = viewname + "_Details";
-				List<CommonViewVO> list = this.commonViewCache.queryByDateForViewDirectlySearch(date, searchViewName);
+	private StringBuffer[] checkPoints(String date, List<CheckPointDailySelectionVO> checkPoints) {
+		StringBuffer[] titleAndTest = { new StringBuffer(), new StringBuffer() };
+		for (CheckPointDailySelectionVO cpvo : checkPoints) {
+			if (cpvo.date.equals(date)) {
+				// check zijinliu
+				for (String cp : zijinliuViewnames) {
+					if (cpvo.checkPoint.equals(cp)) {
+						titleAndTest[0].append("资");
+						titleAndTest[1].append("资金流入");
+						break;
+					}
+				}
 
-				for (CommonViewVO cvvo : list) {
-					if (cvvo.stockId.equals(stockId)) {
-						return true;
+				// check week Gordon
+				for (String cp : weekGordonCheckPoints) {
+					if (cpvo.checkPoint.equals(cp)) {
+						titleAndTest[0].append("周");
+						titleAndTest[1].append("周线共振");
+						break;
+					}
+				}
+
+				// check buttom
+				for (String cp : bottomAreaCheckPoints) {
+					if (cpvo.checkPoint.equals(cp)) {
+						titleAndTest[0].append("低");
+						titleAndTest[1].append("底部区间");
+						break;
+					}
+				}
+
+				// check buttom gordon
+				for (String cp : bottomGordonCheckPoints) {
+					if (cpvo.checkPoint.equals(cp)) {
+						titleAndTest[0].append("金");
+						titleAndTest[1].append("底部金叉");
+						break;
 					}
 				}
 			}
 
-			// else get result for checkpoint data, since they are analyse daily
-			// and save to daily table
-			String checkpoint = viewname;
-			List<CheckPointDailySelectionVO> cps = checkPointDailySelectionCache.queryByDateAndCheckPoint(date,
-					checkpoint);
-			for (CheckPointDailySelectionVO cp : cps) {
-				if (cp.stockId.equals(stockId)) {
-					return true;
-				}
-			}
-
 		}
-
-		return false;
+		return titleAndTest;
 	}
 
-	private boolean isMacdKDJWeekGordon(String date, String stockId) {
-		for (String checkpoint : weekGordonCheckPoints) {
-			List<CheckPointDailySelectionVO> cps = checkPointDailySelectionCache.queryByDateAndCheckPoint(date,
-					checkpoint);
-			for (CheckPointDailySelectionVO cp : cps) {
-				if (cp.stockId.equals(stockId)) {
-					return true;
-				}
-			}
-		}
-		return false;
+	private List<CheckPointDailySelectionVO> getCheckPoints(String stockId) {
+		return checkPointDailySelectionCache.getCheckPointByStockId(stockId);
 	}
-
-	private boolean isBottom(String date, String stockId) {
-		for (String checkpoint : bottomCheckPoints) {
-			List<CheckPointDailySelectionVO> cps = checkPointDailySelectionCache.queryByDateAndCheckPoint(date,
-					checkpoint);
-			for (CheckPointDailySelectionVO cp : cps) {
-				if (cp.stockId.equals(stockId)) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
 }

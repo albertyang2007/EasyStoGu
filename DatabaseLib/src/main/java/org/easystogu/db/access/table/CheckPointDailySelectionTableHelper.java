@@ -38,6 +38,7 @@ public class CheckPointDailySelectionTableHelper {
 			+ " WHERE stockid = :stockid AND checkpoint != :checkpoint ORDER BY DATE DESC LIMIT 1";
 	protected String DELETE_BY_DATE_SQL = "DELETE FROM " + tableName + " WHERE date = :date";
 	protected String QUERY_BY_DATE_SQL = "SELECT * FROM " + tableName + " WHERE date = :date";
+	protected String QUERY_BY_STOCKID_SQL = "SELECT * FROM " + tableName + " WHERE stockid = :stockid";
 	protected String QUERY_BY_RECENT_DAYS_SQL = "SELECT * FROM " + tableName
 			+ " WHERE date >= :date ORDER BY DATE DESC";
 
@@ -186,6 +187,24 @@ public class CheckPointDailySelectionTableHelper {
 			namedParameters.addValue("date", date);
 
 			List<CheckPointDailySelectionVO> list = this.namedParameterJdbcTemplate.query(QUERY_BY_DATE_SQL,
+					namedParameters, new IndEventVOMapper());
+
+			return list;
+		} catch (EmptyResultDataAccessException ee) {
+			return null;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public List<CheckPointDailySelectionVO> getCheckPointByStockID(String stockId) {
+		try {
+
+			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+			namedParameters.addValue("stockid", stockId);
+
+			List<CheckPointDailySelectionVO> list = this.namedParameterJdbcTemplate.query(QUERY_BY_STOCKID_SQL,
 					namedParameters, new IndEventVOMapper());
 
 			return list;

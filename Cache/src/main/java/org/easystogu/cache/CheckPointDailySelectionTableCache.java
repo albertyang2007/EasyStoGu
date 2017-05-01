@@ -28,11 +28,18 @@ public class CheckPointDailySelectionTableCache {
 						logger.info("load from database, key:" + key);
 						String[] parms = key.split(":");
 						// key is like: date + ":" + checkpoint
-						if (parms.length == 2)
+						if (parms.length == 2) {
 							return checkPointDailySelectionTable.queryByDateAndCheckPoint(parms[0], parms[1]);
-
-						// only date
-						return checkPointDailySelectionTable.getCheckPointByDate(key);
+						} else if (parms.length == 1) {
+							if (key.contains("-")) {
+								// by date (2017-01-01)
+								return checkPointDailySelectionTable.getCheckPointByDate(key);
+							} else {
+								// by stockId
+								return checkPointDailySelectionTable.getCheckPointByStockID(key);
+							}
+						}
+						return null;
 					}
 				});
 	}
@@ -86,5 +93,9 @@ public class CheckPointDailySelectionTableCache {
 
 	public List<CheckPointDailySelectionVO> getCheckPointByDate(String key) {
 		return get(key);
+	}
+
+	public List<CheckPointDailySelectionVO> getCheckPointByStockId(String stockId) {
+		return get(stockId);
 	}
 }
