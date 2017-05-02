@@ -73,9 +73,13 @@ public class DailyScheduler implements SchedulingConfigurer {
 	// run at 23:00
 	@Scheduled(cron = "0 00 23 * * MON-FRI")
 	public void _0_DataBaseSanityCheck() {
-		logger.info("DataBaseSanityCheck already running.");
-		Thread t = new Thread(new DataBaseSanityCheck());
-		t.start();
+		// only run at office, since at aliyun, there is daily santy after price
+		// update
+		if (Constants.ZONE_OFFICE.equalsIgnoreCase(zone)) {
+			logger.info("DataBaseSanityCheck already running.");
+			Thread t = new Thread(new DataBaseSanityCheck());
+			t.start();
+		}
 	}
 
 	// run at 15:06
