@@ -3,22 +3,21 @@ package org.easystogu.portal;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.easystogu.cache.CheckPointDailySelectionTableCache;
-import org.easystogu.cache.CommonViewCache;
 import org.easystogu.db.vo.table.BBIVO;
 import org.easystogu.db.vo.table.CheckPointDailySelectionVO;
 import org.easystogu.db.vo.table.LuZaoVO;
 import org.easystogu.db.vo.table.MacdVO;
 import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.db.vo.table.VolumeVO;
-import org.easystogu.db.vo.view.CommonViewVO;
+import org.easystogu.indicator.IND;
+import org.easystogu.indicator.MAHelper;
 import org.easystogu.log.LogHelper;
+import org.easystogu.portal.vo.CheckPointFlagsVO;
 import org.easystogu.portal.vo.ShenXianUIVO;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
-import org.easystogu.indicator.IND;
-import org.easystogu.indicator.MAHelper;
-
+import org.easystogu.cache.CheckPointDailySelectionTableCache;
+import org.easystogu.cache.CommonViewCache;
 import com.google.common.primitives.Doubles;
 
 @Component
@@ -51,6 +50,8 @@ public class FlagsAnalyseHelper {
 			BBIVO bbivo = getBBIIndVOByDate(spvo.date, bbiList);
 			LuZaoVO luzaovo = getLuzaoIndVOByDate(spvo.date, luzaoList);
 			VolumeVO volumevo = getVolumeVOByDate(spvo.date, volumeList);
+			// below can be search from table checkpoint_daily_selection
+			CheckPointFlagsVO cpfvo = this.checkPoints(spvo.date, checkPoints);
 
 			if (sxvo != null && macdvo != null && bbivo != null && luzaovo != null && volumevo != null) {
 
@@ -135,10 +136,17 @@ public class FlagsAnalyseHelper {
 					sxvo.setSuoFlagsText("成交萎缩");
 				}
 
-				// below can be search from table checkpoint_daily_selection
-				StringBuffer[] sbs = this.checkPoints(spvo.date, checkPoints);
-				sxvo.setSuoFlagsTitle(sbs[0].toString());
-				sxvo.setSuoFlagsText(sbs[1].toString());
+				// volume and bottom
+				sxvo.setSuoFlagsTitle(cpfvo.bottomAreaTitle.toString() + cpfvo.bottomGordonTitle.toString()
+						+ cpfvo.ziJinLiuRuTitle.toString());
+				sxvo.setSuoFlagsText(cpfvo.bottomAreaText.toString() + cpfvo.bottomGordonText.toString()
+						+ cpfvo.ziJinLiuRuText.toString());
+
+				// append if has
+				String title = sxvo.getDuoFlagsTitle();
+				String text = sxvo.getDuoFlagsText();
+				sxvo.setDuoFlagsTitle(title + cpfvo.weekGordonTitle.toString());
+				sxvo.setDuoFlagsText(text + cpfvo.weekGordonText.toString());
 
 			}
 
@@ -301,49 +309,51 @@ public class FlagsAnalyseHelper {
 		return null;
 	}
 
-	private StringBuffer[] checkPoints(String date, List<CheckPointDailySelectionVO> checkPoints) {
-		StringBuffer[] titleAndTest = { new StringBuffer(), new StringBuffer() };
+	private CheckPointFlagsVO checkPoints(String date, List<CheckPointDailySelectionVO> checkPoints) {
+		CheckPointFlagsVO cpfvo = new CheckPointFlagsVO();
 		for (CheckPointDailySelectionVO cpvo : checkPoints) {
 			if (cpvo.date.equals(date)) {
 				// check zijinliu
 				for (String cp : zijinliuViewnames) {
 					if (cpvo.checkPoint.equals(cp)) {
-						titleAndTest[0].append("资");
-						titleAndTest[1].append("资金流入");
+						cpfvo.ziJinLiuRuTitle.append("资");
+						cpfvo.ziJinLiuRuText.append("资金流入");
 						break;
 					}
 				}
 
 				// check week Gordon
-				for (String cp : weekGordonCheckPoints) {
-					if (cpvo.checkPoint.equals(cp)) {
-						titleAndTest[0].append("周");
-						titleAndTest[1].append("周线共振");
-						break;
-					}
+				if (cpvo.checkPoint.contains("MACD_WEEK_GORDON_MACD_DAY_DIF_CROSS_0")) {
+					cpfvo.weekGordonTitle.append("MD周");
+					cpfvo.weekGordonText.append("MACD周线金叉DIF日线金叉");
+				} else if (cpvo.checkPoint.contains("MACD_WEEK_GORDON_KDJ_WEEK_GORDON")) {
+					cpfvo.weekGordonTitle.append("MK周");
+					cpfvo.weekGordonText.append("MACD周线金叉日线KDJ金叉");
 				}
 
 				// check buttom
-				for (String cp : bottomAreaCheckPoints) {
-					if (cpvo.checkPoint.equals(cp)) {
-						titleAndTest[0].append("低");
-						titleAndTest[1].append("底部区间");
-						break;
-					}
+				if (cpvo.checkPoint.equals("WR_Bottom_Area")) {
+					cpfvo.bottomAreaTitle.append("WR低");
+					cpfvo.bottomAreaText.append("WR底部区间");
+				} else if (cpvo.checkPoint.equals("QSDD_Bottom_Area")) {
+					cpfvo.bottomAreaTitle.append("QSDD低");
+					cpfvo.bottomAreaText.append("QSDD底部区间");
+					break;
 				}
 
 				// check buttom gordon
-				for (String cp : bottomGordonCheckPoints) {
-					if (cpvo.checkPoint.equals(cp)) {
-						titleAndTest[0].append("金");
-						titleAndTest[1].append("底部金叉");
-						break;
-					}
+
+				if (cpvo.checkPoint.equals("WR_Bottom_Gordon")) {
+					cpfvo.bottomGordonTitle.append("WR金");
+					cpfvo.bottomGordonText.append("WR底部金叉");
+				} else if (cpvo.checkPoint.equals("QSDD_Bottom_Gordon")) {
+					cpfvo.bottomGordonTitle.append("QSDD金");
+					cpfvo.bottomGordonText.append("QSDD底部金叉");
 				}
 			}
 
 		}
-		return titleAndTest;
+		return cpfvo;
 	}
 
 	private List<CheckPointDailySelectionVO> getCheckPoints(String stockId) {
