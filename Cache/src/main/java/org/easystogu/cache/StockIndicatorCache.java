@@ -44,7 +44,7 @@ public class StockIndicatorCache {
 		stockTablesMap.put(Constants.cacheIndWR, IndWRTableHelper.getInstance());
 		stockTablesMap.put(Constants.cacheIndDDX, IndDDXTableHelper.getInstance());
 
-		cache = CacheBuilder.newBuilder().maximumSize(100).expireAfterWrite(24, TimeUnit.HOURS)
+		cache = CacheBuilder.newBuilder().maximumSize(100).expireAfterWrite(30, TimeUnit.MINUTES)
 				.build(new CacheLoader<String, List<Object>>() {
 					@Override
 					// key is like: type:stockId, for example:

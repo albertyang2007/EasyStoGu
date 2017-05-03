@@ -20,7 +20,7 @@ public class CommonViewCache {
 	private LoadingCache<String, List<CommonViewVO>> cache;
 
 	private CommonViewCache() {
-		cache = CacheBuilder.newBuilder().maximumSize(100).expireAfterWrite(24, TimeUnit.HOURS)
+		cache = CacheBuilder.newBuilder().maximumSize(100).expireAfterWrite(30, TimeUnit.MINUTES)
 				.build(new CacheLoader<String, List<CommonViewVO>>() {
 					@Override
 					// key is

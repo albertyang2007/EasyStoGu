@@ -16,12 +16,12 @@ public class AllCacheRunner implements Runnable {
 	private ConfigurationServiceCache configurationServiceCache = ConfigurationServiceCache.getInstance();
 
 	public void refreshAll() {
+		this.configurationServiceCache.refreshAll();
 		this.checkPointStatisticsCache.refreshAll();
-		this.stockIndicatorCache.refreshAll();
 		this.stockPriceCache.refreshAll();
+		this.stockIndicatorCache.refreshAll();
 		this.checkPointDailySelectionTableCache.refreshAll();
 		this.commonViewCache.refreshAll();
-		this.configurationServiceCache.refreshAll();
 	}
 
 	public void run() {

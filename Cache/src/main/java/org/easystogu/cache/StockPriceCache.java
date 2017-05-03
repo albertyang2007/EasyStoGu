@@ -20,7 +20,7 @@ public class StockPriceCache {
 	private LoadingCache<String, List<String>> cache;
 
 	private StockPriceCache() {
-		cache = CacheBuilder.newBuilder().maximumSize(100).expireAfterWrite(24, TimeUnit.HOURS)
+		cache = CacheBuilder.newBuilder().maximumSize(100).expireAfterWrite(30, TimeUnit.MINUTES)
 				.build(new CacheLoader<String, List<String>>() {
 					@Override
 					// key is like: type:parms, for example:
