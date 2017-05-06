@@ -36,8 +36,14 @@ public class Constants {
 	public static String cacheLatestNStockDate = "latestndate";
 	public static String cacheSZZSDayListByIdAndBetweenDates = "SZZSDayListByIdAndBetweenDates";
 	public static String cacheAllDealDate = "AllDealDate";
-	
+
 	public static String dateRegex = "[0-9]{4}-[0-9]{2}-[0-9]{2}";
 	public static String fromToRegex = dateRegex + "_" + dateRegex;
 	public static String HHmmss = "00:00:00";
+
+	public static void main(String[] args) {
+		for (int i = 1; i <= 31; i++) {
+			System.out.println("{" + (i - 1) * 3 + ", " + ((i - 1) * 3 + 1) + ", " + ((i - 1) * 3 + 2) + "},");
+		}
+	}
 }

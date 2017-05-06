@@ -117,22 +117,34 @@ public class DailyScheduler implements SchedulingConfigurer {
 			// dayN is 1 ~ 31
 			int dayN = Integer.parseInt(WeekdayUtil.currentDay());
 
-			if (dayN == 31) {
-				logger.info("Today is 31 of last day, skip process since next day will be 1.");
-				return;
+			// each day will fetch about 1/30 of all stockIds
+			int[] lastTwoDigs = { ((dayN - 1) * 3), ((dayN - 1) * 3 + 1), ((dayN - 1) * 3 + 2) };
+			String[] strLastTwoDigs = { "" + lastTwoDigs[0], "" + lastTwoDigs[1], "" + lastTwoDigs[2] };
+
+			// convert '1' to '01', '2' to '02' etc
+			for (int i = 0; i < lastTwoDigs.length; i++) {
+				if (lastTwoDigs[i] <= 9) {
+					strLastTwoDigs[i] = "0" + lastTwoDigs[i];
+				}
 			}
 
-			// offDayN is 0 ~ 9
-			int offDayN = dayN % 10;
 			for (String stockId : allStockIds) {
-				int lastDig = Integer.parseInt(stockId.substring(5));
-				if (lastDig == offDayN) {
+				String lastTwoDig = stockId.substring(4);
+				if (lastTwoDig.equals(strLastTwoDigs[0]) || lastTwoDig.equals(strLastTwoDigs[0])
+						|| lastTwoDig.equals(strLastTwoDigs[2])) {
+					stockIds.add(stockId);
+				}
+
+				// hardocde to add missing stockIds
+				if (dayN == 1 && (lastTwoDig.equals("93") || lastTwoDig.equals("94") || lastTwoDig.equals("95")
+						|| lastTwoDig.equals("96") || lastTwoDig.equals("97") || lastTwoDig.equals("98")
+						|| lastTwoDig.equals("99"))) {
 					stockIds.add(stockId);
 				}
 			}
 
-			logger.info("DailyUpdateStockPriceByBatch select stockId with last dig: " + offDayN + ", size: "
-					+ stockIds.size());
+			logger.info("DailyUpdateStockPriceByBatch select stockId with last dig: " + strLastTwoDigs[0] + ", "
+					+ strLastTwoDigs[1] + ", " + strLastTwoDigs[2] + ", size: " + stockIds.size());
 			new HistoryStockPriceDownloadAndStoreDBRunner().countAndSave(stockIds);
 			new HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner().countAndSave(stockIds);
 			new HistoryWeekStockPriceCountAndSaveDBRunner().countAndSave(stockIds);

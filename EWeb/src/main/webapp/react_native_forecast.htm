@@ -107,7 +107,7 @@ demo
 	      
 	      render: function(){
 			      return (<div>
-			                  <input type="text" value={this.state.stockId} name='stockId' maxLength="6" onChange={this.handleChange} />&nbsp;&nbsp;
+			                  <input type="text" value={this.state.stockId} name='stockId' maxLength='6' style={{width:'60px'}} onChange={this.handleChange} />&nbsp;&nbsp;
 			                  
 			                  <select name='indicator' onChange={this.handleChange}>
                               <option value='luzao' defaultValue>luzao</option>
@@ -158,7 +158,7 @@ demo
                               </select>&nbsp;&nbsp;
 			                  
                               <label>重复</label>
-			                  <input type="text" value={this.state.repeatTimes} name='repeatTimes' maxLength="3" onChange={this.handleChange} />&nbsp;&nbsp;
+			                  <input type="text" value={this.state.repeatTimes} name='repeatTimes' maxLength='3' style={{width:'30px'}} onChange={this.handleChange} />&nbsp;&nbsp;
 
                               <input type="submit" value="Submit" onClick={this.handleSubmit} />
 			              </div>

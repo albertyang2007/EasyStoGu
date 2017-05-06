@@ -1224,3 +1224,30 @@ ALTER TABLE "cixin_zijinliu_3_of_5_days_top300_Details"
 GRANT ALL ON TABLE "cixin_zijinliu_3_of_5_days_top300_Details" TO public;
 GRANT ALL ON TABLE "cixin_zijinliu_3_of_5_days_top300_Details" TO postgres;
 
+-- View: "OneYuan_Stock_Statistics"
+
+-- DROP VIEW "OneYuan_Stock_Statistics";
+
+CREATE OR REPLACE VIEW "OneYuan_Stock_Statistics" AS 
+ SELECT v1.date,
+    count(*) AS count
+   FROM ( SELECT stockprice.stockid,
+            stockprice.date,
+            stockprice.open,
+            stockprice.high,
+            stockprice.low,
+            stockprice.close,
+            stockprice.volume,
+            stockprice.lastclose
+           FROM stockprice
+          WHERE stockprice.close < 2::numeric) v1
+  GROUP BY v1.date
+  ORDER BY v1.date DESC;
+
+ALTER TABLE "OneYuan_Stock_Statistics"
+  OWNER TO postgres;
+GRANT ALL ON TABLE "OneYuan_Stock_Statistics" TO public;
+GRANT ALL ON TABLE "OneYuan_Stock_Statistics" TO postgres;
+COMMENT ON VIEW "OneYuan_Stock_Statistics"
+  IS '一元股统计';
+

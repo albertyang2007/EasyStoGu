@@ -83,7 +83,7 @@ demo
 	      render: function(){
 			      return (<div>
 			                  <label>StockId:</label>
-			                  <input type="text" value={this.state.stockId} name='stockId' maxLength="6" onChange={this.handleChange} />&nbsp;&nbsp;
+			                  <input type="text" value={this.state.stockId} name='stockId' maxLength='6' style={{width:'60px'}} onChange={this.handleChange} />&nbsp;&nbsp;
 			                  
                               <label>Indicator:</label>
 			                  <select name='indicator' onChange={this.handleChange}>
@@ -103,11 +103,11 @@ demo
                               <option value='v2'>v2-后复权</option>
                               </select>&nbsp;&nbsp;
 
-			                  <label>DateFrom:</label>
-			                  <input type="text" value={this.state.dateFrom} name='dateFrom' maxLength="10" onChange={this.handleChange} />&nbsp;&nbsp;
+			                  <label>From:</label>
+			                  <input type="text" value={this.state.dateFrom} name='dateFrom' maxLength='10' style={{width:'100px'}} onChange={this.handleChange} />&nbsp;&nbsp;
 			                  
-                              <label>DateTo:</label>
-			                  <input type="text" value={this.state.dateTo} name='dateTo' maxLength="10" onChange={this.handleChange} />&nbsp;&nbsp;
+                              <label>To:</label>
+			                  <input type="text" value={this.state.dateTo} name='dateTo' maxLength='10' style={{width:'100px'}} onChange={this.handleChange} />&nbsp;&nbsp;
 			                  
                               <input type="submit" value="Submit" onClick={this.handleClick} />
 			              </div>
