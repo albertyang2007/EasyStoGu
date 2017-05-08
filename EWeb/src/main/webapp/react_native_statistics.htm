@@ -24,6 +24,7 @@ ${demo.css}
 		var stockId = "999999";
 		var dateFrom = moment().subtract(2000, 'days').format("YYYY-MM-DD");
 		var dateTo = moment().format("YYYY-MM-DD");
+		var howMuchYuan = "OneYuan";
 
 		window.onload = function() {
 			indicator = getQueryString("indicator");
@@ -40,6 +41,9 @@ ${demo.css}
 				loadMacdStatistics(version, stockId, dateFrom, dateTo);
 			} else if (indicator == "wr") {
 				loadWRStatistics(version, stockId, dateFrom, dateTo);
+			} else if (indicator == "OneYuan" || indicator == "FiveYuan" || indicator == "TenYuan") {
+				howMuchYuan = indicator;
+				loadXXXYuanStatistics(howMuchYuan, stockId, dateFrom, dateTo);
 			}
 		}
 	</script>

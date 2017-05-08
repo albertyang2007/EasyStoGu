@@ -177,7 +177,7 @@
 	<bean id="portalXXXYuanStockStatisticsEndPoint" class="org.easystogu.portal.XXXYuanStockStatisticsEndPoint">
 	</bean>
 	<jaxrs:server id="cxfrsservice_XXXYuanStockStatisticsEndPoint"
-		address="/xxxyuanstockstatistics">
+		address="/xxxyuan">
 		<jaxrs:serviceBeans>
 			<ref bean="portalXXXYuanStockStatisticsEndPoint" />
 		</jaxrs:serviceBeans>

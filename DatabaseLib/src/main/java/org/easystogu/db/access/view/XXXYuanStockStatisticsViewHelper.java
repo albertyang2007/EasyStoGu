@@ -58,13 +58,13 @@ public class XXXYuanStockStatisticsViewHelper {
 		}
 	}
 
-	//currently only 3 views: howMuchYuan = One, Five or Ten
+	//currently only 3 views: howMuchYuan = OneYuan, FiveYuan or TenYuan
 	//OneYuan_Stock_Statistics, FiveYuan_Stock_Statistics and TenYuan_Stock_Statistics
 	public List<StatisticsViewVO> getAll(String howMuchYuan) {
 		try {
 			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 
-			String viewName = "\"" + howMuchYuan + "Yuan_Stock_Statistics\"";
+			String viewName = "\"" + howMuchYuan + "_Stock_Statistics\"";
 			String QUERY_ALL = "SELECT date, count FROM " + viewName + "order by date desc";
 
 			List<StatisticsViewVO> list = this.namedParameterJdbcTemplate.query(QUERY_ALL, namedParameters,
@@ -79,7 +79,7 @@ public class XXXYuanStockStatisticsViewHelper {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		XXXYuanStockStatisticsViewHelper ins = XXXYuanStockStatisticsViewHelper.getInstance();
-		List<StatisticsViewVO> list = ins.getAll("One");
+		List<StatisticsViewVO> list = ins.getAll("OneYuan");
 		System.out.println(list.get(0));
 	}
 
