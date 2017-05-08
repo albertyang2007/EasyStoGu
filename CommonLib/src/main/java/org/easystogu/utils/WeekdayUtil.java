@@ -19,12 +19,17 @@ public class WeekdayUtil {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
 		return sdf.format(new Date()).toString();
 	}
+	
+	public static String currentTime() {
+		SimpleDateFormat sdf = new SimpleDateFormat("HH-mm-ss");
+		return sdf.format(new Date()).toString();
+	}
 
 	public static int currentYear() {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
 		return Integer.parseInt(sdf.format(new Date()).toString());
 	}
-	
+
 	public static String currentDay() {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd");
 		return sdf.format(new Date()).toString();
@@ -116,12 +121,6 @@ public class WeekdayUtil {
 		return list;
 	}
 
-	public static boolean isCurrentTimeWorkingDayInDealTime() {
-		GregorianCalendar cal = new GregorianCalendar();
-		return ((cal.getTime().getHours() >= 9) && (cal.getTime().getHours() <= 15))
-				&& WeekdayUtil.isWeekday(new GregorianCalendar());
-	}
-
 	// 返回某年第几周的所有工作日，年底交叉的分开，一年最多53周，
 	public static List<String> getWorkingDaysOfWeek(int year, int week) {
 		List<String> dates = new ArrayList<String>();
@@ -164,8 +163,8 @@ public class WeekdayUtil {
 		int weekNumber = cal.get(Calendar.WEEK_OF_YEAR);
 		return getWorkingDaysOfWeek(new Date().getYear() + 1900, weekNumber);
 	}
-	
-	public static int getWeekNumber(String date){
+
+	public static int getWeekNumber(String date) {
 		Calendar cal = Calendar.getInstance();
 		String[] ymd = date.split("-");
 		cal.set(Calendar.YEAR, Integer.parseInt(ymd[0]));
@@ -178,8 +177,8 @@ public class WeekdayUtil {
 		}
 		return weekNumber;
 	}
-	
-	public static int getWeekNumber(){
+
+	public static int getWeekNumber() {
 		return getWeekNumber(currentDate());
 	}
 
@@ -337,7 +336,20 @@ public class WeekdayUtil {
 		return list;
 	}
 
+	// return true if 09:30~15:00 at working date
+	public static boolean isNowAtWorkingDayAndTransactionTime() {
+		GregorianCalendar cal = new GregorianCalendar();
+		SimpleDateFormat sdf = new SimpleDateFormat("HH-mm-ss");
+		String timeStr = sdf.format(new Date()).toString();
+		if (WeekdayUtil.isWeekday(new GregorianCalendar())) {
+			if (timeStr.compareTo("09-25-00") >= 0 && timeStr.compareTo("15-00-00") <= 0) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public static void main(String[] args) {
-		System.out.println(WeekdayUtil.currentDay());
+		System.out.println(WeekdayUtil.isNowAtWorkingDayAndTransactionTime());
 	}
 }

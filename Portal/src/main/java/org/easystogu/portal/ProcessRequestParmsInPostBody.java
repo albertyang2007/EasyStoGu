@@ -10,6 +10,7 @@ import org.easystogu.db.util.MergeNDaysPriceUtil;
 import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.portal.init.TrendModeLoader;
+import org.easystogu.sina.runner.history.HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner;
 import org.easystogu.trendmode.vo.SimplePriceVO;
 import org.easystogu.trendmode.vo.TrendModeVO;
 import org.easystogu.utils.Strings;
@@ -29,13 +30,16 @@ import org.springframework.stereotype.Component;
 @Component
 public class ProcessRequestParmsInPostBody {
 	protected StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
+	protected StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
 	protected CompanyInfoFileHelper companyInfoHelper = CompanyInfoFileHelper.getInstance();
 	protected MergeNDaysPriceUtil mergeNdaysPriceHeloer = new MergeNDaysPriceUtil();
 	protected StockIndicatorCache indicatorCache = StockIndicatorCache.getInstance();
+	protected HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner historyQianFuQuanRunner = new HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner();
 	@Autowired
 	protected TrendModeLoader trendModeLoader;
 
 	public List<StockPriceVO> updateStockPriceAccordingToRequest(String stockId, String postBody) {
+
 		List<StockPriceVO> spList = fetchAllPrices(stockId);
 		if (Strings.isEmpty(postBody))
 			return spList;
@@ -81,8 +85,29 @@ public class ProcessRequestParmsInPostBody {
 			return spList;
 
 		List<SimplePriceVO> origList = tmo.getPricesByCopy();
+
+		// append the repeat times of forecast
 		for (int i = 1; i < repeatTimes; i++) {
 			tmo.prices.addAll(origList);
+		}
+
+		// if the now the time is at the transaction time
+		// 如果当前正是交易时间，即时的价格已经在schedule每5分钟更新一次，在此基础上再进行预测
+		if (WeekdayUtil.isNowAtWorkingDayAndTransactionTime() && curSPVO.date.equals(WeekdayUtil.currentDate())) {
+			// delete the first one, since it is already happens
+			SimplePriceVO firstSPVO = tmo.prices.get(0);
+			tmo.prices.remove(0);
+
+			// update the stock price based on the forecast tmo
+			curSPVO.setClose(Strings.convert2ScaleDecimal(curSPVO.lastClose * (1.0 + firstSPVO.getClose() / 100.0)));
+			// adjust the realtime high and realtime low if the forecast close
+			// is changed
+			if (curSPVO.high < curSPVO.close) {
+				curSPVO.high = curSPVO.close;
+			}
+			if (curSPVO.low > curSPVO.close) {
+				curSPVO.low = curSPVO.close;
+			}
 		}
 
 		List<String> nextWorkingDateList = WeekdayUtil.nextWorkingDateList(curSPVO.date, tmo.prices.size());
@@ -130,7 +155,7 @@ public class ProcessRequestParmsInPostBody {
 			if (Strings.isNotEmpty(postBody)) {
 				try {
 					JSONObject jsonParm = new JSONObject(postBody);
-					
+
 					int repeatTimes = 1;
 					String repeatTimesParms = jsonParm.getString("repeatTimes");
 					if (Strings.isNotEmpty(repeatTimesParms) && Strings.isNumeric(repeatTimesParms)) {
@@ -145,7 +170,7 @@ public class ProcessRequestParmsInPostBody {
 						for (int i = 1; i < repeatTimes; i++) {
 							tmo.prices.addAll(origList);
 						}
-						
+
 						if (tmo.prices.size() > 0) {
 							String newEndDate = WeekdayUtil.nextNWorkingDate(endDate, tmo.prices.size());
 							return fromDate + "_" + newEndDate;

@@ -2,7 +2,6 @@ package org.easystogu.portal;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.POST;
@@ -11,20 +10,17 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 
-import org.easystogu.config.ConfigurationService;
-import org.easystogu.config.DBConfigurationService;
-import org.easystogu.cache.ConfigurationServiceCache;
+import org.easystogu.db.vo.table.BBIVO;
 import org.easystogu.db.vo.table.BollVO;
 import org.easystogu.db.vo.table.KDJVO;
 import org.easystogu.db.vo.table.LuZaoVO;
 import org.easystogu.db.vo.table.MacdVO;
 import org.easystogu.db.vo.table.QSDDVO;
-import org.easystogu.db.vo.table.BBIVO;
 import org.easystogu.db.vo.table.ShenXianVO;
 import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.db.vo.table.WRVO;
-import org.easystogu.indicator.BOLLHelper;
 import org.easystogu.indicator.BBIHelper;
+import org.easystogu.indicator.BOLLHelper;
 import org.easystogu.indicator.KDJHelper;
 import org.easystogu.indicator.LuZaoHelper;
 import org.easystogu.indicator.MACDHelper;
@@ -34,13 +30,9 @@ import org.easystogu.indicator.WRHelper;
 import org.easystogu.indicator.runner.utils.StockPriceFetcher;
 import org.easystogu.portal.init.TrendModeLoader;
 import org.easystogu.portal.vo.ShenXianUIVO;
-import org.easystogu.trendmode.vo.TrendModeVO;
 import org.easystogu.utils.Strings;
-import org.easystogu.utils.WeekdayUtil;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.easystogu.cache.ConfigurationServiceCache;
 import com.google.common.primitives.Doubles;
 
 //V3, with forecast data, query from qian fuquan stock price and count in real time

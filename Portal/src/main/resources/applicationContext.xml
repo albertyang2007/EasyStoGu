@@ -151,7 +151,7 @@
 			<bean class="com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider" />
 		</jaxrs:providers>
 	</jaxrs:server>
-	
+
 	<bean id="portalServiceViewEndPoint" class="org.easystogu.portal.ViewEndPoint">
 	</bean>
 	<jaxrs:server id="cxfrsservice_ViewEndPoint" address="/view">
@@ -162,7 +162,7 @@
 			<bean class="com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider" />
 		</jaxrs:providers>
 	</jaxrs:server>
-	
+
 	<bean id="portalServiceFavoritesEndPoint" class="org.easystogu.portal.FavoritesEndPoint">
 	</bean>
 	<jaxrs:server id="cxfrsservice_FavoritesEndPoint" address="/favorites">
@@ -173,7 +173,19 @@
 			<bean class="com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider" />
 		</jaxrs:providers>
 	</jaxrs:server>
-	
+
+	<bean id="portalXXXYuanStockStatisticsEndPoint" class="org.easystogu.portal.XXXYuanStockStatisticsEndPoint">
+	</bean>
+	<jaxrs:server id="cxfrsservice_XXXYuanStockStatisticsEndPoint"
+		address="/xxxyuanstockstatistics">
+		<jaxrs:serviceBeans>
+			<ref bean="portalXXXYuanStockStatisticsEndPoint" />
+		</jaxrs:serviceBeans>
+		<jaxrs:providers>
+			<bean class="com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider" />
+		</jaxrs:providers>
+	</jaxrs:server>
+
 	<bean id="portalServiceTestEndPoint" class="org.easystogu.portal.TestControler">
 	</bean>
 	<jaxrs:server id="cxfrsservice_TestControler" address="/">
@@ -184,5 +196,5 @@
 			<bean class="com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider" />
 		</jaxrs:providers>
 	</jaxrs:server>
-	
+
 </beans>

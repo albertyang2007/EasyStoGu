@@ -10,6 +10,7 @@ import org.easystogu.log.LogHelper;
 import org.easystogu.runner.DailyOverAllRunner;
 import org.easystogu.runner.DailyUpdateStockPriceAndDDXRunner;
 import org.easystogu.runner.DataBaseSanityCheck;
+import org.easystogu.sina.runner.DailyStockPriceDownloadAndStoreDBRunner2;
 import org.easystogu.sina.runner.history.HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner;
 import org.easystogu.sina.runner.history.HistoryStockPriceDownloadAndStoreDBRunner;
 import org.easystogu.sina.runner.history.HistoryWeekStockPriceCountAndSaveDBRunner;
@@ -152,6 +153,23 @@ public class DailyScheduler implements SchedulingConfigurer {
 			// after update price, do the sanity test
 			new DataBaseSanityCheck().run();
 		}
+	}
+
+	// every 5 mins from 9 to 15, Monday to Friday
+	@Scheduled(cron = "0 0/5 09,10,11,13,14 * * MON-FRI")
+	public void updateStockPriceOnlyEvery5Mins() {
+		String time = WeekdayUtil.currentTime();
+		logger.info("updateStockPriceOnlyEvery5Mins already running at " + time + ", please check DB result.");
+		if (Constants.ZONE_ALIYUN.equalsIgnoreCase(zone)) {
+			if ((time.compareTo("09-25-00") >= 0 && time.compareTo("11-30-00") <= 0)
+					|| (time.compareTo("13-00-00") >= 0 && time.compareTo("15-00-00") <= 0)) {
+				// day (download all stockIds price)
+				DailyStockPriceDownloadAndStoreDBRunner2 runner = new DailyStockPriceDownloadAndStoreDBRunner2();
+				runner.run();
+				logger.info("updateStockPriceOnlyEvery5Mins Done.");
+			}
+		}
+
 	}
 
 	public static void main(String[] args) {
