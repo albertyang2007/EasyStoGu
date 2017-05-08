@@ -65,7 +65,7 @@ public class XXXYuanStockStatisticsViewHelper {
 			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 
 			String viewName = "\"" + howMuchYuan + "_Stock_Statistics\"";
-			String QUERY_ALL = "SELECT date, count FROM " + viewName + "order by date desc";
+			String QUERY_ALL = "SELECT date, count FROM " + viewName + "order by date";
 
 			List<StatisticsViewVO> list = this.namedParameterJdbcTemplate.query(QUERY_ALL, namedParameters,
 					new StatisticsInfoVOMapper());

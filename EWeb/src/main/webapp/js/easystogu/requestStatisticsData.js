@@ -538,6 +538,7 @@ function loadWRStatistics(version, stockId, dateFrom, dateTo) {
  */
 function loadXXXYuanStatistics(howMuchYuan, stockId, dateFrom, dateTo) {
 	var seriesCounter = 0, date_price = [], volume = [], data_count = [];
+	var version = 'v1';
 	/**
 	 * Load StocPrice and display OHLC
 	 * 
