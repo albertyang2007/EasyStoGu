@@ -544,7 +544,7 @@ function loadXXXYuanStatistics(howMuchYuan, stockId, dateFrom, dateTo) {
 	 * 
 	 * @returns {undefined}
 	 */
-	var url_price = getEasyStoGuServerUrl() + "/portal/price" + version + "/"
+	var url_price = getEasyStoGuServerUrl() + "/portal/price" + version + "/month/"
 			+ stockId + "/" + dateFrom + "_" + dateTo;
 	$.getJSON(url_price, function(data) {
 		i = 0;

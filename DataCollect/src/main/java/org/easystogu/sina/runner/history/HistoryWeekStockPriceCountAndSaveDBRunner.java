@@ -12,7 +12,7 @@ import org.easystogu.file.access.CompanyInfoFileHelper;
 //手动将2009年之后的stockprice分成每周入库，weeksotckprice，一次性运行
 public class HistoryWeekStockPriceCountAndSaveDBRunner {
     private StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
-    private MergeNDaysPriceUtil weekPriceMergeUtil = new MergeNDaysPriceUtil();
+    private MergeNDaysPriceUtil nDaysPriceMergeUtil = new MergeNDaysPriceUtil();
     private WeekStockPriceTableHelper weekStockPriceTable = WeekStockPriceTableHelper.getInstance();
 
     public void deleteStockPrice(String stockId) {
@@ -40,7 +40,7 @@ public class HistoryWeekStockPriceCountAndSaveDBRunner {
         weekStockPriceTable.delete(stockId);
         
         List<StockPriceVO> spList = qianFuQuanStockPriceTable.getStockPriceById(stockId);
-        List<StockPriceVO> spWeekList = weekPriceMergeUtil.generateAllWeekPriceVO(stockId, spList);
+        List<StockPriceVO> spWeekList = nDaysPriceMergeUtil.generateAllWeekPriceVO(stockId, spList);
         for (StockPriceVO mergeVO : spWeekList) {
             weekStockPriceTable.insert(mergeVO);
         }

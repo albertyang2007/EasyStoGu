@@ -13,6 +13,7 @@ import javax.ws.rs.core.Context;
 import org.easystogu.cache.ConfigurationServiceCache;
 import org.easystogu.cache.XXXYuanStockStatisticsCache;
 import org.easystogu.db.vo.view.StatisticsViewVO;
+import org.easystogu.portal.util.MergeNDaysStatisticsHelper;
 import org.easystogu.portal.vo.StatisticsVO;
 
 public class XXXYuanStockStatisticsEndPoint {
@@ -28,13 +29,14 @@ public class XXXYuanStockStatisticsEndPoint {
 		List<StatisticsVO> rtnList = new ArrayList<StatisticsVO>();
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		List<StatisticsViewVO> list = this.stockStatisticsCache.get(howMuchYuan);
+
+		// should merge into a Week or Month based
 		for (StatisticsViewVO svvo : list) {
-			// should merge into a Week or Month based
 			StatisticsVO svo = new StatisticsVO();
 			svo.date = svvo.date;
 			svo.count1 = svvo.count;
 			rtnList.add(svo);
 		}
-		return rtnList;
+		return MergeNDaysStatisticsHelper.mergeToMonthBased(rtnList);
 	}
 }

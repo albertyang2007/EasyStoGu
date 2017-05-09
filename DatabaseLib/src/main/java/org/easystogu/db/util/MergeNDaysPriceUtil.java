@@ -3,12 +3,12 @@ package org.easystogu.db.util;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.utils.WeekdayUtil;
 
 //merge days price vo into week price vo
 public class MergeNDaysPriceUtil {
-
 	public List<StockPriceVO> generateAllWeekPriceVO(String stockId, List<StockPriceVO> spList) {
 		List<StockPriceVO> spWeekList = new ArrayList<StockPriceVO>();
 		for (int year = 1997; year <= WeekdayUtil.currentYear(); year++) {
@@ -62,8 +62,9 @@ public class MergeNDaysPriceUtil {
 
 		int startIndex = spDayList.size() % nDays;
 
-		//System.out.println("sub startDay=" + spDayList.get(0).date + ", size=" + spDayList.size() + ", startIndex="
-		//		+ startIndex);
+		// System.out.println("sub startDay=" + spDayList.get(0).date + ",
+		// size=" + spDayList.size() + ", startIndex="
+		// + startIndex);
 
 		for (int i = startIndex; i < spDayList.size(); i += nDays) {
 
@@ -102,5 +103,59 @@ public class MergeNDaysPriceUtil {
 			}
 		}
 		return subList;
+	}
+
+	// input: date price, order by date
+	// output: month price, order by month
+	public List<StockPriceVO> mergeToMonthBased(List<StockPriceVO> spList) {
+		List<StockPriceVO> monthList = new ArrayList<StockPriceVO>();
+		for (StockPriceVO spvo : spList) {
+			String year = spvo.date.split("_")[0].split("-")[0];
+			String month = spvo.date.split("_")[0].split("-")[1];
+			StockPriceVO vo = this.getStockPriceVOByYearMonth(year, month, monthList);
+			if (vo == null) {
+				vo = new StockPriceVO();
+				vo.name = spvo.name;
+				vo.open = spvo.open;
+				vo.close = spvo.close;
+				vo.high = spvo.high;
+				vo.low = spvo.low;
+				vo.date = spvo.date;
+				vo.stockId = spvo.stockId;
+				vo.volume = spvo.volume;
+
+				monthList.add(vo);
+			} else {
+				vo.date = spvo.date;
+				vo.close = spvo.close;
+				vo.volume += spvo.volume;
+
+				if (vo.high < spvo.high) {
+					vo.high = spvo.high;
+				}
+				if (vo.low > spvo.low) {
+					vo.low = spvo.low;
+				}
+			}
+		}
+		return monthList;
+	}
+
+	private StockPriceVO getStockPriceVOByYearMonth(String _year, String _month, List<StockPriceVO> monthList) {
+		for (StockPriceVO vo : monthList) {
+			String year = vo.date.split("_")[0].split("-")[0];
+			String month = vo.date.split("_")[0].split("-")[1];
+			if (year.equals(_year) && month.equals(_month)) {
+				return vo;
+			}
+		}
+		return null;
+	}
+
+	public static void main(String[] args) {
+		MergeNDaysPriceUtil ins = new MergeNDaysPriceUtil();
+		StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
+		List<StockPriceVO> list = ins.mergeToMonthBased(stockPriceTable.getStockPriceById("999999"));
+		System.out.println(list.get(list.size() - 1));
 	}
 }

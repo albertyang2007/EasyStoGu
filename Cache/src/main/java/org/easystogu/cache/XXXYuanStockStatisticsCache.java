@@ -20,7 +20,7 @@ public class XXXYuanStockStatisticsCache {
 	private LoadingCache<String, List<StatisticsViewVO>> cache;
 
 	private XXXYuanStockStatisticsCache() {
-		cache = CacheBuilder.newBuilder().maximumSize(100).expireAfterWrite(24, TimeUnit.HOURS)
+		cache = CacheBuilder.newBuilder().maximumSize(100).expireAfterWrite(12, TimeUnit.HOURS)
 				.build(new CacheLoader<String, List<StatisticsViewVO>>() {
 					@Override
 					// key is

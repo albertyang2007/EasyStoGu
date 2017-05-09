@@ -15,7 +15,9 @@ import org.easystogu.config.ConfigurationService;
 import org.easystogu.config.DBConfigurationService;
 import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.table.StockPriceTableHelper;
+import org.easystogu.db.util.MergeNDaysPriceUtil;
 import org.easystogu.db.vo.table.StockPriceVO;
+import org.easystogu.portal.util.MergeNDaysStatisticsHelper;
 import org.easystogu.utils.Strings;
 import org.easystogu.cache.StockIndicatorCache;
 import org.easystogu.cache.ConfigurationServiceCache;
@@ -29,6 +31,7 @@ public class PriceEndPointV1 {
 	protected static String HHmmss = "00:00:00";
 	protected StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
 	protected StockIndicatorCache indicatorCache = StockIndicatorCache.getInstance();
+	private MergeNDaysPriceUtil nDaysPriceMergeUtil = new MergeNDaysPriceUtil();
 
 	@Autowired
 	protected ProcessRequestParmsInPostBody postParmsProcess;
@@ -46,9 +49,10 @@ public class PriceEndPointV1 {
 		if (Pattern.matches(fromToRegex, dateParm)) {
 			String date1 = dateParm.split("_")[0];
 			String date2 = dateParm.split("_")[1];
-			List<Object> cacheSpList = indicatorCache.queryByStockId(Constants.cacheQianFuQuanStockPrice + ":" +stockIdParm);
+			List<Object> cacheSpList = indicatorCache
+					.queryByStockId(Constants.cacheQianFuQuanStockPrice + ":" + stockIdParm);
 			for (Object obj : cacheSpList) {
-				StockPriceVO spvo = (StockPriceVO)obj;
+				StockPriceVO spvo = (StockPriceVO) obj;
 				if (Strings.isDateSelected(date1 + " " + HHmmss, date2 + " " + HHmmss, spvo.date + " " + HHmmss)) {
 					spList.add(spvo);
 				}
@@ -58,5 +62,16 @@ public class PriceEndPointV1 {
 		}
 
 		return spList;
+	}
+
+	@GET
+	@Path("/month/{stockId}/{date}")
+	@Produces("application/json")
+	public List<StockPriceVO> queryDayPriceByIdMonthBased(@PathParam("stockId") String stockIdParm,
+			@PathParam("date") String dateParm, @Context HttpServletResponse response) {
+		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
+		List<StockPriceVO> spList = this.queryDayPriceById(stockIdParm, dateParm, response);
+		// merge to month based
+		return nDaysPriceMergeUtil.mergeToMonthBased(spList);
 	}
 }
