@@ -1251,3 +1251,55 @@ GRANT ALL ON TABLE "OneYuan_Stock_Statistics" TO postgres;
 COMMENT ON VIEW "OneYuan_Stock_Statistics"
   IS '一元股统计';
 
+-- DROP VIEW "FiveYuan_Stock_Statistics";
+
+CREATE OR REPLACE VIEW "FiveYuan_Stock_Statistics" AS 
+ SELECT v1.date,
+    count(*) AS count
+   FROM ( SELECT stockprice.stockid,
+            stockprice.date,
+            stockprice.open,
+            stockprice.high,
+            stockprice.low,
+            stockprice.close,
+            stockprice.volume,
+            stockprice.lastclose
+           FROM stockprice
+          WHERE stockprice.close < 5::numeric) v1
+  GROUP BY v1.date
+  ORDER BY v1.date DESC;
+
+ALTER TABLE "FiveYuan_Stock_Statistics"
+  OWNER TO postgres;
+GRANT ALL ON TABLE "FiveYuan_Stock_Statistics" TO public;
+GRANT ALL ON TABLE "FiveYuan_Stock_Statistics" TO postgres;
+COMMENT ON VIEW "FiveYuan_Stock_Statistics"
+  IS '5元股统计';
+  
+-- View: "TenYuan_Stock_Statistics"
+
+-- DROP VIEW "TenYuan_Stock_Statistics";
+
+CREATE OR REPLACE VIEW "TenYuan_Stock_Statistics" AS 
+ SELECT v1.date,
+    count(*) AS count
+   FROM ( SELECT stockprice.stockid,
+            stockprice.date,
+            stockprice.open,
+            stockprice.high,
+            stockprice.low,
+            stockprice.close,
+            stockprice.volume,
+            stockprice.lastclose
+           FROM stockprice
+          WHERE stockprice.close < 10::numeric) v1
+  GROUP BY v1.date
+  ORDER BY v1.date DESC;
+
+ALTER TABLE "TenYuan_Stock_Statistics"
+  OWNER TO postgres;
+GRANT ALL ON TABLE "TenYuan_Stock_Statistics" TO public;
+GRANT ALL ON TABLE "TenYuan_Stock_Statistics" TO postgres;
+COMMENT ON VIEW "TenYuan_Stock_Statistics"
+  IS '10元股统计';
+
