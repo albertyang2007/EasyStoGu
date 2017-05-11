@@ -107,7 +107,27 @@ demo
 	      
 	      render: function(){
 			      return (<div>
-			                  <input type="text" value={this.state.stockId} name='stockId' maxLength='6' style={{width:'60px'}} onChange={this.handleChange} />&nbsp;&nbsp;
+			                  <select name='stockId' onChange={this.handleChange}>
+                              <option value='002252' defaultValue>上海莱士</option>
+                              <option value='601668'>中国建筑</option>
+                              <option value='600029'>南方航空</option>
+                              <option value='600021'>上海电力</option>
+                              <option value='600580'>卧龙电气</option>
+                              <option value='002045'>国光电器</option>
+                              <option value='601336'>新华保险</option>
+                              <option value='600717'>天津港</option>
+                              <option value='000049'>德赛电池</option>
+                              <option value='002415'>海康威视</option>
+                              <option value='000651'>格力电器</option>
+                              <option value='000002'>万科A</option>
+                              <option value='002673'>西部证券</option>
+                              <option value='601318'>中国平安</option>
+                              <option value='002466'>天齐锂业</option>
+                              <option value='600518'>康美药业</option>
+                              <option value='002709'>天赐材料</option>
+                              <option value='601991'>大唐发电</option> 
+                              <option value='603999'>读者传媒</option> 
+                              </select>&nbsp;&nbsp;
 			                  
 			                  <select name='indicator' onChange={this.handleChange}>
                               <option value='shenxianSell' defaultValue>shenxianSell</option>

@@ -350,6 +350,6 @@ public class WeekdayUtil {
 	}
 
 	public static void main(String[] args) {
-		System.out.println(WeekdayUtil.isNowAtWorkingDayAndTransactionTime());
+		System.out.println(WeekdayUtil.currentTime());
 	}
 }
