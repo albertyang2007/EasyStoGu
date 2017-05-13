@@ -157,7 +157,7 @@ public class DailyScheduler implements SchedulingConfigurer {
 
 	// every 15 mins from 9 to 15, Monday to Friday
 	@Scheduled(cron = "0 0/15 09,10,11,13,14 * * MON-FRI")
-	public void updateStockPriceOnlyEvery5Mins() {
+	public void updateStockPriceOnlyEveryMins() {
 		String time = WeekdayUtil.currentTime();
 		logger.info("updateStockPriceOnlyEvery5Mins start at " + time);
 		if (Constants.ZONE_ALIYUN.equalsIgnoreCase(zone)) {
