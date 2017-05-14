@@ -219,7 +219,7 @@ public class HistoryAnalyseReport {
 		for (String stockId : stockIds) {
 			index++;
 
-			//if (!stockId.equals("002466"))
+			//if (!stockId.equals("601336"))
 			//	continue;
 
 			List<HistoryReportDetailsVO> historyReportList = this.doAnalyseBuySellDate(stockId, checkPoint);
@@ -260,10 +260,14 @@ public class HistoryAnalyseReport {
 					} else {
 						// for completed VO
 						// remove it from daily selection
-						//System.out.println("Completed: " + reportVO);
-						this.checkPointDailySelectionTable.delete(stockId, reportVO.buyPriceVO.date,
-								checkPoint.toString());
+						System.out.println("Completed: " + reportVO);
+						//this.checkPointDailySelectionTable.delete(stockId, reportVO.buyPriceVO.date,
+						//		checkPoint.toString());
 						// save case into history DB
+						if (isCheckPointSelected(checkPoint)) {
+							this.saveToCheckPointDailySelectionDB(reportVO.stockId, reportVO.buyPriceVO.date,
+									checkPoint);
+						}
 						checkPointHistorySelectionTable
 								.insert(reportVO.convertToHistoryReportVO(checkPoint.toString()));
 					}
@@ -310,8 +314,8 @@ public class HistoryAnalyseReport {
 
 		for (String stockId : stockIds) {
 
-			// if (!stockId.equals("002609"))
-			// continue;
+			if (!stockId.equals("000049"))
+			continue;
 
 			if (index++ % 100 == 0) {
 				System.out.println("Analyse of " + index + "/" + stockIds.size());
@@ -455,7 +459,7 @@ public class HistoryAnalyseReport {
 		// }
 
 		// reporter.searchAllStockIdAnalyseHistoryBuySellCheckPoint(DailyCombineCheckPoint.WR_Bottom_Gordon);
-		reporter.searchAllStockIdAnalyseHistoryBuySellCheckPoint(DailyCombineCheckPoint.LuZao_PhaseIII_MACD_WEEK_GORDON_MACD_DAY_DIF_CROSS_0);
+		reporter.searchAllStockIdAnalyseHistoryBuySellCheckPoint(DailyCombineCheckPoint.MACD_TWICE_GORDON_W_Botton_MACD_DI_BEILI);
 		//reporter.countAllStockIdStatisticsCheckPoint();
 
 	}

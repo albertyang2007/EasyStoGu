@@ -7,6 +7,7 @@ import org.easystogu.config.Constants;
 import org.easystogu.easymoney.runner.OverAllZiJinLiuAndDDXRunner;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.log.LogHelper;
+import org.easystogu.report.HistoryAnalyseReport;
 import org.easystogu.runner.DailyOverAllRunner;
 import org.easystogu.runner.DailyUpdateStockPriceAndDDXRunner;
 import org.easystogu.runner.DataBaseSanityCheck;
@@ -25,6 +26,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.scheduling.annotation.SchedulingConfigurer;
 import org.springframework.scheduling.config.ScheduledTaskRegistrar;
 import org.easystogu.cache.ConfigurationServiceCache;
+import org.easystogu.checkpoint.DailyCombineCheckPoint;
 
 @Configuration
 @EnableScheduling
@@ -170,6 +172,17 @@ public class DailyScheduler implements SchedulingConfigurer {
 			}
 		}
 
+	}
+	
+	//just run onece
+	@Scheduled(cron = "0 40 18 * * SUN")
+	public void JustRunOnce(){
+		String time = WeekdayUtil.currentDate();
+		if(time.equals("2017-05-14")){
+			logger.info("run HistoryAnalyseReport for MACD_TWICE_GORDON_W_Botton_MACD_DI_BEILI");
+			HistoryAnalyseReport reporter = new HistoryAnalyseReport();
+			reporter.searchAllStockIdAnalyseHistoryBuySellCheckPoint(DailyCombineCheckPoint.MACD_TWICE_GORDON_W_Botton_MACD_DI_BEILI);
+		}
 	}
 
 	public static void main(String[] args) {

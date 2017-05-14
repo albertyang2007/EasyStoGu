@@ -3,6 +3,7 @@ package org.easystogu.portal;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.easystogu.cache.CheckPointDailySelectionTableCache;
 import org.easystogu.db.vo.table.BBIVO;
 import org.easystogu.db.vo.table.CheckPointDailySelectionVO;
 import org.easystogu.db.vo.table.LuZaoVO;
@@ -16,14 +17,12 @@ import org.easystogu.portal.vo.CheckPointFlagsVO;
 import org.easystogu.portal.vo.ShenXianUIVO;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
-import org.easystogu.cache.CheckPointDailySelectionTableCache;
-import org.easystogu.cache.CommonViewCache;
+
 import com.google.common.primitives.Doubles;
 
 @Component
 public class FlagsAnalyseHelper {
 	private static Logger logger = LogHelper.getLogger(FlagsAnalyseHelper.class);
-	private CommonViewCache commonViewCache = CommonViewCache.getInstance();
 	private CheckPointDailySelectionTableCache checkPointDailySelectionCache = CheckPointDailySelectionTableCache
 			.getInstance();
 	private static String[] zijinliuViewnames = { "luzao_phaseII_zijinliu_top300", "luzao_phaseIII_zijinliu_top300",
@@ -31,11 +30,6 @@ public class FlagsAnalyseHelper {
 			"luzao_phaseII_zijinliu_3_of_5_days_top300", "luzao_phaseII_ddx_2_of_5_days_bigger_05",
 			"luzao_phaseIII_zijinliu_3_days_top300", "luzao_phaseIII_zijinliu_3_of_5_days_top300",
 			"luzao_phaseIII_ddx_2_of_5_days_bigger_05" };
-	private static String[] weekGordonCheckPoints = { "LuZao_PhaseII_MACD_WEEK_GORDON_MACD_DAY_DIF_CROSS_0",
-			"LuZao_PhaseIII_MACD_WEEK_GORDON_MACD_DAY_DIF_CROSS_0", "LuZao_PhaseII_MACD_WEEK_GORDON_KDJ_WEEK_GORDON",
-			"LuZao_PhaseIII_MACD_WEEK_GORDON_KDJ_WEEK_GORDON" };
-	private static String[] bottomAreaCheckPoints = { "WR_Bottom_Area", "QSDD_Bottom_Area", };
-	private static String[] bottomGordonCheckPoints = { "WR_Bottom_Gordon", "QSDD_Bottom_Gordon" };
 
 	public List<ShenXianUIVO> shenXianBuySellFlagsAnalyse(List<StockPriceVO> spList, List<ShenXianUIVO> sxList,
 			List<MacdVO> macdList, List<BBIVO> bbiList, List<LuZaoVO> luzaoList) {
@@ -150,6 +144,12 @@ public class FlagsAnalyseHelper {
 				if (cpfvo.weekGordonTitle.toString().trim().length() > 0) {
 					sxvo.setDuoFlagsTitle(cpfvo.weekGordonTitle.toString().trim() + sxvo.getDuoFlagsTitle());
 					sxvo.setDuoFlagsText(cpfvo.weekGordonText.toString().trim() + sxvo.getDuoFlagsText());
+				}
+				
+				// append if it has W Botton and Twice MACD Gordon
+				if (cpfvo.wbottomMacdTwiceGordonTitle.toString().trim().length() > 0) {
+					sxvo.setDuoFlagsTitle(cpfvo.wbottomMacdTwiceGordonTitle.toString().trim() + sxvo.getDuoFlagsTitle());
+					sxvo.setDuoFlagsText(cpfvo.wbottomMacdTwiceGordonText.toString().trim() + sxvo.getDuoFlagsText());
 				}
 
 			}
@@ -355,6 +355,12 @@ public class FlagsAnalyseHelper {
 				if (cpvo.checkPoint.equals("QSDD_Bottom_Gordon")) {
 					cpfvo.bottomGordonTitle.append("Q金");
 					cpfvo.bottomGordonText.append("QSDD底部金叉");
+				}
+
+				// macd二次金叉，W底，MACD背离
+				if (cpvo.checkPoint.contains("MACD_TWICE_GORDON_W_Botton_MACD_DI_BEILI")) {
+					cpfvo.wbottomMacdTwiceGordonTitle.append("W底");
+					cpfvo.wbottomMacdTwiceGordonText.append("MACD二次金叉,W底背离");
 				}
 			}
 

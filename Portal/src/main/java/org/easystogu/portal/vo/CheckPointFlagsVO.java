@@ -12,4 +12,7 @@ public class CheckPointFlagsVO {
 
 	public StringBuffer bottomGordonTitle = new StringBuffer();
 	public StringBuffer bottomGordonText = new StringBuffer();
+	
+	public StringBuffer wbottomMacdTwiceGordonTitle = new StringBuffer();
+	public StringBuffer wbottomMacdTwiceGordonText = new StringBuffer();
 }
