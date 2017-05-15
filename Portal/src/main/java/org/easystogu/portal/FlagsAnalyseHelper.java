@@ -211,7 +211,7 @@ public class FlagsAnalyseHelper {
 			if (curvo.date.equals(date)) {
 				if (index - 1 >= 0) {
 					MacdVO prevo = indList.get(index - 1);
-					if (curvo.macd < 0 && prevo.macd >= 0) {
+					if (curvo.macd <= 0 && prevo.macd > 0) {
 						return true;
 					}
 				}
@@ -226,7 +226,7 @@ public class FlagsAnalyseHelper {
 			if (curvo.date.equals(date)) {
 				if (index - 1 >= 0) {
 					BBIVO prevo = indList.get(index - 1);
-					if (curvo.close > curvo.bbi && prevo.close < prevo.bbi) {
+					if (curvo.close >= curvo.bbi && prevo.close < prevo.bbi) {
 						return true;
 					}
 				}
@@ -241,7 +241,7 @@ public class FlagsAnalyseHelper {
 			if (curvo.date.equals(date)) {
 				if (index - 1 >= 0) {
 					BBIVO prevo = indList.get(index - 1);
-					if (curvo.close < curvo.bbi && prevo.close > prevo.bbi) {
+					if (curvo.close <= curvo.bbi && prevo.close > prevo.bbi) {
 						return true;
 					}
 				}
@@ -256,7 +256,7 @@ public class FlagsAnalyseHelper {
 			if (curvo.date.equals(date)) {
 				if (index - 1 >= 0) {
 					ShenXianUIVO prevo = indList.get(index - 1);
-					if (curvo.h1 > curvo.h2 && prevo.h1 < prevo.h2) {
+					if (curvo.h1 >= curvo.h2 && prevo.h1 < prevo.h2) {
 						return true;
 					}
 				}
@@ -271,7 +271,7 @@ public class FlagsAnalyseHelper {
 			if (curvo.date.equals(date)) {
 				if (index - 1 >= 0) {
 					ShenXianUIVO prevo = indList.get(index - 1);
-					if (curvo.h1 < curvo.h2 && prevo.h1 > prevo.h2) {
+					if (curvo.h1 <= curvo.h2 && prevo.h1 > prevo.h2) {
 						return true;
 					}
 				}
