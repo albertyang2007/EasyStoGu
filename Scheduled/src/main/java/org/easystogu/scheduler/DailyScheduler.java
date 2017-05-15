@@ -110,8 +110,8 @@ public class DailyScheduler implements SchedulingConfigurer {
 	// 每周更新一下stockprice，每次选择一部分
 	// please do not change the SAT-SUN, will impact the selected stockId
 	// 请不要随意更改这个时间，跟选出的stockid算法有关。
-	// run at 02:00 every day
-	@Scheduled(cron = "0 00 02 * * ?")
+	// run at 04:00 every day
+	@Scheduled(cron = "0 00 04 * * ?")
 	private void DailyUpdateStockPriceByBatch() {
 		logger.info("DailyUpdateStockPriceByBatch already running, please check DB result.");
 		if (Constants.ZONE_ALIYUN.equalsIgnoreCase(zone)) {
