@@ -219,7 +219,7 @@ public class HistoryAnalyseReport {
 		for (String stockId : stockIds) {
 			index++;
 
-			//if (!stockId.equals("601336"))
+			//if (!stockId.equals("000049"))
 			//	continue;
 
 			List<HistoryReportDetailsVO> historyReportList = this.doAnalyseBuySellDate(stockId, checkPoint);

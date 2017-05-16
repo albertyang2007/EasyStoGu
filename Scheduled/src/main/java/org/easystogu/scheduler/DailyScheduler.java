@@ -18,6 +18,7 @@ import org.easystogu.sina.runner.DailyStockPriceDownloadAndStoreDBRunner2;
 import org.easystogu.sina.runner.history.HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner;
 import org.easystogu.sina.runner.history.HistoryStockPriceDownloadAndStoreDBRunner;
 import org.easystogu.sina.runner.history.HistoryWeekStockPriceCountAndSaveDBRunner;
+import org.easystogu.database.replicate.DailyReplicateRunner;
 import org.easystogu.utils.WeekdayUtil;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,15 +52,29 @@ public class DailyScheduler implements SchedulingConfigurer {
 	// run at 11:31
 	@Scheduled(cron = "0 31 11 * * MON-FRI")
 	public void _1_DailyOverAllRunner() {
-		boolean isGetZiJinLiu = true;
-		this.DailyOverAllRunner(isGetZiJinLiu);
+		if (Constants.ZONE_ALIYUN.equalsIgnoreCase(zone)) {
+			boolean isGetZiJinLiu = true;
+			this.DailyOverAllRunner(isGetZiJinLiu);
+		}
 	}
 
 	// run at 15:06
 	@Scheduled(cron = "0 06 15 * * MON-FRI")
 	public void _3_DailyOverAllRunner() {
-		boolean isGetZiJinLiu = true;
-		this.DailyOverAllRunner(isGetZiJinLiu);
+		if (Constants.ZONE_ALIYUN.equalsIgnoreCase(zone)) {
+			boolean isGetZiJinLiu = true;
+			this.DailyOverAllRunner(isGetZiJinLiu);
+		}
+	}
+	
+	// run at 16:30
+	@Scheduled(cron = "0 30 16 * * MON-FRI")
+	public void _3_DailyReplicateRunnerFromAliyun() {
+		if (Constants.ZONE_OFFICE.equalsIgnoreCase(zone)) {
+			logger.info("DailyReplicateRunnerFromAliyun already running.");
+			Thread t = new Thread(new DailyReplicateRunner());
+			t.start();
+		}
 	}
 
 	// run at 21:45
@@ -113,9 +128,8 @@ public class DailyScheduler implements SchedulingConfigurer {
 	// run at 04:00 every day
 	@Scheduled(cron = "0 00 04 * * ?")
 	private void DailyUpdateStockPriceByBatch() {
-		logger.info("DailyUpdateStockPriceByBatch already running, please check DB result.");
 		if (Constants.ZONE_ALIYUN.equalsIgnoreCase(zone)) {
-
+			logger.info("DailyUpdateStockPriceByBatch already running, please check DB result.");
 			List<String> allStockIds = companyInfoHelper.getAllStockId();
 			List<String> stockIds = new ArrayList<String>();
 			// dayN is 1 ~ 31
@@ -161,15 +175,15 @@ public class DailyScheduler implements SchedulingConfigurer {
 	// every 15 mins from 9 to 15, Monday to Friday
 	@Scheduled(cron = "0 0/15 09,10,11,13,14 * * MON-FRI")
 	public void updateStockPriceOnlyEveryMins() {
-		String time = WeekdayUtil.currentTime();
-		logger.info("updateStockPriceOnlyEvery5Mins start at " + time);
 		if (Constants.ZONE_ALIYUN.equalsIgnoreCase(zone)) {
+			String time = WeekdayUtil.currentTime();
+			logger.info("updateStockPriceOnlyEvery5Mins start at " + time);
 			if ((time.compareTo("09-25-00") >= 0 && time.compareTo("11-30-00") <= 0)
 					|| (time.compareTo("13-00-00") >= 0 && time.compareTo("15-00-00") <= 0)) {
 				// day (download all stockIds price)
 				DailyStockPriceDownloadAndStoreDBRunner2 runner = new DailyStockPriceDownloadAndStoreDBRunner2();
 				runner.run();
-				//update cache
+				// update cache
 				AllCacheRunner cacheRunner = new AllCacheRunner();
 				cacheRunner.refreshAll();
 				logger.info("updateStockPriceOnlyEvery5Mins stop at " + WeekdayUtil.currentTime());
@@ -177,15 +191,16 @@ public class DailyScheduler implements SchedulingConfigurer {
 		}
 
 	}
-	
-	//just run onece
+
+	// just run onece
 	@Scheduled(cron = "0 40 18 * * SUN")
-	public void JustRunOnce(){
+	public void JustRunOnce() {
 		String time = WeekdayUtil.currentDate();
-		if(time.equals("2017-05-14")){
+		if (time.equals("2017-05-14")) {
 			logger.info("run HistoryAnalyseReport for MACD_TWICE_GORDON_W_Botton_MACD_DI_BEILI");
 			HistoryAnalyseReport reporter = new HistoryAnalyseReport();
-			reporter.searchAllStockIdAnalyseHistoryBuySellCheckPoint(DailyCombineCheckPoint.MACD_TWICE_GORDON_W_Botton_MACD_DI_BEILI);
+			reporter.searchAllStockIdAnalyseHistoryBuySellCheckPoint(
+					DailyCombineCheckPoint.MACD_TWICE_GORDON_W_Botton_MACD_DI_BEILI);
 		}
 	}
 }

@@ -47,9 +47,14 @@
 			<artifactId>easystogu-analyse</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
-				<dependency>
+		<dependency>
 			<groupId>org.albertyang2007.easystogu</groupId>
 			<artifactId>easystogu-cache</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.albertyang2007.easystogu</groupId>
+			<artifactId>easystogu-databasereplicate</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>

@@ -1517,18 +1517,29 @@ public class CombineAnalyseHelper {
 
 			int curIndex = overDayList.size() - 1;
 
-			if (curSuperDayVO.macdCorssType == CrossType.GORDON) {
+			if (curSuperDayVO.macdCorssType == CrossType.GORDON && curSuperDayVO.macdVO.dif < 0
+					&& curSuperDayVO.avgMA43 <= curSuperDayVO.avgMA86) {
 				// find previously macd Gordon within 30 days
 				int preMacdGordonIndex = this.findPreviouslyMACDGordonIndex(overDayList, 30);
 				if (preMacdGordonIndex < 0) {
 					return false;
 				}
-				
+
+				// 两个金叉之间的所有macd dif值都是出于零轴之下
+				for (int index = preMacdGordonIndex; index < curIndex; index++) {
+					StockSuperVO spvo = overDayList.get(index);
+					if (spvo.macdVO.dif > 0) {
+						return false;
+					}
+				}
+
 				StockSuperVO pNdaysVO = overDayList.get(preMacdGordonIndex);
-				
+
 				// previously macd dif is less then now dif
-				if (pNdaysVO != null && pNdaysVO.macdVO.dif < curSuperDayVO.macdVO.dif) {
-					
+				// 两个金叉之间相差10天以上，避免振幅很小的误差
+				if (pNdaysVO != null && pNdaysVO.macdVO.dif < curSuperDayVO.macdVO.dif
+						&& (curIndex - preMacdGordonIndex) >= 10) {
+
 					// previously lowest price is higher then now lowest price
 					StockSuperVO preLowestPriceVO1 = this.findPreviouslyLowestPriceIndex(overDayList,
 							preMacdGordonIndex - 10, preMacdGordonIndex);
@@ -1537,11 +1548,11 @@ public class CombineAnalyseHelper {
 					// 第一macd金叉的前几日最低价格高于第二金叉前几日的最低价格，构成价格背离
 					// 第一macd金叉的前几日最低价格时候macd dif低于第二金叉前几日的最低价格时候macd
 					// dif，构成MACD背离
-					
 					if (preLowestPriceVO1 != null && preLowestPriceVO2 != null) {
 						if (preLowestPriceVO1.priceVO.low > preLowestPriceVO2.priceVO.low
 								&& preLowestPriceVO1.macdVO.dif < preLowestPriceVO2.macdVO.dif) {
-							//System.out.println(pNdaysVO.macdVO + "   " + curSuperDayVO.macdVO);
+							// System.out.println(pNdaysVO.macdVO + " " +
+							// curSuperDayVO.macdVO);
 							return true;
 						}
 					}

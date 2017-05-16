@@ -17,28 +17,28 @@ import org.easystogu.database.replicate.runner.QianFuQuanStockPriceReplicateWork
 import org.easystogu.database.replicate.runner.StockPriceReplicateWorker;
 import org.easystogu.database.replicate.runner.WeekStockPriceReplicateWorker;
 import org.easystogu.database.replicate.runner.ZiJinLiuReplicateWorker;
-import org.easystogu.utils.WeekdayUtil;
 
 public class HistoryReplicateRunner {
 	public static void main(String[] args) {
-		String[] myArgs = { "2017-04-01", WeekdayUtil.currentDate() };
+		String[] myArgs = { "2017-05-15", "2017-05-16" };
+		
 		CompanyInfoReplicateWorker.main(myArgs);
 		StockPriceReplicateWorker.main(myArgs);
 		QianFuQuanStockPriceReplicateWorker.main(myArgs);
 
 		// daily ind
-		//IndMacdReplicateWorker.main(myArgs);
-		//IndKDJReplicateWorker.main(myArgs);
-		//IndShenXianReplicateWorker.main(myArgs);
-		//IndWRReplicateWorker.main(myArgs);
-		//IndMAReplicateWorker.main(myArgs);
-		//IndQSDDReplicateWorker.main(myArgs);
-		//IndBollReplicateWorker.main(myArgs);
+		IndMacdReplicateWorker.main(myArgs);
+		IndKDJReplicateWorker.main(myArgs);
+		IndShenXianReplicateWorker.main(myArgs);
+		IndWRReplicateWorker.main(myArgs);
+		IndMAReplicateWorker.main(myArgs);
+		IndQSDDReplicateWorker.main(myArgs);
+		IndBollReplicateWorker.main(myArgs);
 
 		// week
-		//WeekStockPriceReplicateWorker.main(myArgs);
-		//IndWeekMacdReplicateWorker.main(myArgs);
-		//IndWeekKDJReplicateWorker.main(myArgs);
+		WeekStockPriceReplicateWorker.main(myArgs);
+		IndWeekMacdReplicateWorker.main(myArgs);
+		IndWeekKDJReplicateWorker.main(myArgs);
 
 		// zijinliu & ddx
 		ZiJinLiuReplicateWorker.main(myArgs);
@@ -46,5 +46,7 @@ public class HistoryReplicateRunner {
 
 		DailySelectionReplicateWorker.main(myArgs);
 		DailyStatisticsReplicateWorker.main(myArgs);
+		
+		// should do santity to verify the data
 	}
 }
