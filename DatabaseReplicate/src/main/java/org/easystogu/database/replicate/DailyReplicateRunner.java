@@ -49,6 +49,8 @@ public class DailyReplicateRunner implements Runnable {
 		DailySelectionReplicateWorker.main(args);
 		DailyStatisticsReplicateWorker.main(args);
 
+		System.out.println("DailyReplicateRunner complete!");
+
 		// should do santity to verify the data
 	}
 

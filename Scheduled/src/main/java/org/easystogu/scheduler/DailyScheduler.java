@@ -72,8 +72,10 @@ public class DailyScheduler implements SchedulingConfigurer {
 	public void _3_DailyReplicateRunnerFromAliyun() {
 		if (Constants.ZONE_OFFICE.equalsIgnoreCase(zone)) {
 			logger.info("DailyReplicateRunnerFromAliyun already running.");
-			Thread t = new Thread(new DailyReplicateRunner());
-			t.start();
+			new DailyReplicateRunner().run();
+
+			// after update price, do the sanity test
+			new DataBaseSanityCheck().run();
 		}
 	}
 

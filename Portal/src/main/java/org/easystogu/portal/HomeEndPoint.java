@@ -8,6 +8,8 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
+import org.easystogu.cache.ConfigurationServiceCache;
+import org.easystogu.config.Constants;
 import org.easystogu.easymoney.runner.DailyDDXRunner;
 import org.easystogu.easymoney.runner.DailyZhuLiJingLiuRuRunner;
 import org.easystogu.easymoney.runner.DailyZiJinLiuRunner;
@@ -24,8 +26,7 @@ import org.easystogu.runner.RecentlySelectionRunner;
 import org.easystogu.sina.runner.DailyStockPriceDownloadAndStoreDBRunner2;
 import org.easystogu.sina.runner.RealtimeDisplayStockPriceRunner;
 import org.easystogu.sina.runner.history.StockPriceHistoryOverAllRunner;
-import org.easystogu.cache.ConfigurationServiceCache;
-import org.easystogu.config.Constants;
+import org.easystogu.database.replicate.DailyReplicateRunner;
 
 public class HomeEndPoint {
 	private ConfigurationServiceCache config = ConfigurationServiceCache.getInstance();
@@ -60,6 +61,7 @@ public class HomeEndPoint {
 		sb.append(
 				"<a href='/portal/home/updateStockPriceHistoryOverAllRunner/2016-10-17_2016-11-23'>updateStockPriceHistoryOverAllRunnerFromStartDate</a><br>");
 		sb.append("<a href='/portal/home/IndicatorHistortOverAllRunner'>IndicatorHistortOverAllRunner</a><br>");
+		sb.append("<a href='/portal/home/DailyReplicateRunner'>DailyReplicateRunner</a><br>");
 
 		return Response.ok().entity(sb.toString()).build();
 	}
@@ -282,6 +284,17 @@ public class HomeEndPoint {
 			Thread t = new Thread(new IndicatorHistortOverAllRunner());
 			t.start();
 			return "IndicatorHistortOverAllRunner already running, please check folder result.";
+		}
+		return "Zone not allow to run this method.";
+	}
+
+	@GET
+	@Path("/DailyReplicateRunner")
+	public String dailyReplicateRunner() {
+		if (Constants.ZONE_OFFICE.equals(zone)) {
+			Thread t = new Thread(new DailyReplicateRunner());
+			t.start();
+			return "DailyReplicateRunner already running, please check folder result.";
 		}
 		return "Zone not allow to run this method.";
 	}
