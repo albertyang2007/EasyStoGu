@@ -20,7 +20,7 @@ import org.easystogu.database.replicate.runner.ZiJinLiuReplicateWorker;
 
 public class HistoryReplicateRunner {
 	public static void main(String[] args) {
-		String[] myArgs = { "2017-05-15", "2017-05-16" };
+		String[] myArgs = { "2017-05-17", "2017-05-18" };
 		
 		CompanyInfoReplicateWorker.main(myArgs);
 		StockPriceReplicateWorker.main(myArgs);

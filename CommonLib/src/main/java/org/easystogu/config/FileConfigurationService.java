@@ -1,5 +1,7 @@
 package org.easystogu.config;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
@@ -14,7 +16,7 @@ import org.springframework.core.io.ResourceLoader;
 public class FileConfigurationService implements ConfigurationService {
 	private static Logger logger = LogHelper.getLogger(FileConfigurationService.class);
 	private static ResourceLoader resourceLoader = new DefaultResourceLoader();
-	private final Properties properties;
+	private Properties properties = new Properties();
 	private static FileConfigurationService instance = null;
 
 	public static FileConfigurationService getInstance() {
@@ -27,26 +29,48 @@ public class FileConfigurationService implements ConfigurationService {
 	private FileConfigurationService() {
 		String[] resourcesPaths = new String[2];
 		resourcesPaths[0] = "classpath:/application.properties";
-		if (Strings.isNotEmpty(System.getProperty("easystogu.config"))) {
-			resourcesPaths[1] = System.getProperty("easystogu.config");
+		if (Strings.isNotEmpty(System.getProperty("properties.file"))) {
+			resourcesPaths[1] = System.getProperty("properties.file");
 		} else {
 			resourcesPaths[1] = "application.properties";
 		}
-		properties = loadProperties(resourcesPaths);
+		loadPropertiesFromResource(resourcesPaths[0]);
+		loadPropertiesFromPath(resourcesPaths[1]);
 	}
 
-	private Properties loadProperties(String... resourcesPaths) {
-		Properties props = new Properties();
+	private void loadPropertiesFromResource(String... resourcesPaths) {
+		for (String location : resourcesPaths) {
 
+			logger.debug("Loading properties file from resource:{}", location);
+
+			InputStream is = null;
+			try {
+				Resource resource = resourceLoader.getResource(location);
+				is = resource.getInputStream();
+				properties.load(is);
+			} catch (IOException ex) {
+				logger.info("Could not load properties from resource:{}, {} ", location, ex.getMessage());
+			} finally {
+				if (is != null) {
+					try {
+						is.close();
+					} catch (IOException e) {
+						logger.error("Exception: ", e);
+					}
+				}
+			}
+		}
+	}
+
+	private void loadPropertiesFromPath(String... resourcesPaths) {
 		for (String location : resourcesPaths) {
 
 			logger.debug("Loading properties file from path:{}", location);
 
 			InputStream is = null;
 			try {
-				Resource resource = resourceLoader.getResource(location);
-				is = resource.getInputStream();
-				props.load(is);
+				is = new FileInputStream(new File(location));
+				properties.load(is);
 			} catch (IOException ex) {
 				logger.info("Could not load properties from path:{}, {} ", location, ex.getMessage());
 			} finally {
@@ -54,11 +78,11 @@ public class FileConfigurationService implements ConfigurationService {
 					try {
 						is.close();
 					} catch (IOException e) {
+						logger.error("Exception: ", e);
 					}
 				}
 			}
 		}
-		return props;
 	}
 
 	public String getValue(String key) {
