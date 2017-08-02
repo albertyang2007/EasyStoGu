@@ -59,7 +59,7 @@ public class DailyZiJinLiuFatchDataHelper {
 
 			// first page content
 			HtmlTable tabContent = (HtmlTable) htmlpage.getElementById("dt_1");
-			// System.out.println("tabContent=\n"+tabContent.asText());
+			//System.out.println("tabContent=\n" + tabContent.asText());
 			List<ZiJinLiuVO> rtn = this.parseOnePageStockIdsZiJinLiu(tabContent.asText());
 			System.out.println("Process 1 day ZiJinLiu Page 1 end with vo size: " + rtn.size());
 			list.addAll(rtn);
@@ -75,7 +75,7 @@ public class DailyZiJinLiuFatchDataHelper {
 					} catch (Exception e) {
 						System.out.println("Exception happen, is it the last page? page=" + page + ", Error msg="
 								+ e.getLocalizedMessage());
-						//continue;???
+						// continue;???
 					}
 					List<?> links = div.getByXPath("a");
 					HtmlAnchor anchor = (HtmlAnchor) links.get(links.size() - 1);
@@ -141,8 +141,8 @@ public class DailyZiJinLiuFatchDataHelper {
 					webClient.waitForBackgroundJavaScript(1000 * 10L);
 					tabContent = (HtmlTable) htmlpage.getElementById("dt_1");
 					rtn = this.parseOnePageStockIdsZiJinLiu(tabContent.asText());
-					System.out.println(
-							"Process " + DCFFITA + " day ZiJinLiu Page " + page + " end with vo size: " + rtn.size());
+					System.out.println("Process " + DCFFITA + " day ZiJinLiu Page " + page + " end with vo size: "
+							+ rtn.size());
 					list.addAll(rtn);
 				}
 			}
@@ -165,32 +165,32 @@ public class DailyZiJinLiuFatchDataHelper {
 				String line = lines[i].replaceAll("\\s{1,}", " ");
 				String[] data = line.trim().split(" ");
 				// System.out.println("len=" + data.length);
-				if (data.length == 17) {
+				if (data.length == 18) {
 					try {
 						ZiJinLiuVO vo = new ZiJinLiuVO();
-						// 19 601186 中国铁建 大单详情 股吧 研报 16.47 3.65% 1.56亿 8.25%
-						// 2.99亿
-						// 15.83% -1.43亿 -7.58% -1.03亿 -5.44% -5313万 -2.81%
+						// 1 002797 第一创业 详情 数据 股吧 10.96 10.04% 4.05亿 18.83%
+						// 4.94亿 22.98% -8939万 -4.15% -1.53亿 -7.10%
 						vo.rate = Integer.parseInt(data[0]);
 						vo.stockId = data[1];
 						vo.name = data[2].trim();
 
-						vo.incPer = data[6];
+						vo.curPrice = data[6];
+						vo.incPer = data[7];
 
-						vo.majorNetIn = convertNetIn2Double(data[7]);
-						vo.majorNetPer = convertNetPer2Double(data[8]);
+						vo.majorNetIn = convertNetIn2Double(data[8]);
+						vo.majorNetPer = convertNetPer2Double(data[9]);
 
-						vo.biggestNetIn = convertNetIn2Double(data[9]);
-						vo.biggestNetPer = convertNetPer2Double(data[10]);
+						vo.biggestNetIn = convertNetIn2Double(data[10]);
+						vo.biggestNetPer = convertNetPer2Double(data[11]);
 
-						vo.bigNetIn = convertNetIn2Double(data[11]);
-						vo.bigNetPer = convertNetPer2Double(data[12]);
+						vo.bigNetIn = convertNetIn2Double(data[12]);
+						vo.bigNetPer = convertNetPer2Double(data[13]);
 
-						vo.midNetIn = convertNetIn2Double(data[13]);
-						vo.midNetPer = convertNetPer2Double(data[14]);
+						vo.midNetIn = convertNetIn2Double(data[14]);
+						vo.midNetPer = convertNetPer2Double(data[15]);
 
-						vo.smallNetIn = convertNetIn2Double(data[15]);
-						vo.smallNetPer = convertNetPer2Double(data[16]);
+						vo.smallNetIn = convertNetIn2Double(data[16]);
+						vo.smallNetPer = convertNetPer2Double(data[17]);
 
 						vo.date = this.currentDate;
 
@@ -200,6 +200,8 @@ public class DailyZiJinLiuFatchDataHelper {
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
+				} else {
+					System.out.println("Fatel error, ZiJinLiu format is not correct, pls check " + baseUrl);
 				}
 			}
 		}
