@@ -36,6 +36,7 @@ public class DailyScheduler implements SchedulingConfigurer {
 	private static Logger logger = LogHelper.getLogger(DailyScheduler.class);
 	private ConfigurationServiceCache config = ConfigurationServiceCache.getInstance();
 	private String zone = config.getString("zone", Constants.ZONE_OFFICE);
+	private boolean dailyUpdateStockPriceByBatch = config.getBoolean(Constants.DailyUpdateStockPriceByBatch, false);
 	private CompanyInfoFileHelper companyInfoHelper = CompanyInfoFileHelper.getInstance();
 
 	@Autowired
@@ -91,8 +92,8 @@ public class DailyScheduler implements SchedulingConfigurer {
 		}
 	}
 
-	// run at 23:00
-	@Scheduled(cron = "0 00 23 * * MON-FRI")
+	// run at 18:00
+	@Scheduled(cron = "0 00 18 * * MON-FRI")
 	public void _0_DataBaseSanityCheck() {
 		// only run at office, since at aliyun, there is daily santy after price
 		// update
@@ -127,9 +128,14 @@ public class DailyScheduler implements SchedulingConfigurer {
 	// 每周更新一下stockprice，每次选择一部分
 	// please do not change the SAT-SUN, will impact the selected stockId
 	// 请不要随意更改这个时间，跟选出的stockid算法有关。
-	// run at 04:00 every day
-	//@Scheduled(cron = "0 00 04 * * ?")
+	// run at 20:00 every day
+	@Scheduled(cron = "0 00 20 * * ?")
 	private void DailyUpdateStockPriceByBatch() {
+		if(!dailyUpdateStockPriceByBatch){
+			logger.info("dailyUpdateStockPriceByBatch is false, not run.");
+			return;
+		}
+	
 		if (Constants.ZONE_ALIYUN.equalsIgnoreCase(zone)) {
 			logger.info("DailyUpdateStockPriceByBatch already running, please check DB result.");
 			List<String> allStockIds = companyInfoHelper.getAllStockId();
@@ -195,7 +201,7 @@ public class DailyScheduler implements SchedulingConfigurer {
 	}
 
 	// just run onece
-	@Scheduled(cron = "0 40 18 * * SUN")
+	//@Scheduled(cron = "0 40 18 * * SUN")
 	public void JustRunOnce() {
 		String time = WeekdayUtil.currentDate();
 		if (time.equals("2017-05-14")) {

@@ -21,6 +21,7 @@ public class Constants {
 	public static final String ZONE_OFFICE = "office";
 	public static final String ZONE_HOME = "home";
 	public static final String ZONE_ALIYUN = "aliyun";
+	public static final String DailyUpdateStockPriceByBatch = "DailyUpdateStockPriceByBatch";
 
 	public static String cacheStockPrice = "stockPrice";
 	public static String cacheQianFuQuanStockPrice = "qianFuQuanStockPrice";
