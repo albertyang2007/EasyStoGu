@@ -22,7 +22,7 @@ public class FileReaderAndWriter {
 				}
 				read.close();
 			} else {
-				System.out.println("fie not found:" + filePath);
+				System.out.println("file not found:" + filePath);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
