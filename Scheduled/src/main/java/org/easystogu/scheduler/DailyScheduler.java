@@ -180,12 +180,12 @@ public class DailyScheduler implements SchedulingConfigurer {
 		}
 	}
 
-	// every 30 mins from 9 to 15, Monday to Friday
-	@Scheduled(cron = "0 0/30 09,10,11,13,14 * * MON-FRI")
+	// every 15 mins from 9 to 15, Monday to Friday
+	@Scheduled(cron = "0 0/15 09,10,11,13,14 * * MON-FRI")
 	public void updateStockPriceOnlyEveryMins() {
 		if (Constants.ZONE_ALIYUN.equalsIgnoreCase(zone)) {
 			String time = WeekdayUtil.currentTime();
-			logger.info("updateStockPriceOnlyEvery5Mins start at " + time);
+			logger.info("updateStockPriceOnlyEvery15Mins start at " + time);
 			if ((time.compareTo("09-25-00") >= 0 && time.compareTo("11-30-00") <= 0)
 					|| (time.compareTo("13-00-00") >= 0 && time.compareTo("15-00-00") <= 0)) {
 				// day (download all stockIds price)
@@ -194,7 +194,7 @@ public class DailyScheduler implements SchedulingConfigurer {
 				// update cache
 				AllCacheRunner cacheRunner = new AllCacheRunner();
 				cacheRunner.refreshAll();
-				logger.info("updateStockPriceOnlyEvery5Mins stop at " + WeekdayUtil.currentTime());
+				logger.info("updateStockPriceOnlyEvery15Mins stop at " + WeekdayUtil.currentTime());
 			}
 		}
 
