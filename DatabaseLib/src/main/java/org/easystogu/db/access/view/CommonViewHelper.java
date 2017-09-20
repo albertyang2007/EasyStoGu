@@ -88,9 +88,13 @@ public class CommonViewHelper {
 			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 			StringBuffer sql = new StringBuffer();
 			sql.append("SELECT * FROM \"" + viewName + "\"");
+			//specific the date
 			if (Strings.isNotEmpty(date)) {
 				sql.append(" WHERE date = :date");
 				namedParameters.addValue("date", date);
+			} else if("Latest_20".equals(date)){
+			    //not specific the date, search least 20
+			    sql.append(" ORDER BY date DESC LIMIT 20");
 			}
 
 			List<CommonViewVO> list = this.namedParameterJdbcTemplate.query(sql.toString(), namedParameters,
