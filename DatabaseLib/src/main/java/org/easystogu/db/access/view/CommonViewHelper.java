@@ -5,8 +5,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.sql.DataSource;
-
 import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
 import org.easystogu.db.vo.view.CommonViewVO;
 import org.easystogu.log.LogHelper;
@@ -96,6 +94,8 @@ public class CommonViewHelper {
 			    //not specific the date, search least 20
 			    sql.append(" ORDER BY date DESC LIMIT 20");
 			}
+			
+			logger.info("queryByDateForViewDirectlySearch sql =" + sql.toString());
 
 			List<CommonViewVO> list = this.namedParameterJdbcTemplate.query(sql.toString(), namedParameters,
 					new CommonViewVOMapper());

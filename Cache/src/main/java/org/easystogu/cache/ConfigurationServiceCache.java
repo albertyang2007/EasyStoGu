@@ -106,7 +106,7 @@ public class ConfigurationServiceCache {
             if (obj instanceof Boolean) {
                 return (Boolean) obj;
             }else if(obj instanceof String){
-                return Boolean.getBoolean((String)obj);
+                return Boolean.parseBoolean((String)obj);
             }
         }
         return defaultValue;
@@ -122,5 +122,9 @@ public class ConfigurationServiceCache {
             return (Double) obj;
         }
         return defaultValue;
+    }
+    
+    public static void main(String[] args){
+        System.out.println(Boolean.parseBoolean("True"));
     }
 }
