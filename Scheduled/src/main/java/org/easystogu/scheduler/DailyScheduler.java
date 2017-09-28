@@ -201,14 +201,21 @@ public class DailyScheduler implements SchedulingConfigurer {
 	}
 
 	// just run onece
-	//@Scheduled(cron = "0 40 18 * * SUN")
+	@Scheduled(cron = "0 40 23 * * ?")
 	public void JustRunOnce() {
 		String time = WeekdayUtil.currentDate();
-		if (time.equals("2017-05-14")) {
-			logger.info("run HistoryAnalyseReport for MACD_TWICE_GORDON_W_Botton_MACD_DI_BEILI");
-			HistoryAnalyseReport reporter = new HistoryAnalyseReport();
-			reporter.searchAllStockIdAnalyseHistoryBuySellCheckPoint(
-					DailyCombineCheckPoint.MACD_TWICE_GORDON_W_Botton_MACD_DI_BEILI);
+		if (time.equals("2017-09-28")) {
+		    List<String> stockIds = new ArrayList<String>();
+		    stockIds.add("002252");
+		    stockIds.add("601727");
+		    stockIds.add("601318");
+			logger.info("JustRunOnce for " + stockIds);
+			new HistoryStockPriceDownloadAndStoreDBRunner().countAndSave(stockIds);
+            new HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner().countAndSave(stockIds);
+            new HistoryWeekStockPriceCountAndSaveDBRunner().countAndSave(stockIds);
+
+            // after update price, do the sanity test
+            new DataBaseSanityCheck().run();
 		}
 	}
 }
