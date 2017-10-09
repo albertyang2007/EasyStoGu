@@ -136,17 +136,17 @@ ${demo.css}
             var newState = {};
 
             $.ajaxSettings.async = false;
-            var dateOptionsTmp = getLatestNDate(30);
+            var dateOptionsTmp = getLatestNDate(20);
             //first option is empty
             tmpDateOptions = [];
-
-            tmpDateOptions.push(<option value='Latest_20'>Latest_20</option>);
 
             for (var i = 0; i < dateOptionsTmp.length; i++) {
                   tmpDateOptions.push(
                   <option value={dateOptionsTmp[i]}>{dateOptionsTmp[i]}</option>
                   );
             }
+
+            tmpDateOptions.push(<option value='Latest_20'>Latest_20</option>);
 
 	        newState["dateOptions"] = tmpDateOptions;
             
