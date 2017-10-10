@@ -33,189 +33,186 @@ import org.springframework.scheduling.config.ScheduledTaskRegistrar;
 @Configuration
 @EnableScheduling
 public class DailyScheduler implements SchedulingConfigurer {
-	private static Logger logger = LogHelper.getLogger(DailyScheduler.class);
-	private ConfigurationServiceCache config = ConfigurationServiceCache.getInstance();
-	private String zone = config.getString("zone", Constants.ZONE_OFFICE);
-	private boolean dailyUpdateStockPriceByBatch = config.getBoolean(Constants.DailyUpdateStockPriceByBatch, false);
-	private CompanyInfoFileHelper companyInfoHelper = CompanyInfoFileHelper.getInstance();
+    private static Logger logger = LogHelper.getLogger(DailyScheduler.class);
+    private ConfigurationServiceCache config = ConfigurationServiceCache.getInstance();
+    private String zone = config.getString("zone", Constants.ZONE_OFFICE);
+    private boolean dailyUpdateStockPriceByBatch = config.getBoolean(Constants.DailyUpdateStockPriceByBatch, false);
+    private CompanyInfoFileHelper companyInfoHelper = CompanyInfoFileHelper.getInstance();
 
-	@Autowired
-	@Qualifier("taskScheduler")
-	private TaskScheduler taskScheduler;
+    @Autowired
+    @Qualifier("taskScheduler")
+    private TaskScheduler taskScheduler;
 
-	public void configureTasks(ScheduledTaskRegistrar taskRegistrar) {
-		taskRegistrar.setScheduler(taskScheduler);
-	}
+    public void configureTasks(ScheduledTaskRegistrar taskRegistrar) {
+        taskRegistrar.setScheduler(taskScheduler);
+    }
 
-	// refer to:
-	// http://www.quartz-scheduler.org/documentation/quartz-1.x/tutorials/crontrigger
+    // refer to:
+    // http://www.quartz-scheduler.org/documentation/quartz-1.x/tutorials/crontrigger
 
-	// run at 11:31
-	@Scheduled(cron = "0 31 11 * * MON-FRI")
-	public void _1_DailyOverAllRunner() {
-		if (Constants.ZONE_ALIYUN.equalsIgnoreCase(zone)) {
-			boolean isGetZiJinLiu = true;
-			this.DailyOverAllRunner(isGetZiJinLiu);
-		}
-	}
+    // run at 11:31
+    @Scheduled(cron = "0 31 11 * * MON-FRI")
+    public void _1_DailyOverAllRunner() {
+        if (Constants.ZONE_ALIYUN.equalsIgnoreCase(zone)) {
+            boolean isGetZiJinLiu = true;
+            this.DailyOverAllRunner(isGetZiJinLiu);
+        }
+    }
 
-	// run at 15:06
-	@Scheduled(cron = "0 06 15 * * MON-FRI")
-	public void _3_DailyOverAllRunner() {
-		if (Constants.ZONE_ALIYUN.equalsIgnoreCase(zone)) {
-			boolean isGetZiJinLiu = true;
-			this.DailyOverAllRunner(isGetZiJinLiu);
-		}
-	}
-	
-	// run at 16:30
-	@Scheduled(cron = "0 30 16 * * MON-FRI")
-	public void _3_DailyReplicateRunnerFromAliyun() {
-		if (Constants.ZONE_OFFICE.equalsIgnoreCase(zone)) {
-			logger.info("DailyReplicateRunnerFromAliyun already running.");
-			new DailyReplicateRunner().run();
+    // run at 15:06
+    @Scheduled(cron = "0 06 15 * * MON-FRI")
+    public void _3_DailyOverAllRunner() {
+        if (Constants.ZONE_ALIYUN.equalsIgnoreCase(zone)) {
+            boolean isGetZiJinLiu = true;
+            this.DailyOverAllRunner(isGetZiJinLiu);
+        }
+    }
 
-			// after update price, do the sanity test
-			new DataBaseSanityCheck().run();
-		}
-	}
+    // run at 16:30
+    @Scheduled(cron = "0 30 16 * * MON-FRI")
+    public void _3_DailyReplicateRunnerFromAliyun() {
+        if (Constants.ZONE_OFFICE.equalsIgnoreCase(zone)) {
+            logger.info("DailyReplicateRunnerFromAliyun already running.");
+            new DailyReplicateRunner().run();
 
-	// run at 21:45
-	// @Scheduled(cron = "0 45 21 * * MON-FRI")
-	public void _0_DailyZiJinLiuAndDDX() {
-		logger.info("OverAllZiJinLiuAndDDXRunner and DDX for all StockId already running.");
-		if (Constants.ZONE_OFFICE.equalsIgnoreCase(zone)) {
-			OverAllZiJinLiuAndDDXRunner runner = new OverAllZiJinLiuAndDDXRunner();
-			runner.resetToAllPage();
-			Thread t = new Thread(runner);
-			t.start();
-		}
-	}
+            // after update price, do the sanity test
+            new DataBaseSanityCheck().run();
+        }
+    }
 
-	// run at 18:00
-	@Scheduled(cron = "0 00 18 * * MON-FRI")
-	public void _0_DataBaseSanityCheck() {
-		// only run at office, since at aliyun, there is daily santy after price
-		// update
-		if (Constants.ZONE_OFFICE.equalsIgnoreCase(zone)) {
-			logger.info("DataBaseSanityCheck already running.");
-			Thread t = new Thread(new DataBaseSanityCheck());
-			t.start();
-		}
-	}
+    // run at 21:45
+    // @Scheduled(cron = "0 45 21 * * MON-FRI")
+    public void _0_DailyZiJinLiuAndDDX() {
+        logger.info("OverAllZiJinLiuAndDDXRunner and DDX for all StockId already running.");
+        if (Constants.ZONE_OFFICE.equalsIgnoreCase(zone)) {
+            OverAllZiJinLiuAndDDXRunner runner = new OverAllZiJinLiuAndDDXRunner();
+            runner.resetToAllPage();
+            Thread t = new Thread(runner);
+            t.start();
+        }
+    }
 
-	// run at 15:06
-	// @Scheduled(cron = "0 06 15 * * MON-FRI")
-	public void _0_DailyUpdateStockPriceAndDDXRunner() {
-		logger.info("DailyUpdateStockPriceAndDDXRunner already running, please check DB result.");
-		if (Constants.ZONE_ALIYUN.equalsIgnoreCase(zone)) {
-			// daily (download all stockIds price and all zijinliu for ddx)
-			DailyUpdateStockPriceAndDDXRunner runner = new DailyUpdateStockPriceAndDDXRunner();
-			runner.setFetchAllZiJinLiu(true);
-			Thread t = new Thread(runner);
-			t.start();
-		}
-	}
+    // run at 18:00
+    @Scheduled(cron = "0 00 18 * * MON-FRI")
+    public void _0_DataBaseSanityCheck() {
+        // only run at office, since at aliyun, there is daily santy after price
+        // update
+        if (Constants.ZONE_OFFICE.equalsIgnoreCase(zone)) {
+            logger.info("DataBaseSanityCheck already running.");
+            Thread t = new Thread(new DataBaseSanityCheck());
+            t.start();
+        }
+    }
 
-	private void DailyOverAllRunner(boolean isGetZiJinLiu) {
-		logger.info("DailyOverAllRunner already running, please check DB result.");
-		DailyOverAllRunner runner = new DailyOverAllRunner(isGetZiJinLiu);
-		Thread t = new Thread(runner);
-		t.start();
-	}
+    // run at 15:06
+    // @Scheduled(cron = "0 06 15 * * MON-FRI")
+    public void _0_DailyUpdateStockPriceAndDDXRunner() {
+        logger.info("DailyUpdateStockPriceAndDDXRunner already running, please check DB result.");
+        if (Constants.ZONE_ALIYUN.equalsIgnoreCase(zone)) {
+            // daily (download all stockIds price and all zijinliu for ddx)
+            DailyUpdateStockPriceAndDDXRunner runner = new DailyUpdateStockPriceAndDDXRunner();
+            runner.setFetchAllZiJinLiu(true);
+            Thread t = new Thread(runner);
+            t.start();
+        }
+    }
 
-	// sometime the stockprice has problem and will miss data or chuquan is not
-	// 每周更新一下stockprice，每次选择一部分
-	// please do not change the SAT-SUN, will impact the selected stockId
-	// 请不要随意更改这个时间，跟选出的stockid算法有关。
-	// run at 20:00 every day
-	@Scheduled(cron = "0 00 20 * * ?")
-	private void DailyUpdateStockPriceByBatch() {
-		if(!dailyUpdateStockPriceByBatch){
-			logger.info("dailyUpdateStockPriceByBatch is false, not run.");
-			return;
-		}
-	
-		if (Constants.ZONE_ALIYUN.equalsIgnoreCase(zone)) {
-			logger.info("DailyUpdateStockPriceByBatch already running, please check DB result.");
-			List<String> allStockIds = companyInfoHelper.getAllStockId();
-			List<String> stockIds = new ArrayList<String>();
-			// dayN is 1 ~ 31
-			int dayN = Integer.parseInt(WeekdayUtil.currentDay());
+    private void DailyOverAllRunner(boolean isGetZiJinLiu) {
+        logger.info("DailyOverAllRunner already running, please check DB result.");
+        DailyOverAllRunner runner = new DailyOverAllRunner(isGetZiJinLiu);
+        Thread t = new Thread(runner);
+        t.start();
+    }
 
-			// each day will fetch about 1/30 of all stockIds
-			int[] lastTwoDigs = { ((dayN - 1) * 3), ((dayN - 1) * 3 + 1), ((dayN - 1) * 3 + 2) };
-			String[] strLastTwoDigs = { "" + lastTwoDigs[0], "" + lastTwoDigs[1], "" + lastTwoDigs[2] };
+    // sometime the stockprice has problem and will miss data or chuquan is not
+    // 每周更新一下stockprice，每次选择一部分
+    // please do not change the SAT-SUN, will impact the selected stockId
+    // 请不要随意更改这个时间，跟选出的stockid算法有关。
+    // run at 20:00 every day
+    @Scheduled(cron = "0 00 20 * * ?")
+    private void DailyUpdateStockPriceByBatch() {
+        if (!dailyUpdateStockPriceByBatch) {
+            logger.info("dailyUpdateStockPriceByBatch is false, not run.");
+            return;
+        }
 
-			// convert '1' to '01', '2' to '02' etc
-			for (int i = 0; i < lastTwoDigs.length; i++) {
-				if (lastTwoDigs[i] <= 9) {
-					strLastTwoDigs[i] = "0" + lastTwoDigs[i];
-				}
-			}
+        if (Constants.ZONE_ALIYUN.equalsIgnoreCase(zone)) {
+            logger.info("DailyUpdateStockPriceByBatch already running, please check DB result.");
+            List<String> allStockIds = companyInfoHelper.getAllStockId();
+            List<String> stockIds = new ArrayList<String>();
+            // dayN is 1 ~ 31
+            int dayN = Integer.parseInt(WeekdayUtil.currentDay());
 
-			for (String stockId : allStockIds) {
-				String lastTwoDig = stockId.substring(4);
-				if (lastTwoDig.equals(strLastTwoDigs[0]) || lastTwoDig.equals(strLastTwoDigs[0])
-						|| lastTwoDig.equals(strLastTwoDigs[2])) {
-					stockIds.add(stockId);
-				}
+            // each day will fetch about 1/30 of all stockIds
+            int[] lastTwoDigs = { ((dayN - 1) * 3), ((dayN - 1) * 3 + 1), ((dayN - 1) * 3 + 2) };
+            String[] strLastTwoDigs = { "" + lastTwoDigs[0], "" + lastTwoDigs[1], "" + lastTwoDigs[2] };
 
-				// hardocde to add missing stockIds
-				if (dayN == 1 && (lastTwoDig.equals("93") || lastTwoDig.equals("94") || lastTwoDig.equals("95")
-						|| lastTwoDig.equals("96") || lastTwoDig.equals("97") || lastTwoDig.equals("98")
-						|| lastTwoDig.equals("99"))) {
-					stockIds.add(stockId);
-				}
-			}
+            // convert '1' to '01', '2' to '02' etc
+            for (int i = 0; i < lastTwoDigs.length; i++) {
+                if (lastTwoDigs[i] <= 9) {
+                    strLastTwoDigs[i] = "0" + lastTwoDigs[i];
+                }
+            }
 
-			logger.info("DailyUpdateStockPriceByBatch select stockId with last dig: " + strLastTwoDigs[0] + ", "
-					+ strLastTwoDigs[1] + ", " + strLastTwoDigs[2] + ", size: " + stockIds.size());
-			new HistoryStockPriceDownloadAndStoreDBRunner().countAndSave(stockIds);
-			new HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner().countAndSave(stockIds);
-			new HistoryWeekStockPriceCountAndSaveDBRunner().countAndSave(stockIds);
+            for (String stockId : allStockIds) {
+                String lastTwoDig = stockId.substring(4);
+                if (lastTwoDig.equals(strLastTwoDigs[0]) || lastTwoDig.equals(strLastTwoDigs[0])
+                        || lastTwoDig.equals(strLastTwoDigs[2])) {
+                    stockIds.add(stockId);
+                }
 
-			// after update price, do the sanity test
-			new DataBaseSanityCheck().run();
-		}
-	}
+                // hardocde to add missing stockIds
+                if (dayN == 1 && (lastTwoDig.equals("93") || lastTwoDig.equals("94") || lastTwoDig.equals("95")
+                        || lastTwoDig.equals("96") || lastTwoDig.equals("97") || lastTwoDig.equals("98")
+                        || lastTwoDig.equals("99"))) {
+                    stockIds.add(stockId);
+                }
+            }
 
-	// every 15 mins from 9 to 15, Monday to Friday
-	@Scheduled(cron = "0 0/15 09,10,11,13,14 * * MON-FRI")
-	public void updateStockPriceOnlyEveryMins() {
-		if (Constants.ZONE_ALIYUN.equalsIgnoreCase(zone)) {
-			String time = WeekdayUtil.currentTime();
-			logger.info("updateStockPriceOnlyEvery15Mins start at " + time);
-			if ((time.compareTo("09-25-00") >= 0 && time.compareTo("11-30-00") <= 0)
-					|| (time.compareTo("13-00-00") >= 0 && time.compareTo("15-00-00") <= 0)) {
-				// day (download all stockIds price)
-				DailyStockPriceDownloadAndStoreDBRunner2 runner = new DailyStockPriceDownloadAndStoreDBRunner2();
-				runner.run();
-				// update cache
-				AllCacheRunner cacheRunner = new AllCacheRunner();
-				cacheRunner.refreshAll();
-				logger.info("updateStockPriceOnlyEvery15Mins stop at " + WeekdayUtil.currentTime());
-			}
-		}
-
-	}
-
-	// just run onece
-	@Scheduled(cron = "0 40 23 * * ?")
-	public void JustRunOnce() {
-		String time = WeekdayUtil.currentDate();
-		if (time.equals("2017-09-28")) {
-		    List<String> stockIds = new ArrayList<String>();
-		    stockIds.add("002252");
-		    stockIds.add("601727");
-		    stockIds.add("601318");
-			logger.info("JustRunOnce for " + stockIds);
-			new HistoryStockPriceDownloadAndStoreDBRunner().countAndSave(stockIds);
+            logger.info("DailyUpdateStockPriceByBatch select stockId with last dig: " + strLastTwoDigs[0] + ", "
+                    + strLastTwoDigs[1] + ", " + strLastTwoDigs[2] + ", size: " + stockIds.size());
+            new HistoryStockPriceDownloadAndStoreDBRunner().countAndSave(stockIds);
             new HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner().countAndSave(stockIds);
             new HistoryWeekStockPriceCountAndSaveDBRunner().countAndSave(stockIds);
 
             // after update price, do the sanity test
             new DataBaseSanityCheck().run();
-		}
-	}
+        }
+    }
+
+    // every 15 mins from 9 to 15, Monday to Friday
+    @Scheduled(cron = "0 0/15 09,10,11,13,14 * * MON-FRI")
+    public void updateStockPriceOnlyEveryMins() {
+        if (Constants.ZONE_ALIYUN.equalsIgnoreCase(zone)) {
+            String time = WeekdayUtil.currentTime();
+            logger.info("updateStockPriceOnlyEvery15Mins start at " + time);
+            if ((time.compareTo("09-25-00") >= 0 && time.compareTo("11-30-00") <= 0)
+                    || (time.compareTo("13-00-00") >= 0 && time.compareTo("15-00-00") <= 0)) {
+                // day (download all stockIds price)
+                DailyStockPriceDownloadAndStoreDBRunner2 runner = new DailyStockPriceDownloadAndStoreDBRunner2();
+                runner.run();
+                // update cache
+                AllCacheRunner cacheRunner = new AllCacheRunner();
+                cacheRunner.refreshAll();
+                logger.info("updateStockPriceOnlyEvery15Mins stop at " + WeekdayUtil.currentTime());
+            }
+        }
+
+    }
+
+    // just run onece
+    @Scheduled(cron = "0 23 07 * * ?")
+    public void JustRunOnce() {
+        String time = WeekdayUtil.currentDate();
+        if (time.equals("2017-10-10")) {
+            List<String> stockIds = companyInfoHelper.getAllStockId();
+            logger.info("JustRunOnce for " + stockIds);
+            new HistoryStockPriceDownloadAndStoreDBRunner().countAndSave(stockIds);
+            new HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner().countAndSave(stockIds);
+            new HistoryWeekStockPriceCountAndSaveDBRunner().countAndSave(stockIds);
+
+            // after update price, do the sanity test
+            new DataBaseSanityCheck().run();
+        }
+    }
 }

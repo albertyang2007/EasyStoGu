@@ -314,8 +314,8 @@ public class HistoryAnalyseReport {
 
 		for (String stockId : stockIds) {
 
-			if (!stockId.equals("000049"))
-			continue;
+			//if (!stockId.equals("000049"))
+			//continue;
 
 			if (index++ % 100 == 0) {
 				System.out.println("Analyse of " + index + "/" + stockIds.size());
@@ -418,7 +418,7 @@ public class HistoryAnalyseReport {
 	}
 
 	public void countAllStockIdStatisticsCheckPoint() {
-		/*searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.Trend_PhaseI_GuanCha);
+		searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.Trend_PhaseI_GuanCha);
 		searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.Trend_PhaseII_JianCang);
 		searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.Trend_PhaseIII_ChiGu);
 		searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.Trend_PhaseVI_JianCang);
@@ -442,8 +442,8 @@ public class HistoryAnalyseReport {
 		searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.WR_Bottom_Area);
 		searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.WR_Top_Area);
 		searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.WR_Bottom_Gordon);
-		*/
-		searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.LuZao_KDJ_Gordon_TiaoKongGaoKai);
+		
+		//searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.LuZao_KDJ_Gordon_TiaoKongGaoKai);
 	}
 
 	public static void main(String[] args) {
