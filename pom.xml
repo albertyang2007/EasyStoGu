@@ -37,6 +37,7 @@
 				<module>TrendMode</module>
 				<module>DatabaseReplicate</module>
 				<module>Cache</module>
+				<module>DynamicCompiler</module>
 			</modules>
 		</profile>
 	</profiles>
