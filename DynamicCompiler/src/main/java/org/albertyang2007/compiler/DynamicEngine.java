@@ -24,7 +24,7 @@ public class DynamicEngine {
 	private String classpath;
 
 	private DynamicEngine() {
-		this.parentClassLoader = (URLClassLoader) this.getClass().getClassLoader();
+		this.parentClassLoader = (URLClassLoader) java.lang.ClassLoader.getSystemClassLoader();
 		this.buildClassPath();
 	}
 
