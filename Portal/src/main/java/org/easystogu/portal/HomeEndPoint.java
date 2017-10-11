@@ -8,7 +8,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
-import org.albertyang2007.compiler.taskIF.TaskTester;
 import org.easystogu.cache.ConfigurationServiceCache;
 import org.easystogu.config.Constants;
 import org.easystogu.database.replicate.DailyReplicateRunner;
@@ -25,6 +24,7 @@ import org.easystogu.runner.DailyUpdateStockPriceAndIndicatorRunner;
 import org.easystogu.runner.DailyViewAnalyseRunner;
 import org.easystogu.runner.DataBaseSanityCheck;
 import org.easystogu.runner.RecentlySelectionRunner;
+import org.easystogu.runner.dynamic.taskIF.DynamicRunner;
 import org.easystogu.sina.runner.DailyStockPriceDownloadAndStoreDBRunner2;
 import org.easystogu.sina.runner.RealtimeDisplayStockPriceRunner;
 import org.easystogu.sina.runner.history.StockPriceHistoryOverAllRunner;
@@ -304,7 +304,7 @@ public class HomeEndPoint {
     @Path("/OneTimeDynamicRunner")
     public String oneTimeDynamicRunner() {
         if (Constants.ZONE_ALIYUN.equals(zone)) {
-            TaskTester.main(null);
+            DynamicRunner.main(null);
             return "OneTimeDynamicRunner already running, please check folder result.";
         }
         return "Zone not allow to run this method.";

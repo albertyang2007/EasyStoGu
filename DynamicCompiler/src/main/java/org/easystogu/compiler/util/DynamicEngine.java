@@ -1,4 +1,4 @@
-package org.albertyang2007.compiler.util;
+package org.easystogu.compiler.util;
 
 import java.io.File;
 import java.net.URL;

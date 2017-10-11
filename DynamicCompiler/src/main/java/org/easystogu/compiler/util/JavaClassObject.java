@@ -1,4 +1,4 @@
-package org.albertyang2007.compiler.util;
+package org.easystogu.compiler.util;
 
 import javax.tools.JavaFileObject;
 import javax.tools.SimpleJavaFileObject;

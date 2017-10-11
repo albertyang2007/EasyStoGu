@@ -1,4 +1,4 @@
-package org.albertyang2007.compiler;
+package org.easystogu.compiler.util;
 
 import java.net.URLClassLoader;
 import java.net.URL;
