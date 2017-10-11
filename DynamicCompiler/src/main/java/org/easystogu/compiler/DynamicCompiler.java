@@ -9,8 +9,8 @@ public class DynamicCompiler {
 			throws IllegalAccessException, InstantiationException {
 		//long start = System.currentTimeMillis();
 		//System.out.println("Compile and Execute JavaCode:\n" + javaSrcCode);
-		DynamicEngine de = DynamicEngine.getInstance();
-		Object instance = de.javaCodeToObject(fullName, javaSrcCode.toString());
+		DynamicEngine engine = new DynamicEngine("/home/eyaweiw/easystogu/DynamicCompiler/");
+		Object instance = engine.javaCodeToObject(fullName, javaSrcCode.toString());
 		//long end = System.currentTimeMillis();
 		//System.out.println("Use Time:" + (end - start) + "ms");
 		return instance;
