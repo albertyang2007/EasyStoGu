@@ -18,7 +18,7 @@ public class ConfigurationServiceCache {
     private LoadingCache<String, Object> cache;
 
     private ConfigurationServiceCache() {
-        cache = CacheBuilder.newBuilder().maximumSize(100).expireAfterWrite(30, TimeUnit.MINUTES)
+        cache = CacheBuilder.newBuilder().maximumSize(100).expireAfterWrite(5, TimeUnit.MINUTES)
                 .build(new CacheLoader<String, Object>() {
                     @Override
                     // key is
