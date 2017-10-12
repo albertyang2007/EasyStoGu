@@ -201,18 +201,14 @@ public class DailyScheduler implements SchedulingConfigurer {
     }
 
     // just run onece
-    @Scheduled(cron = "0 23 07 * * ?")
+    @Scheduled(cron = "0 50 19 * * ?")
     public void JustRunOnce() {
         String time = WeekdayUtil.currentDate();
-        if (time.equals("2017-10-10")) {
-            List<String> stockIds = companyInfoHelper.getAllStockId();
-            logger.info("JustRunOnce for " + stockIds);
-            new HistoryStockPriceDownloadAndStoreDBRunner().countAndSave(stockIds);
-            new HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner().countAndSave(stockIds);
-            new HistoryWeekStockPriceCountAndSaveDBRunner().countAndSave(stockIds);
-
-            // after update price, do the sanity test
-            new DataBaseSanityCheck().run();
+        if (time.equals("2017-10-12")) {
+            logger.info("start HistoryAnalyseReport");
+            HistoryAnalyseReport ins = new HistoryAnalyseReport();
+            ins.countAllStockIdStatisticsCheckPoint();
+            logger.info("stop HistoryAnalyseReport");
         }
     }
 }
