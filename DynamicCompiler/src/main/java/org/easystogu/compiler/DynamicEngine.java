@@ -13,15 +13,22 @@ import javax.tools.JavaFileObject;
 import javax.tools.StandardJavaFileManager;
 import javax.tools.ToolProvider;
 
+import org.jboss.modules.ModuleClassLoader;
+
 public class DynamicEngine {
     private URLClassLoader parentClassLoader;
+    //private ModuleClassLoader parentClassLoader;
+
     private String classpath;
     private String fixingClassLoaderPath;
 
     public DynamicEngine(String classLoaderPath) {
         this.fixingClassLoaderPath = classLoaderPath;
+
         this.parentClassLoader = (URLClassLoader) java.lang.ClassLoader.getSystemClassLoader();
-        //this.parentClassLoader = (URLClassLoader) this.getClass().getClassLoader();
+        //ModuleClassLoader cast exception!!!
+        //this.parentClassLoader = (ModuleClassLoader) this.getClass().getClassLoader();
+
         this.buildClassPath();
     }
 

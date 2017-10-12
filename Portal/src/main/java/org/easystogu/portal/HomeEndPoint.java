@@ -303,7 +303,7 @@ public class HomeEndPoint {
     @GET
     @Path("/OneTimeDynamicRunner")
     public String oneTimeDynamicRunner() {
-        if (Constants.ZONE_ALIYUN.equals(zone)) {
+        if (Constants.ZONE_OFFICE.equals(zone)) {
             DynamicRunner.main(null);
             return "OneTimeDynamicRunner already running, please check folder result.";
         }
