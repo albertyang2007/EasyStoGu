@@ -185,9 +185,9 @@ public class DailyScheduler implements SchedulingConfigurer {
     public void updateStockPriceOnlyEveryMins() {
         if (Constants.ZONE_ALIYUN.equalsIgnoreCase(zone)) {
             String time = WeekdayUtil.currentTime();
-            logger.info("updateStockPriceOnlyEvery15Mins start at " + time);
             if ((time.compareTo("09-25-00") >= 0 && time.compareTo("11-30-00") <= 0)
                     || (time.compareTo("13-00-00") >= 0 && time.compareTo("15-00-00") <= 0)) {
+                logger.info("updateStockPriceOnlyEvery15Mins start at " + time);
                 // day (download all stockIds price)
                 DailyStockPriceDownloadAndStoreDBRunner2 runner = new DailyStockPriceDownloadAndStoreDBRunner2();
                 runner.run();
