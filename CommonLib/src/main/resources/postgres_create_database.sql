@@ -861,3 +861,21 @@ ALTER TABLE ind_ma
 GRANT ALL ON TABLE ind_ma TO public;
 GRANT ALL ON TABLE ind_ma TO postgres;
 
+-- Table: favorites_stock
+
+-- DROP TABLE favorites_stock;
+
+CREATE TABLE favorites_stock
+(
+  stockid text NOT NULL,
+  userid text NOT NULL,
+  CONSTRAINT favorites_stock_pkey PRIMARY KEY (stockid, userid)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE favorites_stock
+  OWNER TO postgres;
+GRANT ALL ON TABLE favorites_stock TO public;
+GRANT ALL ON TABLE favorites_stock TO postgres;
+

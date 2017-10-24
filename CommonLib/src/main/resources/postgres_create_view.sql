@@ -1303,3 +1303,66 @@ GRANT ALL ON TABLE "TenYuan_Stock_Statistics" TO postgres;
 COMMENT ON VIEW "TenYuan_Stock_Statistics"
   IS '10元股统计';
 
+-- View: favorites_daily_selection
+
+-- DROP VIEW favorites_daily_selection;
+
+CREATE OR REPLACE VIEW favorites_daily_selection AS 
+ SELECT DISTINCT checkpoint_daily_selection.stockid,
+    count(DISTINCT checkpoint_daily_selection.checkpoint) AS checkpoint_count
+   FROM checkpoint_daily_selection
+  WHERE checkpoint_daily_selection.date = (( SELECT stockprice_latest_date.date
+           FROM stockprice_latest_date))
+  GROUP BY checkpoint_daily_selection.stockid
+ HAVING count(checkpoint_daily_selection.checkpoint) > 1
+  ORDER BY count(DISTINCT checkpoint_daily_selection.checkpoint) DESC;
+
+ALTER TABLE favorites_daily_selection
+  OWNER TO postgres;
+GRANT ALL ON TABLE favorites_daily_selection TO public;
+GRANT ALL ON TABLE favorites_daily_selection TO postgres;
+COMMENT ON VIEW favorites_daily_selection
+  IS '排序：当天checkpoint 命中最多的stockid';
+  
+
+-- View: favorites_stock_checkpoint
+
+-- DROP VIEW favorites_stock_checkpoint;
+
+CREATE OR REPLACE VIEW favorites_stock_checkpoint AS 
+ SELECT checkpoint_daily_selection.stockid,
+    checkpoint_daily_selection.date,
+    checkpoint_daily_selection.checkpoint,
+    favorites_stock.userid
+   FROM favorites_stock,
+    checkpoint_daily_selection
+  WHERE checkpoint_daily_selection.stockid = favorites_stock.stockid;
+
+ALTER TABLE favorites_stock_checkpoint
+  OWNER TO postgres;
+GRANT ALL ON TABLE favorites_stock_checkpoint TO public;
+GRANT ALL ON TABLE favorites_stock_checkpoint TO postgres;
+COMMENT ON VIEW favorites_stock_checkpoint
+  IS '出现检查点的自选股';
+
+
+-- View: "favorites_stock_checkpoint_Details"
+
+-- DROP VIEW "favorites_stock_checkpoint_Details";
+
+CREATE OR REPLACE VIEW "favorites_stock_checkpoint_Details" AS 
+ SELECT company_info.name,
+    company_info.stockid,
+    favorites_stock_checkpoint.date,
+    favorites_stock_checkpoint.checkpoint,
+    favorites_stock_checkpoint.userid
+   FROM company_info,
+    favorites_stock_checkpoint
+  WHERE company_info.stockid = favorites_stock_checkpoint.stockid;
+
+ALTER TABLE "favorites_stock_checkpoint_Details"
+  OWNER TO postgres;
+GRANT ALL ON TABLE "favorites_stock_checkpoint_Details" TO public;
+GRANT ALL ON TABLE "favorites_stock_checkpoint_Details" TO postgres;
+
+  
