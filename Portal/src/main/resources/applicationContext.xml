@@ -186,6 +186,17 @@
 		</jaxrs:providers>
 	</jaxrs:server>
 
+	<bean id="portalServiceReportEndPoint" class="org.easystogu.portal.ReportEndPoint">
+	</bean>
+	<jaxrs:server id="cxfrsservice_ReportEndPoint" address="/report">
+		<jaxrs:serviceBeans>
+			<ref bean="portalServiceReportEndPoint" />
+		</jaxrs:serviceBeans>
+		<jaxrs:providers>
+			<bean class="com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider" />
+		</jaxrs:providers>
+	</jaxrs:server>
+
 	<bean id="portalServiceTestEndPoint" class="org.easystogu.portal.TestControler">
 	</bean>
 	<jaxrs:server id="cxfrsservice_TestControler" address="/">
