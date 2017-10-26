@@ -201,13 +201,14 @@ public class DailyScheduler implements SchedulingConfigurer {
     }
 
     // just run onece
-    @Scheduled(cron = "0 50 19 * * ?")
+    @Scheduled(cron = "0 25 13 * * ?")
     public void JustRunOnce() {
         String time = WeekdayUtil.currentDate();
-        if (time.equals("2017-10-12")) {
+        if (time.equals("2017-10-26")) {
             logger.info("start HistoryAnalyseReport");
             HistoryAnalyseReport ins = new HistoryAnalyseReport();
-            ins.countAllStockIdStatisticsCheckPoint();
+            ins.searchAllStockIdAnalyseHistoryBuySellCheckPoint(
+                    DailyCombineCheckPoint.MACD_TWICE_GORDON_W_Botton_TiaoKong_ZhanShang_Bull);
             logger.info("stop HistoryAnalyseReport");
         }
     }
