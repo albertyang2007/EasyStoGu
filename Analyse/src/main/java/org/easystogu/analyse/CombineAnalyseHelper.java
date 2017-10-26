@@ -1569,10 +1569,8 @@ public class CombineAnalyseHelper {
             if (curSuperDayVO.priceVO.low > pre1SuperDayVO.priceVO.high
                     && curSuperDayVO.priceVO.close >= curSuperDayVO.avgMA20) {
 
-                //luzao phase II
-                if (curSuperDayVO.priceVO.close >= curSuperDayVO.avgMA19
-                        && curSuperDayVO.avgMA19 <= curSuperDayVO.avgMA43
-                        && curSuperDayVO.avgMA43 <= curSuperDayVO.avgMA86) {
+                //luzao phase II or III
+                if (curSuperDayVO.avgMA43 <= curSuperDayVO.avgMA86) {
 
                     if ((curSuperDayVO.macdCorssType == CrossType.GORDON
                             || curSuperDayVO.macdCorssType == CrossType.NEAR_GORDON) && curSuperDayVO.macdVO.dif < 0) {
