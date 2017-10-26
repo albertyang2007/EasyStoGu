@@ -1524,20 +1524,18 @@ public class CombineAnalyseHelper {
                     return false;
                 }
 
-                // 两个金叉之间的所有macd dif值都是出于零轴之下
-                for (int index = preMacdGordonIndex; index < curIndex; index++) {
-                    StockSuperVO spvo = overDayList.get(index);
-                    if (spvo.macdVO.dif > 0) {
-                        return false;
-                    }
+                // 两个金叉的macd dif值都是出于零轴之下
+                StockSuperVO spvo = overDayList.get(preMacdGordonIndex);
+                if (curSuperDayVO.macdVO.dif > 0 || spvo.macdVO.dif > 0) {
+                    return false;
                 }
 
                 StockSuperVO pNdaysVO = overDayList.get(preMacdGordonIndex);
 
                 // previously macd dif is less then now dif
-                // 两个金叉之间相差10天以上，避免振幅很小的误差
+                // 两个金叉之间相差12天以上，避免振幅很小的误差
                 if (pNdaysVO != null && pNdaysVO.macdVO.dif < curSuperDayVO.macdVO.dif
-                        && (curIndex - preMacdGordonIndex) >= 10) {
+                        && (curIndex - preMacdGordonIndex) >= 12) {
 
                     // previously lowest price is higher then now lowest price
                     StockSuperVO preLowestPriceVO1 = this.findPreviouslyLowestPriceIndex(overDayList,
@@ -1589,9 +1587,9 @@ public class CombineAnalyseHelper {
                         StockSuperVO pNdaysVO = overDayList.get(preMacdGordonIndex);
 
                         // previously macd dif is less then now dif
-                        // 两个金叉之间相差15天以上，避免振幅很小的误差
+                        // 两个金叉之间相差12天以上，避免振幅很小的误差
                         if (pNdaysVO != null && pNdaysVO.macdVO.dif < curSuperDayVO.macdVO.dif
-                                && (curIndex - preMacdGordonIndex) >= 15) {
+                                && (curIndex - preMacdGordonIndex) >= 12) {
                             return true;
                         }
                     }

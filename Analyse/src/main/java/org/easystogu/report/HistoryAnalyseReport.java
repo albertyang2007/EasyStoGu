@@ -219,9 +219,9 @@ public class HistoryAnalyseReport {
         for (String stockId : stockIds) {
             index++;
 
-            //if (!stockId.equals("300072")) {
-            //    continue;
-            //}
+            if (!stockId.equals("601336")) {
+                continue;
+            }
 
             List<HistoryReportDetailsVO> historyReportList = this.doAnalyseBuySellDate(stockId, checkPoint);
             for (HistoryReportDetailsVO reportVO : historyReportList) {
@@ -461,7 +461,7 @@ public class HistoryAnalyseReport {
 
         // reporter.searchAllStockIdAnalyseHistoryBuySellCheckPoint(DailyCombineCheckPoint.WR_Bottom_Gordon);
         reporter.searchAllStockIdAnalyseHistoryBuySellCheckPoint(
-                DailyCombineCheckPoint.MACD_TWICE_GORDON_W_Botton_TiaoKong_ZhanShang_Bull);
+                DailyCombineCheckPoint.MACD_TWICE_GORDON_W_Botton_MACD_DI_BEILI);
         //reporter.countAllStockIdStatisticsCheckPoint();
 
     }
