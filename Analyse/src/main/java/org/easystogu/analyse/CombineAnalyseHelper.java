@@ -1562,7 +1562,7 @@ public class CombineAnalyseHelper {
 
         //example: 300072@2016-03-14 @2017-10-10 && 000049@2017-01-18
         //鲁兆建仓阶段，MACD二次金叉，W大底，跳空站稳布林线
-        case LuZao_PhaseII_MACD_TWICE_GORDON_W_Botton_TiaoKong_ZhanShang_Bull: {
+        case MACD_TWICE_GORDON_W_Botton_TiaoKong_ZhanShang_Bull: {
             int curIndex = overDayList.size() - 1;
 
             //开盘跳空,收盘站上布林线

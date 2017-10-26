@@ -461,7 +461,7 @@ public class HistoryAnalyseReport {
 
         // reporter.searchAllStockIdAnalyseHistoryBuySellCheckPoint(DailyCombineCheckPoint.WR_Bottom_Gordon);
         reporter.searchAllStockIdAnalyseHistoryBuySellCheckPoint(
-                DailyCombineCheckPoint.LuZao_PhaseII_MACD_TWICE_GORDON_W_Botton_TiaoKong_ZhanShang_Bull);
+                DailyCombineCheckPoint.MACD_TWICE_GORDON_W_Botton_TiaoKong_ZhanShang_Bull);
         //reporter.countAllStockIdStatisticsCheckPoint();
 
     }
