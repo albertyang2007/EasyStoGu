@@ -34,9 +34,9 @@ public class HtmlUnitHelper {
 		webClient.setJavaScriptEnabled(true);
 		webClient.setCssEnabled(true);
 		webClient.setAjaxController(new NicelyResynchronizingAjaxController());
-		webClient.setTimeout(50000);
+		webClient.setTimeout(30000);
 		webClient.setThrowExceptionOnScriptError(false);
-		webClient.waitForBackgroundJavaScript(1000 * 10L);
+		webClient.waitForBackgroundJavaScript(1000 * 5L);
 		webClient.setJavaScriptTimeout(0);
 		webClient.setRedirectEnabled(true);
 		JavaScriptEngine engine = new JavaScriptEngine(webClient);

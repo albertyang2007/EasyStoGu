@@ -49,7 +49,7 @@ public class DailyZiJinLiuFatchDataHelper {
 		WebClient webClient = HtmlUnitHelper.getWebClient();
 		try {
 			HtmlPage htmlpage = webClient.getPage(baseUrl);
-			webClient.waitForBackgroundJavaScript(1000 * 10L);
+			webClient.waitForBackgroundJavaScript(1000 * 5L);
 			// System.out.println(htmlpage.asXml());
 
 			// fetch current date
@@ -80,7 +80,7 @@ public class DailyZiJinLiuFatchDataHelper {
 					List<?> links = div.getByXPath("a");
 					HtmlAnchor anchor = (HtmlAnchor) links.get(links.size() - 1);
 					htmlpage = (HtmlPage) anchor.click();
-					webClient.waitForBackgroundJavaScript(1000 * 10L);
+					webClient.waitForBackgroundJavaScript(1000 * 5L);
 					tabContent = (HtmlTable) htmlpage.getElementById("dt_1");
 					rtn = this.parseOnePageStockIdsZiJinLiu(tabContent.asText());
 					System.out.println("Process 1 day ZiJinLiu Page " + page + " end with vo size: " + rtn.size());
