@@ -70,7 +70,7 @@ public class DailyZiJinLiuFatchDataHelper {
 					System.out.println("Process 1 day ZiJinLiu Page " + page);
 					HtmlDivision div = (HtmlDivision) htmlpage.getElementById("PageCont");
 					try {
-						HtmlTextInput input = div.getElementById("gopage");
+						HtmlTextInput input = div.getElementById("PageContgopage");
 						input.setValueAttribute("" + page);
 					} catch (Exception e) {
 						System.out.println("Exception happen, is it the last page? page=" + page + ", Error msg="
