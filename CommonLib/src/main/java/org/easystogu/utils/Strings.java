@@ -64,6 +64,9 @@ public class Strings {
 		String s = Double.toString(d);
 		String[] arr = s.split("\\.");
 		if (arr.length == 2) {
+		    if (arr[0].length() == 1) {
+                return " " + s;
+            }
 			if (arr[1].length() == 1) {
 				return s + "0";
 			}
@@ -94,6 +97,6 @@ public class Strings {
 	}
 
 	public static void main(String[] args) {
-		System.out.println(convert2ScaleDecimalAlignWithLength(10.0, 2));
+		System.out.println(convert2ScaleDecimalAlignWithLength(9.0, 2));
 	}
 }
