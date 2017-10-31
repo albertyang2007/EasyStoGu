@@ -65,10 +65,10 @@ public class Strings {
 		String[] arr = s.split("\\.");
 		if (arr.length == 2) {
 		    if (arr[0].length() == 1) {
-                return " " + s;
+                s =  " " + s;
             }
 			if (arr[1].length() == 1) {
-				return s + "0";
+				s = s + "0";
 			}
 		}
 		return s;
