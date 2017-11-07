@@ -22,6 +22,9 @@ public class Constants {
 	public static final String ZONE_HOME = "home";
 	public static final String ZONE_ALIYUN = "aliyun";
 	public static final String DailyUpdateStockPriceByBatch = "DailyUpdateStockPriceByBatch";
+	
+	public static final String CassandraContactPoints = "cassandra.contactpoints";
+	public static final String CassandraPort = "cassandra.port";
 
 	public static String cacheStockPrice = "stockPrice";
 	public static String cacheQianFuQuanStockPrice = "qianFuQuanStockPrice";
