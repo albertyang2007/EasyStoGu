@@ -44,6 +44,8 @@ public class Constants {
 	public static String dateRegex = "[0-9]{4}-[0-9]{2}-[0-9]{2}";
 	public static String fromToRegex = dateRegex + "_" + dateRegex;
 	public static String HHmmss = "00:00:00";
+	
+	public static String CassandraKeySpace = "EasyStoGu";
 
 	public static void main(String[] args) {
 		for (int i = 1; i <= 31; i++) {

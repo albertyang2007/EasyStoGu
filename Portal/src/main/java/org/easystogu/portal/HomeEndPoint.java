@@ -9,8 +9,10 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
 import org.easystogu.cache.ConfigurationServiceCache;
+import org.easystogu.cassandra.access.table.IndMacdCassTableHelper;
 import org.easystogu.config.Constants;
 import org.easystogu.database.replicate.DailyReplicateRunner;
+import org.easystogu.db.vo.table.MacdVO;
 import org.easystogu.easymoney.runner.DailyDDXRunner;
 import org.easystogu.easymoney.runner.DailyZhuLiJingLiuRuRunner;
 import org.easystogu.easymoney.runner.DailyZiJinLiuRunner;
@@ -28,6 +30,7 @@ import org.easystogu.runner.dynamic.taskIF.DynamicRunner;
 import org.easystogu.sina.runner.DailyStockPriceDownloadAndStoreDBRunner2;
 import org.easystogu.sina.runner.RealtimeDisplayStockPriceRunner;
 import org.easystogu.sina.runner.history.StockPriceHistoryOverAllRunner;
+import org.easystogu.utils.WeekdayUtil;
 
 public class HomeEndPoint {
     private ConfigurationServiceCache config = ConfigurationServiceCache.getInstance();
@@ -37,7 +40,7 @@ public class HomeEndPoint {
 
     @GET
     @Path("/")
-    public Response test() {
+    public Response mainPage() {
         StringBuffer sb = new StringBuffer();
         sb.append("<a href='/portal/home/DailyUpdateAllStockRunner'>DailyUpdateAllStockRunner</a><br>");
         sb.append("<a href='/portal/home/DailyOverAllRunner'>DailyOverAllRunner</a><br>");
@@ -63,6 +66,8 @@ public class HomeEndPoint {
         sb.append("<a href='/portal/home/IndicatorHistortOverAllRunner'>IndicatorHistortOverAllRunner</a><br>");
         sb.append("<a href='/portal/home/DailyReplicateRunner'>DailyReplicateRunner</a><br>");
         sb.append("<a href='/portal/home/OneTimeDynamicRunner'>OneTimeDynamicRunner</a><br>");
+        
+        sb.append("<a href='/portal/home/test'>test</a><br>");
 
         return Response.ok().entity(sb.toString()).build();
     }
@@ -308,5 +313,23 @@ public class HomeEndPoint {
             return "OneTimeDynamicRunner already running, please check folder result.";
         }
         return "Zone not allow to run this method.";
+    }
+    
+    @GET
+    @Path("/test")
+    public String test() {
+    	IndMacdCassTableHelper cable = IndMacdCassTableHelper.getInstance();
+		for (int i = 0; i < 10; i++) {
+			MacdVO vo = new MacdVO();
+			vo.stockId = "000001";
+			vo.date = WeekdayUtil.nextNDateString(WeekdayUtil.currentDate(), i);
+			vo.dif = i / 10;
+			vo.dea = i / 100;
+			vo.macd = i / 1000;
+			System.out.println("insert " + vo);
+			cable.insert(vo);
+		}
+		
+		return "OK";
     }
 }

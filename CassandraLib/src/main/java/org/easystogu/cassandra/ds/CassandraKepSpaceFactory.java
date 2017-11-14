@@ -14,7 +14,7 @@ public class CassandraKepSpaceFactory {
 	private static Cluster cluster = null;
 
 	public static Cluster createCluster() {
-		if (cluster != null)
+		if (cluster != null && !cluster.isClosed())
 			return cluster;
 
 		logger.info("create Cassandra Cluster.");
