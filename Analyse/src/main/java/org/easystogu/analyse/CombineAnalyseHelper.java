@@ -1,5 +1,6 @@
 package org.easystogu.analyse;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.easystogu.analyse.util.StockPriceUtils;
@@ -1318,7 +1319,10 @@ public class CombineAnalyseHelper {
 		// 最高价是一个特殊数字，比如12.34, 55.55, 67.54 etc
 		case High_Price_Digit_In_Order: {
 			String digits = Double.toString(curSuperDayVO.priceVO.high).replace(".", "");
-			char[] chars = digits.toCharArray();
+			List<Integer> digs = new ArrayList<Integer>();
+			for (int index = 0; index < digits.length(); index++) {
+				digs.add(new Integer(digits.indexOf(index)));
+			}
 			break;
 		}
 
