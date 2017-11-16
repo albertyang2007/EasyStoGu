@@ -1101,7 +1101,7 @@ function createChart_WR(stockId, date_price, volume, data_lonTerm,
  * 
  * @returns {undefined}
  */
-function createChart_SameDigitsInHighPrice_Statistics(stockId, date_price, volume, data_count) {
+function createChart_SameDigitsInHighPrice_Statistics(stockId, date_price, volume, data_count1, data_count2) {
 	$('#container').highcharts('StockChart', {
 
 		rangeSelector : {
@@ -1148,8 +1148,12 @@ function createChart_SameDigitsInHighPrice_Statistics(stockId, date_price, volum
 			name : 'OHLC',
 			data : date_price
 		}, {
-			name : '个股数目',
-			data : data_count,
+			name : '最高价格',
+			data : data_count1,
+			yAxis : 1
+		}, {
+			name : '最低价格',
+			data : data_count2,
 			yAxis : 1
 		} ]
 	});

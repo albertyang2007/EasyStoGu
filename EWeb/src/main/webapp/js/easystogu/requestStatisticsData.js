@@ -239,8 +239,8 @@ function loadQsddStatistics(version, stockId, dateFrom, dateTo) {
 	 * @returns {undefined}
 	 */
 	/*
-	 * var url_ind = getEasyStoGuServerUrl() + "/portal/ind" + version + "/qsdd/" +
-	 * stockId + "/" + dateFrom + "_" + dateTo; $.getJSON(url_ind,
+	 * var url_ind = getEasyStoGuServerUrl() + "/portal/ind" + version +
+	 * "/qsdd/" + stockId + "/" + dateFrom + "_" + dateTo; $.getJSON(url_ind,
 	 * function(data) { i = 0; for (i; i < data.length; i += 1) { var dateStr =
 	 * data[i]['date'] + " 15:00:00"; var dateD = new
 	 * Date(Date.parse(dateStr.replace(/-/g, "/"))); data_lonTerm.push([
@@ -261,8 +261,8 @@ function loadQsddStatistics(version, stockId, dateFrom, dateTo) {
 	 * 
 	 * @returns {undefined}
 	 */
-	var url_ind = getEasyStoGuServerUrl() + "/portal/statistics/qsdd/" + dateFrom
-			+ "_" + dateTo;
+	var url_ind = getEasyStoGuServerUrl() + "/portal/statistics/qsdd/"
+			+ dateFrom + "_" + dateTo;
 	$.getJSON(url_ind, function(data) {
 		i = 0;
 		for (i; i < data.length; i += 1) {
@@ -319,8 +319,8 @@ function loadShenXianStatistics(version, stockId, dateFrom, dateTo) {
 	 * 
 	 * @returns {undefined}
 	 */
-	var url_ind = getEasyStoGuServerUrl() + "/portal/ind" + version + "/shenxian/"
-			+ stockId + "/" + dateFrom + "_" + dateTo;
+	var url_ind = getEasyStoGuServerUrl() + "/portal/ind" + version
+			+ "/shenxian/" + stockId + "/" + dateFrom + "_" + dateTo;
 	$.getJSON(url_ind, function(data) {
 		i = 0;
 		for (i; i < data.length; i += 1) {
@@ -391,8 +391,8 @@ function loadMacdStatistics(version, stockId, dateFrom, dateTo) {
 
 		seriesCounter += 1;
 		if (seriesCounter === 2) {
-			createChart_Macd_Statistics(stockId, date_price, volume,
-					data_dif, data_dea, data_macd, data_gordon, data_dead);
+			createChart_Macd_Statistics(stockId, date_price, volume, data_dif,
+					data_dea, data_macd, data_gordon, data_dead);
 		}
 	});
 
@@ -402,34 +402,29 @@ function loadMacdStatistics(version, stockId, dateFrom, dateTo) {
 	 * @returns {undefined}
 	 */
 	/*
-	var url_ind = getEasyStoGuServerUrl() + "/portal/ind" + version + "/macd/"
-			+ stockId + "/" + dateFrom + "_" + dateTo;
-	$.getJSON(url_ind, function(data) {
-		i = 0;
-		for (i; i < data.length; i += 1) {
-			var dateStr = data[i]['date'] + " 15:00:00";
-			var dateD = new Date(Date.parse(dateStr.replace(/-/g, "/")));
-			data_dif.push([ dateD.getTime(), data[i]['dif'] ]);
-
-			data_dea.push([ dateD.getTime(), data[i]['dea'] ]);
-
-			data_macd.push([ dateD.getTime(), data[i]['macd'] ]);
-		}
-
-		seriesCounter += 1;
-		if (seriesCounter === 3) {
-			createChart_Macd_Statistics(stockId, date_price, volume,
-					data_dif, data_dea, data_macd, data_gordon, data_dead);
-		}
-	});*/
+	 * var url_ind = getEasyStoGuServerUrl() + "/portal/ind" + version +
+	 * "/macd/" + stockId + "/" + dateFrom + "_" + dateTo; $.getJSON(url_ind,
+	 * function(data) { i = 0; for (i; i < data.length; i += 1) { var dateStr =
+	 * data[i]['date'] + " 15:00:00"; var dateD = new
+	 * Date(Date.parse(dateStr.replace(/-/g, "/"))); data_dif.push([
+	 * dateD.getTime(), data[i]['dif'] ]);
+	 * 
+	 * data_dea.push([ dateD.getTime(), data[i]['dea'] ]);
+	 * 
+	 * data_macd.push([ dateD.getTime(), data[i]['macd'] ]); }
+	 * 
+	 * seriesCounter += 1; if (seriesCounter === 3) {
+	 * createChart_Macd_Statistics(stockId, date_price, volume, data_dif,
+	 * data_dea, data_macd, data_gordon, data_dead); } });
+	 */
 
 	/**
 	 * Load macd gordon and dead statistics and display
 	 * 
 	 * @returns {undefined}
 	 */
-	var url_ind = getEasyStoGuServerUrl() + "/portal/statistics/macd/" + dateFrom
-			+ "_" + dateTo;
+	var url_ind = getEasyStoGuServerUrl() + "/portal/statistics/macd/"
+			+ dateFrom + "_" + dateTo;
 	$.getJSON(url_ind, function(data) {
 		i = 0;
 		for (i; i < data.length; i += 1) {
@@ -441,8 +436,8 @@ function loadMacdStatistics(version, stockId, dateFrom, dateTo) {
 
 		seriesCounter += 1;
 		if (seriesCounter === 2) {
-			createChart_Macd_Statistics(stockId, date_price, volume,
-					data_dif, data_dea, data_macd, data_gordon, data_dead);
+			createChart_Macd_Statistics(stockId, date_price, volume, data_dif,
+					data_dea, data_macd, data_gordon, data_dead);
 		}
 	});
 }
@@ -531,12 +526,12 @@ function loadWRStatistics(version, stockId, dateFrom, dateTo) {
 }
 
 /**
- * Load SameDigitsInHighPrice Statistics 
+ * Load SameDigitsInHighPrice Statistics
  * 
  * @returns {undefined}
  */
 function loadSameDigitsInHighPriceStatistics(stockId, dateFrom, dateTo) {
-	var seriesCounter = 0, date_price = [], volume = [], data_count = [];
+	var seriesCounter = 0, date_price = [], volume = [], data_count1 = [], data_count2 = [];
 	var version = 'v1';
 	/**
 	 * Load StocPrice and display OHLC
@@ -544,61 +539,6 @@ function loadSameDigitsInHighPriceStatistics(stockId, dateFrom, dateTo) {
 	 * @returns {undefined}
 	 */
 	var url_price = getEasyStoGuServerUrl() + "/portal/price" + version + "/"
-	              + stockId + "/" + dateFrom + "_" + dateTo;
-	$.getJSON(url_price, function(data) {
-		i = 0;
-		for (i; i < data.length; i += 1) {
-			var dateStr = data[i]['date'] + " 15:00:00";
-			var dateD = new Date(Date.parse(dateStr.replace(/-/g, "/")));
-			date_price.push([ dateD.getTime(), data[i]['open'],
-					data[i]['high'], data[i]['low'], data[i]['close'] ]);
-
-			volume.push([ dateD.getTime(), data[i]['volume'] ]);
-		}
-
-		seriesCounter += 1;
-		if (seriesCounter === 2) {
-			createChart_SameDigitsInHighPrice_Statistics(stockId, date_price, volume, data_count);
-		}
-	});
-
-	/**
-	 * Load SameDigitsInHighPrice statistics and display
-	 * 
-	 * @returns {undefined}
-	 */
-	var url_ind = getEasyStoGuServerUrl() + "/portal/statistics/sameDigitsInHighPrice/" + dateFrom
-	              + "_" + dateTo;
-	$.getJSON(url_ind, function(data) {
-		i = 0;
-		for (i; i < data.length; i += 1) {
-			var dateStr = data[i]['date'] + " 15:00:00";
-			var dateD = new Date(Date.parse(dateStr.replace(/-/g, "/")));
-			data_count.push([ dateD.getTime(), data[i]['count1'] ]);
-		}
-
-		seriesCounter += 1;
-		if (seriesCounter === 2) {
-			createChart_SameDigitsInHighPrice_Statistics(stockId, date_price, volume, data_count);
-		}
-	});
-}
-
-
-/**
- * Load XXXYuan Stock Statistics
- * 
- * @returns {undefined}
- */
-function loadXXXYuanStatistics(howMuchYuan, stockId, dateFrom, dateTo) {
-	var seriesCounter = 0, date_price = [], volume = [], data_count = [];
-	var version = 'v1';
-	/**
-	 * Load StocPrice and display OHLC
-	 * 
-	 * @returns {undefined}
-	 */
-	var url_price = getEasyStoGuServerUrl() + "/portal/price" + version + "/month/"
 			+ stockId + "/" + dateFrom + "_" + dateTo;
 	$.getJSON(url_price, function(data) {
 		i = 0;
@@ -613,7 +553,66 @@ function loadXXXYuanStatistics(howMuchYuan, stockId, dateFrom, dateTo) {
 
 		seriesCounter += 1;
 		if (seriesCounter === 2) {
-			createChart_XXXYuan_Statistics(stockId, date_price, volume, data_count);
+			createChart_SameDigitsInHighPrice_Statistics(stockId, date_price,
+					volume, data_count1, data_count2);
+		}
+	});
+
+	/**
+	 * Load SameDigitsInHighPrice statistics and display
+	 * 
+	 * @returns {undefined}
+	 */
+	var url_ind = getEasyStoGuServerUrl()
+			+ "/portal/statistics/sameDigitsInHighPrice/" + dateFrom + "_"
+			+ dateTo;
+	$.getJSON(url_ind, function(data) {
+		i = 0;
+		for (i; i < data.length; i += 1) {
+			var dateStr = data[i]['date'] + " 15:00:00";
+			var dateD = new Date(Date.parse(dateStr.replace(/-/g, "/")));
+			data_count1.push([ dateD.getTime(), data[i]['count1'] ]);
+			data_count2.push([ dateD.getTime(), data[i]['count2'] ]);
+		}
+
+		seriesCounter += 1;
+		if (seriesCounter === 2) {
+			createChart_SameDigitsInHighPrice_Statistics(stockId, date_price,
+					volume, data_count1, data_count2);
+		}
+	});
+}
+
+/**
+ * Load XXXYuan Stock Statistics
+ * 
+ * @returns {undefined}
+ */
+function loadXXXYuanStatistics(howMuchYuan, stockId, dateFrom, dateTo) {
+	var seriesCounter = 0, date_price = [], volume = [], data_count = [];
+	var version = 'v1';
+	/**
+	 * Load StocPrice and display OHLC
+	 * 
+	 * @returns {undefined}
+	 */
+	var url_price = getEasyStoGuServerUrl() + "/portal/price" + version
+			+ "/month/" + stockId + "/" + dateFrom + "_" + dateTo;
+	$.getJSON(url_price, function(data) {
+		i = 0;
+		for (i; i < data.length; i += 1) {
+			var dateStr = data[i]['date'] + " 15:00:00";
+			var dateD = new Date(Date.parse(dateStr.replace(/-/g, "/")));
+			date_price.push([ dateD.getTime(), data[i]['open'],
+					data[i]['high'], data[i]['low'], data[i]['close'] ]);
+
+			volume.push([ dateD.getTime(), data[i]['volume'] ]);
+		}
+
+		seriesCounter += 1;
+		if (seriesCounter === 2) {
+			createChart_XXXYuan_Statistics(stockId, date_price, volume,
+					data_count);
 		}
 	});
 
@@ -633,7 +632,8 @@ function loadXXXYuanStatistics(howMuchYuan, stockId, dateFrom, dateTo) {
 
 		seriesCounter += 1;
 		if (seriesCounter === 2) {
-			createChart_XXXYuan_Statistics(stockId, date_price, volume, data_count);
+			createChart_XXXYuan_Statistics(stockId, date_price, volume,
+					data_count);
 		}
 	});
 }

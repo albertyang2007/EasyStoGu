@@ -201,7 +201,7 @@ public class DailyScheduler implements SchedulingConfigurer {
 	}
 
 	// just run onece
-	@Scheduled(cron = "0 43 18 * * ?")
+	@Scheduled(cron = "0 50 22 * * ?")
 	public void JustRunOnce() {
 		String time = WeekdayUtil.currentDate();
 		if (time.equals("2017-11-16")) {

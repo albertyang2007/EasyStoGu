@@ -255,6 +255,8 @@ public class CheckPointStatisticsEndPoint {
 
 					vo.count1 = this.getCount(statisticsList, date,
 							DailyCombineCheckPoint.High_Price_Digit_In_Order.name());
+					vo.count2 = this.getCount(statisticsList, date,
+							DailyCombineCheckPoint.Low_Price_Digit_In_Order.name());
 
 					list.add(vo);
 				}
