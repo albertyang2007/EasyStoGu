@@ -530,6 +530,60 @@ function loadWRStatistics(version, stockId, dateFrom, dateTo) {
 	});
 }
 
+/**
+ * Load SameDigitsInHighPrice Statistics 
+ * 
+ * @returns {undefined}
+ */
+function loadSameDigitsInHighPriceStatistics(stockId, dateFrom, dateTo) {
+	var seriesCounter = 0, date_price = [], volume = [], data_count = [];
+	var version = 'v1';
+	/**
+	 * Load StocPrice and display OHLC
+	 * 
+	 * @returns {undefined}
+	 */
+	var url_price = getEasyStoGuServerUrl() + "/portal/price" + version + "/"
+	              + stockId + "/" + dateFrom + "_" + dateTo;
+	$.getJSON(url_price, function(data) {
+		i = 0;
+		for (i; i < data.length; i += 1) {
+			var dateStr = data[i]['date'] + " 15:00:00";
+			var dateD = new Date(Date.parse(dateStr.replace(/-/g, "/")));
+			date_price.push([ dateD.getTime(), data[i]['open'],
+					data[i]['high'], data[i]['low'], data[i]['close'] ]);
+
+			volume.push([ dateD.getTime(), data[i]['volume'] ]);
+		}
+
+		seriesCounter += 1;
+		if (seriesCounter === 2) {
+			createChart_SameDigitsInHighPrice_Statistics(stockId, date_price, volume, data_count);
+		}
+	});
+
+	/**
+	 * Load SameDigitsInHighPrice statistics and display
+	 * 
+	 * @returns {undefined}
+	 */
+	var url_ind = getEasyStoGuServerUrl() + "/portal/statistics/sameDigitsInHighPrice/" + dateFrom
+	              + "_" + dateTo;
+	$.getJSON(url_ind, function(data) {
+		i = 0;
+		for (i; i < data.length; i += 1) {
+			var dateStr = data[i]['date'] + " 15:00:00";
+			var dateD = new Date(Date.parse(dateStr.replace(/-/g, "/")));
+			data_count.push([ dateD.getTime(), data[i]['count1'] ]);
+		}
+
+		seriesCounter += 1;
+		if (seriesCounter === 2) {
+			createChart_SameDigitsInHighPrice_Statistics(stockId, date_price, volume, data_count);
+		}
+	});
+}
+
 
 /**
  * Load XXXYuan Stock Statistics

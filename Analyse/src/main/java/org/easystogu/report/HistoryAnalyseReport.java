@@ -460,9 +460,10 @@ public class HistoryAnalyseReport {
         // }
 
         // reporter.searchAllStockIdAnalyseHistoryBuySellCheckPoint(DailyCombineCheckPoint.WR_Bottom_Gordon);
-        reporter.searchAllStockIdAnalyseHistoryBuySellCheckPoint(
-                DailyCombineCheckPoint.MACD_TWICE_GORDON_W_Botton_MACD_DI_BEILI);
+        //reporter.searchAllStockIdAnalyseHistoryBuySellCheckPoint(
+        //        DailyCombineCheckPoint.MACD_TWICE_GORDON_W_Botton_MACD_DI_BEILI);
         //reporter.countAllStockIdStatisticsCheckPoint();
+        reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.High_Price_Digit_In_Order);
 
     }
 }

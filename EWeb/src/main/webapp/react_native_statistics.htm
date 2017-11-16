@@ -41,6 +41,8 @@ ${demo.css}
 				loadMacdStatistics(version, stockId, dateFrom, dateTo);
 			} else if (indicator == "wr") {
 				loadWRStatistics(version, stockId, dateFrom, dateTo);
+			} else if (indicator == "sameDigitsInHighPrice") {
+				loadSameDigitsInHighPriceStatistics(stockId, dateFrom, dateTo);
 			} else if (indicator == "OneYuan" || indicator == "FiveYuan" || indicator == "TenYuan") {
 				howMuchYuan = indicator;
 				loadXXXYuanStatistics(howMuchYuan, stockId, "1990-01-01", dateTo);

@@ -318,18 +318,6 @@ public class HomeEndPoint {
     @GET
     @Path("/test")
     public String test() {
-    	IndMacdCassTableHelper cable = IndMacdCassTableHelper.getInstance();
-		for (int i = 0; i < 10; i++) {
-			MacdVO vo = new MacdVO();
-			vo.stockId = "000001";
-			vo.date = WeekdayUtil.nextNDateString(WeekdayUtil.currentDate(), i);
-			vo.dif = i / 10;
-			vo.dea = i / 100;
-			vo.macd = i / 1000;
-			System.out.println("insert " + vo);
-			cable.insert(vo);
-		}
-		
 		return "OK";
     }
 }

@@ -1097,6 +1097,67 @@ function createChart_WR(stockId, date_price, volume, data_lonTerm,
 }
 
 /**
+ * Create the SameDigitsInHighPrice Stock statistics chart
+ * 
+ * @returns {undefined}
+ */
+function createChart_SameDigitsInHighPrice_Statistics(stockId, date_price, volume, data_count) {
+	$('#container').highcharts('StockChart', {
+
+		rangeSelector : {
+			selected : 1
+		},
+
+		title : {
+			text : stockId
+		},
+
+		plotOptions : {
+			candlestick : {
+				color : '#00ff00',// Green
+				upColor : '#ff0000'// Red
+			}
+		},
+
+		yAxis : [ {
+			labels : {
+				align : 'right',
+				x : -3
+			},
+			title : {
+				text : 'Price'
+			},
+			height : '60%',
+			lineWidth : 2
+		}, {
+			labels : {
+				align : 'right',
+				x : -3
+			},
+			title : {
+				text : 'Statistics'
+			},
+			top : '65%',
+			height : '35%',
+			offset : 0,
+			lineWidth : 2
+		} ],
+
+		series : [ {
+			type : 'candlestick',
+			name : 'OHLC',
+			data : date_price
+		}, {
+			name : '个股数目',
+			data : data_count,
+			yAxis : 1
+		} ]
+	});
+
+	chart = $('#container').highcharts();
+}
+
+/**
  * Create the XXXYuan Stock statistics chart
  * 
  * @returns {undefined}

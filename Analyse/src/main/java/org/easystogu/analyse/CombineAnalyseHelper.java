@@ -1,12 +1,15 @@
 package org.easystogu.analyse;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.easystogu.analyse.util.DigitInOrderHelper;
 import org.easystogu.analyse.util.StockPriceUtils;
 import org.easystogu.checkpoint.DailyCombineCheckPoint;
+import org.easystogu.db.access.table.StockPriceTableHelper;
+import org.easystogu.db.access.table.StockSuperVOHelper;
+import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.db.vo.table.StockSuperVO;
+import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.utils.CrossType;
 
 public class CombineAnalyseHelper {
@@ -152,8 +155,8 @@ public class CombineAnalyseHelper {
 					break;
 				}
 
-				if (findLongPlatformBasedOnWeekDateOrig(overWeekList.subList(overWeekList.size() - length,
-						overWeekList.size()))) {
+				if (findLongPlatformBasedOnWeekDateOrig(
+						overWeekList.subList(overWeekList.size() - length, overWeekList.size()))) {
 					hasWeekFlatformStartVO = true;
 					break;
 				}
@@ -285,9 +288,12 @@ public class CombineAnalyseHelper {
 										&& (pre1SuperDayVO.priceVO.close < curSuperDayVO.avgMA5)
 										&& (pre1SuperDayVO.priceVO.close < curSuperDayVO.avgMA10)) {
 									if (curSuperDayVO.volumeIncreasePercent >= 1.0) {
-										if ((StockPriceUtils.isKLineRed(curSuperDayVO.priceVO) || (curSuperDayVO.priceVO.close > pre1SuperDayVO.priceVO.close))
-												&& (StockPriceUtils.isKLineRed(pre1SuperDayVO.priceVO) || (pre1SuperDayVO.priceVO.close > pre2SuperDayVO.priceVO.close))
-												&& (StockPriceUtils.isKLineGreen(pre2SuperDayVO.priceVO) || (pre2SuperDayVO.priceVO.close < pre3SuperDayVO.priceVO.close))) {
+										if ((StockPriceUtils.isKLineRed(curSuperDayVO.priceVO)
+												|| (curSuperDayVO.priceVO.close > pre1SuperDayVO.priceVO.close))
+												&& (StockPriceUtils.isKLineRed(pre1SuperDayVO.priceVO)
+														|| (pre1SuperDayVO.priceVO.close > pre2SuperDayVO.priceVO.close))
+												&& (StockPriceUtils.isKLineGreen(pre2SuperDayVO.priceVO)
+														|| (pre2SuperDayVO.priceVO.close < pre3SuperDayVO.priceVO.close))) {
 											return true;
 										}
 									}
@@ -691,8 +697,8 @@ public class CombineAnalyseHelper {
 					break;
 				}
 
-				if (findLongPlatformBasedOnWeekDateOrig(overWeekList.subList(overWeekList.size() - length,
-						overWeekList.size()))) {
+				if (findLongPlatformBasedOnWeekDateOrig(
+						overWeekList.subList(overWeekList.size() - length, overWeekList.size()))) {
 					hasWeekFlatformStartVO = true;
 					break;
 				}
@@ -739,7 +745,8 @@ public class CombineAnalyseHelper {
 						&& StockPriceUtils.isKLineGreen(pre3SuperDayVO.priceVO)) {
 					if (curSuperDayVO.volumeIncreasePercent > 1) {
 						if ((pre2SuperDayVO.volumeIncreasePercent < 1)
-								|| (pre2SuperDayVO.priceVO.volume < pre2SuperDayVO.avgVol5 && pre3SuperDayVO.priceVO.volume < pre3SuperDayVO.avgVol5)) {
+								|| (pre2SuperDayVO.priceVO.volume < pre2SuperDayVO.avgVol5
+										&& pre3SuperDayVO.priceVO.volume < pre3SuperDayVO.avgVol5)) {
 							// close higher ma5 ma10
 							if (curSuperDayVO.priceVO.close >= curSuperDayVO.avgMA5
 									&& curSuperDayVO.priceVO.close >= curSuperDayVO.avgMA10) {
@@ -762,7 +769,8 @@ public class CombineAnalyseHelper {
 						&& StockPriceUtils.isKLineGreen(pre3SuperDayVO.priceVO)) {
 					if (curSuperDayVO.volumeIncreasePercent > 1) {
 						if ((pre1SuperDayVO.volumeIncreasePercent < 1 && pre2SuperDayVO.volumeIncreasePercent < 1)
-								|| (pre1SuperDayVO.priceVO.volume < pre1SuperDayVO.avgVol5 && pre2SuperDayVO.priceVO.volume < pre2SuperDayVO.avgVol5)) {
+								|| (pre1SuperDayVO.priceVO.volume < pre1SuperDayVO.avgVol5
+										&& pre2SuperDayVO.priceVO.volume < pre2SuperDayVO.avgVol5)) {
 							// close higher ma5 ma10
 							if (curSuperDayVO.priceVO.close >= curSuperDayVO.avgMA5
 									&& curSuperDayVO.priceVO.close >= curSuperDayVO.avgMA10) {
@@ -815,7 +823,8 @@ public class CombineAnalyseHelper {
 						&& StockPriceUtils.isKLineGreen(pre3SuperDayVO.priceVO)) {
 					if (curSuperDayVO.volumeIncreasePercent > 1) {
 						if ((pre2SuperDayVO.volumeIncreasePercent < 1)
-								|| (pre2SuperDayVO.priceVO.volume < pre2SuperDayVO.avgVol5 && pre3SuperDayVO.priceVO.volume < pre3SuperDayVO.avgVol5)) {
+								|| (pre2SuperDayVO.priceVO.volume < pre2SuperDayVO.avgVol5
+										&& pre3SuperDayVO.priceVO.volume < pre3SuperDayVO.avgVol5)) {
 							// close higher ma5 ma10
 							if (curSuperDayVO.priceVO.close >= curSuperDayVO.avgMA5
 									&& curSuperDayVO.priceVO.close >= curSuperDayVO.avgMA10) {
@@ -838,7 +847,8 @@ public class CombineAnalyseHelper {
 						&& StockPriceUtils.isKLineGreen(pre3SuperDayVO.priceVO)) {
 					if (curSuperDayVO.volumeIncreasePercent > 1) {
 						if ((pre1SuperDayVO.volumeIncreasePercent < 1 && pre2SuperDayVO.volumeIncreasePercent < 1)
-								|| (pre1SuperDayVO.priceVO.volume < pre1SuperDayVO.avgVol5 && pre2SuperDayVO.priceVO.volume < pre2SuperDayVO.avgVol5)) {
+								|| (pre1SuperDayVO.priceVO.volume < pre1SuperDayVO.avgVol5
+										&& pre2SuperDayVO.priceVO.volume < pre2SuperDayVO.avgVol5)) {
 							// close higher ma5 ma10
 							if (curSuperDayVO.priceVO.close >= curSuperDayVO.avgMA5
 									&& curSuperDayVO.priceVO.close >= curSuperDayVO.avgMA10) {
@@ -904,7 +914,8 @@ public class CombineAnalyseHelper {
 					double low = pre6SuperDayVO.priceVO.low;
 					if (pre5SuperDayVO.priceVO.high / high <= 1.02 && pre4SuperDayVO.priceVO.high / high <= 1.02
 							&& pre3SuperDayVO.priceVO.high / high <= 1.02 && pre2SuperDayVO.priceVO.high / high <= 1.02
-							&& pre1SuperDayVO.priceVO.high / high <= 1.02 && curSuperDayVO.priceVO.high / high <= 1.02) {
+							&& pre1SuperDayVO.priceVO.high / high <= 1.02
+							&& curSuperDayVO.priceVO.high / high <= 1.02) {
 						if (pre5SuperDayVO.priceVO.low >= low && pre4SuperDayVO.priceVO.low >= low
 								&& pre3SuperDayVO.priceVO.low >= low && pre2SuperDayVO.priceVO.low >= low
 								&& pre1SuperDayVO.priceVO.low >= low && curSuperDayVO.priceVO.low >= low) {
@@ -1046,11 +1057,13 @@ public class CombineAnalyseHelper {
 			if (curSuperDayVO.kdjCorssType == CrossType.GORDON && curSuperDayVO.kdjVO.kValueBetween(15, 30)) {
 
 				boolean pre4DayKDJGordon = (pre4SuperDayVO.kdjCorssType == CrossType.GORDON
-						|| pre4SuperDayVO.kdjCorssType == CrossType.NEAR_GORDON || pre4SuperDayVO.rsvCorssType == CrossType.GORDON)
+						|| pre4SuperDayVO.kdjCorssType == CrossType.NEAR_GORDON
+						|| pre4SuperDayVO.rsvCorssType == CrossType.GORDON)
 						&& pre4SuperDayVO.kdjVO.kValueBetween(15, 30);
 
 				boolean pre5DayKDJGordon = (pre5SuperDayVO.kdjCorssType == CrossType.GORDON
-						|| pre5SuperDayVO.kdjCorssType == CrossType.NEAR_GORDON || pre5SuperDayVO.rsvCorssType == CrossType.GORDON)
+						|| pre5SuperDayVO.kdjCorssType == CrossType.NEAR_GORDON
+						|| pre5SuperDayVO.rsvCorssType == CrossType.GORDON)
 						&& pre5SuperDayVO.kdjVO.kValueBetween(15, 30);
 
 				if (pre4DayKDJGordon || pre5DayKDJGordon) {
@@ -1202,8 +1215,8 @@ public class CombineAnalyseHelper {
 		// luzao close>ma19 and ma19<ma43<ma86
 		// shenxian close>h1 and h1<h2
 		case Trend_PhaseI_GuanCha: {
-			if (curSuperDayVO.priceVO.close > curSuperDayVO.avgMA19
-					&& (curSuperDayVO.avgMA19 < curSuperDayVO.avgMA43 && curSuperDayVO.avgMA43 < curSuperDayVO.avgMA86)) {
+			if (curSuperDayVO.priceVO.close > curSuperDayVO.avgMA19 && (curSuperDayVO.avgMA19 < curSuperDayVO.avgMA43
+					&& curSuperDayVO.avgMA43 < curSuperDayVO.avgMA86)) {
 				if (curSuperDayVO.priceVO.close > curSuperDayVO.shenXianVO.h1
 						&& curSuperDayVO.shenXianVO.h1 < curSuperDayVO.shenXianVO.h2) {
 					return true;
@@ -1567,8 +1580,8 @@ public class CombineAnalyseHelper {
 				// luzao phase II or III
 				if (curSuperDayVO.avgMA43 <= curSuperDayVO.avgMA86) {
 
-					if ((curSuperDayVO.macdCorssType == CrossType.GORDON || curSuperDayVO.macdCorssType == CrossType.NEAR_GORDON)
-							&& curSuperDayVO.macdVO.dif < 0) {
+					if ((curSuperDayVO.macdCorssType == CrossType.GORDON
+							|| curSuperDayVO.macdCorssType == CrossType.NEAR_GORDON) && curSuperDayVO.macdVO.dif < 0) {
 
 						// find previously macd Gordon within 40 days
 						int preMacdGordonIndex = this.findPreviouslyMACDGordonIndex(overDayList, 40);
@@ -1663,15 +1676,15 @@ public class CombineAnalyseHelper {
 		minPlatformLen = 3;
 		maxPlatformLen = 10;
 		for (int length = minPlatformLen; length <= maxPlatformLen; length++) {
-			if (findLongPlatformBasedOnWeekDate(
-					overWeekList.subList(overWeekList.size() - length, overWeekList.size()), overDayList)) {
+			if (findLongPlatformBasedOnWeekDate(overWeekList.subList(overWeekList.size() - length, overWeekList.size()),
+					overDayList)) {
 				findPlatform = true;
 				curSuperDayVO.hengPanWeekLen = length;
 				break;
 			}
 
-			if (findLongPlatformBasedOnWeekDateOrig(overWeekList.subList(overWeekList.size() - length,
-					overWeekList.size()))) {
+			if (findLongPlatformBasedOnWeekDateOrig(
+					overWeekList.subList(overWeekList.size() - length, overWeekList.size()))) {
 				findPlatform = true;
 				curSuperDayVO.hengPanWeekLen = length;
 				break;
@@ -2094,7 +2107,8 @@ public class CombineAnalyseHelper {
 	private boolean close_Higher_MA5_MA10(StockSuperVO curSuperDayVO) {
 
 		// close higher than ma5 and ma10
-		if (curSuperDayVO.priceVO.close >= curSuperDayVO.avgMA5 && curSuperDayVO.priceVO.close >= curSuperDayVO.avgMA10) {
+		if (curSuperDayVO.priceVO.close >= curSuperDayVO.avgMA5
+				&& curSuperDayVO.priceVO.close >= curSuperDayVO.avgMA10) {
 			return true;
 		}
 
@@ -2126,7 +2140,8 @@ public class CombineAnalyseHelper {
 	private boolean close_Higher_N_Percent_Than_LastClose(StockSuperVO curSuperDayVO, double increasePercent) {
 
 		// close higher N% than lastClose
-		if ((curSuperDayVO.priceVO.close - curSuperDayVO.priceVO.lastClose) * 100 / curSuperDayVO.priceVO.lastClose >= increasePercent) {
+		if ((curSuperDayVO.priceVO.close - curSuperDayVO.priceVO.lastClose) * 100
+				/ curSuperDayVO.priceVO.lastClose >= increasePercent) {
 			return true;
 		}
 
@@ -2136,7 +2151,8 @@ public class CombineAnalyseHelper {
 	private boolean close_Lower_N_Percent_Than_LastClose(StockSuperVO curSuperDayVO, double increasePercent) {
 
 		// close higher N% than lastClose
-		if ((curSuperDayVO.priceVO.close - curSuperDayVO.priceVO.lastClose) * 100 / curSuperDayVO.priceVO.lastClose < increasePercent) {
+		if ((curSuperDayVO.priceVO.close - curSuperDayVO.priceVO.lastClose) * 100
+				/ curSuperDayVO.priceVO.lastClose < increasePercent) {
 			return true;
 		}
 
@@ -2178,9 +2194,20 @@ public class CombineAnalyseHelper {
 		return number;
 	}
 
-	private void debugInfo(StockSuperVO vo, String date, String info) {
-		if (vo.priceVO.date.equals(date)) {
-			System.out.println(info);
+	public static void main(String[] args) {
+		CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
+		StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
+		List<String> stockIds = stockConfig.getAllStockId();
+		for (String stockId : stockIds) {
+			List<StockPriceVO> prices = stockPriceTable.queryByStockId(stockId);
+			for (StockPriceVO vo : prices) {
+				if (vo.date.equals("2017-11-15") || vo.date.equals("2017-11-16")) {
+					boolean rtn = DigitInOrderHelper.checkAll(vo.high);
+					if (rtn) {
+						System.out.println(vo);
+					}
+				}
+			}
 		}
 	}
 }
