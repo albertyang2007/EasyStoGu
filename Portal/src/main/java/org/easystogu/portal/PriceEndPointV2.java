@@ -38,7 +38,7 @@ public class PriceEndPointV2 extends PriceEndPointV0{
 		if (Pattern.matches(fromToRegex, dateParm)) {
 			String date1 = dateParm.split("_")[0];
 			String date2 = dateParm.split("_")[1];
-			List<Object> cacheSpList = indicatorCache.queryByStockId(Constants.cacheQianFuQuanStockPrice + ":" +stockIdParm);
+			List<StockPriceVO> cacheSpList = indicatorCache.queryByStockId(Constants.cacheQianFuQuanStockPrice + ":" +stockIdParm);
 			for (Object obj : cacheSpList) {
 				StockPriceVO spvo = (StockPriceVO)obj;
 				if (Strings.isDateSelected(date1 + " " + HHmmss, date2 + " " + HHmmss, spvo.date + " " + HHmmss)) {

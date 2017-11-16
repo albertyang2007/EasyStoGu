@@ -18,7 +18,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
-public class IndKDJTableHelper implements CacheAbleStock {
+public class IndKDJTableHelper{
 
 	private static Logger logger = LogHelper.getLogger(IndKDJTableHelper.class);
 	private static IndKDJTableHelper instance = null;
@@ -225,7 +225,7 @@ public class IndKDJTableHelper implements CacheAbleStock {
 		}
 	}
 	
-	public List queryByStockId(String stockId) {
+	public List<KDJVO> queryByStockId(String stockId) {
 		return this.getAllKDJ(stockId);
 	}
 

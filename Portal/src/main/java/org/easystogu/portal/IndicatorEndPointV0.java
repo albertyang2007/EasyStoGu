@@ -280,14 +280,17 @@ public class IndicatorEndPointV0 {
 		if (Pattern.matches(fromToRegex, dateParm)) {
 			String date1 = dateParm.split("_")[0];
 			String date2 = dateParm.split("_")[1];
-			// return ddxTable.getByIdAndBetweenDate(stockIdParm, date1, date2);
-			List<Object> cacheSpList = indicatorCache.queryByStockId(Constants.cacheIndDDX + ":" + stockIdParm);
-			for (Object obj : cacheSpList) {
-				DDXVO spvo = (DDXVO) obj;
-				if (Strings.isDateSelected(date1 + " " + HHmmss, date2 + " " + HHmmss, spvo.date + " " + HHmmss)) {
-					list.add(spvo);
-				}
-			}
+			return ddxTable.getByIdAndBetweenDate(stockIdParm, date1, date2);
+			// List<Object> cacheSpList =
+			// indicatorCache.queryByStockId(Constants.cacheIndDDX + ":" +
+			// stockIdParm);
+			// for (Object obj : cacheSpList) {
+			// DDXVO spvo = (DDXVO) obj;
+			// if (Strings.isDateSelected(date1 + " " + HHmmss, date2 + " " +
+			// HHmmss, spvo.date + " " + HHmmss)) {
+			// list.add(spvo);
+			// }
+			// }
 		} else if (Pattern.matches(dateRegex, dateParm) || Strings.isEmpty(dateParm)) {
 			list.add(ddxTable.getDDX(stockIdParm, dateParm));
 		}
@@ -297,7 +300,7 @@ public class IndicatorEndPointV0 {
 	// common function to fetch price from stockPrice table
 	protected List<StockPriceVO> fetchAllPrices(String stockid) {
 		List<StockPriceVO> spList = new ArrayList<StockPriceVO>();
-		List<Object> cacheSpList = indicatorCache.queryByStockId(Constants.cacheStockPrice + ":" + stockid);
+		List<StockPriceVO> cacheSpList = indicatorCache.queryByStockId(Constants.cacheStockPrice + ":" + stockid);
 		for (Object obj : cacheSpList) {
 			spList.add((StockPriceVO) obj);
 		}

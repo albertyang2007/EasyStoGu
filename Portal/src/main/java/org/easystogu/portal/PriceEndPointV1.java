@@ -49,7 +49,7 @@ public class PriceEndPointV1 {
 		if (Pattern.matches(fromToRegex, dateParm)) {
 			String date1 = dateParm.split("_")[0];
 			String date2 = dateParm.split("_")[1];
-			List<Object> cacheSpList = indicatorCache
+			List<StockPriceVO> cacheSpList = indicatorCache
 					.queryByStockId(Constants.cacheQianFuQuanStockPrice + ":" + stockIdParm);
 			for (Object obj : cacheSpList) {
 				StockPriceVO spvo = (StockPriceVO) obj;

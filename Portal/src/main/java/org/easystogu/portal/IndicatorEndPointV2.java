@@ -32,7 +32,7 @@ public class IndicatorEndPointV2 extends IndicatorEndPointV0{
 	@Override
 	protected List<StockPriceVO> fetchAllPrices(String stockid) {
 		List<StockPriceVO> spList = new ArrayList<StockPriceVO>();
-		List<Object> cacheSpList = indicatorCache.queryByStockId(Constants.cacheQianFuQuanStockPrice + ":" +stockid);
+		List<StockPriceVO> cacheSpList = indicatorCache.queryByStockId(Constants.cacheQianFuQuanStockPrice + ":" +stockid);
 		for (Object obj : cacheSpList) {
 			spList.add((StockPriceVO)obj);
 		}

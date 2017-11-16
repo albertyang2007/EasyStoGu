@@ -802,7 +802,7 @@ public class StockPriceTableHelper implements CacheAbleStock {
 		return 0;
 	}
 
-	public List queryByStockId(String stockId) {
+	public List<StockPriceVO> queryByStockId(String stockId) {
 		return this.getStockPriceById(stockId);
 	}
 

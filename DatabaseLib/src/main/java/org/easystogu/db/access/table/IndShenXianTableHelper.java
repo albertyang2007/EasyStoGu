@@ -18,7 +18,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
-public class IndShenXianTableHelper implements CacheAbleStock {
+public class IndShenXianTableHelper{
 	private static Logger logger = LogHelper.getLogger(IndShenXianTableHelper.class);
 	private static IndShenXianTableHelper instance = null;
 	private static IndShenXianTableHelper georedInstance = null;
@@ -222,7 +222,7 @@ public class IndShenXianTableHelper implements CacheAbleStock {
 		}
 	}
 
-	public List queryByStockId(String stockId) {
+	public List<ShenXianVO> queryByStockId(String stockId) {
 		return this.getAllShenXian(stockId);
 	}
 

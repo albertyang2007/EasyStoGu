@@ -134,7 +134,7 @@ public class ProcessRequestParmsInPostBody {
 	// common function to fetch price from stockPrice table
 	private List<StockPriceVO> fetchAllPrices(String stockid) {
 		List<StockPriceVO> spList = new ArrayList<StockPriceVO>();
-		List<Object> tmpList = this.indicatorCache.queryByStockId(Constants.cacheQianFuQuanStockPrice + ":" + stockid);
+		List<StockPriceVO> tmpList = this.indicatorCache.queryByStockId(Constants.cacheQianFuQuanStockPrice + ":" + stockid);
 		for (Object obj : tmpList) {
 			spList.add((StockPriceVO) obj);
 		}

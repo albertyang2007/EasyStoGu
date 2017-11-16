@@ -18,7 +18,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
-public class IndWRTableHelper implements CacheAbleStock {
+public class IndWRTableHelper{
 	private static Logger logger = LogHelper.getLogger(IndQSDDTableHelper.class);
 	private static IndWRTableHelper instance = null;
 	private static IndWRTableHelper georedInstance = null;
@@ -221,7 +221,7 @@ public class IndWRTableHelper implements CacheAbleStock {
 		return new ArrayList<WRVO>();
 	}
 
-	public List queryByStockId(String stockId) {
+	public List<WRVO> queryByStockId(String stockId) {
 		return this.getAllWR(stockId);
 	}
 

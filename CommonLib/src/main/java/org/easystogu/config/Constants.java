@@ -28,14 +28,14 @@ public class Constants {
 
 	public static String cacheStockPrice = "stockPrice";
 	public static String cacheQianFuQuanStockPrice = "qianFuQuanStockPrice";
-	public static String cacheIndKDJ = "indKDJ";
-	public static String cacheIndMacd = "indMacd";
-	public static String cacheIndBoll = "indBoll";
-	public static String cacheIndMA = "indMA";
-	public static String cacheIndShenXian = "indShenXian";
-	public static String cacheIndQSDD = "indQSDD";
-	public static String cacheIndWR = "indWR";
-	public static String cacheIndDDX = "indDDX";
+	//public static String cacheIndKDJ = "indKDJ";
+	//public static String cacheIndMacd = "indMacd";
+	//public static String cacheIndBoll = "indBoll";
+	//public static String cacheIndMA = "indMA";
+	//public static String cacheIndShenXian = "indShenXian";
+	//public static String cacheIndQSDD = "indQSDD";
+	//public static String cacheIndWR = "indWR";
+	//public static String cacheIndDDX = "indDDX";
 
 	public static String cacheLatestNStockDate = "latestndate";
 	public static String cacheSZZSDayListByIdAndBetweenDates = "SZZSDayListByIdAndBetweenDates";

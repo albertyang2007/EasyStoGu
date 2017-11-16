@@ -72,15 +72,17 @@ public class IndicatorEndPointV1 {
 		if (Pattern.matches(fromToRegex, dateParm)) {
 			String date1 = dateParm.split("_")[0];
 			String date2 = dateParm.split("_")[1];
-			// return macdTable.getByIdAndBetweenDate(stockIdParm, date1,
-			// date2);
-			List<Object> cacheSpList = indicatorCache.queryByStockId(Constants.cacheIndMacd + ":" + stockIdParm);
-			for (Object obj : cacheSpList) {
-				MacdVO spvo = (MacdVO) obj;
-				if (Strings.isDateSelected(date1 + " " + HHmmss, date2 + " " + HHmmss, spvo.date + " " + HHmmss)) {
-					list.add(spvo);
-				}
-			}
+			return macdTable.getByIdAndBetweenDate(stockIdParm, date1, date2);
+			// List<Object> cacheSpList =
+			// indicatorCache.queryByStockId(Constants.cacheIndMacd + ":" +
+			// stockIdParm);
+			// for (Object obj : cacheSpList) {
+			// MacdVO spvo = (MacdVO) obj;
+			// if (Strings.isDateSelected(date1 + " " + HHmmss, date2 + " " +
+			// HHmmss, spvo.date + " " + HHmmss)) {
+			// list.add(spvo);
+			// }
+			// }
 		} else if (Pattern.matches(dateRegex, dateParm) || Strings.isEmpty(dateParm)) {
 			list.add(macdTable.getMacd(stockIdParm, dateParm));
 		}
@@ -97,14 +99,17 @@ public class IndicatorEndPointV1 {
 		if (Pattern.matches(fromToRegex, dateParm)) {
 			String date1 = dateParm.split("_")[0];
 			String date2 = dateParm.split("_")[1];
-			// return kdjTable.getByIdAndBetweenDate(stockIdParm, date1, date2);
-			List<Object> cacheSpList = indicatorCache.queryByStockId(Constants.cacheIndKDJ + ":" + stockIdParm);
-			for (Object obj : cacheSpList) {
-				KDJVO spvo = (KDJVO) obj;
-				if (Strings.isDateSelected(date1 + " " + HHmmss, date2 + " " + HHmmss, spvo.date + " " + HHmmss)) {
-					list.add(spvo);
-				}
-			}
+			return kdjTable.getByIdAndBetweenDate(stockIdParm, date1, date2);
+			// List<Object> cacheSpList =
+			// indicatorCache.queryByStockId(Constants.cacheIndKDJ + ":" +
+			// stockIdParm);
+			// for (Object obj : cacheSpList) {
+			// KDJVO spvo = (KDJVO) obj;
+			// if (Strings.isDateSelected(date1 + " " + HHmmss, date2 + " " +
+			// HHmmss, spvo.date + " " + HHmmss)) {
+			// list.add(spvo);
+			// }
+			// }
 		} else if (Pattern.matches(fromToRegex, dateParm) || Strings.isEmpty(dateParm)) {
 			list.add(kdjTable.getKDJ(stockIdParm, dateParm));
 		}
@@ -121,15 +126,17 @@ public class IndicatorEndPointV1 {
 		if (Pattern.matches(fromToRegex, dateParm)) {
 			String date1 = dateParm.split("_")[0];
 			String date2 = dateParm.split("_")[1];
-			// return bollTable.getByIdAndBetweenDate(stockIdParm, date1,
-			// date2);
-			List<Object> cacheSpList = indicatorCache.queryByStockId(Constants.cacheIndBoll + ":" + stockIdParm);
-			for (Object obj : cacheSpList) {
-				BollVO spvo = (BollVO) obj;
-				if (Strings.isDateSelected(date1 + " " + HHmmss, date2 + " " + HHmmss, spvo.date + " " + HHmmss)) {
-					list.add(spvo);
-				}
-			}
+			return bollTable.getByIdAndBetweenDate(stockIdParm, date1, date2);
+			// List<Object> cacheSpList =
+			// indicatorCache.queryByStockId(Constants.cacheIndBoll + ":" +
+			// stockIdParm);
+			// for (Object obj : cacheSpList) {
+			// BollVO spvo = (BollVO) obj;
+			// if (Strings.isDateSelected(date1 + " " + HHmmss, date2 + " " +
+			// HHmmss, spvo.date + " " + HHmmss)) {
+			// list.add(spvo);
+			// }
+			// }
 		} else if (Pattern.matches(dateRegex, dateParm) || Strings.isEmpty(dateParm)) {
 			list.add(bollTable.getBoll(stockIdParm, dateParm));
 		}
@@ -147,15 +154,17 @@ public class IndicatorEndPointV1 {
 		if (Pattern.matches(fromToRegex, dateParm)) {
 			String date1 = dateParm.split("_")[0];
 			String date2 = dateParm.split("_")[1];
-			// return shenXianTable.getByIdAndBetweenDate(stockIdParm, date1,
-			// date2);
-			List<Object> cacheSpList = indicatorCache.queryByStockId(Constants.cacheIndShenXian + ":" + stockIdParm);
-			for (Object obj : cacheSpList) {
-				ShenXianVO spvo = (ShenXianVO) obj;
-				if (Strings.isDateSelected(date1 + " " + HHmmss, date2 + " " + HHmmss, spvo.date + " " + HHmmss)) {
-					list.add(spvo);
-				}
-			}
+			return shenXianTable.getByIdAndBetweenDate(stockIdParm, date1, date2);
+			// List<Object> cacheSpList =
+			// indicatorCache.queryByStockId(Constants.cacheIndShenXian + ":" +
+			// stockIdParm);
+			// for (Object obj : cacheSpList) {
+			// ShenXianVO spvo = (ShenXianVO) obj;
+			// if (Strings.isDateSelected(date1 + " " + HHmmss, date2 + " " +
+			// HHmmss, spvo.date + " " + HHmmss)) {
+			// list.add(spvo);
+			// }
+			// }
 		} else if (Pattern.matches(dateRegex, dateParm) || Strings.isEmpty(dateParm)) {
 			list.add(shenXianTable.getShenXian(stockIdParm, dateParm));
 		}
@@ -229,15 +238,17 @@ public class IndicatorEndPointV1 {
 		if (Pattern.matches(fromToRegex, dateParm)) {
 			String date1 = dateParm.split("_")[0];
 			String date2 = dateParm.split("_")[1];
-			// return qsddTable.getByIdAndBetweenDate(stockIdParm, date1,
-			// date2);
-			List<Object> cacheSpList = indicatorCache.queryByStockId(Constants.cacheIndQSDD + ":" + stockIdParm);
-			for (Object obj : cacheSpList) {
-				QSDDVO spvo = (QSDDVO) obj;
-				if (Strings.isDateSelected(date1 + " " + HHmmss, date2 + " " + HHmmss, spvo.date + " " + HHmmss)) {
-					list.add(spvo);
-				}
-			}
+			return qsddTable.getByIdAndBetweenDate(stockIdParm, date1, date2);
+			// List<Object> cacheSpList =
+			// indicatorCache.queryByStockId(Constants.cacheIndQSDD + ":" +
+			// stockIdParm);
+			// for (Object obj : cacheSpList) {
+			// QSDDVO spvo = (QSDDVO) obj;
+			// if (Strings.isDateSelected(date1 + " " + HHmmss, date2 + " " +
+			// HHmmss, spvo.date + " " + HHmmss)) {
+			// list.add(spvo);
+			// }
+			// }
 		} else if (Pattern.matches(dateRegex, dateParm) || Strings.isEmpty(dateParm)) {
 			list.add(qsddTable.getQSDD(stockIdParm, dateParm));
 
@@ -255,14 +266,17 @@ public class IndicatorEndPointV1 {
 		if (Pattern.matches(fromToRegex, dateParm)) {
 			String date1 = dateParm.split("_")[0];
 			String date2 = dateParm.split("_")[1];
-			// return wrTable.getByIdAndBetweenDate(stockIdParm, date1, date2);
-			List<Object> cacheSpList = indicatorCache.queryByStockId(Constants.cacheIndWR + ":" + stockIdParm);
-			for (Object obj : cacheSpList) {
-				WRVO spvo = (WRVO) obj;
-				if (Strings.isDateSelected(date1 + " " + HHmmss, date2 + " " + HHmmss, spvo.date + " " + HHmmss)) {
-					list.add(spvo);
-				}
-			}
+			return wrTable.getByIdAndBetweenDate(stockIdParm, date1, date2);
+			// List<Object> cacheSpList =
+			// indicatorCache.queryByStockId(Constants.cacheIndWR + ":" +
+			// stockIdParm);
+			// for (Object obj : cacheSpList) {
+			// WRVO spvo = (WRVO) obj;
+			// if (Strings.isDateSelected(date1 + " " + HHmmss, date2 + " " +
+			// HHmmss, spvo.date + " " + HHmmss)) {
+			// list.add(spvo);
+			// }
+			// }
 		} else if (Pattern.matches(dateRegex, dateParm) || Strings.isEmpty(dateParm)) {
 			list.add(wrTable.getWR(stockIdParm, dateParm));
 		}
@@ -279,14 +293,17 @@ public class IndicatorEndPointV1 {
 		if (Pattern.matches(fromToRegex, dateParm)) {
 			String date1 = dateParm.split("_")[0];
 			String date2 = dateParm.split("_")[1];
-			// return ddxTable.getByIdAndBetweenDate(stockIdParm, date1, date2);
-			List<Object> cacheSpList = indicatorCache.queryByStockId(Constants.cacheIndDDX + ":" + stockIdParm);
-			for (Object obj : cacheSpList) {
-				DDXVO spvo = (DDXVO) obj;
-				if (Strings.isDateSelected(date1 + " " + HHmmss, date2 + " " + HHmmss, spvo.date + " " + HHmmss)) {
-					list.add(spvo);
-				}
-			}
+			return ddxTable.getByIdAndBetweenDate(stockIdParm, date1, date2);
+			// List<Object> cacheSpList =
+			// indicatorCache.queryByStockId(Constants.cacheIndDDX + ":" +
+			// stockIdParm);
+			// for (Object obj : cacheSpList) {
+			// DDXVO spvo = (DDXVO) obj;
+			// if (Strings.isDateSelected(date1 + " " + HHmmss, date2 + " " +
+			// HHmmss, spvo.date + " " + HHmmss)) {
+			// list.add(spvo);
+			// }
+			// }
 		} else if (Pattern.matches(dateRegex, dateParm) || Strings.isEmpty(dateParm)) {
 			list.add(ddxTable.getDDX(stockIdParm, dateParm));
 		}
@@ -296,7 +313,7 @@ public class IndicatorEndPointV1 {
 	// common function to fetch price from stockPrice table
 	protected List<StockPriceVO> fetchAllPrices(String stockid) {
 		List<StockPriceVO> spList = new ArrayList<StockPriceVO>();
-		List<Object> cacheSpList = indicatorCache.queryByStockId(Constants.cacheQianFuQuanStockPrice + ":" + stockid);
+		List<StockPriceVO> cacheSpList = indicatorCache.queryByStockId(Constants.cacheQianFuQuanStockPrice + ":" + stockid);
 		for (Object obj : cacheSpList) {
 			spList.add((StockPriceVO) obj);
 		}
