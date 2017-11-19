@@ -1,6 +1,6 @@
 package org.easystogu.db.vo.table;
 
-public class DDXVO {
+public class DDXVO  extends IndicatorVO{
 	public String stockId;
 	public String date;
 	public double ddx;

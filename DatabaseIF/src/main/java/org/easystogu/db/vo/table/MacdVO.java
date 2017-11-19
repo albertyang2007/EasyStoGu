@@ -1,9 +1,8 @@
 package org.easystogu.db.vo.table;
 
 //table name = "ind_macd"
-public class MacdVO {
+public class MacdVO extends IndicatorVO{
 	public String stockId;
-	public String name;
 	public String date;
 	public double dif;
 	public double dea;
@@ -17,7 +16,6 @@ public class MacdVO {
 	public String toString() {
 		StringBuffer sb = new StringBuffer("MacdVO: {");
 		sb.append("stockId:" + stockId);
-		sb.append(", name:" + name);
 		sb.append(", date:" + date);
 		sb.append(", DIF:" + dif);
 		sb.append(", DEA:" + dea);
@@ -32,14 +30,6 @@ public class MacdVO {
 
 	public void setStockId(String stockId) {
 		this.stockId = stockId;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public String getDate() {

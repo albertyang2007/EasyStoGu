@@ -1,6 +1,6 @@
 package org.easystogu.db.vo.table;
 
-public class LuZaoVO {
+public class LuZaoVO  extends IndicatorVO{
 	public String stockId;
 	public String name;
 	public String date;

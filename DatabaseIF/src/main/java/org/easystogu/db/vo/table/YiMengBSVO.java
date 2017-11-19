@@ -1,6 +1,6 @@
 package org.easystogu.db.vo.table;
 
-public class YiMengBSVO {
+public class YiMengBSVO  extends IndicatorVO{
 
 	public String stockId;
 	public String name;

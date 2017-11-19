@@ -1,6 +1,6 @@
 package org.easystogu.db.vo.table;
 
-public class BBIVO {
+public class BBIVO  extends IndicatorVO{
 	public String stockId;
 	public String name;
 	public String date;

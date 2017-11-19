@@ -1,7 +1,7 @@
 package org.easystogu.db.vo.table;
 
 //table name = "ind_kdj"
-public class KDJVO {
+public class KDJVO  extends IndicatorVO{
 
 	public String stockId;
 	public String name;

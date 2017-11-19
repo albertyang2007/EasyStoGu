@@ -25,18 +25,19 @@ public class IndMacdTableHelper{
 	protected String tableName = "IND_MACD";
 	protected String INSERT_SQL = "INSERT INTO " + tableName
 			+ " (stockId, date, dif, dea, macd) VALUES (:stockId, :date, :dif, :dea, :macd)";
+	
 	protected String QUERY_BY_ID_AND_DATE_SQL = "SELECT * FROM " + tableName
 			+ " WHERE stockId = :stockId AND date = :date";
 	protected String QUERY_BY_DATE_SQL = "SELECT * FROM " + tableName + " WHERE date = :date";
 	protected String QUERY_ALL_BY_ID_SQL = "SELECT * FROM " + tableName + " WHERE stockId = :stockId ORDER BY date";
 	protected String QUERY_LATEST_N_BY_ID_SQL = "SELECT * FROM " + tableName
 			+ " WHERE stockId = :stockId ORDER BY date DESC LIMIT :limit";
+	protected String QUERY_BY_STOCKID_AND_BETWEEN_DATE = "SELECT * FROM " + tableName
+			+ " WHERE stockId = :stockId AND DATE >= :date1 AND DATE <= :date2 ORDER BY DATE";
 	protected String DELETE_BY_STOCKID_SQL = "DELETE FROM " + tableName + " WHERE stockId = :stockId";
 	protected String DELETE_BY_STOCKID_AND_DATE_SQL = "DELETE FROM " + tableName
 			+ " WHERE stockId = :stockId AND date = :date";
 	protected String DELETE_BY_DATE_SQL = "DELETE FROM " + tableName + " WHERE date = :date";
-	protected String QUERY_BY_STOCKID_AND_BETWEEN_DATE = "SELECT * FROM " + tableName
-			+ " WHERE stockId = :stockId AND DATE >= :date1 AND DATE <= :date2 ORDER BY DATE";
 
 	protected NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 

@@ -1,6 +1,6 @@
 package org.easystogu.db.vo.table;
 
-public class WRVO {
+public class WRVO  extends IndicatorVO{
 
 	public String stockId;
 	public String name;

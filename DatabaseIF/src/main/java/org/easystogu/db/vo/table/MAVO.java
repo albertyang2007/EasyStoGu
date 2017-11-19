@@ -1,6 +1,6 @@
 package org.easystogu.db.vo.table;
 
-public class MAVO {
+public class MAVO  extends IndicatorVO{
 	public String stockId;
 	public String date;
 	public double ma5;
