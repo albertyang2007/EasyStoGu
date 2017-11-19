@@ -35,7 +35,8 @@ public abstract class CassandraIndDBHelper implements IndicatorDBHelperIF {
 
 		String[] paris = generateFieldsNamePairs();
 
-		// INSERT INTO ind.macd (stockId, date, dif, dea, macd) VALUES (?, ?, ?, ?, ?);
+		// INSERT INTO ind.macd (stockId, date, dif, dea, macd) VALUES (?, ?, ?,
+		// ?, ?);
 		INSERT_SQL = "INSERT INTO " + tableName + " (" + paris[0] + ") VALUES (" + paris[1] + ")";
 		QUERY_ALL_BY_ID_SQL = "SELECT * FROM " + tableName + " WHERE stockId = ? ORDER BY date";
 		QUERY_BY_ID_AND_DATE_SQL = "SELECT * FROM " + tableName + " WHERE stockId = ? AND date = ?";
@@ -65,6 +66,10 @@ public abstract class CassandraIndDBHelper implements IndicatorDBHelperIF {
 	@SuppressWarnings("unchecked")
 	protected <T extends IndicatorVO> T mapRowToVO(Row r) {
 		try {
+
+			if (r == null)
+				return null;
+
 			IndicatorVO vo = indicatorVOClass.newInstance();
 			Field[] fields = indicatorVOClass.getDeclaredFields();
 

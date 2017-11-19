@@ -67,3 +67,26 @@ CREATE TABLE IF NOT EXISTS EasyStoGu.ind_wr
   midterm double,
   PRIMARY KEY (stockid, date)
 );
+
+#ind_week_macd table
+CREATE TABLE IF NOT EXISTS EasyStoGu.ind_week_macd
+(
+  stockid text,
+  date text,
+  dif double,
+  dea double,
+  macd double,
+  PRIMARY KEY (stockid, date)
+);
+
+#ind_week_kdj table
+CREATE TABLE IF NOT EXISTS EasyStoGu.ind_week_kdj
+(
+  stockid text,
+  date text,
+  k double,
+  d double,
+  j double,
+  rsv double,
+  PRIMARY KEY (stockid, date)
+);

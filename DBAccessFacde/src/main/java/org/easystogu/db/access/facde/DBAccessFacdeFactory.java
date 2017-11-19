@@ -11,6 +11,8 @@ import org.easystogu.cassandra.access.table.IndMacdCassTableHelper;
 import org.easystogu.cassandra.access.table.IndQSDDCassTableHelper;
 import org.easystogu.cassandra.access.table.IndShenXianCassTableHelper;
 import org.easystogu.cassandra.access.table.IndWRCassTableHelper;
+import org.easystogu.cassandra.access.table.IndWeekKDJCassTableHelper;
+import org.easystogu.cassandra.access.table.IndWeekMacdCassTableHelper;
 import org.easystogu.db.helper.IF.IndicatorDBHelperIF;
 import org.easystogu.postgresql.access.table.IndBollDBTableHelper;
 import org.easystogu.postgresql.access.table.IndKDJDBTableHelper;
@@ -18,6 +20,8 @@ import org.easystogu.postgresql.access.table.IndMacdDBTableHelper;
 import org.easystogu.postgresql.access.table.IndQSDDDBTableHelper;
 import org.easystogu.postgresql.access.table.IndShenXianDBTableHelper;
 import org.easystogu.postgresql.access.table.IndWRDBTableHelper;
+import org.easystogu.postgresql.access.table.IndWeekKDJDBTableHelper;
+import org.easystogu.postgresql.access.table.IndWeekMacdDBTableHelper;
 
 public class DBAccessFacdeFactory {
 	static ConfigurationServiceCache config = ConfigurationServiceCache.getInstance();
@@ -33,6 +37,8 @@ public class DBAccessFacdeFactory {
 		cqlFacdeMap.put("Qsdd", IndQSDDCassTableHelper.class);
 		cqlFacdeMap.put("Wr", IndWRCassTableHelper.class);
 		cqlFacdeMap.put("Shenxian", IndShenXianCassTableHelper.class);
+		cqlFacdeMap.put("WeekMacd", IndWeekMacdCassTableHelper.class);
+		cqlFacdeMap.put("WeekKdj", IndWeekKDJCassTableHelper.class);
 
 		// sql
 		sqlFacdeMap.put("Macd", IndMacdDBTableHelper.class);
@@ -41,6 +47,8 @@ public class DBAccessFacdeFactory {
 		sqlFacdeMap.put("Qsdd", IndQSDDDBTableHelper.class);
 		sqlFacdeMap.put("Wr", IndWRDBTableHelper.class);
 		sqlFacdeMap.put("Shenxian", IndShenXianDBTableHelper.class);
+		sqlFacdeMap.put("WeekMacd", IndWeekMacdDBTableHelper.class);
+		sqlFacdeMap.put("WeekKdj", IndWeekKDJDBTableHelper.class);
 	}
 
 	@SuppressWarnings("unchecked")
