@@ -8,7 +8,7 @@ import java.util.List;
 
 import org.easystogu.cassandra.ds.CassandraKepSpaceFactory;
 import org.easystogu.config.Constants;
-import org.easystogu.db.helper.IF.IndicatorDBHelper;
+import org.easystogu.db.helper.IF.IndicatorDBHelperIF;
 import org.easystogu.db.vo.table.IndicatorVO;
 
 import com.datastax.driver.core.BatchStatement;
@@ -17,7 +17,7 @@ import com.datastax.driver.core.ResultSet;
 import com.datastax.driver.core.Row;
 import com.datastax.driver.core.Session;
 
-public abstract class CassandraIndDBHelper implements IndicatorDBHelper {
+public abstract class CassandraIndDBHelper implements IndicatorDBHelperIF {
 	protected Class<? extends IndicatorVO> indicatorVOClass;
 	protected Session session;
 	protected String tableName;// To be set later
@@ -50,6 +50,18 @@ public abstract class CassandraIndDBHelper implements IndicatorDBHelper {
 		this.session = CassandraKepSpaceFactory.createCluster().connect();
 	}
 
+	private String[] generateFieldsNamePairs() {
+		StringBuffer sbNames = new StringBuffer();
+		StringBuffer sbQuota = new StringBuffer();
+		Field[] fields = indicatorVOClass.getDeclaredFields();
+		for (Field f : fields) {
+			sbNames.append(f.getName() + ",");
+			sbQuota.append("?,");
+		}
+		return new String[] { sbNames.toString().substring(0, sbNames.length() - 1),
+				sbQuota.toString().substring(0, sbQuota.length() - 1) };
+	}
+
 	@SuppressWarnings("unchecked")
 	protected <T extends IndicatorVO> T mapRowToVO(Row r) {
 		try {
@@ -75,18 +87,6 @@ public abstract class CassandraIndDBHelper implements IndicatorDBHelper {
 			e.printStackTrace();
 		}
 		return null;
-	}
-
-	private String[] generateFieldsNamePairs() {
-		StringBuffer sbNames = new StringBuffer();
-		StringBuffer sbQuota = new StringBuffer();
-		Field[] fields = indicatorVOClass.getDeclaredFields();
-		for (Field f : fields) {
-			sbNames.append(f.getName() + ",");
-			sbQuota.append("?,");
-		}
-		return new String[] { sbNames.toString().substring(0, sbNames.length() - 1),
-				sbQuota.toString().substring(0, sbQuota.length() - 1) };
 	}
 
 	private Object[] generateBindParms(IndicatorVO vo) {
@@ -130,6 +130,12 @@ public abstract class CassandraIndDBHelper implements IndicatorDBHelper {
 		session.execute(batchStatement);
 	}
 
+	public <T extends IndicatorVO> T getSingle(String stockId, String date) {
+		PreparedStatement preparedStatement = session.prepare(QUERY_BY_ID_AND_DATE_SQL);
+		ResultSet results = session.execute(preparedStatement.bind(stockId, date));
+		return mapResultSetToSingle(results);
+	}
+
 	public <T extends IndicatorVO> List<T> getAll(String stockId) {
 		PreparedStatement preparedStatement = session.prepare(QUERY_ALL_BY_ID_SQL);
 		ResultSet results = session.execute(preparedStatement.bind(stockId));
@@ -144,12 +150,6 @@ public abstract class CassandraIndDBHelper implements IndicatorDBHelper {
 	public void delete(String stockId, String date) {
 		PreparedStatement preparedStatement = session.prepare(DELETE_BY_STOCKID_AND_DATE_SQL);
 		session.execute(preparedStatement.bind(stockId, date));
-	}
-
-	public <T extends IndicatorVO> T getSingle(String stockId, String date) {
-		PreparedStatement preparedStatement = session.prepare(QUERY_BY_ID_AND_DATE_SQL);
-		ResultSet results = session.execute(preparedStatement.bind(stockId, date));
-		return mapResultSetToSingle(results);
 	}
 
 	public <T extends IndicatorVO> List<T> getByIdAndBetweenDate(String stockId, String startDate, String endDate) {

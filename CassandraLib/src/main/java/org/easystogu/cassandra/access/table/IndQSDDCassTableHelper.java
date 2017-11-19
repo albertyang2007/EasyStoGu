@@ -27,7 +27,7 @@ public class IndQSDDCassTableHelper extends CassandraIndDBHelper {
 		List<QSDDVO> list = new ArrayList<QSDDVO>();
 		for (int i = 0; i < 10; i++) {
 			QSDDVO vo = new QSDDVO();
-			vo.stockId = "000001";
+			vo.stockId = "100001";
 			vo.date = WeekdayUtil.nextNDateString(WeekdayUtil.currentDate(), i);
 			vo.lonTerm = RandomUtils.nextDouble();
 			vo.shoTerm = RandomUtils.nextDouble();
@@ -37,13 +37,13 @@ public class IndQSDDCassTableHelper extends CassandraIndDBHelper {
 
 		cable.insert(list);
 		System.out.println("getAll");
-		cable.getAll("000001");
+		cable.getAll("100001");
 		System.out.println("getSingle");
-		cable.getSingle("000001", "2017-11-19");
+		cable.getSingle("100001", "2017-11-19");
 		System.out.println("getByIdAndBetweenDate");
-		cable.getByIdAndBetweenDate("000001", "2017-11-19", "2017-11-20");
+		cable.getByIdAndBetweenDate("100001", "2017-11-19", "2017-11-20");
 		System.out.println("getByIdAndNDate");
-		cable.getByIdAndLatestNDate("000001", 5);
+		cable.getByIdAndLatestNDate("100001", 5);
 
 		System.exit(0);
 	}

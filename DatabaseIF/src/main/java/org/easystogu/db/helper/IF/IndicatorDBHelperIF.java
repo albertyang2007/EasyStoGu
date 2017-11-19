@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.easystogu.db.vo.table.IndicatorVO;
 
-public interface IndicatorDBHelper {
+public interface IndicatorDBHelperIF {
 
 	public <T extends IndicatorVO> void insert(T vo);
 
