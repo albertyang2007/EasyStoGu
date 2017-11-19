@@ -13,6 +13,7 @@ import org.easystogu.cassandra.access.table.IndShenXianCassTableHelper;
 import org.easystogu.cassandra.access.table.IndWRCassTableHelper;
 import org.easystogu.cassandra.access.table.IndWeekKDJCassTableHelper;
 import org.easystogu.cassandra.access.table.IndWeekMacdCassTableHelper;
+import org.easystogu.config.Constants;
 import org.easystogu.db.helper.IF.IndicatorDBHelperIF;
 import org.easystogu.postgresql.access.table.IndBollDBTableHelper;
 import org.easystogu.postgresql.access.table.IndKDJDBTableHelper;
@@ -31,24 +32,24 @@ public class DBAccessFacdeFactory {
 
 	static {
 		// cql
-		cqlFacdeMap.put("Macd", IndMacdCassTableHelper.class);
-		cqlFacdeMap.put("Kdj", IndKDJCassTableHelper.class);
-		cqlFacdeMap.put("Boll", IndBollCassTableHelper.class);
-		cqlFacdeMap.put("Qsdd", IndQSDDCassTableHelper.class);
-		cqlFacdeMap.put("Wr", IndWRCassTableHelper.class);
-		cqlFacdeMap.put("Shenxian", IndShenXianCassTableHelper.class);
-		cqlFacdeMap.put("WeekMacd", IndWeekMacdCassTableHelper.class);
-		cqlFacdeMap.put("WeekKdj", IndWeekKDJCassTableHelper.class);
+		cqlFacdeMap.put(Constants.indMacd, IndMacdCassTableHelper.class);
+		cqlFacdeMap.put(Constants.indKDJ, IndKDJCassTableHelper.class);
+		cqlFacdeMap.put(Constants.indBoll, IndBollCassTableHelper.class);
+		cqlFacdeMap.put(Constants.indQSDD, IndQSDDCassTableHelper.class);
+		cqlFacdeMap.put(Constants.indWR, IndWRCassTableHelper.class);
+		cqlFacdeMap.put(Constants.indShenXian, IndShenXianCassTableHelper.class);
+		cqlFacdeMap.put(Constants.indWeekMacd, IndWeekMacdCassTableHelper.class);
+		cqlFacdeMap.put(Constants.indWeekKDJ, IndWeekKDJCassTableHelper.class);
 
 		// sql
-		sqlFacdeMap.put("Macd", IndMacdDBTableHelper.class);
-		sqlFacdeMap.put("Kdj", IndKDJDBTableHelper.class);
-		sqlFacdeMap.put("Boll", IndBollDBTableHelper.class);
-		sqlFacdeMap.put("Qsdd", IndQSDDDBTableHelper.class);
-		sqlFacdeMap.put("Wr", IndWRDBTableHelper.class);
-		sqlFacdeMap.put("Shenxian", IndShenXianDBTableHelper.class);
-		sqlFacdeMap.put("WeekMacd", IndWeekMacdDBTableHelper.class);
-		sqlFacdeMap.put("WeekKdj", IndWeekKDJDBTableHelper.class);
+		sqlFacdeMap.put(Constants.indMacd, IndMacdDBTableHelper.class);
+		sqlFacdeMap.put(Constants.indKDJ, IndKDJDBTableHelper.class);
+		sqlFacdeMap.put(Constants.indBoll, IndBollDBTableHelper.class);
+		sqlFacdeMap.put(Constants.indQSDD, IndQSDDDBTableHelper.class);
+		sqlFacdeMap.put(Constants.indWR, IndWRDBTableHelper.class);
+		sqlFacdeMap.put(Constants.indShenXian, IndShenXianDBTableHelper.class);
+		sqlFacdeMap.put(Constants.indWeekMacd, IndWeekMacdDBTableHelper.class);
+		sqlFacdeMap.put(Constants.indWeekKDJ, IndWeekKDJDBTableHelper.class);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -58,7 +59,7 @@ public class DBAccessFacdeFactory {
 			Class clazz = cqlFacdeMap.get(name);
 			if ("SQL".equals(indicatorDBType))
 				clazz = sqlFacdeMap.get(name);
-			
+
 			Method getInstanceM = clazz.getMethod("getInstance", null);
 			return (IndicatorDBHelperIF) getInstanceM.invoke(null, null);
 		} catch (Exception e) {
@@ -66,7 +67,7 @@ public class DBAccessFacdeFactory {
 		}
 		return null;
 	}
-	
+
 	public static void main(String[] args) {
 		IndicatorDBHelperIF boll = DBAccessFacdeFactory.getInstance("Boll");
 		System.out.println(boll.getClass());
