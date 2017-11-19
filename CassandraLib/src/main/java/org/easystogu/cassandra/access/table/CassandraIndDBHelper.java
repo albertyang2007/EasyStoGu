@@ -6,7 +6,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.easystogu.cassandra.ds.CassandraKepSpaceFactory;
+import org.easystogu.cassandra.ks.CassandraKepSpaceFactory;
 import org.easystogu.config.Constants;
 import org.easystogu.db.helper.IF.IndicatorDBHelperIF;
 import org.easystogu.db.vo.table.IndicatorVO;

@@ -1,4 +1,4 @@
-package org.easystogu.cassandra.ds;
+package org.easystogu.cassandra.ks;
 
 import org.easystogu.config.ConfigurationService;
 import org.easystogu.config.Constants;

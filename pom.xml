@@ -28,6 +28,7 @@
 				<module>DatabaseIF</module>
 				<module>DatabaseLib</module>
 				<module>CassandraLib</module>
+				<module>DBAccessFacde</module>
 				<module>DataCollect</module>
 				<module>EasyMoneyCollect</module>
 				<module>Indicator</module>
