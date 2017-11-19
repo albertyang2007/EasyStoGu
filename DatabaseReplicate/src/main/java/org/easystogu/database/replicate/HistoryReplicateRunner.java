@@ -3,16 +3,7 @@ package org.easystogu.database.replicate;
 import org.easystogu.database.replicate.runner.CompanyInfoReplicateWorker;
 import org.easystogu.database.replicate.runner.DailySelectionReplicateWorker;
 import org.easystogu.database.replicate.runner.DailyStatisticsReplicateWorker;
-import org.easystogu.database.replicate.runner.IndBollReplicateWorker;
 import org.easystogu.database.replicate.runner.IndDDXReplicateWorker;
-import org.easystogu.database.replicate.runner.IndKDJReplicateWorker;
-import org.easystogu.database.replicate.runner.IndMAReplicateWorker;
-import org.easystogu.database.replicate.runner.IndMacdReplicateWorker;
-import org.easystogu.database.replicate.runner.IndQSDDReplicateWorker;
-import org.easystogu.database.replicate.runner.IndShenXianReplicateWorker;
-import org.easystogu.database.replicate.runner.IndWRReplicateWorker;
-import org.easystogu.database.replicate.runner.IndWeekKDJReplicateWorker;
-import org.easystogu.database.replicate.runner.IndWeekMacdReplicateWorker;
 import org.easystogu.database.replicate.runner.QianFuQuanStockPriceReplicateWorker;
 import org.easystogu.database.replicate.runner.StockPriceReplicateWorker;
 import org.easystogu.database.replicate.runner.WeekStockPriceReplicateWorker;
@@ -27,18 +18,9 @@ public class HistoryReplicateRunner {
 		QianFuQuanStockPriceReplicateWorker.main(myArgs);
 
 		// daily ind
-		IndMacdReplicateWorker.main(myArgs);
-		IndKDJReplicateWorker.main(myArgs);
-		IndShenXianReplicateWorker.main(myArgs);
-		IndWRReplicateWorker.main(myArgs);
-		IndMAReplicateWorker.main(myArgs);
-		IndQSDDReplicateWorker.main(myArgs);
-		IndBollReplicateWorker.main(myArgs);
 
 		// week
 		WeekStockPriceReplicateWorker.main(myArgs);
-		IndWeekMacdReplicateWorker.main(myArgs);
-		IndWeekKDJReplicateWorker.main(myArgs);
 
 		// zijinliu & ddx
 		ZiJinLiuReplicateWorker.main(myArgs);

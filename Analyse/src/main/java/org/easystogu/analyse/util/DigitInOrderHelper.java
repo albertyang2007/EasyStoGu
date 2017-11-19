@@ -57,6 +57,19 @@ public class DigitInOrderHelper {
 		return false;
 	}
 
+	// 36.15
+	public static boolean sameSumAtTwoSides(double d) {
+		String digits = Double.toString(d).replace(".", "");
+		if (digits.length() == 4) {
+			char[] digs = digits.toCharArray();
+			if (digs[1] == (digs[2] + digs[3])) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	public static List<Integer> doubleToOrderDigis(double d) {
 		String digits = Double.toString(d).replace(".", "");
 		List<Integer> digs = new ArrayList<Integer>();
@@ -80,6 +93,8 @@ public class DigitInOrderHelper {
 			return true;
 		if (sameAtTwoSides(d))
 			return true;
+		if (sameSumAtTwoSides(d))
+			return true;
 		return false;
 	}
 
@@ -93,6 +108,6 @@ public class DigitInOrderHelper {
 		System.out.println(checkAll(240.68));
 		System.out.println(checkAll(121.21));
 		System.out.println(checkAll(351.53));
-		System.out.println(checkAll(351.35));
+		System.out.println(checkAll(36.15));
 	}
 }

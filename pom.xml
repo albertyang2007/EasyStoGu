@@ -25,6 +25,7 @@
 			</activation>
 			<modules>
 				<module>CommonLib</module>
+				<module>DatabaseIF</module>
 				<module>DatabaseLib</module>
 				<module>CassandraLib</module>
 				<module>DataCollect</module>

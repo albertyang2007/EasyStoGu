@@ -6,7 +6,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.easystogu.db.access.table.cache.CacheAbleStock;
 import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
 import org.easystogu.db.vo.table.MacdVO;
 import org.easystogu.log.LogHelper;
@@ -124,17 +123,6 @@ public class IndMacdTableHelper{
 		}
 	}
 
-	public void deleteByDate(String date) {
-		try {
-			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
-			namedParameters.addValue("date", date);
-			namedParameterJdbcTemplate.execute(DELETE_BY_DATE_SQL, namedParameters,
-					new DefaultPreparedStatementCallback());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
 	public MacdVO getMacd(String stockId, String date) {
 		try {
 
@@ -152,22 +140,6 @@ public class IndMacdTableHelper{
 			e.printStackTrace();
 		}
 		return null;
-	}
-
-	public List<MacdVO> getByDate(String date) {
-		try {
-
-			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
-			namedParameters.addValue("date", date);
-
-			List<MacdVO> list = this.namedParameterJdbcTemplate.query(QUERY_BY_DATE_SQL, namedParameters,
-					new IndMacdVOMapper());
-
-			return list;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return new ArrayList<MacdVO>();
 	}
 
 	public List<MacdVO> getAllMacd(String stockId) {
@@ -220,10 +192,6 @@ public class IndMacdTableHelper{
 			e.printStackTrace();
 			return new ArrayList<MacdVO>();
 		}
-	}
-
-	public List<MacdVO> queryByStockId(String stockId) {
-		return this.getAllMacd(stockId);
 	}
 
 	public static void main(String[] args) {
