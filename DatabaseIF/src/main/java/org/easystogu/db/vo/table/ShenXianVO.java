@@ -2,7 +2,6 @@ package org.easystogu.db.vo.table;
 
 public class ShenXianVO  extends IndicatorVO{
 	public String stockId;
-	public String name;
 	public String date;
 	public double h1;
 	public double h2;
@@ -14,14 +13,6 @@ public class ShenXianVO  extends IndicatorVO{
 
 	public void setStockId(String stockId) {
 		this.stockId = stockId;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public String getDate() {
@@ -64,7 +55,6 @@ public class ShenXianVO  extends IndicatorVO{
 	public String toString() {
 		StringBuffer sb = new StringBuffer("ShenXianVO: {");
 		sb.append("stockId:" + stockId);
-		sb.append(", name:" + name);
 		sb.append(", date:" + date);
 		sb.append(", h1:" + h1);
 		sb.append(", h2:" + h2);

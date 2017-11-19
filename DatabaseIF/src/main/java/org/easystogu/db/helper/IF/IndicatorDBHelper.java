@@ -20,6 +20,6 @@ public interface IndicatorDBHelper {
 
 	public <T extends IndicatorVO> List<T> getByIdAndBetweenDate(String stockId, String StartDate, String endDate);
 
-	public <T extends IndicatorVO> List<T> getNDateMacd(String stockId, int day);
+	public <T extends IndicatorVO> List<T> getByIdAndLatestNDate(String stockId, int day);
 
 }

@@ -5,33 +5,33 @@ import java.util.List;
 
 import org.apache.commons.lang.math.RandomUtils;
 import org.easystogu.db.vo.table.IndicatorVO;
-import org.easystogu.db.vo.table.MacdVO;
+import org.easystogu.db.vo.table.ShenXianVO;
 import org.easystogu.utils.WeekdayUtil;
 
-public class IndMacdCassTableHelper extends CassandraIndDBHelper {
-	private static IndMacdCassTableHelper instance = null;
+public class IndShenXianCassTableHelper extends CassandraIndDBHelper {
+	private static IndShenXianCassTableHelper instance = null;
 
-	public static IndMacdCassTableHelper getInstance() {
+	public static IndShenXianCassTableHelper getInstance() {
 		if (instance == null) {
-			instance = new IndMacdCassTableHelper("ind_macd", MacdVO.class);
+			instance = new IndShenXianCassTableHelper("ind_shenxian", ShenXianVO.class);
 		}
 		return instance;
 	}
 
-	protected IndMacdCassTableHelper(String tableName, Class<? extends IndicatorVO> indicatorVOClass) {
+	protected IndShenXianCassTableHelper(String tableName, Class<? extends IndicatorVO> indicatorVOClass) {
 		super(tableName, indicatorVOClass);
 	}
 
 	public static void main(String[] args) {
-		IndMacdCassTableHelper cable = IndMacdCassTableHelper.getInstance();
-		List<MacdVO> list = new ArrayList<MacdVO>();
+		IndShenXianCassTableHelper cable = IndShenXianCassTableHelper.getInstance();
+		List<ShenXianVO> list = new ArrayList<ShenXianVO>();
 		for (int i = 0; i < 10; i++) {
-			MacdVO vo = new MacdVO();
+			ShenXianVO vo = new ShenXianVO();
 			vo.stockId = "000001";
 			vo.date = WeekdayUtil.nextNDateString(WeekdayUtil.currentDate(), i);
-			vo.dif = RandomUtils.nextDouble();
-			vo.dea = RandomUtils.nextDouble();
-			vo.macd = vo.dea - vo.dif;
+			vo.h1 = RandomUtils.nextDouble();
+			vo.h2 = RandomUtils.nextDouble();
+			vo.h3 = RandomUtils.nextDouble();
 			list.add(vo);
 		}
 
@@ -44,7 +44,7 @@ public class IndMacdCassTableHelper extends CassandraIndDBHelper {
 		cable.getByIdAndBetweenDate("000001", "2017-11-19", "2017-11-20");
 		System.out.println("getByIdAndNDate");
 		cable.getByIdAndLatestNDate("000001", 5);
-		
+
 		System.exit(0);
 	}
 }

@@ -10,7 +10,6 @@ import org.easystogu.cassandra.ds.CassandraKepSpaceFactory;
 import org.easystogu.config.Constants;
 import org.easystogu.db.helper.IF.IndicatorDBHelper;
 import org.easystogu.db.vo.table.IndicatorVO;
-import org.easystogu.db.vo.table.MacdVO;
 
 import com.datastax.driver.core.BatchStatement;
 import com.datastax.driver.core.PreparedStatement;
@@ -29,33 +28,6 @@ public abstract class CassandraIndDBHelper implements IndicatorDBHelper {
 	protected String QUERY_LATEST_N_BY_ID_SQL;
 	protected String DELETE_BY_STOCKID_SQL;
 	protected String DELETE_BY_STOCKID_AND_DATE_SQL;
-
-	protected <T extends IndicatorVO> T mapRowToVO(Row r) {
-		try {
-			IndicatorVO vo = indicatorVOClass.newInstance();
-			Field[] fields = indicatorVOClass.getDeclaredFields();
-
-			for (Field f : fields) {
-				PropertyDescriptor pd = new PropertyDescriptor(f.getName(), indicatorVOClass);
-				Method wM = pd.getWriteMethod();
-				System.out.println("f.getClass()="+f.getClass());
-				if (String.class.equals(f.getClass())) {
-					wM.invoke(vo, r.getString(f.getName()));
-				} else if (Integer.class.equals(f.getClass())) {
-					wM.invoke(vo, r.getInt(f.getName()));
-				} else if (Double.class.equals(f.getClass())) {
-					wM.invoke(vo, r.getDouble(f.getName()));
-				} else if (Float.class.equals(f.getClass())) {
-					wM.invoke(vo, r.getFloat(f.getName()));
-				}
-			}
-			System.out.println(vo);
-			return (T) vo;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
 
 	protected CassandraIndDBHelper(String tableNameParm, Class<? extends IndicatorVO> indicatorVOClass) {
 		this.indicatorVOClass = indicatorVOClass;
@@ -76,6 +48,33 @@ public abstract class CassandraIndDBHelper implements IndicatorDBHelper {
 		// System.out.println(INSERT_SQL);
 
 		this.session = CassandraKepSpaceFactory.createCluster().connect();
+	}
+
+	@SuppressWarnings("unchecked")
+	protected <T extends IndicatorVO> T mapRowToVO(Row r) {
+		try {
+			IndicatorVO vo = indicatorVOClass.newInstance();
+			Field[] fields = indicatorVOClass.getDeclaredFields();
+
+			for (Field f : fields) {
+				PropertyDescriptor pd = new PropertyDescriptor(f.getName(), indicatorVOClass);
+				Method wM = pd.getWriteMethod();
+				if (String.class.equals(f.getType())) {
+					wM.invoke(vo, r.getString(f.getName()));
+				} else if (int.class.equals(f.getType())) {
+					wM.invoke(vo, r.getInt(f.getName()));
+				} else if (double.class.equals(f.getType())) {
+					wM.invoke(vo, r.getDouble(f.getName()));
+				} else if (float.class.equals(f.getType())) {
+					wM.invoke(vo, r.getFloat(f.getName()));
+				}
+			}
+			System.out.println(vo);
+			return (T) vo;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	private String[] generateFieldsNamePairs() {
@@ -100,11 +99,10 @@ public abstract class CassandraIndDBHelper implements IndicatorDBHelper {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 		return list.toArray();
-
 	}
 
+	@SuppressWarnings("unchecked")
 	protected <T extends IndicatorVO> List<T> mapResultSetToList(ResultSet results) {
 		List<IndicatorVO> list = new ArrayList<IndicatorVO>();
 		for (Row r : results.all()) {
@@ -113,22 +111,19 @@ public abstract class CassandraIndDBHelper implements IndicatorDBHelper {
 		return (List<T>) list;
 	}
 
+	@SuppressWarnings("unchecked")
 	protected <T extends IndicatorVO> T mapResultSetToSingle(ResultSet results) {
 		return (T) mapRowToVO(results.one());
 	}
 
-	public <T extends IndicatorVO> void insert(T parm) {
-		MacdVO vo = (MacdVO) parm;
+	public <T extends IndicatorVO> void insert(T vo) {
 		PreparedStatement preparedStatement = session.prepare(INSERT_SQL);
-		// session.execute(preparedStatement.bind(vo.stockId, vo.date, vo.dif, vo.dea,
-		// vo.macd));
 		session.execute(preparedStatement.bind(generateBindParms(vo)));
 	}
 
 	public <T extends IndicatorVO> void insert(List<T> list) {
 		BatchStatement batchStatement = new BatchStatement(BatchStatement.Type.UNLOGGED);
-		for (Object parm : list) {
-			MacdVO vo = (MacdVO) parm;
+		for (IndicatorVO vo : list) {
 			PreparedStatement preparedStatement = session.prepare(INSERT_SQL);
 			batchStatement.add(preparedStatement.bind(generateBindParms(vo)));
 		}
@@ -163,7 +158,7 @@ public abstract class CassandraIndDBHelper implements IndicatorDBHelper {
 		return mapResultSetToList(results);
 	}
 
-	public <T extends IndicatorVO> List<T> getNDateMacd(String stockId, int day) {
+	public <T extends IndicatorVO> List<T> getByIdAndLatestNDate(String stockId, int day) {
 		PreparedStatement preparedStatement = session.prepare(QUERY_LATEST_N_BY_ID_SQL);
 		ResultSet results = session.execute(preparedStatement.bind(stockId, day));
 		return mapResultSetToList(results);

@@ -3,7 +3,6 @@ package org.easystogu.db.vo.table;
 //table name = "ind_boll"
 public class BollVO  extends IndicatorVO{
 	public String stockId;
-	public String name;
 	public String date;
 	public double mb;
 	public double up;
@@ -17,7 +16,6 @@ public class BollVO  extends IndicatorVO{
 	public String toString() {
 		StringBuffer sb = new StringBuffer("BollVO: {");
 		sb.append("stockId:" + stockId);
-		sb.append(", name:" + name);
 		sb.append(", date:" + date);
 		sb.append(", mb:" + mb);
 		sb.append(", up:" + up);
@@ -41,14 +39,6 @@ public class BollVO  extends IndicatorVO{
 
 	public void setStockId(String stockId) {
 		this.stockId = stockId;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public String getDate() {

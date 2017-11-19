@@ -5,33 +5,33 @@ import java.util.List;
 
 import org.apache.commons.lang.math.RandomUtils;
 import org.easystogu.db.vo.table.IndicatorVO;
-import org.easystogu.db.vo.table.MacdVO;
+import org.easystogu.db.vo.table.KDJVO;
 import org.easystogu.utils.WeekdayUtil;
 
-public class IndMacdCassTableHelper extends CassandraIndDBHelper {
-	private static IndMacdCassTableHelper instance = null;
+public class IndKDJCassTableHelper extends CassandraIndDBHelper {
+	private static IndKDJCassTableHelper instance = null;
 
-	public static IndMacdCassTableHelper getInstance() {
+	public static IndKDJCassTableHelper getInstance() {
 		if (instance == null) {
-			instance = new IndMacdCassTableHelper("ind_macd", MacdVO.class);
+			instance = new IndKDJCassTableHelper("ind_kdj", KDJVO.class);
 		}
 		return instance;
 	}
 
-	protected IndMacdCassTableHelper(String tableName, Class<? extends IndicatorVO> indicatorVOClass) {
+	protected IndKDJCassTableHelper(String tableName, Class<? extends IndicatorVO> indicatorVOClass) {
 		super(tableName, indicatorVOClass);
 	}
 
 	public static void main(String[] args) {
-		IndMacdCassTableHelper cable = IndMacdCassTableHelper.getInstance();
-		List<MacdVO> list = new ArrayList<MacdVO>();
+		IndKDJCassTableHelper cable = IndKDJCassTableHelper.getInstance();
+		List<KDJVO> list = new ArrayList<KDJVO>();
 		for (int i = 0; i < 10; i++) {
-			MacdVO vo = new MacdVO();
+			KDJVO vo = new KDJVO();
 			vo.stockId = "000001";
 			vo.date = WeekdayUtil.nextNDateString(WeekdayUtil.currentDate(), i);
-			vo.dif = RandomUtils.nextDouble();
-			vo.dea = RandomUtils.nextDouble();
-			vo.macd = vo.dea - vo.dif;
+			vo.k = RandomUtils.nextDouble();
+			vo.d = RandomUtils.nextDouble();
+			vo.j = vo.k - vo.d;
 			list.add(vo);
 		}
 
@@ -44,7 +44,7 @@ public class IndMacdCassTableHelper extends CassandraIndDBHelper {
 		cable.getByIdAndBetweenDate("000001", "2017-11-19", "2017-11-20");
 		System.out.println("getByIdAndNDate");
 		cable.getByIdAndLatestNDate("000001", 5);
-		
+
 		System.exit(0);
 	}
 }

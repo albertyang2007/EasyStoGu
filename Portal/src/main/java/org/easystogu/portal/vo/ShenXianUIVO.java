@@ -34,7 +34,6 @@ public class ShenXianUIVO extends ShenXianVO {
 	public String toString() {
 		StringBuffer sb = new StringBuffer("ShenXianVO: {");
 		sb.append("stockId:" + stockId);
-		sb.append(", name:" + name);
 		sb.append(", date:" + date);
 		sb.append(", h1:" + h1);
 		sb.append(", h2:" + h2);

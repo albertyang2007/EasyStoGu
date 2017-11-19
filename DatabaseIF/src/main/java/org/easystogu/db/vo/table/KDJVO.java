@@ -4,7 +4,6 @@ package org.easystogu.db.vo.table;
 public class KDJVO  extends IndicatorVO{
 
 	public String stockId;
-	public String name;
 	public String date;
 	public double k;
 	public double d;
@@ -19,7 +18,6 @@ public class KDJVO  extends IndicatorVO{
 	public String toString() {
 		StringBuffer sb = new StringBuffer("KDJVO: {");
 		sb.append("stockId:" + stockId);
-		sb.append(", name:" + name);
         sb.append(", date:" + date);
         sb.append(", R:" + rsv);
 		sb.append(", K:" + k);
@@ -35,14 +33,6 @@ public class KDJVO  extends IndicatorVO{
 
 	public void setStockId(String stockId) {
 		this.stockId = stockId;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public String getDate() {
