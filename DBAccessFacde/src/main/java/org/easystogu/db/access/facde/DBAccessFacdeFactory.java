@@ -4,7 +4,6 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.easystogu.cache.ConfigurationServiceCache;
 import org.easystogu.cassandra.access.table.IndBollCassTableHelper;
 import org.easystogu.cassandra.access.table.IndKDJCassTableHelper;
 import org.easystogu.cassandra.access.table.IndMacdCassTableHelper;
@@ -13,7 +12,9 @@ import org.easystogu.cassandra.access.table.IndShenXianCassTableHelper;
 import org.easystogu.cassandra.access.table.IndWRCassTableHelper;
 import org.easystogu.cassandra.access.table.IndWeekKDJCassTableHelper;
 import org.easystogu.cassandra.access.table.IndWeekMacdCassTableHelper;
+import org.easystogu.config.ConfigurationService;
 import org.easystogu.config.Constants;
+import org.easystogu.config.DBConfigurationService;
 import org.easystogu.db.helper.IF.IndicatorDBHelperIF;
 import org.easystogu.postgresql.access.table.IndBollDBTableHelper;
 import org.easystogu.postgresql.access.table.IndKDJDBTableHelper;
@@ -25,7 +26,7 @@ import org.easystogu.postgresql.access.table.IndWeekKDJDBTableHelper;
 import org.easystogu.postgresql.access.table.IndWeekMacdDBTableHelper;
 
 public class DBAccessFacdeFactory {
-	static ConfigurationServiceCache config = ConfigurationServiceCache.getInstance();
+	static private ConfigurationService config = DBConfigurationService.getInstance();
 
 	static Map<String, Class<? extends IndicatorDBHelperIF>> sqlFacdeMap = new HashMap<String, Class<? extends IndicatorDBHelperIF>>();
 	static Map<String, Class<? extends IndicatorDBHelperIF>> cqlFacdeMap = new HashMap<String, Class<? extends IndicatorDBHelperIF>>();
