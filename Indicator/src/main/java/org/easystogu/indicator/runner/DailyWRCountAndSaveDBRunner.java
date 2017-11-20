@@ -1,6 +1,5 @@
 package org.easystogu.indicator.runner;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.easystogu.config.Constants;
@@ -46,23 +45,18 @@ public class DailyWRCountAndSaveDBRunner implements Runnable {
 		double[][] wr = wrHelper.getWRList(Doubles.toArray(close), Doubles.toArray(low), Doubles.toArray(high), 19, 43,
 				86);
 
-		// int length = wr[0].length;
+		int index = priceList.size() - 1;
 
-		List<WRVO> indList = new ArrayList<WRVO>();
-		for (int index = 0; index < priceList.size() - 1; index++) {
-			WRVO vo = new WRVO();
-			vo.setShoTerm(Strings.convert2ScaleDecimal(wr[0][index]));
-			vo.setMidTerm(Strings.convert2ScaleDecimal(wr[1][index]));
-			vo.setLonTerm(Strings.convert2ScaleDecimal(wr[2][index]));
-			vo.setStockId(stockId);
-			vo.setDate(priceList.get(index).date);
+		WRVO vo = new WRVO();
+		vo.setShoTerm(Strings.convert2ScaleDecimal(wr[0][index]));
+		vo.setMidTerm(Strings.convert2ScaleDecimal(wr[1][index]));
+		vo.setLonTerm(Strings.convert2ScaleDecimal(wr[2][index]));
+		vo.setStockId(stockId);
+		vo.setDate(priceList.get(index).date);
 
-			indList.add(vo);
+		this.deleteWR(stockId, vo.date);
 
-			// if using cassandra, do not need to delete it, it will overwrite them
-			// this.deleteWR(stockId, vo.date);
-		}
-		wrTable.insert(indList);
+		wrTable.insert(vo);
 
 	}
 

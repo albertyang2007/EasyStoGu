@@ -1,6 +1,5 @@
 package org.easystogu.indicator.runner;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.easystogu.config.Constants;
@@ -47,26 +46,22 @@ public class DailyBollCountAndSaveDBRunner implements Runnable {
 
 		double[][] boll = bollHelper.getBOLLList(close, 20, 2, 2);
 
-		// index = priceList.size() - 1;
-		List<BollVO> indList = new ArrayList<BollVO>();
-		for (index = 0; index < priceList.size() - 1; index++) {
-			double up = Strings.convert2ScaleDecimal(boll[0][index]);
-			double mb = Strings.convert2ScaleDecimal(boll[1][index]);
-			double dn = Strings.convert2ScaleDecimal(boll[2][index]);
+		index = priceList.size() - 1;
 
-			BollVO vo = new BollVO();
-			vo.setStockId(stockId);
-			vo.setDate(priceList.get(index).date);
-			vo.setMb(mb);
-			vo.setUp(up);
-			vo.setDn(dn);
-			
-			indList.add(vo);
+		double up = Strings.convert2ScaleDecimal(boll[0][index]);
+		double mb = Strings.convert2ScaleDecimal(boll[1][index]);
+		double dn = Strings.convert2ScaleDecimal(boll[2][index]);
 
-			// if using cassandra, do not need to delete it, it will overwrite them
-			// this.deleteBoll(stockId, vo.date);
-		}
-		bollTable.insert(indList);
+		BollVO vo = new BollVO();
+		vo.setStockId(stockId);
+		vo.setDate(priceList.get(index).date);
+		vo.setMb(mb);
+		vo.setUp(up);
+		vo.setDn(dn);
+
+		this.deleteBoll(stockId, vo.date);
+
+		bollTable.insert(vo);
 	}
 
 	public void countAndSaved(List<String> stockIds) {

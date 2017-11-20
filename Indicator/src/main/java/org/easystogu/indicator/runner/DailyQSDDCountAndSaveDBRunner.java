@@ -1,6 +1,5 @@
 package org.easystogu.indicator.runner;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.easystogu.config.Constants;
@@ -44,23 +43,18 @@ public class DailyQSDDCountAndSaveDBRunner implements Runnable {
 
 		double[][] qsdd = qsddHelper.getQSDDList(Doubles.toArray(close), Doubles.toArray(low), Doubles.toArray(high));
 
-		// int length = qsdd[0].length;
+		int index = priceList.size() - 1;
 
-		List<QSDDVO> indList = new ArrayList<QSDDVO>();
-		for (int index = 0; index < priceList.size() - 1; index++) {
-			QSDDVO vo = new QSDDVO();
-			vo.setLonTerm(Strings.convert2ScaleDecimal(qsdd[0][index]));
-			vo.setShoTerm(Strings.convert2ScaleDecimal(qsdd[1][index]));
-			vo.setMidTerm(Strings.convert2ScaleDecimal(qsdd[2][index]));
-			vo.setStockId(stockId);
-			vo.setDate(priceList.get(index).date);
-			
-			indList.add(vo);
+		QSDDVO vo = new QSDDVO();
+		vo.setLonTerm(Strings.convert2ScaleDecimal(qsdd[0][index]));
+		vo.setShoTerm(Strings.convert2ScaleDecimal(qsdd[1][index]));
+		vo.setMidTerm(Strings.convert2ScaleDecimal(qsdd[2][index]));
+		vo.setStockId(stockId);
+		vo.setDate(priceList.get(index).date);
 
-			// if using cassandra, do not need to delete it, it will overwrite them
-			// this.deleteQSDD(stockId, vo.date);
-		}
-		qsddTable.insert(indList);
+		this.deleteQSDD(stockId, vo.date);
+
+		qsddTable.insert(vo);
 
 	}
 

@@ -1,6 +1,5 @@
 package org.easystogu.indicator.runner;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.easystogu.config.Constants;
@@ -55,22 +54,18 @@ public class DailyShenXianCountAndSaveDBRunner implements Runnable {
 
 		double[][] shenXian = shenXianHelper.getShenXianList(Doubles.toArray(close));
 
-		// int length = shenXian[0].length;
-		List<ShenXianVO> indList = new ArrayList<ShenXianVO>();
-		for (int index = 0; index < priceList.size() - 1; index++) {
-			ShenXianVO vo = new ShenXianVO();
-			vo.setH1(Strings.convert2ScaleDecimal(shenXian[0][index]));
-			vo.setH2(Strings.convert2ScaleDecimal(shenXian[1][index]));
-			vo.setH3(Strings.convert2ScaleDecimal(shenXian[2][index]));
-			vo.setStockId(stockId);
-			vo.setDate(priceList.get(index).date);
-			
-			indList.add(vo);
+		int index = priceList.size() - 1;
 
-			// if using cassandra, do not need to delete it, it will overwrite them
-			// this.deleteShenXian(stockId, vo.date);
-		}
-		shenXianTable.insert(indList);
+		ShenXianVO vo = new ShenXianVO();
+		vo.setH1(Strings.convert2ScaleDecimal(shenXian[0][index]));
+		vo.setH2(Strings.convert2ScaleDecimal(shenXian[1][index]));
+		vo.setH3(Strings.convert2ScaleDecimal(shenXian[2][index]));
+		vo.setStockId(stockId);
+		vo.setDate(priceList.get(index).date);
+
+		this.deleteShenXian(stockId, vo.date);
+
+		shenXianTable.insert(vo);
 
 	}
 

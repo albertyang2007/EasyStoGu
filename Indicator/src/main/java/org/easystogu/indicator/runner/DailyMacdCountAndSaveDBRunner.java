@@ -1,6 +1,5 @@
 package org.easystogu.indicator.runner;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.easystogu.config.Constants;
@@ -47,27 +46,22 @@ public class DailyMacdCountAndSaveDBRunner implements Runnable {
 
 		double[][] macd = macdHelper.getMACDList(close);
 
-		// index = priceList.size() - 1;
-		List<MacdVO> indList = new ArrayList<MacdVO>();
-		for (index = 0; index < priceList.size() - 1; index++) {
-			double dif = macd[0][index];
-			double dea = macd[1][index];
-			double macdRtn = macd[2][index];
+		index = priceList.size() - 1;
 
-			MacdVO vo = new MacdVO();
-			vo.setStockId(stockId);
-			vo.setDate(priceList.get(index).date);
-			vo.setDif(Strings.convert2ScaleDecimal(dif));
-			vo.setDea(Strings.convert2ScaleDecimal(dea));
-			vo.setMacd(Strings.convert2ScaleDecimal(macdRtn));
-			
-			indList.add(vo);
-			//System.out.println("indMacd index=" + index);
-			
-			// if using cassandra, do not need to delete it, it will overwrite them
-			// this.deleteMacd(stockId, vo.date);
-		}
-		macdTable.insert(indList);
+		double dif = macd[0][index];
+		double dea = macd[1][index];
+		double macdRtn = macd[2][index];
+
+		MacdVO vo = new MacdVO();
+		vo.setStockId(stockId);
+		vo.setDate(priceList.get(index).date);
+		vo.setDif(Strings.convert2ScaleDecimal(dif));
+		vo.setDea(Strings.convert2ScaleDecimal(dea));
+		vo.setMacd(Strings.convert2ScaleDecimal(macdRtn));
+
+		this.deleteMacd(stockId, vo.date);
+
+		macdTable.insert(vo);
 	}
 
 	public void countAndSaved(List<String> stockIds) {
@@ -89,7 +83,7 @@ public class DailyMacdCountAndSaveDBRunner implements Runnable {
 		CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 		DailyMacdCountAndSaveDBRunner runner = new DailyMacdCountAndSaveDBRunner();
 		runner.countAndSaved(stockConfig.getAllStockId());
-		//runner.countAndSaved("999999");
-		//System.exit(0);
+		// runner.countAndSaved("999999");
+		// System.exit(0);
 	}
 }

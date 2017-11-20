@@ -1,6 +1,5 @@
 package org.easystogu.indicator.runner;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.easystogu.config.Constants;
@@ -46,25 +45,19 @@ public class DailyKDJCountAndSaveDBRunner implements Runnable {
 
 		double[][] KDJ = kdjHelper.getKDJList(Doubles.toArray(close), Doubles.toArray(low), Doubles.toArray(high));
 
-		//int length = KDJ[0].length;
+		int index = priceList.size() - 1;
+		
+		KDJVO vo = new KDJVO();
+		vo.setK(Strings.convert2ScaleDecimal(KDJ[0][index]));
+		vo.setD(Strings.convert2ScaleDecimal(KDJ[1][index]));
+		vo.setJ(Strings.convert2ScaleDecimal(KDJ[2][index]));
+		vo.setRsv(Strings.convert2ScaleDecimal(KDJ[3][index]));
+		vo.setStockId(stockId);
+		vo.setDate(priceList.get(index).date);
 
-		List<KDJVO> indList = new ArrayList<KDJVO>();
-		for (int index = 0; index < priceList.size() - 1; index++) {
-			KDJVO vo = new KDJVO();
-			vo.setK(Strings.convert2ScaleDecimal(KDJ[0][index]));
-			vo.setD(Strings.convert2ScaleDecimal(KDJ[1][index]));
-			vo.setJ(Strings.convert2ScaleDecimal(KDJ[2][index]));
-			vo.setRsv(Strings.convert2ScaleDecimal(KDJ[3][index]));
-			vo.setStockId(stockId);
-			vo.setDate(priceList.get(index).date);
-			
-			indList.add(vo);
-			
-			// if using cassandra, do not need to delete it, it will overwrite them
-			// this.deleteKDJ(stockId, vo.date);
-		}
-		kdjTable.insert(indList);
+		this.deleteKDJ(stockId, vo.date);
 
+		kdjTable.insert(vo);
 	}
 
 	public void countAndSaved(List<String> stockIds) {
