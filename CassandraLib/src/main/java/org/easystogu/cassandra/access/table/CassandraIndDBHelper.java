@@ -70,7 +70,6 @@ public abstract class CassandraIndDBHelper implements IndicatorDBHelperIF {
 	@SuppressWarnings("unchecked")
 	protected <T extends IndicatorVO> T mapRowToVO(Row r) {
 		try {
-
 			if (r == null)
 				return null;
 
@@ -90,7 +89,7 @@ public abstract class CassandraIndDBHelper implements IndicatorDBHelperIF {
 					wM.invoke(vo, r.getFloat(f.getName()));
 				}
 			}
-			System.out.println(vo);
+			//System.out.println(vo);
 			return (T) vo;
 		} catch (Exception e) {
 			e.printStackTrace();
