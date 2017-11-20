@@ -131,6 +131,7 @@ public abstract class CassandraIndDBHelper implements IndicatorDBHelperIF {
 		for (IndicatorVO vo : list) {
 			PreparedStatement preparedStatement = session.prepare(INSERT_SQL);
 			batchStatement.add(preparedStatement.bind(generateBindParms(vo)));
+			//System.out.println("insert vo=" + vo);
 		}
 		session.execute(batchStatement);
 	}

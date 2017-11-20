@@ -1,11 +1,13 @@
 package org.easystogu.indicator.runner;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import org.easystogu.cassandra.access.table.IndMacdCassTableHelper;
-import org.easystogu.db.access.table.IndMacdTableHelper;
+import org.easystogu.config.Constants;
+import org.easystogu.db.access.facde.DBAccessFacdeFactory;
 import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.table.StockPriceTableHelper;
+import org.easystogu.db.helper.IF.IndicatorDBHelperIF;
 import org.easystogu.db.vo.table.MacdVO;
 import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
@@ -14,8 +16,7 @@ import org.easystogu.utils.Strings;
 
 //每日根据最新数据计算当天的macd值，每天运行一次
 public class DailyMacdCountAndSaveDBRunner implements Runnable {
-	protected IndMacdTableHelper macdTable = IndMacdTableHelper.getInstance();
-	protected IndMacdCassTableHelper macdCable = IndMacdCassTableHelper.getInstance();
+	protected IndicatorDBHelperIF macdTable = DBAccessFacdeFactory.getInstance(Constants.indMacd);
 	protected StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
 	protected MACDHelper macdHelper = new MACDHelper();
 	protected CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
@@ -26,15 +27,11 @@ public class DailyMacdCountAndSaveDBRunner implements Runnable {
 
 	public void deleteMacd(String stockId, String date) {
 		macdTable.delete(stockId, date);
-		macdCable.delete(stockId, date);
 	}
 
 	public void countAndSaved(String stockId) {
 
 		List<StockPriceVO> priceList = qianFuQuanStockPriceTable.getStockPriceById(stockId);
-		// List<StockPriceVO> list =
-		// stockPriceTable.getNdateStockPriceById(stockId, minLength);
-		// Collections.reverse(list);
 
 		int length = priceList.size();
 
@@ -50,26 +47,27 @@ public class DailyMacdCountAndSaveDBRunner implements Runnable {
 
 		double[][] macd = macdHelper.getMACDList(close);
 
-		index = priceList.size() - 1;
-		double dif = macd[0][index];
-		double dea = macd[1][index];
-		double macdRtn = macd[2][index];
-		// System.out.println("date=" + list.get(index).date);
-		// System.out.println("DIF=" + dif);
-		// System.out.println("DEA=" + dea);
-		// System.out.println("MACD=" + macdRtn);
+		// index = priceList.size() - 1;
+		List<MacdVO> indList = new ArrayList<MacdVO>();
+		for (index = 0; index < priceList.size() - 1; index++) {
+			double dif = macd[0][index];
+			double dea = macd[1][index];
+			double macdRtn = macd[2][index];
 
-		MacdVO vo = new MacdVO();
-		vo.setStockId(stockId);
-		vo.setDate(priceList.get(index).date);
-		vo.setDif(Strings.convert2ScaleDecimal(dif));
-		vo.setDea(Strings.convert2ScaleDecimal(dea));
-		vo.setMacd(Strings.convert2ScaleDecimal(macdRtn));
-
-		// System.out.println(vo);
-		this.deleteMacd(stockId, vo.date);
-		macdTable.insert(vo);
-		macdCable.insert(vo);
+			MacdVO vo = new MacdVO();
+			vo.setStockId(stockId);
+			vo.setDate(priceList.get(index).date);
+			vo.setDif(Strings.convert2ScaleDecimal(dif));
+			vo.setDea(Strings.convert2ScaleDecimal(dea));
+			vo.setMacd(Strings.convert2ScaleDecimal(macdRtn));
+			
+			indList.add(vo);
+			//System.out.println("indMacd index=" + index);
+			
+			// if using cassandra, do not need to delete it, it will overwrite them
+			// this.deleteMacd(stockId, vo.date);
+		}
+		macdTable.insert(indList);
 	}
 
 	public void countAndSaved(List<String> stockIds) {
@@ -91,6 +89,7 @@ public class DailyMacdCountAndSaveDBRunner implements Runnable {
 		CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 		DailyMacdCountAndSaveDBRunner runner = new DailyMacdCountAndSaveDBRunner();
 		runner.countAndSaved(stockConfig.getAllStockId());
-		// runner.countAndSaved("999999");
+		//runner.countAndSaved("999999");
+		//System.exit(0);
 	}
 }

@@ -1,10 +1,13 @@
 package org.easystogu.indicator.runner;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import org.easystogu.db.access.table.IndWRTableHelper;
+import org.easystogu.config.Constants;
+import org.easystogu.db.access.facde.DBAccessFacdeFactory;
 import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.table.StockPriceTableHelper;
+import org.easystogu.db.helper.IF.IndicatorDBHelperIF;
 import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.db.vo.table.WRVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
@@ -18,7 +21,7 @@ public class DailyWRCountAndSaveDBRunner implements Runnable {
 
 	private WRHelper wrHelper = new WRHelper();
 	protected StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
-	protected IndWRTableHelper wrTable = IndWRTableHelper.getInstance();
+	protected IndicatorDBHelperIF wrTable = DBAccessFacdeFactory.getInstance(Constants.indQSDD);
 	protected CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 
 	public DailyWRCountAndSaveDBRunner() {
@@ -43,19 +46,23 @@ public class DailyWRCountAndSaveDBRunner implements Runnable {
 		double[][] wr = wrHelper.getWRList(Doubles.toArray(close), Doubles.toArray(low), Doubles.toArray(high), 19, 43,
 				86);
 
-		int length = wr[0].length;
+		// int length = wr[0].length;
 
-		// for (int i = 0; i < KDJ[0].length; i++) {
-		WRVO vo = new WRVO();
-		vo.setShoTerm(Strings.convert2ScaleDecimal(wr[0][length - 1]));
-		vo.setMidTerm(Strings.convert2ScaleDecimal(wr[1][length - 1]));
-		vo.setLonTerm(Strings.convert2ScaleDecimal(wr[2][length - 1]));
-		vo.setStockId(stockId);
-		vo.setDate(priceList.get(length - 1).date);
+		List<WRVO> indList = new ArrayList<WRVO>();
+		for (int index = 0; index < priceList.size() - 1; index++) {
+			WRVO vo = new WRVO();
+			vo.setShoTerm(Strings.convert2ScaleDecimal(wr[0][index]));
+			vo.setMidTerm(Strings.convert2ScaleDecimal(wr[1][index]));
+			vo.setLonTerm(Strings.convert2ScaleDecimal(wr[2][index]));
+			vo.setStockId(stockId);
+			vo.setDate(priceList.get(index).date);
 
-		// System.out.println(vo);
-		this.deleteWR(stockId, vo.date);
-		wrTable.insert(vo);
+			indList.add(vo);
+
+			// if using cassandra, do not need to delete it, it will overwrite them
+			// this.deleteWR(stockId, vo.date);
+		}
+		wrTable.insert(indList);
 
 	}
 
