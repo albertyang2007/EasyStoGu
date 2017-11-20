@@ -17,10 +17,9 @@ import org.easystogu.utils.Strings;
 import com.google.common.primitives.Doubles;
 
 public class DailyWRCountAndSaveDBRunner implements Runnable {
-
+	protected IndicatorDBHelperIF wrTable = DBAccessFacdeFactory.getInstance(Constants.indWR);
 	private WRHelper wrHelper = new WRHelper();
 	protected StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
-	protected IndicatorDBHelperIF wrTable = DBAccessFacdeFactory.getInstance(Constants.indQSDD);
 	protected CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 
 	public DailyWRCountAndSaveDBRunner() {

@@ -2,9 +2,11 @@ package org.easystogu.indicator.runner.history;
 
 import java.util.List;
 
-import org.easystogu.db.access.table.IndShenXianTableHelper;
+import org.easystogu.config.Constants;
+import org.easystogu.db.access.facde.DBAccessFacdeFactory;
 import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.table.StockPriceTableHelper;
+import org.easystogu.db.helper.IF.IndicatorDBHelperIF;
 import org.easystogu.db.vo.table.ShenXianVO;
 import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
@@ -15,9 +17,8 @@ import org.easystogu.utils.Strings;
 import com.google.common.primitives.Doubles;
 
 public class HistoryShenXianCountAndSaveDBRunner {
-
+	protected IndicatorDBHelperIF shenXianTable = DBAccessFacdeFactory.getInstance(Constants.indShenXian);
 	protected StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
-	protected IndShenXianTableHelper shenXianTable = IndShenXianTableHelper.getInstance();
 	protected ShenXianHelper shenXianHelper = new ShenXianHelper();
 
 	public void deleteShenXian(String stockId) {

@@ -17,8 +17,8 @@ import org.easystogu.utils.Strings;
 import com.google.common.primitives.Doubles;
 
 public class DailyShenXianCountAndSaveDBRunner implements Runnable {
-	protected StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
 	protected IndicatorDBHelperIF shenXianTable = DBAccessFacdeFactory.getInstance(Constants.indShenXian);
+	protected StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
 
 	private ShenXianHelper shenXianHelper = new ShenXianHelper();
 	protected CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();

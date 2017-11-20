@@ -2,9 +2,11 @@ package org.easystogu.indicator.runner.history;
 
 import java.util.List;
 
-import org.easystogu.db.access.table.IndMacdTableHelper;
+import org.easystogu.config.Constants;
+import org.easystogu.db.access.facde.DBAccessFacdeFactory;
 import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.table.StockPriceTableHelper;
+import org.easystogu.db.helper.IF.IndicatorDBHelperIF;
 import org.easystogu.db.vo.table.MacdVO;
 import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
@@ -13,8 +15,7 @@ import org.easystogu.utils.Strings;
 
 //计算数据库中所有macd值，包括最新和历史的，一次性运行
 public class HistoryMacdCountAndSaveDBRunner {
-
-	protected IndMacdTableHelper macdTable = IndMacdTableHelper.getInstance();
+	protected IndicatorDBHelperIF macdTable = DBAccessFacdeFactory.getInstance(Constants.indMacd);
 	protected StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
 	protected MACDHelper macdHelper = new MACDHelper();
 
@@ -31,8 +32,8 @@ public class HistoryMacdCountAndSaveDBRunner {
 	}
 
 	public void countAndSaved(String stockId) {
-        this.deleteMacd(stockId);
-        
+		this.deleteMacd(stockId);
+
 		try {
 			List<StockPriceVO> priceList = qianFuQuanStockPriceTable.getStockPriceById(stockId);
 

@@ -2,9 +2,11 @@ package org.easystogu.indicator.runner.history;
 
 import java.util.List;
 
-import org.easystogu.db.access.table.IndBollTableHelper;
+import org.easystogu.config.Constants;
+import org.easystogu.db.access.facde.DBAccessFacdeFactory;
 import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.table.StockPriceTableHelper;
+import org.easystogu.db.helper.IF.IndicatorDBHelperIF;
 import org.easystogu.db.vo.table.BollVO;
 import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
@@ -14,7 +16,7 @@ import org.easystogu.utils.Strings;
 //计算数据库中所有boll值，包括最新和历史的，一次性运行
 public class HistoryBollCountAndSaveDBRunner {
 
-	protected IndBollTableHelper bollTable = IndBollTableHelper.getInstance();
+	protected IndicatorDBHelperIF bollTable = DBAccessFacdeFactory.getInstance(Constants.indBoll);
 	protected StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
 	private BOLLHelper bollHelper = new BOLLHelper();
 

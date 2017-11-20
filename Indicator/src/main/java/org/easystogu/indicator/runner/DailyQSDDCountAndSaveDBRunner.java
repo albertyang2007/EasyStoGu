@@ -17,9 +17,9 @@ import org.easystogu.utils.Strings;
 import com.google.common.primitives.Doubles;
 
 public class DailyQSDDCountAndSaveDBRunner implements Runnable {
+	protected IndicatorDBHelperIF qsddTable = DBAccessFacdeFactory.getInstance(Constants.indQSDD);
 	private QSDDHelper qsddHelper = new QSDDHelper();
 	protected StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
-	protected IndicatorDBHelperIF qsddTable = DBAccessFacdeFactory.getInstance(Constants.indQSDD);
 	protected CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 
 	public DailyQSDDCountAndSaveDBRunner() {

@@ -1,12 +1,13 @@
 package org.easystogu.indicator.runner.history;
 
-import org.easystogu.db.access.table.IndWeekKDJTableHelper;
+import org.easystogu.config.Constants;
+import org.easystogu.db.access.facde.DBAccessFacdeFactory;
 import org.easystogu.db.access.table.WeekStockPriceTableHelper;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 
 public class HistoryWeeklyKDJCountAndSaveDBRunner extends HistoryKDJCountAndSaveDBRunner {
 	public HistoryWeeklyKDJCountAndSaveDBRunner() {
-		kdjTable = IndWeekKDJTableHelper.getInstance();
+		kdjTable = DBAccessFacdeFactory.getInstance(Constants.indWeekKDJ);
 		qianFuQuanStockPriceTable = WeekStockPriceTableHelper.getInstance();
 	}
 

@@ -1,13 +1,14 @@
 package org.easystogu.indicator.runner.history;
 
-import org.easystogu.db.access.table.IndWeekMacdTableHelper;
+import org.easystogu.config.Constants;
+import org.easystogu.db.access.facde.DBAccessFacdeFactory;
 import org.easystogu.db.access.table.WeekStockPriceTableHelper;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 
 public class HistoryWeeklyMacdCountAndSaveDBRunner extends HistoryMacdCountAndSaveDBRunner {
 
 	public HistoryWeeklyMacdCountAndSaveDBRunner() {
-		macdTable = IndWeekMacdTableHelper.getInstance();
+		macdTable = DBAccessFacdeFactory.getInstance(Constants.indWeekMacd);
 		qianFuQuanStockPriceTable = WeekStockPriceTableHelper.getInstance();
 	}
 
