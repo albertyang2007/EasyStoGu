@@ -3,6 +3,8 @@ package org.easystogu.db.access.table;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.easystogu.config.Constants;
+import org.easystogu.db.access.facde.DBAccessFacdeFactory;
 import org.easystogu.db.vo.table.KDJVO;
 import org.easystogu.db.vo.table.MacdVO;
 import org.easystogu.db.vo.table.StockPriceVO;
@@ -11,13 +13,8 @@ import org.easystogu.db.vo.table.StockSuperVO;
 public class WeekStockSuperVOHelper extends StockSuperVOHelper {
 	public WeekStockSuperVOHelper() {
 		qianFuQuanStockPriceTable = WeekStockPriceTableHelper.getInstance();
-		macdTable = IndWeekMacdTableHelper.getInstance();
-		kdjTable = IndWeekKDJTableHelper.getInstance();
-		// bollTable = IndWeekBollTableHelper.getInstance();
-		// shenXianTable = IndWeekShenXianTableHelper.getInstance();
-		// xueShi2Table = IndWeekXueShi2TableHelper.getInstance();
-		// mai1mai2Table = IndWeekMai1Mai2TableHelper.getInstance();
-		// yiMengBSTable = IndWeekYiMengBSTableHelper.getInstance();
+		macdTable = DBAccessFacdeFactory.getInstance(Constants.indWeekMacd);
+		kdjTable = DBAccessFacdeFactory.getInstance(Constants.indWeekKDJ);
 	}
 
 	@Override
@@ -26,11 +23,8 @@ public class WeekStockSuperVOHelper extends StockSuperVOHelper {
 		List<StockSuperVO> overList = new ArrayList<StockSuperVO>();
 
 		List<StockPriceVO> spList = qianFuQuanStockPriceTable.getStockPriceById(stockId);
-		List<MacdVO> macdList = macdTable.getAllMacd(stockId);
-		List<KDJVO> kdjList = kdjTable.getAllKDJ(stockId);
-		// List<BollVO> bollList = bollTable.getAllBoll(stockId);
-		// List<ShenXianVO> shenXianList =
-		// shenXianTable.getAllShenXian(stockId);
+		List<MacdVO> macdList = macdTable.getAll(stockId);
+		List<KDJVO> kdjList = kdjTable.getAll(stockId);
 
 		if ((spList.size() != macdList.size()) || (spList.size() != kdjList.size())) {
 			return overList;
@@ -59,8 +53,8 @@ public class WeekStockSuperVOHelper extends StockSuperVOHelper {
 		List<StockSuperVO> overList = new ArrayList<StockSuperVO>();
 
 		List<StockPriceVO> spList = qianFuQuanStockPriceTable.getNdateStockPriceById(stockId, day);
-		List<MacdVO> macdList = macdTable.getNDateMacd(stockId, day);
-		List<KDJVO> kdjList = kdjTable.getNDateKDJ(stockId, day);
+		List<MacdVO> macdList = macdTable.getByIdAndLatestNDate(stockId, day);
+		List<KDJVO> kdjList = kdjTable.getByIdAndLatestNDate(stockId, day);
 
 		if ((spList.size() != day) || (macdList.size() != day) || (kdjList.size() != day)) {
 			return overList;

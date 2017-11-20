@@ -11,19 +11,13 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 
-import org.easystogu.config.ConfigurationService;
-import org.easystogu.config.Constants;
-import org.easystogu.cache.StockIndicatorCache;
 import org.easystogu.cache.ConfigurationServiceCache;
-import org.easystogu.config.DBConfigurationService;
-import org.easystogu.db.access.table.IndBollTableHelper;
+import org.easystogu.cache.StockIndicatorCache;
+import org.easystogu.config.Constants;
+import org.easystogu.db.access.facde.DBAccessFacdeFactory;
 import org.easystogu.db.access.table.IndDDXTableHelper;
-import org.easystogu.db.access.table.IndKDJTableHelper;
-import org.easystogu.db.access.table.IndMacdTableHelper;
-import org.easystogu.db.access.table.IndQSDDTableHelper;
-import org.easystogu.db.access.table.IndShenXianTableHelper;
-import org.easystogu.db.access.table.IndWRTableHelper;
 import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
+import org.easystogu.db.helper.IF.IndicatorDBHelperIF;
 import org.easystogu.db.vo.table.BollVO;
 import org.easystogu.db.vo.table.DDXVO;
 import org.easystogu.db.vo.table.KDJVO;
@@ -47,13 +41,14 @@ public class IndicatorEndPointV1 {
 	private ConfigurationServiceCache config = ConfigurationServiceCache.getInstance();
 	protected String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
 	protected QianFuQuanStockPriceTableHelper qianfuquanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
-	protected IndKDJTableHelper kdjTable = IndKDJTableHelper.getInstance();
-	protected IndMacdTableHelper macdTable = IndMacdTableHelper.getInstance();
-	protected IndBollTableHelper bollTable = IndBollTableHelper.getInstance();
-	protected IndQSDDTableHelper qsddTable = IndQSDDTableHelper.getInstance();
-	protected IndWRTableHelper wrTable = IndWRTableHelper.getInstance();
+	protected IndicatorDBHelperIF kdjTable = DBAccessFacdeFactory.getInstance(Constants.indKDJ);
+	protected IndicatorDBHelperIF macdTable = DBAccessFacdeFactory.getInstance(Constants.indMacd);
+	protected IndicatorDBHelperIF bollTable = DBAccessFacdeFactory.getInstance(Constants.indBoll);
+	protected IndicatorDBHelperIF qsddTable = DBAccessFacdeFactory.getInstance(Constants.indQSDD);
+	protected IndicatorDBHelperIF wrTable = DBAccessFacdeFactory.getInstance(Constants.indWR);
+	protected IndicatorDBHelperIF shenXianTable = DBAccessFacdeFactory.getInstance(Constants.indShenXian);
+
 	protected IndDDXTableHelper ddxTable = IndDDXTableHelper.getInstance();
-	protected IndShenXianTableHelper shenXianTable = IndShenXianTableHelper.getInstance();
 	protected LuZaoHelper luzaoHelper = new LuZaoHelper();
 	protected ShenXianHelper shenXianHelper = new ShenXianHelper();
 
@@ -84,7 +79,7 @@ public class IndicatorEndPointV1 {
 			// }
 			// }
 		} else if (Pattern.matches(dateRegex, dateParm) || Strings.isEmpty(dateParm)) {
-			list.add(macdTable.getMacd(stockIdParm, dateParm));
+			list.add((MacdVO) macdTable.getSingle(stockIdParm, dateParm));
 		}
 		return list;
 	}
@@ -111,7 +106,7 @@ public class IndicatorEndPointV1 {
 			// }
 			// }
 		} else if (Pattern.matches(fromToRegex, dateParm) || Strings.isEmpty(dateParm)) {
-			list.add(kdjTable.getKDJ(stockIdParm, dateParm));
+			list.add((KDJVO) kdjTable.getSingle(stockIdParm, dateParm));
 		}
 		return list;
 	}
@@ -138,7 +133,7 @@ public class IndicatorEndPointV1 {
 			// }
 			// }
 		} else if (Pattern.matches(dateRegex, dateParm) || Strings.isEmpty(dateParm)) {
-			list.add(bollTable.getBoll(stockIdParm, dateParm));
+			list.add((BollVO) bollTable.getSingle(stockIdParm, dateParm));
 		}
 		return list;
 	}
@@ -166,7 +161,7 @@ public class IndicatorEndPointV1 {
 			// }
 			// }
 		} else if (Pattern.matches(dateRegex, dateParm) || Strings.isEmpty(dateParm)) {
-			list.add(shenXianTable.getShenXian(stockIdParm, dateParm));
+			list.add((ShenXianVO) shenXianTable.getSingle(stockIdParm, dateParm));
 		}
 		return list;
 	}
@@ -250,7 +245,7 @@ public class IndicatorEndPointV1 {
 			// }
 			// }
 		} else if (Pattern.matches(dateRegex, dateParm) || Strings.isEmpty(dateParm)) {
-			list.add(qsddTable.getQSDD(stockIdParm, dateParm));
+			list.add((QSDDVO) qsddTable.getSingle(stockIdParm, dateParm));
 
 		}
 		return list;
@@ -278,7 +273,7 @@ public class IndicatorEndPointV1 {
 			// }
 			// }
 		} else if (Pattern.matches(dateRegex, dateParm) || Strings.isEmpty(dateParm)) {
-			list.add(wrTable.getWR(stockIdParm, dateParm));
+			list.add((WRVO) wrTable.getSingle(stockIdParm, dateParm));
 		}
 		return list;
 	}
@@ -313,7 +308,8 @@ public class IndicatorEndPointV1 {
 	// common function to fetch price from stockPrice table
 	protected List<StockPriceVO> fetchAllPrices(String stockid) {
 		List<StockPriceVO> spList = new ArrayList<StockPriceVO>();
-		List<StockPriceVO> cacheSpList = indicatorCache.queryByStockId(Constants.cacheQianFuQuanStockPrice + ":" + stockid);
+		List<StockPriceVO> cacheSpList = indicatorCache
+				.queryByStockId(Constants.cacheQianFuQuanStockPrice + ":" + stockid);
 		for (Object obj : cacheSpList) {
 			spList.add((StockPriceVO) obj);
 		}

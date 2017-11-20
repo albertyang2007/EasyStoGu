@@ -1,9 +1,7 @@
 package org.easystogu.runner;
 
-import org.easystogu.indicator.runner.history.HistoryWeeklyBollCountAndSaveDBRunner;
 import org.easystogu.indicator.runner.history.HistoryWeeklyKDJCountAndSaveDBRunner;
 import org.easystogu.indicator.runner.history.HistoryWeeklyMacdCountAndSaveDBRunner;
-import org.easystogu.indicator.runner.history.HistoryWeeklyShenXianCountAndSaveDBRunner;
 import org.easystogu.sina.runner.history.HistoryWeekStockPriceCountAndSaveDBRunner;
 
 public class WeeklyManualCountAndSaveDBRunner {
@@ -13,7 +11,5 @@ public class WeeklyManualCountAndSaveDBRunner {
         HistoryWeekStockPriceCountAndSaveDBRunner.main(args);
         HistoryWeeklyMacdCountAndSaveDBRunner.main(args);
         HistoryWeeklyKDJCountAndSaveDBRunner.main(args);
-        HistoryWeeklyBollCountAndSaveDBRunner.main(args);
-        HistoryWeeklyShenXianCountAndSaveDBRunner.main(args);
     }
 }

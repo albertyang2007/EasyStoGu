@@ -3,18 +3,15 @@ package org.easystogu.runner;
 import java.util.List;
 
 import org.easystogu.cache.runner.AllCacheRunner;
-import org.easystogu.db.access.table.IndBollTableHelper;
-import org.easystogu.db.access.table.IndKDJTableHelper;
+import org.easystogu.config.Constants;
+import org.easystogu.db.access.facde.DBAccessFacdeFactory;
 import org.easystogu.db.access.table.IndMATableHelper;
-import org.easystogu.db.access.table.IndMacdTableHelper;
-import org.easystogu.db.access.table.IndQSDDTableHelper;
-import org.easystogu.db.access.table.IndShenXianTableHelper;
-import org.easystogu.db.access.table.IndWRTableHelper;
 import org.easystogu.db.access.table.IndWeekKDJTableHelper;
 import org.easystogu.db.access.table.IndWeekMacdTableHelper;
 import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.access.table.WeekStockPriceTableHelper;
+import org.easystogu.db.helper.IF.IndicatorDBHelperIF;
 import org.easystogu.db.vo.table.BollVO;
 import org.easystogu.db.vo.table.KDJVO;
 import org.easystogu.db.vo.table.MAVO;
@@ -39,16 +36,14 @@ import org.easystogu.utils.Strings;
 public class DataBaseSanityCheck implements Runnable {
 	protected StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
 	protected QianFuQuanStockPriceTableHelper qianfuquanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
-	protected IndMacdTableHelper macdTable = IndMacdTableHelper.getInstance();
-	protected IndKDJTableHelper kdjTable = IndKDJTableHelper.getInstance();
-	protected IndBollTableHelper bollTable = IndBollTableHelper.getInstance();
-	protected IndShenXianTableHelper shenXianTable = IndShenXianTableHelper.getInstance();
-	protected IndQSDDTableHelper qsddTable = IndQSDDTableHelper.getInstance();
+	protected IndicatorDBHelperIF macdTable = DBAccessFacdeFactory.getInstance(Constants.indMacd);
+	protected IndicatorDBHelperIF kdjTable = DBAccessFacdeFactory.getInstance(Constants.indKDJ);
+	protected IndicatorDBHelperIF bollTable = DBAccessFacdeFactory.getInstance(Constants.indBoll);
+	protected IndicatorDBHelperIF shenXianTable = DBAccessFacdeFactory.getInstance(Constants.indShenXian);
+	protected IndicatorDBHelperIF qsddTable = DBAccessFacdeFactory.getInstance(Constants.indQSDD);
+	protected IndicatorDBHelperIF wrTable = DBAccessFacdeFactory.getInstance(Constants.indWR);
+	
 	protected IndMATableHelper maTable = IndMATableHelper.getInstance();
-	protected IndWRTableHelper wrTable = IndWRTableHelper.getInstance();
-	// protected HistoryHouFuQuanStockPriceDownloadAndStoreDBRunner
-	// historyHouFuQuanRunner = new
-	// HistoryHouFuQuanStockPriceDownloadAndStoreDBRunner();
 	protected HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner historyQianFuQuanRunner = new HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner();
 
 	protected WeekStockPriceTableHelper weekStockPriceTable = WeekStockPriceTableHelper.getInstance();
@@ -70,13 +65,13 @@ public class DataBaseSanityCheck implements Runnable {
 
 		List<StockPriceVO> spList = stockPriceTable.getStockPriceById(stockId);
 		List<StockPriceVO> qianfuquan_spList = qianfuquanStockPriceTable.getStockPriceById(stockId);
-		List<MacdVO> macdList = macdTable.getAllMacd(stockId);
-		List<KDJVO> kdjList = kdjTable.getAllKDJ(stockId);
-		List<BollVO> bollList = bollTable.getAllBoll(stockId);
-		List<ShenXianVO> shenXianList = shenXianTable.getAllShenXian(stockId);
-		List<QSDDVO> qsddList = qsddTable.getAllQSDD(stockId);
+		List<MacdVO> macdList = macdTable.getAll(stockId);
+		List<KDJVO> kdjList = kdjTable.getAll(stockId);
+		List<BollVO> bollList = bollTable.getAll(stockId);
+		List<ShenXianVO> shenXianList = shenXianTable.getAll(stockId);
+		List<QSDDVO> qsddList = qsddTable.getAll(stockId);
 		List<MAVO> maList = maTable.getAllMA(stockId);
-		List<WRVO> wrList = wrTable.getAllWR(stockId);
+		List<WRVO> wrList = wrTable.getAll(stockId);
 
 		for (StockPriceVO vo : spList) {
 			if (vo.close == 0 || vo.open == 0 || vo.high == 0 || vo.low == 0 || Strings.isEmpty(vo.date)) {
@@ -211,11 +206,6 @@ public class DataBaseSanityCheck implements Runnable {
 		check.sanityDailyCheck(stockConfig.getAllStockId());
 		check.sanityWeekCheck(stockConfig.getAllStockId());
 		// check.sanityDailyCheck("002521");
-		// check.sanityDailyCheck("399001");
-		// check.sanityDailyCheck("399006");
-		// check.sanityWeekCheck("002521");
-		// check.sanityWeekCheck("399001");
-		// check.sanityWeekCheck("399006");
 	}
 
 	public static void main(String[] args) {

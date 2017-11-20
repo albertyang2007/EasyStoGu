@@ -12,25 +12,11 @@ public class AllDailyIndCountAndSaveDBRunner {
 		new DailyQSDDCountAndSaveDBRunner().countAndSaved(stockIds);
 		new DailyWRCountAndSaveDBRunner().countAndSaved(stockIds);
 		new DailyMACountAndSaveDBRunner().countAndSaved(stockIds);
-		// new DailyYiMengBSCountAndSaveDBRunner().countAndSaved(stockIds);
-		// new DailyMai1Mai2CountAndSaveDBRunner().countAndSaved(stockIds);
-		// new DailyXueShi2CountAndSaveDBRunner().countAndSaved(stockIds);
-		// new
-		// DailyZhuliJinChuCountAndSaveDBRunner().countAndSaved(stockIds);
-		// new DailyYiMengBSCountAndSaveDBRunner().countAndSaved(stockIds);
 	}
 
 	public void runDailyWeekIndForStockIds(List<String> stockIds) {
 		// week ind
 		new DailyWeekMacdCountAndSaveDBRunner().countAndSaved(stockIds);
 		new DailyWeekKDJCountAndSaveDBRunner().countAndSaved(stockIds);
-		// new DailyWeekBollCountAndSaveDBRunner().countAndSaved(stockIds);
-		// new
-		// DailyWeekMai1Mai2CountAndSaveDBRunner().countAndSaved(stockIds);
-		// new
-		// DailyWeekShenXianCountAndSaveDBRunner().countAndSaved(stockIds);
-		// new
-		// DailyWeekYiMengBSCountAndSaveDBRunner().countAndSaved(stockIds);
-		// new DailyWeekQSDDCountAndSaveDBRunner().countAndSaved(stockIds);
 	}
 }

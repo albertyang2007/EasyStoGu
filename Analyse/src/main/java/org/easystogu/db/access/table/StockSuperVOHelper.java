@@ -3,6 +3,9 @@ package org.easystogu.db.access.table;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.easystogu.config.Constants;
+import org.easystogu.db.access.facde.DBAccessFacdeFactory;
+import org.easystogu.db.helper.IF.IndicatorDBHelperIF;
 import org.easystogu.db.vo.table.BollVO;
 import org.easystogu.db.vo.table.KDJVO;
 import org.easystogu.db.vo.table.MacdVO;
@@ -15,40 +18,37 @@ import org.easystogu.db.vo.table.WRVO;
 public class StockSuperVOHelper {
 
 	protected StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
-	protected IndMacdTableHelper macdTable = IndMacdTableHelper.getInstance();
-	protected IndKDJTableHelper kdjTable = IndKDJTableHelper.getInstance();
-	protected IndBollTableHelper bollTable = IndBollTableHelper.getInstance();
-	protected IndShenXianTableHelper shenXianTable = IndShenXianTableHelper.getInstance();
+	protected IndicatorDBHelperIF macdTable = DBAccessFacdeFactory.getInstance(Constants.indMacd);
+	protected IndicatorDBHelperIF kdjTable = DBAccessFacdeFactory.getInstance(Constants.indKDJ);
+	protected IndicatorDBHelperIF bollTable = DBAccessFacdeFactory.getInstance(Constants.indBoll);
+	protected IndicatorDBHelperIF shenXianTable = DBAccessFacdeFactory.getInstance(Constants.indShenXian);
+	protected IndicatorDBHelperIF qsddTable = DBAccessFacdeFactory.getInstance(Constants.indQSDD);
+	protected IndicatorDBHelperIF wrTable = DBAccessFacdeFactory.getInstance(Constants.indWR);
 	protected IndDDXTableHelper ddxTable = IndDDXTableHelper.getInstance();
-	protected IndQSDDTableHelper qsddTable = IndQSDDTableHelper.getInstance();
-	protected IndWRTableHelper wrTable = IndWRTableHelper.getInstance();
-
-	// protected IndYiMengBSTableHelper ymbsTable =
-	// IndYiMengBSTableHelper.getInstance();
 
 	public List<StockSuperVO> getAllStockSuperVO(String stockId) {
 		// merge them into one overall VO
 		List<StockSuperVO> overList = new ArrayList<StockSuperVO>();
 
 		List<StockPriceVO> spList = qianFuQuanStockPriceTable.getStockPriceById(stockId);
-		List<MacdVO> macdList = macdTable.getAllMacd(stockId);
-		List<KDJVO> kdjList = kdjTable.getAllKDJ(stockId);
-		List<BollVO> bollList = bollTable.getAllBoll(stockId);
-		List<ShenXianVO> shenXianList = shenXianTable.getAllShenXian(stockId);
-		List<QSDDVO> qsddList = qsddTable.getAllQSDD(stockId);
-		List<WRVO> wrList = wrTable.getAllWR(stockId);
+		List<MacdVO> macdList = macdTable.getAll(stockId);
+		List<KDJVO> kdjList = kdjTable.getAll(stockId);
+		List<BollVO> bollList = bollTable.getAll(stockId);
+		List<ShenXianVO> shenXianList = shenXianTable.getAll(stockId);
+		List<QSDDVO> qsddList = qsddTable.getAll(stockId);
+		List<WRVO> wrList = wrTable.getAll(stockId);
 
 		if ((spList.size() != macdList.size()) || (macdList.size() != kdjList.size())
 				|| (kdjList.size() != spList.size()) || (bollList.size() != spList.size())
 				|| (shenXianList.size() != spList.size()) || (qsddList.size() != spList.size())
 				|| (wrList.size() != spList.size())) {
-			//System.out.println("rtn 1");
+			// System.out.println("rtn 1");
 			return overList;
 		}
 
 		if ((spList.size() == 0) || (macdList.size() == 0) || (kdjList.size() == 0) || (bollList.size() == 0)
 				|| (shenXianList.size() == 0) || (qsddList.size() == 0) || (wrList.size() == 0)) {
-			//System.out.println("rtn 2");
+			// System.out.println("rtn 2");
 			return overList;
 		}
 
@@ -56,7 +56,7 @@ public class StockSuperVOHelper {
 				|| !spList.get(0).date.equals(bollList.get(0).date)
 				|| !spList.get(0).date.equals(shenXianList.get(0).date)
 				|| !spList.get(0).date.equals(qsddList.get(0).date) || !spList.get(0).date.equals(wrList.get(0).date)) {
-			//System.out.println("rtn 3");
+			// System.out.println("rtn 3");
 			return overList;
 		}
 
@@ -78,12 +78,11 @@ public class StockSuperVOHelper {
 		List<StockSuperVO> overList = new ArrayList<StockSuperVO>();
 
 		List<StockPriceVO> spList = qianFuQuanStockPriceTable.getNdateStockPriceById(stockId, day);
-		List<MacdVO> macdList = macdTable.getNDateMacd(stockId, day);
-		List<KDJVO> kdjList = kdjTable.getNDateKDJ(stockId, day);
-		List<BollVO> bollList = bollTable.getNDateBoll(stockId, day);
-		List<ShenXianVO> shenXianList = shenXianTable.getNDateShenXian(stockId, day);
-		List<QSDDVO> qsddList = qsddTable.getNDateQSDD(stockId, day);
-		// List<YiMengBSVO> ymbsList = ymbsTable.getNDateYiMengBS(stockId, day);
+		List<MacdVO> macdList = macdTable.getByIdAndLatestNDate(stockId, day);
+		List<KDJVO> kdjList = kdjTable.getByIdAndLatestNDate(stockId, day);
+		List<BollVO> bollList = bollTable.getByIdAndLatestNDate(stockId, day);
+		List<ShenXianVO> shenXianList = shenXianTable.getByIdAndLatestNDate(stockId, day);
+		List<QSDDVO> qsddList = qsddTable.getByIdAndLatestNDate(stockId, day);
 
 		if ((spList.size() != day) || (macdList.size() != day) || (kdjList.size() != day) || (bollList.size() != day)
 				|| (shenXianList.size() != day) || (qsddList.size() != day)) {
