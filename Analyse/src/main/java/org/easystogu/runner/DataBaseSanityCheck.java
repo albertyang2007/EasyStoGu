@@ -6,8 +6,6 @@ import org.easystogu.cache.runner.AllCacheRunner;
 import org.easystogu.config.Constants;
 import org.easystogu.db.access.facde.DBAccessFacdeFactory;
 import org.easystogu.db.access.table.IndMATableHelper;
-import org.easystogu.db.access.table.IndWeekKDJTableHelper;
-import org.easystogu.db.access.table.IndWeekMacdTableHelper;
 import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.access.table.WeekStockPriceTableHelper;
@@ -47,8 +45,8 @@ public class DataBaseSanityCheck implements Runnable {
 	protected HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner historyQianFuQuanRunner = new HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner();
 
 	protected WeekStockPriceTableHelper weekStockPriceTable = WeekStockPriceTableHelper.getInstance();
-	protected IndWeekMacdTableHelper macdWeekTable = IndWeekMacdTableHelper.getInstance();
-	protected IndWeekKDJTableHelper kdjWeekTable = IndWeekKDJTableHelper.getInstance();
+	protected IndicatorDBHelperIF weekMacdTable = DBAccessFacdeFactory.getInstance(Constants.indWeekMacd);
+	protected IndicatorDBHelperIF weekKdjTable = DBAccessFacdeFactory.getInstance(Constants.indWeekKDJ);
 
 	public void sanityDailyCheck(List<String> stockIds) {
 		int index = 0;
@@ -147,8 +145,8 @@ public class DataBaseSanityCheck implements Runnable {
 
 	public void sanityWeekCheck(String stockId) {
 		List<StockPriceVO> spList = weekStockPriceTable.getStockPriceById(stockId);
-		List<MacdVO> macdList = macdWeekTable.getAllMacd(stockId);
-		List<KDJVO> kdjList = kdjWeekTable.getAllKDJ(stockId);
+		List<MacdVO> macdList = weekMacdTable.getAll(stockId);
+		List<KDJVO> kdjList = weekKdjTable.getAll(stockId);
 
 		boolean refresh = false;
 		for (StockPriceVO vo : spList) {
@@ -167,13 +165,13 @@ public class DataBaseSanityCheck implements Runnable {
 
 			figureOutDifferenceDate(spList, macdList);
 
-			macdWeekTable.delete(stockId);
+			weekMacdTable.delete(stockId);
 			HistoryWeeklyMacdCountAndSaveDBRunner runner = new HistoryWeeklyMacdCountAndSaveDBRunner();
 			runner.countAndSaved(stockId);
 		}
 		if ((spList.size() != kdjList.size())) {
 			System.out.println(stockId + " size of week kdj is not equal:" + spList.size() + "!=" + kdjList.size());
-			kdjWeekTable.delete(stockId);
+			weekKdjTable.delete(stockId);
 			HistoryWeeklyKDJCountAndSaveDBRunner runner = new HistoryWeeklyKDJCountAndSaveDBRunner();
 			runner.countAndSaved(stockId);
 		}
