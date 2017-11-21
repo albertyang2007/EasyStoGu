@@ -24,9 +24,6 @@ public class DailyUpdateStockPriceAndDDXRunner implements Runnable {
 
 		// daily zijinliu and ddx for all
 		OverAllZiJinLiuAndDDXRunner zijinliuRunner = new OverAllZiJinLiuAndDDXRunner();
-		if (fetchAllZiJinLiu)
-			zijinliuRunner.resetToAllPage();
-		
 		zijinliuRunner.run();
 
 		System.out.println("stop using " + (System.currentTimeMillis() - st) / 1000 + " seconds");

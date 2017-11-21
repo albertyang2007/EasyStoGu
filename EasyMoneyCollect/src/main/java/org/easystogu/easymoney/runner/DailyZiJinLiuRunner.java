@@ -24,10 +24,6 @@ public class DailyZiJinLiuRunner implements Runnable {
 		this.toPage = config.getInt("real_Time_Get_ZiJin_Liu_PageNumber", 10);
 	}
 
-	public void resetToAllPage() {
-		this.toPage = DailyZiJinLiuFatchDataHelper.totalPages;
-	}
-
 	public void countAndSaved() {
 		System.out.println("Fatch ZiJinLiu only toPage = " + toPage);
 		List<ZiJinLiuVO> list = fatchDataHelper.getAllStockIdsZiJinLiu(toPage);

@@ -130,7 +130,6 @@ public class HomeEndPoint {
 	public String overAllZiJinLiuAndDDXRunnerForAllStockId() {
 		if (Constants.ZONE_OFFICE.equals(zone)) {
 			OverAllZiJinLiuAndDDXRunner runner = new OverAllZiJinLiuAndDDXRunner();
-			runner.resetToAllPage();
 			Thread t = new Thread(runner);
 			t.start();
 			return "OverAllZiJinLiuAndDDXRunnerForAllStockId already running, please check DB result.";
@@ -143,7 +142,6 @@ public class HomeEndPoint {
 	public String dailyZiJinLiuRunnerForAllStockId() {
 		if (Constants.ZONE_OFFICE.equals(zone)) {
 			DailyZiJinLiuRunner runner = new DailyZiJinLiuRunner();
-			runner.resetToAllPage();
 			Thread t = new Thread(runner);
 			t.start();
 			return "DailyZiJinLiuRunner already running, please check DB result.";

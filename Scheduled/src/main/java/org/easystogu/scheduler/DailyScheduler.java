@@ -86,7 +86,6 @@ public class DailyScheduler implements SchedulingConfigurer {
 		logger.info("OverAllZiJinLiuAndDDXRunner and DDX for all StockId already running.");
 		if (Constants.ZONE_OFFICE.equalsIgnoreCase(zone)) {
 			OverAllZiJinLiuAndDDXRunner runner = new OverAllZiJinLiuAndDDXRunner();
-			runner.resetToAllPage();
 			Thread t = new Thread(runner);
 			t.start();
 		}
