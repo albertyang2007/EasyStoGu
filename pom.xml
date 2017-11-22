@@ -26,8 +26,7 @@
 			<modules>
 				<module>CommonLib</module>
 				<module>DataAccessModule</module>
-				<module>DataCollect</module>
-				<module>EasyMoneyCollect</module>
+				<module>DataCollectModule</module>
 				<module>Indicator</module>
 				<module>Analyse</module>
 				<module>Portal</module>
