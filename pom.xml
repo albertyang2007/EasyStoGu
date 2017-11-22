@@ -25,10 +25,7 @@
 			</activation>
 			<modules>
 				<module>CommonLib</module>
-				<module>DatabaseIF</module>
-				<module>DatabaseLib</module>
-				<module>CassandraLib</module>
-				<module>DBAccessFacde</module>
+				<module>DataAccessModule</module>
 				<module>DataCollect</module>
 				<module>EasyMoneyCollect</module>
 				<module>Indicator</module>
