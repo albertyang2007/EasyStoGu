@@ -57,7 +57,9 @@ public enum DailyCombineCheckPoint {
     		MACD_TWICE_GORDON_W_Botton_MACD_DI_BEILI(SellPointType.KDJ_Dead, 0, 99.0), 
     		MACD_TWICE_GORDON_W_Botton_TiaoKong_ZhanShang_Bull(SellPointType.KDJ_Dead, 0, 99.0),
     		High_Price_Digit_In_Order(SellPointType.KDJ_Dead, 0, 99.0),
-    		Low_Price_Digit_In_Order(SellPointType.KDJ_Dead, 0, 99.0);
+    		Low_Price_Digit_In_Order(SellPointType.KDJ_Dead, 0, 99.0),
+    		KDJ_Over_Buy(SellPointType.KDJ_Dead, 0, 99.0),
+    		KDJ_Over_Sell(SellPointType.KDJ_Dead, 0, 99.0);
 
     private ConfigurationService config = DBConfigurationService.getInstance();
     private double minEarnPercent = config.getDouble("minEarnPercent_Select_CheckPoint");
