@@ -1350,6 +1350,18 @@ public class CombineAnalyseHelper {
 			return false;
 		}
 
+		case KDJ_Over_Buy: {
+			if (curSuperDayVO.kdjVO.j >= 110.0)
+				return true;
+			return false;
+		}
+
+		case KDJ_Over_Sell: {
+			if (curSuperDayVO.kdjVO.j <= -10.0)
+				return true;
+			return false;
+		}
+
 		// wr bottom
 		// short, middle and long term is less than 5 and trend is down
 		case WR_Bottom_Area: {
