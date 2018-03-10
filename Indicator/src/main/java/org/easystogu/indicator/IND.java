@@ -321,16 +321,16 @@ public class IND {
 		return highn;
 	}
 
-	public static double[] simpleMovingAverage(double[] values, int n) {
-		double[] sums = Arrays.copyOf(values, values.length); // <1>
-		Arrays.parallelPrefix(sums, Double::sum); // <2>
+/*	public static double[] simpleMovingAverageLamdbas(double[] values, int n) {
+		//double[] sums = Arrays.copyOf(values, values.length); // <1>
+		Arrays.parallelPrefix(values, Double::sum); // <2>
 		int start = n - 1;
-		return IntStream.range(start, sums.length) // <3>
+		return IntStream.range(start, values.length) // <3>
 				.mapToDouble(i -> {
-					double prefix = i == start ? 0 : sums[i - n];
-					return (sums[i] - prefix) / n; // <4>
+					double prefix = i == start ? 0 : values[i - n];
+					return (values[i] - prefix) / n; // <4>
 				}).toArray(); // <5>
-	}
+	}*/
 
 	public static void main(String[] args) {
 		IND ind = new IND();
@@ -346,12 +346,12 @@ public class IND {
 		double[] sma = ind.SMA(price, 5);
 		long t2 = System.currentTimeMillis();
 
-		double[] sma2 = simpleMovingAverage(price, 5);
+		//double[] sma2 = simpleMovingAverageLamdbas(price, 5);
 		long t3 = System.currentTimeMillis();
 		System.out.println(t2 - t1);
 		System.out.println(t3 - t2);
  
 		System.out.println(sma[sma.length - 1]);
-		System.out.println(sma2[sma2.length - 1]);
+		//System.out.println(sma2[sma2.length - 1]);
 	}
 }
