@@ -1,14 +1,22 @@
 package org.easystogu.indicator;
 
-import org.easystogu.config.ConfigurationService;
-import org.easystogu.config.DBConfigurationService;
+//import org.easystogu.config.ConfigurationService;
+//import org.easystogu.config.DBConfigurationService;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.IntStream;
+
+import com.google.common.primitives.Doubles;
 import com.tictactec.ta.lib.Core;
 import com.tictactec.ta.lib.MInteger;
 
 public class IND {
-	private ConfigurationService config = DBConfigurationService.getInstance();
-	public int mockLength = config.getInt("insert_length_mock_price_count_indicator", 120);
+	// private ConfigurationService config =
+	// DBConfigurationService.getInstance();
+	public int mockLength = 120;// config.getInt("insert_length_mock_price_count_indicator",
+								// 120);
 	protected static final double DEFAULT_VALUE = 0.0;
 	protected Core core = new Core();
 
@@ -313,12 +321,37 @@ public class IND {
 		return highn;
 	}
 
+	public static double[] simpleMovingAverage(double[] values, int n) {
+		double[] sums = Arrays.copyOf(values, values.length); // <1>
+		Arrays.parallelPrefix(sums, Double::sum); // <2>
+		int start = n - 1;
+		return IntStream.range(start, sums.length) // <3>
+				.mapToDouble(i -> {
+					double prefix = i == start ? 0 : sums[i - n];
+					return (sums[i] - prefix) / n; // <4>
+				}).toArray(); // <5>
+	}
+
 	public static void main(String[] args) {
 		IND ind = new IND();
-		double[] a = new double[] { 1.0, 2.0, 3.0, 4.0, 5.0 };
-		double[] c = ind.insertBefore(a, 9.0, 5);
-		for (int i = 0; i < c.length; i++) {
-			System.out.println(c[i]);
+
+		List<Double> prices = new ArrayList<Double>();
+		for (long i = 0; i < 20000000; i++) {
+			prices.add(new Double(i));
 		}
+
+		double[] price = Doubles.toArray(prices);
+
+		long t1 = System.currentTimeMillis();
+		double[] sma = ind.SMA(price, 5);
+		long t2 = System.currentTimeMillis();
+
+		double[] sma2 = simpleMovingAverage(price, 5);
+		long t3 = System.currentTimeMillis();
+		System.out.println(t2 - t1);
+		System.out.println(t3 - t2);
+
+		System.out.println(sma[sma.length - 1]);
+		System.out.println(sma2[sma2.length - 1]);
 	}
 }
