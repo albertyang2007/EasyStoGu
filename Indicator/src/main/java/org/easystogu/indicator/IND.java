@@ -350,7 +350,7 @@ public class IND {
 		long t3 = System.currentTimeMillis();
 		System.out.println(t2 - t1);
 		System.out.println(t3 - t2);
-
+ 
 		System.out.println(sma[sma.length - 1]);
 		System.out.println(sma2[sma2.length - 1]);
 	}
