@@ -29,7 +29,7 @@
 		<moco.version>0.9.1</moco.version>
 
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<java.version>1.6</java.version>
+		<java.version>1.8</java.version>
 	</properties>
 
 	<dependencies>
