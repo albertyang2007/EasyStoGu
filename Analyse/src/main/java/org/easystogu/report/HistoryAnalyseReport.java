@@ -15,6 +15,7 @@ import org.easystogu.db.access.table.CheckPointDailySelectionTableHelper;
 import org.easystogu.db.access.table.CheckPointDailyStatisticsTableHelper;
 import org.easystogu.db.access.table.CheckPointHistoryAnalyseTableHelper;
 import org.easystogu.db.access.table.CheckPointHistorySelectionTableHelper;
+import org.easystogu.db.access.table.StockBehaviorStatisticsTableHelper;
 import org.easystogu.db.access.table.StockSuperVOHelper;
 import org.easystogu.db.access.table.WeekStockSuperVOHelper;
 import org.easystogu.db.vo.table.CheckPointDailySelectionVO;
@@ -31,6 +32,8 @@ public class HistoryAnalyseReport {
     private CheckPointHistorySelectionTableHelper checkPointHistorySelectionTable = CheckPointHistorySelectionTableHelper
             .getInstance();
     private CheckPointDailyStatisticsTableHelper checkPointDailyStatisticsTable = CheckPointDailyStatisticsTableHelper
+            .getInstance();
+    private StockBehaviorStatisticsTableHelper stockBehaviorStatisticsTable = StockBehaviorStatisticsTableHelper
             .getInstance();
     private WeekStockSuperVOHelper weekStockOverAllHelper = new WeekStockSuperVOHelper();
     private CombineAnalyseHelper combineAanalyserHelper = new CombineAnalyseHelper();

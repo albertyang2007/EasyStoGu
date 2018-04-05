@@ -59,7 +59,9 @@ public enum DailyCombineCheckPoint {
     		High_Price_Digit_In_Order(SellPointType.KDJ_Dead, 0, 99.0),
     		Low_Price_Digit_In_Order(SellPointType.KDJ_Dead, 0, 99.0),
     		KDJ_Over_Buy(SellPointType.KDJ_Dead, 0, 99.0),
-    		KDJ_Over_Sell(SellPointType.KDJ_Dead, 0, 99.0);
+    		KDJ_Over_Sell(SellPointType.KDJ_Dead, 0, 99.0),
+    		TIAOKONG_GAOKAI_25_POINTS_DAY1_HUIBU(SellPointType.KDJ_Dead, 0, 99.0),
+    		TIAOKONG_DIKAI_25_POINTS_DAY1_HUIBU(SellPointType.KDJ_Dead, 0, 99.0);
 
     private ConfigurationService config = DBConfigurationService.getInstance();
     private double minEarnPercent = config.getDouble("minEarnPercent_Select_CheckPoint");

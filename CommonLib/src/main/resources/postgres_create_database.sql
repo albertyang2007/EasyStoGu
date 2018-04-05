@@ -879,3 +879,27 @@ ALTER TABLE favorites_stock
 GRANT ALL ON TABLE favorites_stock TO public;
 GRANT ALL ON TABLE favorites_stock TO postgres;
 
+-- Table: stock_behavior_statistics
+
+-- DROP TABLE stock_behavior_statistics;
+
+CREATE TABLE stock_behavior_statistics
+(
+  stockid text NOT NULL,
+  checkpoint text NOT NULL,
+  statistics numeric NOT NULL,
+  CONSTRAINT stock_behavior_statistics_pkey PRIMARY KEY (stockid, checkpoint)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE stock_behavior_statistics
+  OWNER TO postgres;
+GRANT ALL ON TABLE stock_behavior_statistics TO public;
+GRANT ALL ON TABLE stock_behavior_statistics TO postgres;
+COMMENT ON TABLE stock_behavior_statistics
+  IS '个股行为统计：
+1. 比如跳空开盘当天回补的概率，5天回补的概率；
+2.重要事件点的行为，比如年报，分红，除权等 ';
+
+
