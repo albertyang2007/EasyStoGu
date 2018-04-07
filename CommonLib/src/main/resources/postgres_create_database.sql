@@ -887,7 +887,7 @@ CREATE TABLE stock_behavior_statistics
 (
   stockid text NOT NULL,
   checkpoint text NOT NULL,
-  statistics numeric NOT NULL,
+  statistics text,
   CONSTRAINT stock_behavior_statistics_pkey PRIMARY KEY (stockid, checkpoint)
 )
 WITH (
