@@ -16,7 +16,6 @@ import org.easystogu.db.vo.table.StockSuperVO;
 import org.easystogu.db.vo.table.WRVO;
 
 public class StockSuperVOHelper {
-
 	protected StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
 	protected IndicatorDBHelperIF macdTable = DBAccessFacdeFactory.getInstance(Constants.indMacd);
 	protected IndicatorDBHelperIF kdjTable = DBAccessFacdeFactory.getInstance(Constants.indKDJ);
