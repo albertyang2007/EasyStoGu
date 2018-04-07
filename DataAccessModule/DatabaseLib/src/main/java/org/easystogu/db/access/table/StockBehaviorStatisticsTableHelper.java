@@ -70,7 +70,7 @@ public class StockBehaviorStatisticsTableHelper {
             StockBehaviorStatisticsVO vo = new StockBehaviorStatisticsVO();
             vo.setStockId(rs.getString("stockid"));
             vo.setCheckPoint(rs.getString("checkpoint"));
-            vo.setStatistics(rs.getDouble("statistics"));
+            vo.setStatistics(rs.getString("statistics"));
             return vo;
         }
     }

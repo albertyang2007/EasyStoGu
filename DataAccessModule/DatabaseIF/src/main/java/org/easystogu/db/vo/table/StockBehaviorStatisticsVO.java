@@ -3,7 +3,12 @@ package org.easystogu.db.vo.table;
 public class StockBehaviorStatisticsVO {
     public String stockId;
     public String checkPoint;
-    public double statistics;
+    public String statistics;
+
+    @Override
+    public String toString() {
+        return stockId + "," + checkPoint + "," + statistics;
+    }
 
     public String getStockId() {
         return stockId;
@@ -21,11 +26,11 @@ public class StockBehaviorStatisticsVO {
         this.checkPoint = checkPoint;
     }
 
-    public double getStatistics() {
+    public String getStatistics() {
         return statistics;
     }
 
-    public void setStatistics(double statistics) {
+    public void setStatistics(String statistics) {
         this.statistics = statistics;
     }
 }
