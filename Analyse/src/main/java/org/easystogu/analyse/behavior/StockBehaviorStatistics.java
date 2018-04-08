@@ -13,7 +13,7 @@ public class StockBehaviorStatistics {
             .getInstance();
 
     //跳空高开，当天回补缺口
-    public void doAnalyseTiaoKongGaoKaiDay1HuiBu(String stockId, float baseDif) {
+    public void doAnalyseTiaoKongGaoKaiDay1HuiBu(String stockId, int[] difRange) {
         List<StockPriceVO> spList = qianFuQuanStockPriceTable.getStockPriceById(stockId);
 
         int[] statistics = { 0, 0, 0 };
@@ -24,8 +24,8 @@ public class StockBehaviorStatistics {
             StockPriceVO next2VO = spList.get(index + 2);
             //高开n个点
             if (curVO.open > pre1VO.high) {
-                double dif = (curVO.open - pre1VO.close) / (pre1VO.close * 0.1);
-                if (dif >= baseDif & dif <= baseDif + 0.1) {
+                double dif = 10 * (curVO.open - pre1VO.close) / (pre1VO.close * 0.1);
+                if (dif >= difRange[0] & dif <= difRange[1]) {
                     statistics[0]++;
                     if (curVO.low <= pre1VO.high) {
                         //当天回补
@@ -43,15 +43,14 @@ public class StockBehaviorStatistics {
         }
 
         if (statistics[0] > 0) {
-            System.out.println(baseDif + " 当天回补缺口概率=" + ((double) statistics[1] / (double) statistics[0])
-                    + " 第二三天回补缺口概率=" + ((double) statistics[2] / (double) statistics[0]) + ", 总样本数=" + statistics[0]);
-        } else {
-            System.out.println(baseDif + " 没有数据");
+            System.out.println(stockId + "高开: " + difRange[0] + "~" + difRange[1] + " 当天回补缺口概率="
+                    + formatNumber((double) statistics[1] / (double) statistics[0]) + " 第二三天回补缺口概率="
+                    + formatNumber((double) statistics[2] / (double) statistics[0]) + ", 总样本数=" + statistics[0]);
         }
     }
 
     //跳空低开，当天回补缺口
-    public void doAnalyseTiaoKongDiKaiDay1HuiBu(String stockId, float baseDif) {
+    public void doAnalyseTiaoKongDiKaiDay1HuiBu(String stockId, int[] difRange) {
         List<StockPriceVO> spList = qianFuQuanStockPriceTable.getStockPriceById(stockId);
 
         int[] statistics = { 0, 0, 0 };
@@ -62,8 +61,8 @@ public class StockBehaviorStatistics {
             StockPriceVO next2VO = spList.get(index + 2);
             //低开n个点
             if (curVO.open < pre1VO.low) {
-                double dif = (pre1VO.close - curVO.open) / (pre1VO.close * 0.1);
-                if (dif >= baseDif & dif <= baseDif + 0.1) {
+                double dif = 10 * (pre1VO.close - curVO.open) / (pre1VO.close * 0.1);
+                if (dif >= difRange[0] & dif <= difRange[1]) {
                     statistics[0]++;
                     if (curVO.high >= pre1VO.low) {
                         //当天回补
@@ -81,19 +80,25 @@ public class StockBehaviorStatistics {
         }
 
         if (statistics[0] > 0) {
-            System.out.println(baseDif + " 当天回补缺口概率=" + ((double) statistics[1] / (double) statistics[0])
-                    + " 第二三天回补缺口概率=" + ((double) statistics[2] / (double) statistics[0]) + ", 总样本数=" + statistics[0]);
-        } else {
-            System.out.println(baseDif + " 没有数据");
+            System.out.println(stockId + "低开: " + difRange[0] + "~" + difRange[1] + " 当天回补缺口概率="
+                    + formatNumber((double) statistics[1] / (double) statistics[0]) + " 第二三天回补缺口概率="
+                    + formatNumber((double) statistics[2] / (double) statistics[0]) + ", 总样本数=" + statistics[0]);
         }
+    }
+
+    private String formatNumber(double d) {
+        return String.format("%.2f", d);
     }
 
     public static void main(String[] args) {
         StockBehaviorStatistics ins = new StockBehaviorStatistics();
         String stockId = "601318";
-        for (float dif = 0.1f; dif < 1.0; dif += 0.1) {
-            ins.doAnalyseTiaoKongGaoKaiDay1HuiBu(stockId, dif);
-            ins.doAnalyseTiaoKongDiKaiDay1HuiBu(stockId, dif);
+        int[][] difRanges = new int[][] { { 1, 3 }, { 3, 5 }, { 5, 8 } };
+        for (int[] difRange : difRanges) {
+            ins.doAnalyseTiaoKongGaoKaiDay1HuiBu(stockId, difRange);
+        }
+        for (int[] difRange : difRanges) {
+            ins.doAnalyseTiaoKongDiKaiDay1HuiBu(stockId, difRange);
         }
     }
 }
