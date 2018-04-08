@@ -90,9 +90,10 @@ public class StockBehaviorStatistics {
 
     public static void main(String[] args) {
         StockBehaviorStatistics ins = new StockBehaviorStatistics();
-        for (float dif = 0.1f; dif < 1.0; dif += 0.1)
-            ins.doAnalyseTiaoKongGaoKaiDay1HuiBu("601318", dif);
-        for (float dif = 0.1f; dif < 1.0; dif += 0.1)
-            ins.doAnalyseTiaoKongDiKaiDay1HuiBu("601318", dif);
+        String stockId = "601318";
+        for (float dif = 0.1f; dif < 1.0; dif += 0.1) {
+            ins.doAnalyseTiaoKongGaoKaiDay1HuiBu(stockId, dif);
+            ins.doAnalyseTiaoKongDiKaiDay1HuiBu(stockId, dif);
+        }
     }
 }
