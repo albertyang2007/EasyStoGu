@@ -7,6 +7,7 @@ import org.easystogu.db.access.table.StockBehaviorStatisticsTableHelper;
 import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.vo.table.StockPriceVO;
 
+//跳空高开和低开当天回补缺口的统计
 public class StockBehaviorStatistics {
     private StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
     private StockBehaviorStatisticsTableHelper stockBehaviorStatisticsTable = StockBehaviorStatisticsTableHelper
