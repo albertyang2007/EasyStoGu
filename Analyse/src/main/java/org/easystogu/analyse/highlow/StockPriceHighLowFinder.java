@@ -12,7 +12,10 @@ public class StockPriceHighLowFinder {
 
 	public void findHighLowPriceInDays(String stockId, int day) {
 		List<StockPriceVO> spList = qianFuQuanStockPriceTable.queryByStockId(stockId);
-
+		int[] indexs = findHighPriceIndex(spList, day);
+		for (int i = 0; i < indexs.length; i++) {
+			System.out.println(i + ": " + indexs[i] + ": " + spList.get(i).toString());
+		}
 	}
 
 	private int[] findHighPriceIndex(List<StockPriceVO> spList, int day) {
@@ -37,8 +40,8 @@ public class StockPriceHighLowFinder {
 	}
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
+		StockPriceHighLowFinder ins = new StockPriceHighLowFinder();
+		ins.findHighLowPriceInDays("601318", 19);
 	}
 
 }
