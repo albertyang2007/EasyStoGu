@@ -22,7 +22,7 @@ szzsFilter = szzs[idx_for_szzs]
 # For szzs, only need second column, exclude first column (date)
 szzsData=np.array(szzsFilter)[:,1]
 # For qsdd, only need second column, exclude first column (date)
-qsddData=np.array(qsddFilter)[:,1:6]
+qsddData=np.array(qsddFilter)[:,1:6] # 0:len(qsddFilter)-2:,1:6
 
 print("qsdd:")
 print(qsddData)
