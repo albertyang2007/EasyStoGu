@@ -12,6 +12,8 @@ import java.util.List;
 import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
 import org.easystogu.db.helper.IF.IndicatorDBHelperIF;
 import org.easystogu.db.vo.table.IndicatorVO;
+import org.easystogu.log.LogHelper;
+import org.slf4j.Logger;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.PreparedStatementCallback;
@@ -20,6 +22,7 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 public abstract class PostgresqlIndDBHelper implements IndicatorDBHelperIF {
+	private static Logger logger = LogHelper.getLogger(PostgresqlIndDBHelper.class);
 	protected Class<? extends IndicatorVO> indicatorVOClass;
 	protected NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 	protected String tableName;// To be set later
@@ -188,6 +191,8 @@ public abstract class PostgresqlIndDBHelper implements IndicatorDBHelperIF {
 
 	@SuppressWarnings("unchecked")
 	public <T extends IndicatorVO> List<T> getByIdAndBetweenDate(String stockId, String startDate, String endDate) {
+		logger.info("getByIdAndBetweenDate: stockId=" + stockId + ",startDate=" + startDate + ",endDate=" + endDate
+				+ ",SQL=" + QUERY_BY_STOCKID_AND_BETWEEN_DATE);
 		try {
 			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 			namedParameters.addValue("stockId", stockId);

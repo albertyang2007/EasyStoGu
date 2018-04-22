@@ -223,7 +223,7 @@ public class CheckPointStatisticsEndPoint {
 
 					vo.count1 = this.getCount(statisticsList, date, DailyCombineCheckPoint.WR_Top_Area.name());
 					vo.count2 = this.getCount(statisticsList, date, DailyCombineCheckPoint.WR_Bottom_Area.name());
-					vo.count2 = this.getCount(statisticsList, date, DailyCombineCheckPoint.WR_Bottom_Gordon.name());
+					vo.count3 = this.getCount(statisticsList, date, DailyCombineCheckPoint.WR_Bottom_Gordon.name());
 
 					list.add(vo);
 				}
