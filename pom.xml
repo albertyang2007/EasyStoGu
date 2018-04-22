@@ -29,6 +29,7 @@
 				<module>DataCollectModule</module>
 				<module>Indicator</module>
 				<module>Analyse</module>
+				<module>AI</module>
 				<module>Portal</module>
 				<module>EWeb</module>
 				<module>App</module>
