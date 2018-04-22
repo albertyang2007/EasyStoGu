@@ -33,6 +33,8 @@ public class CheckPointDailyStatisticsTableHelper {
 			+ " WHERE checkPoint = :checkpoint AND date = :date";
 	protected String QUERY_BY_DATE = "SELECT * FROM " + tableName + " WHERE date = :date";
 	protected String QUERY_BY_CHECK_POINT = "SELECT * FROM " + tableName + " WHERE checkpoint = :checkpoint";
+	protected String QUERY_BY_CHECK_POINT_ORDER_BY_DATE = "SELECT * FROM " + tableName
+			+ " WHERE checkpoint = :checkpoint ORDER BY DATE";
 	protected String QUERY_BY_BETWEEN_DATE = "SELECT * FROM " + tableName
 			+ " WHERE date >= :startDate AND date <= :endDate";
 
@@ -139,6 +141,22 @@ public class CheckPointDailyStatisticsTableHelper {
 
 			List<CheckPointDailyStatisticsVO> list = this.namedParameterJdbcTemplate.query(QUERY_BY_CHECK_POINT,
 					namedParameters, new CheckPointDailyStatisticsVOMapper());
+
+			return list;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new ArrayList<CheckPointDailyStatisticsVO>();
+	}
+
+	public List<CheckPointDailyStatisticsVO> getByCheckPointOrderByDate(String checkpoint) {
+		try {
+
+			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+			namedParameters.addValue("checkpoint", checkpoint);
+
+			List<CheckPointDailyStatisticsVO> list = this.namedParameterJdbcTemplate.query(
+					QUERY_BY_CHECK_POINT_ORDER_BY_DATE, namedParameters, new CheckPointDailyStatisticsVOMapper());
 
 			return list;
 		} catch (Exception e) {
