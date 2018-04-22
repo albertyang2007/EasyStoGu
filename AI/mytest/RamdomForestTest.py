@@ -15,12 +15,15 @@ X = [
     [29,176,36,1]
     ]
 
+# not select the last two rows
 subX = X[0:len(X)-2]
 print(subX)
+print(X)
 
 Y = [0, 1, 1, 1, 0, 0, 1, 0, 1, 1, 0, 1]
-
-print(X)
+# not select the last two elements
+subY = Y[0:len(Y)-2]
+print(subY)
 print(Y)
 
 clf = RandomForestClassifier().fit(X, Y)
