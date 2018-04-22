@@ -174,7 +174,7 @@ public class StockPriceHighLowFinder {
 		ins.saveFileHighLowPriceInDays(resultfileName, stockId, dayPeriod);
 
 		String cpStatisticsBasePath = "F:/github/EasyStoGu/CommonLib/src/main/resources/AI/";
-		ins.saveFileAllCheckPointDailyStatistics(cpStatisticsBasePath);
+		//ins.saveFileAllCheckPointDailyStatistics(cpStatisticsBasePath);
 	}
 
 }
