@@ -1,13 +1,17 @@
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.naive_bayes import GaussianNB
-from sklearn.linear_model import LogisticRegression
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.svm import SVC
 import os
 import pandas as pd
 import numpy as np
 
-BASE_PATH = 'F:/github/EasyStoGu/CommonLib/src/main/resources/AI/'
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.svm import SVC
+
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.naive_bayes import GaussianNB
+from sklearn.linear_model import LogisticRegression
+
+
+BASE_PATH = 'C:/Users/eyaweiw/github/EasyStoGu/CommonLib/src/main/resources/AI/'
 # Load data
 szzs = pd.read_csv(os.path.join(BASE_PATH, "999999_high.csv"), usecols=[0,1])
 qsdd = pd.read_csv(os.path.join(BASE_PATH, "WR.csv"), usecols=[0,1,2,3])
@@ -19,10 +23,11 @@ qsddFilter = qsdd[idx_for_qsdd]
 idx_for_szzs = szzs['date'].isin(qsddFilter['date'])
 szzsFilter = szzs[idx_for_szzs]
 
+forecastDay = 2
 # For szzs, only need second column, exclude first column (date)
-szzsData=np.array(szzsFilter)[:,1]
+szzsData=np.array(szzsFilter)[:,1][0:len(szzsFilter)-forecastDay]
 # For qsdd, only need second column, exclude first column (date)
-qsddData=np.array(qsddFilter)[:,1:6] # 0:len(qsddFilter)-2:,1:6
+qsddData=np.array(qsddFilter)[0:len(qsddFilter)-forecastDay:,1:6] # 0:len(qsddFilter)-2:,1:6
 
 print("qsdd:")
 print(qsddData)
