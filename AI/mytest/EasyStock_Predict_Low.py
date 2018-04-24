@@ -11,7 +11,7 @@ from sklearn.naive_bayes import GaussianNB #Yes!!!
 from sklearn.linear_model import LogisticRegression
 
 
-BASE_PATH = 'C:/Users/eyaweiw/github/EasyStoGu/CommonLib/src/main/resources/AI/'
+BASE_PATH = 'f:/github/EasyStoGu/CommonLib/src/main/resources/AI/'
 # Load data
 szzsLow = pd.read_csv(os.path.join(BASE_PATH, "999999_low.csv"), usecols=[0,1])
 
