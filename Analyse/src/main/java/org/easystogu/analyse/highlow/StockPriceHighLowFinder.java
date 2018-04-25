@@ -39,8 +39,15 @@ public class StockPriceHighLowFinder {
         int[] indexs = new int[spList.size()];
         for (int index = 0; index < spList.size() - day; index++) {
             List<StockPriceVO> subSpList = spList.subList(index, index + day);
+            
+            //mark current day, previously day and next day as top / buttom area
             indexs[index + getHighestPriceIndex(subSpList)] = 1;
+            indexs[index + getHighestPriceIndex(subSpList) - 1] = 1;
+            indexs[index + getHighestPriceIndex(subSpList) + 1] = 1;
+            
             indexs[index + getLowestPriceIndex(subSpList)] = -1;
+            indexs[index + getLowestPriceIndex(subSpList) - 1] = -1;
+            indexs[index + getLowestPriceIndex(subSpList) + 1] = -1;
         }
         return indexs;
     }
@@ -174,11 +181,11 @@ public class StockPriceHighLowFinder {
         StockPriceHighLowFinder ins = new StockPriceHighLowFinder();
         String stockId = "999999";
         int dayPeriod = 86;
-        String resultfileName = "C:/Users/[path]/github/EasyStoGu/CommonLib/src/main/resources/AI/" + stockId
-                + "_low.csv";
+        String resultfileName = "C:/Users/eyaweiw/github/EasyStoGu/CommonLib/src/main/resources/AI/" + stockId
+                + "_high_low.csv";
         ins.saveFileHighLowPriceInDays(resultfileName, stockId, dayPeriod);
 
-        String cpStatisticsBasePath = "C:/Users/[path]/github/EasyStoGu/CommonLib/src/main/resources/AI/";
+        String cpStatisticsBasePath = "C:/Users/eyaweiw/github/EasyStoGu/CommonLib/src/main/resources/AI/";
         ins.saveFileAllCheckPointDailyStatistics(cpStatisticsBasePath);
     }
 
