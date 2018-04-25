@@ -1468,11 +1468,11 @@ public class CombineAnalyseHelper {
 			}
 		}
 
-		// macd di bei li
+		// macd di bei li (not correct 该模型还不成熟)
 		// 估价比前几日创出新低，但是macd不是最低
 		case MACD_DI_BeiLi: {
 			// 当日股价创86日新低
-			if (isLowestPriceWithinDays(overDayList, 86) && curSuperDayVO.macdVO.macd < 0) {
+			if (isLowestPriceWithinDays(overDayList, 40) && curSuperDayVO.macdVO.macd < 0) {
 				if (curSuperDayVO.priceVO.low < pre1SuperDayVO.priceVO.low) {
 					if (curSuperDayVO.macdVO.macd > pre1SuperDayVO.macdVO.macd) {
 						return true;
@@ -1486,7 +1486,7 @@ public class CombineAnalyseHelper {
 		// 估价比前几日创出新低，但是wr不是最低
 		case WR_DI_BeiLi: {
 			// 当日股价创86日新低
-			if (isLowestPriceWithinDays(overDayList, 86) && curSuperDayVO.wrVO.lonTerm <= 10.0) {
+			if (isLowestPriceWithinDays(overDayList, 40) && curSuperDayVO.wrVO.lonTerm <= 10.0) {
 				if (curSuperDayVO.priceVO.low < pre1SuperDayVO.priceVO.low) {
 					if (curSuperDayVO.wrVO.lonTerm > pre1SuperDayVO.wrVO.lonTerm) {
 						return true;
@@ -2281,14 +2281,10 @@ public class CombineAnalyseHelper {
 
 	// 判断当日价格是否86天之内最低
 	private boolean isLowestPriceWithinDays(List<StockSuperVO> overDayList, int dayRange) {
-		if (overDayList.size() < 86) {
-			System.out.println("Error: overDayList size is less then 86.");
-			return false;
-		}
 		StockSuperVO curSuperDayVO = overDayList.get(overDayList.size() - 1);
 		double curLow = curSuperDayVO.priceVO.low;
-		for (int i = overDayList.size() - 86; i < overDayList.size() - 1; i++) {
-			if (curLow < overDayList.get(i).priceVO.low) {
+		for (int i = overDayList.size() - dayRange; i < overDayList.size() - 1; i++) {
+			if (curLow > overDayList.get(i).priceVO.low) {
 				return false;
 			}
 		}

@@ -9,6 +9,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
 import org.easystogu.cache.ConfigurationServiceCache;
+import org.easystogu.checkpoint.DailyCombineCheckPoint;
 import org.easystogu.config.Constants;
 import org.easystogu.database.replicate.DailyReplicateRunner;
 import org.easystogu.easymoney.runner.DailyDDXRunner;
@@ -21,6 +22,7 @@ import org.easystogu.indicator.runner.DailyWRCountAndSaveDBRunner;
 import org.easystogu.indicator.runner.DailyWeekKDJCountAndSaveDBRunner;
 import org.easystogu.indicator.runner.DailyWeekMacdCountAndSaveDBRunner;
 import org.easystogu.indicator.runner.history.IndicatorHistortOverAllRunner;
+import org.easystogu.report.HistoryAnalyseReport;
 import org.easystogu.runner.DailyOverAllRunner;
 import org.easystogu.runner.DailySelectionRunner;
 import org.easystogu.runner.DailyUpdateAllStockRunner;
@@ -67,7 +69,7 @@ public class HomeEndPoint {
 		sb.append("<a href='/portal/home/IndicatorHistortOverAllRunner'>IndicatorHistortOverAllRunner</a><br>");
 		sb.append("<a href='/portal/home/DailyReplicateRunner'>DailyReplicateRunner</a><br>");
 		sb.append("<a href='/portal/home/OneTimeDynamicRunner'>OneTimeDynamicRunner</a><br>");
-
+		sb.append("<a href='/portal/home/OneTimeTempRunner'>OneTimeTempRunner</a><br>");
 		sb.append("<a href='/portal/home/test'>test</a><br>");
 
 		return Response.ok().entity(sb.toString()).build();
@@ -310,6 +312,17 @@ public class HomeEndPoint {
 		if (Constants.ZONE_OFFICE.equals(zone)) {
 			DynamicRunner.main(null);
 			return "OneTimeDynamicRunner already running, please check folder result.";
+		}
+		return "Zone not allow to run this method.";
+	}
+
+	@GET
+	@Path("/OneTimeTempRunner")
+	public String oneTimeTempRunner() {
+		if (Constants.ZONE_ALIYUN.equals(zone)) {
+			//HistoryAnalyseReport reporter = new HistoryAnalyseReport();
+			//reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.WR_DI_BeiLi);
+			return "OneTimeTempRunner already running, please check folder result.";
 		}
 		return "Zone not allow to run this method.";
 	}
