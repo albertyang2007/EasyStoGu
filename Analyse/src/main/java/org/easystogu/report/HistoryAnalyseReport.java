@@ -219,7 +219,7 @@ public class HistoryAnalyseReport {
         for (String stockId : stockIds) {
             index++;
 
-            if (!stockId.equals("601336")) {
+            if (!stockId.equals("601318")) {
                 continue;
             }
 
@@ -460,10 +460,10 @@ public class HistoryAnalyseReport {
         // }
 
         // reporter.searchAllStockIdAnalyseHistoryBuySellCheckPoint(DailyCombineCheckPoint.WR_Bottom_Gordon);
-        //reporter.searchAllStockIdAnalyseHistoryBuySellCheckPoint(
-        //        DailyCombineCheckPoint.MACD_TWICE_GORDON_W_Botton_MACD_DI_BEILI);
+        reporter.searchAllStockIdAnalyseHistoryBuySellCheckPoint(
+                DailyCombineCheckPoint.WR_DI_BeiLi);
         //reporter.countAllStockIdStatisticsCheckPoint();
-        reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.High_Price_Digit_In_Order);
+        //reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.High_Price_Digit_In_Order);
 
     }
 }

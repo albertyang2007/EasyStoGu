@@ -47,8 +47,8 @@ public enum DailyCombineCheckPoint {
             SellPointType.KDJ_Dead, 0, 99.0), LuZao_DeadII_MA19_DownCross_MA43(SellPointType.KDJ_Dead, 0, 99.0), QSDD_Top_Area(
             SellPointType.KDJ_Dead, 0, 99.0), QSDD_Bottom_Area(SellPointType.KDJ_Dead, 11848, 10.8), QSDD_Bottom_Gordon(
             SellPointType.KDJ_Dead, 5055, 12.0), WR_Bottom_Area(SellPointType.KDJ_Dead, 0, 0), WR_Bottom_Gordon(
-            SellPointType.KDJ_Dead, 74303, 9.56),WR_Top_Area(SellPointType.KDJ_Dead, 0, 0),WR_Ready_To_ZhangTing(SellPointType.KDJ_Dead, 0, 0), MACD_DI_BeiLi(
-            SellPointType.KDJ_Dead, 0, 99.0),WR_4_Days_SameValue_XianShang(SellPointType.KDJ_Dead,2923,8.35), 
+            SellPointType.KDJ_Dead, 74303, 9.56),WR_Top_Area(SellPointType.KDJ_Dead, 0, 0),WR_Ready_To_ZhangTing(SellPointType.KDJ_Dead, 0, 0), 
+            MACD_DI_BeiLi(SellPointType.KDJ_Dead, 0, 99.0),WR_DI_BeiLi(SellPointType.KDJ_Dead, 0, 99.0),WR_4_Days_SameValue_XianShang(SellPointType.KDJ_Dead,2923,8.35), 
     		LuZao_KDJ_Gordon_TiaoKongGaoKai(SellPointType.KDJ_Dead, 0, 99.0),
     		LuZao_PhaseII_MACD_WEEK_GORDON_MACD_DAY_DIF_CROSS_0(SellPointType.KDJ_Dead, 0, 99.0),
     		LuZao_PhaseIII_MACD_WEEK_GORDON_MACD_DAY_DIF_CROSS_0(SellPointType.KDJ_Dead, 0, 99.0),

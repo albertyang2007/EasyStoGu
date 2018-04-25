@@ -1472,9 +1472,23 @@ public class CombineAnalyseHelper {
 		// 估价比前几日创出新低，但是macd不是最低
 		case MACD_DI_BeiLi: {
 			// 当日股价创86日新低
-			if (isLowestPriceWithinDays(overDayList, 86)) {
+			if (isLowestPriceWithinDays(overDayList, 86) && curSuperDayVO.macdVO.macd < 0) {
 				if (curSuperDayVO.priceVO.low < pre1SuperDayVO.priceVO.low) {
 					if (curSuperDayVO.macdVO.macd > pre1SuperDayVO.macdVO.macd) {
+						return true;
+					}
+				}
+			}
+			break;
+		}
+
+		// wr di bei li
+		// 估价比前几日创出新低，但是wr不是最低
+		case WR_DI_BeiLi: {
+			// 当日股价创86日新低
+			if (isLowestPriceWithinDays(overDayList, 86) && curSuperDayVO.wrVO.lonTerm <= 10.0) {
+				if (curSuperDayVO.priceVO.low < pre1SuperDayVO.priceVO.low) {
+					if (curSuperDayVO.wrVO.lonTerm > pre1SuperDayVO.wrVO.lonTerm) {
 						return true;
 					}
 				}
