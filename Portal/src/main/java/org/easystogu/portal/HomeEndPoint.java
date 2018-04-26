@@ -320,8 +320,14 @@ public class HomeEndPoint {
 	@Path("/OneTimeTempRunner")
 	public String oneTimeTempRunner() {
 		if (Constants.ZONE_ALIYUN.equals(zone)) {
-			//HistoryAnalyseReport reporter = new HistoryAnalyseReport();
-			//reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.WR_DI_BeiLi);
+			Thread t = new Thread(new Runnable() {
+                public void run() {
+                    HistoryAnalyseReport reporter = new HistoryAnalyseReport();
+                    reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.WR_DI_BeiLi);
+                }
+			});
+            t.start();
+			
 			return "OneTimeTempRunner already running, please check folder result.";
 		}
 		return "Zone not allow to run this method.";
