@@ -902,4 +902,20 @@ COMMENT ON TABLE stock_behavior_statistics
 1. 比如跳空开盘当天回补的概率，5天回补的概率；
 2.重要事件点的行为，比如年报，分红，除权等 ';
 
-
+CREATE TABLE stockprice_hl_time
+(
+  stockid text NOT NULL,
+  date text NOT NULL,
+  hight_time text NOT NULL,
+  low_time text NOT NULL,
+  CONSTRAINT stockprice_hl_time_pk PRIMARY KEY (stockid, date)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE stockprice_hl_time
+  OWNER TO postgres;
+GRANT ALL ON TABLE stockprice_hl_time TO public;
+GRANT ALL ON TABLE stockprice_hl_time TO postgres;
+COMMENT ON TABLE stockprice_hl_time
+  IS '当日最高最低价格的时间';
