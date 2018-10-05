@@ -87,7 +87,8 @@ public class FlagsAnalyseHelper {
 						sxvo.setSellFlagsTitle("空D");
 						sxvo.setSellFlagsText(spvo.close + " 神仙死叉,清仓2/3");
 					} else {
-						sxvo.setSellFlagsTitle("空");
+						// do not print it since too many occurs
+						// sxvo.setSellFlagsTitle("空");
 					}
 				}
 
@@ -104,7 +105,8 @@ public class FlagsAnalyseHelper {
 						sxvo.setDuoFlagsText(macdStr + " MACD金叉,试仓1/3");
 					} else {
 						// most of time come here
-						sxvo.setDuoFlagsTitle("多");
+						// do not print it since too many occurs
+						// sxvo.setDuoFlagsTitle("多");
 						// sxvo.setDuoFlagsText("");
 					}
 				}
@@ -145,11 +147,19 @@ public class FlagsAnalyseHelper {
 					sxvo.setDuoFlagsTitle(cpfvo.weekGordonTitle.toString().trim() + sxvo.getDuoFlagsTitle());
 					sxvo.setDuoFlagsText(cpfvo.weekGordonText.toString().trim() + sxvo.getDuoFlagsText());
 				}
-				
+
 				// append if it has W Botton and Twice MACD Gordon
 				if (cpfvo.wbottomMacdTwiceGordonTitle.toString().trim().length() > 0) {
-					sxvo.setDuoFlagsTitle(cpfvo.wbottomMacdTwiceGordonTitle.toString().trim() + sxvo.getDuoFlagsTitle());
+					sxvo.setDuoFlagsTitle(
+							cpfvo.wbottomMacdTwiceGordonTitle.toString().trim() + sxvo.getDuoFlagsTitle());
 					sxvo.setDuoFlagsText(cpfvo.wbottomMacdTwiceGordonText.toString().trim() + sxvo.getDuoFlagsText());
+				}
+
+				// append if it has zijinliu
+				if (cpfvo.ziJinLiuRuText.toString().trim().length() > 0) {
+					sxvo.setDuoFlagsTitle(sxvo.getDuoFlagsTitle() + "资");
+					String info = sxvo.getDuoFlagsText().trim().length() > 0 ? sxvo.getDuoFlagsText() + " " : "";
+					sxvo.setDuoFlagsText(info + "资金流入");
 				}
 
 			}
@@ -319,7 +329,7 @@ public class FlagsAnalyseHelper {
 			if (cpvo.date.equals(date)) {
 				// check zijinliu
 				for (String cp : zijinliuViewnames) {
-					if (cpvo.checkPoint.equals(cp)) {
+					if (cpvo.checkPoint.toUpperCase().equals(cp.toUpperCase())) {
 						cpfvo.ziJinLiuRuTitle.append("资");
 						cpfvo.ziJinLiuRuText.append("资金流入");
 						break;
@@ -327,38 +337,38 @@ public class FlagsAnalyseHelper {
 				}
 
 				// check week Gordon
-				if (cpvo.checkPoint.contains("MACD_WEEK_GORDON_MACD_DAY_DIF_CROSS_0")) {
+				if (cpvo.checkPoint.toUpperCase().contains("MACD_WEEK_GORDON_MACD_DAY_DIF_CROSS_0")) {
 					cpfvo.weekGordonTitle.append("MD周");
 					cpfvo.weekGordonText.append("MACD周线金叉DIF日线金叉");
 				}
-				if (cpvo.checkPoint.contains("MACD_WEEK_GORDON_KDJ_WEEK_GORDON")) {
+				if (cpvo.checkPoint.toUpperCase().contains("MACD_WEEK_GORDON_KDJ_WEEK_GORDON")) {
 					cpfvo.weekGordonTitle.append("MK周");
 					cpfvo.weekGordonText.append("MACD周线金叉日线KDJ金叉");
 				}
 
 				// check buttom
-				if (cpvo.checkPoint.equals("WR_Bottom_Area")) {
+				if (cpvo.checkPoint.toUpperCase().equals("WR_Bottom_Area".toUpperCase())) {
 					cpfvo.bottomAreaTitle.append("W底");
 					cpfvo.bottomAreaText.append("WR底部区间");
 				}
-				if (cpvo.checkPoint.equals("QSDD_Bottom_Area")) {
+				if (cpvo.checkPoint.toUpperCase().equals("QSDD_Bottom_Area".toUpperCase())) {
 					cpfvo.bottomAreaTitle.append("Q底");
 					cpfvo.bottomAreaText.append("QSDD底部区间");
 				}
 
 				// check buttom gordon
 
-				if (cpvo.checkPoint.equals("WR_Bottom_Gordon")) {
+				if (cpvo.checkPoint.toUpperCase().equals("WR_Bottom_Gordon".toUpperCase())) {
 					cpfvo.bottomGordonTitle.append("W金");
 					cpfvo.bottomGordonText.append("WR底部金叉");
 				}
-				if (cpvo.checkPoint.equals("QSDD_Bottom_Gordon")) {
+				if (cpvo.checkPoint.toUpperCase().equals("QSDD_Bottom_Gordon".toUpperCase())) {
 					cpfvo.bottomGordonTitle.append("Q金");
 					cpfvo.bottomGordonText.append("QSDD底部金叉");
 				}
 
 				// macd二次金叉，W底，MACD背离
-				if (cpvo.checkPoint.contains("MACD_TWICE_GORDON_W_Botton_MACD_DI_BEILI")) {
+				if (cpvo.checkPoint.toUpperCase().contains("MACD_TWICE_GORDON_W_Botton_MACD_DI_BEILI".toUpperCase())) {
 					cpfvo.wbottomMacdTwiceGordonTitle.append("W底");
 					cpfvo.wbottomMacdTwiceGordonText.append("MACD二次金叉,W底背离");
 				}
