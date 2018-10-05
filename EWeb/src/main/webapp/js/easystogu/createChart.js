@@ -7,6 +7,9 @@ function createChart_LuZao(stockId, date_price, volume, data_ma19, data_ma43,
 		data_ma86) {
 	$('#container').highcharts('StockChart', {
 
+		exporting : {
+			enabled : false
+		},
 		rangeSelector : {
 			selected : 1
 		},
@@ -30,7 +33,7 @@ function createChart_LuZao(stockId, date_price, volume, data_ma19, data_ma43,
 			title : {
 				text : 'Price'
 			},
-			height : '60%',
+			height : '70%',
 			lineWidth : 2
 		}, {
 			labels : {
@@ -40,8 +43,8 @@ function createChart_LuZao(stockId, date_price, volume, data_ma19, data_ma43,
 			title : {
 				text : 'Volume'
 			},
-			top : '65%',
-			height : '35%',
+			top : '70%',
+			height : '30%',
 			offset : 0,
 			lineWidth : 2
 		} ],
@@ -80,7 +83,10 @@ function createChart_LuZao_Trend_Statistics(stockId, date_price, volume,
 		data_ma19, data_ma43, data_ma86, data_1_guancha, data_2_jiancang,
 		data_3_chigu, data_4_jiancang) {
 	$('#container').highcharts('StockChart', {
-
+		exporting : {
+			enabled : false
+		},
+		
 		rangeSelector : {
 			selected : 1
 		},
@@ -104,7 +110,7 @@ function createChart_LuZao_Trend_Statistics(stockId, date_price, volume,
 			title : {
 				text : 'Price'
 			},
-			height : '60%',
+			height : '70%',
 			lineWidth : 2
 		}, {
 			labels : {
@@ -114,8 +120,8 @@ function createChart_LuZao_Trend_Statistics(stockId, date_price, volume,
 			title : {
 				text : 'Statistics'
 			},
-			top : '65%',
-			height : '35%',
+			top : '70%',
+			height : '30%',
 			offset : 0,
 			lineWidth : 2
 		} ],
@@ -165,7 +171,10 @@ function createChart_LuZao_Gordon_Statistics(stockId, date_price, volume,
 		data_ma19, data_ma43, data_ma86, data_1_gordon0, data_2_gordon1,
 		data_3_gordon2, data_4_dead1, data_5_dead2) {
 	$('#container').highcharts('StockChart', {
-
+		exporting : {
+			enabled : false
+		},
+		
 		rangeSelector : {
 			selected : 1
 		},
@@ -189,7 +198,7 @@ function createChart_LuZao_Gordon_Statistics(stockId, date_price, volume,
 			title : {
 				text : 'Price'
 			},
-			height : '60%',
+			height : '70%',
 			lineWidth : 2
 		}, {
 			labels : {
@@ -199,8 +208,8 @@ function createChart_LuZao_Gordon_Statistics(stockId, date_price, volume,
 			title : {
 				text : 'Statistics'
 			},
-			top : '65%',
-			height : '35%',
+			top : '70%',
+			height : '30%',
 			offset : 0,
 			lineWidth : 2
 		} ],
@@ -252,7 +261,10 @@ function createChart_LuZao_Gordon_Statistics(stockId, date_price, volume,
 function createChart_ShenXian(stockId, date_price, volume, data_h1, data_h2,
 		data_h3) {
 	$('#container').highcharts('StockChart', {
-
+		exporting : {
+			enabled : false
+		},
+		
 		rangeSelector : {
 			selected : 1
 		},
@@ -276,7 +288,7 @@ function createChart_ShenXian(stockId, date_price, volume, data_h1, data_h2,
 			title : {
 				text : 'Price'
 			},
-			height : '60%',
+			height : '70%',
 			lineWidth : 2
 		}, {
 			labels : {
@@ -286,8 +298,8 @@ function createChart_ShenXian(stockId, date_price, volume, data_h1, data_h2,
 			title : {
 				text : 'Volume'
 			},
-			top : '65%',
-			height : '35%',
+			top : '70%',
+			height : '30%',
 			offset : 0,
 			lineWidth : 2
 		} ],
@@ -317,23 +329,21 @@ function createChart_ShenXian(stockId, date_price, volume, data_h1, data_h2,
 }
 
 /**
- * Create the StockPrice and shenxianSell chart
- * date_price: stock price
- * volume: volume
- * data_h1: h2
- * data_h2: h2
- * data_hc5: 压力 price
- * data_hc6: 支撑 price
- * buy_flags: buy point
- * sell_flags: sell point
- * duo_flags: 金叉死叉 
- * suo_flags: 成交量是否萎缩
+ * Create the StockPrice and shenxianSell chart date_price: stock price volume:
+ * volume data_h1: h2 data_h2: h2 data_hc5: 压力 price data_hc6: 支撑 price
+ * buy_flags: buy point sell_flags: sell point duo_flags: 金叉死叉 suo_flags:
+ * 成交量是否萎缩
+ * 
  * @returns {undefined}
  */
-function createChart_ShenXianSell(stockId, date_price, volume, data_h1, data_h2,
-		data_hc5, data_hc6, buy_flags, sell_flags, duo_flags, suo_flags) {
+function createChart_ShenXianSell(stockId, date_price, volume, data_h1,
+		data_h2, data_hc5, data_hc6, buy_flags, sell_flags, duo_flags,
+		suo_flags) {
 	$('#container').highcharts('StockChart', {
-
+		exporting : {
+			enabled : false
+		},
+		
 		rangeSelector : {
 			selected : 1
 		},
@@ -357,7 +367,7 @@ function createChart_ShenXianSell(stockId, date_price, volume, data_h1, data_h2,
 			title : {
 				text : 'Price'
 			},
-			height : '60%',
+			height : '70%',
 			lineWidth : 2
 		}, {
 			labels : {
@@ -367,8 +377,8 @@ function createChart_ShenXianSell(stockId, date_price, volume, data_h1, data_h2,
 			title : {
 				text : 'Volume'
 			},
-			top : '65%',
-			height : '35%',
+			top : '70%',
+			height : '30%',
 			offset : 0,
 			lineWidth : 2
 		} ],
@@ -377,7 +387,7 @@ function createChart_ShenXianSell(stockId, date_price, volume, data_h1, data_h2,
 			type : 'candlestick',
 			name : 'OHLC',
 			data : date_price,
-			id   : 'candlestick'
+			id : 'candlestick'
 		}, {
 			name : 'H1',
 			data : data_h1
@@ -387,33 +397,33 @@ function createChart_ShenXianSell(stockId, date_price, volume, data_h1, data_h2,
 		}, {
 			name : 'HC5',
 			data : data_hc5,
-			id   : 'HC5'
+			id : 'HC5'
 		}, {
 			name : 'HC6',
 			data : data_hc6,
-			id   : 'HC6'
+			id : 'HC6'
 		}, {
 			type : 'flags',
 			data : sell_flags,
-			onSeries: 'HC5'
+			onSeries : 'HC5'
 		}, {
 			type : 'column',
 			name : 'Volume',
 			data : volume,
-			id   : 'Volume',
+			id : 'Volume',
 			yAxis : 1
 		}, {
 			type : 'flags',
 			data : buy_flags,
-			onSeries: 'HC6'
+			onSeries : 'HC6'
 		}, {
 			type : 'flags',
 			data : duo_flags,
-			onSeries: 'HC6'
+			onSeries : 'HC6'
 		}, {
 			type : 'flags',
 			data : suo_flags
-		}]
+		} ]
 	});
 
 	chart = $('#container').highcharts();
@@ -427,7 +437,10 @@ function createChart_ShenXianSell(stockId, date_price, volume, data_h1, data_h2,
 function createChart_ShenXian_Statistics(stockId, date_price, volume, data_h1,
 		data_h2, data_h3, data_gordon, data_dead) {
 	$('#container').highcharts('StockChart', {
-
+		exporting : {
+			enabled : false
+		},
+		
 		rangeSelector : {
 			selected : 1
 		},
@@ -451,7 +464,7 @@ function createChart_ShenXian_Statistics(stockId, date_price, volume, data_h1,
 			title : {
 				text : 'Price'
 			},
-			height : '60%',
+			height : '70%',
 			lineWidth : 2
 		}, {
 			labels : {
@@ -461,8 +474,8 @@ function createChart_ShenXian_Statistics(stockId, date_price, volume, data_h1,
 			title : {
 				text : 'Statistics'
 			},
-			top : '65%',
-			height : '35%',
+			top : '70%',
+			height : '30%',
 			offset : 0,
 			lineWidth : 2
 		} ],
@@ -502,7 +515,10 @@ function createChart_ShenXian_Statistics(stockId, date_price, volume, data_h1,
 function createChart_Boll(stockId, date_price, volume, data_mb, data_up,
 		data_dn) {
 	$('#container').highcharts('StockChart', {
-
+		exporting : {
+			enabled : false
+		},
+		
 		rangeSelector : {
 			selected : 1
 		},
@@ -526,7 +542,7 @@ function createChart_Boll(stockId, date_price, volume, data_mb, data_up,
 			title : {
 				text : 'Price'
 			},
-			height : '60%',
+			height : '70%',
 			lineWidth : 2
 		}, {
 			labels : {
@@ -536,8 +552,8 @@ function createChart_Boll(stockId, date_price, volume, data_mb, data_up,
 			title : {
 				text : 'Volume'
 			},
-			top : '65%',
-			height : '35%',
+			top : '70%',
+			height : '30%',
 			offset : 0,
 			lineWidth : 2
 		} ],
@@ -574,7 +590,10 @@ function createChart_Boll(stockId, date_price, volume, data_mb, data_up,
 function createChart_Macd(stockId, date_price, volume, data_dif, data_dea,
 		data_macd) {
 	$('#container').highcharts('StockChart', {
-
+		exporting : {
+			enabled : false
+		},
+		
 		rangeSelector : {
 			selected : 1
 		},
@@ -598,7 +617,7 @@ function createChart_Macd(stockId, date_price, volume, data_dif, data_dea,
 			title : {
 				text : 'Price'
 			},
-			height : '60%',
+			height : '70%',
 			lineWidth : 2
 		}, {
 			labels : {
@@ -608,8 +627,8 @@ function createChart_Macd(stockId, date_price, volume, data_dif, data_dea,
 			title : {
 				text : 'MACD'
 			},
-			top : '65%',
-			height : '35%',
+			top : '70%',
+			height : '30%',
 			offset : 0,
 			lineWidth : 2
 		} ],
@@ -644,7 +663,10 @@ function createChart_Macd(stockId, date_price, volume, data_dif, data_dea,
 function createChart_Macd_Statistics(stockId, date_price, volume, data_dif,
 		data_dea, data_macd, data_gordon, data_dead) {
 	$('#container').highcharts('StockChart', {
-
+		exporting : {
+			enabled : false
+		},
+		
 		rangeSelector : {
 			selected : 1
 		},
@@ -668,7 +690,7 @@ function createChart_Macd_Statistics(stockId, date_price, volume, data_dif,
 			title : {
 				text : 'Price'
 			},
-			height : '60%',
+			height : '70%',
 			lineWidth : 2
 		}, {
 			labels : {
@@ -678,8 +700,8 @@ function createChart_Macd_Statistics(stockId, date_price, volume, data_dif,
 			title : {
 				text : 'Statistics'
 			},
-			top : '65%',
-			height : '35%',
+			top : '70%',
+			height : '30%',
 			offset : 0,
 			lineWidth : 2
 		} ],
@@ -710,7 +732,10 @@ function createChart_Macd_Statistics(stockId, date_price, volume, data_dif,
 function createChart_Qsdd(stockId, date_price, volume, data_lonTerm,
 		data_midTerm, data_shoTerm) {
 	$('#container').highcharts('StockChart', {
-
+		exporting : {
+			enabled : false
+		},
+		
 		rangeSelector : {
 			selected : 1
 		},
@@ -734,7 +759,7 @@ function createChart_Qsdd(stockId, date_price, volume, data_lonTerm,
 			title : {
 				text : 'Price'
 			},
-			height : '60%',
+			height : '70%',
 			lineWidth : 2
 		}, {
 			labels : {
@@ -744,8 +769,8 @@ function createChart_Qsdd(stockId, date_price, volume, data_lonTerm,
 			title : {
 				text : 'QSDD'
 			},
-			top : '65%',
-			height : '35%',
+			top : '70%',
+			height : '30%',
 			offset : 0,
 			lineWidth : 2
 		} ],
@@ -782,7 +807,10 @@ function createChart_Qsdd_Statistics(stockId, date_price, volume, data_lonTerm,
 		data_midTerm, data_shoTerm, date_topArea, date_bottomArea,
 		date_bottomGordon) {
 	$('#container').highcharts('StockChart', {
-
+		exporting : {
+			enabled : false
+		},
+		
 		rangeSelector : {
 			selected : 1
 		},
@@ -806,7 +834,7 @@ function createChart_Qsdd_Statistics(stockId, date_price, volume, data_lonTerm,
 			title : {
 				text : 'Price'
 			},
-			height : '60%',
+			height : '70%',
 			lineWidth : 2
 		}, {
 			labels : {
@@ -816,8 +844,8 @@ function createChart_Qsdd_Statistics(stockId, date_price, volume, data_lonTerm,
 			title : {
 				text : 'QSDD'
 			},
-			top : '65%',
-			height : '35%',
+			top : '70%',
+			height : '30%',
 			offset : 0,
 			lineWidth : 2
 		}, {
@@ -828,8 +856,8 @@ function createChart_Qsdd_Statistics(stockId, date_price, volume, data_lonTerm,
 			title : {
 				text : 'QSDD'
 			},
-			top : '65%',
-			height : '35%',
+			top : '70%',
+			height : '30%',
 			offset : 0,
 			lineWidth : 2
 		} ],
@@ -876,6 +904,10 @@ function createChart_Qsdd_Statistics(stockId, date_price, volume, data_lonTerm,
 function createChart_Candlestick(stockId, date_price, volume) {
 	$('#container').highcharts('StockChart', {
 
+		exporting : {
+			enabled : false
+		},
+		
 		rangeSelector : {
 			selected : 1
 		},
@@ -899,7 +931,7 @@ function createChart_Candlestick(stockId, date_price, volume) {
 			title : {
 				text : 'Price'
 			},
-			height : '60%',
+			height : '70%',
 			lineWidth : 2
 		}, {
 			labels : {
@@ -909,8 +941,8 @@ function createChart_Candlestick(stockId, date_price, volume) {
 			title : {
 				text : 'Volume'
 			},
-			top : '65%',
-			height : '35%',
+			top : '70%',
+			height : '30%',
 			offset : 0,
 			lineWidth : 2
 		} ],
@@ -941,6 +973,10 @@ function createChart_WR_Statistics(stockId, date_price, volume, data_lonTerm,
 		date_bottomGordon) {
 	$('#container').highcharts('StockChart', {
 
+		exporting : {
+			enabled : false
+		},
+		
 		rangeSelector : {
 			selected : 1
 		},
@@ -964,7 +1000,7 @@ function createChart_WR_Statistics(stockId, date_price, volume, data_lonTerm,
 			title : {
 				text : 'Price'
 			},
-			height : '60%',
+			height : '70%',
 			lineWidth : 2
 		}, {
 			labels : {
@@ -974,8 +1010,8 @@ function createChart_WR_Statistics(stockId, date_price, volume, data_lonTerm,
 			title : {
 				text : 'Statistics'
 			},
-			top : '65%',
-			height : '35%',
+			top : '70%',
+			height : '30%',
 			offset : 0,
 			lineWidth : 2
 		}, {
@@ -986,8 +1022,8 @@ function createChart_WR_Statistics(stockId, date_price, volume, data_lonTerm,
 			title : {
 				text : 'Statistics'
 			},
-			top : '65%',
-			height : '35%',
+			top : '70%',
+			height : '30%',
 			offset : 0,
 			lineWidth : 2
 		} ],
@@ -1034,7 +1070,10 @@ function createChart_WR_Statistics(stockId, date_price, volume, data_lonTerm,
 function createChart_WR(stockId, date_price, volume, data_lonTerm,
 		data_midTerm, data_shoTerm) {
 	$('#container').highcharts('StockChart', {
-
+		exporting : {
+			enabled : false
+		},
+		
 		rangeSelector : {
 			selected : 1
 		},
@@ -1058,7 +1097,7 @@ function createChart_WR(stockId, date_price, volume, data_lonTerm,
 			title : {
 				text : 'Price'
 			},
-			height : '60%',
+			height : '70%',
 			lineWidth : 2
 		}, {
 			labels : {
@@ -1068,8 +1107,8 @@ function createChart_WR(stockId, date_price, volume, data_lonTerm,
 			title : {
 				text : 'WR'
 			},
-			top : '65%',
-			height : '35%',
+			top : '70%',
+			height : '30%',
 			offset : 0,
 			lineWidth : 2
 		} ],
@@ -1101,9 +1140,13 @@ function createChart_WR(stockId, date_price, volume, data_lonTerm,
  * 
  * @returns {undefined}
  */
-function createChart_SameDigitsInHighPrice_Statistics(stockId, date_price, volume, data_count1, data_count2) {
+function createChart_SameDigitsInHighPrice_Statistics(stockId, date_price,
+		volume, data_count1, data_count2) {
 	$('#container').highcharts('StockChart', {
-
+		exporting : {
+			enabled : false
+		},
+		
 		rangeSelector : {
 			selected : 1
 		},
@@ -1127,7 +1170,7 @@ function createChart_SameDigitsInHighPrice_Statistics(stockId, date_price, volum
 			title : {
 				text : 'Price'
 			},
-			height : '60%',
+			height : '70%',
 			lineWidth : 2
 		}, {
 			labels : {
@@ -1137,8 +1180,8 @@ function createChart_SameDigitsInHighPrice_Statistics(stockId, date_price, volum
 			title : {
 				text : 'Statistics'
 			},
-			top : '65%',
-			height : '35%',
+			top : '70%',
+			height : '30%',
 			offset : 0,
 			lineWidth : 2
 		} ],
@@ -1168,7 +1211,10 @@ function createChart_SameDigitsInHighPrice_Statistics(stockId, date_price, volum
  */
 function createChart_XXXYuan_Statistics(stockId, date_price, volume, data_count) {
 	$('#container').highcharts('StockChart', {
-
+		exporting : {
+			enabled : false
+		},
+		
 		rangeSelector : {
 			selected : 1
 		},
@@ -1192,7 +1238,7 @@ function createChart_XXXYuan_Statistics(stockId, date_price, volume, data_count)
 			title : {
 				text : 'Price'
 			},
-			height : '60%',
+			height : '70%',
 			lineWidth : 2
 		}, {
 			labels : {
@@ -1202,8 +1248,8 @@ function createChart_XXXYuan_Statistics(stockId, date_price, volume, data_count)
 			title : {
 				text : 'Statistics'
 			},
-			top : '65%',
-			height : '35%',
+			top : '70%',
+			height : '30%',
 			offset : 0,
 			lineWidth : 2
 		} ],
