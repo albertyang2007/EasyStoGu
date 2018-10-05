@@ -14,7 +14,6 @@ import org.easystogu.cache.StockPriceCache;
 import org.easystogu.config.Constants;
 import org.easystogu.db.access.view.FavoritesStockCheckpointViewHelper;
 import org.easystogu.db.vo.view.FavoritesStockCheckpointVO;
-import org.easystogu.utils.WeekdayUtil;
 
 public class ReportEndPoint {
     private ConfigurationServiceCache config = ConfigurationServiceCache.getInstance();
@@ -25,6 +24,7 @@ public class ReportEndPoint {
 
     @GET
     @Path("/{DateOffset}")
+    @Produces("text/html; charset=UTF-8")
     //@Produces("application/json")
     //DateOffset is like 0,1,2,3 means today, yesterday, ...
     public String queryReportByDate(@PathParam("DateOffset") String dateOffset, @Context HttpServletResponse response) {

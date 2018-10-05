@@ -9,7 +9,6 @@ import java.util.List;
 import org.easystogu.db.access.table.CompanyInfoTableHelper;
 import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
 import org.easystogu.db.vo.view.FavoritesStockCheckpointVO;
-import org.easystogu.db.vo.view.StatisticsViewVO;
 import org.easystogu.log.LogHelper;
 import org.slf4j.Logger;
 import org.springframework.dao.DataAccessException;

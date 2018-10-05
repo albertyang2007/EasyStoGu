@@ -166,6 +166,7 @@ public class IndicatorEndPointV3 {
 	public List<ShenXianUIVO> queryShenXianSellById(@PathParam("stockId") String stockIdParm,
 			@PathParam("date") String dateParm, String postBody, @Context HttpServletResponse response) {
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
+	
 		List<ShenXianUIVO> sxList = new ArrayList<ShenXianUIVO>();
 		List<MacdVO> macdList = new ArrayList<MacdVO>();
 		List<BBIVO> bbiList = new ArrayList<BBIVO>();
