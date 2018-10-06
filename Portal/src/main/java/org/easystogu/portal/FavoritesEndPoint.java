@@ -5,21 +5,25 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 
+import org.easystogu.cache.CheckPointDailySelectionTableCache;
+import org.easystogu.cache.CommonViewCache;
+import org.easystogu.cache.ConfigurationServiceCache;
+import org.easystogu.db.access.table.FavoritesStockHelper;
 import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.vo.table.CheckPointDailySelectionVO;
 import org.easystogu.db.vo.view.CommonViewVO;
+import org.easystogu.db.vo.view.FavoritesStockVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.log.LogHelper;
 import org.slf4j.Logger;
-import org.easystogu.cache.ConfigurationServiceCache;
-import org.easystogu.cache.CheckPointDailySelectionTableCache;
-import org.easystogu.cache.CommonViewCache;
 
 public class FavoritesEndPoint {
 	private static Logger logger = LogHelper.getLogger(FavoritesEndPoint.class);
@@ -30,6 +34,7 @@ public class FavoritesEndPoint {
 			.getInstance();
 	protected StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
 	private CommonViewCache commonViewCache = CommonViewCache.getInstance();
+	private FavoritesStockHelper favoritesStockHelper = FavoritesStockHelper.getInstance();
 
 	@GET
 	@Path("/")
@@ -57,6 +62,26 @@ public class FavoritesEndPoint {
 		}
 
 		return list;
+	}
+
+	@POST
+	@Path("/{userId}/{stockId}")
+	@Produces("application/json")
+	public List<FavoritesStockVO> addToFavorites(@PathParam("userId") String userIdParm,
+			@PathParam("stockId") String stockIdParm, String postBody, @Context HttpServletResponse response) {
+		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
+		favoritesStockHelper.insert(new FavoritesStockVO(stockIdParm, userIdParm));
+		return favoritesStockHelper.getByUserId(userIdParm);
+	}
+	
+	@DELETE
+	@Path("/{userId}/{stockId}")
+	@Produces("application/json")
+	public List<FavoritesStockVO> deleteFromFavorites(@PathParam("userId") String userIdParm,
+			@PathParam("stockId") String stockIdParm, String postBody, @Context HttpServletResponse response) {
+		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
+		favoritesStockHelper.delete(stockIdParm, userIdParm);
+		return favoritesStockHelper.getByUserId(userIdParm);
 	}
 
 	private boolean isWeekGordon(CheckPointDailySelectionVO cpvo) {

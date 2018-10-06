@@ -1,0 +1,100 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<script type="text/javascript" src="js/reactjs_0.13.0/JSXTransformer.js"></script>
+<script type="text/javascript" src="js/reactjs_0.13.0/react.js"></script>
+<script type="text/javascript" src="js/jquery_1.8.2/jquery.min.js"></script>
+<script type="text/javascript" src="js/easystogu/common.js"></script>
+<script type="text/javascript" src="js/3pp/moment.min.js"></script>
+<style type="text/css">
+${
+demo
+.css
+}
+</style>
+</head>
+<body>	
+      <script type="text/jsx">      
+	      var ParmForm = React.createClass({
+	         getInitialState: function() {
+	         return {
+	            stockId: "999999"
+	        };
+	      },
+	      
+	      handleChange: function(e) {
+	         var newState = {};
+	         newState[e.target.name] = e.target.value;
+	         this.setState(newState);
+	      },
+	
+	      handleAddClick: function() {
+	         var data = {
+	            stockId : this.state.stockId
+	        };
+	        
+            stockId = data.stockId;
+
+            // set ajax async to false just to query the stock company info
+            $.ajaxSettings.async = false;
+
+            // convert the stock name to sotckId if input parm is not a stockId
+            var stockIdRegex = new RegExp('[0-9]{6}','g');
+            if(!data.stockId.match(stockIdRegex)){
+            	 var companyInfo = loadCompanyInfoByName(data.stockId);
+               data.stockId = companyInfo.stockId;
+               stockId = data.stockId;
+            }
+
+            //reset ajax async to true when load big data from portal
+            $.ajaxSettings.async = true;
+	        
+            addToFavorites(data.stockId);
+	      },
+
+          handleDeleteClick: function() {
+	         var data = {
+	            stockId : this.state.stockId
+	        };
+	        
+            stockId = data.stockId;
+
+            // set ajax async to false just to query the stock company info
+            $.ajaxSettings.async = false;
+
+            // convert the stock name to sotckId if input parm is not a stockId
+            var stockIdRegex = new RegExp('[0-9]{6}','g');
+            if(!data.stockId.match(stockIdRegex)){
+            	 var companyInfo = loadCompanyInfoByName(data.stockId);
+               data.stockId = companyInfo.stockId;
+               stockId = data.stockId;
+            }
+
+            //reset ajax async to true when load big data from portal
+            $.ajaxSettings.async = true;
+	        
+            deleteFromFavorites(data.stockId);
+	      },
+	      
+	      render: function(){
+			      return (<div>
+			                  <input type="text" value={this.state.stockId} name='stockId' maxLength='6' style={{width:'60px'}} onChange={this.handleChange} />&nbsp;&nbsp;
+			                  <input type="submit" value="加自选" onClick={this.handleAddClick} />
+			                  <input type="submit" value="删自选" onClick={this.handleDeleteClick} />
+			              </div>
+			              );
+			     }         
+	      });
+	      
+	      React.render(<ParmForm />,
+	      document.getElementById("containerForm")
+	      );
+      </script>
+
+	<script type="text/javascript" src="js/highstock_4.2.1/highstock.js"></script>
+	<div>
+		<div id="containerForm"></div>
+	</div>
+</body>
+</html>
