@@ -71,9 +71,13 @@ public class FavoritesEndPoint {
 			@PathParam("stockId") String stockIdParm, String postBody, @Context HttpServletResponse response) {
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		favoritesStockHelper.insert(new FavoritesStockVO(stockIdParm, userIdParm));
-		return favoritesStockHelper.getByUserId(userIdParm);
+		List<FavoritesStockVO> rtn = favoritesStockHelper.getByUserId(userIdParm);
+		for (FavoritesStockVO vo : rtn) {
+			vo.setName(stockConfig.getByStockId(vo.stockId).name);
+		}
+		return rtn;
 	}
-	
+
 	@DELETE
 	@Path("/{userId}/{stockId}")
 	@Produces("application/json")
@@ -81,7 +85,24 @@ public class FavoritesEndPoint {
 			@PathParam("stockId") String stockIdParm, String postBody, @Context HttpServletResponse response) {
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		favoritesStockHelper.delete(stockIdParm, userIdParm);
-		return favoritesStockHelper.getByUserId(userIdParm);
+		List<FavoritesStockVO> rtn = favoritesStockHelper.getByUserId(userIdParm);
+		for (FavoritesStockVO vo : rtn) {
+			vo.setName(stockConfig.getByStockId(vo.stockId).name);
+		}
+		return rtn;
+	}
+
+	@GET
+	@Path("/{userId}")
+	@Produces("application/json")
+	public List<FavoritesStockVO> getFavorites(@PathParam("userId") String userIdParm, String postBody,
+			@Context HttpServletResponse response) {
+		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
+		List<FavoritesStockVO> rtn = favoritesStockHelper.getByUserId(userIdParm);
+		for (FavoritesStockVO vo : rtn) {
+			vo.setName(stockConfig.getByStockId(vo.stockId).name);
+		}
+		return rtn;
 	}
 
 	private boolean isWeekGordon(CheckPointDailySelectionVO cpvo) {

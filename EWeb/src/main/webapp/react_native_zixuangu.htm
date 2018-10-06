@@ -37,7 +37,8 @@ demo
 	            dateTo: moment().format("YYYY-MM-DD"),
 	            trendModeName: "None",
                 nDays : "1",
-                repeatTimes: "1"
+                repeatTimes: "1",
+                favoritesStockIds: []
 	        };
 	      },
 	      
@@ -55,7 +56,8 @@ demo
 	            dateFrom : this.state.dateFrom,
 	            dateTo : this.state.dateTo,
                 nDays : this.state.nDays,
-                repeatTimes : this.state.repeatTimes
+                repeatTimes : this.state.repeatTimes,
+                favoritesStockIds : this.state.favoritesStockIds
 	        };
 
 	        var reqParms = {
@@ -101,35 +103,26 @@ demo
 	      },
 
           componentDidMount: function () {                 
-                  // By defaut show the 999999 luzhao data
-                  //loadLuZao('v2', '999999', dateFrom, dateTo);
+                  // load all favorites stockId for userId (admin)
+                  var newState = {};
+                  var tmpFavoritesStockIds = getFavoritesStockIds('admin');
+
+                  tmpData = [];
+
+                  for (var i = 0; i < tmpFavoritesStockIds.length; i++) {
+                     tmpData.push(
+                        <option value={tmpFavoritesStockIds[i][0]}>{tmpFavoritesStockIds[i][1]}</option>
+                     );
+                  }
+
+                  newState["favoritesStockIds"] = tmpData;
+                  this.setState(newState);
           },
 	      
 	      render: function(){
 			      return (<div>
 			                  <select name='stockId' onChange={this.handleChange}>
-                              <option value='601318' defaultValue>中国平安</option>
-                              <option value='601318'>中国平安</option>
-                              <option value='600547'>山东黄金</option>		
-                              <option value='000002'>万科A</option>							  
-                              <option value='601668'>中国建筑</option>
-                              <option value='600029'>南方航空</option>
-                              <option value='000423'>东阿阿胶</option>
-                              <option value='600021'>上海电力</option>
-                              <option value='002045'>国光电器</option>
-                              <option value='601336'>新华保险</option>
-                              <option value='600717'>华大基因</option>
-                              <option value='000049'>德赛电池</option>
-                              <option value='002415'>海康威视</option>
-                              <option value='000651'>格力电器</option>
-                              <option value='002673'>西部证券</option>
-                              <option value='002466'>天齐锂业</option>
-                              <option value='600518'>康美药业</option>
-                              <option value='002709'>天赐材料</option>
-                              <option value='601991'>顺丰控股</option> 
-                              <option value='603999'>读者传媒</option> 
-							  <option value='601766'>中国中车</option> 
-							  <option value='600519'>贵州茅台</option> 
+                              {this.state.favoritesStockIds}
                               </select>&nbsp;&nbsp;
 			                  
 			                  <select name='indicator' onChange={this.handleChange}>

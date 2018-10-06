@@ -186,7 +186,7 @@ function addToFavorites(stockId) {
 		processData : false,
 		contentType : 'application/json; charset=utf-8',
 		success : function(data) {
-			alert(data);
+			alert("Success add to favorites");
 		}
 	});
 }
@@ -203,7 +203,19 @@ function deleteFromFavorites(stockId) {
 		processData : false,
 		contentType : 'application/json; charset=utf-8',
 		success : function(data) {
-			alert(data);
+			alert("Success delete from favorites");
 		}
 	});
+}
+
+/*
+ * get favorites stockId by userId
+ */
+function getFavoritesStockIds(userId) {
+	var url_price = getEasyStoGuServerUrl() + "/portal/favorites/" + userId;
+	var data_price = [];
+	$.getJSON(url_price, function(data) {
+		data_price = data;
+	});
+	return data_price;
 }
