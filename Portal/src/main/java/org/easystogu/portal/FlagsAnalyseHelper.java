@@ -111,6 +111,49 @@ public class FlagsAnalyseHelper {
 					}
 				}
 
+				// 鲁兆趋势
+				//Gordon
+				if (this.isLuZaoGordonI(spvo.date, spList, luzaoList)) {
+					String title = sxvo.getDuoFlagsTitle().trim().length() > 0 ? sxvo.getDuoFlagsTitle() + "震" : "震";
+					String text = sxvo.getDuoFlagsText().trim().length() > 0 ? sxvo.getDuoFlagsText() + " 震出东方"
+							: "震出东方";
+					sxvo.setDuoFlagsTitle(title);
+					sxvo.setDuoFlagsText(text);
+				} else if (this.isLuZaoGordonII(spvo.date, luzaoList)) {
+					String title = sxvo.getDuoFlagsTitle().trim().length() > 0 ? sxvo.getDuoFlagsTitle() + "升" : "升";
+					String text = sxvo.getDuoFlagsText().trim().length() > 0 ? sxvo.getDuoFlagsText() + " 升越良山"
+							: "升越良山";
+					sxvo.setDuoFlagsTitle(title);
+					sxvo.setDuoFlagsText(text);
+				} else if (this.isLuZaoGordonIII(spvo.date, luzaoList)) {
+					String title = sxvo.getDuoFlagsTitle().trim().length() > 0 ? sxvo.getDuoFlagsTitle() + "乘" : "乘";
+					String text = sxvo.getDuoFlagsText().trim().length() > 0 ? sxvo.getDuoFlagsText() + " 山腰乘凉"
+							: "山腰乘凉";
+					sxvo.setDuoFlagsTitle(title);
+					sxvo.setDuoFlagsText(text);
+				} 
+				
+				//Dead
+				if (this.isLuZaoDeadI(spvo.date, luzaoList)) {
+					String title = sxvo.getDuoFlagsTitle().trim().length() > 0 ? sxvo.getDuoFlagsTitle() + "重" : "重";
+					String text = sxvo.getDuoFlagsText().trim().length() > 0 ? sxvo.getDuoFlagsText() + " 三山重叠"
+							: "三山重叠";
+					sxvo.setDuoFlagsTitle(title);
+					sxvo.setDuoFlagsText(text);
+				} else if (this.isLuZaoDeadII(spvo.date, luzaoList)) {
+					String title = sxvo.getDuoFlagsTitle().trim().length() > 0 ? sxvo.getDuoFlagsTitle() + "腰" : "腰";
+					String text = sxvo.getDuoFlagsText().trim().length() > 0 ? sxvo.getDuoFlagsText() + " 跌到山腰"
+							: "跌到山腰";
+					sxvo.setDuoFlagsTitle(title);
+					sxvo.setDuoFlagsText(text);
+				} else if (this.isLuZaoDeadIII(spvo.date, luzaoList)) {
+					String title = sxvo.getDuoFlagsTitle().trim().length() > 0 ? sxvo.getDuoFlagsTitle() + "脚" : "脚";
+					String text = sxvo.getDuoFlagsText().trim().length() > 0 ? sxvo.getDuoFlagsText() + " 跌到山脚"
+							: "跌到山脚";
+					sxvo.setDuoFlagsTitle(title);
+					sxvo.setDuoFlagsText(text);
+				} 
+
 				// 多头做T
 				// if ((sxvo.h1 >= sxvo.h2)) {
 				// buy point
@@ -207,6 +250,104 @@ public class FlagsAnalyseHelper {
 				if (index - 1 >= 0) {
 					MacdVO prevo = indList.get(index - 1);
 					if (curvo.macd >= 0 && prevo.macd < 0) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+
+	// 震出东方 close >= MA19
+	private boolean isLuZaoGordonI(String date, List<StockPriceVO> spList, List<LuZaoVO> indList) {
+		for (int index = 0; index < indList.size(); index++) {
+			LuZaoVO curvo = indList.get(index);
+			StockPriceVO curspvo = spList.get(index);
+			if (curvo.date.equals(date)) {
+				if (index - 1 >= 0) {
+					LuZaoVO prevo = indList.get(index - 1);
+					StockPriceVO prespvo = spList.get(index - 1);
+					if (curspvo.close >= curvo.ma19 && prespvo.close < prevo.ma19) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+
+	// 升越良山 MA19 >= MA43
+	private boolean isLuZaoGordonII(String date, List<LuZaoVO> indList) {
+		for (int index = 0; index < indList.size(); index++) {
+			LuZaoVO curvo = indList.get(index);
+			if (curvo.date.equals(date)) {
+				if (index - 1 >= 0) {
+					LuZaoVO prevo = indList.get(index - 1);
+					if (curvo.ma19 >= curvo.ma43 && prevo.ma19 < prevo.ma43) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+
+	// 山腰乘凉 MA19 >= MA86
+	private boolean isLuZaoGordonIII(String date, List<LuZaoVO> indList) {
+		for (int index = 0; index < indList.size(); index++) {
+			LuZaoVO curvo = indList.get(index);
+			if (curvo.date.equals(date)) {
+				if (index - 1 >= 0) {
+					LuZaoVO prevo = indList.get(index - 1);
+					if (curvo.ma19 >= curvo.ma86 && prevo.ma19 < prevo.ma86) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+
+	// 三山重叠 MA43 >= MA86
+	private boolean isLuZaoDeadI(String date, List<LuZaoVO> indList) {
+		for (int index = 0; index < indList.size(); index++) {
+			LuZaoVO curvo = indList.get(index);
+			if (curvo.date.equals(date)) {
+				if (index - 1 >= 0) {
+					LuZaoVO prevo = indList.get(index - 1);
+					if (curvo.ma43 >= curvo.ma86 && prevo.ma43 < prevo.ma86) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+
+	// 跌倒山腰 MA19 <= MA43
+	private boolean isLuZaoDeadII(String date, List<LuZaoVO> indList) {
+		for (int index = 0; index < indList.size(); index++) {
+			LuZaoVO curvo = indList.get(index);
+			if (curvo.date.equals(date)) {
+				if (index - 1 >= 0) {
+					LuZaoVO prevo = indList.get(index - 1);
+					if (curvo.ma19 < curvo.ma43 && prevo.ma19 >= prevo.ma43) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+
+	// 跌倒山脚 MA43 <= MA86
+	private boolean isLuZaoDeadIII(String date, List<LuZaoVO> indList) {
+		for (int index = 0; index < indList.size(); index++) {
+			LuZaoVO curvo = indList.get(index);
+			if (curvo.date.equals(date)) {
+				if (index - 1 >= 0) {
+					LuZaoVO prevo = indList.get(index - 1);
+					if (curvo.ma43 < curvo.ma86 && prevo.ma43 >= prevo.ma86) {
 						return true;
 					}
 				}
@@ -330,7 +471,7 @@ public class FlagsAnalyseHelper {
 				// check zijinliu
 				for (String cp : zijinliuViewnames) {
 					if (cpvo.checkPoint.toUpperCase().equals(cp.toUpperCase())) {
-						cpfvo.ziJinLiuRuTitle.append("资");
+						cpfvo.ziJinLiuRuTitle.append("钱");
 						cpfvo.ziJinLiuRuText.append("资金流入");
 						break;
 					}

@@ -33,7 +33,7 @@ function createChart_LuZao(stockId, date_price, volume, data_ma19, data_ma43,
 			title : {
 				text : 'Price'
 			},
-			height : '70%',
+			height : '80%',
 			lineWidth : 2
 		}, {
 			labels : {
@@ -110,7 +110,7 @@ function createChart_LuZao_Trend_Statistics(stockId, date_price, volume,
 			title : {
 				text : 'Price'
 			},
-			height : '70%',
+			height : '80%',
 			lineWidth : 2
 		}, {
 			labels : {
@@ -198,7 +198,7 @@ function createChart_LuZao_Gordon_Statistics(stockId, date_price, volume,
 			title : {
 				text : 'Price'
 			},
-			height : '70%',
+			height : '80%',
 			lineWidth : 2
 		}, {
 			labels : {
@@ -288,7 +288,7 @@ function createChart_ShenXian(stockId, date_price, volume, data_h1, data_h2,
 			title : {
 				text : 'Price'
 			},
-			height : '70%',
+			height : '80%',
 			lineWidth : 2
 		}, {
 			labels : {
@@ -367,7 +367,7 @@ function createChart_ShenXianSell(stockId, date_price, volume, data_h1,
 			title : {
 				text : 'Price'
 			},
-			height : '70%',
+			height : '80%',
 			lineWidth : 2
 		}, {
 			labels : {
@@ -464,7 +464,7 @@ function createChart_ShenXian_Statistics(stockId, date_price, volume, data_h1,
 			title : {
 				text : 'Price'
 			},
-			height : '70%',
+			height : '80%',
 			lineWidth : 2
 		}, {
 			labels : {
@@ -542,7 +542,7 @@ function createChart_Boll(stockId, date_price, volume, data_mb, data_up,
 			title : {
 				text : 'Price'
 			},
-			height : '70%',
+			height : '80%',
 			lineWidth : 2
 		}, {
 			labels : {
@@ -617,7 +617,7 @@ function createChart_Macd(stockId, date_price, volume, data_dif, data_dea,
 			title : {
 				text : 'Price'
 			},
-			height : '70%',
+			height : '80%',
 			lineWidth : 2
 		}, {
 			labels : {
@@ -690,7 +690,7 @@ function createChart_Macd_Statistics(stockId, date_price, volume, data_dif,
 			title : {
 				text : 'Price'
 			},
-			height : '70%',
+			height : '80%',
 			lineWidth : 2
 		}, {
 			labels : {
@@ -759,7 +759,7 @@ function createChart_Qsdd(stockId, date_price, volume, data_lonTerm,
 			title : {
 				text : 'Price'
 			},
-			height : '70%',
+			height : '80%',
 			lineWidth : 2
 		}, {
 			labels : {
@@ -834,7 +834,7 @@ function createChart_Qsdd_Statistics(stockId, date_price, volume, data_lonTerm,
 			title : {
 				text : 'Price'
 			},
-			height : '70%',
+			height : '80%',
 			lineWidth : 2
 		}, {
 			labels : {
@@ -931,7 +931,7 @@ function createChart_Candlestick(stockId, date_price, volume) {
 			title : {
 				text : 'Price'
 			},
-			height : '70%',
+			height : '80%',
 			lineWidth : 2
 		}, {
 			labels : {
@@ -1000,7 +1000,7 @@ function createChart_WR_Statistics(stockId, date_price, volume, data_lonTerm,
 			title : {
 				text : 'Price'
 			},
-			height : '70%',
+			height : '80%',
 			lineWidth : 2
 		}, {
 			labels : {
@@ -1097,7 +1097,7 @@ function createChart_WR(stockId, date_price, volume, data_lonTerm,
 			title : {
 				text : 'Price'
 			},
-			height : '70%',
+			height : '80%',
 			lineWidth : 2
 		}, {
 			labels : {
@@ -1170,7 +1170,7 @@ function createChart_SameDigitsInHighPrice_Statistics(stockId, date_price,
 			title : {
 				text : 'Price'
 			},
-			height : '70%',
+			height : '80%',
 			lineWidth : 2
 		}, {
 			labels : {
@@ -1238,7 +1238,7 @@ function createChart_XXXYuan_Statistics(stockId, date_price, volume, data_count)
 			title : {
 				text : 'Price'
 			},
-			height : '70%',
+			height : '80%',
 			lineWidth : 2
 		}, {
 			labels : {
