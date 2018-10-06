@@ -157,7 +157,7 @@ public class FlagsAnalyseHelper {
 
 				// append if it has zijinliu
 				if (cpfvo.ziJinLiuRuText.toString().trim().length() > 0) {
-					sxvo.setDuoFlagsTitle(sxvo.getDuoFlagsTitle() + "资");
+					sxvo.setDuoFlagsTitle(sxvo.getDuoFlagsTitle() + "钱");
 					String info = sxvo.getDuoFlagsText().trim().length() > 0 ? sxvo.getDuoFlagsText() + " " : "";
 					sxvo.setDuoFlagsText(info + "资金流入");
 				}
