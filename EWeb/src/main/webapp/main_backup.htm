@@ -1,0 +1,128 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<script type="text/javascript" src="js/reactjs_0.13.0/JSXTransformer.js"></script>
+<script type="text/javascript" src="js/reactjs_0.13.0/react.js"></script>
+<script type="text/javascript" src="js/jquery_1.8.2/jquery.min.js"></script>
+<script type="text/javascript" src="js/easystogu/requestStockData.js"></script>
+<script type="text/javascript" src="js/easystogu/common.js"></script>
+<script type="text/javascript" src="js/easystogu/createChart.js"></script>
+<script type="text/javascript" src="js/3pp/moment.min.js"></script>
+<style type="text/css">
+${
+demo
+.css
+}
+</style>
+</head>
+<body>	
+      <script type="text/jsx">      
+	      var ParmForm = React.createClass({
+	         getInitialState: function() {
+	         return {
+	            stockId: "999999",
+	            indicator: "shenxian_sell",
+                version: "v1",
+	            dateFrom: moment().subtract(2000, 'days').format("YYYY-MM-DD"),
+	            dateTo: moment().format("YYYY-MM-DD"),
+	        };
+	      },
+	      
+	      handleChange: function(e) {
+	         var newState = {};
+	         newState[e.target.name] = e.target.value;
+	         this.setState(newState);
+	      },
+	
+	      handleClick: function() {
+	         var data = {
+	            stockId : this.state.stockId,
+	            indicator : this.state.indicator,
+                version: this.state.version, 
+	            dateFrom : this.state.dateFrom,
+	            dateTo : this.state.dateTo,
+	        };
+	        
+            indicator = data.indicator;
+            dateFrom = data.dateFrom;
+            dateTo = data.dateTo;
+            stockId = data.stockId;
+
+            // set ajax async to false just to query the stock company info
+            $.ajaxSettings.async = false;
+
+            // convert the stock name to sotckId if input parm is not a stockId
+            var stockIdRegex = new RegExp('[0-9]{6}','g');
+            if(!data.stockId.match(stockIdRegex)){
+            	 var companyInfo = loadCompanyInfoByName(data.stockId);
+               data.stockId = companyInfo.stockId;
+               stockId = data.stockId;
+            }
+
+            //reset ajax async to true when load big data from portal
+            $.ajaxSettings.async = true;
+	        
+            if(data.indicator == "shenxian"){ 
+	           loadShenXian(data.version, data.stockId, data.dateFrom, data.dateTo);
+            }else if(data.indicator == "shenxian_sell"){ 
+	           loadShenXianSell(data.version, data.stockId, data.dateFrom, data.dateTo);
+            }else if(data.indicator == "luzao"){ 
+	           loadLuZao(data.version, data.stockId, data.dateFrom, data.dateTo);
+            }else if(data.indicator == "boll"){ 
+	           loadBoll(data.version, data.stockId, data.dateFrom, data.dateTo);
+            }else if(data.indicator == "macd"){ 
+	           loadMacd(data.version, data.stockId, data.dateFrom, data.dateTo);
+            }else if(data.indicator == "qsdd"){ 
+	           loadQSDD(data.version, data.stockId, data.dateFrom, data.dateTo);
+            }else if(data.indicator == "wr"){ 
+	           loadWR(data.version, data.stockId, data.dateFrom, data.dateTo);
+            }
+	      },
+	      
+	      render: function(){
+			      return (<div>
+			                  <input type="text" value={this.state.stockId} name='stockId' maxLength='6' style={{width:'60px'}} onChange={this.handleChange} />&nbsp;&nbsp;
+			                  
+			                  <select name='indicator' onChange={this.handleChange}>
+                              <option value='shenxian_sell' defaultValue>shenxian_sell</option>
+                              <option value='shenxian'>shenxian</option>
+                              <option value='luzao'>luzao</option>
+                              <option value='macd'>macd</option>
+                              <option value='boll'>boll</option>
+                              <option value='qsdd'>qsdd</option>
+                              <option value='wr'>wr</option>
+                              </select>&nbsp;&nbsp;
+
+			                  <select name='version' onChange={this.handleChange}>
+                              <option value='v0'>v0-不复权</option>
+                              <option value='v1' defaultValue>v1-前复权</option>
+                              <option value='v2'>v2-后复权</option>
+                              </select>&nbsp;&nbsp;
+
+			                  <label>From:</label>
+			                  <input type="text" value={this.state.dateFrom} name='dateFrom' maxLength='10' style={{width:'100px'}} onChange={this.handleChange} />&nbsp;&nbsp;
+			                  
+                              <label>To:</label>
+			                  <input type="text" value={this.state.dateTo} name='dateTo' maxLength='10' style={{width:'100px'}} onChange={this.handleChange} />&nbsp;&nbsp;
+			                  
+                              <input type="submit" value="Submit" onClick={this.handleClick} />
+			              </div>
+			              );
+			     }         
+	      });
+	      
+	      React.render(<ParmForm />,
+	      document.getElementById("containerForm")
+	      );
+      </script>
+
+	<script type="text/javascript" src="js/highstock_4.2.1/highstock.js"></script>
+	<script type="text/javascript"
+		src="js/highstock_4.2.1/modules/exporting.js"></script>
+	<div>
+		<div id="containerForm"></div>
+		<div id="container" style="height: 100%; min-width: 100%; position:fixed;"></div>
+	</div>
+</body>
+</html>

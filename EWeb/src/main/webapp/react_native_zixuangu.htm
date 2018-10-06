@@ -105,13 +105,15 @@ demo
           componentDidMount: function () {                 
                   // load all favorites stockId for userId (admin)
                   var newState = {};
+                  $.ajaxSettings.async = false;
                   var tmpFavoritesStockIds = getFavoritesStockIds('admin');
+                  $.ajaxSettings.async = true;
 
                   tmpData = [];
 
                   for (var i = 0; i < tmpFavoritesStockIds.length; i++) {
                      tmpData.push(
-                        <option value={tmpFavoritesStockIds[i][0]}>{tmpFavoritesStockIds[i][1]}</option>
+                        <option value={tmpFavoritesStockIds[i].stockId}>{tmpFavoritesStockIds[i].name}</option>
                      );
                   }
 
