@@ -11,17 +11,14 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 
+import org.easystogu.cache.CheckPointStatisticsCache;
+import org.easystogu.cache.ConfigurationServiceCache;
+import org.easystogu.cache.StockPriceCache;
 import org.easystogu.checkpoint.DailyCombineCheckPoint;
-import org.easystogu.config.ConfigurationService;
 import org.easystogu.config.Constants;
-import org.easystogu.config.DBConfigurationService;
-import org.easystogu.db.access.table.CheckPointDailyStatisticsTableHelper;
 import org.easystogu.db.vo.table.CheckPointDailyStatisticsVO;
 import org.easystogu.portal.vo.StatisticsVO;
 import org.easystogu.utils.WeekdayUtil;
-import org.easystogu.cache.StockPriceCache;
-import org.easystogu.cache.CheckPointStatisticsCache;
-import org.easystogu.cache.ConfigurationServiceCache;
 
 public class CheckPointStatisticsEndPoint {
 	private ConfigurationServiceCache config = ConfigurationServiceCache.getInstance();

@@ -106,7 +106,7 @@ demo
                   // load all favorites stockId for userId (admin)
                   var newState = {};
                   $.ajaxSettings.async = false;
-                  var tmpFavoritesStockIds = getFavoritesStockIds('admin');
+                  var tmpFavoritesStockIds = getFavoritesStockIdsByUserId('admin');
                   $.ajaxSettings.async = true;
 
                   tmpData = [];

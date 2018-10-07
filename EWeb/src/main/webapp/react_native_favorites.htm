@@ -17,7 +17,7 @@ ${demo.css}
 <body>
 	<script type="text/jsx">    
           var stockId = "999999";
-          var indicator = "luzao";
+          var indicator = "shenxian_sell";
           var dateFrom = moment().subtract(2000, 'days').format("YYYY-MM-DD");
           var dateTo = moment().format("YYYY-MM-DD");
           var selectDate = dateTo;
@@ -25,6 +25,7 @@ ${demo.css}
           var version = "v1";
           var viewName = "luzao_phaseII_ddx_2_of_5_days_bigger_05";
           var cixin = "False";
+          var isZiXuanGu = true;
 
 	      var reqParms = {
 		        "trendModeName" : "None",
@@ -44,7 +45,8 @@ ${demo.css}
                 viewName: "",
                 viewOptions: [],
                 dateOptions: [],
-                stockIdOptions: []
+                stockIdOptions: [],
+                isZiXuanGu: true
 	        };
 	      },
 	      
@@ -57,7 +59,7 @@ ${demo.css}
 
              //update stockIds based on selectDate
              $.ajaxSettings.async = false;
-             selectStockIds = getFavoritesStockIds(selectDate);
+             selectStockIds = getFavoritesStockIdsByDate(selectDate, isZiXuanGu);
              $.ajaxSettings.async = true;
              this.state.stockIdOptions = [];
              for (var i = 0; i < selectStockIds.length; i++) {
@@ -71,7 +73,8 @@ ${demo.css}
                 newState["stockId"] = stockId;
 	            this.setState(newState);
                 //refresh the chart using the first stockid
-                loadLuZao(version, stockId, dateFrom, dateTo);
+                //loadLuZao(version, stockId, dateFrom, dateTo);
+                loadShenXianSellWithReqParms(stockId, dateFrom, dateTo, reqParms);
              }
 	      },
 
@@ -82,7 +85,8 @@ ${demo.css}
         
              //update the stockId to selected value
              stockId = e.target.value;
-             loadLuZao(version, stockId, dateFrom, dateTo);
+             //loadLuZao(version, stockId, dateFrom, dateTo);
+             loadShenXianSellWithReqParms(stockId, dateFrom, dateTo, reqParms);
 	      },
 
           handleChangeSelectIndicator: function(e) {
@@ -132,29 +136,38 @@ ${demo.css}
             }
 	      },
 
+          handleZiXuanGu: function(e) {
+	         var newState = {};
+	         newState[e.target.name] = e.target.value;
+	         this.setState(newState);
+        
+             //update the indicator to selected value
+             isZiXuanGu = !isZiXuanGu;
+	      },
+
           componentDidMount: function () {
             var newState = {};
 
             $.ajaxSettings.async = false;
-            var dateOptionsTmp = getLatestNDate(20);
+            var dateOptionsTmp = getLatestNDate(50);
             //first option is empty
             tmpDateOptions = [];
 
+            tmpDateOptions.push(<option value='Latest_50'>Latest_50</option>);
             for (var i = 0; i < dateOptionsTmp.length; i++) {
                   tmpDateOptions.push(
                   <option value={dateOptionsTmp[i]}>{dateOptionsTmp[i]}</option>
                   );
             }
 
-            tmpDateOptions.push(<option value='Latest_20'>Latest_20</option>);
-
 	        newState["dateOptions"] = tmpDateOptions;
             
             viewName = getQueryString("selectView");
 
             newState["viewName"] = viewName;
+            newState["isZiXuanGu"] = true;
 
-            selectStockIds = getFavoritesStockIds(dateOptionsTmp[0]);
+            selectStockIds = getFavoritesStockIdsByDate('Latest_50', isZiXuanGu);
             $.ajaxSettings.async = true;
 
             //update stockIds based on viewName
@@ -188,14 +201,16 @@ ${demo.css}
                               </select>&nbsp;&nbsp;
 			                  
 			                  <select name='indicator' onChange={this.handleChangeSelectIndicator}>
-                              <option value='luzao' defaultValue>luzao</option>
+                              <option value='shenxian_sell' defaultValue>shenxian_sell</option>                              
                               <option value='shenxian'>shenxian</option>
-                              <option value='shenxian_sell'>shenxian_sell</option>
+                              <option value='luzao'>luzao</option>                              
                               <option value='macd'>macd</option>
                               <option value='boll'>boll</option>
                               <option value='qsdd'>qsdd</option>
                               </select>&nbsp;&nbsp;
 			                  
+                              <input type="checkbox" name="自选股" defaultChecked onClick={this.handleZiXuanGu} />自选股&nbsp;&nbsp;
+
                               <input type="submit" value="Submit" onClick={this.handleSubmit} />
 			              </div>
 			              );

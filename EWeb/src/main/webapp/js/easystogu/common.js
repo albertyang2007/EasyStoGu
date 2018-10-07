@@ -99,23 +99,6 @@ function getAllStockIdsFromView(viewName) {
 	return stockIds;
 }
 
-/**
- * Load all stockIds from View
- * 
- * @returns {undefined}
- */
-function getFavoritesStockIds(date) {
-	var url = getEasyStoGuServerUrl() + "/portal/favorites?date=" + date;
-	var stockIds = [];
-	$.getJSON(url, function(data) {
-		i = 0;
-		for (i; i < data.length; i += 1) {
-			stockIds.push([ data[i]['stockId'], data[i]['name'] ]);
-		}
-	});
-	return stockIds;
-}
-
 /*
  * get the query parameters from http GET request, for example
  * http://localhost:8080/query?name=value return value
@@ -177,8 +160,7 @@ function convert2Volume(data) {
 /*
  * add stockId to favorites
  */
-function addToFavorites(stockId) {
-	var userId = "admin";
+function addToFavorites(userId, stockId) {
 	var url_price = getEasyStoGuServerUrl() + "/portal/favorites/" + userId + "/"+ stockId;
 	$.ajax({
 		type : "POST",
@@ -191,11 +173,27 @@ function addToFavorites(stockId) {
 	});
 }
 
+/**
+ * Load all stockIds from View
+ * 
+ * @returns {undefined}
+ */
+function getFavoritesStockIdsByDate(date, isZiXuanGu) {
+	var url = getEasyStoGuServerUrl() + "/portal/favorites?date=" + date + "&isZiXuanGu=" + isZiXuanGu;
+	var stockIds = [];
+	$.getJSON(url, function(data) {
+		i = 0;
+		for (i; i < data.length; i += 1) {
+			stockIds.push([ data[i]['stockId'], data[i]['name'] ]);
+		}
+	});
+	return stockIds;
+}
+
 /*
  * delete stockId from favorites
  */
-function deleteFromFavorites(stockId) {
-	var userId = "admin";
+function deleteFromFavorites(userId, stockId) {
 	var url_price = getEasyStoGuServerUrl() + "/portal/favorites/" + userId + "/"+ stockId;
 	$.ajax({
 		type : "DELETE",
@@ -211,7 +209,7 @@ function deleteFromFavorites(stockId) {
 /*
  * get favorites stockId by userId
  */
-function getFavoritesStockIds(userId) {
+function getFavoritesStockIdsByUserId(userId) {
 	var url_price = getEasyStoGuServerUrl() + "/portal/favorites/" + userId;
 	var data_price = [];
 	$.getJSON(url_price, function(data) {

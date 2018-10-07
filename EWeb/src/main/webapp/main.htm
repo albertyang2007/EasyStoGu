@@ -50,7 +50,7 @@ demo
             //reset ajax async to true when load big data from portal
             $.ajaxSettings.async = true;
 	        
-            addToFavorites(data.stockId);
+            addToFavorites('admin', data.stockId);
 	      },
 
           handleDeleteClick: function() {
@@ -74,7 +74,7 @@ demo
             //reset ajax async to true when load big data from portal
             $.ajaxSettings.async = true;
 	        
-            deleteFromFavorites(data.stockId);
+            deleteFromFavorites('admin', data.stockId);
 	      },
 	      
 	      render: function(){
