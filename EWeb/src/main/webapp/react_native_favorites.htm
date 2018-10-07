@@ -145,6 +145,32 @@ ${demo.css}
              isZiXuanGu = !isZiXuanGu;
 	      },
 
+          handleAddFavorites: function() {
+	         var data = {
+	            stockId : this.state.stockId
+	        };
+	        
+            stockId = data.stockId;
+
+            //reset ajax async to true when load big data from portal
+            $.ajaxSettings.async = true;
+	        
+            addToFavorites('admin', data.stockId);
+	      },
+
+          handleDeleteFavorites: function() {
+	         var data = {
+	            stockId : this.state.stockId
+	        };
+	        
+            stockId = data.stockId;
+
+            //reset ajax async to true when load big data from portal
+            $.ajaxSettings.async = true;
+	        
+            deleteFromFavorites('admin', data.stockId);
+	      },
+
           componentDidMount: function () {
             var newState = {};
 
@@ -211,7 +237,9 @@ ${demo.css}
 			                  
                               <input type="checkbox" name="自选股" defaultChecked onClick={this.handleZiXuanGu} />自选股&nbsp;&nbsp;
 
-                              <input type="submit" value="Submit" onClick={this.handleSubmit} />
+                              <input type="submit" value="Submit" onClick={this.handleSubmit} />&nbsp;&nbsp;
+                              <input type="submit" value="加自选" onClick={this.handleAddFavorites} />&nbsp;&nbsp;
+			                  <input type="submit" value="删自选" onClick={this.handleDeleteFavorites} />
 			              </div>
 			              );
 			     }         

@@ -124,29 +124,19 @@ public class FavoritesEndPoint {
 	@POST
 	@Path("/{userId}/{stockId}")
 	@Produces("application/json")
-	public List<FavoritesStockVO> addToFavorites(@PathParam("userId") String userIdParm,
+	public void addToFavorites(@PathParam("userId") String userIdParm,
 			@PathParam("stockId") String stockIdParm, String postBody, @Context HttpServletResponse response) {
-		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
+		//response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		favoritesStockHelper.insert(new FavoritesStockVO(stockIdParm, userIdParm));
-		List<FavoritesStockVO> rtn = favoritesStockHelper.getByUserId(userIdParm);
-		for (FavoritesStockVO vo : rtn) {
-			vo.setName(stockConfig.getByStockId(vo.stockId).name);
-		}
-		return rtn;
 	}
 
 	@DELETE
 	@Path("/{userId}/{stockId}")
 	@Produces("application/json")
-	public List<FavoritesStockVO> deleteFromFavorites(@PathParam("userId") String userIdParm,
+	public void deleteFromFavorites(@PathParam("userId") String userIdParm,
 			@PathParam("stockId") String stockIdParm, String postBody, @Context HttpServletResponse response) {
-		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
+		//response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		favoritesStockHelper.delete(stockIdParm, userIdParm);
-		List<FavoritesStockVO> rtn = favoritesStockHelper.getByUserId(userIdParm);
-		for (FavoritesStockVO vo : rtn) {
-			vo.setName(stockConfig.getByStockId(vo.stockId).name);
-		}
-		return rtn;
 	}
 
 	@GET

@@ -157,22 +157,6 @@ function convert2Volume(data) {
 	return volume;
 }
 
-/*
- * add stockId to favorites
- */
-function addToFavorites(userId, stockId) {
-	var url_price = getEasyStoGuServerUrl() + "/portal/favorites/" + userId + "/"+ stockId;
-	$.ajax({
-		type : "POST",
-		url : url_price,
-		processData : false,
-		contentType : 'application/json; charset=utf-8',
-		success : function(data) {
-			alert("Success add to favorites");
-		}
-	});
-}
-
 /**
  * Load all stockIds from View
  * 
@@ -191,6 +175,22 @@ function getFavoritesStockIdsByDate(date, isZiXuanGu) {
 }
 
 /*
+ * add stockId to favorites
+ */
+function addToFavorites(userId, stockId) {
+	var url_price = getEasyStoGuServerUrl() + "/portal/favorites/" + userId + "/"+ stockId;
+	$.ajax({
+		type : "POST",
+		url : url_price,
+		processData : false,
+		contentType : 'application/json; charset=utf-8',
+		success : function(data) {
+			alert("Success add to favorites " + stockId);
+		}
+	});
+}
+
+/*
  * delete stockId from favorites
  */
 function deleteFromFavorites(userId, stockId) {
@@ -201,7 +201,7 @@ function deleteFromFavorites(userId, stockId) {
 		processData : false,
 		contentType : 'application/json; charset=utf-8',
 		success : function(data) {
-			alert("Success delete from favorites");
+			alert("Success delete from favorites: " + stockId);
 		}
 	});
 }

@@ -102,6 +102,32 @@ demo
             }
 	      },
 
+          handleAddFavorites: function() {
+	         var data = {
+	            stockId : this.state.stockId
+	        };
+	        
+            stockId = data.stockId;
+
+            //reset ajax async to true when load big data from portal
+            $.ajaxSettings.async = true;
+	        
+            addToFavorites('admin', data.stockId);
+	      },
+
+          handleDeleteFavorites: function() {
+	         var data = {
+	            stockId : this.state.stockId
+	        };
+	        
+            stockId = data.stockId;
+
+            //reset ajax async to true when load big data from portal
+            $.ajaxSettings.async = true;
+	        
+            deleteFromFavorites('admin', data.stockId);
+	      },
+
           componentDidMount: function () {                 
                   // load all favorites stockId for userId (admin)
                   var newState = {};
@@ -188,7 +214,9 @@ demo
                               <label>重复</label>
 			                  <input type="text" value={this.state.repeatTimes} name='repeatTimes' maxLength='3' style={{width:'30px'}} onChange={this.handleChange} />&nbsp;&nbsp;
 
-                              <input type="submit" value="Submit" onClick={this.handleSubmit} />
+                              <input type="submit" value="Submit" onClick={this.handleSubmit} />&nbsp;&nbsp;
+                              <input type="submit" value="加自选" onClick={this.handleAddFavorites} />&nbsp;&nbsp;
+			                  <input type="submit" value="删自选" onClick={this.handleDeleteFavorites} />
 			              </div>
 			              );
 			     }         
