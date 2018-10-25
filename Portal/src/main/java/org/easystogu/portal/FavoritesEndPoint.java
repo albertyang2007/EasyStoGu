@@ -24,6 +24,7 @@ import org.easystogu.db.access.table.CheckPointDailySelectionTableHelper;
 import org.easystogu.db.access.table.FavoritesStockHelper;
 import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.vo.table.CheckPointDailySelectionVO;
+import org.easystogu.db.vo.table.CompanyInfoVO;
 import org.easystogu.db.vo.view.CommonViewVO;
 import org.easystogu.db.vo.view.FavoritesStockVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
@@ -124,18 +125,18 @@ public class FavoritesEndPoint {
 	@POST
 	@Path("/{userId}/{stockId}")
 	@Produces("application/json")
-	public void addToFavorites(@PathParam("userId") String userIdParm,
-			@PathParam("stockId") String stockIdParm, String postBody, @Context HttpServletResponse response) {
-		//response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
+	public void addToFavorites(@PathParam("userId") String userIdParm, @PathParam("stockId") String stockIdParm,
+			String postBody, @Context HttpServletResponse response) {
+		// response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		favoritesStockHelper.insert(new FavoritesStockVO(stockIdParm, userIdParm));
 	}
 
 	@DELETE
 	@Path("/{userId}/{stockId}")
 	@Produces("application/json")
-	public void deleteFromFavorites(@PathParam("userId") String userIdParm,
-			@PathParam("stockId") String stockIdParm, String postBody, @Context HttpServletResponse response) {
-		//response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
+	public void deleteFromFavorites(@PathParam("userId") String userIdParm, @PathParam("stockId") String stockIdParm,
+			String postBody, @Context HttpServletResponse response) {
+		// response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		favoritesStockHelper.delete(stockIdParm, userIdParm);
 	}
 
@@ -147,7 +148,10 @@ public class FavoritesEndPoint {
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		List<FavoritesStockVO> rtn = favoritesStockHelper.getByUserId(userIdParm);
 		for (FavoritesStockVO vo : rtn) {
-			vo.setName(stockConfig.getByStockId(vo.stockId).name);
+			CompanyInfoVO cvo = stockConfig.getByStockId(vo.stockId);
+			if (cvo != null) {
+				vo.setName(cvo.name);
+			}
 		}
 		return rtn;
 	}

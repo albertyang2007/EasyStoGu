@@ -87,6 +87,7 @@ public class ModeGenerator {
 	}
 
 	public void scenarios() {
+		/*
 		saveToFile(generateTrendMode("Platform_8", "暴涨,长平台整理,突破,下跌", "000701", "2015-09-30", "2016-01-04"));
 		saveToFile(generateTrendMode("M_Tou", "M 头", "999999", "2015-11-03", "2016-01-04"));
 		saveToFile(generateTrendMode("BaoDie", "暴跌", "999999", "2015-08-17", "2015-10-08"));
@@ -110,7 +111,9 @@ public class ModeGenerator {
 		saveToFile(generateTrendMode("HengPan4Zhou", "横盘四周突破", "000049", "2017-02-07", "2017-03-10"));
 		saveToFile(generateTrendMode("HengPan1Zhou", "横盘一周突破", "000423", "2017-03-10", "2017-03-17"));
 		saveToFile(generateTrendMode("HengPan2Zhou", "横盘两周突破", "002673", "2015-03-20", "2015-04-08"));
+		*/
 		
+		saveToFile(generateTrendMode("LuZaoPhaseII", "鲁兆持股阶段", "600547", "2018-09-20", "2018-10-25"));
 	}
 
 	public static void main(String[] args) {
