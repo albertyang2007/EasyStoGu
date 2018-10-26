@@ -20,7 +20,7 @@ public class ModeGenerator {
 	private ConfigurationService config = DBConfigurationService.getInstance();
 	private CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 	private StockPriceTableHelper stockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
-	private String trendModeJsonFilePath = config.getString("trendmode.json.file.path");
+	private String trendModeJsonFilePath = "C:/Users/eyaweiw/github/EasyStoGu/Portal/src/main/resources/TrendMode/";//config.getString("trendmode.json.file.path");
 
 	// select range prices for one stock and return json str
 	public TrendModeVO generateTrendMode(String name, String description, String stockId, String dateStart,
@@ -113,7 +113,7 @@ public class ModeGenerator {
 		saveToFile(generateTrendMode("HengPan2Zhou", "横盘两周突破", "002673", "2015-03-20", "2015-04-08"));
 		*/
 		
-		saveToFile(generateTrendMode("LuZaoPhaseII", "鲁兆持股阶段", "600547", "2018-09-20", "2018-10-25"));
+		saveToFile(generateTrendMode("LuZaoPhaseII", "鲁兆持股阶段", "600547", "2018-09-19", "2018-10-25"));
 	}
 
 	public static void main(String[] args) {
