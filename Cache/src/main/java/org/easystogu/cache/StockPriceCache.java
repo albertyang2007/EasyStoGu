@@ -26,7 +26,7 @@ public class StockPriceCache {
 					// key is like: type:parms, for example:
 					// latestndate:10
 					public List<String> load(String key) throws Exception {
-						logger.info("load from database, key:" + key);
+						logger.info("load from database, stockPriceTable key:" + key);
 						String[] parms = key.split(":");
 						if (Constants.cacheLatestNStockDate.equals(parms[0])) {
 							return stockPriceTable.getLatestNStockDate(Integer.parseInt(parms[1]));

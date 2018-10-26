@@ -18,6 +18,7 @@ import javax.ws.rs.core.Context;
 import org.easystogu.cache.CheckPointDailySelectionTableCache;
 import org.easystogu.cache.CommonViewCache;
 import org.easystogu.cache.ConfigurationServiceCache;
+import org.easystogu.cache.FavoritesCache;
 import org.easystogu.cache.StockPriceCache;
 import org.easystogu.config.Constants;
 import org.easystogu.db.access.table.CheckPointDailySelectionTableHelper;
@@ -43,6 +44,7 @@ public class FavoritesEndPoint {
 	protected StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
 	private CommonViewCache commonViewCache = CommonViewCache.getInstance();
 	private FavoritesStockHelper favoritesStockHelper = FavoritesStockHelper.getInstance();
+	private FavoritesCache favoritesCache = FavoritesCache.getInstance();
 	private StockPriceCache stockPriceCache = StockPriceCache.getInstance();
 
 	@GET
@@ -79,7 +81,7 @@ public class FavoritesEndPoint {
 		// only select the stockId that is in ZiXuanGu (favorites stockids)
 		if ("true".equalsIgnoreCase(isZiXuanGu)) {
 			// here hardcode userId to admin since there is no other customer
-			favoritesStockIds = favoritesStockHelper.getByUserId("admin");
+			favoritesStockIds = favoritesCache.get("admin");
 			cps = filterZiXuanGu(favoritesStockIds, cps);
 		}
 
@@ -129,6 +131,7 @@ public class FavoritesEndPoint {
 			String postBody, @Context HttpServletResponse response) {
 		// response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		favoritesStockHelper.insert(new FavoritesStockVO(stockIdParm, userIdParm));
+		favoritesCache.refreshAll();
 	}
 
 	@DELETE
@@ -138,6 +141,7 @@ public class FavoritesEndPoint {
 			String postBody, @Context HttpServletResponse response) {
 		// response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		favoritesStockHelper.delete(stockIdParm, userIdParm);
+		favoritesCache.refreshAll();
 	}
 
 	@GET
@@ -146,7 +150,7 @@ public class FavoritesEndPoint {
 	public List<FavoritesStockVO> getFavorites(@PathParam("userId") String userIdParm, String postBody,
 			@Context HttpServletResponse response) {
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
-		List<FavoritesStockVO> rtn = favoritesStockHelper.getByUserId(userIdParm);
+		List<FavoritesStockVO> rtn = favoritesCache.get(userIdParm);
 		for (FavoritesStockVO vo : rtn) {
 			CompanyInfoVO cvo = stockConfig.getByStockId(vo.stockId);
 			if (cvo != null) {

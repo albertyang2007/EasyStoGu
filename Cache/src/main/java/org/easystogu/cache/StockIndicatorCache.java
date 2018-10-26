@@ -43,7 +43,7 @@ public class StockIndicatorCache {
 					// key is like: type:stockId, for example:
 					// stockPrice:999999, indDKJ:999999
 					public List<StockPriceVO> load(String key) throws Exception {
-						logger.info("load from database, key:" + key);
+						logger.info("load from database, stockTablesMap key:" + key);
 						CacheAbleStock cacheTable = stockTablesMap.get(key.split(":")[0]);
 						return cacheTable.queryByStockId(key.split(":")[1]);
 					}

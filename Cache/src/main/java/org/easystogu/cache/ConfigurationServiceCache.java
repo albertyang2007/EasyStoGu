@@ -18,12 +18,12 @@ public class ConfigurationServiceCache {
     private LoadingCache<String, Object> cache;
 
     private ConfigurationServiceCache() {
-        cache = CacheBuilder.newBuilder().maximumSize(100).expireAfterWrite(15, TimeUnit.MINUTES)
+        cache = CacheBuilder.newBuilder().maximumSize(100).expireAfterWrite(12, TimeUnit.HOURS)
                 .build(new CacheLoader<String, Object>() {
                     @Override
                     // key is
                     public Object load(String key) throws Exception {
-                        logger.info("load from database, key:" + key);
+                        logger.info("load from database, configServiceTable key:" + key);
                         return configServiceTable.getObject(key);
                     }
                 });

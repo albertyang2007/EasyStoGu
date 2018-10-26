@@ -25,7 +25,7 @@ public class XXXYuanStockStatisticsCache {
 					@Override
 					// key is
 					public List<StatisticsViewVO> load(String key) throws Exception {
-						logger.info("load from database, key:" + key);
+						logger.info("load from database, xtockStatisticsViewHelper key:" + key);
 						// key is One, Five or Ten
 						return xtockStatisticsViewHelper.getAll(key);
 					}

@@ -4,6 +4,7 @@ import org.easystogu.cache.CheckPointDailySelectionTableCache;
 import org.easystogu.cache.CheckPointStatisticsCache;
 import org.easystogu.cache.CommonViewCache;
 import org.easystogu.cache.ConfigurationServiceCache;
+import org.easystogu.cache.FavoritesCache;
 import org.easystogu.cache.StockIndicatorCache;
 import org.easystogu.cache.StockPriceCache;
 import org.easystogu.cache.XXXYuanStockStatisticsCache;
@@ -16,6 +17,7 @@ public class AllCacheRunner implements Runnable {
 	private CommonViewCache commonViewCache = CommonViewCache.getInstance();
 	private ConfigurationServiceCache configurationServiceCache = ConfigurationServiceCache.getInstance();
 	private XXXYuanStockStatisticsCache stockStatisticsCache = XXXYuanStockStatisticsCache.getInstance();
+	private FavoritesCache favoritesCache = FavoritesCache.getInstance();
 
 	public void refreshAll() {
 		this.configurationServiceCache.refreshAll();
@@ -25,6 +27,7 @@ public class AllCacheRunner implements Runnable {
 		this.checkPointDailySelectionTableCache.refreshAll();
 		this.commonViewCache.refreshAll();
 		this.stockStatisticsCache.refreshAll();
+		this.favoritesCache.refreshAll();
 	}
 
 	public void run() {

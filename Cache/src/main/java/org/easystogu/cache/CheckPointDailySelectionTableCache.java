@@ -25,7 +25,7 @@ public class CheckPointDailySelectionTableCache {
 				.build(new CacheLoader<String, List<CheckPointDailySelectionVO>>() {
 					@Override
 					public List<CheckPointDailySelectionVO> load(String key) throws Exception {
-						logger.info("load from database, key:" + key);
+						logger.info("load from database, checkPointDailySelectionTable key:" + key);
 						String[] parms = key.split(":");
 						// key is like: date + ":" + checkpoint
 						if (parms.length == 2) {

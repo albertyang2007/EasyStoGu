@@ -25,7 +25,7 @@ public class CommonViewCache {
 					@Override
 					// key is
 					public List<CommonViewVO> load(String key) throws Exception {
-						logger.info("load from database, key:" + key);
+						logger.info("load from database, commonViewHelper key:" + key);
 						String[] parms = key.split(":");
 						return commonViewHelper.queryByDateForViewDirectlySearch(parms[0], parms[1]);
 					}

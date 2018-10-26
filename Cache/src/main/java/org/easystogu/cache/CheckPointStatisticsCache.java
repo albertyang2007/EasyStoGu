@@ -26,7 +26,7 @@ public class CheckPointStatisticsCache {
 					@Override
 					// key is 
 					public List<CheckPointDailyStatisticsVO> load(String key) throws Exception {
-						logger.info("load from database, key:" + key);
+						logger.info("load from database, checkPointStatisticsTable key:" + key);
 						String[] parms = key.split(":");
 						return checkPointStatisticsTable.getAllCheckPointBetweenDate(parms[0], parms[1]);
 					}
