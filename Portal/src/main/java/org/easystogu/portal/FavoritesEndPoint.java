@@ -55,6 +55,56 @@ public class FavoritesEndPoint {
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		String date = request.getParameter("date");
 		String isZiXuanGu = request.getParameter("isZiXuanGu");
+		String viewName = request.getParameter("viewName");
+
+		if ("MACD_WK_GORDON_KDJ_DIF_DAY_GORDON".equalsIgnoreCase(viewName)) {
+			return getSelectView1(date, isZiXuanGu);
+		}
+
+		if ("MACD_KDJ_WK_GORDON_ZIJIN_LIURU".equalsIgnoreCase(viewName)) {
+			return getSelectView2(date, isZiXuanGu);
+		}
+
+		return null;
+	}
+
+	@POST
+	@Path("/{userId}/{stockId}")
+	@Produces("application/json")
+	public void addToFavorites(@PathParam("userId") String userIdParm, @PathParam("stockId") String stockIdParm,
+			String postBody, @Context HttpServletResponse response) {
+		// response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
+		favoritesStockHelper.insert(new FavoritesStockVO(stockIdParm, userIdParm));
+		favoritesCache.refreshAll();
+	}
+
+	@DELETE
+	@Path("/{userId}/{stockId}")
+	@Produces("application/json")
+	public void deleteFromFavorites(@PathParam("userId") String userIdParm, @PathParam("stockId") String stockIdParm,
+			String postBody, @Context HttpServletResponse response) {
+		// response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
+		favoritesStockHelper.delete(stockIdParm, userIdParm);
+		favoritesCache.refreshAll();
+	}
+
+	@GET
+	@Path("/{userId}")
+	@Produces("application/json")
+	public List<FavoritesStockVO> getFavorites(@PathParam("userId") String userIdParm, String postBody,
+			@Context HttpServletResponse response) {
+		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
+		List<FavoritesStockVO> rtn = favoritesCache.get(userIdParm);
+		for (FavoritesStockVO vo : rtn) {
+			CompanyInfoVO cvo = stockConfig.getByStockId(vo.stockId);
+			if (cvo != null) {
+				vo.setName(cvo.name);
+			}
+		}
+		return rtn;
+	}
+
+	private List<CommonViewVO> getSelectView1(String date, String isZiXuanGu) {
 		List<CommonViewVO> list = new ArrayList<CommonViewVO>();
 		List<CheckPointDailySelectionVO> cps = null;
 
@@ -106,65 +156,38 @@ public class FavoritesEndPoint {
 					}
 				}
 			}
-
-			// first must meets Week Gordon (macd or kdj)
-			// if (isWeekGordon(cp)) {
-			// // seconds must has at least one zijinliu top
-			// if (isZiJinLiuRu(cps, cp.stockId, date)) {
-			// CommonViewVO cvo = new CommonViewVO();
-			// cvo.stockId = cp.stockId;
-			// cvo.name = stockConfig.getStockName(cp.stockId);
-			// cvo.date = date;
-
-			// list.add(cvo);
-			// }
-			// }
 		}
 
 		return list;
 	}
 
-	@POST
-	@Path("/{userId}/{stockId}")
-	@Produces("application/json")
-	public void addToFavorites(@PathParam("userId") String userIdParm, @PathParam("stockId") String stockIdParm,
-			String postBody, @Context HttpServletResponse response) {
-		// response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
-		favoritesStockHelper.insert(new FavoritesStockVO(stockIdParm, userIdParm));
-		favoritesCache.refreshAll();
-	}
+	private List<CommonViewVO> getSelectView2(String date, String isZiXuanGu) {
+		List<CommonViewVO> list = new ArrayList<CommonViewVO>();
+		List<CheckPointDailySelectionVO> cps = checkPointDailySelectionCache.getCheckPointByDate(date);
+		
+		for (CheckPointDailySelectionVO cp : cps) {
+			// first must meets Week Gordon (macd or kdj)
+			if (isWeekGordon(cp)) {
+				// seconds must has at least one zijinliu top
+				if (isZiJinLiuRu(cps, cp.stockId, date)) {
+					CommonViewVO cvo = new CommonViewVO();
+					cvo.stockId = cp.stockId;
+					cvo.name = stockConfig.getStockName(cp.stockId);
+					cvo.date = date;
 
-	@DELETE
-	@Path("/{userId}/{stockId}")
-	@Produces("application/json")
-	public void deleteFromFavorites(@PathParam("userId") String userIdParm, @PathParam("stockId") String stockIdParm,
-			String postBody, @Context HttpServletResponse response) {
-		// response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
-		favoritesStockHelper.delete(stockIdParm, userIdParm);
-		favoritesCache.refreshAll();
-	}
-
-	@GET
-	@Path("/{userId}")
-	@Produces("application/json")
-	public List<FavoritesStockVO> getFavorites(@PathParam("userId") String userIdParm, String postBody,
-			@Context HttpServletResponse response) {
-		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
-		List<FavoritesStockVO> rtn = favoritesCache.get(userIdParm);
-		for (FavoritesStockVO vo : rtn) {
-			CompanyInfoVO cvo = stockConfig.getByStockId(vo.stockId);
-			if (cvo != null) {
-				vo.setName(cvo.name);
+					list.add(cvo);
+				}
 			}
 		}
-		return rtn;
+
+		return list;
 	}
 
 	private boolean isWeekGordon(CheckPointDailySelectionVO cpvo) {
-		if (cpvo.checkPoint.equals("LuZao_PhaseII_MACD_WEEK_GORDON_MACD_DAY_DIF_CROSS_0")
-				|| cpvo.checkPoint.equals("LuZao_PhaseIII_MACD_WEEK_GORDON_MACD_DAY_DIF_CROSS_0")
-				|| cpvo.checkPoint.equals("LuZao_PhaseII_MACD_WEEK_GORDON_KDJ_WEEK_GORDON")
-				|| cpvo.checkPoint.equals("LuZao_PhaseIII_MACD_WEEK_GORDON_KDJ_WEEK_GORDON")) {
+		if (cpvo.checkPoint.equalsIgnoreCase("LuZao_PhaseII_MACD_WEEK_GORDON_MACD_DAY_DIF_CROSS_0")
+				|| cpvo.checkPoint.equalsIgnoreCase("LuZao_PhaseIII_MACD_WEEK_GORDON_MACD_DAY_DIF_CROSS_0")
+				|| cpvo.checkPoint.equalsIgnoreCase("LuZao_PhaseII_MACD_WEEK_GORDON_KDJ_WEEK_GORDON")
+				|| cpvo.checkPoint.equalsIgnoreCase("LuZao_PhaseIII_MACD_WEEK_GORDON_KDJ_WEEK_GORDON")) {
 			return true;
 		}
 		return false;

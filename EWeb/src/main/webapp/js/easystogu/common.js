@@ -162,8 +162,8 @@ function convert2Volume(data) {
  * 
  * @returns {undefined}
  */
-function getFavoritesStockIdsByDate(date, isZiXuanGu) {
-	var url = getEasyStoGuServerUrl() + "/portal/favorites?date=" + date + "&isZiXuanGu=" + isZiXuanGu;
+function getFavoritesStockIdsByDate(date, isZiXuanGu, viewName) {
+	var url = getEasyStoGuServerUrl() + "/portal/favorites?date=" + date + "&isZiXuanGu=" + isZiXuanGu + "&viewName=" + viewName;
 	var stockIds = [];
 	$.getJSON(url, function(data) {
 		i = 0;

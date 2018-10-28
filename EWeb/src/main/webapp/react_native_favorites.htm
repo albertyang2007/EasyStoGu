@@ -193,7 +193,7 @@ ${demo.css}
             newState["viewName"] = viewName;
             newState["isZiXuanGu"] = true;
 
-            selectStockIds = getFavoritesStockIdsByDate('Latest_50', isZiXuanGu);
+            selectStockIds = getFavoritesStockIdsByDate('Latest_50', isZiXuanGu, viewName);
             $.ajaxSettings.async = true;
 
             //update stockIds based on viewName
