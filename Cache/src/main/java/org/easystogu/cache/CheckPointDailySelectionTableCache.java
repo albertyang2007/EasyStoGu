@@ -26,19 +26,29 @@ public class CheckPointDailySelectionTableCache {
 					@Override
 					public List<CheckPointDailySelectionVO> load(String key) throws Exception {
 						logger.info("load from database, checkPointDailySelectionTable key:" + key);
-						String[] parms = key.split(":");
-						// key is like: date + ":" + checkpoint
-						if (parms.length == 2) {
-							return checkPointDailySelectionTable.queryByDateAndCheckPoint(parms[0], parms[1]);
-						} else if (parms.length == 1) {
-							if (key.contains("-")) {
-								// by date (2017-01-01)
-								return checkPointDailySelectionTable.getCheckPointByDate(key);
-							} else {
-								// by stockId
-								return checkPointDailySelectionTable.getCheckPointByStockID(key);
-							}
+						// key is like: checkpoint + "@" + date
+						if (key.contains("@")) {
+							String[] parms = key.split("@");
+							return checkPointDailySelectionTable.queryByDateAndCheckPoint(parms[1], parms[0]);
 						}
+						
+						if(key.contains("stockId=")) {
+							// key likes stockId=999999
+							return checkPointDailySelectionTable.getCheckPointByStockID(key.split("stockId=")[1]);
+						}
+						
+						if (key.contains("CheckPoint>=")) {
+							// check point in recent days
+							return checkPointDailySelectionTable
+									.getRecentDaysCheckPoint(key.split("CheckPoint>=")[1]);
+						} 
+						
+						if (key.contains("CheckPoint=") && key.contains("-")) {
+							// by date (2017-01-01)
+							return checkPointDailySelectionTable.getCheckPointByDate(key);
+						} 
+						
+						logger.error("Error no cache key for " + key);
 						return null;
 					}
 				});
@@ -88,14 +98,18 @@ public class CheckPointDailySelectionTableCache {
 	}
 
 	public List<CheckPointDailySelectionVO> queryByDateAndCheckPoint(String date, String checkpoint) {
-		return get(date + ":" + checkpoint);
+		return get(checkpoint + "@" + date);
 	}
 
-	public List<CheckPointDailySelectionVO> getCheckPointByDate(String key) {
-		return get(key);
+	public List<CheckPointDailySelectionVO> getRecentDaysCheckPoint(String date) {
+		return get("CheckPoint>=" + date);
+	}
+
+	public List<CheckPointDailySelectionVO> getCheckPointByDate(String date) {
+		return get("CheckPoint=" + date);
 	}
 
 	public List<CheckPointDailySelectionVO> getCheckPointByStockId(String stockId) {
-		return get(stockId);
+		return get("stockId=" + stockId);
 	}
 }

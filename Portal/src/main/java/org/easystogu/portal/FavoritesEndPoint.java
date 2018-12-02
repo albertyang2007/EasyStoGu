@@ -21,7 +21,6 @@ import org.easystogu.cache.ConfigurationServiceCache;
 import org.easystogu.cache.FavoritesCache;
 import org.easystogu.cache.StockPriceCache;
 import org.easystogu.config.Constants;
-import org.easystogu.db.access.table.CheckPointDailySelectionTableHelper;
 import org.easystogu.db.access.table.FavoritesStockHelper;
 import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.vo.table.CheckPointDailySelectionVO;
@@ -39,8 +38,9 @@ public class FavoritesEndPoint {
 	private CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 	private CheckPointDailySelectionTableCache checkPointDailySelectionCache = CheckPointDailySelectionTableCache
 			.getInstance();
-	private CheckPointDailySelectionTableHelper checkPointDailySelectionTableHelper = CheckPointDailySelectionTableHelper
-			.getInstance();
+	// private CheckPointDailySelectionTableHelper
+	// checkPointDailySelectionTableHelper = CheckPointDailySelectionTableHelper
+	// .getInstance();
 	protected StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
 	private CommonViewCache commonViewCache = CommonViewCache.getInstance();
 	private FavoritesStockHelper favoritesStockHelper = FavoritesStockHelper.getInstance();
@@ -107,6 +107,8 @@ public class FavoritesEndPoint {
 	private List<CommonViewVO> getSelectView1(String date, String isZiXuanGu) {
 		List<CommonViewVO> list = new ArrayList<CommonViewVO>();
 		List<CheckPointDailySelectionVO> cps = null;
+		List<FavoritesStockVO> favoritesStockIds = null;
+		Map<String, List<String>> selectedStockIds = new HashMap<String, List<String>>();
 
 		// get the latest N date: Latest_50
 		if (date != null && date.contains("Latest_")) {
@@ -117,16 +119,12 @@ public class FavoritesEndPoint {
 			}
 
 			// get all checkpoint that in latest N date
-			cps = checkPointDailySelectionTableHelper.getRecentDaysCheckPoint(date);
+			cps = checkPointDailySelectionCache.getRecentDaysCheckPoint(date);
 
 		} else {
 			// fetch the checkpoint by specify date
 			cps = checkPointDailySelectionCache.getCheckPointByDate(date);
 		}
-
-		List<FavoritesStockVO> favoritesStockIds = null;
-
-		Map<String, List<String>> selectedStockIds = new HashMap<String, List<String>>();
 
 		// only select the stockId that is in ZiXuanGu (favorites stockids)
 		if ("true".equalsIgnoreCase(isZiXuanGu)) {
@@ -163,19 +161,47 @@ public class FavoritesEndPoint {
 
 	private List<CommonViewVO> getSelectView2(String date, String isZiXuanGu) {
 		List<CommonViewVO> list = new ArrayList<CommonViewVO>();
-		List<CheckPointDailySelectionVO> cps = checkPointDailySelectionCache.getCheckPointByDate(date);
-		
+		List<CheckPointDailySelectionVO> cps = null;
+		List<FavoritesStockVO> favoritesStockIds = null;
+		Map<String, String> selectedStockIds = new HashMap<String, String>();
+
+		// get the latest N date: Latest_50
+		if (date != null && date.contains("Latest_")) {
+			String limitNumber = date.split("_")[1];
+			List<String> latestNDate = stockPriceCache.get(Constants.cacheLatestNStockDate + ":" + limitNumber);
+			if (latestNDate != null && latestNDate.size() > 0) {
+				date = latestNDate.get(latestNDate.size() - 1);
+			}
+			// get all checkpoint that in latest N date
+			cps = checkPointDailySelectionCache.getRecentDaysCheckPoint(date);
+		} else {
+			// fetch the checkpoint by specify date
+			cps = checkPointDailySelectionCache.getCheckPointByDate(date);
+		}
+
+		// only select the stockId that is in ZiXuanGu (favorites stockids)
+		if ("true".equalsIgnoreCase(isZiXuanGu)) {
+			// here hardcode userId to admin since there is no other customer
+			favoritesStockIds = favoritesCache.get("admin");
+			cps = filterZiXuanGu(favoritesStockIds, cps);
+		}
+
 		for (CheckPointDailySelectionVO cp : cps) {
 			// first must meets Week Gordon (macd or kdj)
 			if (isWeekGordon(cp)) {
 				// seconds must has at least one zijinliu top
 				if (isZiJinLiuRu(cps, cp.stockId, date)) {
-					CommonViewVO cvo = new CommonViewVO();
-					cvo.stockId = cp.stockId;
-					cvo.name = stockConfig.getStockName(cp.stockId);
-					cvo.date = date;
 
-					list.add(cvo);
+					if (!selectedStockIds.containsKey(cp.stockId)) {
+						selectedStockIds.put(cp.stockId, cp.stockId);
+
+						CommonViewVO cvo = new CommonViewVO();
+						cvo.stockId = cp.stockId;
+						cvo.name = stockConfig.getStockName(cp.stockId);
+						cvo.date = date;
+
+						list.add(cvo);
+					}
 				}
 			}
 		}
