@@ -1,5 +1,6 @@
 package org.easystogu.portal.vo;
 
+import org.apache.commons.lang.StringUtils;
 import org.easystogu.db.vo.table.ShenXianVO;
 
 public class ShenXianUIVO extends ShenXianVO {
@@ -89,6 +90,14 @@ public class ShenXianUIVO extends ShenXianVO {
 	public void setDuoFlagsTitle(String duoFlagsTitle) {
 		this.duoFlagsTitle = duoFlagsTitle;
 	}
+	
+	public void appendDuoFlagsTitle(String duoFlagsTitle) {
+		if (StringUtils.isEmpty(this.duoFlagsTitle)) {
+			this.duoFlagsTitle = duoFlagsTitle;
+		} else {
+			this.duoFlagsTitle = this.duoFlagsTitle + " " + duoFlagsTitle;
+		}
+	}
 
 	public String getDuoFlagsText() {
 		return duoFlagsText;
@@ -96,6 +105,14 @@ public class ShenXianUIVO extends ShenXianVO {
 
 	public void setDuoFlagsText(String duoFlagsText) {
 		this.duoFlagsText = duoFlagsText;
+	}
+
+	public void appendDuoFlagsText(String duoFlagsText) {
+		if (StringUtils.isEmpty(this.duoFlagsText)) {
+			this.duoFlagsText = duoFlagsText;
+		} else {
+			this.duoFlagsText = this.duoFlagsText + " " + duoFlagsText;
+		}
 	}
 
 	public String getSuoFlagsTitle() {

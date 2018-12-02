@@ -75,6 +75,18 @@ public class FlagsAnalyseHelper {
 					sxvo.setDuoFlagsText("神仙死叉");
 				}
 
+				// macd 诱多: price is higher but macd is lower
+				if (this.isMacdYouDuo(spvo.date, macdList, spList)) {
+					sxvo.appendDuoFlagsTitle("YD");
+					sxvo.appendDuoFlagsText("诱多");
+				}
+
+				// macd 诱空: price is lower but macd is higher
+				if (this.isMacdYouKong(spvo.date, macdList, spList)) {
+					sxvo.appendDuoFlagsTitle("YK");
+					sxvo.appendDuoFlagsText("诱空");
+				}
+
 				// 空头
 				if (isBBIDead(spvo.date, bbiList)) {
 					if (isMacdDead(spvo.date, macdList) && isShenXianDead(spvo.date, sxList)) {
@@ -112,7 +124,7 @@ public class FlagsAnalyseHelper {
 				}
 
 				// 鲁兆趋势
-				//Gordon
+				// Gordon
 				if (this.isLuZaoGordonI(spvo.date, spList, luzaoList)) {
 					String title = sxvo.getDuoFlagsTitle().trim().length() > 0 ? sxvo.getDuoFlagsTitle() + "震" : "震";
 					String text = sxvo.getDuoFlagsText().trim().length() > 0 ? sxvo.getDuoFlagsText() + " 震出东方"
@@ -131,9 +143,9 @@ public class FlagsAnalyseHelper {
 							: "山腰乘凉";
 					sxvo.setDuoFlagsTitle(title);
 					sxvo.setDuoFlagsText(text);
-				} 
-				
-				//Dead
+				}
+
+				// Dead
 				if (this.isLuZaoDeadI(spvo.date, luzaoList)) {
 					String title = sxvo.getDuoFlagsTitle().trim().length() > 0 ? sxvo.getDuoFlagsTitle() + "重" : "重";
 					String text = sxvo.getDuoFlagsText().trim().length() > 0 ? sxvo.getDuoFlagsText() + " 三山重叠"
@@ -152,7 +164,7 @@ public class FlagsAnalyseHelper {
 							: "跌到山脚";
 					sxvo.setDuoFlagsTitle(title);
 					sxvo.setDuoFlagsText(text);
-				} 
+				}
 
 				// 多头做T
 				// if ((sxvo.h1 >= sxvo.h2)) {
@@ -204,7 +216,6 @@ public class FlagsAnalyseHelper {
 					String info = sxvo.getDuoFlagsText().trim().length() > 0 ? sxvo.getDuoFlagsText() + " " : "";
 					sxvo.setDuoFlagsText(info + "资金流入");
 				}
-
 			}
 
 		}
@@ -364,6 +375,46 @@ public class FlagsAnalyseHelper {
 					MacdVO prevo = indList.get(index - 1);
 					if (curvo.macd <= 0 && prevo.macd > 0) {
 						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+
+	// 诱多
+	private boolean isMacdYouDuo(String date, List<MacdVO> indList, List<StockPriceVO> spList) {
+		for (int index = 0; index < indList.size(); index++) {
+			MacdVO curvo = indList.get(index);
+			StockPriceVO curPvo = spList.get(index);
+			if (curvo.date.equals(date)) {
+				if (index - 1 >= 0) {
+					MacdVO prevo = indList.get(index - 1);
+					StockPriceVO prePvo = spList.get(index - 1);
+					if (curvo.macd < 0) {
+						if (curvo.macd < prevo.macd && curPvo.close > prePvo.close) {
+							return true;
+						}
+					}
+				}
+			}
+		}
+		return false;
+	}
+
+	// 诱空
+	private boolean isMacdYouKong(String date, List<MacdVO> indList, List<StockPriceVO> spList) {
+		for (int index = 0; index < indList.size(); index++) {
+			MacdVO curvo = indList.get(index);
+			StockPriceVO curPvo = spList.get(index);
+			if (curvo.date.equals(date)) {
+				if (index - 1 >= 0) {
+					MacdVO prevo = indList.get(index - 1);
+					StockPriceVO prePvo = spList.get(index - 1);
+					if (curvo.macd > 0) {
+						if (curvo.macd > prevo.macd && curPvo.close < prePvo.close) {
+							return true;
+						}
 					}
 				}
 			}
