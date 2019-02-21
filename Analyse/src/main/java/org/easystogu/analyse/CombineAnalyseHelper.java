@@ -1670,6 +1670,12 @@ public class CombineAnalyseHelper {
 			}
 			break;
 		}
+		
+		//上涨神奇9转
+		//continue shang zhang for 9 days
+		case NIGHT_DAYS_SHANG_ZHANG:{
+			
+		}
 
 		default:
 			return false;
