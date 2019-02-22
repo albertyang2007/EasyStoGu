@@ -36,6 +36,10 @@ public class CombineAnalyseHelper {
 		StockSuperVO pre7SuperDayVO = overDayList.get(overDayList.size() - 8);
 		StockSuperVO pre8SuperDayVO = overDayList.get(overDayList.size() - 9);
 		StockSuperVO pre9SuperDayVO = overDayList.get(overDayList.size() - 10);
+		StockSuperVO pre10SuperDayVO = overDayList.get(overDayList.size() - 11);
+		StockSuperVO pre11SuperDayVO = overDayList.get(overDayList.size() - 12);
+		StockSuperVO pre12SuperDayVO = overDayList.get(overDayList.size() - 13);
+		StockSuperVO pre13SuperDayVO = overDayList.get(overDayList.size() - 14);
 
 		switch (checkPoint) {
 		case MACD_Gordon:
@@ -1692,9 +1696,24 @@ public class CombineAnalyseHelper {
 							// 5 th day
 							if (pre4SuperDayVO.priceVO.close > pre8SuperDayVO.priceVO.close) {
 								
-								//the first day is up
-								if (pre8SuperDayVO.priceVO.close > pre9SuperDayVO.priceVO.close) {
-									return true;
+								//4 th day
+								if (pre5SuperDayVO.priceVO.close > pre9SuperDayVO.priceVO.close) {
+
+									//3 th day
+									if (pre6SuperDayVO.priceVO.close > pre10SuperDayVO.priceVO.close) {
+
+										//2 th day
+										if (pre7SuperDayVO.priceVO.close > pre11SuperDayVO.priceVO.close) {
+
+											//1 st day
+											if (pre8SuperDayVO.priceVO.close > pre12SuperDayVO.priceVO.close) {
+												//1 st day is up
+												if (pre8SuperDayVO.priceVO.close > pre9SuperDayVO.priceVO.close) {
+													return true;
+												}
+											}
+										}
+									}
 								}
 							}
 						}
@@ -1721,9 +1740,24 @@ public class CombineAnalyseHelper {
 							// 5 th day
 							if (pre4SuperDayVO.priceVO.close < pre8SuperDayVO.priceVO.close) {
 								
-								//the first day is down
-								if (pre8SuperDayVO.priceVO.close < pre9SuperDayVO.priceVO.close) {
-									return true;
+								//4 th day
+								if (pre5SuperDayVO.priceVO.close < pre9SuperDayVO.priceVO.close) {
+
+									//3 th day
+									if (pre6SuperDayVO.priceVO.close < pre10SuperDayVO.priceVO.close) {
+
+										//2 th day
+										if (pre7SuperDayVO.priceVO.close < pre11SuperDayVO.priceVO.close) {
+
+											//1 st day
+											if (pre8SuperDayVO.priceVO.close < pre12SuperDayVO.priceVO.close) {
+												//1 st day is down
+												if (pre8SuperDayVO.priceVO.close < pre9SuperDayVO.priceVO.close) {
+													return true;
+												}
+											}
+										}
+									}
 								}
 							}
 						}

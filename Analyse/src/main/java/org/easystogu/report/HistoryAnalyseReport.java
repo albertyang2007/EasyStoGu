@@ -219,7 +219,7 @@ public class HistoryAnalyseReport {
         for (String stockId : stockIds) {
             index++;
 
-            if (!stockId.equals("600837")) {//600837
+            if (!stockId.equals("002797")) {//600837
                 continue;
             }
 
