@@ -1720,6 +1720,7 @@ public class CombineAnalyseHelper {
 					}
 				}
 			}
+			break;
 		}
 
 		// 下跌神奇9转
@@ -1764,6 +1765,7 @@ public class CombineAnalyseHelper {
 					}
 				}
 			}
+			break;
 		}
 
 		default:
