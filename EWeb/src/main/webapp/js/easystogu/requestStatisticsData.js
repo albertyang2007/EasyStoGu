@@ -234,29 +234,6 @@ function loadQsddStatistics(version, stockId, dateFrom, dateTo) {
 	});
 
 	/**
-	 * Load luzao Indicator and display
-	 * 
-	 * @returns {undefined}
-	 */
-	/*
-	 * var url_ind = getEasyStoGuServerUrl() + "/portal/ind" + version +
-	 * "/qsdd/" + stockId + "/" + dateFrom + "_" + dateTo; $.getJSON(url_ind,
-	 * function(data) { i = 0; for (i; i < data.length; i += 1) { var dateStr =
-	 * data[i]['date'] + " 15:00:00"; var dateD = new
-	 * Date(Date.parse(dateStr.replace(/-/g, "/"))); data_lonTerm.push([
-	 * dateD.getTime(), data[i]['lonTerm'] ]);
-	 * 
-	 * data_midTerm.push([ dateD.getTime(), data[i]['midTerm'] ]);
-	 * 
-	 * data_shoTerm.push([ dateD.getTime(), data[i]['shoTerm'] ]); }
-	 * 
-	 * seriesCounter += 1; if (seriesCounter === 3) {
-	 * createChart_Qsdd_Statistics(stockId, date_price, volume, data_lonTerm,
-	 * data_midTerm, data_shoTerm, date_topArea, date_bottomArea,
-	 * data_bottomGordon); } });
-	 */
-
-	/**
 	 * Load qsdd top bottom statistics and display
 	 * 
 	 * @returns {undefined}
@@ -397,28 +374,6 @@ function loadMacdStatistics(version, stockId, dateFrom, dateTo) {
 	});
 
 	/**
-	 * Load ShenXian Indicator and display
-	 * 
-	 * @returns {undefined}
-	 */
-	/*
-	 * var url_ind = getEasyStoGuServerUrl() + "/portal/ind" + version +
-	 * "/macd/" + stockId + "/" + dateFrom + "_" + dateTo; $.getJSON(url_ind,
-	 * function(data) { i = 0; for (i; i < data.length; i += 1) { var dateStr =
-	 * data[i]['date'] + " 15:00:00"; var dateD = new
-	 * Date(Date.parse(dateStr.replace(/-/g, "/"))); data_dif.push([
-	 * dateD.getTime(), data[i]['dif'] ]);
-	 * 
-	 * data_dea.push([ dateD.getTime(), data[i]['dea'] ]);
-	 * 
-	 * data_macd.push([ dateD.getTime(), data[i]['macd'] ]); }
-	 * 
-	 * seriesCounter += 1; if (seriesCounter === 3) {
-	 * createChart_Macd_Statistics(stockId, date_price, volume, data_dif,
-	 * data_dea, data_macd, data_gordon, data_dead); } });
-	 */
-
-	/**
 	 * Load macd gordon and dead statistics and display
 	 * 
 	 * @returns {undefined}
@@ -438,6 +393,62 @@ function loadMacdStatistics(version, stockId, dateFrom, dateTo) {
 		if (seriesCounter === 2) {
 			createChart_Macd_Statistics(stockId, date_price, volume, data_dif,
 					data_dea, data_macd, data_gordon, data_dead);
+		}
+	});
+}
+
+/**
+ * Load Magic 9 Day and Up, Down Statistics data
+ * 
+ * @returns {undefined}
+ */
+function loadMagic9DayStatistics(version, stockId, dateFrom, dateTo) {
+	var seriesCounter = 0, date_price = [], volume = [], data_dif = [], data_dea = [], data_macd = [], data_up = [], data_down = [];
+	/**
+	 * Load StocPrice and display OHLC
+	 * 
+	 * @returns {undefined}
+	 */
+	var url_price = getEasyStoGuServerUrl() + "/portal/price" + version + "/"
+			+ stockId + "/" + dateFrom + "_" + dateTo;
+	$.getJSON(url_price, function(data) {
+		i = 0;
+		for (i; i < data.length; i += 1) {
+			var dateStr = data[i]['date'] + " 15:00:00";
+			var dateD = new Date(Date.parse(dateStr.replace(/-/g, "/")));
+			date_price.push([ dateD.getTime(), data[i]['open'],
+					data[i]['high'], data[i]['low'], data[i]['close'] ]);
+
+			volume.push([ dateD.getTime(), data[i]['volume'] ]);
+		}
+
+		seriesCounter += 1;
+		if (seriesCounter === 2) {
+			createChart_Magic9Day_Statistics(stockId, date_price, volume, data_dif,
+					data_dea, data_macd, data_up, data_down);
+		}
+	});
+
+	/**
+	 * Load Magic 9 Day Up and Down statistics and display
+	 * 
+	 * @returns {undefined}
+	 */
+	var url_ind = getEasyStoGuServerUrl() + "/portal/statistics/magic9day/"
+			+ dateFrom + "_" + dateTo;
+	$.getJSON(url_ind, function(data) {
+		i = 0;
+		for (i; i < data.length; i += 1) {
+			var dateStr = data[i]['date'] + " 15:00:00";
+			var dateD = new Date(Date.parse(dateStr.replace(/-/g, "/")));
+			data_up.push([ dateD.getTime(), data[i]['count1'] ]);
+			data_down.push([ dateD.getTime(), data[i]['count2'] ]);
+		}
+
+		seriesCounter += 1;
+		if (seriesCounter === 2) {
+			createChart_Magic9Day_Statistics(stockId, date_price, volume, data_dif,
+					data_dea, data_macd, data_up, data_down);
 		}
 	});
 }
@@ -475,29 +486,6 @@ function loadWRStatistics(version, stockId, dateFrom, dateTo) {
 					date_bottomArea, data_bottomGordon);
 		}
 	});
-
-	/**
-	 * Load WR Indicator and display
-	 * 
-	 * @returns {undefined}
-	 */
-	/*
-	 * var url_ind = getEasyStoGuServerUrl() + "/portal/ind" + version + "/wr/" +
-	 * stockId + "/" + dateFrom + "_" + dateTo; $.getJSON(url_ind,
-	 * function(data) { i = 0; for (i; i < data.length; i += 1) { var dateStr =
-	 * data[i]['date'] + " 15:00:00"; var dateD = new
-	 * Date(Date.parse(dateStr.replace(/-/g, "/"))); data_lonTerm.push([
-	 * dateD.getTime(), data[i]['lonTerm'] ]);
-	 * 
-	 * data_midTerm.push([ dateD.getTime(), data[i]['midTerm'] ]);
-	 * 
-	 * data_shoTerm.push([ dateD.getTime(), data[i]['shoTerm'] ]); }
-	 * 
-	 * seriesCounter += 1; if (seriesCounter === 3) {
-	 * createChart_WR_Statistics(stockId, date_price, volume, data_lonTerm,
-	 * data_midTerm, data_shoTerm, date_topArea, date_bottomArea,
-	 * data_bottomGordon); } });
-	 */
 
 	/**
 	 * Load wr top bottom statistics and display

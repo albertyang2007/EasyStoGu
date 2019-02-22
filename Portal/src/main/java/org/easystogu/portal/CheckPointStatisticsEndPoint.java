@@ -197,6 +197,38 @@ public class CheckPointStatisticsEndPoint {
 
 		return list;
 	}
+	
+	@GET
+	@Path("/magic9day/{date}")
+	@Produces("application/json")
+	public List<StatisticsVO> queryMagic9DayStatistics(@PathParam("date") String dateParm,
+			@Context HttpServletResponse response) {
+		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
+		List<StatisticsVO> list = new ArrayList<StatisticsVO>();
+		if (Pattern.matches(fromToRegex, dateParm)) {
+			String date1 = dateParm.split("_")[0];
+			String date2 = dateParm.split("_")[1];
+
+			List<String> allDealDateList = this.stockPriceCache.get(Constants.cacheAllDealDate + ":999999");
+			List<String> dateList = WeekdayUtil.getWorkingDatesBetween(date1, date2);
+			List<CheckPointDailyStatisticsVO> statisticsList = checkPointStatisticsCache.get(date1 + ":" + date2);
+
+			for (String date : dateList) {
+				if (this.isDateInDealDate(allDealDateList, date)) {
+					StatisticsVO vo = new StatisticsVO();
+					vo.date = date;
+
+					vo.count1 = this.getCount(statisticsList, date, DailyCombineCheckPoint.MAGIC_NIGHT_DAYS_SHANG_ZHANG.name());
+					vo.count2 = this.getCount(statisticsList, date, DailyCombineCheckPoint.MAGIC_NIGHT_DAYS_XIA_DIE.name());
+
+					list.add(vo);
+				}
+			}
+		}
+
+		return list;
+	}
+
 
 	@GET
 	@Path("/wr/{date}")

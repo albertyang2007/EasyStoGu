@@ -725,6 +725,75 @@ function createChart_Macd_Statistics(stockId, date_price, volume, data_dif,
 }
 
 /**
+ * Create the StockPrice and magic9Day statistics chart
+ * 
+ * @returns {undefined}
+ */
+function createChart_Magic9Day_Statistics(stockId, date_price, volume, data_dif,
+		data_dea, data_macd, data_up, data_down) {
+	$('#container').highcharts('StockChart', {
+		exporting : {
+			enabled : false
+		},
+		
+		rangeSelector : {
+			selected : 1
+		},
+
+		title : {
+			text : stockId
+		},
+
+		plotOptions : {
+			candlestick : {
+				color : '#00ff00',// Green
+				upColor : '#ff0000'// Red
+			}
+		},
+
+		yAxis : [ {
+			labels : {
+				align : 'right',
+				x : -3
+			},
+			title : {
+				text : 'Price'
+			},
+			height : '80%',
+			lineWidth : 2
+		}, {
+			labels : {
+				align : 'right',
+				x : -3
+			},
+			title : {
+				text : 'Statistics'
+			},
+			top : '70%',
+			height : '30%',
+			offset : 0,
+			lineWidth : 2
+		} ],
+
+		series : [ {
+			type : 'candlestick',
+			name : 'OHLC',
+			data : date_price
+		}, {
+			name : '神奇9转上涨个股数目',
+			data : data_up,
+			yAxis : 1
+		}, {
+			name : '神奇9转下跌个股数目',
+			data : data_down,
+			yAxis : 1
+		} ]
+	});
+
+	chart = $('#container').highcharts();
+}
+
+/**
  * Create the StockPrice and qsdd chart
  * 
  * @returns {undefined}
