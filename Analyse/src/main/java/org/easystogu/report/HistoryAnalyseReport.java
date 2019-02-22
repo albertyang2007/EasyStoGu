@@ -315,8 +315,9 @@ public class HistoryAnalyseReport {
 
         for (String stockId : stockIds) {
 
-            //if (!stockId.equals("000049"))
-            //continue;
+            //if (!stockId.equals("002797")) {
+            //	continue;
+            //}
 
             if (index++ % 100 == 0) {
                 System.out.println("Analyse of " + index + "/" + stockIds.size());
@@ -346,6 +347,8 @@ public class HistoryAnalyseReport {
             // System.out.println(cpdsvo);
             checkPointDailyStatisticsTable.insert(cpdsvo);
         }
+        
+        System.out.println("===============================Job done for " + checkPoint + "===============================");
     }
 
     private void saveToCheckPointDailySelectionDB(String stockId, String date, DailyCombineCheckPoint checkPoint) {
@@ -444,7 +447,8 @@ public class HistoryAnalyseReport {
         searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.WR_Top_Area);
         searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.WR_Bottom_Gordon);
 
-        //searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.LuZao_KDJ_Gordon_TiaoKongGaoKai);
+        searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.MAGIC_NIGHT_DAYS_SHANG_ZHANG);
+        searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.MAGIC_NIGHT_DAYS_XIA_DIE);
     }
 
     public static void main(String[] args) {
@@ -460,8 +464,8 @@ public class HistoryAnalyseReport {
         // }
 
         // reporter.searchAllStockIdAnalyseHistoryBuySellCheckPoint(DailyCombineCheckPoint.WR_Bottom_Gordon);
-        reporter.searchAllStockIdAnalyseHistoryBuySellCheckPoint(DailyCombineCheckPoint.MAGIC_NIGHT_DAYS_SHANG_ZHANG);
-        reporter.searchAllStockIdAnalyseHistoryBuySellCheckPoint(DailyCombineCheckPoint.MAGIC_NIGHT_DAYS_XIA_DIE);
+        reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.MAGIC_NIGHT_DAYS_SHANG_ZHANG);
+        reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.MAGIC_NIGHT_DAYS_XIA_DIE);
         //reporter.countAllStockIdStatisticsCheckPoint();
         //reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.WR_DI_BeiLi);
 

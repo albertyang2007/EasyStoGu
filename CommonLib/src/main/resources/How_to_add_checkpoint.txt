@@ -1,0 +1,8 @@
+1. definit new checkpoint in DailyCombineCheckPoint.java
+2. add checking logic in CombineAnalyseHelper.java
+3. testing your new checkpoint in HistoryAnalyseReport.java, by invoke method searchAllStockIdAnalyseHistoryBuySellCheckPoint
+   pls hardcode the stockId for your specific testing.
+4. If want to statistics the checkpoint for all stockId and save to table CHECKPOINT_DAILY_STATISTICS,
+   pls invoke method HistoryAnalyseReport.searchAllStockIdStatisticsCheckPoint   
+5. For daily running, pls add new checkpoint to table sysconfig where name is general_CheckPoint
+6. For daily running, if you want the new checkpoint for specify select, pls add it to specify_Select_CheckPoint.   
