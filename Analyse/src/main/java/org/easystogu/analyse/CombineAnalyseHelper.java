@@ -1709,6 +1709,7 @@ public class CombineAnalyseHelper {
 											if (pre8SuperDayVO.priceVO.close > pre12SuperDayVO.priceVO.close) {
 												//1 st day is up
 												if (pre8SuperDayVO.priceVO.close > pre9SuperDayVO.priceVO.close) {
+													//System.out.println(pre8SuperDayVO.priceVO.date);
 													return true;
 												}
 											}
@@ -1754,6 +1755,7 @@ public class CombineAnalyseHelper {
 											if (pre8SuperDayVO.priceVO.close < pre12SuperDayVO.priceVO.close) {
 												//1 st day is down
 												if (pre8SuperDayVO.priceVO.close < pre9SuperDayVO.priceVO.close) {
+													//System.out.println(pre8SuperDayVO.priceVO.date);
 													return true;
 												}
 											}

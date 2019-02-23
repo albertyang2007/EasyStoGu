@@ -203,11 +203,14 @@ public class DataBaseSanityCheck implements Runnable {
 		DataBaseSanityCheck check = new DataBaseSanityCheck();
 		check.sanityDailyCheck(stockConfig.getAllStockId());
 		check.sanityWeekCheck(stockConfig.getAllStockId());
-		// check.sanityDailyCheck("002521");
+		
+		//check.sanityDailyCheck("002797");
+		//check.sanityWeekCheck("002797");
 	}
 
 	public static void main(String[] args) {
 		new DataBaseSanityCheck().run();
 		new AllCacheRunner().refreshAll();
+		System.out.println("DataBaseSanityCheck done!");
 	}
 }

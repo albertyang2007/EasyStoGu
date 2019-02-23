@@ -8,19 +8,16 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
-import org.easystogu.cache.ConfigurationServiceCache;
 import org.easystogu.checkpoint.DailyCombineCheckPoint;
+import org.easystogu.config.ConfigurationService;
 import org.easystogu.config.Constants;
+import org.easystogu.config.DBConfigurationService;
 import org.easystogu.database.replicate.DailyReplicateRunner;
 import org.easystogu.easymoney.runner.DailyDDXRunner;
 import org.easystogu.easymoney.runner.DailyZhuLiJingLiuRuRunner;
 import org.easystogu.easymoney.runner.DailyZiJinLiuRunner;
 import org.easystogu.easymoney.runner.OverAllZiJinLiuAndDDXRunner;
 import org.easystogu.file.access.CompanyInfoFileHelper;
-import org.easystogu.indicator.runner.DailyMACountAndSaveDBRunner;
-import org.easystogu.indicator.runner.DailyWRCountAndSaveDBRunner;
-import org.easystogu.indicator.runner.DailyWeekKDJCountAndSaveDBRunner;
-import org.easystogu.indicator.runner.DailyWeekMacdCountAndSaveDBRunner;
 import org.easystogu.indicator.runner.history.IndicatorHistortOverAllRunner;
 import org.easystogu.report.HistoryAnalyseReport;
 import org.easystogu.runner.DailyOverAllRunner;
@@ -36,7 +33,7 @@ import org.easystogu.sina.runner.RealtimeDisplayStockPriceRunner;
 import org.easystogu.sina.runner.history.StockPriceHistoryOverAllRunner;
 
 public class HomeEndPoint {
-	private ConfigurationServiceCache config = ConfigurationServiceCache.getInstance();
+	private ConfigurationService config = DBConfigurationService.getInstance();
 	private String zone = config.getString("zone", "");
 	protected String dateRegex = "[0-9]{4}-[0-9]{2}-[0-9]{2}";
 	protected String fromToRegex = dateRegex + "_" + dateRegex;
