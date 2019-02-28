@@ -219,7 +219,7 @@ public class HistoryAnalyseReport {
         for (String stockId : stockIds) {
             index++;
 
-            if (!stockId.equals("600837")) {//600837 002797
+            if (!stockId.equals("002797")) {//600837 002797
                 continue;
             }
 
@@ -315,9 +315,9 @@ public class HistoryAnalyseReport {
 
         for (String stockId : stockIds) {
 
-            if (!stockId.equals("002797")) {
-            	continue;
-            }
+            //if (!stockId.equals("002797")) {
+            //	continue;
+            //}
 
             if (index++ % 100 == 0) {
                 System.out.println("Analyse of " + index + "/" + stockIds.size());
@@ -463,10 +463,10 @@ public class HistoryAnalyseReport {
         // }
         // }
 
-        reporter.searchAllStockIdAnalyseHistoryBuySellCheckPoint(DailyCombineCheckPoint.MAGIC_NIGHT_DAYS_SHANG_ZHANG);
+        //reporter.searchAllStockIdAnalyseHistoryBuySellCheckPoint(DailyCombineCheckPoint.MAGIC_NIGHT_DAYS_SHANG_ZHANG);
         
-        //reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.MAGIC_NIGHT_DAYS_SHANG_ZHANG);
-        //reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.MAGIC_NIGHT_DAYS_XIA_DIE);
+        reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.MAGIC_NIGHT_DAYS_SHANG_ZHANG);
+        reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.MAGIC_NIGHT_DAYS_XIA_DIE);
         //reporter.countAllStockIdStatisticsCheckPoint();
         //reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.WR_DI_BeiLi);
 

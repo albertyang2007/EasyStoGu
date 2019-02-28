@@ -42,10 +42,23 @@ public class FileReaderAndWriter {
 		}
 	}
 
+	// tail -100 file
+	public static String tailFile(String filePath, int tailLen) {
+		String[] contents = readFromFile(filePath).split("\n");
+		if (tailLen >= contents.length) {
+			return contents.toString();
+		}
+		//
+		StringBuffer rtns = new StringBuffer();
+		for (int index = contents.length - tailLen; index < contents.length; index++) {
+			rtns.append(contents[index]+"\n");
+		}
+		return rtns.toString();
+	}
+
 	public static void main(String argv[]) {
-		String filePath = "C:/Users/source.txt";
-		String content = readFromFile(filePath);
+		String filePath = "C:/temp/Service-Information.html";
+		String content = tailFile(filePath, 20);
 		System.out.println(content);
-		writeToFile(content, "C:/Users/target.txt");
 	}
 }
