@@ -17,6 +17,7 @@ import org.easystogu.easymoney.runner.DailyDDXRunner;
 import org.easystogu.easymoney.runner.DailyZhuLiJingLiuRuRunner;
 import org.easystogu.easymoney.runner.DailyZiJinLiuRunner;
 import org.easystogu.easymoney.runner.OverAllZiJinLiuAndDDXRunner;
+import org.easystogu.file.FileReaderAndWriter;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.indicator.runner.history.IndicatorHistortOverAllRunner;
 import org.easystogu.report.HistoryAnalyseReport;
@@ -44,16 +45,14 @@ public class HomeEndPoint {
 		StringBuffer sb = new StringBuffer();
 		sb.append("<a href='/portal/home/DailyUpdateAllStockRunner'>DailyUpdateAllStockRunner</a><br>");
 		sb.append("<a href='/portal/home/DailyOverAllRunner'>DailyOverAllRunner</a><br>");
-		sb.append(
-				"<a href='/portal/home/DailyUpdatePriceAndIndicatorRunner'>DailyUpdatePriceAndIndicatorRunner</a><br>");
+		sb.append("<a href='/portal/home/DailyUpdatePriceAndIndicatorRunner'>DailyUpdatePriceAndIndicatorRunner</a><br>");
 		sb.append("<a href='/portal/home/FastDailyOverAllRunner'>FastDailyOverAllRunner</a><br>");
 		sb.append("<a href='/portal/home/DailySelectionRunner'>DailySelectionRunner</a><br>");
 		sb.append("<a href='/portal/home/RealtimeDisplayStockPriceRunner'>RealtimeDisplayStockPriceRunner</a><br>");
 		sb.append("<a href='/portal/home/DailyZiJinLiuRunner'>DailyZiJinLiuRunner</a><br>");
 		sb.append("<a href='/portal/home/DailyZiJinLiuRunnerForAllStockId'>DailyZiJinLiuRunnerForAllStock</a><br>");
 		sb.append("<a href='/portal/home/OverAllZiJinLiuAndDDXRunner'>OverAllZiJinLiuAndDDXRunner</a><br>");
-		sb.append(
-				"<a href='/portal/home/OverAllZiJinLiuAndDDXRunnerForAllStockId'>OverAllZiJinLiuAndDDXRunnerForAllStockId</a><br>");
+		sb.append("<a href='/portal/home/OverAllZiJinLiuAndDDXRunnerForAllStockId'>OverAllZiJinLiuAndDDXRunnerForAllStockId</a><br>");
 		sb.append("<a href='/portal/home/DailyDDXRunner'>DailyDDXRunner</a><br>");
 		sb.append("<a href='/portal/home/DailyViewAnalyseRunner'>DailyViewAnalyseRunner</a><br>");
 		sb.append("<a href='/portal/home/DailyZiJinLiuXiangRunner'>DailyZiJinLiuXiangRunner</a><br>");
@@ -61,12 +60,12 @@ public class HomeEndPoint {
 		sb.append("<a href='/portal/home/RecentlySelectionRunner'>RecentlySelectionRunner</a><br>");
 		sb.append("<a href='/portal/home/DownloadStockPrice'>DownloadStockPrice</a><br>");
 		sb.append("<a href='/portal/home/UpdateCompanyFromFileToDB'>UpdateCompanyFromFileToDB</a><br>");
-		sb.append(
-				"<a href='/portal/home/updateStockPriceHistoryOverAllRunner/2016-10-17_2016-11-23'>updateStockPriceHistoryOverAllRunnerFromStartDate</a><br>");
+		sb.append("<a href='/portal/home/updateStockPriceHistoryOverAllRunner/2016-10-17_2016-11-23'>updateStockPriceHistoryOverAllRunnerFromStartDate</a><br>");
 		sb.append("<a href='/portal/home/IndicatorHistortOverAllRunner'>IndicatorHistortOverAllRunner</a><br>");
 		sb.append("<a href='/portal/home/DailyReplicateRunner'>DailyReplicateRunner</a><br>");
 		sb.append("<a href='/portal/home/OneTimeDynamicRunner'>OneTimeDynamicRunner</a><br>");
 		sb.append("<a href='/portal/home/OneTimeTempRunner'>OneTimeTempRunner</a><br>");
+		sb.append("<a href='/portal/home/Serverlog'>Serverlog</a><br>");
 		sb.append("<a href='/portal/home/test'>test</a><br>");
 
 		return Response.ok().entity(sb.toString()).build();
@@ -329,6 +328,12 @@ public class HomeEndPoint {
 			return "OneTimeTempRunner already running, please check folder result.";
 		}
 		return zone + " not allow to run this method.";
+	}
+
+	@GET
+	@Path("/Serverlog")
+	public String serverlog() {
+		return FileReaderAndWriter.tailFile("/home/eyaweiw/software/jboss-eap-6.4/standalone/log/server.log", 10);
 	}
 
 	@GET
