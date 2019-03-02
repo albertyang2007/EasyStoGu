@@ -81,7 +81,7 @@ public class HomeEndPoint {
 			t.start();
 			return "DailyUpdateAllStockRunner already running, please check folder result.";
 		}
-		return "Zone not allow to run this method.";
+		return zone + " not allow to run this method.";
 	}
 
 	@GET
@@ -92,7 +92,7 @@ public class HomeEndPoint {
 			t.start();
 			return "DailySelectionRunner already running, please check folder result.";
 		}
-		return "Zone not allow to run this method.";
+		return zone + " not allow to run this method.";
 	}
 
 	@GET
@@ -110,7 +110,7 @@ public class HomeEndPoint {
 			t.start();
 			return "DailyZiJinLiuRunner already running, please check DB result.";
 		}
-		return "Zone not allow to run this method.";
+		return zone + " not allow to run this method.";
 	}
 
 	@GET
@@ -121,7 +121,7 @@ public class HomeEndPoint {
 			t.start();
 			return "OverAllZiJinLiuAndDDXRunner already running, please check DB result.";
 		}
-		return "Zone not allow to run this method.";
+		return zone + " not allow to run this method.";
 	}
 
 	@GET
@@ -133,7 +133,7 @@ public class HomeEndPoint {
 			t.start();
 			return "OverAllZiJinLiuAndDDXRunnerForAllStockId already running, please check DB result.";
 		}
-		return "Zone not allow to run this method.";
+		return zone + " not allow to run this method.";
 	}
 
 	@GET
@@ -145,7 +145,7 @@ public class HomeEndPoint {
 			t.start();
 			return "DailyZiJinLiuRunner already running, please check DB result.";
 		}
-		return "Zone not allow to run this method.";
+		return zone + " not allow to run this method.";
 	}
 
 	@GET
@@ -156,7 +156,7 @@ public class HomeEndPoint {
 			t.start();
 			return "DailyZhuLiJingLiuRuRunner already running, please check DB result.";
 		}
-		return "Zone not allow to run this method.";
+		return zone + " not allow to run this method.";
 	}
 
 	@GET
@@ -167,7 +167,7 @@ public class HomeEndPoint {
 			t.start();
 			return "DataBaseSanityCheck already running, please check DB result.";
 		}
-		return "Zone not allow to run this method.";
+		return zone + " not allow to run this method.";
 	}
 
 	@GET
@@ -179,7 +179,7 @@ public class HomeEndPoint {
 			t.start();
 			return "DailyOverAllRunner already running, please check DB result.";
 		}
-		return "Zone not allow to run this method.";
+		return zone + " not allow to run this method.";
 	}
 
 	@GET
@@ -191,7 +191,7 @@ public class HomeEndPoint {
 			t.start();
 			return "FastDailyOverAllRunner already running, please check DB result.";
 		}
-		return "Zone not allow to run this method.";
+		return zone + " not allow to run this method.";
 	}
 
 	@GET
@@ -202,7 +202,7 @@ public class HomeEndPoint {
 			t.start();
 			return "RecentlySelectionRunner already running, please check DB result.";
 		}
-		return "Zone not allow to run this method.";
+		return zone + " not allow to run this method.";
 	}
 
 	@GET
@@ -213,7 +213,7 @@ public class HomeEndPoint {
 			t.start();
 			return "DailyUpdatePriceAndIndicatorRunner already running, please check DB result.";
 		}
-		return "Zone not allow to run this method.";
+		return zone + " not allow to run this method.";
 	}
 
 	@GET
@@ -224,7 +224,7 @@ public class HomeEndPoint {
 			t.start();
 			return "DailyDDXRunner already running, please check DB result.";
 		}
-		return "Zone not allow to run this method.";
+		return zone + " not allow to run this method.";
 	}
 
 	@GET
@@ -235,7 +235,7 @@ public class HomeEndPoint {
 			t.start();
 			return "DailyViewAnalyseRunner already running, please check folder result.";
 		}
-		return "Zone not allow to run this method.";
+		return zone + " not allow to run this method.";
 	}
 
 	@GET
@@ -248,7 +248,7 @@ public class HomeEndPoint {
 			t.start();
 			return "DailyStockPriceDownloadAndStoreDBRunner2 already running, please check folder result.";
 		}
-		return "Zone not allow to run this method.";
+		return zone + " not allow to run this method.";
 	}
 
 	@GET
@@ -260,7 +260,7 @@ public class HomeEndPoint {
 			ins.updateCompanyFromFileToDB();
 			return "UpdateCompanyFromFileToDB already running, please check folder result.";
 		}
-		return "Zone not allow to run this method.";
+		return zone + " not allow to run this method.";
 	}
 
 	@GET
@@ -278,7 +278,7 @@ public class HomeEndPoint {
 			t.start();
 			return "StockPriceHistoryOverAllRunner already running, startDate=" + startDate + ", endDate=" + endDate;
 		}
-		return "Zone not allow to run this method.";
+		return zone + " not allow to run this method.";
 	}
 
 	@GET
@@ -289,7 +289,7 @@ public class HomeEndPoint {
 			t.start();
 			return "IndicatorHistortOverAllRunner already running, please check folder result.";
 		}
-		return "Zone not allow to run this method.";
+		return zone + " not allow to run this method.";
 	}
 
 	@GET
@@ -300,7 +300,7 @@ public class HomeEndPoint {
 			t.start();
 			return "DailyReplicateRunner already running, please check folder result.";
 		}
-		return "Zone not allow to run this method.";
+		return zone + " not allow to run this method.";
 	}
 
 	@GET
@@ -310,7 +310,7 @@ public class HomeEndPoint {
 			DynamicRunner.main(null);
 			return "OneTimeDynamicRunner already running, please check folder result.";
 		}
-		return "Zone not allow to run this method.";
+		return zone + " not allow to run this method.";
 	}
 
 	@GET
@@ -318,16 +318,17 @@ public class HomeEndPoint {
 	public String oneTimeTempRunner() {
 		if (Constants.ZONE_ALIYUN.equals(zone)) {
 			Thread t = new Thread(new Runnable() {
-                public void run() {
-                    HistoryAnalyseReport reporter = new HistoryAnalyseReport();
-                    reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.WR_DI_BeiLi);
-                }
+				public void run() {
+					HistoryAnalyseReport reporter = new HistoryAnalyseReport();
+					reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.MAGIC_NIGHT_DAYS_SHANG_ZHANG);
+					reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.MAGIC_NIGHT_DAYS_XIA_DIE);
+				}
 			});
-            t.start();
-			
+			t.start();
+
 			return "OneTimeTempRunner already running, please check folder result.";
 		}
-		return "Zone not allow to run this method.";
+		return zone + " not allow to run this method.";
 	}
 
 	@GET

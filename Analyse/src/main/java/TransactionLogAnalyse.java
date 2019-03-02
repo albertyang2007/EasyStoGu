@@ -3,19 +3,21 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ForkJoinPool;
 
 public class TransactionLogAnalyse {
 	public DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
+	public ForkJoinPool myPool = new ForkJoinPool(20);
 	public List<BuildRecord> records = new ArrayList<BuildRecord>();
-	public Map<String, Recorder> mapRecorders = new HashMap<String, Recorder>();
+	public Map<String, Recorder> mapRecorders = new java.util.concurrent.ConcurrentHashMap<String, Recorder>();
 
 	public void analyse(String folder, String configFile) {
 
@@ -26,6 +28,23 @@ public class TransactionLogAnalyse {
 			File[] files = dir.listFiles();
 			for (File file : files) {
 				analyseFile(file);
+			}
+		}
+	}
+
+	// -Djava.util.concurrent.ForkJoinPool.common.parallelism=10
+	//or using ForkJoinPool myPool = new ForkJoinPool(10);
+	public void analyseAsync(String folder, String configFile) {
+
+		loadConfig(configFile);
+
+		File dir = new File(folder);
+		if (dir.isDirectory()) {
+			File[] files = dir.listFiles();
+			try {
+				myPool.submit(() -> Arrays.asList(files).parallelStream().forEach(f -> analyseFile(f))).get();
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
 	}
@@ -55,6 +74,8 @@ public class TransactionLogAnalyse {
 	}
 
 	public void analyseFile(File file) {
+		System.out.println("Thread "+ Thread.currentThread().getName() + " process " + file.getName());
+		
 		String lineTxt = null;
 		BufferedReader bufferedReader = null;
 		try {
@@ -140,31 +161,41 @@ public class TransactionLogAnalyse {
 
 			if (recorder.crtResult[4] > 0)
 				System.out.println(recorder.info + "  Number:" + recorder.crtResult[4] + ", Total Delay:"
-						+ recorder.crtResult[0] / recorder.crtResult[4] + ", Diameter Grpc Delay:"
-						+ recorder.crtResult[1] / recorder.crtResult[4] + ", DB Insert Delay:"
-						+ recorder.crtResult[2] / recorder.crtResult[4] + ", Other Delay:"
-						+ recorder.crtResult[3] / recorder.crtResult[4]);
+						+ convert2ScaleDecimal(recorder.crtResult[0] / recorder.crtResult[4]) + ", Diameter Grpc Delay:"
+						+ convert2ScaleDecimal(recorder.crtResult[1] / recorder.crtResult[4]) + ", DB Insert Delay:"
+						+ convert2ScaleDecimal(recorder.crtResult[2] / recorder.crtResult[4]) + ", Other Delay:"
+						+ convert2ScaleDecimal(recorder.crtResult[3] / recorder.crtResult[4]));
 
 			if (recorder.nofResult[4] > 0)
 				System.out.println(recorder.info + "  Number:" + recorder.nofResult[5] + ", Total Delay:"
-						+ recorder.nofResult[0] / recorder.nofResult[5] + ", Diameter Grpc Delay:"
-						+ recorder.nofResult[1] / recorder.nofResult[5] + ", DB Query Delay:"
-						+ recorder.nofResult[2] / recorder.nofResult[5] + ", DB Update Delay:"
-						+ recorder.nofResult[3] / recorder.nofResult[5] + ", Other Delay:"
-						+ recorder.nofResult[4] / recorder.nofResult[5]);
+						+ convert2ScaleDecimal(recorder.nofResult[0] / recorder.nofResult[5]) + ", Diameter Grpc Delay:"
+						+ convert2ScaleDecimal(recorder.nofResult[1] / recorder.nofResult[5]) + ", DB Query Delay:"
+						+ convert2ScaleDecimal(recorder.nofResult[2] / recorder.nofResult[5]) + ", DB Update Delay:"
+						+ convert2ScaleDecimal(recorder.nofResult[3] / recorder.nofResult[5]) + ", Other Delay:"
+						+ convert2ScaleDecimal(recorder.nofResult[4] / recorder.nofResult[5]));
 
 		}
 	}
 
-	//java TransactionLogAnalyse /cluster/home/transaction/node_11/extract ./buildConfig.txt
-	//example buildConfig.txt 
-	//#01 2019-02-22_14:42:50 2019-02-22_14:43:50
-	//#02 2019-02-22_14:43:50 2019-02-22_14:44:50
-	//#03 2019-02-22_14:44:50 2019-02-22_14:45:50
+	public double convert2ScaleDecimal(double num) {
+		if (Double.isNaN(num) || Double.isInfinite(num)) {
+			return 0;
+		}
+		BigDecimal bd = new BigDecimal(num);
+		num = bd.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+		return num;
+	}
+
+	// java TransactionLogAnalyse /cluster/home/transaction/node_11/extract
+	// ./buildConfig.txt
+	// example buildConfig.txt
+	// #01 2019-02-22_14:42:50 2019-02-22_14:43:50
+	// #02 2019-02-22_14:43:50 2019-02-22_14:44:50
+	// #03 2019-02-22_14:44:50 2019-02-22_14:45:50
 	public static void main(String[] args) {
 		TransactionLogAnalyse ins = new TransactionLogAnalyse();
 		// folder, configFile
-		ins.analyse(args[0], args[1]);
+		ins.analyseAsync(args[0], args[1]);
 		ins.displayResult();
 	}
 }
