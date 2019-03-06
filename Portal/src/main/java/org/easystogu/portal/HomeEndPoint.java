@@ -35,7 +35,6 @@ import org.easystogu.sina.runner.history.StockPriceHistoryOverAllRunner;
 
 public class HomeEndPoint {
 	private ConfigurationService config = DBConfigurationService.getInstance();
-	private String zone = config.getString("zone", "");
 	protected String dateRegex = "[0-9]{4}-[0-9]{2}-[0-9]{2}";
 	protected String fromToRegex = dateRegex + "_" + dateRegex;
 
@@ -74,6 +73,7 @@ public class HomeEndPoint {
 	@GET
 	@Path("/DailyUpdateAllStockRunner")
 	public String dailyUpdateOverAllRunner() {
+		String zone = config.getString("zone", "");
 		if (Constants.ZONE_OFFICE.equals(zone)) {
 			boolean isGetZiJinLiu = false;
 			Thread t = new Thread(new DailyUpdateAllStockRunner(isGetZiJinLiu));
@@ -86,6 +86,7 @@ public class HomeEndPoint {
 	@GET
 	@Path("/DailySelectionRunner")
 	public String dailySelectionRunner() {
+		String zone = config.getString("zone", "");
 		if (Constants.ZONE_OFFICE.equals(zone)) {
 			Thread t = new Thread(new DailySelectionRunner());
 			t.start();
@@ -104,6 +105,7 @@ public class HomeEndPoint {
 	@GET
 	@Path("/DailyZiJinLiuRunner")
 	public String dailyZiJinLiuRunner() {
+		String zone = config.getString("zone", "");
 		if (Constants.ZONE_OFFICE.equals(zone)) {
 			Thread t = new Thread(new DailyZiJinLiuRunner());
 			t.start();
@@ -115,6 +117,7 @@ public class HomeEndPoint {
 	@GET
 	@Path("/OverAllZiJinLiuAndDDXRunner")
 	public String overAllZiJinLiuAndDDXRunner() {
+		String zone = config.getString("zone", "");
 		if (Constants.ZONE_OFFICE.equals(zone)) {
 			Thread t = new Thread(new OverAllZiJinLiuAndDDXRunner());
 			t.start();
@@ -126,6 +129,7 @@ public class HomeEndPoint {
 	@GET
 	@Path("/OverAllZiJinLiuAndDDXRunnerForAllStockId")
 	public String overAllZiJinLiuAndDDXRunnerForAllStockId() {
+		String zone = config.getString("zone", "");
 		if (Constants.ZONE_OFFICE.equals(zone)) {
 			OverAllZiJinLiuAndDDXRunner runner = new OverAllZiJinLiuAndDDXRunner();
 			Thread t = new Thread(runner);
@@ -138,6 +142,7 @@ public class HomeEndPoint {
 	@GET
 	@Path("/DailyZiJinLiuRunnerForAllStockId")
 	public String dailyZiJinLiuRunnerForAllStockId() {
+		String zone = config.getString("zone", "");
 		if (Constants.ZONE_OFFICE.equals(zone)) {
 			DailyZiJinLiuRunner runner = new DailyZiJinLiuRunner();
 			Thread t = new Thread(runner);
@@ -150,6 +155,7 @@ public class HomeEndPoint {
 	@GET
 	@Path("/DailyZhuLiJingLiuRuRunner")
 	public String dailyZhuLiJingLiuRuRunner() {
+		String zone = config.getString("zone", "");
 		if (Constants.ZONE_OFFICE.equals(zone)) {
 			Thread t = new Thread(new DailyZhuLiJingLiuRuRunner());
 			t.start();
@@ -161,6 +167,7 @@ public class HomeEndPoint {
 	@GET
 	@Path("/DataBaseSanityCheck")
 	public String dataBaseSanityCheck() {
+		String zone = config.getString("zone", "");
 		if (Constants.ZONE_OFFICE.equals(zone)) {
 			Thread t = new Thread(new DataBaseSanityCheck());
 			t.start();
@@ -172,6 +179,7 @@ public class HomeEndPoint {
 	@GET
 	@Path("/DailyOverAllRunner")
 	public String dailyOverAllRunner() {
+		String zone = config.getString("zone", "");
 		if (Constants.ZONE_OFFICE.equals(zone)) {
 			boolean isGetZiJinLiu = true;
 			Thread t = new Thread(new DailyOverAllRunner(isGetZiJinLiu));
@@ -184,6 +192,7 @@ public class HomeEndPoint {
 	@GET
 	@Path("/FastDailyOverAllRunner")
 	public String fastDailyOverAllRunner() {
+		String zone = config.getString("zone", "");
 		if (Constants.ZONE_OFFICE.equals(zone)) {
 			boolean isGetZiJinLiu = false;
 			Thread t = new Thread(new DailyOverAllRunner(isGetZiJinLiu));
@@ -196,6 +205,7 @@ public class HomeEndPoint {
 	@GET
 	@Path("/RecentlySelectionRunner")
 	public String recentlySelectionRunner() {
+		String zone = config.getString("zone", "");
 		if (Constants.ZONE_OFFICE.equals(zone)) {
 			Thread t = new Thread(new RecentlySelectionRunner());
 			t.start();
@@ -207,6 +217,7 @@ public class HomeEndPoint {
 	@GET
 	@Path("/DailyUpdatePriceAndIndicatorRunner")
 	public String dailyUpdatePriceAndIndicatorRunner() {
+		String zone = config.getString("zone", "");
 		if (Constants.ZONE_OFFICE.equals(zone)) {
 			Thread t = new Thread(new DailyUpdateStockPriceAndIndicatorRunner());
 			t.start();
@@ -218,6 +229,7 @@ public class HomeEndPoint {
 	@GET
 	@Path("/DailyDDXRunner")
 	public String dailyDDXRunner() {
+		String zone = config.getString("zone", "");
 		if (Constants.ZONE_OFFICE.equals(zone)) {
 			Thread t = new Thread(new DailyDDXRunner());
 			t.start();
@@ -229,6 +241,7 @@ public class HomeEndPoint {
 	@GET
 	@Path("/DailyViewAnalyseRunner")
 	public String dailyViewAnalyseRunner() {
+		String zone = config.getString("zone", "");
 		if (Constants.ZONE_OFFICE.equals(zone)) {
 			Thread t = new Thread(new DailyViewAnalyseRunner());
 			t.start();
@@ -240,6 +253,7 @@ public class HomeEndPoint {
 	@GET
 	@Path("/DownloadStockPrice")
 	public String downloadStockPrice() {
+		String zone = config.getString("zone", "");
 		// day (download all stockIds price)
 		if (Constants.ZONE_OFFICE.equals(zone)) {
 			DailyStockPriceDownloadAndStoreDBRunner2 runner = new DailyStockPriceDownloadAndStoreDBRunner2();
@@ -253,6 +267,7 @@ public class HomeEndPoint {
 	@GET
 	@Path("/UpdateCompanyFromFileToDB")
 	public String updateCompanyFromFileToDB() {
+		String zone = config.getString("zone", "");
 		// update the total GuBen and LiuTong GuBen
 		if (Constants.ZONE_OFFICE.equals(zone)) {
 			CompanyInfoFileHelper ins = new CompanyInfoFileHelper();
@@ -265,6 +280,7 @@ public class HomeEndPoint {
 	@GET
 	@Path("/updateStockPriceHistoryOverAllRunner/{date}")
 	public String updateStockPriceHistoryOverAllRunner(@PathParam("date") String dateParm) {
+		String zone = config.getString("zone", "");
 		// update the total GuBen and LiuTong GuBen
 		if (Constants.ZONE_OFFICE.equals(zone)) {
 			String startDate = null, endDate = null;
@@ -283,6 +299,7 @@ public class HomeEndPoint {
 	@GET
 	@Path("/IndicatorHistortOverAllRunner")
 	public String indicatorHistortOverAllRunner() {
+		String zone = config.getString("zone", "");
 		if (Constants.ZONE_OFFICE.equals(zone)) {
 			Thread t = new Thread(new IndicatorHistortOverAllRunner());
 			t.start();
@@ -294,6 +311,7 @@ public class HomeEndPoint {
 	@GET
 	@Path("/DailyReplicateRunner")
 	public String dailyReplicateRunner() {
+		String zone = config.getString("zone", "");
 		if (Constants.ZONE_OFFICE.equals(zone)) {
 			Thread t = new Thread(new DailyReplicateRunner());
 			t.start();
@@ -305,6 +323,7 @@ public class HomeEndPoint {
 	@GET
 	@Path("/OneTimeDynamicRunner")
 	public String oneTimeDynamicRunner() {
+		String zone = config.getString("zone", "");
 		if (Constants.ZONE_OFFICE.equals(zone)) {
 			DynamicRunner.main(null);
 			return "OneTimeDynamicRunner already running, please check folder result.";
@@ -315,6 +334,7 @@ public class HomeEndPoint {
 	@GET
 	@Path("/OneTimeTempRunner")
 	public String oneTimeTempRunner() {
+		String zone = config.getString("zone", "");
 		if (Constants.ZONE_ALIYUN.equals(zone)) {
 			Thread t = new Thread(new Runnable() {
 				public void run() {
@@ -333,7 +353,7 @@ public class HomeEndPoint {
 	@GET
 	@Path("/Serverlog")
 	public String serverlog() {
-		return FileReaderAndWriter.tailFile("/home/eyaweiw/software/jboss-eap-6.4/standalone/log/server.log", 10);
+		return FileReaderAndWriter.tailFile("/home/eyaweiw/software/jboss-eap-6.4/standalone/log/server.log", 20);
 	}
 
 	@GET
