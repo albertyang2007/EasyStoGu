@@ -2,6 +2,8 @@ package org.easystogu.cache;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import org.easystogu.db.access.table.FavoritesStockHelper;
@@ -14,6 +16,8 @@ import org.slf4j.Logger;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+import com.google.common.util.concurrent.ListenableFuture;
+import com.google.common.util.concurrent.ListenableFutureTask;
 
 public class FavoritesCache {
 	private Logger logger = LogHelper.getLogger(FavoritesCache.class);
@@ -23,11 +27,35 @@ public class FavoritesCache {
 	private LoadingCache<String, List<FavoritesStockVO>> cache;
 
 	private FavoritesCache() {
-		cache = CacheBuilder.newBuilder().maximumSize(100).expireAfterWrite(12, TimeUnit.HOURS)
+		cache = CacheBuilder.newBuilder().maximumSize(100).refreshAfterWrite(12, TimeUnit.HOURS)
 				.build(new CacheLoader<String, List<FavoritesStockVO>>() {
 					@Override
 					public List<FavoritesStockVO> load(String key) throws Exception {
 						logger.info("load from database, favoritesStockHelper key:" + key);
+						return loadDataFromDB(key);
+					}
+
+					@Override
+					public ListenableFuture<List<FavoritesStockVO>> reload(final String key,
+							final List<FavoritesStockVO> oldValue) {
+						logger.info("reload from database, favoritesStockHelper key:" + key);
+						ListenableFutureTask<List<FavoritesStockVO>> task = ListenableFutureTask
+								.create(new Callable<List<FavoritesStockVO>>() {
+									public List<FavoritesStockVO> call() {
+										List<FavoritesStockVO> newValue = oldValue;
+										try {
+											newValue = loadDataFromDB(key);
+										} catch (Exception e) {
+											logger.error("There was an exception when reloading the cache", e);
+										}
+										return newValue;
+									}
+								});
+						Executors.newSingleThreadExecutor().execute(task);
+						return task;
+					}
+
+					private List<FavoritesStockVO> loadDataFromDB(String key) {
 						// key is userId
 						List<FavoritesStockVO> rtn = favoritesStockHelper.getByUserId(key);
 						for (FavoritesStockVO vo : rtn) {
