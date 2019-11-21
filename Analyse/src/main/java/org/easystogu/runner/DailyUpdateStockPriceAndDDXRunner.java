@@ -1,5 +1,7 @@
 package org.easystogu.runner;
 
+import org.easystogu.config.ConfigurationService;
+import org.easystogu.config.DBConfigurationService;
 import org.easystogu.easymoney.runner.OverAllZiJinLiuAndDDXRunner;
 import org.easystogu.sina.runner.DailyStockPriceDownloadAndStoreDBRunner2;
 
@@ -7,6 +9,7 @@ import org.easystogu.sina.runner.DailyStockPriceDownloadAndStoreDBRunner2;
 //no other ind counted,
 //this will be run on aliyun
 public class DailyUpdateStockPriceAndDDXRunner implements Runnable {
+    private ConfigurationService config = DBConfigurationService.getInstance();
 	private boolean fetchAllZiJinLiu = false;
 
 	public boolean isFetchAllZiJinLiu() {
@@ -23,9 +26,10 @@ public class DailyUpdateStockPriceAndDDXRunner implements Runnable {
 		DailyStockPriceDownloadAndStoreDBRunner2.main(null);
 
 		// daily zijinliu and ddx for all
-		OverAllZiJinLiuAndDDXRunner zijinliuRunner = new OverAllZiJinLiuAndDDXRunner();
-		zijinliuRunner.run();
-
+		if(config.getBoolean("count_zijin_and_ddx", false)) {
+		  OverAllZiJinLiuAndDDXRunner zijinliuRunner = new OverAllZiJinLiuAndDDXRunner();
+		  zijinliuRunner.run();
+		}
 		System.out.println("stop using " + (System.currentTimeMillis() - st) / 1000 + " seconds");
 	}
 
