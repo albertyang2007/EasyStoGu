@@ -54,7 +54,7 @@ public class DailyScheduler implements SchedulingConfigurer {
 	@Scheduled(cron = "0 31 11 * * MON-FRI")
 	public void _1_DailyOverAllRunner() {
 		if (Constants.ZONE_ALIYUN.equalsIgnoreCase(zone)) {
-			boolean isGetZiJinLiu = true;
+			boolean isGetZiJinLiu = false;
 			this.DailyOverAllRunner(isGetZiJinLiu);
 		}
 	}
@@ -63,7 +63,7 @@ public class DailyScheduler implements SchedulingConfigurer {
 	@Scheduled(cron = "0 06 15 * * MON-FRI")
 	public void _3_DailyOverAllRunner() {
 		if (Constants.ZONE_ALIYUN.equalsIgnoreCase(zone)) {
-			boolean isGetZiJinLiu = true;
+			boolean isGetZiJinLiu = false;
 			this.DailyOverAllRunner(isGetZiJinLiu);
 		}
 	}
