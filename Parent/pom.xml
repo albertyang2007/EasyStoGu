@@ -106,7 +106,7 @@
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-ear-plugin</artifactId>
 					<configuration>
-						<version>5</version>
+						<version>6</version>
 						<defaultLibBundleDir>lib</defaultLibBundleDir>
 						<skinnyWars>true</skinnyWars>
 					</configuration>
