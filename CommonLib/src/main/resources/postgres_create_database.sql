@@ -22,6 +22,50 @@ COMMENT ON DATABASE easystogu
   IS 'easystogu for stock';
 
 
+-- Table: WSFCONFIG
+
+-- DROP TABLE WSFCONFIG;
+
+CREATE TABLE WSFCONFIG
+(
+  name text NOT NULL,
+  type text NOT NULL,
+  value text,
+  desc1 text,
+  CONSTRAINT WSFCONFIG_key PRIMARY KEY (name)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE WSFCONFIG
+  OWNER TO postgres;
+COMMENT ON TABLE WSFCONFIG
+  IS 'CONFIG Table';
+  
+
+-- Table: COMPANY_INFO
+
+-- DROP TABLE COMPANY_INFO;
+
+CREATE TABLE COMPANY_INFO
+(
+  stockId text NOT NULL,
+  name text NOT NULL,
+  updateTime text,
+  totalGuBen numeric,
+  liuTongAGu numeric,
+  liuTongShiZhi numeric,
+  CONSTRAINT COMPANY_INFO_key PRIMARY KEY (stockId)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE COMPANY_INFO
+  OWNER TO postgres;
+COMMENT ON TABLE COMPANY_INFO
+  IS 'COMPANY_INFO';
+  
+  
 -- Table: stockprice
 
 -- DROP TABLE stockprice;

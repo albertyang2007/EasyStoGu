@@ -49,7 +49,7 @@ public class WSFConfigTableHelper {
 			vo.setName(rs.getString("name"));
 			vo.setValue(rs.getString("value"));
 			vo.setType(rs.getString("type"));
-			vo.setDesc(rs.getString("desc"));
+			vo.setDesc1(rs.getString("desc1"));
 			return vo;
 		}
 	}

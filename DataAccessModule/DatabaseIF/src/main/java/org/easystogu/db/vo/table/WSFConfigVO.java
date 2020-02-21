@@ -4,7 +4,7 @@ public class WSFConfigVO {
 	public String name;
 	public String value;
 	public String type;
-	public String desc;
+	public String desc1;
 	
 	public String getName() {
 		return name;
@@ -24,10 +24,10 @@ public class WSFConfigVO {
 	public void setType(String type) {
 		this.type = type;
 	}
-	public String getDesc() {
-		return desc;
+	public String getDesc1() {
+		return desc1;
 	}
-	public void setDesc(String desc) {
-		this.desc = desc;
+	public void setDesc1(String desc) {
+		this.desc1 = desc;
 	}
 }
