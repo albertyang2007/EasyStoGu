@@ -372,7 +372,7 @@ public class HomeEndPoint {
   public String test() {
     Thread t = new Thread(new Runnable() {
       public void run() {
-        DataBaseSanityCheck.main(null);
+        HistoryAnalyseReport.main(null);
       }
     });
     t.start();

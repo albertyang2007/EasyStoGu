@@ -474,22 +474,12 @@ public class HistoryAnalyseReport {
 
 	public static void main(String[] args) {
 		HistoryAnalyseReport reporter = new HistoryAnalyseReport();
-		// FileConfigurationService config =
-		// FileConfigurationService.getInstance();
-		// for (DailyCombineCheckPoint checkPoint :
-		// DailyCombineCheckPoint.values()) {
-		// if (config.getString("general_CheckPoint",
-		// "").contains(checkPoint.name())) {
-		// reporter.searchAllStockIdAnalyseHistoryCheckPoint(checkPoint);
-		// }
-		// }
 
 		// reporter.searchAllStockIdAnalyseHistoryBuySellCheckPoint(DailyCombineCheckPoint.MAGIC_NIGHT_DAYS_SHANG_ZHANG);
 
-		reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.MAGIC_NIGHT_DAYS_SHANG_ZHANG);
-		reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.MAGIC_NIGHT_DAYS_XIA_DIE);
-		// reporter.countAllStockIdStatisticsCheckPoint();
-		// reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.WR_DI_BeiLi);
-
+		//reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.MAGIC_NIGHT_DAYS_SHANG_ZHANG);
+		//reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.MAGIC_NIGHT_DAYS_XIA_DIE);
+		reporter.countAllStockIdStatisticsCheckPoint();
+		reporter.countAllStockIdAnalyseHistoryBuySellCheckPoint();
 	}
 }
