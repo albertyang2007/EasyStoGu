@@ -24,7 +24,7 @@ public class CompanyInfoTableHelper {
     protected String tableName = "COMPANY_INFO";
     // please modify this SQL in all subClass
     protected String INSERT_SQL = "INSERT INTO " + tableName
-            + " (stockId, name, totalguben, liutongagu, updatetime) VALUES (:stockId, :name, :totalguben, :liutongagu, :updatetime)";
+            + " (stockId, name, suoShuHangYe, totalGuBen, liuTongAGu, ttmShiYingLv, shiJingLv, liuTongBiLi, updateTime) VALUES (:stockId, :name, :suoShuHangYe, :totalGuBen, :liuTongAGu, :ttmShiYingLv, :shiJingLv, :liuTongBiLi, :updateTime)";
     protected String QUERY_BY_STOCKID = "SELECT * FROM " + tableName + " WHERE stockId = :stockId";
     protected String QUERY_ALL = "SELECT * FROM " + tableName;
     protected String QUERY_ALL_STOCKID = "SELECT stockId AS rtn FROM " + tableName;
@@ -56,8 +56,13 @@ public class CompanyInfoTableHelper {
             CompanyInfoVO vo = new CompanyInfoVO();
             vo.setStockId(rs.getString("stockId"));
             vo.setName(rs.getString("name"));
-            vo.setTotalGuBen(rs.getDouble("totalguben"));
-            vo.setLiuTongAGu(rs.getDouble("liutongagu"));
+            vo.setSuoShuHangYe(rs.getString("suoShuHangYe"));
+            vo.setTtmShiYingLv(rs.getDouble("ttmShiYingLv"));
+            vo.setShiJingLv(rs.getDouble("shiJingLv"));
+            vo.setLiuTongBiLi(rs.getDouble("liuTongBiLi"));
+            vo.setTotalGuBen(rs.getDouble("totalGuBen"));
+            vo.setLiuTongAGu(rs.getDouble("liuTongAGu"));
+            vo.setUpdateTime(rs.getString("updateTime"));
             return vo;
         }
     }
@@ -81,9 +86,13 @@ public class CompanyInfoTableHelper {
             MapSqlParameterSource namedParameters = new MapSqlParameterSource();
             namedParameters.addValue("stockId", vo.getStockId());
             namedParameters.addValue("name", vo.getName());
-            namedParameters.addValue("totalguben", vo.getTotalGuBen());
-            namedParameters.addValue("liutongagu", vo.getLiuTongAGu());
-            namedParameters.addValue("updatetime", vo.getUpdateTime());
+            namedParameters.addValue("suoShuHangYe", vo.getSuoShuHangYe());
+            namedParameters.addValue("ttmShiYingLv", vo.getTtmShiYingLv());
+            namedParameters.addValue("shiJingLv", vo.getShiJingLv());
+            namedParameters.addValue("liuTongBiLi", vo.getLiuTongBiLi());
+            namedParameters.addValue("totalGuBen", vo.getTotalGuBen());
+            namedParameters.addValue("liuTongAGu", vo.getLiuTongAGu());
+            namedParameters.addValue("updateTime", vo.getUpdateTime());
 
             namedParameterJdbcTemplate.execute(INSERT_SQL, namedParameters, new DefaultPreparedStatementCallback());
         } catch (Exception e) {

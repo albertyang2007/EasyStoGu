@@ -51,10 +51,13 @@ CREATE TABLE COMPANY_INFO
 (
   stockId text NOT NULL,
   name text NOT NULL,
-  updateTime text,
+  suoShuHangYe text,
   totalGuBen numeric,
   liuTongAGu numeric,
-  liuTongShiZhi numeric,
+  ttmShiYingLv numeric,
+  shiJingLv numeric,
+  liuTongBiLi numeric,
+  updateTime text,
   CONSTRAINT COMPANY_INFO_key PRIMARY KEY (stockId)
 )
 WITH (
@@ -124,6 +127,7 @@ CREATE TABLE ind_kdj
   k numeric,
   d numeric,
   j numeric,
+  rsv numeric,
   CONSTRAINT kdj_primary_key PRIMARY KEY (stockid, date)
 )
 WITH (

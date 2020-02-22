@@ -25,7 +25,7 @@ public class CompanyInfoFileHelper {
 	private CompanyInfoTableHelper companyInfoTable = CompanyInfoTableHelper.getInstance();
 	private static CompanyInfoFileHelper instance = null;
 	protected TextFileSourceHelper fileSource = TextFileSourceHelper.getInstance();
-	protected String fileName = "Table_CompanyInfo.csv";
+	protected String fileName = "./Company_Info/Company_Info.csv";
 	private Map<String, CompanyInfoVO> companyMap = new HashMap<String, CompanyInfoVO>();
 
 	public static CompanyInfoFileHelper getInstance() {
@@ -247,6 +247,7 @@ public class CompanyInfoFileHelper {
 			// System.out.println(vo);
 			if (vo.totalGuBen != 0 && vo.liuTongAGu != 0) {
 				this.companyInfoTable.delete(vo.stockId);
+				//System.out.println("Insert Company_Info :" + vo);
 				this.companyInfoTable.insert(vo);
 				//System.out.println(vo);
 			}
@@ -256,6 +257,7 @@ public class CompanyInfoFileHelper {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		CompanyInfoFileHelper ins = new CompanyInfoFileHelper();
+		//ins.companyInfoTable.delete("000001");
 		ins.updateCompanyFromFileToDB();
 	}
 }

@@ -31,8 +31,19 @@ public class Strings {
 	public static boolean isNotEmpty(String string) {
 		return (string != null) && (!string.isEmpty());
 	}
+	
+	public static double parseDouble(String str) {
+	  try {
+	    return Double.parseDouble(str);
+	  }catch(Exception e) {
+	    return 0;
+	  }
+	}
 
 	public static boolean isNumeric(String str) {
+	    if(str == null || "".equals(str)) {
+	      return false;
+	    }
 		for (int i = str.length(); --i >= 0;) {
 			if (!Character.isDigit(str.charAt(i))) {
 				return false;

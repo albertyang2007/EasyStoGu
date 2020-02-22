@@ -51,7 +51,7 @@ public class TextFileSourceHelper {
         InputStream fis = null;
         try {
             fis = new FileInputStream(resource.getFile());
-            BufferedReader reader = new BufferedReader(new InputStreamReader(fis, "gb2312"));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(fis, "UTF-8"));
             String line = reader.readLine();
             while (line != null) {
                 if (Strings.isNotEmpty(line)) {

@@ -185,16 +185,12 @@ public class HistoryStockPriceDownloadAndStoreDBRunner {
         HistoryStockPriceDownloadAndStoreDBRunner runner = new HistoryStockPriceDownloadAndStoreDBRunner(startDate,
                 endDate);
         List<String> stockIds = runner.companyInfoHelper.getAllStockId();
-        // for major zhi shu
-        // runner.countAndSave("999999");
-        // runner.countAndSave("399001");
-        // runner.countAndSave("399006");
         // for all stockIds
         runner.countAndSave(stockIds);
         // for specify stockId
-        // runner.countAndSave("000049");
+        //runner.countAndSave("000001");
 
         // finally re run for failure
-        // runner.reRunOnFailure();
+        //runner.reRunOnFailure();
     }
 }

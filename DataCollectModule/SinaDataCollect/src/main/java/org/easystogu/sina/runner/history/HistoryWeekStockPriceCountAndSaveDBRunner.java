@@ -50,11 +50,11 @@ public class HistoryWeekStockPriceCountAndSaveDBRunner {
         // TODO Auto-generated method stub
         CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
         HistoryWeekStockPriceCountAndSaveDBRunner runner = new HistoryWeekStockPriceCountAndSaveDBRunner();
-        //runner.countAndSave(stockConfig.getAllStockId());
+        runner.countAndSave(stockConfig.getAllStockId());
         //runner.countAndSave("999999");
         //runner.countAndSave("399001");
         //runner.countAndSave("399006");
-        runner.countAndSave("000049");
+        //runner.countAndSave("000049");
     }
 
 }
