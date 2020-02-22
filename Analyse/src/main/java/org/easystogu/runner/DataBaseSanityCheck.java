@@ -201,7 +201,7 @@ public class DataBaseSanityCheck implements Runnable {
 		// TODO Auto-generated method stub
 		CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 		DataBaseSanityCheck check = new DataBaseSanityCheck();
-		check.sanityDailyCheck(stockConfig.getAllStockId());
+		//check.sanityDailyCheck(stockConfig.getAllStockId());
 		check.sanityWeekCheck(stockConfig.getAllStockId());
 		
 		//check.sanityDailyCheck("002797");

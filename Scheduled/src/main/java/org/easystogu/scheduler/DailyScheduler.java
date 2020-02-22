@@ -69,7 +69,7 @@ public class DailyScheduler implements SchedulingConfigurer {
 	}
 
 	// run at 16:30
-	@Scheduled(cron = "0 30 16 * * MON-FRI")
+	//@Scheduled(cron = "0 30 16 * * MON-FRI")
 	public void _3_DailyReplicateRunnerFromAliyun() {
 		if (Constants.ZONE_OFFICE.equalsIgnoreCase(zone)) {
 			logger.info("DailyReplicateRunnerFromAliyun already running.");
@@ -92,7 +92,7 @@ public class DailyScheduler implements SchedulingConfigurer {
 	}
 
 	// run at 18:00
-	@Scheduled(cron = "0 00 18 * * MON-FRI")
+	//@Scheduled(cron = "0 00 18 * * MON-FRI")
 	public void _0_DataBaseSanityCheck() {
 		// only run at office, since at aliyun, there is daily santy after price
 		// update
@@ -180,7 +180,7 @@ public class DailyScheduler implements SchedulingConfigurer {
 	}
 
 	// every 15 mins from 9 to 15, Monday to Friday
-	@Scheduled(cron = "0 0/15 09,10,11,13,14 * * MON-FRI")
+	//@Scheduled(cron = "0 0/15 09,10,11,13,14 * * MON-FRI")
 	public void updateStockPriceOnlyEveryMins() {
 		if (Constants.ZONE_ALIYUN.equalsIgnoreCase(zone)) {
 			String time = WeekdayUtil.currentTime();

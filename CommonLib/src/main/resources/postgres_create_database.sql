@@ -253,6 +253,7 @@ CREATE TABLE ind_week_kdj
   k numeric,
   d numeric,
   j numeric,
+  rsv numeric,
   CONSTRAINT week_kdj_primary_key PRIMARY KEY (stockid, date)
 )
 WITH (

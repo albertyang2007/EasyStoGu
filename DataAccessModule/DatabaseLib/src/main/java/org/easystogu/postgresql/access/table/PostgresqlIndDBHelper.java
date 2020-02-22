@@ -89,7 +89,7 @@ public abstract class PostgresqlIndDBHelper implements IndicatorDBHelperIF {
 						wM.invoke(vo, r.getFloat(f.getName()));
 					}
 				}
-				System.out.println(vo);
+				//System.out.println(vo);
 				return vo;
 			} catch (Exception e) {
 				e.printStackTrace();
