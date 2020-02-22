@@ -368,16 +368,58 @@ public class HomeEndPoint {
   }
 
   @GET
-  @Path("/test")
-  public String test() {
+  @Path("/test0")
+  public String test0() {
     Thread t = new Thread(new Runnable() {
       public void run() {
-        DataBaseSanityCheck.main(null);
-        HistoryAnalyseReport.main(null);
+        HistoryAnalyseReport reporter = new HistoryAnalyseReport();
+        reporter.countAllStockIdStatisticsCheckPoint(0);
       }
     });
     t.start();
     
-    return "start DataBaseSanityCheck and HistoryAnalyseReport";
+    return "start countAllStockIdStatisticsCheckPoint 0";
+  }
+  
+  @GET
+  @Path("/test1")
+  public String test1() {
+    Thread t = new Thread(new Runnable() {
+      public void run() {
+        HistoryAnalyseReport reporter = new HistoryAnalyseReport();
+        reporter.countAllStockIdStatisticsCheckPoint(1);
+      }
+    });
+    t.start();
+    
+    return "start countAllStockIdStatisticsCheckPoint 1";
+  }
+  
+  @GET
+  @Path("/test2")
+  public String test2() {
+    Thread t = new Thread(new Runnable() {
+      public void run() {
+        HistoryAnalyseReport reporter = new HistoryAnalyseReport();
+        reporter.countAllStockIdAnalyseHistoryBuySellCheckPoint(2);
+      }
+    });
+    t.start();
+    
+    return "start countAllStockIdAnalyseHistoryBuySellCheckPoint 2";
+  }
+  
+  @GET
+  @Path("/test3")
+  public String test3() {
+    Thread t = new Thread(new Runnable() {
+      public void run() {
+        HistoryAnalyseReport reporter = new HistoryAnalyseReport();
+        reporter.countAllStockIdAnalyseHistoryBuySellCheckPoint(3);
+      }
+    });
+    t.start();
+    
+    return "start countAllStockIdAnalyseHistoryBuySellCheckPoint 3";
   }
 }
