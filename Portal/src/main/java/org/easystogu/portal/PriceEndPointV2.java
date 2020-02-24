@@ -21,16 +21,18 @@ import org.easystogu.cache.ConfigurationServiceCache;
 import org.easystogu.utils.Strings;
 import org.easystogu.config.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
+import com.google.gson.Gson;
 
 //v2, qian FuQuan stockprice (v2 same as v1, can be delete?)
 public class PriceEndPointV2 extends PriceEndPointV0{
 	protected StockPriceTableHelper stockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
-
+	private Gson gson = new Gson();
+	
 	@Override
 	@GET
 	@Path("/{stockId}/{date}")
 	@Produces("application/json")
-	public List<StockPriceVO> queryDayPriceById(@PathParam("stockId") String stockIdParm,
+	public String queryDayPriceById(@PathParam("stockId") String stockIdParm,
 			@PathParam("date") String dateParm, @Context HttpServletResponse response) {
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		List<StockPriceVO> spList = new ArrayList<StockPriceVO>();
@@ -49,6 +51,6 @@ public class PriceEndPointV2 extends PriceEndPointV0{
 			spList.add(stockPriceTable.getStockPriceByIdAndDate(stockIdParm, dateParm));
 		}
 
-		return spList;
+		return gson.toJson(spList);
 	}
 }

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.DELETE;
@@ -14,7 +13,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
-
 import org.easystogu.cache.CheckPointDailySelectionTableCache;
 import org.easystogu.cache.CommonViewCache;
 import org.easystogu.cache.ConfigurationServiceCache;
@@ -30,6 +28,7 @@ import org.easystogu.db.vo.view.FavoritesStockVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.log.LogHelper;
 import org.slf4j.Logger;
+import com.google.gson.Gson;
 
 public class FavoritesEndPoint {
 	private static Logger logger = LogHelper.getLogger(FavoritesEndPoint.class);
@@ -46,11 +45,13 @@ public class FavoritesEndPoint {
 	private FavoritesStockHelper favoritesStockHelper = FavoritesStockHelper.getInstance();
 	private FavoritesCache favoritesCache = FavoritesCache.getInstance();
 	private StockPriceCache stockPriceCache = StockPriceCache.getInstance();
+	
+	private Gson gson = new Gson();
 
 	@GET
 	@Path("/")
 	@Produces("application/json")
-	public List<CommonViewVO> queryFavoritesSelectionCheckPoints(@Context HttpServletRequest request,
+	public String queryFavoritesSelectionCheckPoints(@Context HttpServletRequest request,
 			@Context HttpServletResponse response) {
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		String date = request.getParameter("date");
@@ -58,14 +59,14 @@ public class FavoritesEndPoint {
 		String viewName = request.getParameter("viewName");
 
 		if ("MACD_WK_GORDON_KDJ_DIF_DAY_GORDON".equalsIgnoreCase(viewName)) {
-			return getSelectView1(date, isZiXuanGu);
+			return gson.toJson(getSelectView1(date, isZiXuanGu));
 		}
 
 		if ("MACD_KDJ_WK_GORDON_ZIJIN_LIURU".equalsIgnoreCase(viewName)) {
-			return getSelectView2(date, isZiXuanGu);
+			return gson.toJson(getSelectView2(date, isZiXuanGu));
 		}
 
-		return null;
+		return "{}";
 	}
 
 	@POST
@@ -91,7 +92,7 @@ public class FavoritesEndPoint {
 	@GET
 	@Path("/{userId}")
 	@Produces("application/json")
-	public List<FavoritesStockVO> getFavorites(@PathParam("userId") String userIdParm, String postBody,
+	public String getFavorites(@PathParam("userId") String userIdParm, String postBody,
 			@Context HttpServletResponse response) {
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		List<FavoritesStockVO> rtn = favoritesCache.get(userIdParm);
@@ -101,7 +102,7 @@ public class FavoritesEndPoint {
 				vo.setName(cvo.name);
 			}
 		}
-		return rtn;
+		return gson.toJson(rtn);
 	}
 
 	private List<CommonViewVO> getSelectView1(String date, String isZiXuanGu) {

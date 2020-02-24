@@ -16,6 +16,7 @@ import org.easystogu.cache.StockPriceCache;
 import org.easystogu.config.Constants;
 import org.easystogu.db.access.view.FavoritesStockCheckpointViewHelper;
 import org.easystogu.db.vo.view.FavoritesStockCheckpointVO;
+import com.google.gson.Gson;
 
 public class ReportEndPoint {
 	private ConfigurationServiceCache config = ConfigurationServiceCache.getInstance();
@@ -23,7 +24,8 @@ public class ReportEndPoint {
 			.getInstance();
 	private StockPriceCache stockPriceCache = StockPriceCache.getInstance();
 	protected String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
-
+	private Gson gson = new Gson();
+	
 	@GET
 	@Path("/{DateOffset}")
 	@Produces("text/html; charset=UTF-8")
@@ -45,6 +47,6 @@ public class ReportEndPoint {
 				rtn.append(vo.checkPoint + "<br>");
 			}
 		}
-		return rtn.toString();
+		return gson.toJson(rtn.toString());
 	}
 }

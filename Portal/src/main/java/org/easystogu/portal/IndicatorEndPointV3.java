@@ -34,6 +34,7 @@ import org.easystogu.utils.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.easystogu.cache.ConfigurationServiceCache;
 import com.google.common.primitives.Doubles;
+import com.google.gson.Gson;
 
 //V3, with forecast data, query from qian fuquan stock price and count in real time
 public class IndicatorEndPointV3 {
@@ -54,11 +55,13 @@ public class IndicatorEndPointV3 {
 	protected TrendModeLoader trendModeLoader;
 	@Autowired
 	FlagsAnalyseHelper flagsAnalyseHelper;
+	
+	private Gson gson = new Gson();
 
 	@POST
 	@Path("/macd/{stockId}/{date}")
 	@Produces("application/json")
-	public List<MacdVO> queryMACDById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
+	public String queryMACDById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
 			String postBody, @Context HttpServletResponse response) {
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		List<MacdVO> list = new ArrayList<MacdVO>();
@@ -77,13 +80,13 @@ public class IndicatorEndPointV3 {
 				list.add(vo);
 			}
 		}
-		return list;
+		return gson.toJson(list);
 	}
 
 	@POST
 	@Path("/kdj/{stockId}/{date}")
 	@Produces("application/json")
-	public List<KDJVO> queryKDJById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
+	public String queryKDJById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
 			String postBody, @Context HttpServletResponse response) {
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		List<KDJVO> list = new ArrayList<KDJVO>();
@@ -105,13 +108,13 @@ public class IndicatorEndPointV3 {
 				list.add(vo);
 			}
 		}
-		return list;
+		return gson.toJson(list);
 	}
 
 	@POST
 	@Path("/boll/{stockId}/{date}")
 	@Produces("application/json")
-	public List<BollVO> queryBollById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
+	public String queryBollById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
 			String postBody, @Context HttpServletResponse response) {
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		List<BollVO> list = new ArrayList<BollVO>();
@@ -131,13 +134,13 @@ public class IndicatorEndPointV3 {
 			}
 		}
 
-		return list;
+		return gson.toJson(list);
 	}
 
 	@POST
 	@Path("/shenxian/{stockId}/{date}")
 	@Produces("application/json")
-	public List<ShenXianVO> queryShenXianById(@PathParam("stockId") String stockIdParm,
+	public String queryShenXianById(@PathParam("stockId") String stockIdParm,
 			@PathParam("date") String dateParm, String postBody, @Context HttpServletResponse response) {
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		List<ShenXianVO> list = new ArrayList<ShenXianVO>();
@@ -157,13 +160,13 @@ public class IndicatorEndPointV3 {
 			}
 		}
 
-		return list;
+		return gson.toJson(list);
 	}
 
 	@POST
 	@Path("/shenxianSell/{stockId}/{date}")
 	@Produces("application/json")
-	public List<ShenXianUIVO> queryShenXianSellById(@PathParam("stockId") String stockIdParm,
+	public String queryShenXianSellById(@PathParam("stockId") String stockIdParm,
 			@PathParam("date") String dateParm, String postBody, @Context HttpServletResponse response) {
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 	
@@ -234,13 +237,13 @@ public class IndicatorEndPointV3 {
 			}
 		}
 
-		return flagsAnalyseHelper.shenXianBuySellFlagsAnalyse(spList, sxList, macdList, bbiList, luzaoList);
+		return gson.toJson(flagsAnalyseHelper.shenXianBuySellFlagsAnalyse(spList, sxList, macdList, bbiList, luzaoList));
 	}
 
 	@POST
 	@Path("/luzao/{stockId}/{date}")
 	@Produces("application/json")
-	public List<LuZaoVO> queryLuZaoById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
+	public String queryLuZaoById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
 			String postBody, @Context HttpServletResponse response) {
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		List<LuZaoVO> list = new ArrayList<LuZaoVO>();
@@ -260,13 +263,13 @@ public class IndicatorEndPointV3 {
 			}
 		}
 
-		return list;
+		return gson.toJson(list);
 	}
 
 	@POST
 	@Path("/qsdd/{stockId}/{date}")
 	@Produces("application/json")
-	public List<QSDDVO> queryQSDDById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
+	public String queryQSDDById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
 			String postBody, @Context HttpServletResponse response) {
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		List<QSDDVO> list = new ArrayList<QSDDVO>();
@@ -288,13 +291,13 @@ public class IndicatorEndPointV3 {
 			}
 		}
 
-		return list;
+		return gson.toJson(list);
 	}
 
 	@POST
 	@Path("/wr/{stockId}/{date}")
 	@Produces("application/json")
-	public List<WRVO> queryWRById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
+	public String queryWRById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
 			String postBody, @Context HttpServletResponse response) {
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		List<WRVO> list = new ArrayList<WRVO>();
@@ -317,6 +320,6 @@ public class IndicatorEndPointV3 {
 			}
 		}
 
-		return list;
+		return gson.toJson(list);
 	}
 }

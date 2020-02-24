@@ -20,6 +20,7 @@ import org.easystogu.trendmode.vo.TrendModeVO;
 import org.easystogu.utils.Strings;
 import org.easystogu.utils.WeekdayUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import com.google.gson.Gson;
 
 public class TrendModeEndPoint {
 	private ConfigurationService config = DBConfigurationService.getInstance();
@@ -27,16 +28,18 @@ public class TrendModeEndPoint {
 	@Autowired
 	private TrendModeLoader modeLoader;
 
+	private Gson gson = new Gson();
+	
 	@GET
 	@Path("/query/{name}")
 	@Produces("application/json")
-	public List<StockPriceVO> queryTrendModeByName(@PathParam("name") String name,
+	public String queryTrendModeByName(@PathParam("name") String name,
 			@Context HttpServletResponse response) {
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		List<StockPriceVO> spList = new ArrayList<StockPriceVO>();
 		TrendModeVO tmo = modeLoader.loadTrendMode(name);
 		if (tmo == null)
-			return spList;
+			return gson.toJson(spList);
 		List<String> nextWorkingDateList = WeekdayUtil.nextWorkingDateList(WeekdayUtil.currentDate(),
 				tmo.prices.size());
 		StockPriceVO curSPVO = StockPriceVO.createDefaulyVO();
@@ -55,14 +58,14 @@ public class TrendModeEndPoint {
 			spList.add(spvo);
 			curSPVO = spvo;
 		}
-		return spList;
+		return gson.toJson(spList);
 	}
 
 	@GET
 	@Path("/listnames")
 	@Produces("application/json")
-	public List<String> queryAllTrendModeNames(@Context HttpServletResponse response) {
+	public String queryAllTrendModeNames(@Context HttpServletResponse response) {
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
-		return modeLoader.getAllNames();
+		return gson.toJson(modeLoader.getAllNames());
 	}
 }

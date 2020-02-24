@@ -23,6 +23,7 @@ import org.easystogu.utils.WeekdayUtil;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import com.google.gson.Gson;
 
 //v3, with forecast data, query qian fuquan stockprice and count in real time
 public class PriceEndPointV3 {
@@ -34,10 +35,12 @@ public class PriceEndPointV3 {
 	@Autowired
 	protected TrendModeLoader trendModeLoader;
 
+	private Gson gson = new Gson();
+	
 	@POST
 	@Path("/{stockId}/{date}")
 	@Produces("application/json")
-	public List<StockPriceVO> queryDayPriceByIdWithForecastPrice(@PathParam("stockId") String stockIdParm,
+	public String queryDayPriceByIdWithForecastPrice(@PathParam("stockId") String stockIdParm,
 			@PathParam("date") String dateParm, String postBody, @Context HttpServletResponse response) {
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		List<StockPriceVO> rtnSpList = new ArrayList<StockPriceVO>();
@@ -49,6 +52,6 @@ public class PriceEndPointV3 {
 			}
 		}
 
-		return rtnSpList;
+		return gson.toJson(rtnSpList);
 	}
 }

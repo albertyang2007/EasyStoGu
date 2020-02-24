@@ -15,16 +15,19 @@ import org.easystogu.cache.XXXYuanStockStatisticsCache;
 import org.easystogu.db.vo.view.StatisticsViewVO;
 import org.easystogu.portal.util.MergeNDaysStatisticsHelper;
 import org.easystogu.portal.vo.StatisticsVO;
+import com.google.gson.Gson;
 
 public class XXXYuanStockStatisticsEndPoint {
 	private ConfigurationServiceCache config = ConfigurationServiceCache.getInstance();
 	private String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
 	private XXXYuanStockStatisticsCache stockStatisticsCache = XXXYuanStockStatisticsCache.getInstance();
 
+	private Gson gson = new Gson();
+	
 	@GET
 	@Path("/{howMuchYuan}")
 	@Produces("application/json")
-	public List<StatisticsVO> getLatestDate(@PathParam("howMuchYuan") String howMuchYuan,
+	public String getLatestDate(@PathParam("howMuchYuan") String howMuchYuan,
 			@Context HttpServletResponse response) {
 		List<StatisticsVO> rtnList = new ArrayList<StatisticsVO>();
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
@@ -37,6 +40,6 @@ public class XXXYuanStockStatisticsEndPoint {
 			svo.count1 = svvo.count;
 			rtnList.add(svo);
 		}
-		return MergeNDaysStatisticsHelper.mergeToMonthBased(rtnList);
+		return gson.toJson(MergeNDaysStatisticsHelper.mergeToMonthBased(rtnList));
 	}
 }

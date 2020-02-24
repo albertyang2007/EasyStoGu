@@ -34,6 +34,7 @@ import org.easystogu.portal.vo.ShenXianUIVO;
 import org.easystogu.utils.Strings;
 
 import com.google.common.primitives.Doubles;
+import com.google.gson.Gson;
 
 //V1, query indicator from DB, qian FuQuan (suggest to use this v1)
 public class IndicatorEndPointV1 {
@@ -56,18 +57,20 @@ public class IndicatorEndPointV1 {
 
 	protected String dateRegex = "[0-9]{4}-[0-9]{2}-[0-9]{2}";
 	protected String fromToRegex = dateRegex + "_" + dateRegex;
+	
+	private Gson gson = new Gson();
 
 	@GET
 	@Path("/macd/{stockId}/{date}")
 	@Produces("application/json")
-	public List<MacdVO> queryMACDById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
+	public String queryMACDById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
 			@Context HttpServletResponse response) {
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		List<MacdVO> list = new ArrayList<MacdVO>();
 		if (Pattern.matches(fromToRegex, dateParm)) {
 			String date1 = dateParm.split("_")[0];
 			String date2 = dateParm.split("_")[1];
-			return macdTable.getByIdAndBetweenDate(stockIdParm, date1, date2);
+			return gson.toJson(macdTable.getByIdAndBetweenDate(stockIdParm, date1, date2));
 			// List<Object> cacheSpList =
 			// indicatorCache.queryByStockId(Constants.cacheIndMacd + ":" +
 			// stockIdParm);
@@ -81,20 +84,20 @@ public class IndicatorEndPointV1 {
 		} else if (Pattern.matches(dateRegex, dateParm) || Strings.isEmpty(dateParm)) {
 			list.add((MacdVO) macdTable.getSingle(stockIdParm, dateParm));
 		}
-		return list;
+		return gson.toJson(list);
 	}
 
 	@GET
 	@Path("/kdj/{stockId}/{date}")
 	@Produces("application/json")
-	public List<KDJVO> queryKDJById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
+	public String queryKDJById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
 			@Context HttpServletResponse response) {
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		List<KDJVO> list = new ArrayList<KDJVO>();
 		if (Pattern.matches(fromToRegex, dateParm)) {
 			String date1 = dateParm.split("_")[0];
 			String date2 = dateParm.split("_")[1];
-			return kdjTable.getByIdAndBetweenDate(stockIdParm, date1, date2);
+			return gson.toJson(kdjTable.getByIdAndBetweenDate(stockIdParm, date1, date2));
 			// List<Object> cacheSpList =
 			// indicatorCache.queryByStockId(Constants.cacheIndKDJ + ":" +
 			// stockIdParm);
@@ -108,20 +111,20 @@ public class IndicatorEndPointV1 {
 		} else if (Pattern.matches(fromToRegex, dateParm) || Strings.isEmpty(dateParm)) {
 			list.add((KDJVO) kdjTable.getSingle(stockIdParm, dateParm));
 		}
-		return list;
+		return gson.toJson(list);
 	}
 
 	@GET
 	@Path("/boll/{stockId}/{date}")
 	@Produces("application/json")
-	public List<BollVO> queryBollById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
+	public String queryBollById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
 			@Context HttpServletResponse response) {
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		List<BollVO> list = new ArrayList<BollVO>();
 		if (Pattern.matches(fromToRegex, dateParm)) {
 			String date1 = dateParm.split("_")[0];
 			String date2 = dateParm.split("_")[1];
-			return bollTable.getByIdAndBetweenDate(stockIdParm, date1, date2);
+			return gson.toJson(bollTable.getByIdAndBetweenDate(stockIdParm, date1, date2));
 			// List<Object> cacheSpList =
 			// indicatorCache.queryByStockId(Constants.cacheIndBoll + ":" +
 			// stockIdParm);
@@ -135,21 +138,21 @@ public class IndicatorEndPointV1 {
 		} else if (Pattern.matches(dateRegex, dateParm) || Strings.isEmpty(dateParm)) {
 			list.add((BollVO) bollTable.getSingle(stockIdParm, dateParm));
 		}
-		return list;
+		return gson.toJson(list);
 	}
 
 	// fetch ind from db directly
 	@GET
 	@Path("/shenxian/{stockId}/{date}")
 	@Produces("application/json")
-	public List<ShenXianVO> queryShenXianById(@PathParam("stockId") String stockIdParm,
+	public String queryShenXianById(@PathParam("stockId") String stockIdParm,
 			@PathParam("date") String dateParm, @Context HttpServletResponse response) {
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		List<ShenXianVO> list = new ArrayList<ShenXianVO>();
 		if (Pattern.matches(fromToRegex, dateParm)) {
 			String date1 = dateParm.split("_")[0];
 			String date2 = dateParm.split("_")[1];
-			return shenXianTable.getByIdAndBetweenDate(stockIdParm, date1, date2);
+			return gson.toJson(shenXianTable.getByIdAndBetweenDate(stockIdParm, date1, date2));
 			// List<Object> cacheSpList =
 			// indicatorCache.queryByStockId(Constants.cacheIndShenXian + ":" +
 			// stockIdParm);
@@ -163,7 +166,7 @@ public class IndicatorEndPointV1 {
 		} else if (Pattern.matches(dateRegex, dateParm) || Strings.isEmpty(dateParm)) {
 			list.add((ShenXianVO) shenXianTable.getSingle(stockIdParm, dateParm));
 		}
-		return list;
+		return gson.toJson(list);
 	}
 
 	// since there is no table to store the HC5, just
@@ -171,7 +174,7 @@ public class IndicatorEndPointV1 {
 	@GET
 	@Path("/shenxianSell/{stockId}/{date}")
 	@Produces("application/json")
-	public List<ShenXianUIVO> queryShenXianSellById(@PathParam("stockId") String stockIdParm,
+	public String queryShenXianSellById(@PathParam("stockId") String stockIdParm,
 			@PathParam("date") String dateParm, @Context HttpServletResponse response) {
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 
@@ -195,13 +198,13 @@ public class IndicatorEndPointV1 {
 			}
 		}
 
-		return list;
+		return gson.toJson(list);
 	}
 
 	@GET
 	@Path("/luzao/{stockId}/{date}")
 	@Produces("application/json")
-	public List<LuZaoVO> queryLuZaoById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
+	public String queryLuZaoById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
 			@Context HttpServletResponse response) {
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		List<LuZaoVO> list = new ArrayList<LuZaoVO>();
@@ -220,20 +223,20 @@ public class IndicatorEndPointV1 {
 			}
 		}
 
-		return list;
+		return gson.toJson(list);
 	}
 
 	@GET
 	@Path("/qsdd/{stockId}/{date}")
 	@Produces("application/json")
-	public List<QSDDVO> queryQSDDById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
+	public String queryQSDDById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
 			@Context HttpServletResponse response) {
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		List<QSDDVO> list = new ArrayList<QSDDVO>();
 		if (Pattern.matches(fromToRegex, dateParm)) {
 			String date1 = dateParm.split("_")[0];
 			String date2 = dateParm.split("_")[1];
-			return qsddTable.getByIdAndBetweenDate(stockIdParm, date1, date2);
+			return gson.toJson(qsddTable.getByIdAndBetweenDate(stockIdParm, date1, date2));
 			// List<Object> cacheSpList =
 			// indicatorCache.queryByStockId(Constants.cacheIndQSDD + ":" +
 			// stockIdParm);
@@ -248,20 +251,20 @@ public class IndicatorEndPointV1 {
 			list.add((QSDDVO) qsddTable.getSingle(stockIdParm, dateParm));
 
 		}
-		return list;
+		return gson.toJson(list);
 	}
 
 	@GET
 	@Path("/wr/{stockId}/{date}")
 	@Produces("application/json")
-	public List<WRVO> queryWRById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
+	public String queryWRById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
 			@Context HttpServletResponse response) {
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		List<WRVO> list = new ArrayList<WRVO>();
 		if (Pattern.matches(fromToRegex, dateParm)) {
 			String date1 = dateParm.split("_")[0];
 			String date2 = dateParm.split("_")[1];
-			return wrTable.getByIdAndBetweenDate(stockIdParm, date1, date2);
+			return gson.toJson(wrTable.getByIdAndBetweenDate(stockIdParm, date1, date2));
 			// List<Object> cacheSpList =
 			// indicatorCache.queryByStockId(Constants.cacheIndWR + ":" +
 			// stockIdParm);
@@ -275,20 +278,20 @@ public class IndicatorEndPointV1 {
 		} else if (Pattern.matches(dateRegex, dateParm) || Strings.isEmpty(dateParm)) {
 			list.add((WRVO) wrTable.getSingle(stockIdParm, dateParm));
 		}
-		return list;
+		return gson.toJson(list);
 	}
 
 	@GET
 	@Path("/ddx/{stockId}/{date}")
 	@Produces("application/json")
-	public List<DDXVO> queryDDXById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
+	public String queryDDXById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
 			@Context HttpServletResponse response) {
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		List<DDXVO> list = new ArrayList<DDXVO>();
 		if (Pattern.matches(fromToRegex, dateParm)) {
 			String date1 = dateParm.split("_")[0];
 			String date2 = dateParm.split("_")[1];
-			return ddxTable.getByIdAndBetweenDate(stockIdParm, date1, date2);
+			return gson.toJson(ddxTable.getByIdAndBetweenDate(stockIdParm, date1, date2));
 			// List<Object> cacheSpList =
 			// indicatorCache.queryByStockId(Constants.cacheIndDDX + ":" +
 			// stockIdParm);
@@ -302,7 +305,7 @@ public class IndicatorEndPointV1 {
 		} else if (Pattern.matches(dateRegex, dateParm) || Strings.isEmpty(dateParm)) {
 			list.add(ddxTable.getDDX(stockIdParm, dateParm));
 		}
-		return list;
+		return gson.toJson(list);
 	}
 
 	// common function to fetch price from stockPrice table

@@ -19,6 +19,7 @@ import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.utils.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
+import com.google.gson.Gson;
 import org.easystogu.cache.StockIndicatorCache;
 import org.easystogu.cache.ConfigurationServiceCache;
 import org.easystogu.config.Constants;
@@ -35,11 +36,13 @@ public class PriceEndPointV0 {
 	protected ProcessRequestParmsInPostBody postParmsProcess;
 	protected String dateRegex = "[0-9]{4}-[0-9]{2}-[0-9]{2}";
 	protected String fromToRegex = dateRegex + "_" + dateRegex;
+	
+	private Gson gson = new Gson();
 
 	@GET
 	@Path("/{stockId}/{date}")
 	@Produces("application/json")
-	public List<StockPriceVO> queryDayPriceById(@PathParam("stockId") String stockIdParm,
+	public String queryDayPriceById(@PathParam("stockId") String stockIdParm,
 			@PathParam("date") String dateParm, @Context HttpServletResponse response) {
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 
@@ -59,6 +62,6 @@ public class PriceEndPointV0 {
 			spList.add(stockPriceTable.getStockPriceByIdAndDate(stockIdParm, dateParm));
 		}
 
-		return spList;
+		return gson.toJson(spList);
 	}
 }

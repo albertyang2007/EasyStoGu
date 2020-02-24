@@ -23,6 +23,7 @@ import org.easystogu.cache.CheckPointDailySelectionTableCache;
 import org.easystogu.cache.CommonViewCache;
 import org.easystogu.cache.ConfigurationServiceCache;
 import org.slf4j.Logger;
+import com.google.gson.Gson;
 
 public class ViewEndPoint {
 	private ConfigurationServiceCache config = ConfigurationServiceCache.getInstance();
@@ -33,11 +34,13 @@ public class ViewEndPoint {
 			.getInstance();
 	protected StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
 	private CommonViewCache commonViewCache = CommonViewCache.getInstance();
+	
+	private Gson gson = new Gson();
 
 	@GET
 	@Path("/{viewname}")
 	@Produces("application/json")
-	public List<CommonViewVO> queryDayPriceByIdFromAnalyseViewAtRealTime(@PathParam("viewname") String viewname,
+	public String queryDayPriceByIdFromAnalyseViewAtRealTime(@PathParam("viewname") String viewname,
 			@Context HttpServletRequest request, @Context HttpServletResponse response) {
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		String date = request.getParameter("date");
@@ -51,7 +54,7 @@ public class ViewEndPoint {
 			List<CommonViewVO> list = this.commonViewCache
 					.queryByDateForViewDirectlySearch(date, searchViewName);
 
-			return this.fliterCiXinGu(cixin, list);
+			return gson.toJson(this.fliterCiXinGu(cixin, list));
 		}
 
 		// else get result for checkpoint data, since they are analyse daily and
@@ -69,7 +72,7 @@ public class ViewEndPoint {
 			list.add(cvo);
 		}
 
-		return this.fliterCiXinGu(cixin, list);
+		return gson.toJson(this.fliterCiXinGu(cixin, list));
 	}
 
 	// fliter cixin

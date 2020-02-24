@@ -19,6 +19,7 @@ import org.easystogu.config.Constants;
 import org.easystogu.db.vo.table.CheckPointDailyStatisticsVO;
 import org.easystogu.portal.vo.StatisticsVO;
 import org.easystogu.utils.WeekdayUtil;
+import com.google.gson.Gson;
 
 public class CheckPointStatisticsEndPoint {
 	private ConfigurationServiceCache config = ConfigurationServiceCache.getInstance();
@@ -32,11 +33,13 @@ public class CheckPointStatisticsEndPoint {
 	private StockPriceCache stockPriceCache = StockPriceCache.getInstance();
 	private String dateRegex = "[0-9]{4}-[0-9]{2}-[0-9]{2}";
 	private String fromToRegex = dateRegex + "_" + dateRegex;
+	
+	private Gson gson = new Gson();
 
 	@GET
 	@Path("/luzao/trend/{date}")
 	@Produces("application/json")
-	public List<StatisticsVO> queryLuZaoTrendStatistics(@PathParam("date") String dateParm,
+	public String queryLuZaoTrendStatistics(@PathParam("date") String dateParm,
 			@Context HttpServletResponse response) {
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		List<StatisticsVO> list = new ArrayList<StatisticsVO>();
@@ -62,13 +65,13 @@ public class CheckPointStatisticsEndPoint {
 			}
 		}
 
-		return list;
+		return gson.toJson(list);
 	}
 
 	@GET
 	@Path("/luzao/gordon/{date}")
 	@Produces("application/json")
-	public List<StatisticsVO> queryLuZaoGordonStatistics(@PathParam("date") String dateParm,
+	public String queryLuZaoGordonStatistics(@PathParam("date") String dateParm,
 			@Context HttpServletResponse response) {
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		List<StatisticsVO> list = new ArrayList<StatisticsVO>();
@@ -101,13 +104,13 @@ public class CheckPointStatisticsEndPoint {
 			}
 		}
 
-		return list;
+		return gson.toJson(list);
 	}
 
 	@GET
 	@Path("/qsdd/{date}")
 	@Produces("application/json")
-	public List<StatisticsVO> queryQsddStatistics(@PathParam("date") String dateParm,
+	public String queryQsddStatistics(@PathParam("date") String dateParm,
 			@Context HttpServletResponse response) {
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		List<StatisticsVO> list = new ArrayList<StatisticsVO>();
@@ -133,13 +136,13 @@ public class CheckPointStatisticsEndPoint {
 			}
 		}
 
-		return list;
+		return gson.toJson(list);
 	}
 
 	@GET
 	@Path("/shenxian/{date}")
 	@Produces("application/json")
-	public List<StatisticsVO> queryShenXianStatistics(@PathParam("date") String dateParm,
+	public String queryShenXianStatistics(@PathParam("date") String dateParm,
 			@Context HttpServletResponse response) {
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		List<StatisticsVO> list = new ArrayList<StatisticsVO>();
@@ -164,13 +167,13 @@ public class CheckPointStatisticsEndPoint {
 			}
 		}
 
-		return list;
+		return gson.toJson(list);
 	}
 
 	@GET
 	@Path("/macd/{date}")
 	@Produces("application/json")
-	public List<StatisticsVO> queryMACDStatistics(@PathParam("date") String dateParm,
+	public String queryMACDStatistics(@PathParam("date") String dateParm,
 			@Context HttpServletResponse response) {
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		List<StatisticsVO> list = new ArrayList<StatisticsVO>();
@@ -195,13 +198,13 @@ public class CheckPointStatisticsEndPoint {
 			}
 		}
 
-		return list;
+		return gson.toJson(list);
 	}
 	
 	@GET
 	@Path("/magic9day/{date}")
 	@Produces("application/json")
-	public List<StatisticsVO> queryMagic9DayStatistics(@PathParam("date") String dateParm,
+	public String queryMagic9DayStatistics(@PathParam("date") String dateParm,
 			@Context HttpServletResponse response) {
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		List<StatisticsVO> list = new ArrayList<StatisticsVO>();
@@ -226,14 +229,14 @@ public class CheckPointStatisticsEndPoint {
 			}
 		}
 
-		return list;
+		return gson.toJson(list);
 	}
 
 
 	@GET
 	@Path("/wr/{date}")
 	@Produces("application/json")
-	public List<StatisticsVO> queryWRStatistics(@PathParam("date") String dateParm,
+	public String queryWRStatistics(@PathParam("date") String dateParm,
 			@Context HttpServletResponse response) {
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		List<StatisticsVO> list = new ArrayList<StatisticsVO>();
@@ -259,13 +262,13 @@ public class CheckPointStatisticsEndPoint {
 			}
 		}
 
-		return list;
+		return gson.toJson(list);
 	}
 
 	@GET
 	@Path("/sameDigitsInHighPrice/{date}")
 	@Produces("application/json")
-	public List<StatisticsVO> querySameDigitsInHighPriceStatistics(@PathParam("date") String dateParm,
+	public String querySameDigitsInHighPriceStatistics(@PathParam("date") String dateParm,
 			@Context HttpServletResponse response) {
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		List<StatisticsVO> list = new ArrayList<StatisticsVO>();
@@ -292,7 +295,7 @@ public class CheckPointStatisticsEndPoint {
 			}
 		}
 
-		return list;
+		return gson.toJson(list);
 	}
 
 	private boolean isDateInDealDate(List<String> allDealDateList, String adate) {

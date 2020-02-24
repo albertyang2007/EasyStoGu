@@ -40,6 +40,7 @@ import org.easystogu.portal.vo.ShenXianUIVO;
 import org.easystogu.utils.Strings;
 
 import com.google.common.primitives.Doubles;
+import com.google.gson.Gson;
 
 //V0, query stockprice (no chuquan) and count in real time
 public class IndicatorEndPointV0 {
@@ -58,11 +59,13 @@ public class IndicatorEndPointV0 {
 	protected IndDDXTableHelper ddxTable = IndDDXTableHelper.getInstance();
 	protected String dateRegex = "[0-9]{4}-[0-9]{2}-[0-9]{2}";
 	protected String fromToRegex = dateRegex + "_" + dateRegex;
+	
+	private Gson gson = new Gson();
 
 	@GET
 	@Path("/macd/{stockId}/{date}")
 	@Produces("application/json")
-	public List<MacdVO> queryMACDById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
+	public String queryMACDById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
 			@Context HttpServletResponse response) {
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		List<MacdVO> list = new ArrayList<MacdVO>();
@@ -80,13 +83,13 @@ public class IndicatorEndPointV0 {
 				list.add(vo);
 			}
 		}
-		return list;
+		return gson.toJson(list);
 	}
 
 	@GET
 	@Path("/kdj/{stockId}/{date}")
 	@Produces("application/json")
-	public List<KDJVO> queryKDJById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
+	public String queryKDJById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
 			@Context HttpServletResponse response) {
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		List<KDJVO> list = new ArrayList<KDJVO>();
@@ -107,13 +110,13 @@ public class IndicatorEndPointV0 {
 				list.add(vo);
 			}
 		}
-		return list;
+		return gson.toJson(list);
 	}
 
 	@GET
 	@Path("/boll/{stockId}/{date}")
 	@Produces("application/json")
-	public List<BollVO> queryBollById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
+	public String queryBollById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
 			@Context HttpServletResponse response) {
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		List<BollVO> list = new ArrayList<BollVO>();
@@ -132,13 +135,13 @@ public class IndicatorEndPointV0 {
 			}
 		}
 
-		return list;
+		return gson.toJson(list);
 	}
 
 	@GET
 	@Path("/shenxian/{stockId}/{date}")
 	@Produces("application/json")
-	public List<ShenXianVO> queryShenXianById(@PathParam("stockId") String stockIdParm,
+	public String queryShenXianById(@PathParam("stockId") String stockIdParm,
 			@PathParam("date") String dateParm, @Context HttpServletResponse response) {
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		List<ShenXianVO> list = new ArrayList<ShenXianVO>();
@@ -157,14 +160,14 @@ public class IndicatorEndPointV0 {
 			}
 		}
 
-		return list;
+		return gson.toJson(list);
 	}
 
 	// h3 is replaced by HC5
 	@GET
 	@Path("/shenxianSell/{stockId}/{date}")
 	@Produces("application/json")
-	public List<ShenXianUIVO> queryShenXianSellById(@PathParam("stockId") String stockIdParm,
+	public String queryShenXianSellById(@PathParam("stockId") String stockIdParm,
 			@PathParam("date") String dateParm, @Context HttpServletResponse response) {
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		List<ShenXianUIVO> list = new ArrayList<ShenXianUIVO>();
@@ -187,13 +190,13 @@ public class IndicatorEndPointV0 {
 			}
 		}
 
-		return list;
+		return gson.toJson(list);
 	}
 
 	@GET
 	@Path("/luzao/{stockId}/{date}")
 	@Produces("application/json")
-	public List<LuZaoVO> queryLuZaoById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
+	public String queryLuZaoById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
 			@Context HttpServletResponse response) {
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		List<LuZaoVO> list = new ArrayList<LuZaoVO>();
@@ -212,13 +215,13 @@ public class IndicatorEndPointV0 {
 			}
 		}
 
-		return list;
+		return gson.toJson(list);
 	}
 
 	@GET
 	@Path("/qsdd/{stockId}/{date}")
 	@Produces("application/json")
-	public List<QSDDVO> queryQSDDById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
+	public String queryQSDDById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
 			@Context HttpServletResponse response) {
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		List<QSDDVO> list = new ArrayList<QSDDVO>();
@@ -239,13 +242,13 @@ public class IndicatorEndPointV0 {
 			}
 		}
 
-		return list;
+		return gson.toJson(list);
 	}
 
 	@GET
 	@Path("/wr/{stockId}/{date}")
 	@Produces("application/json")
-	public List<WRVO> queryWRById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
+	public String queryWRById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
 			@Context HttpServletResponse response) {
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		List<WRVO> list = new ArrayList<WRVO>();
@@ -267,20 +270,20 @@ public class IndicatorEndPointV0 {
 			}
 		}
 
-		return list;
+		return gson.toJson(list);
 	}
 
 	@GET
 	@Path("/ddx/{stockId}/{date}")
 	@Produces("application/json")
-	public List<DDXVO> queryDDXById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
+	public String queryDDXById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
 			@Context HttpServletResponse response) {
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		List<DDXVO> list = new ArrayList<DDXVO>();
 		if (Pattern.matches(fromToRegex, dateParm)) {
 			String date1 = dateParm.split("_")[0];
 			String date2 = dateParm.split("_")[1];
-			return ddxTable.getByIdAndBetweenDate(stockIdParm, date1, date2);
+			return gson.toJson(ddxTable.getByIdAndBetweenDate(stockIdParm, date1, date2));
 			// List<Object> cacheSpList =
 			// indicatorCache.queryByStockId(Constants.cacheIndDDX + ":" +
 			// stockIdParm);
@@ -294,7 +297,7 @@ public class IndicatorEndPointV0 {
 		} else if (Pattern.matches(dateRegex, dateParm) || Strings.isEmpty(dateParm)) {
 			list.add(ddxTable.getDDX(stockIdParm, dateParm));
 		}
-		return list;
+		return gson.toJson(list);
 	}
 
 	// common function to fetch price from stockPrice table
