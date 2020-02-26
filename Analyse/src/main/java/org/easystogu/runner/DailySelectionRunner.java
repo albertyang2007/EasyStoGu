@@ -125,6 +125,10 @@ public class DailySelectionRunner implements Runnable {
       int weekListLen = overWeekList.size();
       if (weekListLen >= 24)
         overWeekList = overWeekList.subList(weekListLen - 24, weekListLen);
+      
+      if(overWeekList.size() == 0 ) {
+        return;
+      }
 
       // so must reverse in date order
       // Collections.reverse(overDayList);
@@ -143,7 +147,7 @@ public class DailySelectionRunner implements Runnable {
       }
 
       // exclude ting pai
-      if (!superVO.priceVO.date.equals(latestDate)) {
+      if (checkDayPriceEqualWeekPrice && !superVO.priceVO.date.equals(latestDate)) {
         System.out.println(stockId + " priveVO date (" + superVO.priceVO.date
             + " ) is not equal latestDate (" + latestDate + ")");
         return;
