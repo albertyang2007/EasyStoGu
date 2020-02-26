@@ -421,6 +421,7 @@ public class HistoryAnalyseReport {
 
 	public void countAllStockIdAnalyseHistoryBuySellCheckPoint(int cpuIndex) {
 	   if(cpuIndex == 2) {
+	     //general_CheckPoint
 		searchAllStockIdAnalyseHistoryBuySellCheckPoint(DailyCombineCheckPoint.Trend_PhaseI_GuanCha);
 		searchAllStockIdAnalyseHistoryBuySellCheckPoint(DailyCombineCheckPoint.Trend_PhaseII_JianCang);
 		searchAllStockIdAnalyseHistoryBuySellCheckPoint(DailyCombineCheckPoint.Trend_PhaseIII_ChiGu);
@@ -433,9 +434,10 @@ public class HistoryAnalyseReport {
 		searchAllStockIdAnalyseHistoryBuySellCheckPoint(DailyCombineCheckPoint.LuZao_GordonO_MA43_DownCross_MA86);
 		searchAllStockIdAnalyseHistoryBuySellCheckPoint(DailyCombineCheckPoint.LuZao_GordonI_MA19_UpCross_MA43);
 		searchAllStockIdAnalyseHistoryBuySellCheckPoint(DailyCombineCheckPoint.LuZao_GordonII_MA19_UpCross_MA86);
-		searchAllStockIdAnalyseHistoryBuySellCheckPoint(DailyCombineCheckPoint.LuZao_DeadI_MA43_UpCross_MA86);
 		System.out.println("countAllStockIdAnalyseHistoryBuySellCheckPoint cpuIndex=2 complate");
 	   }else if(cpuIndex == 3){
+	     //general_CheckPoint
+	    searchAllStockIdAnalyseHistoryBuySellCheckPoint(DailyCombineCheckPoint.LuZao_DeadI_MA43_UpCross_MA86);
 		searchAllStockIdAnalyseHistoryBuySellCheckPoint(DailyCombineCheckPoint.LuZao_DeadII_MA19_DownCross_MA43);
 
 		searchAllStockIdAnalyseHistoryBuySellCheckPoint(DailyCombineCheckPoint.ShenXian_Gordon);
@@ -448,7 +450,16 @@ public class HistoryAnalyseReport {
 		searchAllStockIdAnalyseHistoryBuySellCheckPoint(DailyCombineCheckPoint.WR_Top_Area);
 		searchAllStockIdAnalyseHistoryBuySellCheckPoint(DailyCombineCheckPoint.WR_Bottom_Gordon);
 		System.out.println("countAllStockIdAnalyseHistoryBuySellCheckPoint cpuIndex=3 complate");
-	   }else {
+	   } else if(cpuIndex == 4) {
+	     //specify_Select_CheckPoint
+	     searchAllStockIdAnalyseHistoryBuySellCheckPoint(DailyCombineCheckPoint.LuZao_PhaseII_MACD_WEEK_GORDON_MACD_DAY_DIF_CROSS_0);
+	     searchAllStockIdAnalyseHistoryBuySellCheckPoint(DailyCombineCheckPoint.LuZao_PhaseIII_MACD_WEEK_GORDON_MACD_DAY_DIF_CROSS_0);
+	     searchAllStockIdAnalyseHistoryBuySellCheckPoint(DailyCombineCheckPoint.LuZao_PhaseII_MACD_WEEK_GORDON_KDJ_WEEK_GORDON);
+	     searchAllStockIdAnalyseHistoryBuySellCheckPoint(DailyCombineCheckPoint.LuZao_PhaseIII_MACD_WEEK_GORDON_KDJ_WEEK_GORDON);
+	     searchAllStockIdAnalyseHistoryBuySellCheckPoint(DailyCombineCheckPoint.MACD_TWICE_GORDON_W_Botton_MACD_DI_BEILI);
+	     searchAllStockIdAnalyseHistoryBuySellCheckPoint(DailyCombineCheckPoint.MACD_TWICE_GORDON_W_Botton_TiaoKong_ZhanShang_Bull);
+	     System.out.println("countAllStockIdAnalyseHistoryBuySellCheckPoint cpuIndex=4 complate");
+	   } else {
 	     System.out.println("countAllStockIdAnalyseHistoryBuySellCheckPoint unknown cpuIndex=" + cpuIndex);
 	   }
 	}
@@ -467,9 +478,9 @@ public class HistoryAnalyseReport {
 		searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.LuZao_GordonO_MA43_DownCross_MA86);
 		searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.LuZao_GordonI_MA19_UpCross_MA43);
 		searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.LuZao_GordonII_MA19_UpCross_MA86);
-		searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.LuZao_DeadI_MA43_UpCross_MA86);
 		System.out.println("countAllStockIdStatisticsCheckPoint cpuIndex=0 complate");
 	  }else if(cpuIndex == 1) {
+	    searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.LuZao_DeadI_MA43_UpCross_MA86);
 		searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.LuZao_DeadII_MA19_DownCross_MA43);
 
 		searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.ShenXian_Gordon);

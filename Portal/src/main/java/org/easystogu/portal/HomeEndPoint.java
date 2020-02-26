@@ -25,6 +25,7 @@ import org.easystogu.runner.DailyUpdateAllStockRunner;
 import org.easystogu.runner.DailyUpdateStockPriceAndIndicatorRunner;
 import org.easystogu.runner.DailyViewAnalyseRunner;
 import org.easystogu.runner.DataBaseSanityCheck;
+import org.easystogu.runner.HistoryDailySelectionRunner;
 import org.easystogu.runner.RecentlySelectionRunner;
 import org.easystogu.runner.dynamic.taskIF.DynamicRunner;
 import org.easystogu.sina.runner.DailyStockPriceDownloadAndStoreDBRunner2;
@@ -372,13 +373,14 @@ public class HomeEndPoint {
   public String test0() {
     Thread t = new Thread(new Runnable() {
       public void run() {
-        HistoryAnalyseReport reporter = new HistoryAnalyseReport();
-        reporter.countAllStockIdStatisticsCheckPoint(0);
+        HistoryDailySelectionRunner runner = new HistoryDailySelectionRunner();
+        //cpuIndex: 0,1,2,3
+        runner.runTask(0);
       }
     });
     t.start();
     
-    return "start countAllStockIdStatisticsCheckPoint 0";
+    return "start HistoryDailySelectionRunner 0";
   }
   
   @GET
@@ -386,13 +388,14 @@ public class HomeEndPoint {
   public String test1() {
     Thread t = new Thread(new Runnable() {
       public void run() {
-        HistoryAnalyseReport reporter = new HistoryAnalyseReport();
-        reporter.countAllStockIdStatisticsCheckPoint(1);
+        HistoryDailySelectionRunner runner = new HistoryDailySelectionRunner();
+        //cpuIndex: 0,1,2,3
+        runner.runTask(1);
       }
     });
     t.start();
     
-    return "start countAllStockIdStatisticsCheckPoint 1";
+    return "start HistoryDailySelectionRunner 1";
   }
   
   @GET
@@ -400,13 +403,14 @@ public class HomeEndPoint {
   public String test2() {
     Thread t = new Thread(new Runnable() {
       public void run() {
-        HistoryAnalyseReport reporter = new HistoryAnalyseReport();
-        reporter.countAllStockIdAnalyseHistoryBuySellCheckPoint(2);
+        HistoryDailySelectionRunner runner = new HistoryDailySelectionRunner();
+        //cpuIndex: 0,1,2,3
+        runner.runTask(2);
       }
     });
     t.start();
     
-    return "start countAllStockIdAnalyseHistoryBuySellCheckPoint 2";
+    return "start HistoryDailySelectionRunner 2";
   }
   
   @GET
@@ -414,12 +418,13 @@ public class HomeEndPoint {
   public String test3() {
     Thread t = new Thread(new Runnable() {
       public void run() {
-        HistoryAnalyseReport reporter = new HistoryAnalyseReport();
-        reporter.countAllStockIdAnalyseHistoryBuySellCheckPoint(3);
+        HistoryDailySelectionRunner runner = new HistoryDailySelectionRunner();
+        //cpuIndex: 0,1,2,3
+        runner.runTask(3);
       }
     });
     t.start();
     
-    return "start countAllStockIdAnalyseHistoryBuySellCheckPoint 3";
+    return "start HistoryDailySelectionRunner 3";
   }
 }
