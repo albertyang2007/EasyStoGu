@@ -44,7 +44,7 @@ public enum DailyCombineCheckPoint {
             SellPointType.KDJ_Dead, 0, 99.0), Trend_PhaseIII_ChiGu(SellPointType.KDJ_Dead, 0, 99.0), Trend_PhaseVI_JianCang(
             SellPointType.KDJ_Dead, 0, 99.0), LuZao_GordonO_MA43_DownCross_MA86(SellPointType.KDJ_Dead, 0, 99.0), LuZao_GordonI_MA19_UpCross_MA43(
             SellPointType.KDJ_Dead, 0, 99.0), LuZao_GordonII_MA19_UpCross_MA86(SellPointType.KDJ_Dead, 0, 99.0), LuZao_DeadI_MA43_UpCross_MA86(
-            SellPointType.KDJ_Dead, 0, 99.0), LuZao_DeadII_MA19_DownCross_MA43(SellPointType.KDJ_Dead, 0, 99.0), QSDD_Top_Area(
+            SellPointType.KDJ_Dead, 0, 99.0), LuZao_DeadII_MA19_DownCross_MA43(SellPointType.KDJ_Dead, 0, 99.0), LuZao_DeadIII_MA43_DownCross_MA86(SellPointType.KDJ_Dead, 0, 99.0),QSDD_Top_Area(
             SellPointType.KDJ_Dead, 0, 99.0), QSDD_Bottom_Area(SellPointType.KDJ_Dead, 11848, 10.8), QSDD_Bottom_Gordon(
             SellPointType.KDJ_Dead, 5055, 12.0), WR_Bottom_Area(SellPointType.KDJ_Dead, 0, 0), WR_Bottom_Gordon(
             SellPointType.KDJ_Dead, 74303, 9.56),WR_Top_Area(SellPointType.KDJ_Dead, 0, 0),WR_Ready_To_ZhangTing(SellPointType.KDJ_Dead, 0, 0), 

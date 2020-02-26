@@ -1295,6 +1295,7 @@ public class CombineAnalyseHelper {
 			break;
 		}
 
+		//三山重叠 
 		// ma19>ma43, ma19>ma86 ma43 up corss ma86
 		case LuZao_DeadI_MA43_UpCross_MA86: {
 			if (curSuperDayVO.avgMA19 > curSuperDayVO.avgMA43 && curSuperDayVO.avgMA19 > curSuperDayVO.avgMA86) {
@@ -1305,6 +1306,7 @@ public class CombineAnalyseHelper {
 			break;
 		}
 
+		//跌倒山腰
 		// ma86<ma19, ma86<ma43, ma19 downcross ma43
 		case LuZao_DeadII_MA19_DownCross_MA43: {
 			if (curSuperDayVO.avgMA86 < curSuperDayVO.avgMA19 && curSuperDayVO.avgMA86 < curSuperDayVO.avgMA43) {
@@ -1314,6 +1316,17 @@ public class CombineAnalyseHelper {
 			}
 			break;
 		}
+		
+		//跌倒山脚
+		//MA43 <= MA86
+        case LuZao_DeadIII_MA43_DownCross_MA86: {
+          if (curSuperDayVO.avgMA86 < curSuperDayVO.avgMA19 && curSuperDayVO.avgMA86 < curSuperDayVO.avgMA43) {
+              if (curSuperDayVO.avgMA43 < curSuperDayVO.avgMA86 && pre1SuperDayVO.avgMA43 >= pre1SuperDayVO.avgMA86) {
+                return true;
+              }
+          }
+          break;
+        }		
 
 		// qsdd top
 		case QSDD_Top_Area: {

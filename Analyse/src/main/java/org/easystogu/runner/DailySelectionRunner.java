@@ -16,6 +16,7 @@ import org.easystogu.config.ConfigurationService;
 import org.easystogu.config.DBConfigurationService;
 import org.easystogu.db.access.table.CheckPointDailySelectionTableHelper;
 import org.easystogu.db.access.table.CheckPointDailyStatisticsTableHelper;
+import org.easystogu.db.access.table.FavoritesStockHelper;
 import org.easystogu.db.access.table.ScheduleActionTableHelper;
 import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.access.table.StockSuperVOHelper;
@@ -75,6 +76,7 @@ public class DailySelectionRunner implements Runnable {
   private boolean fetchRealTimeZiJinLiu = false;
 
   // below are for daily and history
+  protected FavoritesStockHelper favoritesStockHelper = FavoritesStockHelper.getInstance();
   protected CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
   protected StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
   protected String latestDate = stockPriceTable.getLatestStockDate();
@@ -126,7 +128,7 @@ public class DailySelectionRunner implements Runnable {
       if (weekListLen >= 24)
         overWeekList = overWeekList.subList(weekListLen - 24, weekListLen);
       
-      if(overWeekList.size() == 0 ) {
+      if(overWeekList.size() == 0 || overDayList.size() == 0) {
         return;
       }
 
@@ -147,7 +149,7 @@ public class DailySelectionRunner implements Runnable {
       }
 
       // exclude ting pai
-      if (checkDayPriceEqualWeekPrice && !superVO.priceVO.date.equals(latestDate)) {
+      if (!superVO.priceVO.date.equals(latestDate)) {
         System.out.println(stockId + " priveVO date (" + superVO.priceVO.date
             + " ) is not equal latestDate (" + latestDate + ")");
         return;
@@ -160,7 +162,7 @@ public class DailySelectionRunner implements Runnable {
           if (combineAnalyserHelper.isConditionSatisfy(checkPoint, overDayList, overWeekList)) {
             this.setZiJinLiuVO(superVO);
             this.saveToCheckPointSelectionDB(superVO, checkPoint);
-            // this.addToConditionMapForReportDisplay(superVO, checkPoint);
+            //this.addToConditionMapForReportDisplay(superVO, checkPoint);
           }
         } else if (this.isDependCheckPoint(checkPoint)) {
           if (combineAnalyserHelper.isConditionSatisfy(checkPoint, overDayList, overWeekList)) {
@@ -176,7 +178,7 @@ public class DailySelectionRunner implements Runnable {
               String lastNDate = stockPriceTable.getLastNDate(stockId, 10);
               if (latestCheckPointSelection.date.compareTo(lastNDate) >= 0) {
                 this.saveToCheckPointSelectionDB(superVO, checkPoint);
-                // this.addToConditionMapForReportDisplay(superVO, checkPoint);
+                //this.addToConditionMapForReportDisplay(superVO, checkPoint);
               }
             }
           }
@@ -187,12 +189,27 @@ public class DailySelectionRunner implements Runnable {
             // display
             if (checkPoint.compareTo(DailyCombineCheckPoint.QSDD_Bottom_Area) == 0
                 || checkPoint.compareTo(DailyCombineCheckPoint.QSDD_Bottom_Gordon) == 0
+                || checkPoint.compareTo(DailyCombineCheckPoint.QSDD_Top_Area) == 0//add to DB? more top area
                 || checkPoint.compareTo(DailyCombineCheckPoint.WR_Bottom_Area) == 0
-                || checkPoint.compareTo(DailyCombineCheckPoint.WR_Bottom_Gordon) == 0) {
+                || checkPoint.compareTo(DailyCombineCheckPoint.WR_Bottom_Gordon) == 0
+                || checkPoint.compareTo(DailyCombineCheckPoint.WR_Top_Area) == 0//add to DB? more top area
+                || checkPoint.compareTo(DailyCombineCheckPoint.LuZao_GordonO_MA43_DownCross_MA86) == 0
+                || checkPoint.compareTo(DailyCombineCheckPoint.LuZao_GordonI_MA19_UpCross_MA43) == 0
+                || checkPoint.compareTo(DailyCombineCheckPoint.LuZao_GordonII_MA19_UpCross_MA86) == 0
+                || checkPoint.compareTo(DailyCombineCheckPoint.LuZao_DeadI_MA43_UpCross_MA86) == 0
+                || checkPoint.compareTo(DailyCombineCheckPoint.LuZao_DeadII_MA19_DownCross_MA43) == 0
+                || checkPoint.compareTo(DailyCombineCheckPoint.LuZao_DeadIII_MA43_DownCross_MA86) == 0
+                || checkPoint.compareTo(DailyCombineCheckPoint.ShenXian_Gordon) == 0
+                || checkPoint.compareTo(DailyCombineCheckPoint.ShenXian_Dead) == 0
+                || checkPoint.compareTo(DailyCombineCheckPoint.MACD_Gordon) == 0
+                || checkPoint.compareTo(DailyCombineCheckPoint.MACD_Dead) == 0            
+                || checkPoint.compareTo(DailyCombineCheckPoint.WR_DI_BeiLi) == 0
+                || checkPoint.compareTo(DailyCombineCheckPoint.MAGIC_NIGHT_DAYS_SHANG_ZHANG) == 0
+                || checkPoint.compareTo(DailyCombineCheckPoint.MAGIC_NIGHT_DAYS_XIA_DIE) == 0) {
               this.saveToCheckPointSelectionDB(superVO, checkPoint);
-              // this.addToConditionMapForReportDisplay(superVO, checkPoint);
+              //this.addToConditionMapForReportDisplay(superVO, checkPoint);
             }
-            // this.addToGeneralCheckPointGordonMap(checkPoint, stockId);
+            this.addToGeneralCheckPointGordonMap(checkPoint, stockId);
           }
         }
       }
@@ -487,9 +504,9 @@ public class DailySelectionRunner implements Runnable {
       doAnalyse(stockId);
     }
 
-    // reportSelectedStockIds();
-    // reportSelectedHistoryReport();
-    // addGeneralCheckPointStatisticsResultToDB();
+    //reportSelectedStockIds();
+    //reportSelectedHistoryReport();
+    //addGeneralCheckPointStatisticsResultToDB();
   }
 
   public void run() {
