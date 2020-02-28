@@ -3,9 +3,10 @@ package org.easystogu.runner;
 import java.util.ArrayList;
 import java.util.List;
 import org.easystogu.db.vo.view.FavoritesStockVO;
+import org.easystogu.utils.Strings;
 
 // DailySelectionRunner is only run for today, so this job is to go back to
-// history and run then save into checkpoint_daily_selection
+// history and run favorites stockId (not all stockIds) then save into checkpoint_daily_selection
 public class HistoryDailySelectionRunner extends DailySelectionRunner {
   public void runTask(int cpuIndex) {
     System.out.println("HistoryDailySelectionRunner for cpuIndex:" + cpuIndex);
@@ -16,6 +17,8 @@ public class HistoryDailySelectionRunner extends DailySelectionRunner {
     //System.out.println(dates.get(dates.size() - 1));//first day of stock: 1990-12-19
     //System.out.println(dates.get(0));//current day of stock
     
+    //not count all the stockId since it will cause huge time
+    //so just count the favorites stockId
     //List<String> stockIds = runner.stockConfig.getAllStockId();
     List<FavoritesStockVO> favoritesStockIds = runner.favoritesStockHelper.getByUserId("admin");
     
@@ -33,8 +36,9 @@ public class HistoryDailySelectionRunner extends DailySelectionRunner {
     
     //
     for(int index = 0; index < sudDateGroups.size(); index++) {
-      System.out.println("Process of data:" + sudDateGroups.get(index));
-      new DailySelectionRunner().runForDate(sudDateGroups.get(index), stockIds);
+      String date = sudDateGroups.get(index);
+      System.out.println("Process of data:" + date);
+      new DailySelectionRunner().runForDate(date, stockIds);
     }
     System.out.println("HistoryDailySelectionRunner Complete for cpuIndex:" + cpuIndex);
   }

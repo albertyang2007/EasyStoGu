@@ -53,6 +53,17 @@ public class HouFuQuanStockPriceTableHelper extends StockPriceTableHelper {
 		// kdj used this: High(n)
 		SELECT_HIGH_N_PRICE_SQL = "SELECT max(high) AS rtn from (SELECT high FROM " + tableName
 				+ " WHERE stockId = :stockId ORDER BY date DESC LIMIT :limit) AS myhighn";
+		
+		//AI use this High(n) with date start from
+		SELECT_HIGH_N_PRICE_START_DATA_SQL = "SELECT max(high) AS rtn from (SELECT high FROM "
+		      + tableName + " WHERE stockId = :stockId AND date > :startDate LIMIT :limit) AS myhighn";
+		//AI use this Low(n) with date start from
+		SELECT_LOW_N_PRICE_START_DATA_SQL = "SELECT min(low) AS rtn from (SELECT low FROM "
+		      + tableName + " WHERE stockId = :stockId AND date > :startDate LIMIT :limit) AS mylown";
+		//AI use this Close(n) with date start from
+		SELECT_CLOSE_N_PRICE_START_DATA_SQL = "SELECT min(close) AS rtn from (SELECT close FROM "
+		      + tableName + " WHERE stockId = :stockId AND date > :startDate LIMIT :limit) AS myclose";
+		
 		// query price by Id and date
 		QUERY_BY_STOCKID_DATE_SQL = "SELECT * FROM " + tableName + " WHERE stockId = :stockId AND date = :date";
 		// query the last date
