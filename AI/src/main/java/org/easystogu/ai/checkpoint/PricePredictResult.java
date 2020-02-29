@@ -4,16 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public enum PricePredictResult {
-  //in the next N days
-  LowPrice_Low_30_Next_N_Day(-10.0, -0.30, false),//the lowest price in the next N days is lower 30% then current price
-  LowPrice_Low_20_Next_N_Day(-0.30, -0.20, false),
-  LowPrice_Low_10_Next_N_Day(-0.20, -0.10, false),
-  LowPrice_Equal_Next_N_Day(-0.10, 0.10, false),
-  
-  HighPrice_Equal_Next_N_Day(-0.10, 0.10, true),
-  HighPrice_High_10_Next_N_Day(0.10, 0.20, true),
+  //in the next N days   
+  HighPrice_High_30_Next_N_Day(0.30, 10.0, true),//the highest price in the next N days is higher 30% then current price
   HighPrice_High_20_Next_N_Day(0.20, 0.30, true),
-  HighPrice_High_30_Next_N_Day(0.30, 10.0, true);//the highest price in the next N days is higher 30% then current price
+  HighPrice_High_10_Next_N_Day(0.10, 0.20, true),
+  HighPrice_Equal_Next_N_Day(-0.10, 0.10, true),
+  LowPrice_Equal_Next_N_Day(-0.10, 0.10, false),  
+  LowPrice_Low_10_Next_N_Day(-0.20, -0.10, false),
+  LowPrice_Low_20_Next_N_Day(-0.30, -0.20, false),  
+  LowPrice_Low_30_Next_N_Day(-10.0, -0.30, false);//the lowest price in the next N days is lower 30% then current price
   
   private double min;
   private double max;

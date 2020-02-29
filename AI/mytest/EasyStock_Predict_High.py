@@ -17,7 +17,7 @@ from sklearn.metrics import precision_recall_curve
 from sklearn.metrics import classification_report  
 
 
-BASE_PATH = 'f:/github/EasyStoGu/CommonLib/src/main/resources/AI/'
+BASE_PATH = 'C:/Users/eyaweiw/github/EasyStoGu/AI/mytest/AI/'
 # Load data
 szzsHigh = pd.read_csv(os.path.join(BASE_PATH, "999999_high.csv"), usecols=[0,1])
 

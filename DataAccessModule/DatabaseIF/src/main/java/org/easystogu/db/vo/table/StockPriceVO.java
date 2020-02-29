@@ -15,6 +15,8 @@ public class StockPriceVO {
     public long volume;
     public double lastClose;
     public double nextClose;//Just for Stock Price Predict AI
+    public double nextHigh;//Just for Stock Price Predict AI
+    public double nextLow;//Just for Stock Price Predict AI
 
     public StockPriceVO() {
         this.name = "";
@@ -86,21 +88,6 @@ public class StockPriceVO {
         sb.append("}");
         return sb.toString();
     }
-    
-    public String toCsvPredictString() {
-      StringBuffer sb = new StringBuffer();
-      sb.append(stockId);
-      sb.append("," + date);
-      sb.append("," + open);
-      sb.append("," + close);
-      sb.append("," + low);
-      sb.append("," + high);
-      sb.append("," + volume);
-      sb.append("," + volume);//there is no money, so use volume
-      sb.append("," + (this.close-this.lastClose)/this.close);//change
-      sb.append("," + nextClose);//label
-      return sb.toString();
-  }
 
     public static StockPriceVO createDefaulyVO() {
         StockPriceVO vo = new StockPriceVO();

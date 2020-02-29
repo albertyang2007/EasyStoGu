@@ -69,21 +69,28 @@ public class DailySelectionPrapareDataForAI implements Runnable {
           checkPointDailySelectionTableHelper.getCheckPointSelection(stockId, date);
       //add date before the flagArray as csv content
       //add result after the date as csv content
-      String[] withDateContent = new String[1 + pricePredict4AiResult.size() + checkPoint4AiAnalyse.size()];
+      String[] withDateContent = new String[1 + checkPoint4AiAnalyse.size() + pricePredict4AiResult.size()];
       withDateContent[0] = date;
+      
+      //add checkpoint selection array
+      String[] checkPointArray = toCheckPointDailySelectionArray(cpDailySelections);
+      for(int index = 0; index < checkPointArray.length; index++) {
+        withDateContent[index + 1] = checkPointArray[index];
+      }
       
       //add close low/high price in next N days
       if(cpDailySelections!=null && cpDailySelections.size()>0) {
         String[] pricePredictResult = this.toPricePredictResultArray(stockId, date);
         for(int index = 0; index < pricePredictResult.length; index++) {
-          withDateContent[index + 1] = pricePredictResult[index];
+          withDateContent[index + 1 + checkPoint4AiAnalyse.size()] = pricePredictResult[index];
         }
-      }
-      
-      //add checkpoint selection array
-      String[] checkPointArray = toCheckPointDailySelectionArray(cpDailySelections);
-      for(int index = 0; index < checkPointArray.length; index++) {
-        withDateContent[index + 1 + pricePredict4AiResult.size()] = checkPointArray[index];
+      }else {
+        //add empty array
+        String[] array = generateArrayWithContent(pricePredict4AiResult.size(), "0");
+        //add empty array to content
+        for(int index = 0; index < array.length; index++) {
+          withDateContent[index + 1 + checkPoint4AiAnalyse.size()] = array[index];
+        }
       }
       
       //
@@ -97,8 +104,9 @@ public class DailySelectionPrapareDataForAI implements Runnable {
   // convert one days CheckPointDailySelectionVO array
   // 稀疏矩阵
   private String[] toCheckPointDailySelectionArray(
-      List<CheckPointDailySelectionVO> cpDailySelectionVos) {
-    String[] array = new String[checkPoint4AiAnalyse.size()];
+      List<CheckPointDailySelectionVO> cpDailySelectionVos) {    
+    String[] array = generateArrayWithContent(checkPoint4AiAnalyse.size(), "0");
+    
     for (CheckPointDailySelectionVO cpDsVo : cpDailySelectionVos) {
       int index = getCheckPointIndex(cpDsVo.checkPoint);
       if(index != -1 && index < array.length) {
@@ -111,7 +119,8 @@ public class DailySelectionPrapareDataForAI implements Runnable {
   // convert price predict result to array
   // 稀疏矩阵
   private String[] toPricePredictResultArray(String stockId, String date) {
-    String[] array = new String[pricePredict4AiResult.size()];
+    String[] array = generateArrayWithContent(pricePredict4AiResult.size(), "0");
+    
     //current close price
     double closePrice = qianFuQuanStockPriceTableHelper.getStockPriceByIdAndDate(stockId, date).getClose();
 
@@ -134,12 +143,15 @@ public class DailySelectionPrapareDataForAI implements Runnable {
     if(arrayIndexLowPrice != -1) {
       array[arrayIndexLowPrice] = "1";
     }
-    
-    if(date.equals("2019-06-10")) {
-      System.out.println("closePrice=" + closePrice + ", highPrice=" + highPrice + ", lowPrice=" + lowPrice);
-      System.out.println("arrayIndexHighPrice=" + arrayIndexHighPrice + ", arrayIndexLowPrice=" + arrayIndexLowPrice);
-    }
 
+    return array;
+  }
+  
+  private String[] generateArrayWithContent(int size, String content) {
+    String[] array = new String[size];
+    for(int i=0; i<array.length; i++) {
+      array[i] = content;
+    }
     return array;
   }
   
@@ -147,11 +159,11 @@ public class DailySelectionPrapareDataForAI implements Runnable {
   //date,checkPoint1,checkPoint2,....,checkPointN,Flag_To_Be_Added
   private void writeToCsvFile(String stockId, List<String[]> rowContents) {
     //out put the stockId and int array to csv file
-    String fileName = checkPointDataPath + stockId + ".csv";
+    String fileName = checkPointDataPath + stockId + "_stockCheckPoint.csv";
     List<String> headers = new ArrayList();
     headers.add("Date");
-    headers.addAll(pricePredict4AiResult);
     headers.addAll(checkPoint4AiAnalyse);
+    headers.addAll(pricePredict4AiResult);
     CSVFileHelper.write(fileName, headers.toArray(new String[headers.size()]), rowContents);
     System.out.println("Write to file: " + fileName);
   }
