@@ -369,62 +369,15 @@ public class HomeEndPoint {
   }
 
   @GET
-  @Path("/test0")
-  public String test0() {
+  @Path("/test")
+  public String test() {
     Thread t = new Thread(new Runnable() {
       public void run() {
-        HistoryDailySelectionRunner runner = new HistoryDailySelectionRunner();
-        //cpuIndex: 0,1,2,3
-        runner.runTask(0);
+        DailySelectionRunner.main(null);
       }
     });
     t.start();
     
     return "start HistoryDailySelectionRunner 0";
-  }
-  
-  @GET
-  @Path("/test1")
-  public String test1() {
-    Thread t = new Thread(new Runnable() {
-      public void run() {
-        HistoryDailySelectionRunner runner = new HistoryDailySelectionRunner();
-        //cpuIndex: 0,1,2,3
-        runner.runTask(1);
-      }
-    });
-    t.start();
-    
-    return "start HistoryDailySelectionRunner 1";
-  }
-  
-  @GET
-  @Path("/test2")
-  public String test2() {
-    Thread t = new Thread(new Runnable() {
-      public void run() {
-        HistoryDailySelectionRunner runner = new HistoryDailySelectionRunner();
-        //cpuIndex: 0,1,2,3
-        runner.runTask(2);
-      }
-    });
-    t.start();
-    
-    return "start HistoryDailySelectionRunner 2";
-  }
-  
-  @GET
-  @Path("/test3")
-  public String test3() {
-    Thread t = new Thread(new Runnable() {
-      public void run() {
-        HistoryDailySelectionRunner runner = new HistoryDailySelectionRunner();
-        //cpuIndex: 0,1,2,3
-        runner.runTask(3);
-      }
-    });
-    t.start();
-    
-    return "start HistoryDailySelectionRunner 3";
   }
 }

@@ -129,6 +129,8 @@ public class StockPriceTableHelper implements CacheAbleStock {
       "SELECT count(*) AS rtn FROM " + tableName + " WHERE stockid='999999' AND DATE = :date";
   protected String COUNT_BY_ID_SQL =
       "SELECT COUNT(*) AS rtn FROM " + tableName + " WHERE stockId = :stockId";
+  protected String COUNT_BY_DATE_SQL =
+      "SELECT COUNT(*) AS rtn FROM " + tableName + " WHERE DATE = :date";
   protected String COUNT_ALL_SQL = "SELECT count(*) AS rtn from " + tableName;
   // select all distinct stockIDs
   protected String QUERY_DISTINCT_ID =
@@ -868,6 +870,23 @@ public class StockPriceTableHelper implements CacheAbleStock {
     return 0;
   }
 
+  public int countByDate(String date) {
+    try {
+      MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+      namedParameters.addValue("date", date);
+
+      int rtn = this.namedParameterJdbcTemplate.queryForObject(COUNT_BY_DATE_SQL, namedParameters,
+          new IntVOMapper());
+
+      return rtn;
+    } catch (EmptyResultDataAccessException ee) {
+      return 0;
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return 0;
+  }
+  
   public int countAll() {
     try {
       MapSqlParameterSource namedParameters = new MapSqlParameterSource();

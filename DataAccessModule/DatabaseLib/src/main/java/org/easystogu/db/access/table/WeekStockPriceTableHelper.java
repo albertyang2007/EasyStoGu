@@ -103,6 +103,7 @@ public class WeekStockPriceTableHelper extends StockPriceTableHelper {
 		QUERY_ALL_BY_DATE = "SELECT * FROM " + tableName + " WHERE DATE = :date ORDER BY stockId";
 		IS_DATE_IN_DEAL = "SELECT count(*) AS rtn FROM " + tableName + " WHERE stockid='999999' AND DATE = :date";
 		COUNT_BY_ID_SQL = "SELECT COUNT(*) AS rtn FROM " + tableName + " WHERE stockId = :stockId";
+		COUNT_BY_DATE_SQL = "SELECT COUNT(*) AS rtn FROM " + tableName + " WHERE DATE = :date";
 		COUNT_ALL_SQL = "SELECT count(*) AS rtn from " + tableName;
 		// select all distinct stockIDs
 		QUERY_DISTINCT_ID = "SELECT distinct(stockid) AS rtn FROM " + tableName + " order by stockid";

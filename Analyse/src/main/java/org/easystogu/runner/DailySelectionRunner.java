@@ -504,9 +504,9 @@ public class DailySelectionRunner implements Runnable {
       doAnalyse(stockId);
     }
 
-    //reportSelectedStockIds();
-    //reportSelectedHistoryReport();
-    //addGeneralCheckPointStatisticsResultToDB();
+    reportSelectedStockIds();
+    reportSelectedHistoryReport();
+    addGeneralCheckPointStatisticsResultToDB();
   }
 
   public void run() {

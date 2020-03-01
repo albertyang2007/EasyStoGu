@@ -60,7 +60,7 @@ public class DailyScheduler implements SchedulingConfigurer {
 	}
 
 	// run at 15:06 DailyOverAllRunner
-	//@Scheduled(cron = "0 06 15 * * MON-FRI")
+	@Scheduled(cron = "0 06 15 * * MON-FRI")
 	public void _3_DailyOverAllRunner() {
 		if (Constants.ZONE_ALIYUN.equalsIgnoreCase(zone)) {
 			boolean isGetZiJinLiu = false;

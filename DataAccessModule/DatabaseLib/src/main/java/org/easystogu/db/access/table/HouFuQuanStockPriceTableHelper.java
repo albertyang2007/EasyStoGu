@@ -119,6 +119,7 @@ public class HouFuQuanStockPriceTableHelper extends StockPriceTableHelper {
 		// to check if a date is in deal time, to exclude the holiday
 		IS_DATE_IN_DEAL = "SELECT count(*) AS rtn FROM " + tableName + " WHERE stockid='999999' AND DATE = :date";
 		COUNT_BY_ID_SQL = "SELECT COUNT(*) AS rtn FROM " + tableName + " WHERE stockId = :stockId";
+		COUNT_BY_DATE_SQL = "SELECT COUNT(*) AS rtn FROM " + tableName + " WHERE DATE = :date";
 		COUNT_ALL_SQL = "SELECT count(*) AS rtn from " + tableName;
 		// select all distinct stockIDs
 		QUERY_DISTINCT_ID = "SELECT distinct(stockid) AS rtn FROM " + tableName + " order by stockid";
