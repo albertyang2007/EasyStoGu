@@ -22,7 +22,7 @@ public class CheckPointDailyStatisticsTableHelper {
 	private static CheckPointDailyStatisticsTableHelper georedInstance = null;
 	private String tableName = "CHECKPOINT_DAILY_STATISTICS";
 	protected String INSERT_SQL = "INSERT INTO " + tableName
-			+ " (date, checkpoint, count) VALUES (:date, :checkpoint, :count)";
+			+ " (date, checkpoint, count, rate) VALUES (:date, :checkpoint, :count, :rate)";
 	protected String DELETE_SQL = "DELETE FROM " + tableName + " WHERE date = :date AND checkpoint = :checkpoint";
 	protected String COUNT_BY_DATE_AND_CHECKPOINT_SQL = "SELECT count AS rtn FROM " + tableName
 			+ " WHERE date = :date AND checkpoint = :checkpoint";

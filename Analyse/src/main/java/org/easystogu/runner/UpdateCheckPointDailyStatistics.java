@@ -15,6 +15,9 @@ public class UpdateCheckPointDailyStatistics {
   private static void runTask() {
     List<String> dates = stockPriceTableHelper.getAllSZZSDealDate();
     for (String date : dates) {
+      if(!date.equals("2020-03-18")) {
+        continue;
+      }
       System.out.println("process "+ date);
       //count the stock company has deal at that date
       int totalCompanyDeal = stockPriceTableHelper.countByDate(date);
