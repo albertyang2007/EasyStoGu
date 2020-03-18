@@ -70,7 +70,7 @@ public class Strings {
 		return num;
 	}
 
-	public static String convert2ScaleDecimalAlignWithLength(double num, int scale) {
+	public static String convert2ScaleDecimalStr(double num, int scale) {
 		double d = convert2ScaleDecimal(num, scale);
 		String s = Double.toString(d);
 		String[] arr = s.split("\\.");
@@ -108,6 +108,6 @@ public class Strings {
 	}
 
 	public static void main(String[] args) {
-		System.out.println(convert2ScaleDecimalAlignWithLength(9.0, 2));
+		System.out.println(convert2ScaleDecimalStr(9.0, 2));
 	}
 }

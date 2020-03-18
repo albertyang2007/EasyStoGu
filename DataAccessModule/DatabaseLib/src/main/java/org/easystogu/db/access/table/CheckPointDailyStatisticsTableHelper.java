@@ -5,7 +5,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
 import org.easystogu.db.vo.table.CheckPointDailyStatisticsVO;
 import org.easystogu.log.LogHelper;
@@ -37,6 +36,8 @@ public class CheckPointDailyStatisticsTableHelper {
 			+ " WHERE checkpoint = :checkpoint ORDER BY DATE";
 	protected String QUERY_BY_BETWEEN_DATE = "SELECT * FROM " + tableName
 			+ " WHERE date >= :startDate AND date <= :endDate";
+	protected String UPDATE_RATE_CHECKPOINT_AND_DATE = "UPDATE " + tableName + " SET rate = :rate" 
+			+ " WHERE checkPoint = :checkpoint AND date = :date";
 
 	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
@@ -77,6 +78,7 @@ public class CheckPointDailyStatisticsTableHelper {
 			vo.setCheckPoint(rs.getString("checkpoint"));
 			vo.setDate(rs.getString("date"));
 			vo.setCount(rs.getInt("count"));
+			vo.setRate(rs.getDouble("rate"));
 			return vo;
 		}
 	}
@@ -171,6 +173,7 @@ public class CheckPointDailyStatisticsTableHelper {
 			namedParameters.addValue("date", vo.getDate());
 			namedParameters.addValue("checkpoint", vo.getCheckPoint());
 			namedParameters.addValue("count", vo.getCount());
+			namedParameters.addValue("rate", vo.getRate());
 
 			namedParameterJdbcTemplate.execute(INSERT_SQL, namedParameters, new DefaultPreparedStatementCallback());
 		} catch (Exception e) {
@@ -235,6 +238,20 @@ public class CheckPointDailyStatisticsTableHelper {
 			e.printStackTrace();
 		}
 	}
+	
+	  public void updateRate(CheckPointDailyStatisticsVO cpvo) {
+	    try {
+	      MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+	      namedParameters.addValue("rate", cpvo.rate);
+	      namedParameters.addValue("checkpoint", cpvo.checkPoint);
+	      namedParameters.addValue("date", cpvo.date);
+
+	      namedParameterJdbcTemplate.execute(UPDATE_RATE_CHECKPOINT_AND_DATE, namedParameters,
+	          new DefaultPreparedStatementCallback());
+	    } catch (Exception e) {
+	      e.printStackTrace();
+	    }
+	  }
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub

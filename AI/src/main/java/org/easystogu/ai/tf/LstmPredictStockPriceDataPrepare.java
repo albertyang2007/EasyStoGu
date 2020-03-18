@@ -58,7 +58,6 @@ public class LstmPredictStockPriceDataPrepare {
     // write to csv file
     String fileName = filePath + stockId + "_stockPrice.csv";
     CSVFileHelper.write(fileName, csvHeader.split(","), contents);
-    System.out.println("Successfully write to file " + fileName);
   }
 
   public static String toCsvPredictString(StockPriceVO spvo, ShenXianVO sxvo, MacdVO macdvo,

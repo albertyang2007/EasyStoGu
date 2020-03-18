@@ -6,6 +6,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
+import org.easystogu.ai.sklearn.CheckPointStatisticsPrepareData;
 import org.easystogu.checkpoint.DailyCombineCheckPoint;
 import org.easystogu.config.ConfigurationService;
 import org.easystogu.config.Constants;
@@ -25,7 +26,6 @@ import org.easystogu.runner.DailyUpdateAllStockRunner;
 import org.easystogu.runner.DailyUpdateStockPriceAndIndicatorRunner;
 import org.easystogu.runner.DailyViewAnalyseRunner;
 import org.easystogu.runner.DataBaseSanityCheck;
-import org.easystogu.runner.HistoryDailySelectionRunner;
 import org.easystogu.runner.RecentlySelectionRunner;
 import org.easystogu.runner.dynamic.taskIF.DynamicRunner;
 import org.easystogu.sina.runner.DailyStockPriceDownloadAndStoreDBRunner2;
@@ -72,6 +72,8 @@ public class HomeEndPoint {
     sb.append("<a href='/portal/home/OneTimeTempRunner'>OneTimeTempRunner</a><br>");
     sb.append("<a href='/portal/home/Serverlog'>Serverlog</a><br>");
     sb.append("<a href='/portal/home/test'>test</a><br>");
+    
+    sb.append("<br><a href='/eweb/index.htm'>eweb index</a><br>");
 
     return Response.ok().entity(sb.toString()).build();
   }
@@ -373,11 +375,11 @@ public class HomeEndPoint {
   public String test() {
     Thread t = new Thread(new Runnable() {
       public void run() {
-        DailySelectionRunner.main(null);
+        CheckPointStatisticsPrepareData.main(null);
       }
     });
     t.start();
     
-    return "start HistoryDailySelectionRunner 0";
+    return "start CheckPointStatisticsPrepareData";
   }
 }

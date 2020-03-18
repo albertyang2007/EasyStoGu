@@ -744,6 +744,7 @@ CREATE TABLE checkpoint_daily_statistics
   date text NOT NULL,
   checkpoint text NOT NULL,
   count integer,
+  rate numeric,
   CONSTRAINT checkpoint_daily_statistics_primary_key PRIMARY KEY (date, checkpoint)
 )
 WITH (

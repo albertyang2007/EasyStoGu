@@ -24,7 +24,7 @@ public class CommonViewCache {
 	private LoadingCache<String, List<CommonViewVO>> cache;
 
 	private CommonViewCache() {
-		cache = CacheBuilder.newBuilder().maximumSize(100).refreshAfterWrite(30, TimeUnit.MINUTES)
+		cache = CacheBuilder.newBuilder().maximumSize(100).refreshAfterWrite(5, TimeUnit.MINUTES)
 				.build(new CacheLoader<String, List<CommonViewVO>>() {
 					@Override
 					public List<CommonViewVO> load(String key) throws Exception {

@@ -4,10 +4,11 @@ public class CheckPointDailyStatisticsVO {
     public String date;
     public String checkPoint;
     public int count;
+    public double rate;
 
     @Override
     public String toString() {
-        return "date: " + date + ", checkPoint=" + checkPoint + ", count=" + count;
+        return "date: " + date + ", checkPoint=" + checkPoint + ", count=" + count + ", rate=" + rate;
     }
 
     public String getDate() {
@@ -32,5 +33,13 @@ public class CheckPointDailyStatisticsVO {
 
     public void setCount(int count) {
         this.count = count;
+    }
+
+    public double getRate() {
+      return rate;
+    }
+
+    public void setRate(double rate) {
+      this.rate = rate;
     }
 }

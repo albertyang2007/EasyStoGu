@@ -41,7 +41,7 @@ public class StockIndicatorCache {
 		//stockTablesMap.put(Constants.cacheIndWR, IndWRTableHelper.getInstance());
 		//stockTablesMap.put(Constants.cacheIndDDX, IndDDXTableHelper.getInstance());
 
-		cache = CacheBuilder.newBuilder().maximumSize(100).refreshAfterWrite(30, TimeUnit.MINUTES)
+		cache = CacheBuilder.newBuilder().maximumSize(100).refreshAfterWrite(5, TimeUnit.MINUTES)
 				.build(new CacheLoader<String, List<StockPriceVO>>() {
 					// key is like: type:stockId, for example:
 					// stockPrice:999999, indDKJ:999999

@@ -1,4 +1,4 @@
-package org.easystogu.analyse.highlow;
+package org.easystogu.ai.sklearn;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +16,7 @@ import org.easystogu.file.CSVFileHelper;
 import org.easystogu.utils.StringComparator;
 
 //找出股价在19日，43日，86日内的最低最高价格和对应的日期
+//related python sctips is: EasyStock_Predict_High.py and EasyStock_Predict_Low.py
 public class StockPriceHighLowFinder {
     private StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
     private CheckPointDailyStatisticsTableHelper checkPointDailyStatisticsTableHelper = CheckPointDailyStatisticsTableHelper
@@ -37,17 +38,22 @@ public class StockPriceHighLowFinder {
 
     private int[] findHighPriceIndex(List<StockPriceVO> spList, int day) {
         int[] indexs = new int[spList.size()];
+        try {
         for (int index = 0; index < spList.size() - day; index++) {
             List<StockPriceVO> subSpList = spList.subList(index, index + day);
-            
+            int highIndex = getHighestPriceIndex(subSpList);
+            int lowIndex = getLowestPriceIndex(subSpList);
             //mark current day, previously day and next day as top / buttom area
-            indexs[index + getHighestPriceIndex(subSpList)] = 1;
-            indexs[index + getHighestPriceIndex(subSpList) - 1] = 1;
-            indexs[index + getHighestPriceIndex(subSpList) + 1] = 1;
+            indexs[index + highIndex] = 1;
+            indexs[index + highIndex - 1] = 1;
+            indexs[index + highIndex + 1] = 1;
             
-            indexs[index + getLowestPriceIndex(subSpList)] = -1;
-            indexs[index + getLowestPriceIndex(subSpList) - 1] = -1;
-            indexs[index + getLowestPriceIndex(subSpList) + 1] = -1;
+            indexs[index + lowIndex] = -1;
+            indexs[index + lowIndex - 1] = -1;
+            indexs[index + lowIndex + 1] = -1;
+        }}catch(Exception e) {
+          System.out.println();
+          e.printStackTrace();
         }
         return indexs;
     }
@@ -181,12 +187,12 @@ public class StockPriceHighLowFinder {
         StockPriceHighLowFinder ins = new StockPriceHighLowFinder();
         String stockId = "999999";
         int dayPeriod = 86;
-        String resultfileName = "C:/Users/eyaweiw/github/EasyStoGu/CommonLib/src/main/resources/AI/" + stockId
+        String resultfileName = "C:/Users/eyaweiw/github/EasyStoGu/AI/mytest/AI/" + stockId
                 + "_high_low.csv";
         ins.saveFileHighLowPriceInDays(resultfileName, stockId, dayPeriod);
 
-        String cpStatisticsBasePath = "C:/Users/eyaweiw/github/EasyStoGu/CommonLib/src/main/resources/AI/";
-        ins.saveFileAllCheckPointDailyStatistics(cpStatisticsBasePath);
+        //String cpStatisticsBasePath = "C:/Users/eyaweiw/github/EasyStoGu/AI/mytest/AI/";
+        //ins.saveFileAllCheckPointDailyStatistics(cpStatisticsBasePath);
     }
 
 }

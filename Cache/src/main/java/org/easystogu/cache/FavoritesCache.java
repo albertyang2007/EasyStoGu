@@ -27,7 +27,7 @@ public class FavoritesCache {
 	private LoadingCache<String, List<FavoritesStockVO>> cache;
 
 	private FavoritesCache() {
-		cache = CacheBuilder.newBuilder().maximumSize(100).refreshAfterWrite(12, TimeUnit.HOURS)
+		cache = CacheBuilder.newBuilder().maximumSize(100).refreshAfterWrite(5, TimeUnit.MINUTES)
 				.build(new CacheLoader<String, List<FavoritesStockVO>>() {
 					@Override
 					public List<FavoritesStockVO> load(String key) throws Exception {

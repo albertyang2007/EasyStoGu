@@ -87,13 +87,13 @@ public class RealTimePriceVO {
     @Override
     public String toString() {
         return this.stockId + "\t[lastClose:"
-                + Strings.convert2ScaleDecimalAlignWithLength(this.lastClose, 2) + "\t:open:"
-                + Strings.convert2ScaleDecimalAlignWithLength(this.open, 2) + "(" + toPercent(this.open, this.lastClose)
-                + ")" + ",\thigh:" + Strings.convert2ScaleDecimalAlignWithLength(this.high, 2) + "("
+                + Strings.convert2ScaleDecimalStr(this.lastClose, 2) + "\t:open:"
+                + Strings.convert2ScaleDecimalStr(this.open, 2) + "(" + toPercent(this.open, this.lastClose)
+                + ")" + ",\thigh:" + Strings.convert2ScaleDecimalStr(this.high, 2) + "("
                 + toPercent(this.high, this.lastClose) + ")" + ",\tcur:"
-                + Strings.convert2ScaleDecimalAlignWithLength(this.current, 2) + "("
+                + Strings.convert2ScaleDecimalStr(this.current, 2) + "("
                 + toPercent(this.current, this.lastClose) + ")" + ",\tlow:"
-                + Strings.convert2ScaleDecimalAlignWithLength(this.low, 2) + "(" + toPercent(this.low, this.lastClose)
+                + Strings.convert2ScaleDecimalStr(this.low, 2) + "(" + toPercent(this.low, this.lastClose)
                 + ")" + ",\trange:" + this.diffRange(this.high, this.low, this.lastClose) + "]";
     }
 

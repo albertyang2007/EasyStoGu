@@ -22,7 +22,7 @@ public class ConfigurationServiceCache {
 	private LoadingCache<String, Object> cache;
 
 	private ConfigurationServiceCache() {
-		cache = CacheBuilder.newBuilder().maximumSize(100).refreshAfterWrite(12, TimeUnit.HOURS)
+		cache = CacheBuilder.newBuilder().maximumSize(100).refreshAfterWrite(5, TimeUnit.MINUTES)
 				.build(new CacheLoader<String, Object>() {
 					@Override
 					public Object load(String key) throws Exception {

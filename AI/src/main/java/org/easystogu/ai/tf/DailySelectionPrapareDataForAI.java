@@ -1,6 +1,7 @@
 package org.easystogu.ai.tf;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import org.easystogu.ai.checkpoint.PricePredictResult;
 import org.easystogu.checkpoint.DailyCombineCheckPoint;
@@ -63,6 +64,7 @@ public class DailySelectionPrapareDataForAI implements Runnable {
   // search CHECKPOINT_DAILY_SELECTION and get checkout to csv file
   private void prepareCsvData(String stockId) {    
     List<String> dates = stockPriceTableHelper.getAllDealDate(stockId);
+    Collections.reverse(dates);
     List<String[]> rowContents = new ArrayList();
     for (String date : dates) {
       List<CheckPointDailySelectionVO> cpDailySelections =
@@ -165,7 +167,6 @@ public class DailySelectionPrapareDataForAI implements Runnable {
     headers.addAll(checkPoint4AiAnalyse);
     headers.addAll(pricePredict4AiResult);
     CSVFileHelper.write(fileName, headers.toArray(new String[headers.size()]), rowContents);
-    System.out.println("Write to file: " + fileName);
   }
 
   @Override

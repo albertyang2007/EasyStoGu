@@ -39,6 +39,7 @@ public class CSVFileHelper {
     } finally {
       csvWriter.close();
     }
+    System.out.println("Successfully write to csv file " + fileName);
   }
 
   public static void appendRows(String fileName, List<String[]> rowContents) {

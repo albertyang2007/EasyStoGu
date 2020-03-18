@@ -24,7 +24,7 @@ public class StockPriceCache {
 	private LoadingCache<String, List<String>> cache;
 
 	private StockPriceCache() {
-		cache = CacheBuilder.newBuilder().maximumSize(100).refreshAfterWrite(30, TimeUnit.MINUTES)
+		cache = CacheBuilder.newBuilder().maximumSize(100).refreshAfterWrite(5, TimeUnit.MINUTES)
 				.build(new CacheLoader<String, List<String>>() {
 					// key is like: type:parms, for example:
 					// latestndate:10

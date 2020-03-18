@@ -37,6 +37,7 @@ import org.easystogu.report.HistoryReportDetailsVO;
 import org.easystogu.report.RangeHistoryReportVO;
 import org.easystogu.report.ReportTemplate;
 import org.easystogu.report.comparator.ZiJinLiuComparator;
+import org.easystogu.utils.Strings;
 import org.easystogu.utils.WeekdayUtil;
 
 // daily select stock that checkpoint is satisfied
@@ -450,6 +451,10 @@ public class DailySelectionRunner implements Runnable {
       cpdsvo.date = latestDate;
       cpdsvo.checkPoint = checkPoint.name();
       cpdsvo.count = stockIds.size();
+      //count the stock company has deal at that date
+      int totalCompanyDeal = this.stockPriceTable.countByDate(cpdsvo.date);
+      cpdsvo.rate = Strings.convert2ScaleDecimal(cpdsvo.count * 1.0 / totalCompanyDeal, 4);
+      
       // update
       String previousDate = this.stockPriceTable.getPreviousStockDate(latestDate);
       CheckPointDailyStatisticsVO lastVO =
