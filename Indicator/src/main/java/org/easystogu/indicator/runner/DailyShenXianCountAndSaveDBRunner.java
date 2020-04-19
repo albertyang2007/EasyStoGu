@@ -70,13 +70,17 @@ public class DailyShenXianCountAndSaveDBRunner implements Runnable {
 	}
 
 	public void countAndSaved(List<String> stockIds) {
-		int index = 0;
-		for (String stockId : stockIds) {
-			if (index++ % 500 == 0) {
-				System.out.println("ShenXian countAndSaved: " + stockId + " " + (index) + "/" + stockIds.size());
-			}
-			this.countAndSaved(stockId);
-		}
+	  stockIds.stream().forEach(stockId -> {
+        this.countAndSaved(stockId);
+      });
+	  
+//		int index = 0;
+//		for (String stockId : stockIds) {
+//			if (index++ % 500 == 0) {
+//				System.out.println("ShenXian countAndSaved: " + stockId + " " + (index) + "/" + stockIds.size());
+//			}
+//			this.countAndSaved(stockId);
+//		}
 	}
 
 	public void run() {
