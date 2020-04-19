@@ -498,9 +498,7 @@ public class DailySelectionRunner implements Runnable {
     this.fetchRealTimeZiJinLiu = fetchRealTimeZiJinLiu;
   }
 
-  public void runForStockIds(List<String> stockIds) {
-    
-
+  public void runForStockIds(List<String> stockIds) {    
     System.out.println("DailySelection runForStockIds start");
     stockIds.parallelStream().forEach(stockId -> {
       this.doAnalyse(stockId);
@@ -528,15 +526,25 @@ public class DailySelectionRunner implements Runnable {
     this.runForStockIds(stockIds);
   }
 
+  //run for CHECKPOINT_DAILY_STATISTICS when all zero statistics for date
   public void runForDate(String date, List<String> stockIds) {
     this.latestDate = date;
     this.addToScheduleActionTable = false;
     this.checkDayPriceEqualWeekPrice = false;
     this.runForStockIds(stockIds);
   }
+  
+  //run for CHECKPOINT_DAILY_STATISTICS when all zero statistics for date
+  public void runForDate(String date) {
+    this.latestDate = date;
+    this.addToScheduleActionTable = false;
+    this.checkDayPriceEqualWeekPrice = false;
+    this.runForStockIds(stockConfig.getAllStockId());
+  }
 
   public static void main(String[] args) {
     // TODO Auto-generated method stub
     new DailySelectionRunner().run();
+    //new DailySelectionRunner().runForDate("2020-04-17");
   }
 }

@@ -4,6 +4,7 @@ import java.util.List;
 import org.easystogu.cache.runner.AllCacheRunner;
 import org.easystogu.config.Constants;
 import org.easystogu.db.access.facde.DBAccessFacdeFactory;
+import org.easystogu.db.access.table.CheckPointDailyStatisticsTableHelper;
 import org.easystogu.db.access.table.IndMATableHelper;
 import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.table.StockPriceTableHelper;
@@ -45,6 +46,8 @@ public class DataBaseSanityCheck implements Runnable {
   protected IndMATableHelper maTable = IndMATableHelper.getInstance();
   protected HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner historyQianFuQuanRunner =
       new HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner();
+  protected CheckPointDailyStatisticsTableHelper checkPointDailyStatisticsTable =
+      CheckPointDailyStatisticsTableHelper.getInstance();
 
   protected WeekStockPriceTableHelper weekStockPriceTable = WeekStockPriceTableHelper.getInstance();
   protected IndicatorDBHelperIF weekMacdTable =
@@ -150,7 +153,7 @@ public class DataBaseSanityCheck implements Runnable {
 
   public void sanityWeekCheck(List<String> stockIds) {
     System.out.println("sanityWeekCheck completed.");
-    
+
     stockIds.parallelStream().forEach(stockId -> {
       this.sanityWeekCheck(stockId);
     });
@@ -203,6 +206,23 @@ public class DataBaseSanityCheck implements Runnable {
 
   }
 
+  public void sanityDailyStatisticsCheck(List<String> stockIds) {
+    System.out.println("sanityDailyStatisticsCheck start.");
+    List<String> dates = stockPriceTable.getAllDealDate("999999");
+    for (String date : dates) {
+      //do not care the count date before 2000 year
+      if (date.compareTo("2000-01-01") >= 0) {
+        int rtn = checkPointDailyStatisticsTable.countByDate(date);
+        if (rtn == 0) {
+          System.out
+              .println("Daily Statistics is all zero for date " + date + ", try to re-count it.");
+          new DailySelectionRunner().runForDate(date, stockIds);
+        }
+      }
+    }
+    System.out.println("sanityDailyStatisticsCheck completed.");
+  }
+
   public void figureOutDifferenceDate(List<StockPriceVO> spList, List<MacdVO> macdList) {
     int minLen = Math.min(spList.size(), macdList.size());
     int index = 0;
@@ -228,6 +248,7 @@ public class DataBaseSanityCheck implements Runnable {
     DataBaseSanityCheck check = new DataBaseSanityCheck();
     check.sanityDailyCheck(stockConfig.getAllStockId());
     check.sanityWeekCheck(stockConfig.getAllStockId());
+    check.sanityDailyStatisticsCheck(stockConfig.getAllStockId());
 
     // check.sanityDailyCheck("002797");
     // check.sanityWeekCheck("002797");
