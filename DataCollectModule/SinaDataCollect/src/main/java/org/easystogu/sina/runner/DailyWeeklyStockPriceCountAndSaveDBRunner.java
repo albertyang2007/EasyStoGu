@@ -23,7 +23,7 @@ public class DailyWeeklyStockPriceCountAndSaveDBRunner implements Runnable {
 
 	public void countAndSave(List<String> stockIds) {
 	  
-	  stockIds.stream().forEach(stockId -> {
+	  stockIds.parallelStream().forEach(stockId -> {
         this.countAndSaved(stockId);
       });
 	  

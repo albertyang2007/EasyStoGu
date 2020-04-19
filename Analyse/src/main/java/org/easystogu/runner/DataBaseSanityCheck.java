@@ -54,7 +54,7 @@ public class DataBaseSanityCheck implements Runnable {
 
   public void sanityDailyCheck(List<String> stockIds) {
     System.out.println("sanityDailyCheck start.");
-    stockIds.stream().forEach(stockId -> {
+    stockIds.parallelStream().forEach(stockId -> {
       this.sanityDailyCheck(stockId);
     });
 
@@ -151,7 +151,7 @@ public class DataBaseSanityCheck implements Runnable {
   public void sanityWeekCheck(List<String> stockIds) {
     System.out.println("sanityWeekCheck completed.");
     
-    stockIds.stream().forEach(stockId -> {
+    stockIds.parallelStream().forEach(stockId -> {
       this.sanityWeekCheck(stockId);
     });
 

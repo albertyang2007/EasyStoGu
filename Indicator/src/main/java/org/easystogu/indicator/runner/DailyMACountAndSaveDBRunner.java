@@ -81,7 +81,7 @@ public class DailyMACountAndSaveDBRunner implements Runnable {
 	}
 
 	public void countAndSaved(List<String> stockIds) {
-	  stockIds.stream().forEach(stockId -> {
+	  stockIds.parallelStream().forEach(stockId -> {
         this.countAndSaved(stockId);
       });
 	  
