@@ -21,15 +21,26 @@ public class DailyViewAnalyseRunner implements Runnable {
 	private void slowAnalyseForView(String viewName) {
 		System.out.println("Analyse for viewName: " + viewName);
 		List<String> stockIds = commonViewHelper.queryAllStockIds(viewName);
-		for (String stockId : stockIds) {
-			CheckPointDailySelectionVO cpvo = new CheckPointDailySelectionVO();
-			cpvo.stockId = stockId;
-			cpvo.checkPoint = viewName;
-			cpvo.date = this.latestDate;
+		
+		stockIds.parallelStream().forEach(stockId -> {
+          CheckPointDailySelectionVO cpvo = new CheckPointDailySelectionVO();
+          cpvo.stockId = stockId;
+          cpvo.checkPoint = viewName;
+          cpvo.date = this.latestDate;
 
-			checkPointDailySelectionTable.delete(stockId, latestDate, viewName);
-			checkPointDailySelectionTable.insert(cpvo);
-		}
+          checkPointDailySelectionTable.delete(stockId, latestDate, viewName);
+          checkPointDailySelectionTable.insert(cpvo);
+		});
+		
+//		for (String stockId : stockIds) {
+//			CheckPointDailySelectionVO cpvo = new CheckPointDailySelectionVO();
+//			cpvo.stockId = stockId;
+//			cpvo.checkPoint = viewName;
+//			cpvo.date = this.latestDate;
+//
+//			checkPointDailySelectionTable.delete(stockId, latestDate, viewName);
+//			checkPointDailySelectionTable.insert(cpvo);
+//		}
 	}
 
 	// extract the currentDate from view, those view has many date's date

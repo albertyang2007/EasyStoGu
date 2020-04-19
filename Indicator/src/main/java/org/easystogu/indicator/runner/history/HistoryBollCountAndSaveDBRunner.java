@@ -78,13 +78,20 @@ public class HistoryBollCountAndSaveDBRunner {
 	}
 
 	public void countAndSaved(List<String> stockIds) {
-		int index = 0;
-		for (String stockId : stockIds) {
-			if (index++ % 100 == 0)
-				System.out.println("Boll countAndSaved: " + stockId + " " + (index) + "/" + stockIds.size());
-			this.countAndSaved(stockId);
-		}
-	}
+      System.out.println("Boll countAndSaved start");
+      stockIds.parallelStream().forEach(stockId -> {
+        this.countAndSaved(stockId);
+      });
+      
+//      int index = 0;
+//      for (String stockId : stockIds) {
+//          if (index++ % 100 == 0)
+//              System.out.println("Boll countAndSaved: " + stockId + " " + (index) + "/" + stockIds.size());
+//          this.countAndSaved(stockId);
+//      }
+      
+      System.out.println("Boll countAndSaved stop");
+    }
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub

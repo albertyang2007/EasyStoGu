@@ -499,19 +499,28 @@ public class DailySelectionRunner implements Runnable {
   }
 
   public void runForStockIds(List<String> stockIds) {
-    int index = 0;
-    for (String stockId : stockIds) {
-      // if (!stockId.equals("300300"))
-      // continue;
-      if (index++ % 500 == 0) {
-        System.out.println("Analyse of " + index + "/" + stockIds.size());
-      }
-      doAnalyse(stockId);
-    }
+    
+
+    System.out.println("DailySelection runForStockIds start");
+    stockIds.parallelStream().forEach(stockId -> {
+      this.doAnalyse(stockId);
+    });
+    
+//    int index = 0;
+//    for (String stockId : stockIds) {
+//      // if (!stockId.equals("300300"))
+//      // continue;
+//      if (index++ % 500 == 0) {
+//        System.out.println("Analyse of " + index + "/" + stockIds.size());
+//      }
+//      doAnalyse(stockId);
+//    }
 
     reportSelectedStockIds();
     reportSelectedHistoryReport();
     addGeneralCheckPointStatisticsResultToDB();
+    
+    System.out.println("DailySelection runForStockIds stop");
   }
 
   public void run() {

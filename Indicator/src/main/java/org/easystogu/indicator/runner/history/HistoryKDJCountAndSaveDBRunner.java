@@ -71,13 +71,20 @@ public class HistoryKDJCountAndSaveDBRunner {
 	}
 
 	public void countAndSaved(List<String> stockIds) {
-		int index = 0;
-		for (String stockId : stockIds) {
-			if (index++ % 100 == 0)
-				System.out.println("KDJ countAndSaved: " + stockId + " " + (index) + " of " + stockIds.size());
-			this.countAndSaved(stockId);
-		}
-	}
+      System.out.println("KDJ countAndSaved start");
+      stockIds.parallelStream().forEach(stockId -> {
+        this.countAndSaved(stockId);
+      });
+      
+//      int index = 0;
+//      for (String stockId : stockIds) {
+//          if (index++ % 100 == 0)
+//              System.out.println("JDK countAndSaved: " + stockId + " " + (index) + "/" + stockIds.size());
+//          this.countAndSaved(stockId);
+//      }
+      
+      System.out.println("JDK countAndSaved stop");
+    }
 
 	// TODO Auto-generated method stub
 	// 一次性计算数据库中所有KDJ数据，入库
