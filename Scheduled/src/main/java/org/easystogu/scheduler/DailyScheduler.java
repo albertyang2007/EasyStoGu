@@ -51,9 +51,9 @@ public class DailyScheduler implements SchedulingConfigurer {
 	// http://www.quartz-scheduler.org/documentation/quartz-1.x/tutorials/crontrigger
 
 	// run at 11:31 DailyOverAllRunner
-	//@Scheduled(cron = "0 31 11 * * MON-FRI")
+	@Scheduled(cron = "0 31 11 * * MON-FRI")
 	public void _1_DailyOverAllRunner() {
-		if (Constants.ZONE_ALIYUN.equalsIgnoreCase(zone)) {
+		if (Constants.ZONE_OFFICE.equalsIgnoreCase(zone)) {
 			boolean isGetZiJinLiu = false;
 			this.DailyOverAllRunner(isGetZiJinLiu);
 		}
