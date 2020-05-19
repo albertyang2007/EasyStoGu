@@ -64,7 +64,7 @@ public class HomeEndPoint {
     sb.append("<a href='/portal/home/DownloadStockPrice'>DownloadStockPrice</a><br>");
     sb.append("<a href='/portal/home/UpdateCompanyFromFileToDB'>UpdateCompanyFromFileToDB</a><br>");
     sb.append(
-        "<a href='/portal/home/updateStockPriceHistoryOverAllRunner/2016-10-17_2016-11-23'>updateStockPriceHistoryOverAllRunnerFromStartDate</a><br>");
+        "<a href='/portal/home/updateStockPriceHistoryOverAllRunner/2016-10-17_2016-11-23'>updateStockPriceHistoryOverAllRunner</a><br>");
     sb.append(
         "<a href='/portal/home/IndicatorHistortOverAllRunner'>IndicatorHistortOverAllRunner</a><br>");
     sb.append("<a href='/portal/home/DailyReplicateRunner'>DailyReplicateRunner</a><br>");

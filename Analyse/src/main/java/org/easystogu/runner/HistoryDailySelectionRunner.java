@@ -3,7 +3,6 @@ package org.easystogu.runner;
 import java.util.ArrayList;
 import java.util.List;
 import org.easystogu.db.vo.view.FavoritesStockVO;
-import org.easystogu.utils.Strings;
 
 // DailySelectionRunner is only run for today, so this job is to go back to
 // history and run favorites stockId (not all stockIds) then save into checkpoint_daily_selection

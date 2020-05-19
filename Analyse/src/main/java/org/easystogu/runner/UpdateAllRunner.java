@@ -1,10 +1,8 @@
 package org.easystogu.runner;
 
 import java.io.IOException;
-
 import org.easystogu.indicator.runner.history.IndicatorHistortOverAllRunner;
 import org.easystogu.report.HistoryAnalyseReport;
-import org.easystogu.sina.runner.history.StockPriceHistoryOverAllRunner;
 import org.easystogu.utils.WeekdayUtil;
 
 public class UpdateAllRunner {

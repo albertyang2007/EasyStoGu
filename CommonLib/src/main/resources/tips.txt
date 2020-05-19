@@ -1,0 +1,5 @@
+1. How to re-collect the missing data stock price:
+ input the startDate_endDate
+ /portal/home/updateStockPriceHistoryOverAllRunner/2016-10-17_2016-11-23
+
+2. Then run the sanity checking
