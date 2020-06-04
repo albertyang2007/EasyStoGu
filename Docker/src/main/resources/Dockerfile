@@ -1,4 +1,4 @@
 FROM ubuntu
 RUN apt-get update \
-    && apt-get install -y postgresql
+    && DEBIAN_FRONTEND=noninteractive apt-get install -y postgresql
 	
