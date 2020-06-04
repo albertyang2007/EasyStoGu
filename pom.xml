@@ -38,6 +38,7 @@
 				<module>DatabaseReplicate</module>
 				<module>Cache</module>
 				<module>DynamicCompiler</module>
+				<module>Docker</module>
 			</modules>
 		</profile>
 	</profiles>
