@@ -24,12 +24,13 @@ import org.springframework.web.client.RestTemplate;
 import net.sf.json.JSONObject;
 
 //history stock price from sohu, json format
-//example: http://q.stock.sohu.com/hisHq?code=cn_002252&start=19990101&end=20170930&order=D&period=d&rt=json
+//example: https://q.stock.sohu.com/hisHq?code=cn_002252&start=19990101&end=20170930&order=D&period=d&rt=json
+//         https://q.stock.sohu.com/hisHq?code=cn_600036&start=20200610&end=20200616&order=D&period=d&rt=json
 public class HistoryStockPriceDownloadAndStoreDBRunner {
     // before 1997, there is no +-10%
     private String startDate = "1997-01-01";
     private String endDate = WeekdayUtil.currentDate();
-    private static String baseUrl = "http://q.stock.sohu.com/hisHq?code=cn_stockId&start=startDate&end=endDate&order=D&period=d&rt=json";
+    private static String baseUrl = "https://q.stock.sohu.com/hisHq?code=cn_stockId&start=startDate&end=endDate&order=D&period=d&rt=json";
     private static ConfigurationService configure = FileConfigurationService.getInstance();
     private StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
     private CompanyInfoFileHelper companyInfoHelper = CompanyInfoFileHelper.getInstance();
