@@ -7,7 +7,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 import org.easystogu.ai.sklearn.CheckPointStatisticsPrepareData;
-import org.easystogu.checkpoint.DailyCombineCheckPoint;
 import org.easystogu.config.ConfigurationService;
 import org.easystogu.config.Constants;
 import org.easystogu.config.DBConfigurationService;
@@ -69,7 +68,7 @@ public class HomeEndPoint {
         "<a href='/portal/home/IndicatorHistortOverAllRunner'>IndicatorHistortOverAllRunner</a><br>");
     sb.append("<a href='/portal/home/DailyReplicateRunner'>DailyReplicateRunner</a><br>");
     sb.append("<a href='/portal/home/OneTimeDynamicRunner'>OneTimeDynamicRunner</a><br>");
-    sb.append("<a href='/portal/home/OneTimeTempRunner'>OneTimeTempRunner</a><br>");
+    sb.append("<a href='/portal/home/HistoryAnalyseReport'>HistoryAnalyseReport Count All Check Point</a><br>");
     sb.append("<a href='/portal/home/Serverlog'>Serverlog</a><br>");
     sb.append("<a href='/portal/home/test'>test</a><br>");
     
@@ -343,17 +342,15 @@ public class HomeEndPoint {
   }
 
   @GET
-  @Path("/OneTimeTempRunner")
+  @Path("/HistoryAnalyseReport")
   public String oneTimeTempRunner() {
     String zone = config.getString("zone", "");
-    if (Constants.ZONE_ALIYUN.equals(zone)) {
+    if (Constants.ZONE_OFFICE.equals(zone)) {
       Thread t = new Thread(new Runnable() {
         public void run() {
           HistoryAnalyseReport reporter = new HistoryAnalyseReport();
-          reporter.searchAllStockIdStatisticsCheckPoint(
-              DailyCombineCheckPoint.MAGIC_NIGHT_DAYS_SHANG_ZHANG);
-          reporter.searchAllStockIdStatisticsCheckPoint(
-              DailyCombineCheckPoint.MAGIC_NIGHT_DAYS_XIA_DIE);
+          reporter.countAllStockIdAnalyseHistoryBuySellCheckPoint();
+          reporter.countAllStockIdStatisticsCheckPoint();
         }
       });
       t.start();
