@@ -28,11 +28,14 @@ public class HistoryWeekStockPriceCountAndSaveDBRunner {
     }
 
     public void countAndSave(List<String> stockIds) {
-        int index = 0;
-        for (String stockId : stockIds) {
-            System.out.println("Process weekly price for " + stockId + " " + (++index) + " of " + stockIds.size());
-            this.countAndSave(stockId);
-        }
+        stockIds.parallelStream().forEach(
+                stockId -> this.countAndSave(stockId)
+        );
+        //int index = 0;
+        //for (String stockId : stockIds) {
+        //    System.out.println("Process weekly price for " + stockId + " " + (++index) + " of " + stockIds.size());
+        //    this.countAndSave(stockId);
+        //}
     }
 
     public void countAndSave(String stockId) {
