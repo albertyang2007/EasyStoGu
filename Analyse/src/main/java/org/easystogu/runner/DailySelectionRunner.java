@@ -359,7 +359,7 @@ public class DailySelectionRunner implements Runnable {
 
     this.sortRangeHistoryReport(rangeList);
     this.reportToConsole(rangeList);
-    this.reportToHtml(rangeList);
+    //this.reportToHtml(rangeList);
   }
 
   public void reportToConsole(List<RangeHistoryReportVO> rangeList) {
