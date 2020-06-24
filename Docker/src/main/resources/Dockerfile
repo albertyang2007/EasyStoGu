@@ -1,4 +1,2 @@
-FROM ubuntu
-RUN apt-get update \
-    && DEBIAN_FRONTEND=noninteractive apt-get install -y postgresql
-	
+FROM jboss/wildfly
+ADD easystogu-app-0.0.1-SNAPSHOT.ear /opt/jboss/wildfly/standalone/deployments/

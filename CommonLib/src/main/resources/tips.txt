@@ -1,5 +1,5 @@
-1. How to re-collect the missing data stock price:
- input the startDate_endDate
- /portal/home/updateStockPriceHistoryOverAllRunner/2016-10-17_2016-11-23
-
-2. Then run the sanity checking
+1. Init sql table and view
+2. Init wsfconfig data
+3. run http://localhost:8080/portal/home/UpdateCompanyFromFileToDB
+4. run http://localhost:8080/portal/home/updateStockPriceHistoryOverAllRunner/2000-01-01_2020-06-24
+5. run the sanity checking
