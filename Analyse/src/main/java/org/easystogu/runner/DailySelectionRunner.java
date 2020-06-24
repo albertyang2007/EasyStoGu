@@ -89,12 +89,6 @@ public class DailySelectionRunner implements Runnable {
       List<StockSuperVO> overDayList = stockOverAllHelper.getAllStockSuperVO(stockId);
       List<StockSuperVO> overWeekList = weekStockOverAllHelper.getAllStockSuperVO(stockId);
 
-      // LatestN is reverse in date order desc. 120 is enough to save much
-      // time
-      // List<StockSuperVO> overDayList =
-      // stockOverAllHelper.getLatestNStockSuperVO(stockId, 120);
-      // List<StockSuperVO> overWeekList =
-      // weekStockOverAllHelper.getLatestNStockSuperVO(stockId, 30);
       if (addToScheduleActionTable && overDayList.size() == 0) {
         System.out.println("No stockprice data for " + stockId + ", add to Schedule Action.");
         // next action should be fetch all the data from web, it must be
