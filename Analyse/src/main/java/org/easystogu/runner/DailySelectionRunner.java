@@ -70,10 +70,10 @@ public class DailySelectionRunner implements Runnable {
   private StringBuffer recommandStr = new StringBuffer();
   // StockPriceVO, CheckPoint list
   private Map<StockSuperVO, List<DailyCombineCheckPoint>> selectedMaps =
-      new HashMap<StockSuperVO, List<DailyCombineCheckPoint>>();
-  private Map<String, ZiJinLiuVO> realTimeZiJinLiuMap = new HashMap<String, ZiJinLiuVO>();
+      new java.util.concurrent.ConcurrentHashMap<StockSuperVO, List<DailyCombineCheckPoint>>();
+  private Map<String, ZiJinLiuVO> realTimeZiJinLiuMap = new java.util.concurrent.ConcurrentHashMap<String, ZiJinLiuVO>();
   private Map<DailyCombineCheckPoint, List<String>> generalCheckPointGordonMap =
-      new HashMap<DailyCombineCheckPoint, List<String>>();
+      new java.util.concurrent.ConcurrentHashMap<DailyCombineCheckPoint, List<String>>();
   private boolean fetchRealTimeZiJinLiu = false;
 
   // below are for daily and history
