@@ -8,7 +8,7 @@ function getEasyStoGuServerUrl() {
 	// return "http://www.openstock.cn:18080";
 	// return "http://192.168.1.12:8080";
 	// return "http://localhost:8080";
-	return "http://www.easystogu.cn:8080";
+	return "http://jboss.easystogu.cn:8080";
 }
 
 /**
