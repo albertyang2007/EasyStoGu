@@ -1,5 +1,6 @@
 package org.easystogu.analyse.util;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import org.easystogu.db.vo.table.StockPriceVO;
@@ -113,7 +114,7 @@ class ValueWrapper {
 
   public ValueWrapper(List<StockSuperVO> overList) {
     this.putTimeStamp = System.currentTimeMillis();
-    this.overList = overList;
+    this.overList = new ArrayList<StockSuperVO>(overList);
   }
 
   public boolean isYangEnough() {

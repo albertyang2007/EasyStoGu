@@ -14,6 +14,7 @@ import org.easystogu.db.vo.table.ShenXianVO;
 import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.db.vo.table.StockSuperVO;
 import org.easystogu.db.vo.table.WRVO;
+import org.easystogu.utils.WeekdayUtil;
 
 public class StockSuperVOHelper {
   protected StockPriceTableHelper qianFuQuanStockPriceTable =
@@ -98,7 +99,7 @@ class ValueWrapper {
 
   public ValueWrapper(List<StockSuperVO> overList) {
     this.putTimeStamp = System.currentTimeMillis();
-    this.overList = overList;
+    this.overList = new ArrayList<StockSuperVO>(overList);
   }
 
   public boolean isYangEnough() {
