@@ -68,6 +68,8 @@ public class DataBaseSanityCheck implements Runnable {
       new HistoryWeeklyMacdCountAndSaveDBRunner();
   protected HistoryWeeklyKDJCountAndSaveDBRunner weekKdjRunner =
       new HistoryWeeklyKDJCountAndSaveDBRunner();
+  
+  protected DailySelectionRunner dailySelectionRunner = new DailySelectionRunner();
 
   public void sanityDailyCheck(List<String> stockIds) {
     System.out.println("sanityDailyCheck start.");
@@ -221,7 +223,7 @@ public class DataBaseSanityCheck implements Runnable {
         if (rtn == 0) {
           System.out
               .println("Daily Statistics is all zero for date " + date + ", try to re-count it.");
-          new DailySelectionRunner().runForDate(date, stockIds);
+          dailySelectionRunner.runForDate(date, stockIds);
         }
       }
     }

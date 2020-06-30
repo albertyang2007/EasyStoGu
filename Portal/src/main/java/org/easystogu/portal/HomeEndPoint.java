@@ -6,7 +6,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
-import org.easystogu.ai.sklearn.CheckPointStatisticsPrepareData;
 import org.easystogu.config.ConfigurationService;
 import org.easystogu.config.Constants;
 import org.easystogu.config.DBConfigurationService;
@@ -25,6 +24,7 @@ import org.easystogu.runner.DailyUpdateAllStockRunner;
 import org.easystogu.runner.DailyUpdateStockPriceAndIndicatorRunner;
 import org.easystogu.runner.DailyViewAnalyseRunner;
 import org.easystogu.runner.DataBaseSanityCheck;
+import org.easystogu.runner.HistoryDailySelectionRunner;
 import org.easystogu.runner.RecentlySelectionRunner;
 import org.easystogu.runner.dynamic.taskIF.DynamicRunner;
 import org.easystogu.sina.runner.DailyStockPriceDownloadAndStoreDBRunner2;
@@ -69,8 +69,8 @@ public class HomeEndPoint {
     sb.append("<a href='/portal/home/DailyReplicateRunner'>DailyReplicateRunner</a><br>");
     sb.append("<a href='/portal/home/OneTimeDynamicRunner'>OneTimeDynamicRunner</a><br>");
     sb.append("<a href='/portal/home/HistoryAnalyseReport'>HistoryAnalyseReport Count All Check Point</a><br>");
+    sb.append("<a href='/portal/home/HistoryDailySelectionRunner'>HistoryDailySelectionRunner Count All Daily Check Point Statistics</a><br>");
     sb.append("<a href='/portal/home/Serverlog'>Serverlog</a><br>");
-    sb.append("<a href='/portal/home/test'>test</a><br>");
     
     sb.append("<br><a href='/eweb/index.htm'>eweb index</a><br>");
 
@@ -368,11 +368,12 @@ public class HomeEndPoint {
   }
 
   @GET
-  @Path("/test")
+  @Path("/HistoryDailySelectionRunner")
   public String test() {
     Thread t = new Thread(new Runnable() {
       public void run() {
-        CheckPointStatisticsPrepareData.main(null);
+        HistoryDailySelectionRunner runner = new HistoryDailySelectionRunner();
+        runner.runAllUsingMultipCpu();
       }
     });
     t.start();
