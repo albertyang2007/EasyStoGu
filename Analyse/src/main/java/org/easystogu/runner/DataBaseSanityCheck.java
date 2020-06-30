@@ -55,6 +55,20 @@ public class DataBaseSanityCheck implements Runnable {
   protected IndicatorDBHelperIF weekKdjTable =
       DBAccessFacdeFactory.getInstance(Constants.indWeekKDJ);
 
+  protected HistoryMacdCountAndSaveDBRunner macdRunner = new HistoryMacdCountAndSaveDBRunner();
+  protected HistoryKDJCountAndSaveDBRunner kdjRunner = new HistoryKDJCountAndSaveDBRunner();
+  protected HistoryBollCountAndSaveDBRunner boolRunner = new HistoryBollCountAndSaveDBRunner();
+  protected HistoryShenXianCountAndSaveDBRunner shenxianRunner =
+      new HistoryShenXianCountAndSaveDBRunner();
+  protected HistoryQSDDCountAndSaveDBRunner qsddRunner = new HistoryQSDDCountAndSaveDBRunner();
+  protected HistoryMACountAndSaveDBRunner maRunner = new HistoryMACountAndSaveDBRunner();
+  protected HistoryWRCountAndSaveDBRunner wrRunner = new HistoryWRCountAndSaveDBRunner();
+
+  protected HistoryWeeklyMacdCountAndSaveDBRunner weekMacdRunner =
+      new HistoryWeeklyMacdCountAndSaveDBRunner();
+  protected HistoryWeeklyKDJCountAndSaveDBRunner weekKdjRunner =
+      new HistoryWeeklyKDJCountAndSaveDBRunner();
+
   public void sanityDailyCheck(List<String> stockIds) {
     System.out.println("sanityDailyCheck start.");
     stockIds.parallelStream().forEach(stockId -> {
@@ -103,50 +117,43 @@ public class DataBaseSanityCheck implements Runnable {
       // figureOutDifferenceDate(spList, macdList);
 
       macdTable.delete(stockId);
-      HistoryMacdCountAndSaveDBRunner runner = new HistoryMacdCountAndSaveDBRunner();
-      runner.countAndSaved(stockId);
+      macdRunner.countAndSaved(stockId);
     }
     if ((spList.size() != kdjList.size())) {
       System.out
           .println(stockId + " size of kdj is not equal:" + spList.size() + "!=" + kdjList.size());
       kdjTable.delete(stockId);
-      HistoryKDJCountAndSaveDBRunner runner = new HistoryKDJCountAndSaveDBRunner();
-      runner.countAndSaved(stockId);
+      kdjRunner.countAndSaved(stockId);
     }
     if ((spList.size() != bollList.size())) {
       System.out.println(
           stockId + " size of boll is not equal:" + spList.size() + "!=" + bollList.size());
       bollTable.delete(stockId);
-      HistoryBollCountAndSaveDBRunner runner = new HistoryBollCountAndSaveDBRunner();
-      runner.countAndSaved(stockId);
+      boolRunner.countAndSaved(stockId);
     }
     if ((spList.size() != shenXianList.size())) {
       System.out.println(
           stockId + " size of shenXian is not equal:" + spList.size() + "!=" + shenXianList.size());
       shenXianTable.delete(stockId);
-      HistoryShenXianCountAndSaveDBRunner runner = new HistoryShenXianCountAndSaveDBRunner();
-      runner.countAndSaved(stockId);
+      shenxianRunner.countAndSaved(stockId);
     }
     if ((spList.size() != qsddList.size())) {
       System.out.println(
           stockId + " size of QSDD is not equal:" + spList.size() + "!=" + qsddList.size());
       qsddTable.delete(stockId);
-      HistoryQSDDCountAndSaveDBRunner runner = new HistoryQSDDCountAndSaveDBRunner();
-      runner.countAndSaved(stockId);
+      qsddRunner.countAndSaved(stockId);
     }
     if ((spList.size() != maList.size())) {
       System.out
           .println(stockId + " size of MA is not equal:" + spList.size() + "!=" + maList.size());
       maTable.delete(stockId);
-      HistoryMACountAndSaveDBRunner runner = new HistoryMACountAndSaveDBRunner();
-      runner.countAndSaved(stockId);
+      maRunner.countAndSaved(stockId);
     }
     if ((spList.size() != wrList.size())) {
       System.out
           .println(stockId + " size of WR is not equal:" + spList.size() + "!=" + wrList.size());
       wrTable.delete(stockId);
-      HistoryWRCountAndSaveDBRunner runner = new HistoryWRCountAndSaveDBRunner();
-      runner.countAndSaved(stockId);
+      wrRunner.countAndSaved(stockId);
     }
 
   }
@@ -193,15 +200,13 @@ public class DataBaseSanityCheck implements Runnable {
       figureOutDifferenceDate(spList, macdList);
 
       weekMacdTable.delete(stockId);
-      HistoryWeeklyMacdCountAndSaveDBRunner runner = new HistoryWeeklyMacdCountAndSaveDBRunner();
-      runner.countAndSaved(stockId);
+      weekMacdRunner.countAndSaved(stockId);
     }
     if ((spList.size() != kdjList.size())) {
       System.out.println(
           stockId + " size of week kdj is not equal:" + spList.size() + "!=" + kdjList.size());
       weekKdjTable.delete(stockId);
-      HistoryWeeklyKDJCountAndSaveDBRunner runner = new HistoryWeeklyKDJCountAndSaveDBRunner();
-      runner.countAndSaved(stockId);
+      weekKdjRunner.countAndSaved(stockId);
     }
 
   }
@@ -210,7 +215,7 @@ public class DataBaseSanityCheck implements Runnable {
     System.out.println("sanityDailyStatisticsCheck start.");
     List<String> dates = stockPriceTable.getAllDealDate("999999");
     for (String date : dates) {
-      //do not care the count date before 2000 year
+      // do not care the count date before 2000 year
       if (date.compareTo("2000-01-01") >= 0) {
         int rtn = checkPointDailyStatisticsTable.countByDate(date);
         if (rtn == 0) {
