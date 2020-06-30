@@ -23,10 +23,10 @@ public class WeekStockSuperVOHelper extends StockSuperVOHelper {
   @Override
   public List<StockSuperVO> getAllStockSuperVO(String stockId) {
     // get from map
-    ValueWrapper valueObj = allStockSuperVOMap.get(stockId);
-    if (valueObj != null && valueObj.isYangEnough()) {
-      return valueObj.overList;
-    }
+//    ValueWrapper valueObj = allStockSuperVOMap.get(stockId);
+//    if (valueObj != null && valueObj.isYangEnough()) {
+//      return valueObj.overList;
+//    }
 
     // merge them into one overall VO
     List<StockSuperVO> overList = new ArrayList<StockSuperVO>();
@@ -56,7 +56,7 @@ public class WeekStockSuperVOHelper extends StockSuperVOHelper {
     }
 
     // put to map
-    allStockSuperVOMap.put(stockId, new ValueWrapper(overList));
+//    allStockSuperVOMap.put(stockId, new ValueWrapper(overList));
 
     return overList;
   }

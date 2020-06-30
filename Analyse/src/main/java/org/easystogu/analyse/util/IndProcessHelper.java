@@ -15,13 +15,13 @@ public class IndProcessHelper {
   public static void processDayList(List<StockSuperVO> overDayList) {
     // count and update all ind data
     // day
-    IndKey indKey = new IndKey(overDayList);
-
-    ValueWrapper valueObj = dayListMap.get(indKey);
-    if (valueObj != null && valueObj.isYangEnough()) {
-      overDayList = valueObj.overList;
-      return;
-    }
+//    IndKey indKey = new IndKey(overDayList);
+//
+//    ValueWrapper valueObj = dayListMap.get(indKey);
+//    if (valueObj != null && valueObj.isYangEnough()) {
+//      overDayList = valueObj.overList;
+//      return;
+//    }
 
     IndCrossCheckingHelper.macdCross(overDayList);
     IndCrossCheckingHelper.kdjCross(overDayList);
@@ -36,19 +36,19 @@ public class IndProcessHelper {
     PriceCheckingHelper.setLastClosePrice(overDayList);
     PriceCheckingHelper.countAvgMA(overDayList);
 
-    dayListMap.put(indKey, new ValueWrapper(overDayList));
+//    dayListMap.put(indKey, new ValueWrapper(overDayList));
   }
 
   public static void processWeekList(List<StockSuperVO> overWeekList) {
     // count and update all ind data
     // week
-    IndKey indKey = new IndKey(overWeekList);
-
-    ValueWrapper valueObj = dayListMap.get(indKey);
-    if (valueObj != null && valueObj.isYangEnough()) {
-      overWeekList = valueObj.overList;
-      return;
-    }
+//    IndKey indKey = new IndKey(overWeekList);
+//
+//    ValueWrapper valueObj = dayListMap.get(indKey);
+//    if (valueObj != null && valueObj.isYangEnough()) {
+//      overWeekList = valueObj.overList;
+//      return;
+//    }
 
     PriceCheckingHelper.setLastClosePrice(overWeekList);
     IndCrossCheckingHelper.macdCross(overWeekList);
@@ -56,7 +56,7 @@ public class IndProcessHelper {
     // IndCrossCheckingHelper.qsddCross(overWeekList);
     // IndCrossCheckingHelper.shenXianCross12(overWeekList);
 
-    weekListMap.put(indKey, new ValueWrapper(overWeekList));
+//    weekListMap.put(indKey, new ValueWrapper(overWeekList));
   }
 }
 
