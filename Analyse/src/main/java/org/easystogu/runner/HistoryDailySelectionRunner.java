@@ -2,6 +2,7 @@ package org.easystogu.runner;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.easystogu.db.vo.view.FavoritesStockVO;
 
 // DailySelectionRunner is only run for today, so this job is to go back to
 // history and run favorites stockId (not all stockIds) then save into checkpoint_daily_selection
@@ -15,16 +16,16 @@ public class HistoryDailySelectionRunner extends DailySelectionRunner {
     // System.out.println(dates.get(dates.size() - 1));//first day of stock: 1990-12-19
     // System.out.println(dates.get(0));//current day of stock
 
-    //List<String> stockIds = new ArrayList<String>();
+    List<String> stockIds = new ArrayList<String>();
 
     // not count all the stockId since it will cause huge time
     // so just count the favorites stockId
-    List<String> stockIds = runner.stockConfig.getAllStockId();
-    //List<FavoritesStockVO> favoritesStockIds = runner.favoritesStockHelper.getByUserId("admin");
+    //List<String> stockIds = runner.stockConfig.getAllStockId();
+    List<FavoritesStockVO> favoritesStockIds = runner.favoritesStockHelper.getByUserId("admin");
 
-    //for (int index = 0; index < favoritesStockIds.size(); index++) {
-    //  stockIds.add(favoritesStockIds.get(index).stockId);
-    //}
+    for (int index = 0; index < favoritesStockIds.size(); index++) {
+      stockIds.add(favoritesStockIds.get(index).stockId);
+    }
 
     // split the date into 4 sub groups for 4 cup run async
     int startIndex = getStartIndexFromDates(allDates, cpuIndex);
