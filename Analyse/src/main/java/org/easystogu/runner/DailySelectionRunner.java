@@ -493,7 +493,7 @@ public class DailySelectionRunner implements Runnable {
   }
 
   public void runForStockIds(List<String> stockIds) {    
-    System.out.println("DailySelection runForStockIds start");
+    System.out.println("DailySelection runForStockIds start for date " + this.latestDate);
     
     //stockIds.parallelStream().forEach(stockId -> {
     //  this.doAnalyse(stockId);
@@ -509,11 +509,11 @@ public class DailySelectionRunner implements Runnable {
       doAnalyse(stockId);
     }
 
-    reportSelectedStockIds();
-    reportSelectedHistoryReport();
+    //reportSelectedStockIds();
+    //reportSelectedHistoryReport();
     addGeneralCheckPointStatisticsResultToDB();
     
-    System.out.println("DailySelection runForStockIds stop");
+    System.out.println("DailySelection runForStockIds stop for date " + this.latestDate);
   }
 
   public void run() {

@@ -49,7 +49,7 @@ public class HistoryDailySelectionRunner extends DailySelectionRunner {
   }
 
   private int getStopIndexFromDates(List<String> allDates, int cpuIndex) {
-    if (cpuIndex == 3) {
+    if (cpuIndex == getLogicCPUNumber() -1) {
       return allDates.size();
     }
     return (allDates.size() / getLogicCPUNumber()) * (cpuIndex + 1);
