@@ -19,7 +19,7 @@
 		<dependency>
 			<groupId>org.albertyang2007.easystogu</groupId>
 			<artifactId>easystogu-commonlib</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>${repo-internal-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.jboss.modules</groupId>

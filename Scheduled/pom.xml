@@ -19,42 +19,42 @@
 		<dependency>
 			<groupId>org.albertyang2007.easystogu</groupId>
 			<artifactId>easystogu-commonlib</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>${repo-internal-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.albertyang2007.easystogu</groupId>
 			<artifactId>easystogu-databaselib</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>${repo-internal-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.albertyang2007.easystogu</groupId>
 			<artifactId>easystogu-datacollect</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>${repo-internal-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.albertyang2007.easystogu</groupId>
 			<artifactId>easystogu-easymoneycollect</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>${repo-internal-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.albertyang2007.easystogu</groupId>
 			<artifactId>easystogu-indicator</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>${repo-internal-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.albertyang2007.easystogu</groupId>
 			<artifactId>easystogu-analyse</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>${repo-internal-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.albertyang2007.easystogu</groupId>
 			<artifactId>easystogu-cache</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>${repo-internal-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.albertyang2007.easystogu</groupId>
 			<artifactId>easystogu-databasereplicate</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>${repo-internal-version}</version>
 		</dependency>
 	</dependencies>
 </project>

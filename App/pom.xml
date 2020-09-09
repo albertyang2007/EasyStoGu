@@ -20,21 +20,21 @@
 		<dependency>
 			<groupId>org.albertyang2007.easystogu</groupId>
 			<artifactId>easystogu-portal</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>${repo-internal-version}</version>
 			<type>war</type>
 		</dependency>
 
 		<dependency>
 			<groupId>org.albertyang2007.easystogu</groupId>
 			<artifactId>easystogu-eweb</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>${repo-internal-version}</version>
 			<type>war</type>
 		</dependency>
 
 		<dependency>
 			<groupId>org.albertyang2007.easystogu</groupId>
 			<artifactId>easystogu-portal</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>${repo-internal-version}</version>
 			<type>pom</type>
 			<exclusions>
 				<exclusion>
@@ -51,7 +51,7 @@
 		<dependency>
 			<groupId>org.albertyang2007.easystogu</groupId>
 			<artifactId>easystogu-eweb</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>${repo-internal-version}</version>
 			<type>pom</type>
 			<exclusions>
 				<exclusion>
