@@ -11,7 +11,6 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.albertyang2007.easystogu</groupId>
 	<artifactId>easystogu-databaselib</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
 	<name>EasyStoGu-DatabaseLib</name>
 	<packaging>jar</packaging>
 	<description>EasyStoGu-DatabaseLib: define database lib for all project</description>

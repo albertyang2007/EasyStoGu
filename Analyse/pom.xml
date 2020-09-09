@@ -11,7 +11,6 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.albertyang2007.easystogu</groupId>
 	<artifactId>easystogu-analyse</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
 	<name>EasyStoGu-Analyse</name>
 	<packaging>jar</packaging>
 	<description>EasyStoGu-Analyse: Simple analyse based on data</description>

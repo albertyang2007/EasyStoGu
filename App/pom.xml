@@ -11,7 +11,6 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.albertyang2007.easystogu</groupId>
 	<artifactId>easystogu-app</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
 	<name>EasyStoGu-App</name>
 	<packaging>ear</packaging>
 	<description>EasyStoGu-App: App</description>
