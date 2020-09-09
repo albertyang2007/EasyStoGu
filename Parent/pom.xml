@@ -4,13 +4,13 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.albertyang2007.easystogu</groupId>
 	<artifactId>easystogu-parent</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<name>EasyStoGu-Parent</name>
 	<packaging>pom</packaging>
 	<description>EasyStoGu-Parent</description>
 
 	<properties>
-	    <repo-internal-version>0.0.1-SNAPSHOT</repo-internal-version>
+	    <repo-internal-version>1.0.0</repo-internal-version>
 	    
 		<spring.version>3.2.3.RELEASE</spring.version>
 		<spring-4.version>4.0.7.RELEASE</spring-4.version>
