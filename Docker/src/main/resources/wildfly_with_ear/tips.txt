@@ -1,0 +1,3 @@
+This docker file is used for k8s deployment.
+
+sudo docker build -t easystogu-wildflyjboss-with-ear:2.0.0-snapshot .
