@@ -46,21 +46,29 @@ public class IndicatorEndPointV3 {
 	private ConfigurationServiceCache config = ConfigurationServiceCache.getInstance();
 	protected String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
 	protected static String HHmmss = "00:00:00";
-	protected MACDHelper macdHelper = new MACDHelper();
-	protected KDJHelper kdjHelper = new KDJHelper();
-	protected ShenXianHelper shenXianHelper = new ShenXianHelper();
-	protected QSDDHelper qsddHelper = new QSDDHelper();
-	protected WRHelper wrHelper = new WRHelper();
-	protected BOLLHelper bollHelper = new BOLLHelper();
-	protected BBIHelper bbiHelper = new BBIHelper();
-	protected LuZaoHelper luzaoHelper = new LuZaoHelper();
+	@Autowired
+	protected MACDHelper macdHelper;
+	@Autowired
+	protected KDJHelper kdjHelper;
+	@Autowired
+	protected ShenXianHelper shenXianHelper;
+	@Autowired
+	protected QSDDHelper qsddHelper;
+	@Autowired
+	protected WRHelper wrHelper;
+	@Autowired
+	protected BOLLHelper bollHelper;
+	@Autowired
+	protected BBIHelper bbiHelper;
+	@Autowired
+	protected LuZaoHelper luzaoHelper;
 	@Autowired
 	protected ProcessRequestParmsInPostBody postParmsProcess;
 	@Autowired
 	protected TrendModeLoader trendModeLoader;
 	@Autowired
 	FlagsAnalyseHelper flagsAnalyseHelper;
-	
+
 	private Gson gson = new Gson();
 
 	@PostMapping("/macd/{stockId}/{date}")
@@ -141,8 +149,8 @@ public class IndicatorEndPointV3 {
 
 	@PostMapping("/shenxian/{stockId}/{date}")
 	@Produces("application/json")
-	public String queryShenXianById(@PathParam("stockId") String stockIdParm,
-			@PathParam("date") String dateParm, String postBody, @Context HttpServletResponse response) {
+	public String queryShenXianById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
+			String postBody, @Context HttpServletResponse response) {
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		List<ShenXianVO> list = new ArrayList<ShenXianVO>();
 		List<StockPriceVO> spList = postParmsProcess.updateStockPriceAccordingToRequest(stockIdParm, postBody);
@@ -166,10 +174,10 @@ public class IndicatorEndPointV3 {
 
 	@PostMapping("/shenxianSell/{stockId}/{date}")
 	@Produces("application/json")
-	public String queryShenXianSellById(@PathParam("stockId") String stockIdParm,
-			@PathParam("date") String dateParm, String postBody, @Context HttpServletResponse response) {
+	public String queryShenXianSellById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
+			String postBody, @Context HttpServletResponse response) {
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
-	
+
 		List<ShenXianUIVO> sxList = new ArrayList<ShenXianUIVO>();
 		List<MacdVO> macdList = new ArrayList<MacdVO>();
 		List<BBIVO> bbiList = new ArrayList<BBIVO>();
@@ -237,7 +245,8 @@ public class IndicatorEndPointV3 {
 			}
 		}
 
-		return gson.toJson(flagsAnalyseHelper.shenXianBuySellFlagsAnalyse(spList, sxList, macdList, bbiList, luzaoList));
+		return gson
+				.toJson(flagsAnalyseHelper.shenXianBuySellFlagsAnalyse(spList, sxList, macdList, bbiList, luzaoList));
 	}
 
 	@PostMapping("/luzao/{stockId}/{date}")

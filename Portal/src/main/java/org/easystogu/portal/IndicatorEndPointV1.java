@@ -30,6 +30,7 @@ import org.easystogu.indicator.ShenXianHelper;
 import org.easystogu.indicator.runner.utils.StockPriceFetcher;
 import org.easystogu.portal.vo.ShenXianUIVO;
 import org.easystogu.utils.Strings;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -52,16 +53,17 @@ public class IndicatorEndPointV1 {
 	protected IndicatorDBHelperIF qsddTable = DBAccessFacdeFactory.getInstance(Constants.indQSDD);
 	protected IndicatorDBHelperIF wrTable = DBAccessFacdeFactory.getInstance(Constants.indWR);
 	protected IndicatorDBHelperIF shenXianTable = DBAccessFacdeFactory.getInstance(Constants.indShenXian);
-
 	protected IndDDXTableHelper ddxTable = IndDDXTableHelper.getInstance();
-	protected LuZaoHelper luzaoHelper = new LuZaoHelper();
-	protected ShenXianHelper shenXianHelper = new ShenXianHelper();
-
 	protected StockIndicatorCache indicatorCache = StockIndicatorCache.getInstance();
+	
+	@Autowired
+	protected LuZaoHelper luzaoHelper;
+	@Autowired
+	protected ShenXianHelper shenXianHelper;
 
 	protected String dateRegex = "[0-9]{4}-[0-9]{2}-[0-9]{2}";
 	protected String fromToRegex = dateRegex + "_" + dateRegex;
-	
+
 	private Gson gson = new Gson();
 
 	@GetMapping("/macd/{stockId}/{date}")
@@ -145,8 +147,8 @@ public class IndicatorEndPointV1 {
 	// fetch ind from db directly
 	@GetMapping("/shenxian/{stockId}/{date}")
 	@Produces("application/json")
-	public String queryShenXianById(@PathParam("stockId") String stockIdParm,
-			@PathParam("date") String dateParm, @Context HttpServletResponse response) {
+	public String queryShenXianById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
+			@Context HttpServletResponse response) {
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		List<ShenXianVO> list = new ArrayList<ShenXianVO>();
 		if (Pattern.matches(fromToRegex, dateParm)) {
@@ -173,8 +175,8 @@ public class IndicatorEndPointV1 {
 	// return empty result.
 	@GetMapping("/shenxianSell/{stockId}/{date}")
 	@Produces("application/json")
-	public String queryShenXianSellById(@PathParam("stockId") String stockIdParm,
-			@PathParam("date") String dateParm, @Context HttpServletResponse response) {
+	public String queryShenXianSellById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
+			@Context HttpServletResponse response) {
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 
 		List<ShenXianUIVO> list = new ArrayList<ShenXianUIVO>();

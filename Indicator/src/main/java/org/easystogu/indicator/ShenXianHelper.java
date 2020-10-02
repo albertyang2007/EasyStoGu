@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.table.StockPriceTableHelper;
+import org.springframework.stereotype.Component;
 
 import com.google.common.primitives.Doubles;
 
@@ -13,6 +14,8 @@ import com.google.common.primitives.Doubles;
 // H3:EMA(CLOSE,108),COLORYELLOW;
 // STICKLINE(神仙大趋势H1>H2,神仙大趋势H1,H2,1,1),COLORRED;
 // STICKLINE(神仙大趋势H1<H2,神仙大趋势H1,H2,1,1),COLORBLUE;
+
+@Component
 public class ShenXianHelper extends IND {
 	public double[][] getShenXianList(double[] CLOSE) {
 		int length = CLOSE.length + mockLength;

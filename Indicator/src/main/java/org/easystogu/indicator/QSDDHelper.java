@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.table.StockPriceTableHelper;
+import org.springframework.stereotype.Component;
 
 import com.google.common.primitives.Doubles;
 
@@ -17,6 +18,8 @@ import com.google.common.primitives.Doubles;
  短期线:B+100,COLOR888888;
  中期线:D+100,COLORYELLOW,LINETHICK2;
  */
+
+@Component
 public class QSDDHelper extends IND {
 
 	public double[][] getQSDDList(double[] CLOSE, double[] LOW, double[] HIGH) {

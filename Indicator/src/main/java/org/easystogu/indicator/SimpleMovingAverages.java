@@ -3,6 +3,10 @@ package org.easystogu.indicator;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+
+
+@Component
 public class SimpleMovingAverages {
 	/**
 	 * Calculate the Simple Moving Average value, summing up the previous

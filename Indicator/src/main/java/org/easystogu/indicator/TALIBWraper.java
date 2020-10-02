@@ -1,5 +1,7 @@
 package org.easystogu.indicator;
 
+import org.springframework.stereotype.Component;
+
 import com.tictactec.ta.lib.Core;
 import com.tictactec.ta.lib.MAType;
 import com.tictactec.ta.lib.MInteger;
@@ -8,6 +10,8 @@ import com.tictactec.ta.lib.RetCode;
 //refer to:
 //https://code.google.com/p/quantitativeinvestment/source/browse/trunk/+quantitativeinvestment+--username+Huafeng.LOU@gmail.com/QuantitativeInvestment/Tools/TaLib.cs?spec=svn60&r=48
 //https://github.com/chartsy/chartsy/blob/624d54224615bda9ec55bbaca6e62653550e4be5/Chartsy/Stochastic%20Fast/src/org/chartsy/stochf/StochF.java
+
+@Component
 public class TALIBWraper {
     private Core core = new Core();
 

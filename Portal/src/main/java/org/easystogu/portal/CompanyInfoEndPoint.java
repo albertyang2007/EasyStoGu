@@ -8,7 +8,6 @@ import javax.ws.rs.core.Context;
 import org.easystogu.cache.ConfigurationServiceCache;
 import org.easystogu.cache.StockPriceCache;
 import org.easystogu.config.Constants;
-import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,7 +21,6 @@ import com.google.gson.Gson;
 public class CompanyInfoEndPoint {
 	private ConfigurationServiceCache config = ConfigurationServiceCache.getInstance();
 	private String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
-	private StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
 	private CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 	private StockPriceCache stockPriceCache = StockPriceCache.getInstance();
 	

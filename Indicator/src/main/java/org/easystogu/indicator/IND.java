@@ -4,9 +4,7 @@ package org.easystogu.indicator;
 //import org.easystogu.config.DBConfigurationService;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.IntStream;
 
 import com.google.common.primitives.Doubles;
 import com.tictactec.ta.lib.Core;

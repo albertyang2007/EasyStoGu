@@ -43,9 +43,6 @@ public class FavoritesEndPoint {
 	private CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 	private CheckPointDailySelectionTableCache checkPointDailySelectionCache = CheckPointDailySelectionTableCache
 			.getInstance();
-	// private CheckPointDailySelectionTableHelper
-	// checkPointDailySelectionTableHelper = CheckPointDailySelectionTableHelper
-	// .getInstance();
 	protected StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
 	private CommonViewCache commonViewCache = CommonViewCache.getInstance();
 	private FavoritesStockHelper favoritesStockHelper = FavoritesStockHelper.getInstance();

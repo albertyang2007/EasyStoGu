@@ -5,8 +5,10 @@ import java.util.List;
 import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.vo.table.StockPriceVO;
+import org.springframework.stereotype.Component;
 
 //绝对顶底
+@Component
 public class JueDuiDingDiHelper {
 
 	public static double hhv(double[] list, int before) {

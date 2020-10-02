@@ -28,11 +28,6 @@ import com.google.gson.Gson;
 public class CheckPointStatisticsEndPoint {
   private ConfigurationServiceCache config = ConfigurationServiceCache.getInstance();
   private String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
-  // private CheckPointDailyStatisticsTableHelper checkPointStatisticsTable =
-  // CheckPointDailyStatisticsTableHelper
-  // .getInstance();
-  // private StockPriceTableHelper stockPriceTable =
-  // StockPriceTableHelper.getInstance();
   private CheckPointStatisticsCache checkPointStatisticsCache =
       CheckPointStatisticsCache.getInstance();
   private StockPriceCache stockPriceCache = StockPriceCache.getInstance();

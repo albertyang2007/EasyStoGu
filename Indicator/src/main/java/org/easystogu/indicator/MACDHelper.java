@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.table.StockPriceTableHelper;
+import org.springframework.stereotype.Component;
 
 import com.google.common.primitives.Doubles;
 
@@ -13,6 +14,8 @@ import com.google.common.primitives.Doubles;
  DEA := EMA(DIF,9);
  MACD:= 2*(DIF-DEA);
  */
+
+@Component
 public class MACDHelper extends IND {
 
 	public double[][] getMACDList(double[] CLOSE) {

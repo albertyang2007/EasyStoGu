@@ -6,9 +6,11 @@ import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.indicator.runner.utils.StockPriceFetcher;
+import org.springframework.stereotype.Component;
 
 import com.google.common.primitives.Doubles;
 
+@Component
 public class MAHelper extends IND {
 
 	public double[] getMAList(double[] CLOSE, int day) {

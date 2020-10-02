@@ -6,6 +6,7 @@ import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.indicator.runner.utils.StockPriceFetcher;
+import org.springframework.stereotype.Component;
 
 import com.google.common.primitives.Doubles;
 
@@ -26,6 +27,8 @@ import com.google.common.primitives.Doubles;
 //卖: IF(CROSS(X3,X2), 1, 0);
 //DRAWTEXT(买,L*0.98,'B');
 //DRAWTEXT(卖,H*1.05,'S');
+
+@Component
 public class YiMengBSHelper extends IND {
 
 	public double[][] getYiMengBSList(double[] close, double[] low, double[] high) {

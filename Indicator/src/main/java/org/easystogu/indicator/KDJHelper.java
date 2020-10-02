@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.table.StockPriceTableHelper;
+import org.springframework.stereotype.Component;
 
 import com.google.common.primitives.Doubles;
 
@@ -13,6 +14,8 @@ import com.google.common.primitives.Doubles;
  D:=SMA(K,3,1);
  J:=3*K-2*D;
  */
+
+@Component
 public class KDJHelper extends IND {
 	public static final double DEFAULT_VALUE = 50.0;
 

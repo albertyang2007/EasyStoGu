@@ -5,6 +5,8 @@ import java.util.List;
 import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.vo.table.StockPriceVO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /*买1买2 指标
  * Var1:=(2*CLOSE+HIGH+LOW+OPEN)/5;
@@ -20,16 +22,19 @@ import org.easystogu.db.vo.table.StockPriceVO;
  Var6:=CROSS(SD,SK);
  卖 : Var6;
  */
+
+@Component
 public class Mai1Mai2Helper {
-	TALIBWraper talib = new TALIBWraper();
+	@Autowired
+	TALIBWraper talibHelper;
 
 	public double[][] getMai1Mai2List(double[] var1) {
 		int length = var1.length;
 		double[][] sdsk = new double[2][length];
 
-		double[] var11 = talib.getEma(var1, 4);
-		double[] var12 = talib.getEma(var11, 4);
-		double[] var2 = talib.getEma(var12, 4);
+		double[] var11 = talibHelper.getEma(var1, 4);
+		double[] var12 = talibHelper.getEma(var11, 4);
+		double[] var2 = talibHelper.getEma(var12, 4);
 		//System.out.println("var2=" + var2[length - 1]);
 
 		double[] sj = new double[length];
