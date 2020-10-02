@@ -50,6 +50,13 @@
 
 package com.tictactec.ta.lib;
 
+import javax.annotation.PostConstruct;
+
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
+@Component
+@Scope("prototype")
 public class Core {
    
    private int[] unstablePeriod;
@@ -60,6 +67,11 @@ public class Core {
    
    /** Creates a new instance of Core */
    public Core() {
+	   init();
+   }
+   
+   @PostConstruct
+   public void init() {
       unstablePeriod = new int[com.tictactec.ta.lib.FuncUnstId.All
          .ordinal()];
       compatibility = Compatibility.Default;

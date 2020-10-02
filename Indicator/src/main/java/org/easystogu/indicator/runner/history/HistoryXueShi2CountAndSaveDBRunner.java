@@ -10,6 +10,7 @@ import org.easystogu.db.vo.table.XueShi2VO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.indicator.TALIBWraper;
 import org.easystogu.utils.Strings;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -17,7 +18,8 @@ public class HistoryXueShi2CountAndSaveDBRunner {
 
     protected IndXueShi2TableHelper xueShi2Table = IndXueShi2TableHelper.getInstance();
     protected StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
-    protected TALIBWraper talib = new TALIBWraper();
+    @Autowired
+    protected TALIBWraper talibWraper;
 
     public void deleteXueShi2(String stockId) {
         xueShi2Table.delete(stockId);
@@ -52,7 +54,7 @@ public class HistoryXueShi2CountAndSaveDBRunner {
                 close[index++] = vo.close;
             }
 
-            double[] var = talib.getEma(close, 9);
+            double[] var = talibWraper.getEma(close, 9);
 
             double[] varUpper = new double[var.length];
             for (int i = 0; i < var.length; i++) {
@@ -64,8 +66,8 @@ public class HistoryXueShi2CountAndSaveDBRunner {
                 varLower[i] = var[i] * 0.86;
             }
 
-            double[] xueShi2Upper = talib.getEma(varUpper, 5);
-            double[] xueShi2Low = talib.getEma(varLower, 5);
+            double[] xueShi2Upper = talibWraper.getEma(varUpper, 5);
+            double[] xueShi2Low = talibWraper.getEma(varLower, 5);
 
             for (index = priceList.size() - 1; index >= 0; index--) {
                 double up = xueShi2Upper[index];

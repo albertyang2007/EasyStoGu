@@ -1,5 +1,6 @@
 package org.easystogu.indicator;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.tictactec.ta.lib.Core;
@@ -13,7 +14,8 @@ import com.tictactec.ta.lib.RetCode;
 
 @Component
 public class TALIBWraper {
-    private Core core = new Core();
+	@Autowired
+    private Core core;
 
     // ��ƽ��Ĳ���
     public double[] getSma(double[] prices, int ma) {

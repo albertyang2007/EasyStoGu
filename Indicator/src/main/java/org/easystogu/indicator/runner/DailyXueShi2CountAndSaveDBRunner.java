@@ -18,7 +18,7 @@ public class DailyXueShi2CountAndSaveDBRunner implements Runnable {
     protected IndXueShi2TableHelper xueShi2Table = IndXueShi2TableHelper.getInstance();
     protected StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
     @Autowired
-    private TALIBWraper talib = new TALIBWraper();
+    private TALIBWraper talibHelper;
     protected CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 
     public DailyXueShi2CountAndSaveDBRunner() {
@@ -48,7 +48,7 @@ public class DailyXueShi2CountAndSaveDBRunner implements Runnable {
             close[index++] = vo.close;
         }
 
-        double[] var = talib.getEma(close, 9);
+        double[] var = talibHelper.getEma(close, 9);
 
         double[] varUpper = new double[var.length];
         for (int i = 0; i < var.length; i++) {
@@ -60,8 +60,8 @@ public class DailyXueShi2CountAndSaveDBRunner implements Runnable {
             varLower[i] = var[i] * 0.86;
         }
 
-        double[] xueShi2Upper = talib.getEma(varUpper, 5);
-        double[] xueShi2Low = talib.getEma(varLower, 5);
+        double[] xueShi2Upper = talibHelper.getEma(varUpper, 5);
+        double[] xueShi2Low = talibHelper.getEma(varLower, 5);
 
         double up = xueShi2Upper[length - 1];
         double dn = xueShi2Low[length - 1];
