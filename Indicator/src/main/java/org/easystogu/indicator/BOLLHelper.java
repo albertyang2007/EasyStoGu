@@ -1,10 +1,5 @@
 package org.easystogu.indicator;
 
-import java.util.List;
-
-import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
-import org.easystogu.db.access.table.StockPriceTableHelper;
-import org.easystogu.db.vo.table.StockPriceVO;
 import org.springframework.stereotype.Component;
 
 import com.tictactec.ta.lib.MAType;
@@ -76,36 +71,4 @@ public class BOLLHelper extends IND {
 		}
 		return output;
 	}
-
-	public static void main(String[] args) {
-		StockPriceTableHelper stockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
-		List<StockPriceVO> list = stockPriceTable.getStockPriceById("002789");
-		BOLLHelper ins = new BOLLHelper();
-		// list is order by date
-		int length = list.size();
-		double[] close = new double[length];
-		int index = 0;
-		for (StockPriceVO vo : list) {
-			close[index++] = vo.close;
-		}
-
-		double[][] boll = ins.getBOLLList(close, 20, 2.0, 2.0);
-
-		double up = boll[0][list.size() - 1];
-		double mb = boll[1][list.size() - 1];
-		double dn = boll[2][list.size() - 1];
-
-		System.out.println("MB=" + mb);
-		System.out.println("UP=" + up);
-		System.out.println("DN=" + dn);
-		// output:
-		// MB=34.13050000000002
-		// UP=37.170114942718456
-		// DN=31.09088505728158
-		// Refer:
-		// MB=34.13
-		// UP=37.17
-		// DN=31.09
-	}
-
 }

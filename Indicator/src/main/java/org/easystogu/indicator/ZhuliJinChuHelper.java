@@ -1,10 +1,5 @@
 package org.easystogu.indicator;
 
-import java.util.List;
-
-import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
-import org.easystogu.db.access.table.StockPriceTableHelper;
-import org.easystogu.db.vo.table.StockPriceVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -49,22 +44,5 @@ public class ZhuliJinChuHelper {
 		//System.out.println("kongfang=" + zhuliJinChu[1][length - 1]);
 
 		return zhuliJinChu;
-	}
-
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		StockPriceTableHelper stockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
-		List<StockPriceVO> list = stockPriceTable.getStockPriceById("601318");
-		ZhuliJinChuHelper ins = new ZhuliJinChuHelper();
-
-		// list is order by date
-		int length = list.size();
-		double[] var1 = new double[length];
-		int index = 0;
-		for (StockPriceVO vo : list) {
-			var1[index++] = (2 * vo.close + vo.high + vo.low) / 4;
-		}
-
-		ins.getZhuliJinChuList(var1);
 	}
 }

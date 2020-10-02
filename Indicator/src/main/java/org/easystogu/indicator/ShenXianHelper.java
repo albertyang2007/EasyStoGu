@@ -1,12 +1,6 @@
 package org.easystogu.indicator;
 
-import java.util.List;
-
-import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
-import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.springframework.stereotype.Component;
-
-import com.google.common.primitives.Doubles;
 
 // shenXian indicator
 // 神仙大趋势H1:EMA(CLOSE,6);
@@ -68,23 +62,4 @@ public class ShenXianHelper extends IND {
 
 		return shenXian;
 	}
-
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		StockPriceTableHelper stockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
-		ShenXianHelper ins = new ShenXianHelper();
-
-		String stockId = "601318";
-		List<Double> close = stockPriceTable.getAllClosePrice(stockId);
-		List<Double> high = stockPriceTable.getAllHighPrice(stockId);
-		List<Double> low = stockPriceTable.getAllLowPrice(stockId);
-
-		double[][] h = ins.getShenXianSellPointList(Doubles.toArray(close), Doubles.toArray(high),
-				Doubles.toArray(low));
-		System.out.println("H1 =" + h[0][close.size() - 1]);
-		System.out.println("H2 =" + h[1][close.size() - 1]);
-		System.out.println("HC5=" + (h[2][close.size() - 1]));
-		System.out.println("HC6=" + (h[3][close.size() - 1]));
-	}
-
 }

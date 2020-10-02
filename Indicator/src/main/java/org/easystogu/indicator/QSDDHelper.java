@@ -1,12 +1,6 @@
 package org.easystogu.indicator;
 
-import java.util.List;
-
-import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
-import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.springframework.stereotype.Component;
-
-import com.google.common.primitives.Doubles;
 
 /*
  {趋势顶底}
@@ -25,7 +19,7 @@ public class QSDDHelper extends IND {
 	public double[][] getQSDDList(double[] CLOSE, double[] LOW, double[] HIGH) {
 		int length = CLOSE.length + mockLength;
 		double[][] qsdd = new double[3][length];
-		
+
 		// always add 120 mock date price before the list
 		// append mock data at the begging
 		CLOSE = insertBefore(CLOSE, LOW[0], mockLength);
@@ -52,24 +46,4 @@ public class QSDDHelper extends IND {
 
 		return qsdd;
 	}
-
-	public static void main(String[] args) {
-		StockPriceTableHelper stockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
-		QSDDHelper ins = new QSDDHelper();
-		String stockId = "002790";
-		List<Double> close = stockPriceTable.getAllClosePrice(stockId);
-		List<Double> low = stockPriceTable.getAllLowPrice(stockId);
-		List<Double> high = stockPriceTable.getAllHighPrice(stockId);
-
-		double[][] qsdd = ins.getQSDDList(Doubles.toArray(close), Doubles.toArray(low), Doubles.toArray(high));
-
-		System.out.println("长期线=" + (qsdd[0][close.size() - 1]));
-		System.out.println("中期线=" + (qsdd[2][close.size() - 1]));
-		System.out.println("短期线=" + (qsdd[1][close.size() - 1]));
-
-		System.out.println("长期线=" + (qsdd[0][1]));
-		System.out.println("中期线=" + (qsdd[2][1]));
-		System.out.println("短期线=" + (qsdd[1][1]));
-	}
-
 }

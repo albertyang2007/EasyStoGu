@@ -1,10 +1,5 @@
 package org.easystogu.indicator;
 
-import java.util.List;
-
-import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
-import org.easystogu.db.access.table.StockPriceTableHelper;
-import org.easystogu.db.vo.table.StockPriceVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -54,22 +49,5 @@ public class Mai1Mai2Helper {
 		//System.out.println("sk=" + sdsk[1][length - 1]);
 
 		return sdsk;
-	}
-
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		StockPriceTableHelper stockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
-		List<StockPriceVO> list = stockPriceTable.getStockPriceById("600359");
-		Mai1Mai2Helper ins = new Mai1Mai2Helper();
-
-		// list is order by date
-		int length = list.size();
-		double[] var1 = new double[length];
-		int index = 0;
-		for (StockPriceVO vo : list) {
-			var1[index++] = (2 * vo.close + vo.open + vo.high + vo.low) / 5;
-		}
-
-		ins.getMai1Mai2List(var1);
 	}
 }

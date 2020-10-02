@@ -1,12 +1,5 @@
 package org.easystogu.indicator;
 
-//import org.easystogu.config.ConfigurationService;
-//import org.easystogu.config.DBConfigurationService;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import com.google.common.primitives.Doubles;
 import com.tictactec.ta.lib.Core;
 import com.tictactec.ta.lib.MInteger;
 
@@ -317,39 +310,5 @@ public class IND {
 		}
 
 		return highn;
-	}
-
-/*	public static double[] simpleMovingAverageLamdbas(double[] values, int n) {
-		//double[] sums = Arrays.copyOf(values, values.length); // <1>
-		Arrays.parallelPrefix(values, Double::sum); // <2>
-		int start = n - 1;
-		return IntStream.range(start, values.length) // <3>
-				.mapToDouble(i -> {
-					double prefix = i == start ? 0 : values[i - n];
-					return (values[i] - prefix) / n; // <4>
-				}).toArray(); // <5>
-	}*/
-
-	public static void main(String[] args) {
-		IND ind = new IND();
-
-		List<Double> prices = new ArrayList<Double>();
-		for (long i = 0; i < 20000000; i++) {
-			prices.add(new Double(i));
-		}
-
-		double[] price = Doubles.toArray(prices);
-
-		long t1 = System.currentTimeMillis();
-		double[] sma = ind.SMA(price, 5);
-		long t2 = System.currentTimeMillis();
-
-		//double[] sma2 = simpleMovingAverageLamdbas(price, 5);
-		long t3 = System.currentTimeMillis();
-		System.out.println(t2 - t1);
-		System.out.println(t3 - t2);
- 
-		System.out.println(sma[sma.length - 1]);
-		//System.out.println(sma2[sma2.length - 1]);
 	}
 }

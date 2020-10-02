@@ -2,8 +2,6 @@ package org.easystogu.indicator;
 
 import java.util.List;
 
-import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
-import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.vo.table.StockPriceVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -97,14 +95,4 @@ public class ZhuLiXiChouHelper {
 
 		return chouMa;
 	}
-
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		ZhuLiXiChouHelper helper = new ZhuLiXiChouHelper();
-		StockPriceTableHelper stockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
-		List<StockPriceVO> spList = stockPriceTable.getStockPriceById("601088");//603799
-		// Collections.reverse(spList);
-		helper.getChouMa(spList);
-	}
-
 }

@@ -37,20 +37,4 @@ public class MACDHelper extends IND {
 
 		return macd;
 	}
-
-	public static void main(String[] args) {
-		StockPriceTableHelper stockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
-		MACDHelper ins = new MACDHelper();
-		String stockId = "002789";
-		List<Double> close = stockPriceTable.getAllClosePrice(stockId);
-
-		double[][] macd = ins.getMACDList(Doubles.toArray(close));
-		System.out.println("DIF=" + (macd[0][close.size() - 1]));
-		System.out.println("DEA=" + (macd[1][close.size() - 1]));
-		System.out.println("MACD=" + (macd[2][close.size() - 1]));
-		
-		System.out.println("DIF=" + (macd[0][1]));
-		System.out.println("DEA=" + (macd[1][1]));
-		System.out.println("MACD=" + (macd[2][1]));
-	}
 }

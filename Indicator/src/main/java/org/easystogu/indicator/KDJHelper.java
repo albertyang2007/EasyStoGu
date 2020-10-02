@@ -1,12 +1,6 @@
 package org.easystogu.indicator;
 
-import java.util.List;
-
-import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
-import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.springframework.stereotype.Component;
-
-import com.google.common.primitives.Doubles;
 
 /*
  RSV:=(CLOSE-LLV(LOW,9))/(HHV(HIGH,9)-LLV(LOW,9))*100;
@@ -65,20 +59,5 @@ public class KDJHelper extends IND {
 		}
 
 		return kdj;
-	}
-
-	public static void main(String[] args) {
-		StockPriceTableHelper stockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
-		KDJHelper ins = new KDJHelper();
-		String stockId = "000333";
-		List<Double> close = stockPriceTable.getAllClosePrice(stockId);
-		List<Double> low = stockPriceTable.getAllLowPrice(stockId);
-		List<Double> high = stockPriceTable.getAllHighPrice(stockId);
-
-		double[][] newKDJ = ins.getKDJList(Doubles.toArray(close), Doubles.toArray(low), Doubles.toArray(high));
-		System.out.println("K   " + newKDJ[0][close.size() - 1]);
-		System.out.println("D   " + newKDJ[1][close.size() - 1]);
-		System.out.println("J   " + newKDJ[2][close.size() - 1]);
-		System.out.println("RSV " + newKDJ[3][close.size() - 1]);
 	}
 }

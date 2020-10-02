@@ -1,14 +1,6 @@
 package org.easystogu.indicator;
 
-import java.util.List;
-
-import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
-import org.easystogu.db.access.table.StockPriceTableHelper;
-import org.easystogu.db.vo.table.StockPriceVO;
-import org.easystogu.indicator.runner.utils.StockPriceFetcher;
 import org.springframework.stereotype.Component;
-
-import com.google.common.primitives.Doubles;
 
 //yiMengBS indicator
 //{网上两种说法1: (用这个)}
@@ -37,19 +29,5 @@ public class YiMengBSHelper extends IND {
 		X[0] = EMA(X1, 6);
 		X[1] = EMA(X[0], 5);
 		return X;
-	}
-
-	public static void main(String[] args) {
-		StockPriceTableHelper stockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
-		YiMengBSHelper ins = new YiMengBSHelper();
-		String stockId = "999999";
-		List<StockPriceVO> priceList = stockPriceTable.getStockPriceById(stockId);
-		List<Double> close = StockPriceFetcher.getClosePrice(priceList);
-		List<Double> low = StockPriceFetcher.getLowPrice(priceList);
-		List<Double> high = StockPriceFetcher.getHighPrice(priceList);
-
-		double[][] X = ins.getYiMengBSList(Doubles.toArray(close), Doubles.toArray(low), Doubles.toArray(high));
-		System.out.println("X1=" + (X[0][close.size() - 1]));
-		System.out.println("X2=" + (X[1][close.size() - 1]));
 	}
 }
