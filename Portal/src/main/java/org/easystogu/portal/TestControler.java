@@ -2,18 +2,21 @@ package org.easystogu.portal;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import net.sf.json.JSONObject;
 
+@RestController
+@RequestMapping(value = "/")
 public class TestControler {
-	@POST
-	@Path("/holle")
+	@PostMapping("/holle")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response holle(final String body, @Context HttpServletRequest request) {

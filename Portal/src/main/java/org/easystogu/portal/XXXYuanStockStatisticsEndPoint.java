@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
@@ -15,8 +13,15 @@ import org.easystogu.cache.XXXYuanStockStatisticsCache;
 import org.easystogu.db.vo.view.StatisticsViewVO;
 import org.easystogu.portal.util.MergeNDaysStatisticsHelper;
 import org.easystogu.portal.vo.StatisticsVO;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.google.gson.Gson;
 
+
+@RestController
+@RequestMapping(value = "/xxxyuan")
 public class XXXYuanStockStatisticsEndPoint {
 	private ConfigurationServiceCache config = ConfigurationServiceCache.getInstance();
 	private String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
@@ -24,8 +29,7 @@ public class XXXYuanStockStatisticsEndPoint {
 
 	private Gson gson = new Gson();
 	
-	@GET
-	@Path("/{howMuchYuan}")
+	@GetMapping("/{howMuchYuan}")
 	@Produces("application/json")
 	public String getLatestDate(@PathParam("howMuchYuan") String howMuchYuan,
 			@Context HttpServletResponse response) {

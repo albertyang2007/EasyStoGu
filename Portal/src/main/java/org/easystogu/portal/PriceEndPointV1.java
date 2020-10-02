@@ -5,27 +5,29 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 
-import org.easystogu.config.ConfigurationService;
-import org.easystogu.config.DBConfigurationService;
+import org.easystogu.cache.ConfigurationServiceCache;
+import org.easystogu.cache.StockIndicatorCache;
+import org.easystogu.config.Constants;
 import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.util.MergeNDaysPriceUtil;
 import org.easystogu.db.vo.table.StockPriceVO;
-import org.easystogu.portal.util.MergeNDaysStatisticsHelper;
 import org.easystogu.utils.Strings;
-import org.easystogu.cache.StockIndicatorCache;
-import org.easystogu.cache.ConfigurationServiceCache;
-import org.easystogu.config.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.google.gson.Gson;
 
 //v1, qian FuQuan stockprice data (suggest to use this v1)
+
+@RestController
+@RequestMapping(value = "/pricev1")
 public class PriceEndPointV1 {
 	private ConfigurationServiceCache config = ConfigurationServiceCache.getInstance();
 	private String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
@@ -41,8 +43,7 @@ public class PriceEndPointV1 {
 	
 	private Gson gson = new Gson();
 
-	@GET
-	@Path("/{stockId}/{date}")
+	@GetMapping("/{stockId}/{date}")
 	@Produces("application/json")
 	public String queryDayPriceById(@PathParam("stockId") String stockIdParm,
 			@PathParam("date") String dateParm, @Context HttpServletResponse response) {
@@ -67,8 +68,7 @@ public class PriceEndPointV1 {
 		return gson.toJson(spList);
 	}
 
-	@GET
-	@Path("/month/{stockId}/{date}")
+	@GetMapping("/month/{stockId}/{date}")
 	@Produces("application/json")
 	public String queryDayPriceByIdMonthBased(@PathParam("stockId") String stockIdParm,
 			@PathParam("date") String dateParm, @Context HttpServletResponse response) {

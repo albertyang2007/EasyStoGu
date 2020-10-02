@@ -4,15 +4,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
+
 import org.easystogu.cache.CheckPointDailySelectionTableCache;
 import org.easystogu.cache.CommonViewCache;
 import org.easystogu.cache.ConfigurationServiceCache;
@@ -28,8 +26,16 @@ import org.easystogu.db.vo.view.FavoritesStockVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.log.LogHelper;
 import org.slf4j.Logger;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.google.gson.Gson;
 
+
+@RestController
+@RequestMapping(value = "/favorites")
 public class FavoritesEndPoint {
 	private static Logger logger = LogHelper.getLogger(FavoritesEndPoint.class);
 	private ConfigurationServiceCache config = ConfigurationServiceCache.getInstance();
@@ -48,8 +54,7 @@ public class FavoritesEndPoint {
 	
 	private Gson gson = new Gson();
 
-	@GET
-	@Path("/")
+	@GetMapping("/")
 	@Produces("application/json")
 	public String queryFavoritesSelectionCheckPoints(@Context HttpServletRequest request,
 			@Context HttpServletResponse response) {
@@ -69,8 +74,7 @@ public class FavoritesEndPoint {
 		return "{}";
 	}
 
-	@POST
-	@Path("/{userId}/{stockId}")
+	@GetMapping("/{userId}/{stockId}")
 	@Produces("application/json")
 	public void addToFavorites(@PathParam("userId") String userIdParm, @PathParam("stockId") String stockIdParm,
 			String postBody, @Context HttpServletResponse response) {
@@ -79,8 +83,7 @@ public class FavoritesEndPoint {
 		favoritesCache.refreshAll();
 	}
 
-	@DELETE
-	@Path("/{userId}/{stockId}")
+	@DeleteMapping("/{userId}/{stockId}")
 	@Produces("application/json")
 	public void deleteFromFavorites(@PathParam("userId") String userIdParm, @PathParam("stockId") String stockIdParm,
 			String postBody, @Context HttpServletResponse response) {
@@ -89,8 +92,7 @@ public class FavoritesEndPoint {
 		favoritesCache.refreshAll();
 	}
 
-	@GET
-	@Path("/{userId}")
+	@GetMapping("/{userId}")
 	@Produces("application/json")
 	public String getFavorites(@PathParam("userId") String userIdParm, String postBody,
 			@Context HttpServletResponse response) {

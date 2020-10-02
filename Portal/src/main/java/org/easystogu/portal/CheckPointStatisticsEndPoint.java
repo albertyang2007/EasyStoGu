@@ -3,12 +3,12 @@ package org.easystogu.portal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
+
 import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
+
 import org.easystogu.cache.CheckPointStatisticsCache;
 import org.easystogu.cache.ConfigurationServiceCache;
 import org.easystogu.cache.StockPriceCache;
@@ -17,8 +17,14 @@ import org.easystogu.config.Constants;
 import org.easystogu.db.vo.table.CheckPointDailyStatisticsVO;
 import org.easystogu.portal.vo.StatisticsVO;
 import org.easystogu.utils.WeekdayUtil;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.google.gson.Gson;
 
+@RestController
+@RequestMapping(value = "/statistics")
 public class CheckPointStatisticsEndPoint {
   private ConfigurationServiceCache config = ConfigurationServiceCache.getInstance();
   private String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
@@ -35,8 +41,7 @@ public class CheckPointStatisticsEndPoint {
 
   private Gson gson = new Gson();
 
-  @GET
-  @Path("/luzao/trend/{date}")
+  @GetMapping("/luzao/trend/{date}")
   @Produces("application/json")
   public String queryLuZaoTrendStatistics(@PathParam("date") String dateParm,
       @Context HttpServletResponse response) {
@@ -72,8 +77,7 @@ public class CheckPointStatisticsEndPoint {
     return gson.toJson(list);
   }
 
-  @GET
-  @Path("/luzao/gordon/{date}")
+  @GetMapping("/luzao/gordon/{date}")
   @Produces("application/json")
   public String queryLuZaoGordonStatistics(@PathParam("date") String dateParm,
       @Context HttpServletResponse response) {
@@ -112,8 +116,7 @@ public class CheckPointStatisticsEndPoint {
     return gson.toJson(list);
   }
 
-  @GET
-  @Path("/qsdd/{date}")
+  @GetMapping("/qsdd/{date}")
   @Produces("application/json")
   public String queryQsddStatistics(@PathParam("date") String dateParm,
       @Context HttpServletResponse response) {
@@ -149,8 +152,7 @@ public class CheckPointStatisticsEndPoint {
     return gson.toJson(list);
   }
 
-  @GET
-  @Path("/shenxian/{date}")
+  @GetMapping("/shenxian/{date}")
   @Produces("application/json")
   public String queryShenXianStatistics(@PathParam("date") String dateParm,
       @Context HttpServletResponse response) {
@@ -184,8 +186,7 @@ public class CheckPointStatisticsEndPoint {
     return gson.toJson(list);
   }
 
-  @GET
-  @Path("/macd/{date}")
+  @GetMapping("/macd/{date}")
   @Produces("application/json")
   public String queryMACDStatistics(@PathParam("date") String dateParm,
       @Context HttpServletResponse response) {
@@ -218,8 +219,7 @@ public class CheckPointStatisticsEndPoint {
     return gson.toJson(list);
   }
 
-  @GET
-  @Path("/magic9day/{date}")
+  @GetMapping("/magic9day/{date}")
   @Produces("application/json")
   public String queryMagic9DayStatistics(@PathParam("date") String dateParm,
       @Context HttpServletResponse response) {
@@ -254,8 +254,7 @@ public class CheckPointStatisticsEndPoint {
   }
 
 
-  @GET
-  @Path("/wr/{date}")
+  @GetMapping("/wr/{date}")
   @Produces("application/json")
   public String queryWRStatistics(@PathParam("date") String dateParm,
       @Context HttpServletResponse response) {
@@ -291,8 +290,7 @@ public class CheckPointStatisticsEndPoint {
     return gson.toJson(list);
   }
 
-  @GET
-  @Path("/sameDigitsInHighPrice/{date}")
+  @GetMapping("/sameDigitsInHighPrice/{date}")
   @Produces("application/json")
   public String querySameDigitsInHighPriceStatistics(@PathParam("date") String dateParm,
       @Context HttpServletResponse response) {
@@ -333,16 +331,6 @@ public class CheckPointStatisticsEndPoint {
       }
     }
     return false;
-  }
-
-  private int getCount(List<CheckPointDailyStatisticsVO> statisticsList, String date,
-      String checkPoint) {
-    for (CheckPointDailyStatisticsVO cpvo : statisticsList) {
-      if (cpvo.checkPoint.equalsIgnoreCase(checkPoint) && cpvo.date.equalsIgnoreCase(date)) {
-        return cpvo.count;
-      }
-    }
-    return 0;
   }
 
   private double getRate(List<CheckPointDailyStatisticsVO> statisticsList, String date,

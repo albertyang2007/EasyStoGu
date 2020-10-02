@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import org.easystogu.cache.StockIndicatorCache;
+import org.easystogu.config.Constants;
 import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.util.MergeNDaysPriceUtil;
@@ -15,9 +17,6 @@ import org.easystogu.trendmode.vo.SimplePriceVO;
 import org.easystogu.trendmode.vo.TrendModeVO;
 import org.easystogu.utils.Strings;
 import org.easystogu.utils.WeekdayUtil;
-import org.easystogu.cache.StockIndicatorCache;
-import org.easystogu.config.Constants;
-import org.easystogu.cache.ConfigurationServiceCache;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;

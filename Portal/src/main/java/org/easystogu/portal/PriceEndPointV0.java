@@ -6,25 +6,28 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 
-import org.easystogu.config.ConfigurationService;
-import org.easystogu.config.DBConfigurationService;
+import org.easystogu.cache.ConfigurationServiceCache;
+import org.easystogu.cache.StockIndicatorCache;
+import org.easystogu.config.Constants;
 import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.utils.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.google.gson.Gson;
-import org.easystogu.cache.StockIndicatorCache;
-import org.easystogu.cache.ConfigurationServiceCache;
-import org.easystogu.config.Constants;
 
 //v0, stockprice (no chuquan)
+
+@RestController
+@RequestMapping(value = "/pricev0")
 public class PriceEndPointV0 {
 	protected ConfigurationServiceCache config = ConfigurationServiceCache.getInstance();
 	protected String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
@@ -39,8 +42,7 @@ public class PriceEndPointV0 {
 	
 	private Gson gson = new Gson();
 
-	@GET
-	@Path("/{stockId}/{date}")
+	@GetMapping("/{stockId}/{date}")
 	@Produces("application/json")
 	public String queryDayPriceById(@PathParam("stockId") String stockIdParm,
 			@PathParam("date") String dateParm, @Context HttpServletResponse response) {

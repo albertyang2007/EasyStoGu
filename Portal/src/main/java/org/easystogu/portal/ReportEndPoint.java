@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
@@ -16,8 +14,15 @@ import org.easystogu.cache.StockPriceCache;
 import org.easystogu.config.Constants;
 import org.easystogu.db.access.view.FavoritesStockCheckpointViewHelper;
 import org.easystogu.db.vo.view.FavoritesStockCheckpointVO;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.google.gson.Gson;
 
+
+@RestController
+@RequestMapping(value = "/report")
 public class ReportEndPoint {
 	private ConfigurationServiceCache config = ConfigurationServiceCache.getInstance();
 	private FavoritesStockCheckpointViewHelper favoritesStockCheckpointViewHelper = FavoritesStockCheckpointViewHelper
@@ -26,8 +31,7 @@ public class ReportEndPoint {
 	protected String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
 	private Gson gson = new Gson();
 	
-	@GET
-	@Path("/{DateOffset}")
+	@GetMapping("/{DateOffset}")
 	@Produces("text/html; charset=UTF-8")
 	// @Produces("application/json")
 	// DateOffset is like 0,1,2,3 means today, yesterday, ...

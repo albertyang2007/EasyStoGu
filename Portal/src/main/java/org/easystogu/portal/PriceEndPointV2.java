@@ -5,32 +5,31 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 
-import org.easystogu.config.ConfigurationService;
-import org.easystogu.config.DBConfigurationService;
+import org.easystogu.config.Constants;
 import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.vo.table.StockPriceVO;
-import org.easystogu.cache.StockIndicatorCache;
-import org.easystogu.cache.ConfigurationServiceCache;
 import org.easystogu.utils.Strings;
-import org.easystogu.config.Constants;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.google.gson.Gson;
 
 //v2, qian FuQuan stockprice (v2 same as v1, can be delete?)
+
+@RestController
+@RequestMapping(value = "/pricev2")
 public class PriceEndPointV2 extends PriceEndPointV0{
 	protected StockPriceTableHelper stockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
 	private Gson gson = new Gson();
 	
 	@Override
-	@GET
-	@Path("/{stockId}/{date}")
+	@GetMapping("/{stockId}/{date}")
 	@Produces("application/json")
 	public String queryDayPriceById(@PathParam("stockId") String stockIdParm,
 			@PathParam("date") String dateParm, @Context HttpServletResponse response) {

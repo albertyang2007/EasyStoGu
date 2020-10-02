@@ -5,26 +5,28 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 
-import org.easystogu.config.ConfigurationService;
-import org.easystogu.config.DBConfigurationService;
+import org.easystogu.cache.CheckPointDailySelectionTableCache;
+import org.easystogu.cache.CommonViewCache;
+import org.easystogu.cache.ConfigurationServiceCache;
 import org.easystogu.db.access.table.StockPriceTableHelper;
-import org.easystogu.db.access.view.CommonViewHelper;
 import org.easystogu.db.vo.table.CheckPointDailySelectionVO;
 import org.easystogu.db.vo.view.CommonViewVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.log.LogHelper;
-import org.easystogu.cache.CheckPointDailySelectionTableCache;
-import org.easystogu.cache.CommonViewCache;
-import org.easystogu.cache.ConfigurationServiceCache;
 import org.slf4j.Logger;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.google.gson.Gson;
 
+
+@RestController
+@RequestMapping(value = "/view")
 public class ViewEndPoint {
 	private ConfigurationServiceCache config = ConfigurationServiceCache.getInstance();
 	private String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
@@ -37,8 +39,7 @@ public class ViewEndPoint {
 	
 	private Gson gson = new Gson();
 
-	@GET
-	@Path("/{viewname}")
+	@GetMapping("/{viewname}")
 	@Produces("application/json")
 	public String queryDayPriceByIdFromAnalyseViewAtRealTime(@PathParam("viewname") String viewname,
 			@Context HttpServletRequest request, @Context HttpServletResponse response) {

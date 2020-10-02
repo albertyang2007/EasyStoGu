@@ -4,14 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 
 import org.easystogu.config.ConfigurationService;
-import org.easystogu.cache.ConfigurationServiceCache;
 import org.easystogu.config.DBConfigurationService;
 import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.portal.init.TrendModeLoader;
@@ -20,8 +17,14 @@ import org.easystogu.trendmode.vo.TrendModeVO;
 import org.easystogu.utils.Strings;
 import org.easystogu.utils.WeekdayUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.google.gson.Gson;
 
+@RestController
+@RequestMapping(value = "/trendmode")
 public class TrendModeEndPoint {
 	private ConfigurationService config = DBConfigurationService.getInstance();
 	private String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
@@ -30,8 +33,7 @@ public class TrendModeEndPoint {
 
 	private Gson gson = new Gson();
 	
-	@GET
-	@Path("/query/{name}")
+	@GetMapping("/query/{name}")
 	@Produces("application/json")
 	public String queryTrendModeByName(@PathParam("name") String name,
 			@Context HttpServletResponse response) {
@@ -61,8 +63,7 @@ public class TrendModeEndPoint {
 		return gson.toJson(spList);
 	}
 
-	@GET
-	@Path("/listnames")
+	@GetMapping("/listnames")
 	@Produces("application/json")
 	public String queryAllTrendModeNames(@Context HttpServletResponse response) {
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);

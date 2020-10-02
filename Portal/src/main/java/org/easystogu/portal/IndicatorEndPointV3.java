@@ -4,12 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 
+import org.easystogu.cache.ConfigurationServiceCache;
 import org.easystogu.db.vo.table.BBIVO;
 import org.easystogu.db.vo.table.BollVO;
 import org.easystogu.db.vo.table.KDJVO;
@@ -32,11 +31,17 @@ import org.easystogu.portal.init.TrendModeLoader;
 import org.easystogu.portal.vo.ShenXianUIVO;
 import org.easystogu.utils.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.easystogu.cache.ConfigurationServiceCache;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.google.common.primitives.Doubles;
 import com.google.gson.Gson;
 
 //V3, with forecast data, query from qian fuquan stock price and count in real time
+
+@RestController
+@RequestMapping(value = "/indv3")
 public class IndicatorEndPointV3 {
 	private ConfigurationServiceCache config = ConfigurationServiceCache.getInstance();
 	protected String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
@@ -58,8 +63,7 @@ public class IndicatorEndPointV3 {
 	
 	private Gson gson = new Gson();
 
-	@POST
-	@Path("/macd/{stockId}/{date}")
+	@PostMapping("/macd/{stockId}/{date}")
 	@Produces("application/json")
 	public String queryMACDById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
 			String postBody, @Context HttpServletResponse response) {
@@ -83,8 +87,7 @@ public class IndicatorEndPointV3 {
 		return gson.toJson(list);
 	}
 
-	@POST
-	@Path("/kdj/{stockId}/{date}")
+	@PostMapping("/kdj/{stockId}/{date}")
 	@Produces("application/json")
 	public String queryKDJById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
 			String postBody, @Context HttpServletResponse response) {
@@ -111,8 +114,7 @@ public class IndicatorEndPointV3 {
 		return gson.toJson(list);
 	}
 
-	@POST
-	@Path("/boll/{stockId}/{date}")
+	@PostMapping("/boll/{stockId}/{date}")
 	@Produces("application/json")
 	public String queryBollById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
 			String postBody, @Context HttpServletResponse response) {
@@ -137,8 +139,7 @@ public class IndicatorEndPointV3 {
 		return gson.toJson(list);
 	}
 
-	@POST
-	@Path("/shenxian/{stockId}/{date}")
+	@PostMapping("/shenxian/{stockId}/{date}")
 	@Produces("application/json")
 	public String queryShenXianById(@PathParam("stockId") String stockIdParm,
 			@PathParam("date") String dateParm, String postBody, @Context HttpServletResponse response) {
@@ -163,8 +164,7 @@ public class IndicatorEndPointV3 {
 		return gson.toJson(list);
 	}
 
-	@POST
-	@Path("/shenxianSell/{stockId}/{date}")
+	@PostMapping("/shenxianSell/{stockId}/{date}")
 	@Produces("application/json")
 	public String queryShenXianSellById(@PathParam("stockId") String stockIdParm,
 			@PathParam("date") String dateParm, String postBody, @Context HttpServletResponse response) {
@@ -240,8 +240,7 @@ public class IndicatorEndPointV3 {
 		return gson.toJson(flagsAnalyseHelper.shenXianBuySellFlagsAnalyse(spList, sxList, macdList, bbiList, luzaoList));
 	}
 
-	@POST
-	@Path("/luzao/{stockId}/{date}")
+	@PostMapping("/luzao/{stockId}/{date}")
 	@Produces("application/json")
 	public String queryLuZaoById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
 			String postBody, @Context HttpServletResponse response) {
@@ -266,8 +265,7 @@ public class IndicatorEndPointV3 {
 		return gson.toJson(list);
 	}
 
-	@POST
-	@Path("/qsdd/{stockId}/{date}")
+	@PostMapping("/qsdd/{stockId}/{date}")
 	@Produces("application/json")
 	public String queryQSDDById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
 			String postBody, @Context HttpServletResponse response) {
@@ -294,8 +292,7 @@ public class IndicatorEndPointV3 {
 		return gson.toJson(list);
 	}
 
-	@POST
-	@Path("/wr/{stockId}/{date}")
+	@PostMapping("/wr/{stockId}/{date}")
 	@Produces("application/json")
 	public String queryWRById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
 			String postBody, @Context HttpServletResponse response) {

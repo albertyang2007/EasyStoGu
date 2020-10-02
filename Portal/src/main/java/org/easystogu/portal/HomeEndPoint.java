@@ -1,11 +1,11 @@
 package org.easystogu.portal;
 
 import java.util.regex.Pattern;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
+
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
+
 import org.easystogu.config.ConfigurationService;
 import org.easystogu.config.Constants;
 import org.easystogu.config.DBConfigurationService;
@@ -30,14 +30,18 @@ import org.easystogu.runner.dynamic.taskIF.DynamicRunner;
 import org.easystogu.sina.runner.DailyStockPriceDownloadAndStoreDBRunner2;
 import org.easystogu.sina.runner.RealtimeDisplayStockPriceRunner;
 import org.easystogu.sina.runner.history.StockPriceHistoryOverAllRunner;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
+@RestController
+@RequestMapping(value = "/home")
 public class HomeEndPoint {
   private ConfigurationService config = DBConfigurationService.getInstance();
   protected String dateRegex = "[0-9]{4}-[0-9]{2}-[0-9]{2}";
   protected String fromToRegex = dateRegex + "_" + dateRegex;
 
-  @GET
-  @Path("/")
+  @GetMapping("/")
   public Response mainPage() {
     StringBuffer sb = new StringBuffer();
     sb.append("<a href='/portal/home/DailyUpdateAllStockRunner'>DailyUpdateAllStockRunner</a><br>");
@@ -77,8 +81,7 @@ public class HomeEndPoint {
     return Response.ok().entity(sb.toString()).build();
   }
 
-  @GET
-  @Path("/DailyUpdateAllStockRunner")
+  @GetMapping("/DailyUpdateAllStockRunner")
   public String dailyUpdateOverAllRunner() {
     String zone = config.getString("zone", "");
     if (Constants.ZONE_OFFICE.equals(zone)) {
@@ -90,8 +93,7 @@ public class HomeEndPoint {
     return zone + " not allow to run this method.";
   }
 
-  @GET
-  @Path("/DailySelectionRunner")
+  @GetMapping("/DailySelectionRunner")
   public String dailySelectionRunner() {
     String zone = config.getString("zone", "");
     if (Constants.ZONE_OFFICE.equals(zone)) {
@@ -102,15 +104,13 @@ public class HomeEndPoint {
     return zone + " not allow to run this method.";
   }
 
-  @GET
-  @Path("/RealtimeDisplayStockPriceRunner")
+  @GetMapping("/RealtimeDisplayStockPriceRunner")
   @Produces("text/html; charset=UTF-8")
   public String realtimeDisplayStockPriceRunner() {
     return new RealtimeDisplayStockPriceRunner().printRealTimeOutput();
   }
 
-  @GET
-  @Path("/DailyZiJinLiuRunner")
+  @GetMapping("/DailyZiJinLiuRunner")
   public String dailyZiJinLiuRunner() {
     String zone = config.getString("zone", "");
     if (Constants.ZONE_OFFICE.equals(zone)) {
@@ -121,8 +121,7 @@ public class HomeEndPoint {
     return zone + " not allow to run this method.";
   }
 
-  @GET
-  @Path("/OverAllZiJinLiuAndDDXRunner")
+  @GetMapping("/OverAllZiJinLiuAndDDXRunner")
   public String overAllZiJinLiuAndDDXRunner() {
     String zone = config.getString("zone", "");
     if (Constants.ZONE_OFFICE.equals(zone)) {
@@ -133,8 +132,7 @@ public class HomeEndPoint {
     return zone + " not allow to run this method.";
   }
 
-  @GET
-  @Path("/OverAllZiJinLiuAndDDXRunnerForAllStockId")
+  @GetMapping("/OverAllZiJinLiuAndDDXRunnerForAllStockId")
   public String overAllZiJinLiuAndDDXRunnerForAllStockId() {
     String zone = config.getString("zone", "");
     if (Constants.ZONE_OFFICE.equals(zone)) {
@@ -146,8 +144,7 @@ public class HomeEndPoint {
     return zone + " not allow to run this method.";
   }
 
-  @GET
-  @Path("/DailyZiJinLiuRunnerForAllStockId")
+  @GetMapping("/DailyZiJinLiuRunnerForAllStockId")
   public String dailyZiJinLiuRunnerForAllStockId() {
     String zone = config.getString("zone", "");
     if (Constants.ZONE_OFFICE.equals(zone)) {
@@ -159,8 +156,7 @@ public class HomeEndPoint {
     return zone + " not allow to run this method.";
   }
 
-  @GET
-  @Path("/DailyZhuLiJingLiuRuRunner")
+  @GetMapping("/DailyZhuLiJingLiuRuRunner")
   public String dailyZhuLiJingLiuRuRunner() {
     String zone = config.getString("zone", "");
     if (Constants.ZONE_OFFICE.equals(zone)) {
@@ -171,8 +167,7 @@ public class HomeEndPoint {
     return zone + " not allow to run this method.";
   }
 
-  @GET
-  @Path("/DataBaseSanityCheck")
+  @GetMapping("/DataBaseSanityCheck")
   public String dataBaseSanityCheck() {
     String zone = config.getString("zone", "");
     if (Constants.ZONE_OFFICE.equals(zone)) {
@@ -183,8 +178,7 @@ public class HomeEndPoint {
     return zone + " not allow to run this method.";
   }
 
-  @GET
-  @Path("/DailyOverAllRunner")
+  @GetMapping("/DailyOverAllRunner")
   public String dailyOverAllRunner() {
     String zone = config.getString("zone", "");
     if (Constants.ZONE_OFFICE.equals(zone)) {
@@ -196,8 +190,7 @@ public class HomeEndPoint {
     return zone + " not allow to run this method.";
   }
 
-  @GET
-  @Path("/FastDailyOverAllRunner")
+  @GetMapping("/FastDailyOverAllRunner")
   public String fastDailyOverAllRunner() {
     String zone = config.getString("zone", "");
     if (Constants.ZONE_OFFICE.equals(zone)) {
@@ -209,8 +202,7 @@ public class HomeEndPoint {
     return zone + " not allow to run this method.";
   }
 
-  @GET
-  @Path("/RecentlySelectionRunner")
+  @GetMapping("/RecentlySelectionRunner")
   public String recentlySelectionRunner() {
     String zone = config.getString("zone", "");
     if (Constants.ZONE_OFFICE.equals(zone)) {
@@ -221,8 +213,7 @@ public class HomeEndPoint {
     return zone + " not allow to run this method.";
   }
 
-  @GET
-  @Path("/DailyUpdatePriceAndIndicatorRunner")
+  @GetMapping("/DailyUpdatePriceAndIndicatorRunner")
   public String dailyUpdatePriceAndIndicatorRunner() {
     String zone = config.getString("zone", "");
     if (Constants.ZONE_OFFICE.equals(zone)) {
@@ -233,8 +224,7 @@ public class HomeEndPoint {
     return zone + " not allow to run this method.";
   }
 
-  @GET
-  @Path("/DailyDDXRunner")
+  @GetMapping("/DailyDDXRunner")
   public String dailyDDXRunner() {
     String zone = config.getString("zone", "");
     if (Constants.ZONE_OFFICE.equals(zone)) {
@@ -245,8 +235,7 @@ public class HomeEndPoint {
     return zone + " not allow to run this method.";
   }
 
-  @GET
-  @Path("/DailyViewAnalyseRunner")
+  @GetMapping("/DailyViewAnalyseRunner")
   public String dailyViewAnalyseRunner() {
     String zone = config.getString("zone", "");
     if (Constants.ZONE_OFFICE.equals(zone)) {
@@ -257,8 +246,7 @@ public class HomeEndPoint {
     return zone + " not allow to run this method.";
   }
 
-  @GET
-  @Path("/DownloadStockPrice")
+  @GetMapping("/DownloadStockPrice")
   public String downloadStockPrice() {
     String zone = config.getString("zone", "");
     // day (download all stockIds price)
@@ -272,8 +260,7 @@ public class HomeEndPoint {
     return zone + " not allow to run this method.";
   }
 
-  @GET
-  @Path("/UpdateCompanyFromFileToDB")
+  @GetMapping("/UpdateCompanyFromFileToDB")
   public String updateCompanyFromFileToDB() {
     String zone = config.getString("zone", "");
     // update the total GuBen and LiuTong GuBen
@@ -285,8 +272,7 @@ public class HomeEndPoint {
     return zone + " not allow to run this method.";
   }
 
-  @GET
-  @Path("/updateStockPriceHistoryOverAllRunner/{date}")
+  @GetMapping("/updateStockPriceHistoryOverAllRunner/{date}")
   public String updateStockPriceHistoryOverAllRunner(@PathParam("date") String dateParm) {
     String zone = config.getString("zone", "");
     // update the total GuBen and LiuTong GuBen
@@ -306,8 +292,7 @@ public class HomeEndPoint {
     return zone + " not allow to run this method.";
   }
 
-  @GET
-  @Path("/IndicatorHistortOverAllRunner")
+  @GetMapping("/IndicatorHistortOverAllRunner")
   public String indicatorHistortOverAllRunner() {
     String zone = config.getString("zone", "");
     if (Constants.ZONE_OFFICE.equals(zone)) {
@@ -318,8 +303,7 @@ public class HomeEndPoint {
     return zone + " not allow to run this method.";
   }
 
-  @GET
-  @Path("/DailyReplicateRunner")
+  @GetMapping("/DailyReplicateRunner")
   public String dailyReplicateRunner() {
     String zone = config.getString("zone", "");
     if (Constants.ZONE_OFFICE.equals(zone)) {
@@ -330,8 +314,7 @@ public class HomeEndPoint {
     return zone + " not allow to run this method.";
   }
 
-  @GET
-  @Path("/OneTimeDynamicRunner")
+  @GetMapping("/OneTimeDynamicRunner")
   public String oneTimeDynamicRunner() {
     String zone = config.getString("zone", "");
     if (Constants.ZONE_OFFICE.equals(zone)) {
@@ -341,8 +324,7 @@ public class HomeEndPoint {
     return zone + " not allow to run this method.";
   }
 
-  @GET
-  @Path("/HistoryAnalyseReport")
+  @GetMapping("/HistoryAnalyseReport")
   public String oneTimeTempRunner() {
     String zone = config.getString("zone", "");
     if (Constants.ZONE_OFFICE.equals(zone)) {
@@ -360,15 +342,13 @@ public class HomeEndPoint {
     return zone + " not allow to run this method.";
   }
 
-  @GET
-  @Path("/Serverlog")
+  @GetMapping("/Serverlog")
   public String serverlog() {
     return FileReaderAndWriter
         .tailFile("/home/eyaweiw/software/jboss-eap-6.4/standalone/log/server.log", 20);
   }
 
-  @GET
-  @Path("/HistoryDailySelectionRunner")
+  @GetMapping("/HistoryDailySelectionRunner")
   public String test() {
     Thread t = new Thread(new Runnable() {
       public void run() {

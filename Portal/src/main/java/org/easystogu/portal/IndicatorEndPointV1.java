@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
@@ -32,11 +30,17 @@ import org.easystogu.indicator.ShenXianHelper;
 import org.easystogu.indicator.runner.utils.StockPriceFetcher;
 import org.easystogu.portal.vo.ShenXianUIVO;
 import org.easystogu.utils.Strings;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.google.common.primitives.Doubles;
 import com.google.gson.Gson;
 
 //V1, query indicator from DB, qian FuQuan (suggest to use this v1)
+
+@RestController
+@RequestMapping(value = "/indv1")
 public class IndicatorEndPointV1 {
 	protected static String HHmmss = "00:00:00";
 	private ConfigurationServiceCache config = ConfigurationServiceCache.getInstance();
@@ -60,8 +64,7 @@ public class IndicatorEndPointV1 {
 	
 	private Gson gson = new Gson();
 
-	@GET
-	@Path("/macd/{stockId}/{date}")
+	@GetMapping("/macd/{stockId}/{date}")
 	@Produces("application/json")
 	public String queryMACDById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
 			@Context HttpServletResponse response) {
@@ -87,8 +90,7 @@ public class IndicatorEndPointV1 {
 		return gson.toJson(list);
 	}
 
-	@GET
-	@Path("/kdj/{stockId}/{date}")
+	@GetMapping("/kdj/{stockId}/{date}")
 	@Produces("application/json")
 	public String queryKDJById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
 			@Context HttpServletResponse response) {
@@ -114,8 +116,7 @@ public class IndicatorEndPointV1 {
 		return gson.toJson(list);
 	}
 
-	@GET
-	@Path("/boll/{stockId}/{date}")
+	@GetMapping("/boll/{stockId}/{date}")
 	@Produces("application/json")
 	public String queryBollById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
 			@Context HttpServletResponse response) {
@@ -142,8 +143,7 @@ public class IndicatorEndPointV1 {
 	}
 
 	// fetch ind from db directly
-	@GET
-	@Path("/shenxian/{stockId}/{date}")
+	@GetMapping("/shenxian/{stockId}/{date}")
 	@Produces("application/json")
 	public String queryShenXianById(@PathParam("stockId") String stockIdParm,
 			@PathParam("date") String dateParm, @Context HttpServletResponse response) {
@@ -171,8 +171,7 @@ public class IndicatorEndPointV1 {
 
 	// since there is no table to store the HC5, just
 	// return empty result.
-	@GET
-	@Path("/shenxianSell/{stockId}/{date}")
+	@GetMapping("/shenxianSell/{stockId}/{date}")
 	@Produces("application/json")
 	public String queryShenXianSellById(@PathParam("stockId") String stockIdParm,
 			@PathParam("date") String dateParm, @Context HttpServletResponse response) {
@@ -201,8 +200,7 @@ public class IndicatorEndPointV1 {
 		return gson.toJson(list);
 	}
 
-	@GET
-	@Path("/luzao/{stockId}/{date}")
+	@GetMapping("/luzao/{stockId}/{date}")
 	@Produces("application/json")
 	public String queryLuZaoById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
 			@Context HttpServletResponse response) {
@@ -226,8 +224,7 @@ public class IndicatorEndPointV1 {
 		return gson.toJson(list);
 	}
 
-	@GET
-	@Path("/qsdd/{stockId}/{date}")
+	@GetMapping("/qsdd/{stockId}/{date}")
 	@Produces("application/json")
 	public String queryQSDDById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
 			@Context HttpServletResponse response) {
@@ -254,8 +251,7 @@ public class IndicatorEndPointV1 {
 		return gson.toJson(list);
 	}
 
-	@GET
-	@Path("/wr/{stockId}/{date}")
+	@GetMapping("/wr/{stockId}/{date}")
 	@Produces("application/json")
 	public String queryWRById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
 			@Context HttpServletResponse response) {
@@ -281,8 +277,7 @@ public class IndicatorEndPointV1 {
 		return gson.toJson(list);
 	}
 
-	@GET
-	@Path("/ddx/{stockId}/{date}")
+	@GetMapping("/ddx/{stockId}/{date}")
 	@Produces("application/json")
 	public String queryDDXById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
 			@Context HttpServletResponse response) {
