@@ -10,10 +10,14 @@ import org.easystogu.db.vo.table.XueShi2VO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.indicator.TALIBWraper;
 import org.easystogu.utils.Strings;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class DailyXueShi2CountAndSaveDBRunner implements Runnable {
     protected IndXueShi2TableHelper xueShi2Table = IndXueShi2TableHelper.getInstance();
     protected StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
+    @Autowired
     private TALIBWraper talib = new TALIBWraper();
     protected CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 
@@ -88,11 +92,10 @@ public class DailyXueShi2CountAndSaveDBRunner implements Runnable {
 
     }
 
-    public static void main(String[] args) {
+    public void mainWork(String[] args) {
         // TODO Auto-generated method stub
         CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
-        DailyXueShi2CountAndSaveDBRunner runner = new DailyXueShi2CountAndSaveDBRunner();
-        runner.countAndSaved(stockConfig.getAllStockId());
+        this.countAndSaved(stockConfig.getAllStockId());
         // runner.countAndSaved("000979");
     }
 }

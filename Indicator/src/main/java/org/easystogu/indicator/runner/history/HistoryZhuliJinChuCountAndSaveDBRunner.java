@@ -10,12 +10,16 @@ import org.easystogu.db.vo.table.ZhuliJinChuVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.indicator.ZhuliJinChuHelper;
 import org.easystogu.utils.Strings;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class HistoryZhuliJinChuCountAndSaveDBRunner {
 
     protected StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
     protected IndZhuliJinChuTableHelper zhuliJinChuTable = IndZhuliJinChuTableHelper.getInstance();
-    private ZhuliJinChuHelper zhuliJinChuHelper = new ZhuliJinChuHelper();
+    @Autowired
+    private ZhuliJinChuHelper zhuliJinChuHelper;
 
     public void deleteZhuliJinChu(String stockId) {
         zhuliJinChuTable.delete(stockId);
@@ -79,10 +83,9 @@ public class HistoryZhuliJinChuCountAndSaveDBRunner {
 
     // TODO Auto-generated method stub
     // 一次性计算数据库中所有ShenXian数据，入库
-    public static void main(String[] args) {
+    public void mainWork(String[] args) {
         CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
-        HistoryZhuliJinChuCountAndSaveDBRunner runner = new HistoryZhuliJinChuCountAndSaveDBRunner();
-        runner.countAndSaved(stockConfig.getAllStockId());
+        this.countAndSaved(stockConfig.getAllStockId());
         // runner.countAndSaved("600000");
     }
 

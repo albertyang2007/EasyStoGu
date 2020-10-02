@@ -5,17 +5,28 @@ import org.easystogu.indicator.runner.history.HistoryKDJCountAndSaveDBRunner;
 import org.easystogu.indicator.runner.history.HistoryMacdCountAndSaveDBRunner;
 import org.easystogu.indicator.runner.history.HistoryQSDDCountAndSaveDBRunner;
 import org.easystogu.indicator.runner.history.HistoryShenXianCountAndSaveDBRunner;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class AllHistoryIndCountAndSaveDBRunner {
-
-	public static void main(String[] args) {
+	@Autowired
+	HistoryMacdCountAndSaveDBRunner historyMacdCountAndSaveDBRunner;
+	@Autowired
+	HistoryKDJCountAndSaveDBRunner historyKDJCountAndSaveDBRunner;
+	@Autowired
+	HistoryBollCountAndSaveDBRunner historyBollCountAndSaveDBRunner;
+	@Autowired
+	HistoryShenXianCountAndSaveDBRunner historyShenXianCountAndSaveDBRunner;
+	@Autowired
+	HistoryQSDDCountAndSaveDBRunner historyQSDDCountAndSaveDBRunner;
+	
+	public void mainWork(String[] args) {
 		// TODO Auto-generated method stub
-		HistoryMacdCountAndSaveDBRunner.main(args);
-		HistoryKDJCountAndSaveDBRunner.main(args);
-		HistoryBollCountAndSaveDBRunner.main(args);
-		// HistoryMai1Mai2CountAndSaveDBRunner.main(args);
-		HistoryShenXianCountAndSaveDBRunner.main(args);
-		// HistoryXueShi2CountAndSaveDBRunner.main(args);
-		HistoryQSDDCountAndSaveDBRunner.main(args);
+		historyMacdCountAndSaveDBRunner.mainWork(args);
+		historyKDJCountAndSaveDBRunner.mainWork(args);
+		historyBollCountAndSaveDBRunner.mainWork(args);
+		historyShenXianCountAndSaveDBRunner.mainWork(args);
+		historyQSDDCountAndSaveDBRunner.mainWork(args);
 	}
 }

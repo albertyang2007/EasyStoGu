@@ -7,9 +7,10 @@ import org.easystogu.db.access.facde.DBAccessFacdeFactory;
 import org.easystogu.db.access.table.WeekStockPriceTableHelper;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.utils.WeekdayUtil;
+import org.springframework.stereotype.Component;
 
+@Component
 public class DailyWeekMacdCountAndSaveDBRunner extends DailyMacdCountAndSaveDBRunner {
-
 	public DailyWeekMacdCountAndSaveDBRunner() {
 		macdTable = DBAccessFacdeFactory.getInstance(Constants.indWeekMacd);
 		qianFuQuanStockPriceTable = WeekStockPriceTableHelper.getInstance();
@@ -25,11 +26,10 @@ public class DailyWeekMacdCountAndSaveDBRunner extends DailyMacdCountAndSaveDBRu
 		}
 	}
 
-	public static void main(String[] args) {
+	public void mainWork(String[] args) {
 		// TODO Auto-generated method stub
 		CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
-		DailyWeekMacdCountAndSaveDBRunner runner = new DailyWeekMacdCountAndSaveDBRunner();
-		runner.countAndSaved(stockConfig.getAllStockId());
+		this.countAndSaved(stockConfig.getAllStockId());
 		// runner.countAndSaved("002327");
 	}
 

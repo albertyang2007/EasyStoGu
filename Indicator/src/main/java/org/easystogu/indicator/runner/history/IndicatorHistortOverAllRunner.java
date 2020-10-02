@@ -2,51 +2,73 @@ package org.easystogu.indicator.runner.history;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+@Component
 public class IndicatorHistortOverAllRunner implements Runnable {
+	@Autowired
+	HistoryMacdCountAndSaveDBRunner historyMacdCountAndSaveDBRunner;
+	@Autowired
+	HistoryKDJCountAndSaveDBRunner historyKDJCountAndSaveDBRunner;
+	@Autowired
+	HistoryBollCountAndSaveDBRunner historyBollCountAndSaveDBRunner;
+	@Autowired
+	HistoryShenXianCountAndSaveDBRunner historyShenXianCountAndSaveDBRunner;
+	@Autowired
+	HistoryQSDDCountAndSaveDBRunner historyQSDDCountAndSaveDBRunner;
+	@Autowired
+	HistoryWRCountAndSaveDBRunner historyWRCountAndSaveDBRunner;
+	@Autowired
+	HistoryMACountAndSaveDBRunner historyMACountAndSaveDBRunner;
+	@Autowired
+	HistoryWeeklyMacdCountAndSaveDBRunner historyWeeklyMacdCountAndSaveDBRunner;
+	@Autowired
+	HistoryWeeklyKDJCountAndSaveDBRunner historyWeeklyKDJCountAndSaveDBRunner;
+	
 	public void countAndSave(List<String> stockIds) {
 		// day
-		new HistoryMacdCountAndSaveDBRunner().countAndSaved(stockIds);
-		new HistoryKDJCountAndSaveDBRunner().countAndSaved(stockIds);
-		new HistoryBollCountAndSaveDBRunner().countAndSaved(stockIds);
-		new HistoryShenXianCountAndSaveDBRunner().countAndSaved(stockIds);
-		new HistoryQSDDCountAndSaveDBRunner().countAndSaved(stockIds);
-		new HistoryWRCountAndSaveDBRunner().countAndSaved(stockIds);
-		new HistoryMACountAndSaveDBRunner().countAndSaved(stockIds);
+		historyMacdCountAndSaveDBRunner.countAndSaved(stockIds);
+		historyKDJCountAndSaveDBRunner.countAndSaved(stockIds);
+		historyBollCountAndSaveDBRunner.countAndSaved(stockIds);
+		historyShenXianCountAndSaveDBRunner.countAndSaved(stockIds);
+		historyQSDDCountAndSaveDBRunner.countAndSaved(stockIds);
+		historyWRCountAndSaveDBRunner.countAndSaved(stockIds);
+		historyMACountAndSaveDBRunner.countAndSaved(stockIds);
 		// week
-		new HistoryWeeklyMacdCountAndSaveDBRunner().countAndSaved(stockIds);
-		new HistoryWeeklyKDJCountAndSaveDBRunner().countAndSaved(stockIds);
+		historyWeeklyMacdCountAndSaveDBRunner.countAndSaved(stockIds);
+		historyWeeklyKDJCountAndSaveDBRunner.countAndSaved(stockIds);
 	}
 
 	public void countAndSave(String stockId) {
 		// day
-		new HistoryMacdCountAndSaveDBRunner().countAndSaved(stockId);
-		new HistoryKDJCountAndSaveDBRunner().countAndSaved(stockId);
-		new HistoryBollCountAndSaveDBRunner().countAndSaved(stockId);
-		new HistoryShenXianCountAndSaveDBRunner().countAndSaved(stockId);
-		new HistoryQSDDCountAndSaveDBRunner().countAndSaved(stockId);
-		new HistoryWRCountAndSaveDBRunner().countAndSaved(stockId);
+		historyMacdCountAndSaveDBRunner.countAndSaved(stockId);
+		historyKDJCountAndSaveDBRunner.countAndSaved(stockId);
+		historyBollCountAndSaveDBRunner.countAndSaved(stockId);
+		historyShenXianCountAndSaveDBRunner.countAndSaved(stockId);
+		historyQSDDCountAndSaveDBRunner.countAndSaved(stockId);
+		historyWRCountAndSaveDBRunner.countAndSaved(stockId);
 		// week
-		new HistoryWeeklyMacdCountAndSaveDBRunner().countAndSaved(stockId);
-		new HistoryWeeklyKDJCountAndSaveDBRunner().countAndSaved(stockId);
+		historyWeeklyMacdCountAndSaveDBRunner.countAndSaved(stockId);
+		historyWeeklyKDJCountAndSaveDBRunner.countAndSaved(stockId);
 	}
 
 	public void run() {
 		String[] args = null;
 		// day
-		HistoryMacdCountAndSaveDBRunner.main(args);
-		HistoryKDJCountAndSaveDBRunner.main(args);
-		HistoryBollCountAndSaveDBRunner.main(args);
-		HistoryShenXianCountAndSaveDBRunner.main(args);
-		HistoryQSDDCountAndSaveDBRunner.main(args);
-		HistoryWRCountAndSaveDBRunner.main(args);
+		historyMacdCountAndSaveDBRunner.mainWork(args);
+		historyKDJCountAndSaveDBRunner.mainWork(args);
+		historyBollCountAndSaveDBRunner.mainWork(args);
+		historyShenXianCountAndSaveDBRunner.mainWork(args);
+		historyQSDDCountAndSaveDBRunner.mainWork(args);
+		historyWRCountAndSaveDBRunner.mainWork(args);
 		// week
-		HistoryWeeklyMacdCountAndSaveDBRunner.main(args);
-		HistoryWeeklyKDJCountAndSaveDBRunner.main(args);
+		historyWeeklyMacdCountAndSaveDBRunner.mainWork(args);
+		historyWeeklyKDJCountAndSaveDBRunner.mainWork(args);
 
 	}
 
-	public static void main(String[] args) {
-		IndicatorHistortOverAllRunner runner = new IndicatorHistortOverAllRunner();
-		runner.run();
+	public void mainWork(String[] args) {
+		this.run();
 	}
 }

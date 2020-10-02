@@ -11,12 +11,16 @@ import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.indicator.YiMengBSHelper;
 import org.easystogu.indicator.runner.utils.StockPriceFetcher;
 import org.easystogu.utils.Strings;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.google.common.primitives.Doubles;
 
+@Component
 public class DailyYiMengBSCountAndSaveDBRunner implements Runnable {
     protected StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
     protected IndYiMengBSTableHelper yiMengBSTable = IndYiMengBSTableHelper.getInstance();
+    @Autowired
     protected YiMengBSHelper yiMengBSHelper = new YiMengBSHelper();
     protected CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 
@@ -84,11 +88,10 @@ public class DailyYiMengBSCountAndSaveDBRunner implements Runnable {
     }
 
     // TODO Auto-generated method stub
-    public static void main(String[] args) {
+    public void mainWork(String[] args) {
         CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
         List<String> stockIds = stockConfig.getAllStockId();
-        DailyYiMengBSCountAndSaveDBRunner runner = new DailyYiMengBSCountAndSaveDBRunner();
-        runner.countAndSaved(stockIds);
+        this.countAndSaved(stockIds);
         // runner.countAndSaved("002194");
     }
 

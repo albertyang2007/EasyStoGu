@@ -10,12 +10,16 @@ import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.indicator.Mai1Mai2Helper;
 import org.easystogu.utils.Strings;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class HistoryMai1Mai2CountAndSaveDBRunner {
 
 	protected StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
 	protected IndMai1Mai2TableHelper mai1mai2Table = IndMai1Mai2TableHelper.getInstance();
-	protected Mai1Mai2Helper mai1mai2Helper = new Mai1Mai2Helper();
+	@Autowired
+	protected Mai1Mai2Helper mai1mai2Helper;
 
 	public void deleteMai1Mai2(String stockId) {
 		mai1mai2Table.delete(stockId);
@@ -79,10 +83,9 @@ public class HistoryMai1Mai2CountAndSaveDBRunner {
 
 	// TODO Auto-generated method stub
 	// 一次性计算数据库中所有ShenXian数据，入库
-	public static void main(String[] args) {
+	public void mainWork(String[] args) {
 		CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
-		HistoryMai1Mai2CountAndSaveDBRunner runner = new HistoryMai1Mai2CountAndSaveDBRunner();
-		runner.countAndSaved(stockConfig.getAllStockId());
+		this.countAndSaved(stockConfig.getAllStockId());
 		// runner.countAndSaved("600750");
 	}
 }

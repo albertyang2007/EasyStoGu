@@ -10,11 +10,14 @@ import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.indicator.Mai1Mai2Helper;
 import org.easystogu.utils.Strings;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class DailyMai1Mai2CountAndSaveDBRunner implements Runnable {
-
     protected StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
     protected IndMai1Mai2TableHelper mai1mai2Table = IndMai1Mai2TableHelper.getInstance();
+    @Autowired
     private Mai1Mai2Helper mai1mai2Helper = new Mai1Mai2Helper();
     protected CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 
@@ -83,10 +86,9 @@ public class DailyMai1Mai2CountAndSaveDBRunner implements Runnable {
     }
 
     // TODO Auto-generated method stub
-    public static void main(String[] args) {
+    public void mainWork(String[] args) {
         CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
-        DailyMai1Mai2CountAndSaveDBRunner runner = new DailyMai1Mai2CountAndSaveDBRunner();
-        runner.countAndSaved(stockConfig.getAllStockId());
+        this.countAndSaved(stockConfig.getAllStockId());
         // runner.countAndSaved("600084");
     }
 }

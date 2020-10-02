@@ -12,11 +12,15 @@ import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.indicator.MACDHelper;
 import org.easystogu.utils.Strings;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 //每日根据最新数据计算当天的macd值，每天运行一次
+@Component
 public class DailyMacdCountAndSaveDBRunner implements Runnable {
 	protected IndicatorDBHelperIF macdTable = DBAccessFacdeFactory.getInstance(Constants.indMacd);
 	protected StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
+	@Autowired
 	protected MACDHelper macdHelper = new MACDHelper();
 	protected CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 
@@ -82,11 +86,10 @@ public class DailyMacdCountAndSaveDBRunner implements Runnable {
 
 	}
 
-	public static void main(String[] args) {
+	public void mainWork(String[] args) {
 		// TODO Auto-generated method stub
 		CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
-		DailyMacdCountAndSaveDBRunner runner = new DailyMacdCountAndSaveDBRunner();
-		runner.countAndSaved(stockConfig.getAllStockId());
+		this.countAndSaved(stockConfig.getAllStockId());
 		// runner.countAndSaved("999999");
 		// System.exit(0);
 	}

@@ -13,11 +13,15 @@ import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.indicator.QSDDHelper;
 import org.easystogu.indicator.runner.utils.StockPriceFetcher;
 import org.easystogu.utils.Strings;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.google.common.primitives.Doubles;
 
+@Component
 public class DailyQSDDCountAndSaveDBRunner implements Runnable {
 	protected IndicatorDBHelperIF qsddTable = DBAccessFacdeFactory.getInstance(Constants.indQSDD);
+	@Autowired
 	private QSDDHelper qsddHelper = new QSDDHelper();
 	protected StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
 	protected CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
@@ -76,11 +80,10 @@ public class DailyQSDDCountAndSaveDBRunner implements Runnable {
 
 	}
 
-	public static void main(String[] args) {
+	public void mainWork(String[] args) {
 		// TODO Auto-generated method stub
 		CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
-		DailyQSDDCountAndSaveDBRunner runner = new DailyQSDDCountAndSaveDBRunner();
-		runner.countAndSaved(stockConfig.getAllStockId());
+		this.countAndSaved(stockConfig.getAllStockId());
 		// runner.countAndSaved("999999");
 	}
 }

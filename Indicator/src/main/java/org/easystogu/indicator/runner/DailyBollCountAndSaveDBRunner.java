@@ -12,12 +12,16 @@ import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.indicator.BOLLHelper;
 import org.easystogu.utils.Strings;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 //每日根据最新数据计算当天的boll值，每天运行一次
+@Component
 public class DailyBollCountAndSaveDBRunner implements Runnable {
 	protected IndicatorDBHelperIF bollTable = DBAccessFacdeFactory.getInstance(Constants.indBoll);
 	protected StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
-	protected BOLLHelper bollHelper = new BOLLHelper();
+	@Autowired
+	protected BOLLHelper bollHelper;
 	protected CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 
 	public DailyBollCountAndSaveDBRunner() {
@@ -83,11 +87,10 @@ public class DailyBollCountAndSaveDBRunner implements Runnable {
 
 	}
 
-	public static void main(String[] args) {
+	public void mainWork(String[] args) {
 		// TODO Auto-generated method stub
 		CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
-		DailyBollCountAndSaveDBRunner runner = new DailyBollCountAndSaveDBRunner();
-		runner.countAndSaved(stockConfig.getAllStockId());
+		this.countAndSaved(stockConfig.getAllStockId());
 		// runner.countAndSaved("002214");
 	}
 }

@@ -7,7 +7,9 @@ import org.easystogu.db.access.facde.DBAccessFacdeFactory;
 import org.easystogu.db.access.table.WeekStockPriceTableHelper;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.utils.WeekdayUtil;
+import org.springframework.stereotype.Component;
 
+@Component
 public class DailyWeekKDJCountAndSaveDBRunner extends DailyKDJCountAndSaveDBRunner {
 	public DailyWeekKDJCountAndSaveDBRunner() {
 		kdjTable = DBAccessFacdeFactory.getInstance(Constants.indWeekKDJ);
@@ -24,11 +26,10 @@ public class DailyWeekKDJCountAndSaveDBRunner extends DailyKDJCountAndSaveDBRunn
 		}
 	}
 
-	public static void main(String[] args) {
+	public void mainWork(String[] args) {
 		// TODO Auto-generated method stub
 		CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
-		DailyWeekKDJCountAndSaveDBRunner runner = new DailyWeekKDJCountAndSaveDBRunner();
-		runner.countAndSaved(stockConfig.getAllStockId());
+		this.countAndSaved(stockConfig.getAllStockId());
 		// runner.countAndSaved("002327");
 	}
 }

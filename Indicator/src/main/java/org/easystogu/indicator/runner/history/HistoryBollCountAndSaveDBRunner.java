@@ -12,13 +12,17 @@ import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.indicator.BOLLHelper;
 import org.easystogu.utils.Strings;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 //计算数据库中所有boll值，包括最新和历史的，一次性运行
+@Component
 public class HistoryBollCountAndSaveDBRunner {
 
 	protected IndicatorDBHelperIF bollTable = DBAccessFacdeFactory.getInstance(Constants.indBoll);
 	protected StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
-	private BOLLHelper bollHelper = new BOLLHelper();
+	@Autowired
+	private BOLLHelper bollHelper;
 
 	public void deleteBoll(String stockId) {
 		bollTable.delete(stockId);
@@ -93,11 +97,10 @@ public class HistoryBollCountAndSaveDBRunner {
       System.out.println("Boll countAndSaved stop");
     }
 
-	public static void main(String[] args) {
+	public void mainWork(String[] args) {
 		// TODO Auto-generated method stub
 		CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
-		HistoryBollCountAndSaveDBRunner runner = new HistoryBollCountAndSaveDBRunner();
-		runner.countAndSaved(stockConfig.getAllStockId());
+		this.countAndSaved(stockConfig.getAllStockId());
 		// runner.countAndSaved("600750");
 	}
 

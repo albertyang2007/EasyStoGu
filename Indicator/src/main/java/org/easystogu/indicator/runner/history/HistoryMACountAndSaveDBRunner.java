@@ -11,14 +11,18 @@ import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.indicator.MAHelper;
 import org.easystogu.indicator.runner.utils.StockPriceFetcher;
 import org.easystogu.utils.Strings;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.google.common.primitives.Doubles;
 
+@Component
 public class HistoryMACountAndSaveDBRunner {
 
 	protected StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
 	protected IndMATableHelper maTable = IndMATableHelper.getInstance();
-	protected MAHelper maHelper = new MAHelper();
+	@Autowired
+	protected MAHelper maHelper;
 
 	public void deleteMA(String stockId) {
 		maTable.delete(stockId);
@@ -90,10 +94,9 @@ public class HistoryMACountAndSaveDBRunner {
 
 	// TODO Auto-generated method stub
 	// 一次性计算数据库中所有KDJ数据，入库
-	public static void main(String[] args) {
+	public void mainWork(String[] args) {
 		CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
-		HistoryMACountAndSaveDBRunner runner = new HistoryMACountAndSaveDBRunner();
-		runner.countAndSaved(stockConfig.getAllStockId());
+		this.countAndSaved(stockConfig.getAllStockId());
 		// runner.countAndSaved("999999");
 	}
 

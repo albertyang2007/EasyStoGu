@@ -10,11 +10,15 @@ import org.easystogu.db.vo.table.ZhuliJinChuVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.indicator.ZhuliJinChuHelper;
 import org.easystogu.utils.Strings;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class DailyZhuliJinChuCountAndSaveDBRunner implements Runnable {
 
     protected StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
     protected IndZhuliJinChuTableHelper zhuliJinChuTable = IndZhuliJinChuTableHelper.getInstance();
+    @Autowired
     protected ZhuliJinChuHelper zhuliJinChuHelper = new ZhuliJinChuHelper();
     protected CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 
@@ -82,10 +86,9 @@ public class DailyZhuliJinChuCountAndSaveDBRunner implements Runnable {
     }
 
     // TODO Auto-generated method stub
-    public static void main(String[] args) {
+    public void mainWork(String[] args) {
         CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
-        DailyZhuliJinChuCountAndSaveDBRunner runner = new DailyZhuliJinChuCountAndSaveDBRunner();
-        runner.countAndSaved(stockConfig.getAllStockId());
+        this.countAndSaved(stockConfig.getAllStockId());
         // runner.countAndSaved("600000");
     }
 

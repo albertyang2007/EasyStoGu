@@ -13,13 +13,17 @@ import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.indicator.QSDDHelper;
 import org.easystogu.indicator.runner.utils.StockPriceFetcher;
 import org.easystogu.utils.Strings;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.google.common.primitives.Doubles;
 
+@Component
 public class HistoryQSDDCountAndSaveDBRunner {
 	protected IndicatorDBHelperIF qsddTable = DBAccessFacdeFactory.getInstance(Constants.indQSDD);
 	protected StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
-	protected QSDDHelper qsddHelper = new QSDDHelper();
+	@Autowired
+	protected QSDDHelper qsddHelper;
 
 	public void deleteQSDD(String stockId) {
 		qsddTable.delete(stockId);
@@ -85,10 +89,9 @@ public class HistoryQSDDCountAndSaveDBRunner {
 
 	// TODO Auto-generated method stub
 	// 一次性计算数据库中所有KDJ数据，入库
-	public static void main(String[] args) {
+	public void mainWork(String[] args) {
 		CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
-		HistoryQSDDCountAndSaveDBRunner runner = new HistoryQSDDCountAndSaveDBRunner();
-		runner.countAndSaved(stockConfig.getAllStockId());
+		this.countAndSaved(stockConfig.getAllStockId());
 		// runner.countAndSaved("999999");
 	}
 }

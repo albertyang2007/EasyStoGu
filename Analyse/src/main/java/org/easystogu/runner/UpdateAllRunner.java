@@ -21,7 +21,7 @@ public class UpdateAllRunner {
 		// task started
 
 		// StockPriceHistoryOverAllRunner.main(args);
-		IndicatorHistortOverAllRunner.main(args);
+		IndicatorHistortOverAllRunner.mainWork(args);
 		HistoryAnalyseReport.main(args);
 
 		// task end

@@ -13,13 +13,16 @@ import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.indicator.ShenXianHelper;
 import org.easystogu.indicator.runner.utils.StockPriceFetcher;
 import org.easystogu.utils.Strings;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.google.common.primitives.Doubles;
 
+@Component
 public class DailyShenXianCountAndSaveDBRunner implements Runnable {
 	protected IndicatorDBHelperIF shenXianTable = DBAccessFacdeFactory.getInstance(Constants.indShenXian);
 	protected StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
-
+	@Autowired
 	private ShenXianHelper shenXianHelper = new ShenXianHelper();
 	protected CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 
@@ -88,11 +91,10 @@ public class DailyShenXianCountAndSaveDBRunner implements Runnable {
 	}
 
 	// TODO Auto-generated method stub
-	public static void main(String[] args) {
+	public void mainWork(String[] args) {
 		CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 		List<String> stockIds = stockConfig.getAllStockId();
-		DailyShenXianCountAndSaveDBRunner runner = new DailyShenXianCountAndSaveDBRunner();
-		runner.countAndSaved(stockIds);
+		this.countAndSaved(stockIds);
 		// runner.countAndSaved("999999");
 	}
 }

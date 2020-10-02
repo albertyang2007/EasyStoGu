@@ -10,7 +10,9 @@ import org.easystogu.db.vo.table.XueShi2VO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.indicator.TALIBWraper;
 import org.easystogu.utils.Strings;
+import org.springframework.stereotype.Component;
 
+@Component
 public class HistoryXueShi2CountAndSaveDBRunner {
 
     protected IndXueShi2TableHelper xueShi2Table = IndXueShi2TableHelper.getInstance();
@@ -96,11 +98,10 @@ public class HistoryXueShi2CountAndSaveDBRunner {
         }
     }
 
-    public static void main(String[] args) {
+    public void mainWork(String[] args) {
         // TODO Auto-generated method stub
         CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
-        HistoryXueShi2CountAndSaveDBRunner runner = new HistoryXueShi2CountAndSaveDBRunner();
-        runner.countAndSaved(stockConfig.getAllStockId());
+        this.countAndSaved(stockConfig.getAllStockId());
         // runner.countAndSaved("600750");
     }
 }

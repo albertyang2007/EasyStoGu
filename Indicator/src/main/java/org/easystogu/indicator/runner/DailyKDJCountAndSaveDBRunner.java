@@ -13,11 +13,15 @@ import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.indicator.KDJHelper;
 import org.easystogu.indicator.runner.utils.StockPriceFetcher;
 import org.easystogu.utils.Strings;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.google.common.primitives.Doubles;
 
+@Component
 public class DailyKDJCountAndSaveDBRunner implements Runnable {
 	protected IndicatorDBHelperIF kdjTable = DBAccessFacdeFactory.getInstance(Constants.indKDJ);
+	@Autowired
 	private KDJHelper kdjHelper = new KDJHelper();
 	protected StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
 	protected CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
@@ -77,11 +81,10 @@ public class DailyKDJCountAndSaveDBRunner implements Runnable {
 	public void run() {
 	}
 
-	public static void main(String[] args) {
+	public void mainWork(String[] args) {
 		// TODO Auto-generated method stub
 		CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
-		DailyKDJCountAndSaveDBRunner runner = new DailyKDJCountAndSaveDBRunner();
-		runner.countAndSaved(stockConfig.getAllStockId());
+		this.countAndSaved(stockConfig.getAllStockId());
 		// runner.countAndSaved("002609");
 	}
 }

@@ -13,13 +13,17 @@ import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.indicator.WRHelper;
 import org.easystogu.indicator.runner.utils.StockPriceFetcher;
 import org.easystogu.utils.Strings;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.google.common.primitives.Doubles;
 
+@Component
 public class HistoryWRCountAndSaveDBRunner {
 	protected IndicatorDBHelperIF wrTable = DBAccessFacdeFactory.getInstance(Constants.indWR);
 	protected StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
-	protected WRHelper wrHelper = new WRHelper();
+	@Autowired
+	protected WRHelper wrHelper;
 
 	public void deleteWR(String stockId) {
 		wrTable.delete(stockId);
@@ -86,10 +90,9 @@ public class HistoryWRCountAndSaveDBRunner {
 
 	// TODO Auto-generated method stub
 	// 一次性计算数据库中所有WR数据，入库
-	public static void main(String[] args) {
+	public void mainWork(String[] args) {
 		CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
-		HistoryWRCountAndSaveDBRunner runner = new HistoryWRCountAndSaveDBRunner();
-		runner.countAndSaved(stockConfig.getAllStockId());
+		this.countAndSaved(stockConfig.getAllStockId());
 		//runner.countAndSaved("600422");
 	}
 
