@@ -1,0 +1,7 @@
+server:
+  port: 27360
+  undertow:
+    max-http-post-size: 2097152
+    #refer to undertow doc : In XNIO,Two IO threads per CPU core, TASK_CORE_THREADS 10 per CPU core
+    worker-threads: 50
+

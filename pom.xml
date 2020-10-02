@@ -33,6 +33,7 @@
 				<module>Portal</module>
 				<module>EWeb</module>
 				<module>App</module>
+				<module>SpringBootApp</module>
 				<module>Scheduled</module>
 				<module>TrendMode</module>
 				<module>DatabaseReplicate</module>

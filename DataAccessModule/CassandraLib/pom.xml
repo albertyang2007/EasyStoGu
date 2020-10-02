@@ -30,13 +30,11 @@
 		<dependency>
 			<groupId>com.datastax.cassandra</groupId>
 			<artifactId>cassandra-driver-core</artifactId>
-			<version>3.3.0</version>
 		</dependency>
 		<dependency>
 			<groupId>com.datastax.cassandra</groupId>
 			<artifactId>cassandra-driver-extras</artifactId>
 			<optional>true</optional>
-			<version>3.3.0</version>
 		</dependency>
 		<!-- cassandra driver dependencies end -->
 	</dependencies>
