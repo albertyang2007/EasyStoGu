@@ -8,7 +8,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 
-import org.easystogu.config.ConfigurationService;
 import org.easystogu.config.DBConfigurationService;
 import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.portal.init.TrendModeLoader;
@@ -26,7 +25,8 @@ import com.google.gson.Gson;
 @RestController
 @RequestMapping(value = "/trendmode")
 public class TrendModeEndPoint {
-	private ConfigurationService config = DBConfigurationService.getInstance();
+	@Autowired
+    private DBConfigurationService config;
 	private String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
 	@Autowired
 	private TrendModeLoader modeLoader;

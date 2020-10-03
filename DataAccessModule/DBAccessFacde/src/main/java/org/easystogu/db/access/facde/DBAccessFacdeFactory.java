@@ -12,7 +12,6 @@ import org.easystogu.cassandra.access.table.IndShenXianCassTableHelper;
 import org.easystogu.cassandra.access.table.IndWRCassTableHelper;
 import org.easystogu.cassandra.access.table.IndWeekKDJCassTableHelper;
 import org.easystogu.cassandra.access.table.IndWeekMacdCassTableHelper;
-import org.easystogu.config.ConfigurationService;
 import org.easystogu.config.Constants;
 import org.easystogu.config.DBConfigurationService;
 import org.easystogu.db.helper.IF.IndicatorDBHelperIF;
@@ -24,9 +23,11 @@ import org.easystogu.postgresql.access.table.IndShenXianDBTableHelper;
 import org.easystogu.postgresql.access.table.IndWRDBTableHelper;
 import org.easystogu.postgresql.access.table.IndWeekKDJDBTableHelper;
 import org.easystogu.postgresql.access.table.IndWeekMacdDBTableHelper;
+import org.springframework.stereotype.Component;
 
+@Component
 public class DBAccessFacdeFactory {
-	static private ConfigurationService config = DBConfigurationService.getInstance();
+	private static DBConfigurationService config = DBConfigurationService.getInstance();
 
 	static Map<String, Class<? extends IndicatorDBHelperIF>> sqlFacdeMap = new HashMap<String, Class<? extends IndicatorDBHelperIF>>();
 	static Map<String, Class<? extends IndicatorDBHelperIF>> cqlFacdeMap = new HashMap<String, Class<? extends IndicatorDBHelperIF>>();

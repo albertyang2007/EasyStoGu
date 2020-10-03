@@ -3,16 +3,14 @@ package org.easystogu.analyse.behavior;
 import java.util.List;
 
 import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
-import org.easystogu.db.access.table.StockBehaviorStatisticsTableHelper;
 import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.vo.table.StockPriceVO;
+import org.springframework.stereotype.Component;
 
 //跳空高开和低开当天回补缺口的统计
+@Component
 public class StockBehaviorStatistics {
     private StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
-    private StockBehaviorStatisticsTableHelper stockBehaviorStatisticsTable = StockBehaviorStatisticsTableHelper
-            .getInstance();
-
     //跳空高开，当天回补缺口
     public void doAnalyseTiaoKongGaoKaiDay1HuiBu(String stockId, int[] difRange) {
         List<StockPriceVO> spList = qianFuQuanStockPriceTable.getStockPriceById(stockId);
@@ -89,17 +87,5 @@ public class StockBehaviorStatistics {
 
     private String formatNumber(double d) {
         return String.format("%.2f", d);
-    }
-
-    public static void main(String[] args) {
-        StockBehaviorStatistics ins = new StockBehaviorStatistics();
-        String stockId = "601318";
-        int[][] difRanges = new int[][] { { 1, 3 }, { 3, 5 }, { 5, 8 } };
-        for (int[] difRange : difRanges) {
-            ins.doAnalyseTiaoKongGaoKaiDay1HuiBu(stockId, difRange);
-        }
-        for (int[] difRange : difRanges) {
-            ins.doAnalyseTiaoKongDiKaiDay1HuiBu(stockId, difRange);
-        }
     }
 }

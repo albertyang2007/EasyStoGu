@@ -2,18 +2,17 @@ package org.easystogu.db.access.table;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+
 import org.easystogu.config.Constants;
 import org.easystogu.db.access.facde.DBAccessFacdeFactory;
 import org.easystogu.db.vo.table.KDJVO;
 import org.easystogu.db.vo.table.MacdVO;
 import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.db.vo.table.StockSuperVO;
+import org.springframework.stereotype.Component;
 
+@Component
 public class WeekStockSuperVOHelper extends StockSuperVOHelper {
-  private static Map<String, ValueWrapper> allStockSuperVOMap =
-      new java.util.concurrent.ConcurrentHashMap<String, ValueWrapper>();
-
   public WeekStockSuperVOHelper() {
     qianFuQuanStockPriceTable = WeekStockPriceTableHelper.getInstance();
     macdTable = DBAccessFacdeFactory.getInstance(Constants.indWeekMacd);

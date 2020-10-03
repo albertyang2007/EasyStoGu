@@ -1,15 +1,18 @@
 package org.easystogu.runner;
 
-import org.easystogu.config.ConfigurationService;
 import org.easystogu.config.DBConfigurationService;
 import org.easystogu.easymoney.runner.OverAllZiJinLiuAndDDXRunner;
 import org.easystogu.sina.runner.DailyStockPriceDownloadAndStoreDBRunner2;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 //only download stockprice and zijinliu, ddx, 
 //no other ind counted,
 //this will be run on aliyun
+@Component
 public class DailyUpdateStockPriceAndDDXRunner implements Runnable {
-    private ConfigurationService config = DBConfigurationService.getInstance();
+	@Autowired
+	private DBConfigurationService config;
 	private boolean fetchAllZiJinLiu = false;
 
 	public boolean isFetchAllZiJinLiu() {
@@ -26,15 +29,10 @@ public class DailyUpdateStockPriceAndDDXRunner implements Runnable {
 		DailyStockPriceDownloadAndStoreDBRunner2.main(null);
 
 		// daily zijinliu and ddx for all
-		if(config.getBoolean("count_zijin_and_ddx", false)) {
-		  OverAllZiJinLiuAndDDXRunner zijinliuRunner = new OverAllZiJinLiuAndDDXRunner();
-		  zijinliuRunner.run();
+		if (config.getBoolean("count_zijin_and_ddx", false)) {
+			OverAllZiJinLiuAndDDXRunner zijinliuRunner = new OverAllZiJinLiuAndDDXRunner();
+			zijinliuRunner.run();
 		}
 		System.out.println("stop using " + (System.currentTimeMillis() - st) / 1000 + " seconds");
-	}
-
-	public static void main(String[] args) {
-		// run today stockprice anaylse
-		new DailyUpdateStockPriceAndDDXRunner().run();
 	}
 }

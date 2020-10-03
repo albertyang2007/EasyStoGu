@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.easystogu.config.ConfigurationService;
 import org.easystogu.config.DBConfigurationService;
 import org.easystogu.db.access.table.CheckPointDailySelectionTableHelper;
 import org.easystogu.db.access.table.IndDDXTableHelper;
@@ -15,9 +14,13 @@ import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.vo.table.CheckPointDailySelectionVO;
 import org.easystogu.db.vo.table.DDXVO;
 import org.easystogu.report.comparator.CheckPointEventComparator;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class DailyDaPanStatusSummary {
-	private ConfigurationService config = DBConfigurationService.getInstance();
+	@Autowired
+    private DBConfigurationService config;
 	private CheckPointDailySelectionTableHelper checkPointDailySelectionTable = CheckPointDailySelectionTableHelper
 			.getInstance();
 	private StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
@@ -67,11 +70,5 @@ public class DailyDaPanStatusSummary {
 		this.analyseDailyCheckPointEvent();
 		this.sortMap();
 		this.printResult();
-	}
-
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		DailyDaPanStatusSummary runner = new DailyDaPanStatusSummary();
-		runner.run();
 	}
 }

@@ -29,10 +29,4 @@ public class VolumeHelper {
 					+ pre2VO.priceVO.volume + pre3VO.priceVO.volume + pre4VO.priceVO.volume) / 5;
 		}
 	}
-
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
-	}
-
 }

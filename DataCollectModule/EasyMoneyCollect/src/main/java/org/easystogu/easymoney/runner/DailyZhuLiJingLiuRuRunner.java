@@ -2,17 +2,20 @@ package org.easystogu.easymoney.runner;
 
 import java.util.List;
 
-import org.easystogu.config.ConfigurationService;
 import org.easystogu.config.DBConfigurationService;
 import org.easystogu.db.access.table.ZhuLiJingLiuRuTableHelper;
 import org.easystogu.db.vo.table.ZhuLiJingLiuRuVO;
 import org.easystogu.easymoney.helper.DailyZhuLiJingLiuRuFatchDataHelper;
 import org.easystogu.easymoney.helper.DailyZiJinLiuFatchDataHelper;
 import org.easystogu.utils.Strings;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 //pai ming
+@Component
 public class DailyZhuLiJingLiuRuRunner implements Runnable {
-    private ConfigurationService config = DBConfigurationService.getInstance();
+	@Autowired
+    private DBConfigurationService config;
     private DailyZhuLiJingLiuRuFatchDataHelper fatchDataHelper = new DailyZhuLiJingLiuRuFatchDataHelper();
     private ZhuLiJingLiuRuTableHelper zhuLiJingLiuRuTableHelper = ZhuLiJingLiuRuTableHelper.getInstance();
     private int toPage = 10;

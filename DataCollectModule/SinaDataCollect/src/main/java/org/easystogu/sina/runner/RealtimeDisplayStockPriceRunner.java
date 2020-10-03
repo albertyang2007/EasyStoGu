@@ -2,13 +2,16 @@ package org.easystogu.sina.runner;
 
 import java.util.List;
 
-import org.easystogu.config.ConfigurationService;
 import org.easystogu.config.DBConfigurationService;
 import org.easystogu.sina.common.RealTimePriceVO;
 import org.easystogu.sina.helper.DailyStockPriceDownloadHelper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class RealtimeDisplayStockPriceRunner {
-	private ConfigurationService configure = DBConfigurationService.getInstance();
+	@Autowired
+    private DBConfigurationService configure;
 
 	public String printRealTimeOutput() {
 		// 显示实时数据(指定的stockIds)

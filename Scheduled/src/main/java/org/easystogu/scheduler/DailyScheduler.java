@@ -200,17 +200,4 @@ public class DailyScheduler implements SchedulingConfigurer {
 		}
 
 	}
-
-	// just run onece
-	//@Scheduled(cron = "0 00 21 * * ?")
-	public void JustRunOnce() {
-		String time = WeekdayUtil.currentDate();
-		if (time.equals("2017-11-18")) {
-			logger.info("start HistoryAnalyseReport");
-			HistoryAnalyseReport reporter = new HistoryAnalyseReport();
-			reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.High_Price_Digit_In_Order);
-			reporter.searchAllStockIdStatisticsCheckPoint(DailyCombineCheckPoint.Low_Price_Digit_In_Order);
-			logger.info("stop HistoryAnalyseReport");
-		}
-	}
 }

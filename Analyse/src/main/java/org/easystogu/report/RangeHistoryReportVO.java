@@ -17,35 +17,6 @@ public class RangeHistoryReportVO {
 
 	public StockSuperVO currentSuperVO;
 
-	public RangeHistoryReportVO(StockSuperVO superVO, List<HistoryReportDetailsVO> list,
-			DailyCombineCheckPoint checkPoint) {
-		this.currentSuperVO = superVO;
-		this.stockId = superVO.priceVO.stockId;
-		this.historyReporList = list;
-		this.checkPoint = checkPoint;
-
-		avgEarnPercent[0] = 0;
-		avgEarnPercent[1] = 0;
-		avgEarnPercent[2] = 0;
-
-		double[] totalEarnPercent = new double[3];
-		int size = this.historyReporList.size();
-
-		for (HistoryReportDetailsVO vo : historyReporList) {
-			vo.countData();
-			totalEarnPercent[0] += vo.earnPercent[0];
-			totalEarnPercent[1] += vo.earnPercent[1];
-			totalEarnPercent[2] += vo.earnPercent[2];
-		}
-
-		if (size >= 1) {
-			avgEarnPercent[0] = totalEarnPercent[0] / size;
-			avgEarnPercent[1] = totalEarnPercent[1] / size;
-			avgEarnPercent[2] = totalEarnPercent[2] / size;
-		}
-
-	}
-
 	@Override
 	public String toString() {
 		double priceIncreaseToday = ((this.currentSuperVO.priceVO.close - this.currentSuperVO.priceVO.lastClose) * 100.0)

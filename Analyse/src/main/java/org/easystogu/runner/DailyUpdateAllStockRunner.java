@@ -9,7 +9,9 @@ import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.indicator.runner.AllDailyIndCountAndSaveDBRunner;
 import org.easystogu.sina.runner.DailyStockPriceDownloadAndStoreDBRunner2;
 import org.easystogu.sina.runner.DailyWeeklyStockPriceCountAndSaveDBRunner;
+import org.springframework.stereotype.Component;
 
+@Component
 public class DailyUpdateAllStockRunner implements Runnable {
 	private WSFConfigTableHelper wsfConfig = WSFConfigTableHelper.getInstance();
 	private String zone = wsfConfig.getValue("zone", Constants.ZONE_OFFICE);
@@ -48,10 +50,5 @@ public class DailyUpdateAllStockRunner implements Runnable {
 		new DailyViewAnalyseRunner().run();
 
 		System.out.println("stop using " + (System.currentTimeMillis() - st) / 1000 + " seconds");
-	}
-
-	public static void main(String[] args) {
-		// run today stockprice anaylse
-		new DailyUpdateAllStockRunner(true).run();
 	}
 }

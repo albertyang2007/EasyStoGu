@@ -2,7 +2,9 @@ package org.easystogu.config;
 
 import org.easystogu.db.access.table.WSFConfigTableHelper;
 import org.easystogu.utils.Strings;
+import org.springframework.stereotype.Component;
 
+@Component
 public class DBConfigurationService implements ConfigurationService {
 	private WSFConfigTableHelper wsfConfig = WSFConfigTableHelper.getInstance();
 	private static DBConfigurationService instance = null;
@@ -85,11 +87,5 @@ public class DBConfigurationService implements ConfigurationService {
 	public String getString(String key, String defaultValue) {
 		// TODO Auto-generated method stub
 		return this.getValue(key, defaultValue);
-	}
-
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		DBConfigurationService ins = DBConfigurationService.getInstance();
-		System.out.println(ins.getString("zone"));
 	}
 }

@@ -2,7 +2,7 @@ package org.easystogu.db.access.table;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+
 import org.easystogu.config.Constants;
 import org.easystogu.db.access.facde.DBAccessFacdeFactory;
 import org.easystogu.db.helper.IF.IndicatorDBHelperIF;
@@ -14,8 +14,9 @@ import org.easystogu.db.vo.table.ShenXianVO;
 import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.db.vo.table.StockSuperVO;
 import org.easystogu.db.vo.table.WRVO;
-import org.easystogu.utils.WeekdayUtil;
+import org.springframework.stereotype.Component;
 
+@Component
 public class StockSuperVOHelper {
   protected StockPriceTableHelper qianFuQuanStockPriceTable =
       QianFuQuanStockPriceTableHelper.getInstance();
@@ -27,9 +28,6 @@ public class StockSuperVOHelper {
   protected IndicatorDBHelperIF qsddTable = DBAccessFacdeFactory.getInstance(Constants.indQSDD);
   protected IndicatorDBHelperIF wrTable = DBAccessFacdeFactory.getInstance(Constants.indWR);
   protected IndDDXTableHelper ddxTable = IndDDXTableHelper.getInstance();
-
-  private static Map<String, ValueWrapper> allStockSuperVOMap =
-      new java.util.concurrent.ConcurrentHashMap<String, ValueWrapper>();
 
   public List<StockSuperVO> getAllStockSuperVO(String stockId) {
 

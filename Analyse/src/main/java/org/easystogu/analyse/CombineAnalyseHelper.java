@@ -5,15 +5,12 @@ import java.util.List;
 import org.easystogu.analyse.util.DigitInOrderHelper;
 import org.easystogu.analyse.util.StockPriceUtils;
 import org.easystogu.checkpoint.DailyCombineCheckPoint;
-import org.easystogu.db.access.table.StockPriceTableHelper;
-import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.db.vo.table.StockSuperVO;
-import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.utils.CrossType;
+import org.springframework.stereotype.Component;
 
+@Component
 public class CombineAnalyseHelper {
-	public int[] tempInputArgs = new int[2];// just for temp history analyse
-
 	// overList is order by date, it is daily price and ind
 	public boolean isConditionSatisfy(DailyCombineCheckPoint checkPoint, List<StockSuperVO> overDayList,
 			List<StockSuperVO> overWeekList) {
@@ -1295,7 +1292,7 @@ public class CombineAnalyseHelper {
 			break;
 		}
 
-		//三山重叠 
+		// 三山重叠
 		// ma19>ma43, ma19>ma86 ma43 up corss ma86
 		case LuZao_DeadI_MA43_UpCross_MA86: {
 			if (curSuperDayVO.avgMA19 > curSuperDayVO.avgMA43 && curSuperDayVO.avgMA19 > curSuperDayVO.avgMA86) {
@@ -1306,7 +1303,7 @@ public class CombineAnalyseHelper {
 			break;
 		}
 
-		//跌倒山腰
+		// 跌倒山腰
 		// ma86<ma19, ma86<ma43, ma19 downcross ma43
 		case LuZao_DeadII_MA19_DownCross_MA43: {
 			if (curSuperDayVO.avgMA86 < curSuperDayVO.avgMA19 && curSuperDayVO.avgMA86 < curSuperDayVO.avgMA43) {
@@ -1316,17 +1313,17 @@ public class CombineAnalyseHelper {
 			}
 			break;
 		}
-		
-		//跌倒山脚
-		//MA43 <= MA86
-        case LuZao_DeadIII_MA43_DownCross_MA86: {
-          if (curSuperDayVO.avgMA86 < curSuperDayVO.avgMA19 && curSuperDayVO.avgMA86 < curSuperDayVO.avgMA43) {
-              if (curSuperDayVO.avgMA43 < curSuperDayVO.avgMA86 && pre1SuperDayVO.avgMA43 >= pre1SuperDayVO.avgMA86) {
-                return true;
-              }
-          }
-          break;
-        }		
+
+		// 跌倒山脚
+		// MA43 <= MA86
+		case LuZao_DeadIII_MA43_DownCross_MA86: {
+			if (curSuperDayVO.avgMA86 < curSuperDayVO.avgMA19 && curSuperDayVO.avgMA86 < curSuperDayVO.avgMA43) {
+				if (curSuperDayVO.avgMA43 < curSuperDayVO.avgMA86 && pre1SuperDayVO.avgMA43 >= pre1SuperDayVO.avgMA86) {
+					return true;
+				}
+			}
+			break;
+		}
 
 		// qsdd top
 		case QSDD_Top_Area: {
@@ -1708,21 +1705,21 @@ public class CombineAnalyseHelper {
 
 							// 5 th day
 							if (pre4SuperDayVO.priceVO.close > pre8SuperDayVO.priceVO.close) {
-								
-								//4 th day
+
+								// 4 th day
 								if (pre5SuperDayVO.priceVO.close > pre9SuperDayVO.priceVO.close) {
 
-									//3 th day
+									// 3 th day
 									if (pre6SuperDayVO.priceVO.close > pre10SuperDayVO.priceVO.close) {
 
-										//2 th day
+										// 2 th day
 										if (pre7SuperDayVO.priceVO.close > pre11SuperDayVO.priceVO.close) {
 
-											//1 st day
+											// 1 st day
 											if (pre8SuperDayVO.priceVO.close > pre12SuperDayVO.priceVO.close) {
-												//1 st day is up
+												// 1 st day is up
 												if (pre8SuperDayVO.priceVO.close > pre9SuperDayVO.priceVO.close) {
-													//System.out.println(pre8SuperDayVO.priceVO.date);
+													// System.out.println(pre8SuperDayVO.priceVO.date);
 													return true;
 												}
 											}
@@ -1754,21 +1751,21 @@ public class CombineAnalyseHelper {
 
 							// 5 th day
 							if (pre4SuperDayVO.priceVO.close < pre8SuperDayVO.priceVO.close) {
-								
-								//4 th day
+
+								// 4 th day
 								if (pre5SuperDayVO.priceVO.close < pre9SuperDayVO.priceVO.close) {
 
-									//3 th day
+									// 3 th day
 									if (pre6SuperDayVO.priceVO.close < pre10SuperDayVO.priceVO.close) {
 
-										//2 th day
+										// 2 th day
 										if (pre7SuperDayVO.priceVO.close < pre11SuperDayVO.priceVO.close) {
 
-											//1 st day
+											// 1 st day
 											if (pre8SuperDayVO.priceVO.close < pre12SuperDayVO.priceVO.close) {
-												//1 st day is down
+												// 1 st day is down
 												if (pre8SuperDayVO.priceVO.close < pre9SuperDayVO.priceVO.close) {
-													//System.out.println(pre8SuperDayVO.priceVO.date);
+													// System.out.println(pre8SuperDayVO.priceVO.date);
 													return true;
 												}
 											}
@@ -2401,22 +2398,5 @@ public class CombineAnalyseHelper {
 			}
 		}
 		return true;
-	}
-
-	public static void main(String[] args) {
-		CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
-		StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
-		List<String> stockIds = stockConfig.getAllStockId();
-		for (String stockId : stockIds) {
-			List<StockPriceVO> prices = stockPriceTable.queryByStockId(stockId);
-			for (StockPriceVO vo : prices) {
-				if (vo.date.equals("2017-11-15") || vo.date.equals("2017-11-16")) {
-					boolean rtn = DigitInOrderHelper.checkAll(vo.high);
-					if (rtn) {
-						System.out.println(vo);
-					}
-				}
-			}
-		}
 	}
 }

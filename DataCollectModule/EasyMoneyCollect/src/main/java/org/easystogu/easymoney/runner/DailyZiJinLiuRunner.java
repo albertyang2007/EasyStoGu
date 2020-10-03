@@ -2,7 +2,6 @@ package org.easystogu.easymoney.runner;
 
 import java.util.List;
 
-import org.easystogu.config.ConfigurationService;
 import org.easystogu.config.DBConfigurationService;
 import org.easystogu.db.access.table.ZiJinLiu3DayTableHelper;
 import org.easystogu.db.access.table.ZiJinLiu5DayTableHelper;
@@ -10,10 +9,14 @@ import org.easystogu.db.access.table.ZiJinLiuTableHelper;
 import org.easystogu.db.vo.table.ZiJinLiuVO;
 import org.easystogu.easymoney.helper.DailyZiJinLiuFatchDataHelper;
 import org.easystogu.utils.Strings;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 //zijinliu, ddx use this
+@Component
 public class DailyZiJinLiuRunner implements Runnable {
-	private ConfigurationService config = DBConfigurationService.getInstance();
+	@Autowired
+    private DBConfigurationService config;
 	private DailyZiJinLiuFatchDataHelper fatchDataHelper = new DailyZiJinLiuFatchDataHelper();
 	private ZiJinLiuTableHelper zijinliuTableHelper = ZiJinLiuTableHelper.getInstance();
 	private ZiJinLiu3DayTableHelper zijinliu3DayTableHelper = ZiJinLiu3DayTableHelper.getInstance();

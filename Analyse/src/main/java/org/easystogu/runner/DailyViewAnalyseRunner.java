@@ -7,8 +7,10 @@ import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.access.view.CommonViewHelper;
 import org.easystogu.db.vo.table.CheckPointDailySelectionVO;
 import org.easystogu.db.vo.view.CommonViewVO;
+import org.springframework.stereotype.Component;
 
 //run analyse views and save selection to table checkpoint_daily_selection
+@Component
 public class DailyViewAnalyseRunner implements Runnable {
 	private StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
 	private String latestDate = stockPriceTable.getLatestStockDate();
@@ -77,11 +79,4 @@ public class DailyViewAnalyseRunner implements Runnable {
 		this.slowAnalyseForView("luzao_phaseII_wr_midTerm_lonTerm_same");
 		this.slowAnalyseForView("luzao_phaseII_wr_shoTerm_midTerm_same");
 	}
-
-	public static void main(String[] args) {
-		DailyViewAnalyseRunner runner = new DailyViewAnalyseRunner();
-		runner.run();
-		//runner.slowAnalyseForView("luzao_phaseII_ddx_2_of_5_days_bigger_05");
-	}
-
 }

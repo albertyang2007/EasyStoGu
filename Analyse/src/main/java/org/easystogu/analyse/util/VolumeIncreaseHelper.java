@@ -15,10 +15,4 @@ public class VolumeIncreaseHelper {
 					* 1.0 / superVO.priceVO.volume * 1.0;
 		}
 	}
-
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
-	}
-
 }

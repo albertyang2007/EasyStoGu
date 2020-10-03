@@ -2,16 +2,11 @@ package org.easystogu.analyse.util;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+
 import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.db.vo.table.StockSuperVO;
 
 public class IndProcessHelper {
-  private static Map<IndKey, ValueWrapper> dayListMap =
-      new java.util.concurrent.ConcurrentHashMap<IndKey, ValueWrapper>();
-  private static Map<IndKey, ValueWrapper> weekListMap =
-      new java.util.concurrent.ConcurrentHashMap<IndKey, ValueWrapper>();
-
   public static void processDayList(List<StockSuperVO> overDayList) {
     // count and update all ind data
     // day

@@ -2,15 +2,12 @@ package org.easystogu.report;
 
 import java.util.List;
 
-import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.vo.table.CheckPointHistorySelectionVO;
 import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.db.vo.table.StockSuperVO;
 
 public class HistoryReportDetailsVO {
-
-	private StockPriceTableHelper stockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
 	public List<StockSuperVO> overDayList;
 
 	public String stockId;
@@ -34,7 +31,7 @@ public class HistoryReportDetailsVO {
 		this.overDayList = overDayList;
 	}
 
-	public void countData() {
+	public void countData(StockPriceTableHelper stockPriceTable) {
 		this.stockId = this.buyPriceVO.stockId;
 		this.lowPrice = this.getLowPriceBetweenDate(this.stockId, this.buyPriceVO.date, this.sellPriceVO.date);
 		this.highPrice = this.getHighPriceBetweenDate(this.stockId, this.buyPriceVO.date, this.sellPriceVO.date);

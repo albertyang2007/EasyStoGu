@@ -4,10 +4,11 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import org.easystogu.config.ConfigurationService;
 import org.easystogu.config.DBConfigurationService;
 import org.easystogu.log.LogHelper;
 import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
@@ -15,10 +16,12 @@ import com.google.common.cache.LoadingCache;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.ListenableFutureTask;
 
+@Component
 public class ConfigurationServiceCache {
 	private Logger logger = LogHelper.getLogger(ConfigurationServiceCache.class);
 	private static ConfigurationServiceCache instance = null;
-	private ConfigurationService configServiceTable = DBConfigurationService.getInstance();
+	@Autowired
+    private DBConfigurationService configServiceTable;
 	private LoadingCache<String, Object> cache;
 
 	private ConfigurationServiceCache() {

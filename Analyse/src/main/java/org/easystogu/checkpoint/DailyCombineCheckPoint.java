@@ -1,7 +1,5 @@
 package org.easystogu.checkpoint;
 
-import org.easystogu.config.ConfigurationService;
-import org.easystogu.config.DBConfigurationService;
 import org.easystogu.utils.SellPointType;
 import org.easystogu.utils.Strings;
 
@@ -65,8 +63,7 @@ public enum DailyCombineCheckPoint {
     		MAGIC_NIGHT_DAYS_SHANG_ZHANG(SellPointType.KDJ_Dead, 0, 99.0),
     		MAGIC_NIGHT_DAYS_XIA_DIE(SellPointType.KDJ_Dead, 0, 99.0);
 
-    private ConfigurationService config = DBConfigurationService.getInstance();
-    private double minEarnPercent = config.getDouble("minEarnPercent_Select_CheckPoint");
+    private double minEarnPercent = 8.0;
 
     private String condition;
     // history summary that meet the condiction
@@ -146,15 +143,5 @@ public enum DailyCombineCheckPoint {
 
     public boolean isSatisfyMinEarnPercent() {
         return this.getEarnPercent() >= minEarnPercent ? true : false;
-    }
-
-    public static void main(String[] args) {
-    	ConfigurationService config = DBConfigurationService.getInstance();
-        double minEarnPercent = config.getDouble("minEarnPercent_Select_CheckPoint");
-        for (DailyCombineCheckPoint checkPoint : DailyCombineCheckPoint.values()) {
-            if (checkPoint.getSampleMeet() < 10000 && checkPoint.getEarnPercent() >= 10) {
-                System.out.println(checkPoint.toStringWithDetails());
-            }
-        }
     }
 }

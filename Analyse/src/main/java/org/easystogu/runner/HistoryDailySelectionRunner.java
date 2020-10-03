@@ -3,9 +3,11 @@ package org.easystogu.runner;
 import java.util.ArrayList;
 import java.util.List;
 import org.easystogu.db.vo.view.FavoritesStockVO;
+import org.springframework.stereotype.Component;
 
 // DailySelectionRunner is only run for today, so this job is to go back to
 // history and run favorites stockId (not all stockIds) then save into checkpoint_daily_selection
+@Component
 public class HistoryDailySelectionRunner extends DailySelectionRunner {
   public void runTask(int cpuIndex) {
     System.out.println("HistoryDailySelectionRunner for cpuIndex:" + cpuIndex);
@@ -67,11 +69,5 @@ public class HistoryDailySelectionRunner extends DailySelectionRunner {
     }
 
     cpuList.parallelStream().forEach(cpuIndex -> this.runTask(cpuIndex));
-  }
-
-  public static void main(String[] args) {
-    HistoryDailySelectionRunner runner = new HistoryDailySelectionRunner();
-    // cpuIndex: 0,1,2,3 etc
-    runner.runAllUsingMultipCpu();
   }
 }

@@ -4,16 +4,19 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.util.List;
 
-import org.easystogu.config.ConfigurationService;
 import org.easystogu.config.DBConfigurationService;
 import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.vo.table.StockPriceVO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import net.sf.json.JSONArray;
 
+@Component
 public class StockPriceTableExport {
     private StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
-    private ConfigurationService config = DBConfigurationService.getInstance();
+    @Autowired
+    private DBConfigurationService config;
     private String stockPriceFilePath = config.getString("stockPrice.import_export.file.path");
 
     public void exportToFile(String date) {

@@ -30,7 +30,9 @@ import org.easystogu.indicator.runner.history.HistoryWeeklyKDJCountAndSaveDBRunn
 import org.easystogu.indicator.runner.history.HistoryWeeklyMacdCountAndSaveDBRunner;
 import org.easystogu.sina.runner.history.HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner;
 import org.easystogu.utils.Strings;
+import org.springframework.stereotype.Component;
 
+@Component
 public class DataBaseSanityCheck implements Runnable {
   protected StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
   protected QianFuQuanStockPriceTableHelper qianfuquanStockPriceTable =
@@ -259,11 +261,5 @@ public class DataBaseSanityCheck implements Runnable {
 
     // check.sanityDailyCheck("002797");
     // check.sanityWeekCheck("002797");
-  }
-
-  public static void main(String[] args) {
-    new DataBaseSanityCheck().run();
-    new AllCacheRunner().refreshAll();
-    System.out.println("DataBaseSanityCheck done!");
   }
 }
