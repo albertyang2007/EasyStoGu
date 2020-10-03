@@ -51,8 +51,9 @@ public class IndicatorEndPointV0 {
 	protected static String HHmmss = "00:00:00";
 	protected CompanyInfoFileHelper companyInfoHelper = CompanyInfoFileHelper.getInstance();
 	protected StockIndicatorCache indicatorCache = StockIndicatorCache.getInstance();
-	protected IndDDXTableHelper ddxTable = IndDDXTableHelper.getInstance();
-	
+	@Autowired
+	protected IndDDXTableHelper ddxTable;
+
 	@Autowired
 	protected MACDHelper macdHelper;
 	@Autowired

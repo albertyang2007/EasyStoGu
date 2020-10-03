@@ -13,6 +13,7 @@ import org.easystogu.sina.common.SinaQuoteStockPriceVO;
 import org.easystogu.sina.helper.DailyStockPriceDownloadHelper2;
 import org.easystogu.sina.runner.history.HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner;
 import org.easystogu.utils.Strings;
+import org.springframework.beans.factory.annotation.Autowired;
 
 //daily get real time stock price from http://vip.stock.finance.sina.com.cn/quotes_service/api/
 //it will get all the stockId from the web, including the new on board stockId
@@ -25,7 +26,8 @@ public class DailyStockPriceDownloadAndStoreDBRunner2 implements Runnable {
     //private HouFuQuanStockPriceTableHelper houfuquanStockPriceTable = HouFuQuanStockPriceTableHelper.getInstance();
     private QianFuQuanStockPriceTableHelper qianfuquanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
     //private ScheduleActionTableHelper scheduleActionTable = ScheduleActionTableHelper.getInstance();
-    private CompanyInfoTableHelper companyInfoTable = CompanyInfoTableHelper.getInstance();
+	@Autowired
+	private CompanyInfoTableHelper companyInfoTable;
     private DailyStockPriceDownloadAndStoreDBRunner runner1 = new DailyStockPriceDownloadAndStoreDBRunner();
     private DailyStockPriceDownloadHelper2 sinaHelper2 = new DailyStockPriceDownloadHelper2();
     private HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner historyQianFuQuanRunner = new HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner();

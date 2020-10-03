@@ -4,15 +4,18 @@ import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.Proxy.Type;
 
-import org.easystogu.config.ConfigurationService;
 import org.easystogu.config.Constants;
 import org.easystogu.config.FileConfigurationService;
 import org.easystogu.utils.Strings;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+@Component
 public class RestTemplateHelper {
-	private static ConfigurationService configure = FileConfigurationService.getInstance();
+	@Autowired
+	private static FileConfigurationService configure;
 	private RestTemplate restTemplate = null;
 
 	public RestTemplateHelper() {

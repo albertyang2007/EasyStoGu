@@ -6,19 +6,23 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
 import org.easystogu.db.vo.table.StockPriceHLTimeVO;
 import org.easystogu.log.LogHelper;
 import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.stereotype.Component;
 
+@Component
 public class StockPriceHLTimeTableHelper {
 	private static Logger logger = LogHelper.getLogger(StockPriceHLTimeTableHelper.class);
-	private static StockPriceHLTimeTableHelper instance = null;
+	@Autowired
+	protected NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+	
 	protected String tableName = "STOCKPRICE_HL_TIME";
 	// please modify this SQL in all subClass
 	protected String INSERT_SQL = "INSERT INTO " + tableName
@@ -31,19 +35,6 @@ public class StockPriceHLTimeTableHelper {
 			+ " SET hight_time = :hight_time WHERE stockId = :stockId AND DATE = :date";
 	protected String UPDATE_LOW_PRICE_TIME = "UPDATE " + tableName
 			+ " SET low_time = :low_time WHERE stockId = :stockId AND DATE = :date";
-
-	protected NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-
-	protected StockPriceHLTimeTableHelper(javax.sql.DataSource datasource) {
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(datasource);
-	}
-
-	public static StockPriceHLTimeTableHelper getInstance() {
-		if (instance == null) {
-			instance = new StockPriceHLTimeTableHelper(PostgreSqlDataSourceFactory.createDataSource());
-		}
-		return instance;
-	}
 
 	private static final class StockPriceHLTimeVOMapper implements RowMapper<StockPriceHLTimeVO> {
 		public StockPriceHLTimeVO mapRow(ResultSet rs, int rowNum) throws SQLException {

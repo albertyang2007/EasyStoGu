@@ -6,21 +6,23 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
 import org.easystogu.db.vo.table.ScheduleActionVO;
 import org.easystogu.log.LogHelper;
 import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ScheduleActionTableHelper {
 	private static Logger logger = LogHelper.getLogger(ScheduleActionTableHelper.class);
-	private static ScheduleActionTableHelper instance = null;
-	private static ScheduleActionTableHelper georedInstance = null;
+	@Autowired
+	protected NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 	protected String tableName = "SCHEDULE_ACTION";
 	protected String INSERT_SQL = "INSERT INTO " + tableName
 			+ " (stockId, runDate, createDate, actionDo, params) VALUES (:stockId, :runDate, :createDate, :actionDo, :params)";
@@ -37,26 +39,6 @@ public class ScheduleActionTableHelper {
 			+ " WHERE stockId = :stockId AND runDate = :runDate AND actionDo = :actionDo";
 	protected String DELETE_BY_STOCKID_AND_ACTION_SQL = "DELETE FROM " + tableName
 			+ " WHERE stockId = :stockId AND actionDo = :actionDo";
-
-	protected NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-
-	private ScheduleActionTableHelper(javax.sql.DataSource datasource) {
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(datasource);
-	}
-
-	public static ScheduleActionTableHelper getInstance() {
-		if (instance == null) {
-			instance = new ScheduleActionTableHelper(PostgreSqlDataSourceFactory.createDataSource());
-		}
-		return instance;
-	}
-
-	public static ScheduleActionTableHelper getGeoredInstance() {
-		if (georedInstance == null) {
-			georedInstance = new ScheduleActionTableHelper(PostgreSqlDataSourceFactory.createGeoredDataSource());
-		}
-		return georedInstance;
-	}
 
 	private static final class ScheduleActionVOMapper implements RowMapper<ScheduleActionVO> {
 		public ScheduleActionVO mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -206,22 +188,6 @@ public class ScheduleActionTableHelper {
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ArrayList<ScheduleActionVO>();
-		}
-	}
-
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		ScheduleActionTableHelper ins = ScheduleActionTableHelper.getInstance();
-		try {
-			ScheduleActionVO vo = new ScheduleActionVO();
-			vo.setActionDo(ScheduleActionVO.ActionDo.refresh_history_stockprice.name());
-			vo.setRunDate("2016-08-16");
-			vo.setCreateDate("2016-08-17");
-			vo.setStockId("603569");
-			ins.insert(vo);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 	}
 }

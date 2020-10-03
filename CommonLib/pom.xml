@@ -10,13 +10,16 @@
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.albertyang2007.easystogu</groupId>
 	<artifactId>easystogu-commonlib</artifactId>
 	<name>EasyStoGu-CommonLib</name>
 	<packaging>jar</packaging>
 	<description>EasyStoGu-CommonLib: define common lib for all project</description>
 
 	<dependencies>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>

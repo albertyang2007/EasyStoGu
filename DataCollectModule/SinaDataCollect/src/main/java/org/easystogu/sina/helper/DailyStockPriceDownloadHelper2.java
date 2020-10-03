@@ -6,13 +6,14 @@ import java.net.Proxy.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.easystogu.config.ConfigurationService;
 import org.easystogu.config.Constants;
 import org.easystogu.config.FileConfigurationService;
 import org.easystogu.db.access.table.CompanyInfoTableHelper;
 import org.easystogu.sina.common.SinaQuoteStockPriceVO;
 import org.easystogu.utils.Strings;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import net.sf.json.JSONArray;
@@ -21,15 +22,18 @@ import net.sf.json.JSONObject;
 
 //get real time stock price from http://vip.stock.finance.sina.com.cn/quotes_service/api/
 //it will get all the stockId from the web, including the new on board stockId
+@Component
 public class DailyStockPriceDownloadHelper2 {
-	private CompanyInfoTableHelper companyInfoTable = CompanyInfoTableHelper.getInstance();
+	@Autowired
+	private CompanyInfoTableHelper companyInfoTable;
 	// currently total stock number is less then 3000, if increase, then enlarge
 	// the numberPage
 	private static final int numberPerPage = 100;//can not larger than 100 per times
 	private int totalNumberPage = this.companyInfoTable.getAllCompanyInfo().size() / numberPerPage + 1;
 	private static final String baseUrl = "http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/Market_Center.getHQNodeData?page=1&num="
 			+ numberPerPage + "&sort=symbol&asc=1&node=hs_a";
-	private static ConfigurationService configure = FileConfigurationService.getInstance();
+	@Autowired
+	private static FileConfigurationService configure;
 
 	public List<SinaQuoteStockPriceVO> fetchAllStockPriceFromWeb() {
 		List<SinaQuoteStockPriceVO> list = new ArrayList<SinaQuoteStockPriceVO>();

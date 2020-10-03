@@ -9,54 +9,56 @@ import org.easystogu.db.vo.table.KDJVO;
 import org.easystogu.db.vo.table.MacdVO;
 import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.db.vo.table.StockSuperVO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class WeekStockSuperVOHelper extends StockSuperVOHelper {
-  public WeekStockSuperVOHelper() {
-    qianFuQuanStockPriceTable = WeekStockPriceTableHelper.getInstance();
-    macdTable = DBAccessFacdeFactory.getInstance(Constants.indWeekMacd);
-    kdjTable = DBAccessFacdeFactory.getInstance(Constants.indWeekKDJ);
-  }
+	@Autowired
+	private DBAccessFacdeFactory dBAccessFacdeFactory;
 
-  @Override
-  public List<StockSuperVO> getAllStockSuperVO(String stockId) {
-    // get from map
-//    ValueWrapper valueObj = allStockSuperVOMap.get(stockId);
-//    if (valueObj != null && valueObj.isYangEnough()) {
-//      return valueObj.overList;
-//    }
+	public WeekStockSuperVOHelper() {
+		qianFuQuanStockPriceTable = WeekStockPriceTableHelper.getInstance();
+		macdTable = dBAccessFacdeFactory.getInstance(Constants.indWeekMacd);
+		kdjTable = dBAccessFacdeFactory.getInstance(Constants.indWeekKDJ);
+	}
 
-    // merge them into one overall VO
-    List<StockSuperVO> overList = new ArrayList<StockSuperVO>();
+	@Override
+	public List<StockSuperVO> getAllStockSuperVO(String stockId) {
+		// get from map
+		// ValueWrapper valueObj = allStockSuperVOMap.get(stockId);
+		// if (valueObj != null && valueObj.isYangEnough()) {
+		// return valueObj.overList;
+		// }
 
-    List<StockPriceVO> spList = qianFuQuanStockPriceTable.getStockPriceById(stockId);
-    List<MacdVO> macdList = macdTable.getAll(stockId);
-    List<KDJVO> kdjList = kdjTable.getAll(stockId);
+		// merge them into one overall VO
+		List<StockSuperVO> overList = new ArrayList<StockSuperVO>();
 
-    if ((spList.size() != macdList.size()) || (spList.size() != kdjList.size())) {
-      return overList;
-    }
+		List<StockPriceVO> spList = qianFuQuanStockPriceTable.getStockPriceById(stockId);
+		List<MacdVO> macdList = macdTable.getAll(stockId);
+		List<KDJVO> kdjList = kdjTable.getAll(stockId);
 
-    if ((spList.size() == 0) || (macdList.size() == 0) || (kdjList.size() == 0)) {
-      return overList;
-    }
+		if ((spList.size() != macdList.size()) || (spList.size() != kdjList.size())) {
+			return overList;
+		}
 
-    if (!spList.get(0).date.equals(macdList.get(0).date)
-        || !spList.get(0).date.equals(kdjList.get(0).date)) {
-      return overList;
-    }
+		if ((spList.size() == 0) || (macdList.size() == 0) || (kdjList.size() == 0)) {
+			return overList;
+		}
 
-    for (int index = 0; index < spList.size(); index++) {
-      StockSuperVO superVO =
-          new StockSuperVO(spList.get(index), macdList.get(index), kdjList.get(index), null);
-      // superVO.setShenXianVO(shenXianList.get(index));
-      overList.add(superVO);
-    }
+		if (!spList.get(0).date.equals(macdList.get(0).date) || !spList.get(0).date.equals(kdjList.get(0).date)) {
+			return overList;
+		}
 
-    // put to map
-//    allStockSuperVOMap.put(stockId, new ValueWrapper(overList));
+		for (int index = 0; index < spList.size(); index++) {
+			StockSuperVO superVO = new StockSuperVO(spList.get(index), macdList.get(index), kdjList.get(index), null);
+			// superVO.setShenXianVO(shenXianList.get(index));
+			overList.add(superVO);
+		}
 
-    return overList;
-  }
+		// put to map
+		// allStockSuperVOMap.put(stockId, new ValueWrapper(overList));
+
+		return overList;
+	}
 }

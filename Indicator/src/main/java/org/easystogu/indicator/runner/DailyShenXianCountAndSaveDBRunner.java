@@ -20,7 +20,9 @@ import com.google.common.primitives.Doubles;
 
 @Component
 public class DailyShenXianCountAndSaveDBRunner implements Runnable {
-	protected IndicatorDBHelperIF shenXianTable = DBAccessFacdeFactory.getInstance(Constants.indShenXian);
+	@Autowired
+	private DBAccessFacdeFactory dBAccessFacdeFactory;
+	protected IndicatorDBHelperIF shenXianTable = dBAccessFacdeFactory.getInstance(Constants.indShenXian);
 	protected StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
 	@Autowired
 	private ShenXianHelper shenXianHelper = new ShenXianHelper();

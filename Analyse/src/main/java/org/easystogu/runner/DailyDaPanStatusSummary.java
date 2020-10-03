@@ -20,11 +20,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class DailyDaPanStatusSummary {
 	@Autowired
-    private DBConfigurationService config;
-	private CheckPointDailySelectionTableHelper checkPointDailySelectionTable = CheckPointDailySelectionTableHelper
-			.getInstance();
+	private DBConfigurationService config;
+	@Autowired
+	private CheckPointDailySelectionTableHelper checkPointDailySelectionTable;
 	private StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
-	private IndDDXTableHelper ddxTable = IndDDXTableHelper.getInstance();
+	@Autowired
+	protected IndDDXTableHelper ddxTable;
 	private String latestDate = stockPriceTable.getLatestStockDate();
 	private String generalCheckPoints = config.getString("general_CheckPoint", "");
 	private Map<String, List<CheckPointDailySelectionVO>> stockEventsMap = new HashMap<String, List<CheckPointDailySelectionVO>>();

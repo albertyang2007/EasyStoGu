@@ -1,31 +1,12 @@
 package org.easystogu.db.access.table;
 
-import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
-import org.easystogu.db.vo.table.StockPriceVO;
+import javax.annotation.PostConstruct;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class QianFuQuanStockPriceTableHelper extends StockPriceTableHelper {
-	private static QianFuQuanStockPriceTableHelper instance = null;
-	private static QianFuQuanStockPriceTableHelper georedInstance = null;
-
-	public static QianFuQuanStockPriceTableHelper getInstance() {
-		if (instance == null) {
-			instance = new QianFuQuanStockPriceTableHelper(PostgreSqlDataSourceFactory.createDataSource());
-		}
-		return instance;
-	}
-
-	public static QianFuQuanStockPriceTableHelper getGeoredInstance() {
-		if (georedInstance == null) {
-			georedInstance = new QianFuQuanStockPriceTableHelper(PostgreSqlDataSourceFactory.createGeoredDataSource());
-		}
-		return georedInstance;
-	}
-
-	protected QianFuQuanStockPriceTableHelper(javax.sql.DataSource datasource) {
-		super(datasource);
-		refeshTableSQL();
-	}
-
+	@PostConstruct
 	private void refeshTableSQL() {
 		tableName = "QIAN_FUQUAN_STOCKPRICE";
 		// please modify this SQL in superClass
@@ -50,17 +31,17 @@ public class QianFuQuanStockPriceTableHelper extends StockPriceTableHelper {
 		// kdj used this: High(n)
 		SELECT_HIGH_N_PRICE_SQL = "SELECT max(high) AS rtn from (SELECT high FROM " + tableName
 				+ " WHERE stockId = :stockId ORDER BY date DESC LIMIT :limit) AS myhighn";
-        
-		//AI use this High(n) with date start from
-        SELECT_HIGH_N_PRICE_START_DATA_SQL = "SELECT max(high) AS rtn from (SELECT high FROM "
-              + tableName + " WHERE stockId = :stockId AND date > :startDate LIMIT :limit) AS myhighn";
-        //AI use this Low(n) with date start from
-        SELECT_LOW_N_PRICE_START_DATA_SQL = "SELECT min(low) AS rtn from (SELECT low FROM "
-              + tableName + " WHERE stockId = :stockId AND date > :startDate LIMIT :limit) AS mylown";
-        //AI use this Close(n) with date start from
-        SELECT_CLOSE_N_PRICE_START_DATA_SQL = "SELECT min(close) AS rtn from (SELECT close FROM "
-              + tableName + " WHERE stockId = :stockId AND date > :startDate LIMIT :limit) AS myclose";
-        
+
+		// AI use this High(n) with date start from
+		SELECT_HIGH_N_PRICE_START_DATA_SQL = "SELECT max(high) AS rtn from (SELECT high FROM " + tableName
+				+ " WHERE stockId = :stockId AND date > :startDate LIMIT :limit) AS myhighn";
+		// AI use this Low(n) with date start from
+		SELECT_LOW_N_PRICE_START_DATA_SQL = "SELECT min(low) AS rtn from (SELECT low FROM " + tableName
+				+ " WHERE stockId = :stockId AND date > :startDate LIMIT :limit) AS mylown";
+		// AI use this Close(n) with date start from
+		SELECT_CLOSE_N_PRICE_START_DATA_SQL = "SELECT min(close) AS rtn from (SELECT close FROM " + tableName
+				+ " WHERE stockId = :stockId AND date > :startDate LIMIT :limit) AS myclose";
+
 		// query price by Id and date
 		QUERY_BY_STOCKID_DATE_SQL = "SELECT * FROM " + tableName + " WHERE stockId = :stockId AND date = :date";
 		// query the last date
@@ -121,15 +102,5 @@ public class QianFuQuanStockPriceTableHelper extends StockPriceTableHelper {
 		// select all distinct stockIDs
 		QUERY_DISTINCT_ID = "SELECT distinct(stockid) AS rtn FROM " + tableName + " order by stockid";
 		QUERY_DEAL_DATE_BY_ID = "SELECT date AS rtn FROM " + tableName + " WHERE stockId = :stockId ORDER BY date DESC";
-	}
-
-	public static void main(String[] args) {
-		StockPriceTableHelper table = StockPriceTableHelper.getInstance();
-		StockPriceVO vo = table.getStockPriceByIdAndDate("000002", "2015-01-06");
-		System.out.println(vo.stockId + ";" + vo.close + ";" + vo.date);
-
-		QianFuQuanStockPriceTableHelper qiantable = QianFuQuanStockPriceTableHelper.getInstance();
-		StockPriceVO qianvo = qiantable.getStockPriceByIdAndDate("000002", "2015-01-06");
-		System.out.println(qianvo.stockId + ";" + qianvo.close + ";" + qianvo.date);
 	}
 }

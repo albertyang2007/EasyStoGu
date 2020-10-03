@@ -40,8 +40,8 @@ public class DailySelectionRunner implements Runnable {
 	private DBConfigurationService config;
 	private StockSuperVOHelper stockOverAllHelper = new StockSuperVOHelper();
 	private WeekStockSuperVOHelper weekStockOverAllHelper = new WeekStockSuperVOHelper();
-	private CheckPointDailySelectionTableHelper checkPointDailySelectionTable = CheckPointDailySelectionTableHelper
-			.getInstance();
+	@Autowired
+	private CheckPointDailySelectionTableHelper checkPointDailySelectionTable;
 	private CheckPointDailyStatisticsTableHelper checkPointDailyStatisticsTable = CheckPointDailyStatisticsTableHelper
 			.getInstance();
 	private RealTimeZiJinLiuFatchDataHelper realTimeZiJinLiuHelper = RealTimeZiJinLiuFatchDataHelper.getInstance();

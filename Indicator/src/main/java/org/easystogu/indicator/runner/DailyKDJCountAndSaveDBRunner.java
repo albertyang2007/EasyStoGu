@@ -20,7 +20,9 @@ import com.google.common.primitives.Doubles;
 
 @Component
 public class DailyKDJCountAndSaveDBRunner implements Runnable {
-	protected IndicatorDBHelperIF kdjTable = DBAccessFacdeFactory.getInstance(Constants.indKDJ);
+	@Autowired
+	private DBAccessFacdeFactory dBAccessFacdeFactory;
+	protected IndicatorDBHelperIF kdjTable = dBAccessFacdeFactory.getInstance(Constants.indKDJ);
 	@Autowired
 	private KDJHelper kdjHelper = new KDJHelper();
 	protected StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
@@ -50,7 +52,7 @@ public class DailyKDJCountAndSaveDBRunner implements Runnable {
 		double[][] KDJ = kdjHelper.getKDJList(Doubles.toArray(close), Doubles.toArray(low), Doubles.toArray(high));
 
 		int index = priceList.size() - 1;
-		
+
 		KDJVO vo = new KDJVO();
 		vo.setK(Strings.convert2ScaleDecimal(KDJ[0][index]));
 		vo.setD(Strings.convert2ScaleDecimal(KDJ[1][index]));
@@ -65,17 +67,18 @@ public class DailyKDJCountAndSaveDBRunner implements Runnable {
 	}
 
 	public void countAndSaved(List<String> stockIds) {
-	  stockIds.parallelStream().forEach(stockId -> {
-        this.countAndSaved(stockId);
-      });
-	  
-//		int index = 0;
-//		for (String stockId : stockIds) {
-//			if (index++ % 500 == 0) {
-//				System.out.println("KDJ countAndSaved: " + stockId + " " + (index) + "/" + stockIds.size());
-//			}
-//			this.countAndSaved(stockId);
-//		}
+		stockIds.parallelStream().forEach(stockId -> {
+			this.countAndSaved(stockId);
+		});
+
+		// int index = 0;
+		// for (String stockId : stockIds) {
+		// if (index++ % 500 == 0) {
+		// System.out.println("KDJ countAndSaved: " + stockId + " " + (index) + "/" +
+		// stockIds.size());
+		// }
+		// this.countAndSaved(stockId);
+		// }
 	}
 
 	public void run() {

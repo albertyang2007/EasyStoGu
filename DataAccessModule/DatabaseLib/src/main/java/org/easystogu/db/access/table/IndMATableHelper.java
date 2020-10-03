@@ -6,22 +6,24 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
 import org.easystogu.db.vo.table.MAVO;
 import org.easystogu.log.LogHelper;
 import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.stereotype.Component;
 
-public class IndMATableHelper{
+@Component
+public class IndMATableHelper {
 
 	private static Logger logger = LogHelper.getLogger(IndMATableHelper.class);
-	private static IndMATableHelper instance = null;
-	private static IndMATableHelper georedInstance = null;
+	@Autowired
+	protected NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 	protected String tableName = "IND_MA";
 	// please modify this SQL in all subClass
 	protected String INSERT_SQL = "INSERT INTO " + tableName
@@ -38,26 +40,6 @@ public class IndMATableHelper{
 	protected String DELETE_BY_DATE_SQL = "DELETE FROM " + tableName + " WHERE date = :date";
 	protected String QUERY_BY_STOCKID_AND_BETWEEN_DATE = "SELECT * FROM " + tableName
 			+ " WHERE stockId = :stockId AND DATE >= :date1 AND DATE <= :date2 ORDER BY DATE";
-
-	protected NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-
-	private IndMATableHelper(javax.sql.DataSource datasource) {
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(datasource);
-	}
-
-	public static IndMATableHelper getInstance() {
-		if (instance == null) {
-			instance = new IndMATableHelper(PostgreSqlDataSourceFactory.createDataSource());
-		}
-		return instance;
-	}
-
-	public static IndMATableHelper getGeoredInstance() {
-		if (georedInstance == null) {
-			georedInstance = new IndMATableHelper(PostgreSqlDataSourceFactory.createGeoredDataSource());
-		}
-		return georedInstance;
-	}
 
 	private static final class MAVOMapper implements RowMapper<MAVO> {
 		public MAVO mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -186,7 +168,7 @@ public class IndMATableHelper{
 			return new ArrayList<MAVO>();
 		}
 	}
-	
+
 	public List<MAVO> getByDate(String date) {
 		try {
 
@@ -202,7 +184,6 @@ public class IndMATableHelper{
 		}
 		return new ArrayList<MAVO>();
 	}
-
 
 	// 最近几天的，必须使用时间倒序的SQL
 	public List<MAVO> getNDateMA(String stockId, int day) {
@@ -237,20 +218,8 @@ public class IndMATableHelper{
 		}
 		return new ArrayList<MAVO>();
 	}
-	
+
 	public List<MAVO> queryByStockId(String stockId) {
 		return this.getAllMA(stockId);
 	}
-
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		IndMATableHelper ins = IndMATableHelper.getInstance();
-		try {
-			System.out.println(ins.getMA("000673", "2016-07-19"));
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
 }

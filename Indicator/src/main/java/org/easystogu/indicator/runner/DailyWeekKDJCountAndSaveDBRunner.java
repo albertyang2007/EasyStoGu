@@ -7,12 +7,16 @@ import org.easystogu.db.access.facde.DBAccessFacdeFactory;
 import org.easystogu.db.access.table.WeekStockPriceTableHelper;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.utils.WeekdayUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class DailyWeekKDJCountAndSaveDBRunner extends DailyKDJCountAndSaveDBRunner {
+	@Autowired
+	private DBAccessFacdeFactory dBAccessFacdeFactory;
+
 	public DailyWeekKDJCountAndSaveDBRunner() {
-		kdjTable = DBAccessFacdeFactory.getInstance(Constants.indWeekKDJ);
+		kdjTable = dBAccessFacdeFactory.getInstance(Constants.indWeekKDJ);
 		qianFuQuanStockPriceTable = WeekStockPriceTableHelper.getInstance();
 	}
 

@@ -1,30 +1,12 @@
 package org.easystogu.db.access.table;
 
-import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
+import javax.annotation.PostConstruct;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class IndWeekXueShi2TableHelper extends IndXueShi2TableHelper {
-	private static IndWeekXueShi2TableHelper instance = null;
-	private static IndWeekXueShi2TableHelper georedInstance = null;
-
-	public static IndWeekXueShi2TableHelper getInstance() {
-		if (instance == null) {
-			instance = new IndWeekXueShi2TableHelper(PostgreSqlDataSourceFactory.createDataSource());
-		}
-		return instance;
-	}
-
-	public static IndWeekXueShi2TableHelper getGeoredInstance() {
-		if (georedInstance == null) {
-			georedInstance = new IndWeekXueShi2TableHelper(PostgreSqlDataSourceFactory.createGeoredDataSource());
-		}
-		return georedInstance;
-	}
-
-	protected IndWeekXueShi2TableHelper(javax.sql.DataSource datasource) {
-		super(datasource);
-		refeshTableSQL();
-	}
-
+	@PostConstruct
 	private void refeshTableSQL() {
 		tableName = "IND_WEEK_XUESHI2";
 		INSERT_SQL = "INSERT INTO " + tableName + " (stockId, date, up, dn) VALUES (:stockId, :date, :up, :dn)";

@@ -7,6 +7,7 @@ import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.access.view.CommonViewHelper;
 import org.easystogu.db.vo.table.CheckPointDailySelectionVO;
 import org.easystogu.db.vo.view.CommonViewVO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 //run analyse views and save selection to table checkpoint_daily_selection
@@ -15,8 +16,8 @@ public class DailyViewAnalyseRunner implements Runnable {
 	private StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
 	private String latestDate = stockPriceTable.getLatestStockDate();
 	private CommonViewHelper commonViewHelper = CommonViewHelper.getInstance();
-	private CheckPointDailySelectionTableHelper checkPointDailySelectionTable = CheckPointDailySelectionTableHelper
-			.getInstance();
+	@Autowired
+	private CheckPointDailySelectionTableHelper checkPointDailySelectionTable;
 
 	// daily analyse, if miss one of date analyse, those view only have
 	// latestDate date, there will be no chose to get that date's data

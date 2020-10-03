@@ -5,40 +5,21 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
 import org.easystogu.db.vo.view.CommonViewVO;
 import org.easystogu.log.LogHelper;
 import org.easystogu.utils.Strings;
 import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 public class CommonViewHelper {
     private static Logger logger = LogHelper.getLogger(CommonViewHelper.class);
-    private static CommonViewHelper instance = null;
-    private static CommonViewHelper georedInstance = null;
-    protected String QUERY_BY_VIEW_NAMES = "SELECT COUNT(*) AS rtn FROM pg_views WHERE VIEWNAME = :viewName";
-
+    @Autowired
     protected NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    public static CommonViewHelper getInstance() {
-        if (instance == null) {
-            instance = new CommonViewHelper(PostgreSqlDataSourceFactory.createDataSource());
-        }
-        return instance;
-    }
-
-    public static CommonViewHelper getGeoredInstance() {
-        if (georedInstance == null) {
-            georedInstance = new CommonViewHelper(PostgreSqlDataSourceFactory.createGeoredDataSource());
-        }
-        return georedInstance;
-    }
-
-    protected CommonViewHelper(javax.sql.DataSource dataSource) {
-        this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
-    }
+    protected String QUERY_BY_VIEW_NAMES = "SELECT COUNT(*) AS rtn FROM pg_views WHERE VIEWNAME = :viewName";
 
     private static final class IntVOMapper implements RowMapper<Integer> {
         public Integer mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -140,21 +121,5 @@ public class CommonViewHelper {
             e.printStackTrace();
         }
         return new ArrayList<String>();
-    }
-
-    public static void main(String[] args) {
-        // TODO Auto-generated method stub
-        CommonViewHelper ins = CommonViewHelper.getInstance();
-        List<CommonViewVO> list = ins.queryByDateForViewDirectlySearch("2016-09-20",
-                "luzao_phaseII_zijinliu_top300_Details");
-        for (CommonViewVO vo : list) {
-            System.out.println(vo);
-        }
-        try {
-            System.out.println();
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
     }
 }

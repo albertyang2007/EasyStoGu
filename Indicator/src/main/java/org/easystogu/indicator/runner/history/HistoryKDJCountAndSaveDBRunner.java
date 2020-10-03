@@ -20,7 +20,9 @@ import com.google.common.primitives.Doubles;
 
 @Component
 public class HistoryKDJCountAndSaveDBRunner {
-	protected IndicatorDBHelperIF kdjTable = DBAccessFacdeFactory.getInstance(Constants.indKDJ);
+	@Autowired
+	private DBAccessFacdeFactory dBAccessFacdeFactory;
+	protected IndicatorDBHelperIF kdjTable = dBAccessFacdeFactory.getInstance(Constants.indKDJ);
 	protected StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
 	@Autowired
 	protected KDJHelper kdjHelper;
@@ -38,8 +40,8 @@ public class HistoryKDJCountAndSaveDBRunner {
 	}
 
 	public void countAndSaved(String stockId) {
-        this.deleteKDJ(stockId);
-        
+		this.deleteKDJ(stockId);
+
 		List<StockPriceVO> priceList = qianFuQuanStockPriceTable.getStockPriceById(stockId);
 
 		if (priceList.size() <= 9) {
@@ -75,20 +77,21 @@ public class HistoryKDJCountAndSaveDBRunner {
 	}
 
 	public void countAndSaved(List<String> stockIds) {
-      System.out.println("KDJ countAndSaved start");
-      stockIds.parallelStream().forEach(stockId -> {
-        this.countAndSaved(stockId);
-      });
-      
-//      int index = 0;
-//      for (String stockId : stockIds) {
-//          if (index++ % 100 == 0)
-//              System.out.println("JDK countAndSaved: " + stockId + " " + (index) + "/" + stockIds.size());
-//          this.countAndSaved(stockId);
-//      }
-      
-      System.out.println("JDK countAndSaved stop");
-    }
+		System.out.println("KDJ countAndSaved start");
+		stockIds.parallelStream().forEach(stockId -> {
+			this.countAndSaved(stockId);
+		});
+
+		// int index = 0;
+		// for (String stockId : stockIds) {
+		// if (index++ % 100 == 0)
+		// System.out.println("JDK countAndSaved: " + stockId + " " + (index) + "/" +
+		// stockIds.size());
+		// this.countAndSaved(stockId);
+		// }
+
+		System.out.println("JDK countAndSaved stop");
+	}
 
 	// TODO Auto-generated method stub
 	// 一次性计算数据库中所有KDJ数据，入库

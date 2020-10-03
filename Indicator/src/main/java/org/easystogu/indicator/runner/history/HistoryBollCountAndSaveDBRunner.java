@@ -18,8 +18,9 @@ import org.springframework.stereotype.Component;
 //计算数据库中所有boll值，包括最新和历史的，一次性运行
 @Component
 public class HistoryBollCountAndSaveDBRunner {
-
-	protected IndicatorDBHelperIF bollTable = DBAccessFacdeFactory.getInstance(Constants.indBoll);
+	@Autowired
+	private DBAccessFacdeFactory dBAccessFacdeFactory;
+	protected IndicatorDBHelperIF bollTable = dBAccessFacdeFactory.getInstance(Constants.indBoll);
 	protected StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
 	@Autowired
 	private BOLLHelper bollHelper;
@@ -37,8 +38,8 @@ public class HistoryBollCountAndSaveDBRunner {
 	}
 
 	public void countAndSaved(String stockId) {
-        this.deleteBoll(stockId);
-        
+		this.deleteBoll(stockId);
+
 		try {
 			List<StockPriceVO> priceList = qianFuQuanStockPriceTable.getStockPriceById(stockId);
 
@@ -82,20 +83,21 @@ public class HistoryBollCountAndSaveDBRunner {
 	}
 
 	public void countAndSaved(List<String> stockIds) {
-      System.out.println("Boll countAndSaved start");
-      stockIds.parallelStream().forEach(stockId -> {
-        this.countAndSaved(stockId);
-      });
-      
-//      int index = 0;
-//      for (String stockId : stockIds) {
-//          if (index++ % 100 == 0)
-//              System.out.println("Boll countAndSaved: " + stockId + " " + (index) + "/" + stockIds.size());
-//          this.countAndSaved(stockId);
-//      }
-      
-      System.out.println("Boll countAndSaved stop");
-    }
+		System.out.println("Boll countAndSaved start");
+		stockIds.parallelStream().forEach(stockId -> {
+			this.countAndSaved(stockId);
+		});
+
+		// int index = 0;
+		// for (String stockId : stockIds) {
+		// if (index++ % 100 == 0)
+		// System.out.println("Boll countAndSaved: " + stockId + " " + (index) + "/" +
+		// stockIds.size());
+		// this.countAndSaved(stockId);
+		// }
+
+		System.out.println("Boll countAndSaved stop");
+	}
 
 	public void mainWork(String[] args) {
 		// TODO Auto-generated method stub

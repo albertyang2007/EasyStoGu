@@ -6,21 +6,23 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
 import org.easystogu.db.vo.table.YiMengBSVO;
 import org.easystogu.log.LogHelper;
 import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.stereotype.Component;
 
+@Component
 public class IndYiMengBSTableHelper {
 	private static Logger logger = LogHelper.getLogger(IndYiMengBSTableHelper.class);
-	private static IndYiMengBSTableHelper instance = null;
-	private static IndYiMengBSTableHelper georedInstance = null;
+	@Autowired
+	protected NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 	protected String tableName = "IND_YIMENGBS";
 	// please modify this SQL in all subClass
 	protected String INSERT_SQL = "INSERT INTO " + tableName
@@ -34,26 +36,6 @@ public class IndYiMengBSTableHelper {
 	protected String DELETE_BY_STOCKID_AND_DATE_SQL = "DELETE FROM " + tableName
 			+ " WHERE stockId = :stockId AND date = :date";
 	protected String DELETE_BY_DATE_SQL = "DELETE FROM " + tableName + " WHERE date = :date";
-
-	protected NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-
-	protected IndYiMengBSTableHelper(javax.sql.DataSource datasource) {
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(datasource);
-	}
-
-	public static IndYiMengBSTableHelper getInstance() {
-		if (instance == null) {
-			instance = new IndYiMengBSTableHelper(PostgreSqlDataSourceFactory.createDataSource());
-		}
-		return instance;
-	}
-
-	public static IndYiMengBSTableHelper getGeoredInstance() {
-		if (georedInstance == null) {
-			georedInstance = new IndYiMengBSTableHelper(PostgreSqlDataSourceFactory.createGeoredDataSource());
-		}
-		return georedInstance;
-	}
 
 	private static final class YiMengBSVOMapper implements RowMapper<YiMengBSVO> {
 		public YiMengBSVO mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -180,17 +162,6 @@ public class IndYiMengBSTableHelper {
 			logger.error("exception meets for getAvgClosePrice stockId=" + stockId, e);
 			e.printStackTrace();
 			return new ArrayList<YiMengBSVO>();
-		}
-	}
-
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		IndYiMengBSTableHelper ins = IndYiMengBSTableHelper.getInstance();
-		try {
-			System.out.println(ins.getAllYiMengBS("002194").size());
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 	}
 }

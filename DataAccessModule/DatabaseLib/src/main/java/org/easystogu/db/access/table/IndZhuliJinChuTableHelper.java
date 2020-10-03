@@ -6,21 +6,23 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
 import org.easystogu.db.vo.table.ZhuliJinChuVO;
 import org.easystogu.log.LogHelper;
 import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.stereotype.Component;
 
+@Component
 public class IndZhuliJinChuTableHelper {
 	private static Logger logger = LogHelper.getLogger(IndZhuliJinChuTableHelper.class);
-	private static IndZhuliJinChuTableHelper instance = null;
-	private static IndZhuliJinChuTableHelper georedInstance = null;
+	@Autowired
+	protected NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 	protected String tableName = "IND_ZHULIJINCHU";
 	// please modify this SQL in all subClass
 	protected String INSERT_SQL = "INSERT INTO " + tableName
@@ -34,26 +36,6 @@ public class IndZhuliJinChuTableHelper {
 	protected String DELETE_BY_STOCKID_AND_DATE_SQL = "DELETE FROM " + tableName
 			+ " WHERE stockId = :stockId AND date = :date";
 	protected String DELETE_BY_DATE_SQL = "DELETE FROM " + tableName + " WHERE date = :date";
-
-	protected NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-
-	protected IndZhuliJinChuTableHelper(javax.sql.DataSource datasource) {
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(datasource);
-	}
-
-	public static IndZhuliJinChuTableHelper getInstance() {
-		if (instance == null) {
-			instance = new IndZhuliJinChuTableHelper(PostgreSqlDataSourceFactory.createDataSource());
-		}
-		return instance;
-	}
-
-	public static IndZhuliJinChuTableHelper getGeoredInstance() {
-		if (georedInstance == null) {
-			georedInstance = new IndZhuliJinChuTableHelper(PostgreSqlDataSourceFactory.createGeoredDataSource());
-		}
-		return georedInstance;
-	}
 
 	private static final class ZhuliJinChuVOMapper implements RowMapper<ZhuliJinChuVO> {
 		public ZhuliJinChuVO mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -181,17 +163,6 @@ public class IndZhuliJinChuTableHelper {
 			logger.error("exception meets for getAvgClosePrice stockId=" + stockId, e);
 			e.printStackTrace();
 			return new ArrayList<ZhuliJinChuVO>();
-		}
-	}
-
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		IndMai1Mai2TableHelper ins = IndMai1Mai2TableHelper.getInstance();
-		try {
-			System.out.println(ins.getAllMai1Mai2("600000").size());
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 	}
 }

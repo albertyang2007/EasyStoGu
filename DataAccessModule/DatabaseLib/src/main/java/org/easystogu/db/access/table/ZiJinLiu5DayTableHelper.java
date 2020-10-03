@@ -1,31 +1,12 @@
 package org.easystogu.db.access.table;
 
-import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import javax.annotation.PostConstruct;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class ZiJinLiu5DayTableHelper extends ZiJinLiuTableHelper {
-	private static ZiJinLiu5DayTableHelper instance = null;
-	private static ZiJinLiu5DayTableHelper georedInstance = null;
-
-	public static ZiJinLiu5DayTableHelper getInstance() {
-		if (instance == null) {
-			instance = new ZiJinLiu5DayTableHelper(PostgreSqlDataSourceFactory.createDataSource());
-		}
-		return instance;
-	}
-
-	public static ZiJinLiu5DayTableHelper getGeoredInstance() {
-		if (georedInstance == null) {
-			georedInstance = new ZiJinLiu5DayTableHelper(PostgreSqlDataSourceFactory.createGeoredDataSource());
-		}
-		return georedInstance;
-	}
-
-	protected ZiJinLiu5DayTableHelper(javax.sql.DataSource datasource) {
-		super(datasource);
-		refeshTableSQL();
-	}
-
+	@PostConstruct
 	private void refeshTableSQL() {
 		// please modify this SQL in superClass
 		tableName = "ZIJINLIU_5DAY";

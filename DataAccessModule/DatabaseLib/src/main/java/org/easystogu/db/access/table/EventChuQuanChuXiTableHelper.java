@@ -6,21 +6,23 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
 import org.easystogu.db.vo.table.ChuQuanChuXiVO;
 import org.easystogu.log.LogHelper;
 import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.stereotype.Component;
 
+@Component
 public class EventChuQuanChuXiTableHelper {
 	private static Logger logger = LogHelper.getLogger(EventChuQuanChuXiTableHelper.class);
-	private static EventChuQuanChuXiTableHelper instance = null;
-	private static EventChuQuanChuXiTableHelper georedInstance = null;
+	@Autowired
+	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 	protected String tableName = "EVENT_CHUQUANCHUXI";
 	protected String INSERT_SQL = "INSERT INTO " + tableName
 			+ " (stockId, date, rate, alreadyupdateprice) VALUES (:stockId, :date, :rate, :alreadyupdateprice)";
@@ -34,27 +36,6 @@ public class EventChuQuanChuXiTableHelper {
 	protected String DELETE_BY_STOCKID_SQL = "DELETE FROM " + tableName + " WHERE stockId = :stockId";
 	protected String UPDATE_FLAG_BY_STOCKID_AND_DATE = "UPDATE " + tableName
 			+ " SET alreadyupdateprice = :alreadyupdateprice" + " WHERE stockId = :stockId AND date = :date";
-
-	protected NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-
-	private EventChuQuanChuXiTableHelper(javax.sql.DataSource datasource) {
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(datasource);
-	}
-	
-	public static EventChuQuanChuXiTableHelper getInstance() {
-		if (instance == null) {
-			instance = new EventChuQuanChuXiTableHelper(PostgreSqlDataSourceFactory.createDataSource());
-		}
-		return instance;
-	}
-
-	public static EventChuQuanChuXiTableHelper getGeoredInstance() {
-		if (georedInstance == null) {
-			georedInstance = new EventChuQuanChuXiTableHelper(
-					PostgreSqlDataSourceFactory.createGeoredDataSource());
-		}
-		return georedInstance;
-	}
 
 	private static final class GaoSongZhuanVOMapper implements RowMapper<ChuQuanChuXiVO> {
 		public ChuQuanChuXiVO mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -193,10 +174,4 @@ public class EventChuQuanChuXiTableHelper {
 			e.printStackTrace();
 		}
 	}
-
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
-	}
-
 }

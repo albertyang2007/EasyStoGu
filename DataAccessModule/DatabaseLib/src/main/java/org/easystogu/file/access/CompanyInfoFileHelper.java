@@ -15,6 +15,7 @@ import org.easystogu.log.LogHelper;
 import org.easystogu.utils.StringComparator;
 import org.easystogu.utils.Strings;
 import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 
 //txt file to store all company base info
 //export all data from easymoney software PC version in "分析"->"财务数据", select xls file format
@@ -22,7 +23,8 @@ import org.slf4j.Logger;
 //than conver to Table_CompanyBaseInfo.csv format
 public class CompanyInfoFileHelper {
 	private static Logger logger = LogHelper.getLogger(CompanyInfoFileHelper.class);
-	private CompanyInfoTableHelper companyInfoTable = CompanyInfoTableHelper.getInstance();
+	@Autowired
+	private CompanyInfoTableHelper companyInfoTable;
 	private static CompanyInfoFileHelper instance = null;
 	protected TextFileSourceHelper fileSource = TextFileSourceHelper.getInstance();
 	protected String fileName = "./Company_Info/Company_Info.csv";

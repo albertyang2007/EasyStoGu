@@ -6,44 +6,26 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
 import org.easystogu.db.vo.view.FavoritesStockVO;
 import org.easystogu.log.LogHelper;
 import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.stereotype.Component;
 
+@Component
 public class FavoritesStockHelper {
 	private static Logger logger = LogHelper.getLogger(FavoritesStockHelper.class);
-	private static FavoritesStockHelper instance = null;
-	private static FavoritesStockHelper georedInstance = null;
+	@Autowired
+	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 	protected String tableName = "FAVORITES_STOCK";
 	protected String INSERT_SQL = "INSERT INTO " + tableName + " (stockId, userId) VALUES (:stockId, :userId)";
 	protected String QUERY_BY_USERID_SQL = "SELECT * FROM " + tableName + " WHERE userId = :userId";
 	protected String DELETE_BY_STOCKID_AND_USERID_SQL = "DELETE FROM " + tableName + " WHERE stockId =:stockId AND userId = :userId";
-
-	protected NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-
-	protected FavoritesStockHelper(javax.sql.DataSource datasource) {
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(datasource);
-	}
-
-	public static FavoritesStockHelper getInstance() {
-		if (instance == null) {
-			instance = new FavoritesStockHelper(PostgreSqlDataSourceFactory.createDataSource());
-		}
-		return instance;
-	}
-
-	public static FavoritesStockHelper getGeoredInstance() {
-		if (georedInstance == null) {
-			georedInstance = new FavoritesStockHelper(PostgreSqlDataSourceFactory.createGeoredDataSource());
-		}
-		return georedInstance;
-	}
 
 	private static final class FavoritesStockVOMapper implements RowMapper<FavoritesStockVO> {
 		public FavoritesStockVO mapRow(ResultSet rs, int rowNum) throws SQLException {

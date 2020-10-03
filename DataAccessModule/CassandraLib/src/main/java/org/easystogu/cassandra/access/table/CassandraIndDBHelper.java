@@ -8,10 +8,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.easystogu.cassandra.ks.CassandraKepSpaceFactory;
-import org.easystogu.config.Constants;
 import org.easystogu.db.helper.IF.IndicatorDBHelperIF;
 import org.easystogu.db.vo.table.IndicatorVO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.datastax.driver.core.BatchStatement;
 import com.datastax.driver.core.PreparedStatement;
@@ -19,9 +19,11 @@ import com.datastax.driver.core.ResultSet;
 import com.datastax.driver.core.Row;
 import com.datastax.driver.core.Session;
 
+@Service
 public abstract class CassandraIndDBHelper implements IndicatorDBHelperIF {
-	protected Class<? extends IndicatorVO> indicatorVOClass;
-	protected Session session;
+	@Autowired
+	protected Session cassandraSession;
+	protected Class<?> indicatorVOClass;
 	protected String tableName;// To be set later
 	protected String INSERT_SQL;
 	protected String QUERY_ALL_BY_ID_SQL;
@@ -33,10 +35,7 @@ public abstract class CassandraIndDBHelper implements IndicatorDBHelperIF {
 
 	private Map<String, PreparedStatement> prepareStmtMap = new ConcurrentHashMap<String, PreparedStatement>();
 
-	protected CassandraIndDBHelper(String tableNameParm, Class<? extends IndicatorVO> indicatorVOClass) {
-		this.indicatorVOClass = indicatorVOClass;
-		this.tableName = Constants.CassandraKeySpace + "." + tableNameParm;
-
+	protected CassandraIndDBHelper() {
 		String[] paris = generateFieldsNamePairs();
 
 		// INSERT INTO ind.macd (stockId, date, dif, dea, macd) VALUES (?, ?, ?,
@@ -49,10 +48,6 @@ public abstract class CassandraIndDBHelper implements IndicatorDBHelperIF {
 		QUERY_LATEST_N_BY_ID_SQL = "SELECT * FROM " + tableName + " WHERE stockId = ? ORDER BY date DESC LIMIT ?";
 		DELETE_BY_STOCKID_SQL = "DELETE FROM " + tableName + " WHERE stockId = ?";
 		DELETE_BY_STOCKID_AND_DATE_SQL = "DELETE FROM " + tableName + " WHERE stockId = ? AND date = ?";
-
-		// System.out.println(INSERT_SQL);
-
-		this.session = CassandraKepSpaceFactory.createCluster().connect();
 	}
 
 	private String[] generateFieldsNamePairs() {
@@ -73,7 +68,7 @@ public abstract class CassandraIndDBHelper implements IndicatorDBHelperIF {
 			if (r == null)
 				return null;
 
-			IndicatorVO vo = indicatorVOClass.newInstance();
+			IndicatorVO vo = (IndicatorVO) indicatorVOClass.newInstance();
 			Field[] fields = indicatorVOClass.getDeclaredFields();
 
 			for (Field f : fields) {
@@ -113,7 +108,7 @@ public abstract class CassandraIndDBHelper implements IndicatorDBHelperIF {
 	private PreparedStatement getPrepareStatement(String CQL) {
 		PreparedStatement stmt = this.prepareStmtMap.get(CQL);
 		if (stmt == null) {
-			stmt = session.prepare(CQL);
+			stmt = cassandraSession.prepare(CQL);
 			this.prepareStmtMap.put(CQL, stmt);
 		}
 		return stmt;
@@ -135,7 +130,7 @@ public abstract class CassandraIndDBHelper implements IndicatorDBHelperIF {
 
 	public <T extends IndicatorVO> void insert(T vo) {
 		PreparedStatement preparedStatement = getPrepareStatement(INSERT_SQL);
-		session.execute(preparedStatement.bind(generateBindParms(vo)));
+		cassandraSession.execute(preparedStatement.bind(generateBindParms(vo)));
 	}
 
 	public <T extends IndicatorVO> void insert(List<T> list) {
@@ -144,40 +139,61 @@ public abstract class CassandraIndDBHelper implements IndicatorDBHelperIF {
 		for (IndicatorVO vo : list) {
 			batchStatement.add(preparedStatement.bind(generateBindParms(vo)));
 		}
-		session.execute(batchStatement);
+		cassandraSession.execute(batchStatement);
 	}
 
 	public <T extends IndicatorVO> T getSingle(String stockId, String date) {
 		PreparedStatement preparedStatement = getPrepareStatement(QUERY_BY_ID_AND_DATE_SQL);
-		ResultSet results = session.execute(preparedStatement.bind(stockId, date));
+		ResultSet results = cassandraSession.execute(preparedStatement.bind(stockId, date));
 		return mapResultSetToSingle(results);
 	}
 
 	public <T extends IndicatorVO> List<T> getAll(String stockId) {
 		PreparedStatement preparedStatement = getPrepareStatement(QUERY_ALL_BY_ID_SQL);
-		ResultSet results = session.execute(preparedStatement.bind(stockId));
+		ResultSet results = cassandraSession.execute(preparedStatement.bind(stockId));
 		return mapResultSetToList(results);
 	}
 
 	public void delete(String stockId) {
 		PreparedStatement preparedStatement = getPrepareStatement(DELETE_BY_STOCKID_SQL);
-		session.execute(preparedStatement.bind(stockId));
+		cassandraSession.execute(preparedStatement.bind(stockId));
 	}
 
 	public void delete(String stockId, String date) {
 		PreparedStatement preparedStatement = getPrepareStatement(DELETE_BY_STOCKID_AND_DATE_SQL);
-		session.execute(preparedStatement.bind(stockId, date));
+		cassandraSession.execute(preparedStatement.bind(stockId, date));
 	}
 
 	public <T extends IndicatorVO> List<T> getByIdAndBetweenDate(String stockId, String startDate, String endDate) {
 		PreparedStatement preparedStatement = getPrepareStatement(QUERY_BY_STOCKID_AND_BETWEEN_DATE);
-		ResultSet results = session.execute(preparedStatement.bind(stockId, startDate, endDate));
+		ResultSet results = cassandraSession.execute(preparedStatement.bind(stockId, startDate, endDate));
 		return mapResultSetToList(results);
 	}
 
 	public <T extends IndicatorVO> List<T> getByIdAndLatestNDate(String stockId, int day) {
 		PreparedStatement preparedStatement = getPrepareStatement(QUERY_LATEST_N_BY_ID_SQL);
-		ResultSet results = session.execute(preparedStatement.bind(stockId, day));
+		ResultSet results = cassandraSession.execute(preparedStatement.bind(stockId, day));
 		return mapResultSetToList(results);
+	}
+
+	public Class<?> getIndicatorVOClass() {
+		return indicatorVOClass;
+	}
+
+	public void setIndicatorVOClass(String indicatorVOClass) {
+		try {
+			this.indicatorVOClass = Class.forName(indicatorVOClass).getClass();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public String getTableName() {
+		return tableName;
+	}
+
+	public void setTableName(String tableName) {
+		this.tableName = tableName;
 	}
 }

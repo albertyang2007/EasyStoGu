@@ -47,15 +47,18 @@ public class IndicatorEndPointV1 {
 	private ConfigurationServiceCache config = ConfigurationServiceCache.getInstance();
 	protected String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
 	protected QianFuQuanStockPriceTableHelper qianfuquanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
-	protected IndicatorDBHelperIF kdjTable = DBAccessFacdeFactory.getInstance(Constants.indKDJ);
-	protected IndicatorDBHelperIF macdTable = DBAccessFacdeFactory.getInstance(Constants.indMacd);
-	protected IndicatorDBHelperIF bollTable = DBAccessFacdeFactory.getInstance(Constants.indBoll);
-	protected IndicatorDBHelperIF qsddTable = DBAccessFacdeFactory.getInstance(Constants.indQSDD);
-	protected IndicatorDBHelperIF wrTable = DBAccessFacdeFactory.getInstance(Constants.indWR);
-	protected IndicatorDBHelperIF shenXianTable = DBAccessFacdeFactory.getInstance(Constants.indShenXian);
-	protected IndDDXTableHelper ddxTable = IndDDXTableHelper.getInstance();
+	@Autowired
+	private DBAccessFacdeFactory dBAccessFacdeFactory;
+	protected IndicatorDBHelperIF kdjTable = dBAccessFacdeFactory.getInstance(Constants.indKDJ);
+	protected IndicatorDBHelperIF macdTable = dBAccessFacdeFactory.getInstance(Constants.indMacd);
+	protected IndicatorDBHelperIF bollTable = dBAccessFacdeFactory.getInstance(Constants.indBoll);
+	protected IndicatorDBHelperIF qsddTable = dBAccessFacdeFactory.getInstance(Constants.indQSDD);
+	protected IndicatorDBHelperIF wrTable = dBAccessFacdeFactory.getInstance(Constants.indWR);
+	protected IndicatorDBHelperIF shenXianTable = dBAccessFacdeFactory.getInstance(Constants.indShenXian);
+	@Autowired
+	protected IndDDXTableHelper ddxTable;
 	protected StockIndicatorCache indicatorCache = StockIndicatorCache.getInstance();
-	
+
 	@Autowired
 	protected LuZaoHelper luzaoHelper;
 	@Autowired

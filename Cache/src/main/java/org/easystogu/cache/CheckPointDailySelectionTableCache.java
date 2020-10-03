@@ -10,6 +10,7 @@ import org.easystogu.db.access.table.CheckPointDailySelectionTableHelper;
 import org.easystogu.db.vo.table.CheckPointDailySelectionVO;
 import org.easystogu.log.LogHelper;
 import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
@@ -20,8 +21,8 @@ import com.google.common.util.concurrent.ListenableFutureTask;
 public class CheckPointDailySelectionTableCache {
 	private Logger logger = LogHelper.getLogger(CheckPointDailySelectionTableCache.class);
 	private static CheckPointDailySelectionTableCache instance = null;
-	private CheckPointDailySelectionTableHelper checkPointDailySelectionTable = CheckPointDailySelectionTableHelper
-			.getInstance();
+	@Autowired
+	private CheckPointDailySelectionTableHelper checkPointDailySelectionTable;
 	private LoadingCache<String, List<CheckPointDailySelectionVO>> cache;
 
 	private CheckPointDailySelectionTableCache() {

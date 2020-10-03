@@ -1,9 +1,11 @@
 package org.easystogu.db.access.facde;
 
-import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
+
+import org.easystogu.cassandra.access.table.CassandraIndDBHelper;
 import org.easystogu.cassandra.access.table.IndBollCassTableHelper;
 import org.easystogu.cassandra.access.table.IndKDJCassTableHelper;
 import org.easystogu.cassandra.access.table.IndMacdCassTableHelper;
@@ -22,63 +24,97 @@ import org.easystogu.postgresql.access.table.IndShenXianDBTableHelper;
 import org.easystogu.postgresql.access.table.IndWRDBTableHelper;
 import org.easystogu.postgresql.access.table.IndWeekKDJDBTableHelper;
 import org.easystogu.postgresql.access.table.IndWeekMacdDBTableHelper;
+import org.easystogu.postgresql.access.table.PostgresqlIndDBHelper;
 import org.easystogu.utils.Strings;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class DBAccessFacdeFactory {
-	static Map<String, Class<? extends IndicatorDBHelperIF>> sqlFacdeMap = new HashMap<String, Class<? extends IndicatorDBHelperIF>>();
-	static Map<String, Class<? extends IndicatorDBHelperIF>> cqlFacdeMap = new HashMap<String, Class<? extends IndicatorDBHelperIF>>();
+	static Map<String, PostgresqlIndDBHelper> sqlFacdeMap = new HashMap<String, PostgresqlIndDBHelper>();
+	static Map<String, CassandraIndDBHelper> cqlFacdeMap = new HashMap<String, CassandraIndDBHelper>();
 
-	static {
+	// Cassandra
+	@Autowired
+	IndMacdCassTableHelper indMacdCassTableHelper;
+	@Autowired
+	IndKDJCassTableHelper indKDJCassTableHelper;
+	@Autowired
+	IndBollCassTableHelper indBollCassTableHelper;
+	@Autowired
+	IndQSDDCassTableHelper indQSDDCassTableHelper;
+	@Autowired
+	IndWRCassTableHelper indWRCassTableHelper;
+	@Autowired
+	IndShenXianCassTableHelper indShenXianCassTableHelper;
+	@Autowired
+	IndWeekMacdCassTableHelper indWeekMacdCassTableHelper;
+	@Autowired
+	IndWeekKDJCassTableHelper indWeekKDJCassTableHelper;
+
+	// Postgresql
+	@Autowired
+	IndMacdDBTableHelper indMacdDBTableHelper;
+	@Autowired
+	IndKDJDBTableHelper indKDJDBTableHelper;
+	@Autowired
+	IndBollDBTableHelper indBollDBTableHelper;
+	@Autowired
+	IndQSDDDBTableHelper indQSDDDBTableHelper;
+	@Autowired
+	IndWRDBTableHelper indWRDBTableHelper;
+	@Autowired
+	IndShenXianDBTableHelper indShenXianDBTableHelper;
+	@Autowired
+	IndWeekMacdDBTableHelper indWeekMacdDBTableHelper;
+	@Autowired
+	IndWeekKDJDBTableHelper indWeekKDJDBTableHelper;
+
+	@PostConstruct
+	public void init() {
 		// cql
-		cqlFacdeMap.put(Constants.indMacd, IndMacdCassTableHelper.class);
-		cqlFacdeMap.put(Constants.indKDJ, IndKDJCassTableHelper.class);
-		cqlFacdeMap.put(Constants.indBoll, IndBollCassTableHelper.class);
-		cqlFacdeMap.put(Constants.indQSDD, IndQSDDCassTableHelper.class);
-		cqlFacdeMap.put(Constants.indWR, IndWRCassTableHelper.class);
-		cqlFacdeMap.put(Constants.indShenXian, IndShenXianCassTableHelper.class);
-		cqlFacdeMap.put(Constants.indWeekMacd, IndWeekMacdCassTableHelper.class);
-		cqlFacdeMap.put(Constants.indWeekKDJ, IndWeekKDJCassTableHelper.class);
+		cqlFacdeMap.put(Constants.indMacd, indMacdCassTableHelper);
+		cqlFacdeMap.put(Constants.indKDJ, indKDJCassTableHelper);
+		cqlFacdeMap.put(Constants.indBoll, indBollCassTableHelper);
+		cqlFacdeMap.put(Constants.indQSDD, indQSDDCassTableHelper);
+		cqlFacdeMap.put(Constants.indWR, indWRCassTableHelper);
+		cqlFacdeMap.put(Constants.indShenXian, indShenXianCassTableHelper);
+		cqlFacdeMap.put(Constants.indWeekMacd, indWeekMacdCassTableHelper);
+		cqlFacdeMap.put(Constants.indWeekKDJ, indWeekKDJCassTableHelper);
 
 		// sql
-		sqlFacdeMap.put(Constants.indMacd, IndMacdDBTableHelper.class);
-		sqlFacdeMap.put(Constants.indKDJ, IndKDJDBTableHelper.class);
-		sqlFacdeMap.put(Constants.indBoll, IndBollDBTableHelper.class);
-		sqlFacdeMap.put(Constants.indQSDD, IndQSDDDBTableHelper.class);
-		sqlFacdeMap.put(Constants.indWR, IndWRDBTableHelper.class);
-		sqlFacdeMap.put(Constants.indShenXian, IndShenXianDBTableHelper.class);
-		sqlFacdeMap.put(Constants.indWeekMacd, IndWeekMacdDBTableHelper.class);
-		sqlFacdeMap.put(Constants.indWeekKDJ, IndWeekKDJDBTableHelper.class);
+		sqlFacdeMap.put(Constants.indMacd, indMacdDBTableHelper);
+		sqlFacdeMap.put(Constants.indKDJ, indKDJDBTableHelper);
+		sqlFacdeMap.put(Constants.indBoll, indBollDBTableHelper);
+		sqlFacdeMap.put(Constants.indQSDD, indQSDDDBTableHelper);
+		sqlFacdeMap.put(Constants.indWR, indWRDBTableHelper);
+		sqlFacdeMap.put(Constants.indShenXian, indShenXianDBTableHelper);
+		sqlFacdeMap.put(Constants.indWeekMacd, indWeekMacdDBTableHelper);
+		sqlFacdeMap.put(Constants.indWeekKDJ, indWeekKDJDBTableHelper);
 	}
 
-	@SuppressWarnings("unchecked")
-	public static IndicatorDBHelperIF getInstance(String name) {
+	public IndicatorDBHelperIF getInstance(String name) {
 		try {
-			//for k8s deployment, the indicatorDBType is set in configMap
-			//the configMap is save to system environment 
+			// for k8s deployment, the indicatorDBType is set in configMap
+			// the configMap is save to system environment
 			String indicatorDBType = System.getenv(Constants.indicatorDBType);
 			if (Strings.isEmpty(indicatorDBType)) {
 				indicatorDBType = "SQL";
 			}
 
-			Class clazz = null;
+			IndicatorDBHelperIF instance = null;
 			if ("CQL".equals(indicatorDBType)) {
-				clazz = cqlFacdeMap.get(name);
+				instance = cqlFacdeMap.get(name);
 			} else {
-				clazz = sqlFacdeMap.get(name);
+				instance = sqlFacdeMap.get(name);
 			}
 
-			Method getInstanceM = clazz.getMethod("getInstance", null);
-			return (IndicatorDBHelperIF) getInstanceM.invoke(null, null);
+			//Method getInstanceM = instance.getMethod("getInstance", null);
+			//return (IndicatorDBHelperIF) getInstanceM.invoke(null, null);
+			return instance;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return null;
-	}
-
-	public static void main(String[] args) {
-		IndicatorDBHelperIF boll = DBAccessFacdeFactory.getInstance("Boll");
-		System.out.println(boll.getClass());
 	}
 }

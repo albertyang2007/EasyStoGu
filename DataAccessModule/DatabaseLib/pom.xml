@@ -10,7 +10,6 @@
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.albertyang2007.easystogu</groupId>
 	<artifactId>easystogu-databaselib</artifactId>
 	<name>EasyStoGu-DatabaseLib</name>
 	<packaging>jar</packaging>
@@ -26,6 +25,10 @@
 			<groupId>org.albertyang2007.easystogu</groupId>
 			<artifactId>easystogu-databaseif</artifactId>
 			<version>${repo-internal-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
 		</dependency>
 		<!-- for postgresql store session -->
 		<dependency>

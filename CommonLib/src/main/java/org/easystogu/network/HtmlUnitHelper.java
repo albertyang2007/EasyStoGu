@@ -3,10 +3,11 @@ package org.easystogu.network;
 import java.net.URL;
 import java.util.List;
 
-import org.easystogu.config.ConfigurationService;
 import org.easystogu.config.Constants;
 import org.easystogu.config.FileConfigurationService;
 import org.easystogu.utils.Strings;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.gargoylesoftware.htmlunit.BrowserVersion;
 import com.gargoylesoftware.htmlunit.NicelyResynchronizingAjaxController;
@@ -20,8 +21,10 @@ import com.gargoylesoftware.htmlunit.html.HtmlTable;
 import com.gargoylesoftware.htmlunit.html.HtmlTextInput;
 import com.gargoylesoftware.htmlunit.javascript.JavaScriptEngine;
 
+@Component
 public class HtmlUnitHelper {
-	private static ConfigurationService configure = FileConfigurationService.getInstance();
+	@Autowired
+	private static FileConfigurationService configure;
 
 	public static WebClient getWebClient() {
 		WebClient webClient = null;

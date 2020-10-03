@@ -42,8 +42,8 @@ public class HistoryAnalyseReport {
 	private CombineAnalyseHelper combineAanalyserHelper = new CombineAnalyseHelper();
 	private StockSuperVOHelper stockOverAllHelper = new StockSuperVOHelper();
 	private CheckPointHistoryAnalyseTableHelper cpHistoryAnalyse = CheckPointHistoryAnalyseTableHelper.getInstance();
-	private CheckPointDailySelectionTableHelper checkPointDailySelectionTable = CheckPointDailySelectionTableHelper
-			.getInstance();
+	@Autowired
+	private CheckPointDailySelectionTableHelper checkPointDailySelectionTable;
 	private String specifySelectCheckPoint = config.getString("specify_Select_CheckPoint", "");
 	private String[] specifySelectCheckPoints = specifySelectCheckPoint.split(";");
 	private String[] generalCheckPoints = config.getString("general_CheckPoint", "").split(";");

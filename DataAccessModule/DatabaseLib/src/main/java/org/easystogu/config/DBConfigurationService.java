@@ -2,23 +2,13 @@ package org.easystogu.config;
 
 import org.easystogu.db.access.table.WSFConfigTableHelper;
 import org.easystogu.utils.Strings;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class DBConfigurationService implements ConfigurationService {
-	private WSFConfigTableHelper wsfConfig = WSFConfigTableHelper.getInstance();
-	private static DBConfigurationService instance = null;
-
-	public static DBConfigurationService getInstance() {
-		if (instance == null) {
-			instance = new DBConfigurationService();
-		}
-		return instance;
-	}
-
-	private DBConfigurationService() {
-
-	}
+	@Autowired
+	private WSFConfigTableHelper wsfConfig;
 
 	public Object getObject(String key) {
 		return wsfConfig.getValue(key);

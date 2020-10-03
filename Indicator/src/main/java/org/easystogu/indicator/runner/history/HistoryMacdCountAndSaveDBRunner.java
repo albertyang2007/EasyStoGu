@@ -18,7 +18,9 @@ import org.springframework.stereotype.Component;
 //计算数据库中所有macd值，包括最新和历史的，一次性运行
 @Component
 public class HistoryMacdCountAndSaveDBRunner {
-	protected IndicatorDBHelperIF macdTable = DBAccessFacdeFactory.getInstance(Constants.indMacd);
+	@Autowired
+	private DBAccessFacdeFactory dBAccessFacdeFactory;
+	protected IndicatorDBHelperIF macdTable = dBAccessFacdeFactory.getInstance(Constants.indMacd);
 	protected StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
 	@Autowired
 	protected MACDHelper macdHelper;

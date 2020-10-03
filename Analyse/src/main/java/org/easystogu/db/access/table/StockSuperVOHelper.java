@@ -14,20 +14,26 @@ import org.easystogu.db.vo.table.ShenXianVO;
 import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.db.vo.table.StockSuperVO;
 import org.easystogu.db.vo.table.WRVO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class StockSuperVOHelper {
   protected StockPriceTableHelper qianFuQuanStockPriceTable =
       QianFuQuanStockPriceTableHelper.getInstance();
-  protected IndicatorDBHelperIF macdTable = DBAccessFacdeFactory.getInstance(Constants.indMacd);
-  protected IndicatorDBHelperIF kdjTable = DBAccessFacdeFactory.getInstance(Constants.indKDJ);
-  protected IndicatorDBHelperIF bollTable = DBAccessFacdeFactory.getInstance(Constants.indBoll);
+  @Autowired
+  private DBAccessFacdeFactory dBAccessFacdeFactory;
+  
+  protected IndicatorDBHelperIF macdTable = dBAccessFacdeFactory.getInstance(Constants.indMacd);
+  protected IndicatorDBHelperIF kdjTable = dBAccessFacdeFactory.getInstance(Constants.indKDJ);
+  protected IndicatorDBHelperIF bollTable = dBAccessFacdeFactory.getInstance(Constants.indBoll);
   protected IndicatorDBHelperIF shenXianTable =
-      DBAccessFacdeFactory.getInstance(Constants.indShenXian);
-  protected IndicatorDBHelperIF qsddTable = DBAccessFacdeFactory.getInstance(Constants.indQSDD);
-  protected IndicatorDBHelperIF wrTable = DBAccessFacdeFactory.getInstance(Constants.indWR);
-  protected IndDDXTableHelper ddxTable = IndDDXTableHelper.getInstance();
+		  dBAccessFacdeFactory.getInstance(Constants.indShenXian);
+  protected IndicatorDBHelperIF qsddTable = dBAccessFacdeFactory.getInstance(Constants.indQSDD);
+  protected IndicatorDBHelperIF wrTable = dBAccessFacdeFactory.getInstance(Constants.indWR);
+  
+  @Autowired
+  protected IndDDXTableHelper ddxTable;
 
   public List<StockSuperVO> getAllStockSuperVO(String stockId) {
 

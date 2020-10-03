@@ -6,27 +6,24 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+import javax.annotation.PostConstruct;
+
 import org.easystogu.log.LogHelper;
 import org.easystogu.utils.Strings;
 import org.slf4j.Logger;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.stereotype.Component;
 
+@Component
 public class FileConfigurationService implements ConfigurationService {
 	private static Logger logger = LogHelper.getLogger(FileConfigurationService.class);
 	private static ResourceLoader resourceLoader = new DefaultResourceLoader();
 	private Properties properties = new Properties();
-	private static FileConfigurationService instance = null;
 
-	public static FileConfigurationService getInstance() {
-		if (instance == null) {
-			instance = new FileConfigurationService();
-		}
-		return instance;
-	}
-
-	private FileConfigurationService() {
+	@PostConstruct
+	private void init() {
 		String[] resourcesPaths = new String[2];
 		resourcesPaths[0] = "classpath:/application.properties";
 		if (Strings.isNotEmpty(System.getProperty("properties.file"))) {

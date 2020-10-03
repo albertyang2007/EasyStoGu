@@ -1,34 +1,13 @@
 package org.easystogu.db.access.table;
 
-import java.util.List;
+import javax.annotation.PostConstruct;
 
-import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
-import org.easystogu.db.vo.table.StockPriceVO;
+import org.springframework.stereotype.Component;
 
 //never use hou fu quan stockproce now
+@Component
 public class HouFuQuanStockPriceTableHelper extends StockPriceTableHelper {
-	private static HouFuQuanStockPriceTableHelper instance = null;
-	private static HouFuQuanStockPriceTableHelper georedInstance = null;
-
-	public static HouFuQuanStockPriceTableHelper getInstance() {
-		if (instance == null) {
-			instance = new HouFuQuanStockPriceTableHelper(PostgreSqlDataSourceFactory.createDataSource());
-		}
-		return instance;
-	}
-
-	public static HouFuQuanStockPriceTableHelper getGeoredInstance() {
-		if (georedInstance == null) {
-			georedInstance = new HouFuQuanStockPriceTableHelper(PostgreSqlDataSourceFactory.createGeoredDataSource());
-		}
-		return georedInstance;
-	}
-
-	protected HouFuQuanStockPriceTableHelper(javax.sql.DataSource datasource) {
-		super(datasource);
-		refeshTableSQL();
-	}
-
+	@PostConstruct
 	private void refeshTableSQL() {
 		tableName = "HOU_FUQUAN_STOCKPRICE";
 		// please modify this SQL in superClass
@@ -124,17 +103,5 @@ public class HouFuQuanStockPriceTableHelper extends StockPriceTableHelper {
 		// select all distinct stockIDs
 		QUERY_DISTINCT_ID = "SELECT distinct(stockid) AS rtn FROM " + tableName + " order by stockid";
 		QUERY_DEAL_DATE_BY_ID = "SELECT date AS rtn FROM " + tableName + " WHERE stockId = :stockId ORDER BY date DESC";
-	}
-
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		HouFuQuanStockPriceTableHelper ins = HouFuQuanStockPriceTableHelper.getInstance();
-		try {
-			List<StockPriceVO> list = ins.getStockPriceByIdAndBetweenDate("002609", "2016-04-03", "2016-05-25");
-			System.out.println(list.get(list.size() - 1));
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 }

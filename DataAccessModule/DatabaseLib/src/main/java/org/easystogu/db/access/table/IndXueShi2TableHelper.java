@@ -6,21 +6,23 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
 import org.easystogu.db.vo.table.XueShi2VO;
 import org.easystogu.log.LogHelper;
 import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.stereotype.Component;
 
+@Component
 public class IndXueShi2TableHelper {
-	private static Logger logger = LogHelper.getLogger(IndBollTableHelper.class);
-	private static IndXueShi2TableHelper instance = null;
-	private static IndXueShi2TableHelper georedInstance = null;
+	private static Logger logger = LogHelper.getLogger(IndXueShi2TableHelper.class);
+	@Autowired
+	protected NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 	protected String tableName = "IND_XUESHI2";
 	protected String INSERT_SQL = "INSERT INTO " + tableName
 			+ " (stockId, date, up, dn) VALUES (:stockId, :date, :up, :dn)";
@@ -33,26 +35,6 @@ public class IndXueShi2TableHelper {
 	protected String DELETE_BY_STOCKID_AND_DATE_SQL = "DELETE FROM " + tableName
 			+ " WHERE stockId = :stockId AND date = :date";
 	protected String DELETE_BY_DATE_SQL = "DELETE FROM " + tableName + " WHERE date = :date";
-
-	protected NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-
-	protected IndXueShi2TableHelper(javax.sql.DataSource datasource) {
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(datasource);
-	}
-
-	public static IndXueShi2TableHelper getInstance() {
-		if (instance == null) {
-			instance = new IndXueShi2TableHelper(PostgreSqlDataSourceFactory.createDataSource());
-		}
-		return instance;
-	}
-
-	public static IndXueShi2TableHelper getGeoredInstance() {
-		if (georedInstance == null) {
-			georedInstance = new IndXueShi2TableHelper(PostgreSqlDataSourceFactory.createGeoredDataSource());
-		}
-		return georedInstance;
-	}
 
 	private static final class XueShi2VOMapper implements RowMapper<XueShi2VO> {
 		public XueShi2VO mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -181,23 +163,4 @@ public class IndXueShi2TableHelper {
 			return new ArrayList<XueShi2VO>();
 		}
 	}
-
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		IndXueShi2TableHelper ins = IndXueShi2TableHelper.getInstance();
-		try {
-			// just for UT
-			XueShi2VO vo = new XueShi2VO();
-			vo.setUp(2.22);
-			vo.setDn(3.33);
-			vo.setStockId("000979");
-			vo.setDate("2015-05-22");
-			// ins.insert(vo);
-			System.out.println(ins.getXueShi2("000979", "2015-05-22"));
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
 }

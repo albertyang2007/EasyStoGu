@@ -6,7 +6,6 @@ import java.net.Proxy.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.easystogu.config.ConfigurationService;
 import org.easystogu.config.Constants;
 import org.easystogu.config.FileConfigurationService;
 import org.easystogu.db.access.table.CompanyInfoTableHelper;
@@ -16,17 +15,22 @@ import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.utils.Strings;
 import org.easystogu.utils.WeekdayUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 //never use hou fu quan stockproce now
 //get hou fuquan history stock price from sina
+@Component
 public class HistoryHouFuQuanStockPriceDownloadAndStoreDBRunner {
 	private static String baseUrl = "http://vip.stock.finance.sina.com.cn/api/json_v2.php/BasicStockSrv.getStockFuQuanData?symbol=stockId&type=hfq";
-	private static ConfigurationService configure = FileConfigurationService.getInstance();
+	@Autowired
+	private static FileConfigurationService configure;
 	private HouFuQuanStockPriceTableHelper houfuquanStockPriceTable = HouFuQuanStockPriceTableHelper.getInstance();
 	private StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
-	private CompanyInfoTableHelper companyInfoTable = CompanyInfoTableHelper.getInstance();
+	@Autowired
+	private CompanyInfoTableHelper companyInfoTable;
 	private CompanyInfoFileHelper companyInfoHelper = CompanyInfoFileHelper.getInstance();
 
 	public List<StockPriceVO> fetchFuQuanStockPriceFromWeb(List<String> stockIds) {

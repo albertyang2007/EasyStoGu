@@ -18,7 +18,9 @@ import org.springframework.stereotype.Component;
 //每日根据最新数据计算当天的macd值，每天运行一次
 @Component
 public class DailyMacdCountAndSaveDBRunner implements Runnable {
-	protected IndicatorDBHelperIF macdTable = DBAccessFacdeFactory.getInstance(Constants.indMacd);
+	@Autowired
+	private DBAccessFacdeFactory dBAccessFacdeFactory;
+	protected IndicatorDBHelperIF macdTable = dBAccessFacdeFactory.getInstance(Constants.indMacd);
 	protected StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
 	@Autowired
 	protected MACDHelper macdHelper = new MACDHelper();

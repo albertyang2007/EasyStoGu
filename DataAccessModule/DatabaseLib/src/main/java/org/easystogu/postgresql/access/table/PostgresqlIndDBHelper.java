@@ -9,23 +9,26 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
 import org.easystogu.db.helper.IF.IndicatorDBHelperIF;
 import org.easystogu.db.vo.table.IndicatorVO;
 import org.easystogu.log.LogHelper;
 import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.stereotype.Service;
 
+@Service
 public abstract class PostgresqlIndDBHelper implements IndicatorDBHelperIF {
 	private static Logger logger = LogHelper.getLogger(PostgresqlIndDBHelper.class);
-	protected Class<? extends IndicatorVO> indicatorVOClass;
-	protected NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+	protected Class<?> indicatorVOClass;
 	protected String tableName;// To be set later
+	@Autowired
+	protected NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 	protected String INSERT_SQL;
 	protected String QUERY_ALL_BY_ID_SQL;
 	protected String QUERY_BY_ID_AND_DATE_SQL;
@@ -34,10 +37,7 @@ public abstract class PostgresqlIndDBHelper implements IndicatorDBHelperIF {
 	protected String DELETE_BY_STOCKID_SQL;
 	protected String DELETE_BY_STOCKID_AND_DATE_SQL;
 
-	protected PostgresqlIndDBHelper(String tableNameParm, Class<? extends IndicatorVO> indicatorVOClass) {
-		this.indicatorVOClass = indicatorVOClass;
-		this.tableName = tableNameParm;
-
+	protected PostgresqlIndDBHelper() {
 		String[] paris = generateFieldsNamePairs();
 
 		// INSERT INTO ind.macd (stockId, date, dif, dea, macd) VALUES (:stockId, :date,
@@ -51,11 +51,6 @@ public abstract class PostgresqlIndDBHelper implements IndicatorDBHelperIF {
 				+ " WHERE stockId = :stockId ORDER BY date DESC LIMIT :limit";
 		DELETE_BY_STOCKID_SQL = "DELETE FROM " + tableName + " WHERE stockId = :stockId";
 		DELETE_BY_STOCKID_AND_DATE_SQL = "DELETE FROM " + tableName + " WHERE stockId = :stockId AND date = :date";
-
-		// System.out.println(INSERT_SQL);
-
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
-				PostgreSqlDataSourceFactory.createDataSource());
 	}
 
 	private String[] generateFieldsNamePairs() {
@@ -73,7 +68,7 @@ public abstract class PostgresqlIndDBHelper implements IndicatorDBHelperIF {
 	protected final class IndVOMapper implements RowMapper<IndicatorVO> {
 		public IndicatorVO mapRow(ResultSet r, int rowNum) throws SQLException {
 			try {
-				IndicatorVO vo = indicatorVOClass.newInstance();
+				IndicatorVO vo = (IndicatorVO) indicatorVOClass.newInstance();
 				Field[] fields = indicatorVOClass.getDeclaredFields();
 
 				for (Field f : fields) {
@@ -223,5 +218,26 @@ public abstract class PostgresqlIndDBHelper implements IndicatorDBHelperIF {
 			e.printStackTrace();
 			return new ArrayList<T>();
 		}
+	}
+	
+	public Class<?> getIndicatorVOClass() {
+		return indicatorVOClass;
+	}
+
+	public void setIndicatorVOClass(String indicatorVOClass) {
+		try {
+			this.indicatorVOClass = Class.forName(indicatorVOClass).getClass();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public String getTableName() {
+		return tableName;
+	}
+
+	public void setTableName(String tableName) {
+		this.tableName = tableName;
 	}
 }

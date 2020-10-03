@@ -4,44 +4,26 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
 import org.easystogu.db.vo.table.CheckPointHistoryAnalyseVO;
 import org.easystogu.log.LogHelper;
 import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.stereotype.Component;
 
+@Component
 public class CheckPointHistoryAnalyseTableHelper {
 	private static Logger logger = LogHelper.getLogger(CheckPointHistoryAnalyseTableHelper.class);
-	private static CheckPointHistoryAnalyseTableHelper instance = null;
-	private static CheckPointHistoryAnalyseTableHelper georedInstance = null;
+	@Autowired
+	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 	protected String tableName = "CHECKPOINT_HISTORY_ANALYSE";
 	protected String INSERT_SQL = "INSERT INTO " + tableName
 			+ " (checkpoint, total_satisfy, close_earn_percent, high_earn_percent, low_earn_percent, avg_hold_days, total_high_earn) VALUES (:checkpoint, :total_satisfy, :close_earn_percent, :high_earn_percent, :low_earn_percent, :avg_hold_days, :total_high_earn)";
 	protected String DELETE_BY_CHECKPOINT = "DELETE FROM " + tableName + " WHERE checkPoint = :checkPoint";
-	protected NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-
-	private CheckPointHistoryAnalyseTableHelper(javax.sql.DataSource datasource) {
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(datasource);
-	}
-	
-	public static CheckPointHistoryAnalyseTableHelper getInstance() {
-		if (instance == null) {
-			instance = new CheckPointHistoryAnalyseTableHelper(PostgreSqlDataSourceFactory.createDataSource());
-		}
-		return instance;
-	}
-
-	public static CheckPointHistoryAnalyseTableHelper getGeoredInstance() {
-		if (georedInstance == null) {
-			georedInstance = new CheckPointHistoryAnalyseTableHelper(
-					PostgreSqlDataSourceFactory.createGeoredDataSource());
-		}
-		return georedInstance;
-	}
 
 	private static final class HistoryAnalyseMapper implements RowMapper<CheckPointHistoryAnalyseVO> {
 		public CheckPointHistoryAnalyseVO mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -82,18 +64,5 @@ public class CheckPointHistoryAnalyseTableHelper {
 			logger.error("exception meets for insert vo: " + vo, e);
 			e.printStackTrace();
 		}
-	}
-
-	public static void main(String[] args) {
-		CheckPointHistoryAnalyseTableHelper ins = CheckPointHistoryAnalyseTableHelper.getInstance();
-		CheckPointHistoryAnalyseVO vo = new CheckPointHistoryAnalyseVO();
-		vo.setCheckPoint("Test");
-		vo.setTotalSatisfy(1);
-		vo.setCloseEarnPercent(2);
-		vo.setHighEarnPercent(3);
-		vo.setLowEarnPercent(4);
-		vo.setAvgHoldDays(5);
-		vo.setTotalHighEarn(6);
-		ins.insert(vo);
 	}
 }

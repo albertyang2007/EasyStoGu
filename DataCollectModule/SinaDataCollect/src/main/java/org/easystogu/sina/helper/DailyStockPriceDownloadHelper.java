@@ -7,20 +7,23 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.easystogu.config.ConfigurationService;
 import org.easystogu.config.Constants;
 import org.easystogu.config.FileConfigurationService;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.sina.common.RealTimePriceVO;
 import org.easystogu.utils.Strings;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 //get real time stock price from http://hq.sinajs.cn/list=
 //it need sotckIds as parameter
+@Component
 public class DailyStockPriceDownloadHelper {
 	private static final String baseUrl = "http://hq.sinajs.cn/list=";
-	private static ConfigurationService configure = FileConfigurationService.getInstance();
+	@Autowired
+	private static FileConfigurationService configure;
 	private CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 
 	// stockList is like: sh000001,sh601318

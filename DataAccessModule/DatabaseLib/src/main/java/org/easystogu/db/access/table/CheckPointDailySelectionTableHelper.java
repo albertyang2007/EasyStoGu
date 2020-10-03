@@ -6,21 +6,23 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
 import org.easystogu.db.vo.table.CheckPointDailySelectionVO;
 import org.easystogu.log.LogHelper;
 import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.stereotype.Component;
 
+@Component
 public class CheckPointDailySelectionTableHelper {
 	private static Logger logger = LogHelper.getLogger(CheckPointDailySelectionTableHelper.class);
-	private static CheckPointDailySelectionTableHelper instance = null;
-	private static CheckPointDailySelectionTableHelper georedInstance = null;
+	@Autowired
+	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 	private String tableName = "CHECKPOINT_DAILY_SELECTION";
 	protected String INSERT_SQL = "INSERT INTO " + tableName
 			+ " (stockid, date, checkpoint) VALUES (:stockid, :date, :checkpoint)";
@@ -41,27 +43,6 @@ public class CheckPointDailySelectionTableHelper {
 	protected String QUERY_BY_STOCKID_SQL = "SELECT * FROM " + tableName + " WHERE stockid = :stockid";
 	protected String QUERY_BY_RECENT_DAYS_SQL = "SELECT * FROM " + tableName
 			+ " WHERE date >= :date ORDER BY DATE DESC";
-
-	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-
-	public static CheckPointDailySelectionTableHelper getInstance() {
-		if (instance == null) {
-			instance = new CheckPointDailySelectionTableHelper(PostgreSqlDataSourceFactory.createDataSource());
-		}
-		return instance;
-	}
-
-	private CheckPointDailySelectionTableHelper(javax.sql.DataSource datasource) {
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(datasource);
-	}
-
-	public static CheckPointDailySelectionTableHelper getGeoredInstance() {
-		if (georedInstance == null) {
-			georedInstance = new CheckPointDailySelectionTableHelper(
-					PostgreSqlDataSourceFactory.createGeoredDataSource());
-		}
-		return georedInstance;
-	}
 
 	private static final class IntVOMapper implements RowMapper<Integer> {
 		public Integer mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -313,19 +294,4 @@ public class CheckPointDailySelectionTableHelper {
 			e.printStackTrace();
 		}
 	}
-
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		CheckPointDailySelectionTableHelper ins = CheckPointDailySelectionTableHelper.getInstance();
-		try {
-			List<CheckPointDailySelectionVO> list = ins.queryByDateAndCheckPoint("2016-09-23",
-					"luzao_phaseII_zijinliu_top300");
-			System.out.println(list.size());
-
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
 }

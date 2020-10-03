@@ -3,7 +3,6 @@ package org.easystogu.db.util;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.utils.WeekdayUtil;
 
@@ -150,12 +149,5 @@ public class MergeNDaysPriceUtil {
 			}
 		}
 		return null;
-	}
-
-	public static void main(String[] args) {
-		MergeNDaysPriceUtil ins = new MergeNDaysPriceUtil();
-		StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
-		List<StockPriceVO> list = ins.mergeToMonthBased(stockPriceTable.getStockPriceById("999999"));
-		System.out.println(list.get(list.size() - 1));
 	}
 }

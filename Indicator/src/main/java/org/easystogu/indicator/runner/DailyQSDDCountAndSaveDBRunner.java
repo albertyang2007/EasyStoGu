@@ -20,7 +20,9 @@ import com.google.common.primitives.Doubles;
 
 @Component
 public class DailyQSDDCountAndSaveDBRunner implements Runnable {
-	protected IndicatorDBHelperIF qsddTable = DBAccessFacdeFactory.getInstance(Constants.indQSDD);
+	@Autowired
+	private DBAccessFacdeFactory dBAccessFacdeFactory;
+	protected IndicatorDBHelperIF qsddTable = dBAccessFacdeFactory.getInstance(Constants.indQSDD);
 	@Autowired
 	private QSDDHelper qsddHelper = new QSDDHelper();
 	protected StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();

@@ -1,30 +1,12 @@
 package org.easystogu.db.access.table;
 
-import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
+import javax.annotation.PostConstruct;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class IndWeekZhuliJinChuTableHelper extends IndZhuliJinChuTableHelper {
-	private static IndWeekZhuliJinChuTableHelper instance = null;
-	private static IndWeekZhuliJinChuTableHelper georedInstance = null;
-
-	public static IndWeekZhuliJinChuTableHelper getInstance() {
-		if (instance == null) {
-			instance = new IndWeekZhuliJinChuTableHelper(PostgreSqlDataSourceFactory.createDataSource());
-		}
-		return instance;
-	}
-
-	public static IndWeekZhuliJinChuTableHelper getGeoredInstance() {
-		if (georedInstance == null) {
-			georedInstance = new IndWeekZhuliJinChuTableHelper(PostgreSqlDataSourceFactory.createGeoredDataSource());
-		}
-		return georedInstance;
-	}
-
-	protected IndWeekZhuliJinChuTableHelper(javax.sql.DataSource datasource) {
-		super(datasource);
-		refeshTableSQL();
-	}
-
+	@PostConstruct
 	private void refeshTableSQL() {
 		tableName = "IND_WEEK_ZHULIJINCHU";
 		// please modify this SQL in superClass
@@ -38,16 +20,4 @@ public class IndWeekZhuliJinChuTableHelper extends IndZhuliJinChuTableHelper {
 		DELETE_BY_STOCKID_AND_DATE_SQL = "DELETE FROM " + tableName + " WHERE stockId = :stockId AND date = :date";
 		DELETE_BY_DATE_SQL = "DELETE FROM " + tableName + " WHERE date = :date";
 	}
-
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		IndWeekZhuliJinChuTableHelper ins = IndWeekZhuliJinChuTableHelper.getInstance();
-		try {
-			System.out.println(ins.getAllZhuliJinChu("600359").size());
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
 }

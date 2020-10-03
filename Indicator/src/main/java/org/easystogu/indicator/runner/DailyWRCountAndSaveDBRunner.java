@@ -20,7 +20,9 @@ import com.google.common.primitives.Doubles;
 
 @Component
 public class DailyWRCountAndSaveDBRunner implements Runnable {
-	protected IndicatorDBHelperIF wrTable = DBAccessFacdeFactory.getInstance(Constants.indWR);
+	@Autowired
+	private DBAccessFacdeFactory dBAccessFacdeFactory;
+	protected IndicatorDBHelperIF wrTable = dBAccessFacdeFactory.getInstance(Constants.indWR);
 	@Autowired
 	private WRHelper wrHelper = new WRHelper();
 	protected StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();

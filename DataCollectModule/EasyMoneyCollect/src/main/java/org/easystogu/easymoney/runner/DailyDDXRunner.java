@@ -11,12 +11,14 @@ import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.db.vo.table.ZiJinLiuVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.utils.Strings;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class DailyDDXRunner implements Runnable {
 	private CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 	private ZiJinLiuTableHelper zijinliuTableHelper = ZiJinLiuTableHelper.getInstance();
 	private StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
-	private IndDDXTableHelper ddxTable = IndDDXTableHelper.getInstance();
+	@Autowired
+	protected IndDDXTableHelper ddxTable;
 	private String latestDate = stockPriceTable.getLatestStockDate();
 	private int count = 0;
 

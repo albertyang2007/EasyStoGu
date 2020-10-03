@@ -6,21 +6,23 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
 import org.easystogu.db.vo.table.Mai1Mai2VO;
 import org.easystogu.log.LogHelper;
 import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.stereotype.Component;
 
+@Component
 public class IndMai1Mai2TableHelper{
 	private static Logger logger = LogHelper.getLogger(IndMai1Mai2TableHelper.class);
-	private static IndMai1Mai2TableHelper instance = null;
-	private static IndMai1Mai2TableHelper georedInstance = null;
+	@Autowired
+	protected NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 	protected String tableName = "IND_MAI1MAI2";
 	// please modify this SQL in all subClass
 	protected String INSERT_SQL = "INSERT INTO " + tableName
@@ -34,26 +36,6 @@ public class IndMai1Mai2TableHelper{
 	protected String DELETE_BY_STOCKID_AND_DATE_SQL = "DELETE FROM " + tableName
 			+ " WHERE stockId = :stockId AND date = :date";
 	protected String DELETE_BY_DATE_SQL = "DELETE FROM " + tableName + " WHERE date = :date";
-
-	protected NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-
-	protected IndMai1Mai2TableHelper(javax.sql.DataSource datasource) {
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(datasource);
-	}
-
-	public static IndMai1Mai2TableHelper getInstance() {
-		if (instance == null) {
-			instance = new IndMai1Mai2TableHelper(PostgreSqlDataSourceFactory.createDataSource());
-		}
-		return instance;
-	}
-
-	public static IndMai1Mai2TableHelper getGeoredInstance() {
-		if (georedInstance == null) {
-			georedInstance = new IndMai1Mai2TableHelper(PostgreSqlDataSourceFactory.createGeoredDataSource());
-		}
-		return georedInstance;
-	}
 
 	private static final class Mai1Mai2VOMapper implements RowMapper<Mai1Mai2VO> {
 		public Mai1Mai2VO mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -187,16 +169,4 @@ public class IndMai1Mai2TableHelper{
 	public List<Mai1Mai2VO> queryByStockId(String stockId) {
 		return this.getAllMai1Mai2(stockId);
 	}
-
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		IndMai1Mai2TableHelper ins = IndMai1Mai2TableHelper.getInstance();
-		try {
-			System.out.println(ins.getAllMai1Mai2("600359").size());
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
 }

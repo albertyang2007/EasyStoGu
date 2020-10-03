@@ -5,21 +5,23 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
 import org.easystogu.db.vo.table.EstimateStockVO;
 import org.easystogu.log.LogHelper;
 import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.stereotype.Component;
 
+@Component
 public class EstimateStockTableHelper {
 	private static Logger logger = LogHelper.getLogger(EstimateStockTableHelper.class);
-	private static EstimateStockTableHelper instance = null;
-	private static EstimateStockTableHelper georedInstance = null;
+	@Autowired
+	protected NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 	protected String tableName = "ESTIMATE_STOCK";
 	// please modify this SQL in all subClass
 	protected String INSERT_SQL = "INSERT INTO " + tableName + " (stockId, date) VALUES (:stockId, :date)";
@@ -35,27 +37,6 @@ public class EstimateStockTableHelper {
 	protected String QUERY_BY_DATE_SQL = "SELECT * FROM " + tableName + " WHERE date = :date";
 
 	protected String QUERY_STOCKIDS_BY_DATE_SQL = "SELECT stockId FROM " + tableName + " WHERE date = :date";
-
-	protected NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-
-	private EstimateStockTableHelper(javax.sql.DataSource datasource) {
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(datasource);
-	}
-	
-	public static EstimateStockTableHelper getInstance() {
-		if (instance == null) {
-			instance = new EstimateStockTableHelper(PostgreSqlDataSourceFactory.createDataSource());
-		}
-		return instance;
-	}
-
-	public static EstimateStockTableHelper getGeoredInstance() {
-		if (georedInstance == null) {
-			georedInstance = new EstimateStockTableHelper(
-					PostgreSqlDataSourceFactory.createGeoredDataSource());
-		}
-		return georedInstance;
-	}
 
 	private static final class DefaultPreparedStatementCallback implements PreparedStatementCallback<Integer> {
 		public Integer doInPreparedStatement(PreparedStatement ps) throws SQLException, DataAccessException {

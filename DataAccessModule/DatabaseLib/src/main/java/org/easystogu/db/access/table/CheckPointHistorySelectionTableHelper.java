@@ -4,44 +4,26 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
 import org.easystogu.db.vo.table.CheckPointHistorySelectionVO;
 import org.easystogu.log.LogHelper;
 import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.stereotype.Component;
 
+@Component
 public class CheckPointHistorySelectionTableHelper {
 	private static Logger logger = LogHelper.getLogger(CheckPointHistorySelectionTableHelper.class);
-	private static CheckPointHistorySelectionTableHelper instance = null;
-	private static CheckPointHistorySelectionTableHelper georedInstance = null;
+	@Autowired
+	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 	protected String tableName = "CHECKPOINT_HISTORY_SELECTION";
 	protected String INSERT_SQL = "INSERT INTO " + tableName
 			+ " (stockId, checkPoint, buyDate, sellDate) VALUES (:stockId, :checkPoint, :buyDate, :sellDate)";
 	protected String DELETE_BY_CHECKPOINT = "DELETE FROM " + tableName + " WHERE checkPoint = :checkPoint";
-	protected NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-
-	private CheckPointHistorySelectionTableHelper(javax.sql.DataSource datasource) {
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(datasource);
-	}
-	
-	public static CheckPointHistorySelectionTableHelper getInstance() {
-		if (instance == null) {
-			instance = new CheckPointHistorySelectionTableHelper(PostgreSqlDataSourceFactory.createDataSource());
-		}
-		return instance;
-	}
-
-	public static CheckPointHistorySelectionTableHelper getGeoredInstance() {
-		if (georedInstance == null) {
-			georedInstance = new CheckPointHistorySelectionTableHelper(
-					PostgreSqlDataSourceFactory.createGeoredDataSource());
-		}
-		return georedInstance;
-	}
 
 	private static final class HistoryReportMapper implements RowMapper<CheckPointHistorySelectionVO> {
 		public CheckPointHistorySelectionVO mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -88,16 +70,4 @@ public class CheckPointHistorySelectionTableHelper {
 			e.printStackTrace();
 		}
 	}
-
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		CheckPointHistorySelectionTableHelper ins = CheckPointHistorySelectionTableHelper.getInstance();
-		CheckPointHistorySelectionVO vo = new CheckPointHistorySelectionVO();
-		vo.stockId = "000333";
-		vo.checkPoint = "checkPoint";
-		vo.buyDate = "123";
-		vo.sellDate = "234";
-		ins.insert(vo);
-	}
-
 }

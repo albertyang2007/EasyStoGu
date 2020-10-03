@@ -4,26 +4,25 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
 import org.easystogu.db.vo.table.ZiJinLiuVO;
-import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.log.LogHelper;
 import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ZiJinLiuTableHelper {
 	private static Logger logger = LogHelper.getLogger(ZiJinLiuTableHelper.class);
-	private static ZiJinLiuTableHelper instance = null;
-	private static ZiJinLiuTableHelper georedInstance = null;
+	@Autowired
+	protected NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 	// please modify this SQL in all subClass
 	protected String tableName = "ZIJINLIU";
 	protected String INSERT_SQL = "INSERT INTO " + tableName
@@ -38,27 +37,6 @@ public class ZiJinLiuTableHelper {
 			+ " WHERE stockId = :stockId AND date = :date";
 	protected String DELETE_BY_DATE_SQL = "DELETE FROM " + tableName + " WHERE date = :date";
 	protected String QUERY_BY_DATE_SQL = "SELECT * FROM " + tableName + " WHERE date = :date";
-
-	protected NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-
-	protected ZiJinLiuTableHelper(javax.sql.DataSource datasource) {
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(datasource);
-	}
-	
-	public static ZiJinLiuTableHelper getInstance() {
-		if (instance == null) {
-			instance = new ZiJinLiuTableHelper(PostgreSqlDataSourceFactory.createDataSource());
-		}
-		return instance;
-	}
-
-	public static ZiJinLiuTableHelper getGeoredInstance() {
-		if (georedInstance == null) {
-			georedInstance = new ZiJinLiuTableHelper(
-					PostgreSqlDataSourceFactory.createGeoredDataSource());
-		}
-		return georedInstance;
-	}
 
 	private static final class ZiJinLiuVOMapper implements RowMapper<ZiJinLiuVO> {
 		public ZiJinLiuVO mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -231,34 +209,4 @@ public class ZiJinLiuTableHelper {
 			return new ArrayList<ZiJinLiuVO>();
 		}
 	}
-
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
-		List<String> Ids = stockConfig.getAllStockId();
-		Map<String, String> allIds = new HashMap<String, String>();
-		ZiJinLiuTableHelper ins = ZiJinLiuTableHelper.getInstance();
-		List<ZiJinLiuVO> list = ins.getZiJinLiu("2015-08-11");
-
-		System.out.println("Ids.size=" + Ids.size());
-		System.out.println("list.size=" + list.size());
-
-		for (ZiJinLiuVO vo : list) {
-			if (!allIds.containsKey(vo.stockId)) {
-				allIds.put(vo.stockId, vo.name);
-			}
-		}
-
-		for (String id : Ids) {
-			if (!allIds.containsKey(id)) {
-				allIds.put(id, stockConfig.getStockName(id));
-			}
-		}
-
-		for (Map.Entry<String, String> entry : allIds.entrySet()) {
-			if (entry.getValue() != null)
-				System.out.println(entry.getKey() + "=" + entry.getValue());
-		}
-	}
-
 }

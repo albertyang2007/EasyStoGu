@@ -18,7 +18,9 @@ import org.springframework.stereotype.Component;
 //每日根据最新数据计算当天的boll值，每天运行一次
 @Component
 public class DailyBollCountAndSaveDBRunner implements Runnable {
-	protected IndicatorDBHelperIF bollTable = DBAccessFacdeFactory.getInstance(Constants.indBoll);
+	@Autowired
+	private DBAccessFacdeFactory dBAccessFacdeFactory;
+	protected IndicatorDBHelperIF bollTable = dBAccessFacdeFactory.getInstance(Constants.indBoll);
 	protected StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
 	@Autowired
 	protected BOLLHelper bollHelper;
@@ -69,17 +71,18 @@ public class DailyBollCountAndSaveDBRunner implements Runnable {
 	}
 
 	public void countAndSaved(List<String> stockIds) {
-	  stockIds.parallelStream().forEach(stockId -> {
-        this.countAndSaved(stockId);
-      });
-	  
-//		int index = 0;
-//		for (String stockId : stockIds) {
-//			if (index++ % 500 == 0) {
-//				System.out.println("Boll countAndSaved: " + stockId + " " + (index) + "/" + stockIds.size());
-//			}
-//			this.countAndSaved(stockId);
-//		}
+		stockIds.parallelStream().forEach(stockId -> {
+			this.countAndSaved(stockId);
+		});
+
+		// int index = 0;
+		// for (String stockId : stockIds) {
+		// if (index++ % 500 == 0) {
+		// System.out.println("Boll countAndSaved: " + stockId + " " + (index) + "/" +
+		// stockIds.size());
+		// }
+		// this.countAndSaved(stockId);
+		// }
 	}
 
 	public void run() {

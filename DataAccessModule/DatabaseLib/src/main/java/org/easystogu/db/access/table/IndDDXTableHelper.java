@@ -6,21 +6,24 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
 import org.easystogu.db.vo.table.DDXVO;
 import org.easystogu.log.LogHelper;
 import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.stereotype.Component;
 
-public class IndDDXTableHelper{
+@Component
+public class IndDDXTableHelper {
 	private static Logger logger = LogHelper.getLogger(IndDDXTableHelper.class);
-	private static IndDDXTableHelper instance = null;
-	private static IndDDXTableHelper georedInstance = null;
+	@Autowired
+	protected NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+
 	protected String tableName = "IND_DDX";
 	// please modify this SQL in all subClass
 	protected String INSERT_SQL = "INSERT INTO " + tableName
@@ -37,26 +40,6 @@ public class IndDDXTableHelper{
 	protected String DELETE_BY_DATE_SQL = "DELETE FROM " + tableName + " WHERE date = :date";
 	protected String QUERY_BY_STOCKID_AND_BETWEEN_DATE = "SELECT * FROM " + tableName
 			+ " WHERE stockId = :stockId AND DATE >= :date1 AND DATE <= :date2 ORDER BY DATE";
-
-	protected NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-
-	private IndDDXTableHelper(javax.sql.DataSource datasource) {
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(datasource);
-	}
-
-	public static IndDDXTableHelper getInstance() {
-		if (instance == null) {
-			instance = new IndDDXTableHelper(PostgreSqlDataSourceFactory.createDataSource());
-		}
-		return instance;
-	}
-
-	public static IndDDXTableHelper getGeoredInstance() {
-		if (georedInstance == null) {
-			georedInstance = new IndDDXTableHelper(PostgreSqlDataSourceFactory.createGeoredDataSource());
-		}
-		return georedInstance;
-	}
 
 	private static final class DDXVOMapper implements RowMapper<DDXVO> {
 		public DDXVO mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -169,7 +152,7 @@ public class IndDDXTableHelper{
 			return new ArrayList<DDXVO>();
 		}
 	}
-	
+
 	public List<DDXVO> getByDate(String date) {
 		try {
 
@@ -219,20 +202,8 @@ public class IndDDXTableHelper{
 		}
 		return new ArrayList<DDXVO>();
 	}
-	
+
 	public List<DDXVO> queryByStockId(String stockId) {
 		return this.getAllDDX(stockId);
-	}
-
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		IndDDXTableHelper ins = IndDDXTableHelper.getInstance();
-		try {
-
-			System.out.println(ins.getNDateDDX("600589", 40).size());
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 }

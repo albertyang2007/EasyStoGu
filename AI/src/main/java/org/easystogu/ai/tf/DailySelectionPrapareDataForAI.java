@@ -10,10 +10,11 @@ import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.vo.table.CheckPointDailySelectionVO;
 import org.easystogu.file.CSVFileHelper;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class DailySelectionPrapareDataForAI implements Runnable {
-  private CheckPointDailySelectionTableHelper checkPointDailySelectionTableHelper =
-      CheckPointDailySelectionTableHelper.getInstance();
+	@Autowired
+	private CheckPointDailySelectionTableHelper checkPointDailySelectionTable;
   private StockPriceTableHelper stockPriceTableHelper = StockPriceTableHelper.getInstance();
   private QianFuQuanStockPriceTableHelper qianFuQuanStockPriceTableHelper = QianFuQuanStockPriceTableHelper.getInstance();
   //below can be save into wsfconfig

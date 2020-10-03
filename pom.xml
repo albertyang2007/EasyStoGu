@@ -36,7 +36,6 @@
 				<module>SpringBootApp</module>
 				<module>Scheduled</module>
 				<module>TrendMode</module>
-				<module>DatabaseReplicate</module>
 				<module>Cache</module>
 				<module>DynamicCompiler</module>
 				<module>Docker</module>

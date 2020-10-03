@@ -4,12 +4,16 @@ import org.easystogu.config.Constants;
 import org.easystogu.db.access.facde.DBAccessFacdeFactory;
 import org.easystogu.db.access.table.WeekStockPriceTableHelper;
 import org.easystogu.file.access.CompanyInfoFileHelper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class HistoryWeeklyKDJCountAndSaveDBRunner extends HistoryKDJCountAndSaveDBRunner {
+	@Autowired
+	private DBAccessFacdeFactory dBAccessFacdeFactory;
+
 	public HistoryWeeklyKDJCountAndSaveDBRunner() {
-		kdjTable = DBAccessFacdeFactory.getInstance(Constants.indWeekKDJ);
+		kdjTable = dBAccessFacdeFactory.getInstance(Constants.indWeekKDJ);
 		qianFuQuanStockPriceTable = WeekStockPriceTableHelper.getInstance();
 	}
 

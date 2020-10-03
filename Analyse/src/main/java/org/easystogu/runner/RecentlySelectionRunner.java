@@ -17,6 +17,7 @@ import org.easystogu.db.vo.table.CompanyInfoVO;
 import org.easystogu.db.vo.table.ZhuLiJingLiuRuVO;
 import org.easystogu.db.vo.table.ZiJinLiuVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 //recently (10 days) select stock that checkpoint is satisfied
@@ -26,8 +27,8 @@ public class RecentlySelectionRunner implements Runnable {
 	private StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
 	private ZiJinLiuTableHelper ziJinLiuTableHelper = ZiJinLiuTableHelper.getInstance();
 	private ZhuLiJingLiuRuTableHelper zhuLiJingLiuRuTableHelper = ZhuLiJingLiuRuTableHelper.getInstance();
-	private CheckPointDailySelectionTableHelper checkPointDailySelectionTable = CheckPointDailySelectionTableHelper
-			.getInstance();
+	@Autowired
+	private CheckPointDailySelectionTableHelper checkPointDailySelectionTable;
 	private List<String> lastNDates = stockPriceTable.getAllLastNDate(stockConfig.getSZZSStockIdForDB(), 10);
 	// <stockId, checkPoints>
 	private Map<String, List<CheckPointDailySelectionVO>> checkPointStocks = new HashMap<String, List<CheckPointDailySelectionVO>>();
