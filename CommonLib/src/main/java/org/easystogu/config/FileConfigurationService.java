@@ -11,12 +11,12 @@ import javax.annotation.PostConstruct;
 import org.easystogu.log.LogHelper;
 import org.easystogu.utils.Strings;
 import org.slf4j.Logger;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
-import org.springframework.stereotype.Component;
 
-@Component
+@Configuration
 public class FileConfigurationService implements ConfigurationService {
 	private static Logger logger = LogHelper.getLogger(FileConfigurationService.class);
 	private static ResourceLoader resourceLoader = new DefaultResourceLoader();

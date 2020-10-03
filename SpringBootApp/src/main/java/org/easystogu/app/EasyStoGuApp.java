@@ -29,6 +29,7 @@ public class EasyStoGuApp {
 			SpringApplication.run(EasyStoGuApp.class, args);
 			LOGGER.info("EasyStoGuApp started.");
 		} catch (Exception e) {
+			e.printStackTrace();
 			LOGGER.error("Fail to start EasyStoGuApp: {}", e.getMessage());
 
 			System.exit(-1);

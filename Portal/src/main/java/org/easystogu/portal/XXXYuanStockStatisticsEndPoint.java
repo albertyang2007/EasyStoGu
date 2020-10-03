@@ -25,7 +25,7 @@ import com.google.gson.Gson;
 public class XXXYuanStockStatisticsEndPoint {
 	@Autowired
 	private ConfigurationServiceCache config;
-	private String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
+	private String accessControlAllowOrgin = "*";//config.getString("Access-Control-Allow-Origin", "");
 	@Autowired
 	private XXXYuanStockStatisticsCache stockStatisticsCache;
 

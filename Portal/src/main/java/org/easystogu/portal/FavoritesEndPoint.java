@@ -41,7 +41,7 @@ public class FavoritesEndPoint {
 	private static Logger logger = LogHelper.getLogger(FavoritesEndPoint.class);
 	@Autowired
 	private ConfigurationServiceCache config;
-	private String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
+	private String accessControlAllowOrgin = "*";//config.getString("Access-Control-Allow-Origin", "");
 	@Autowired
 	private CompanyInfoFileHelper stockConfig;
 	@Autowired

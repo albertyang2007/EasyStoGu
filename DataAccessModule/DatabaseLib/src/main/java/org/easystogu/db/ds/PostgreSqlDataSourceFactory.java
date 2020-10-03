@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 public class PostgreSqlDataSourceFactory {
 	private static Logger logger = LogHelper.getLogger(PostgreSqlDataSourceFactory.class);
 	@Autowired
-	private static FileConfigurationService config;
+	private FileConfigurationService config;
 	private static org.apache.tomcat.jdbc.pool.DataSource datasource = null;
 	private static org.apache.tomcat.jdbc.pool.DataSource georedDatasource = null;
 

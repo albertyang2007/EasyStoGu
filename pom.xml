@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
@@ -33,6 +34,27 @@
 				<module>Portal</module>
 				<module>EWeb</module>
 				<module>App</module>
+				<module>Scheduled</module>
+				<module>TrendMode</module>
+				<module>Cache</module>
+				<module>DynamicCompiler</module>
+				<module>Docker</module>
+			</modules>
+		</profile>
+		<profile>
+			<id>springboot</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<modules>
+				<module>CommonLib</module>
+				<module>DataAccessModule</module>
+				<module>DataCollectModule</module>
+				<module>Indicator</module>
+				<module>Analyse</module>
+				<module>AI</module>
+				<module>Portal</module>
+				<module>EWeb</module>
 				<module>SpringBootApp</module>
 				<module>Scheduled</module>
 				<module>TrendMode</module>

@@ -3,9 +3,10 @@ package org.easystogu.config;
 import org.easystogu.db.access.table.WSFConfigTableHelper;
 import org.easystogu.utils.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
-@Component
+@Configuration
 public class DBConfigurationService implements ConfigurationService {
 	@Autowired
 	private WSFConfigTableHelper wsfConfig;

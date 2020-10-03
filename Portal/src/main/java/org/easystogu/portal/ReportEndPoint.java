@@ -30,7 +30,7 @@ public class ReportEndPoint {
 	private FavoritesStockCheckpointViewHelper favoritesStockCheckpointViewHelper;
 	@Autowired
 	private StockPriceCache stockPriceCache;
-	protected String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
+	protected String accessControlAllowOrgin = "*";//config.getString("Access-Control-Allow-Origin", "");
 	private Gson gson = new Gson();
 
 	@GetMapping("/{DateOffset}")

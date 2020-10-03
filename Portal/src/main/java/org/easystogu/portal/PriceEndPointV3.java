@@ -26,7 +26,7 @@ import com.google.gson.Gson;
 public class PriceEndPointV3 {
 	@Autowired
 	private ConfigurationServiceCache config;
-	private String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
+	private String accessControlAllowOrgin = "*";//config.getString("Access-Control-Allow-Origin", "");
 	@Autowired
 	protected CompanyInfoFileHelper companyInfoHelper;
 	@Autowired

@@ -47,7 +47,7 @@ public class IndicatorEndPointV1 {
 	protected static String HHmmss = "00:00:00";
 	@Autowired
 	private ConfigurationServiceCache config;
-	protected String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
+	protected String accessControlAllowOrgin = "*";//config.getString("Access-Control-Allow-Origin", "");
 	@Autowired
 	@Qualifier("qianFuQuanStockPriceTable")
 	protected QianFuQuanStockPriceTableHelper qianfuquanStockPriceTable;

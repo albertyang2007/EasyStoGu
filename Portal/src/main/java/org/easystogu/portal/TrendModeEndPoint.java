@@ -27,7 +27,7 @@ import com.google.gson.Gson;
 public class TrendModeEndPoint {
 	@Autowired
     private DBConfigurationService config;
-	private String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
+	private String accessControlAllowOrgin = "*";//config.getString("Access-Control-Allow-Origin", "");
 	@Autowired
 	private TrendModeLoader modeLoader;
 

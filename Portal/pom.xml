@@ -11,7 +11,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>easystogu-portal</artifactId>
 	<name>EasyStoGu-Portal</name>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 	<description>EasyStoGu-Portal: Web service and API</description>
 
 	<dependencies>

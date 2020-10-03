@@ -44,7 +44,7 @@ public class WSFConfigTableHelper {
 
 	public String getValue(String name, String defaultValue) {
 		try {
-
+			logger.info("getValue name: {}", name);
 			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 			namedParameters.addValue("name", name);
 

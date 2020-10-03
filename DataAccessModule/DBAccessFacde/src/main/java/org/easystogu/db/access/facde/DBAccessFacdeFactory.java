@@ -101,6 +101,8 @@ public class DBAccessFacdeFactory {
 			if (Strings.isEmpty(indicatorDBType)) {
 				indicatorDBType = "SQL";
 			}
+			
+			System.out.println("indicatorDBType is:" + indicatorDBType);
 
 			IndicatorDBHelperIF instance = null;
 			if ("CQL".equals(indicatorDBType)) {

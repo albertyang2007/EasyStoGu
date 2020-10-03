@@ -32,7 +32,7 @@ import com.google.gson.Gson;
 public class PriceEndPointV0 {
 	@Autowired
 	protected ConfigurationServiceCache config;
-	protected String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
+	protected String accessControlAllowOrgin = "*";//config.getString("Access-Control-Allow-Origin", "");
 	protected static String HHmmss = "00:00:00";
 	@Autowired
 	protected CompanyInfoFileHelper companyInfoHelper;

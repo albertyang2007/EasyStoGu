@@ -48,7 +48,7 @@ import com.google.gson.Gson;
 public class IndicatorEndPointV0 {
 	@Autowired
 	private ConfigurationServiceCache config;
-	protected String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
+	protected String accessControlAllowOrgin = "*";//config.getString("Access-Control-Allow-Origin", "");
 	protected static String HHmmss = "00:00:00";
 	@Autowired
 	protected CompanyInfoFileHelper companyInfoHelper;

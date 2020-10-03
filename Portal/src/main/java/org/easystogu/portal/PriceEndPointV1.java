@@ -31,7 +31,7 @@ import com.google.gson.Gson;
 public class PriceEndPointV1 {
 	@Autowired
 	private ConfigurationServiceCache config;
-	private String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
+	private String accessControlAllowOrgin = "*";//config.getString("Access-Control-Allow-Origin", "");
 	protected static String HHmmss = "00:00:00";
 	@Autowired
 	@Qualifier("qianFuQuanStockPriceTable")

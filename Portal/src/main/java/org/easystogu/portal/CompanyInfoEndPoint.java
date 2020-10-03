@@ -22,7 +22,7 @@ import com.google.gson.Gson;
 public class CompanyInfoEndPoint {
 	@Autowired
 	private ConfigurationServiceCache config ;
-	private String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
+	private String accessControlAllowOrgin = "*";//config.getString("Access-Control-Allow-Origin", "");
 	@Autowired
 	private CompanyInfoFileHelper stockConfig ;
 	@Autowired
