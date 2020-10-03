@@ -26,7 +26,7 @@ import org.springframework.web.client.RestTemplate;
 public class HistoryHouFuQuanStockPriceDownloadAndStoreDBRunner {
 	private static String baseUrl = "http://vip.stock.finance.sina.com.cn/api/json_v2.php/BasicStockSrv.getStockFuQuanData?symbol=stockId&type=hfq";
 	@Autowired
-	private static FileConfigurationService configure;
+	private FileConfigurationService configure;
 	@Autowired
 	@Qualifier("houfuquanStockPriceTable")
 	private StockPriceTableHelper houfuquanStockPriceTable;

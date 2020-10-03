@@ -15,7 +15,7 @@ import org.springframework.web.client.RestTemplate;
 @Component
 public class RestTemplateHelper {
 	@Autowired
-	private static FileConfigurationService configure;
+	private FileConfigurationService configure;
 	private RestTemplate restTemplate = null;
 
 	public RestTemplateHelper() {

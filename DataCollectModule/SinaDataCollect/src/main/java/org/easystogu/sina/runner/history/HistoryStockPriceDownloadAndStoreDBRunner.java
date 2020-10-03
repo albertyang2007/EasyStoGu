@@ -33,7 +33,7 @@ public class HistoryStockPriceDownloadAndStoreDBRunner {
 	// before 1997, there is no +-10%
 	private static String baseUrl = "https://q.stock.sohu.com/hisHq?code=cn_stockId&start=startDate&end=endDate&order=D&period=d&rt=json";
 	@Autowired
-	private static FileConfigurationService configure;
+	private FileConfigurationService configure;
 	@Autowired
 	@Qualifier("stockPriceTable")
 	private StockPriceTableHelper stockPriceTable;

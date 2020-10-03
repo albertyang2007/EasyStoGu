@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class HttpClientHelper {
 	@Autowired
-	private static FileConfigurationService configure;
+	private FileConfigurationService configure;
 
 	String proxy = configure.getString(Constants.httpProxyServer, "");
 
