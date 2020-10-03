@@ -9,135 +9,137 @@ import org.easystogu.utils.Strings;
 import org.slf4j.Logger;
 
 public class PostgreSqlDataSourceFactory {
-  private static Logger logger = LogHelper.getLogger(PostgreSqlDataSourceFactory.class);
-  private static ConfigurationService config = FileConfigurationService.getInstance();
-  private static org.apache.tomcat.jdbc.pool.DataSource datasource = null;
-  private static org.apache.tomcat.jdbc.pool.DataSource georedDatasource = null;
+	private static Logger logger = LogHelper.getLogger(PostgreSqlDataSourceFactory.class);
+	private static ConfigurationService config = FileConfigurationService.getInstance();
+	private static org.apache.tomcat.jdbc.pool.DataSource datasource = null;
+	private static org.apache.tomcat.jdbc.pool.DataSource georedDatasource = null;
 
-  public static javax.sql.DataSource createDataSource() {
+	public static javax.sql.DataSource createDataSource() {
 
-    if (datasource != null)
-      return datasource;
+		if (datasource != null)
+			return datasource;
 
-    logger.info("build postgrel datasource.");
-    String driver = config.getString(Constants.JdbcDriver);
+		logger.info("build postgrel datasource.");
+		String driver = config.getString(Constants.JdbcDriver);
 
-    String url = config.getString(Constants.JdbcUrl);
-    String urlFromEnv = System.getenv(Constants.JdbcUrl);
-    if (Strings.isNotEmpty(urlFromEnv)) {
-      logger.info("Using env: {}, value: {}", Constants.JdbcUrl, urlFromEnv);
-      url = urlFromEnv;
-    }
+		String url = config.getString(Constants.JdbcUrl);
+		// for k8s deployment, the parm is getting from configMap,
+		// they are set to system environment
+		String urlFromEnv = System.getenv(Constants.JdbcUrl);
+		if (Strings.isNotEmpty(urlFromEnv)) {
+			logger.info("Using env: {}, value: {}", Constants.JdbcUrl, urlFromEnv);
+			url = urlFromEnv;
+		}
 
-    String user = config.getString(Constants.JdbcUser);
-    String userFromEnv = System.getenv(Constants.JdbcUser);
-    if (Strings.isNotEmpty(userFromEnv)) {
-      logger.info("Using env: {}, value: {}", Constants.JdbcUser, userFromEnv);
-      user = userFromEnv;
-    }
+		String user = config.getString(Constants.JdbcUser);
+		String userFromEnv = System.getenv(Constants.JdbcUser);
+		if (Strings.isNotEmpty(userFromEnv)) {
+			logger.info("Using env: {}, value: {}", Constants.JdbcUser, userFromEnv);
+			user = userFromEnv;
+		}
 
-    String password = config.getString(Constants.JdbcPassword);
-    String pwdFromEnv = System.getenv(Constants.JdbcPassword);
-    if (Strings.isNotEmpty(pwdFromEnv)) {
-      logger.info("Using env: {}, value: {}", Constants.JdbcPassword, pwdFromEnv);
-      password = pwdFromEnv;
-    }
+		String password = config.getString(Constants.JdbcPassword);
+		String pwdFromEnv = System.getenv(Constants.JdbcPassword);
+		if (Strings.isNotEmpty(pwdFromEnv)) {
+			logger.info("Using env: {}, value: {}", Constants.JdbcPassword, pwdFromEnv);
+			password = pwdFromEnv;
+		}
 
-    int active = config.getInt(Constants.JdbcMaxActive, 200);
-    String activeFromEnv = System.getenv(Constants.JdbcMaxActive);
-    if (Strings.isNotEmpty(activeFromEnv)) {
-      logger.info("Using env: {}, value: {}", Constants.JdbcMaxActive, activeFromEnv);
-      active = Integer.parseInt(activeFromEnv);
-    }
-    
-    int idle = config.getInt(Constants.JdbcMaxIdle, 100);
-    String idleFromEnv = System.getenv(Constants.JdbcMaxIdle);
-    if (Strings.isNotEmpty(idleFromEnv)) {
-      logger.info("Using env: {}, value: {}", Constants.JdbcMaxIdle, idleFromEnv);
-      idle = Integer.parseInt(idleFromEnv);
-    }
+		int active = config.getInt(Constants.JdbcMaxActive, 200);
+		String activeFromEnv = System.getenv(Constants.JdbcMaxActive);
+		if (Strings.isNotEmpty(activeFromEnv)) {
+			logger.info("Using env: {}, value: {}", Constants.JdbcMaxActive, activeFromEnv);
+			active = Integer.parseInt(activeFromEnv);
+		}
 
-    datasource = new org.apache.tomcat.jdbc.pool.DataSource();
-    datasource.setDriverClassName(driver);
-    datasource.setUrl(url);
-    datasource.setUsername(user);
-    datasource.setPassword(password);
-    datasource.setMaxActive(active);
-    datasource.setMaxIdle(idle);
-    datasource.setMaxWait(10000);
+		int idle = config.getInt(Constants.JdbcMaxIdle, 100);
+		String idleFromEnv = System.getenv(Constants.JdbcMaxIdle);
+		if (Strings.isNotEmpty(idleFromEnv)) {
+			logger.info("Using env: {}, value: {}", Constants.JdbcMaxIdle, idleFromEnv);
+			idle = Integer.parseInt(idleFromEnv);
+		}
 
-    return datasource;
-  }
+		datasource = new org.apache.tomcat.jdbc.pool.DataSource();
+		datasource.setDriverClassName(driver);
+		datasource.setUrl(url);
+		datasource.setUsername(user);
+		datasource.setPassword(password);
+		datasource.setMaxActive(active);
+		datasource.setMaxIdle(idle);
+		datasource.setMaxWait(10000);
 
-  public static javax.sql.DataSource createGeoredDataSource() {
+		return datasource;
+	}
 
-    if (georedDatasource != null)
-      return georedDatasource;
+	public static javax.sql.DataSource createGeoredDataSource() {
 
-    WSFConfigTableHelper wsfconfig = WSFConfigTableHelper.getInstance();
+		if (georedDatasource != null)
+			return georedDatasource;
 
-    logger.info("build postgrel Geored datasource.");
-    String driver = config.getString(Constants.GeoredJdbcDriver);
+		WSFConfigTableHelper wsfconfig = WSFConfigTableHelper.getInstance();
 
-    String url = wsfconfig.getValue(Constants.GeoredJdbcUrl);
-    String urlFromEnv = System.getenv(Constants.GeoredJdbcUrl);
-    if (Strings.isNotEmpty(urlFromEnv)) {
-      logger.info("Using env: {}, value: {}", Constants.GeoredJdbcUrl, urlFromEnv);
-      url = urlFromEnv;
-    }
+		logger.info("build postgrel Geored datasource.");
+		String driver = config.getString(Constants.GeoredJdbcDriver);
 
-    String user = config.getString(Constants.GeoredJdbcUser);
-    String userFromEnv = System.getenv(Constants.GeoredJdbcUser);
-    if (Strings.isNotEmpty(userFromEnv)) {
-      logger.info("Using env: {}, value: {}", Constants.GeoredJdbcUser, userFromEnv);
-      user = userFromEnv;
-    }
+		String url = wsfconfig.getValue(Constants.GeoredJdbcUrl);
+		String urlFromEnv = System.getenv(Constants.GeoredJdbcUrl);
+		if (Strings.isNotEmpty(urlFromEnv)) {
+			logger.info("Using env: {}, value: {}", Constants.GeoredJdbcUrl, urlFromEnv);
+			url = urlFromEnv;
+		}
 
-    String password = config.getString(Constants.GeoredJdbcPassword);
-    String pwdFromEnv = System.getenv(Constants.GeoredJdbcPassword);
-    if (Strings.isNotEmpty(pwdFromEnv)) {
-      logger.info("Using env: {}, value: {}", Constants.GeoredJdbcPassword, pwdFromEnv);
-      password = pwdFromEnv;
-    }
+		String user = config.getString(Constants.GeoredJdbcUser);
+		String userFromEnv = System.getenv(Constants.GeoredJdbcUser);
+		if (Strings.isNotEmpty(userFromEnv)) {
+			logger.info("Using env: {}, value: {}", Constants.GeoredJdbcUser, userFromEnv);
+			user = userFromEnv;
+		}
 
-    int active = config.getInt(Constants.GeoredJdbcMaxActive, 200);
-    String activeFromEnv = System.getenv(Constants.GeoredJdbcMaxActive);
-    if (Strings.isNotEmpty(activeFromEnv)) {
-      logger.info("Using env: {}, value: {}", Constants.GeoredJdbcMaxActive, activeFromEnv);
-      active = Integer.parseInt(activeFromEnv);
-    }
-    
-    int idle = config.getInt(Constants.GeoredJdbcMaxIdle, 100);
-    String idleFromEnv = System.getenv(Constants.GeoredJdbcMaxIdle);
-    if (Strings.isNotEmpty(idleFromEnv)) {
-      logger.info("Using env: {}, value: {}", Constants.GeoredJdbcMaxIdle, idleFromEnv);
-      idle = Integer.parseInt(idleFromEnv);
-    }
+		String password = config.getString(Constants.GeoredJdbcPassword);
+		String pwdFromEnv = System.getenv(Constants.GeoredJdbcPassword);
+		if (Strings.isNotEmpty(pwdFromEnv)) {
+			logger.info("Using env: {}, value: {}", Constants.GeoredJdbcPassword, pwdFromEnv);
+			password = pwdFromEnv;
+		}
 
-    georedDatasource = new org.apache.tomcat.jdbc.pool.DataSource();
-    georedDatasource.setDriverClassName(driver);
-    georedDatasource.setUrl(url);
-    georedDatasource.setUsername(user);
-    georedDatasource.setPassword(password);
-    georedDatasource.setMaxActive(active);
-    georedDatasource.setMaxIdle(idle);
-    georedDatasource.setMaxWait(10000);
+		int active = config.getInt(Constants.GeoredJdbcMaxActive, 200);
+		String activeFromEnv = System.getenv(Constants.GeoredJdbcMaxActive);
+		if (Strings.isNotEmpty(activeFromEnv)) {
+			logger.info("Using env: {}, value: {}", Constants.GeoredJdbcMaxActive, activeFromEnv);
+			active = Integer.parseInt(activeFromEnv);
+		}
 
-    return georedDatasource;
-  }
+		int idle = config.getInt(Constants.GeoredJdbcMaxIdle, 100);
+		String idleFromEnv = System.getenv(Constants.GeoredJdbcMaxIdle);
+		if (Strings.isNotEmpty(idleFromEnv)) {
+			logger.info("Using env: {}, value: {}", Constants.GeoredJdbcMaxIdle, idleFromEnv);
+			idle = Integer.parseInt(idleFromEnv);
+		}
 
-  public static void shutdown() {
-    logger.info("close postgrel datasource.");
-    if (datasource != null) {
-      datasource.close();
-    }
+		georedDatasource = new org.apache.tomcat.jdbc.pool.DataSource();
+		georedDatasource.setDriverClassName(driver);
+		georedDatasource.setUrl(url);
+		georedDatasource.setUsername(user);
+		georedDatasource.setPassword(password);
+		georedDatasource.setMaxActive(active);
+		georedDatasource.setMaxIdle(idle);
+		georedDatasource.setMaxWait(10000);
 
-    if (georedDatasource != null) {
-      georedDatasource.close();
-    }
-  }
+		return georedDatasource;
+	}
 
-  public static void main(String[] args) {
-    PostgreSqlDataSourceFactory.createGeoredDataSource();
-  }
+	public static void shutdown() {
+		logger.info("close postgrel datasource.");
+		if (datasource != null) {
+			datasource.close();
+		}
+
+		if (georedDatasource != null) {
+			georedDatasource.close();
+		}
+	}
+
+	public static void main(String[] args) {
+		PostgreSqlDataSourceFactory.createGeoredDataSource();
+	}
 }

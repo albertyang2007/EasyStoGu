@@ -13,7 +13,6 @@ import org.easystogu.cassandra.access.table.IndWRCassTableHelper;
 import org.easystogu.cassandra.access.table.IndWeekKDJCassTableHelper;
 import org.easystogu.cassandra.access.table.IndWeekMacdCassTableHelper;
 import org.easystogu.config.Constants;
-import org.easystogu.config.DBConfigurationService;
 import org.easystogu.db.helper.IF.IndicatorDBHelperIF;
 import org.easystogu.postgresql.access.table.IndBollDBTableHelper;
 import org.easystogu.postgresql.access.table.IndKDJDBTableHelper;
@@ -23,12 +22,11 @@ import org.easystogu.postgresql.access.table.IndShenXianDBTableHelper;
 import org.easystogu.postgresql.access.table.IndWRDBTableHelper;
 import org.easystogu.postgresql.access.table.IndWeekKDJDBTableHelper;
 import org.easystogu.postgresql.access.table.IndWeekMacdDBTableHelper;
+import org.easystogu.utils.Strings;
 import org.springframework.stereotype.Component;
 
 @Component
 public class DBAccessFacdeFactory {
-	private static DBConfigurationService config = DBConfigurationService.getInstance();
-
 	static Map<String, Class<? extends IndicatorDBHelperIF>> sqlFacdeMap = new HashMap<String, Class<? extends IndicatorDBHelperIF>>();
 	static Map<String, Class<? extends IndicatorDBHelperIF>> cqlFacdeMap = new HashMap<String, Class<? extends IndicatorDBHelperIF>>();
 
@@ -57,10 +55,19 @@ public class DBAccessFacdeFactory {
 	@SuppressWarnings("unchecked")
 	public static IndicatorDBHelperIF getInstance(String name) {
 		try {
-			String indicatorDBType = config.getString("indicatorDBType", "CQL");
-			Class clazz = cqlFacdeMap.get(name);
-			if ("SQL".equals(indicatorDBType))
+			//for k8s deployment, the indicatorDBType is set in configMap
+			//the configMap is save to system environment 
+			String indicatorDBType = System.getenv(Constants.indicatorDBType);
+			if (Strings.isEmpty(indicatorDBType)) {
+				indicatorDBType = "SQL";
+			}
+
+			Class clazz = null;
+			if ("CQL".equals(indicatorDBType)) {
+				clazz = cqlFacdeMap.get(name);
+			} else {
 				clazz = sqlFacdeMap.get(name);
+			}
 
 			Method getInstanceM = clazz.getMethod("getInstance", null);
 			return (IndicatorDBHelperIF) getInstanceM.invoke(null, null);

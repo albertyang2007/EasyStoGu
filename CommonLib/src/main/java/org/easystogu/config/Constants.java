@@ -48,6 +48,11 @@ public class Constants {
 	public static String HHmmss = "00:00:00";
 
 	public static String CassandraKeySpace = "EasyStoGu";
+	
+	//indicatorDBType indicator store in Cassandra or Postgresql
+	//It will be set from system environment, default is SQL
+	//CQL for cassandra and sql for Postgresql
+	public static String indicatorDBType = "indicatorDBType";
 
 	public static void main(String[] args) {
 		for (int i = 1; i <= 31; i++) {
