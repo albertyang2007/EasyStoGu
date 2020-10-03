@@ -4,26 +4,26 @@ import java.util.List;
 
 import org.easystogu.db.access.table.IndMATableHelper;
 import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
-import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.vo.table.MAVO;
 import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.indicator.MAHelper;
 import org.easystogu.utils.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component
-public class DailyMACountAndSaveDBRunner implements Runnable {
-	protected IndMATableHelper maTable = IndMATableHelper.getInstance();
-	protected StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
+public class DailyMACountAndSaveDBRunner {
 	@Autowired
-	protected MAHelper maHelper = new MAHelper();
-	protected CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
-
-	public DailyMACountAndSaveDBRunner() {
-
-	}
+	protected IndMATableHelper maTable;
+	@Autowired
+	@Qualifier("qianFuQuanStockPriceTable")
+	protected QianFuQuanStockPriceTableHelper qianFuQuanStockPriceTable;
+	@Autowired
+	protected MAHelper maHelper;
+	@Autowired
+	protected CompanyInfoFileHelper stockConfig;
 
 	public void deleteMa(String stockId, String date) {
 		maTable.delete(stockId, date);
@@ -96,16 +96,4 @@ public class DailyMACountAndSaveDBRunner implements Runnable {
 //			this.countAndSaved(stockId);
 //		}
 	}
-
-	public void run() {
-
-	}
-
-	public void mainWork(String[] args) {
-		// TODO Auto-generated method stub
-		CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
-		this.countAndSaved(stockConfig.getAllStockId());
-		//runner.countAndSaved("999999");
-	}
-
 }

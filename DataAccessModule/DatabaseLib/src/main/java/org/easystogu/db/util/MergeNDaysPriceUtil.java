@@ -5,8 +5,10 @@ import java.util.List;
 
 import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.utils.WeekdayUtil;
+import org.springframework.stereotype.Component;
 
 //merge days price vo into week price vo
+@Component
 public class MergeNDaysPriceUtil {
 	public List<StockPriceVO> generateAllWeekPriceVO(String stockId, List<StockPriceVO> spList) {
 		List<StockPriceVO> spWeekList = new ArrayList<StockPriceVO>();

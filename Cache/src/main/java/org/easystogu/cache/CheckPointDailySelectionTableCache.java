@@ -6,11 +6,14 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import javax.annotation.PostConstruct;
+
 import org.easystogu.db.access.table.CheckPointDailySelectionTableHelper;
 import org.easystogu.db.vo.table.CheckPointDailySelectionVO;
 import org.easystogu.log.LogHelper;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
@@ -18,14 +21,15 @@ import com.google.common.cache.LoadingCache;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.ListenableFutureTask;
 
+@Component
 public class CheckPointDailySelectionTableCache {
 	private Logger logger = LogHelper.getLogger(CheckPointDailySelectionTableCache.class);
-	private static CheckPointDailySelectionTableCache instance = null;
 	@Autowired
 	private CheckPointDailySelectionTableHelper checkPointDailySelectionTable;
 	private LoadingCache<String, List<CheckPointDailySelectionVO>> cache;
 
-	private CheckPointDailySelectionTableCache() {
+	@PostConstruct
+	private void init() {
 		cache = CacheBuilder.newBuilder().maximumSize(100).refreshAfterWrite(5, TimeUnit.MINUTES)
 				.build(new CacheLoader<String, List<CheckPointDailySelectionVO>>() {
 					@Override
@@ -80,13 +84,6 @@ public class CheckPointDailySelectionTableCache {
 						return null;
 					}
 				});
-	}
-
-	public static CheckPointDailySelectionTableCache getInstance() {
-		if (instance == null) {
-			instance = new CheckPointDailySelectionTableCache();
-		}
-		return instance;
 	}
 
 	public LoadingCache<String, List<CheckPointDailySelectionVO>> getLoadingCache() {

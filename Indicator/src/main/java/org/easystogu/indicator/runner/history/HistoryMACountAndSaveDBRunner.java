@@ -3,7 +3,6 @@ package org.easystogu.indicator.runner.history;
 import java.util.List;
 
 import org.easystogu.db.access.table.IndMATableHelper;
-import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.vo.table.MAVO;
 import org.easystogu.db.vo.table.StockPriceVO;
@@ -12,15 +11,20 @@ import org.easystogu.indicator.MAHelper;
 import org.easystogu.indicator.runner.utils.StockPriceFetcher;
 import org.easystogu.utils.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import com.google.common.primitives.Doubles;
 
 @Component
 public class HistoryMACountAndSaveDBRunner {
-
-	protected StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
-	protected IndMATableHelper maTable = IndMATableHelper.getInstance();
+	@Autowired
+	@Qualifier("qianFuQuanStockPriceTable")
+	protected StockPriceTableHelper stockPriceTable;
+	@Autowired
+	private CompanyInfoFileHelper stockConfig;
+	@Autowired
+	protected IndMATableHelper maTable;
 	@Autowired
 	protected MAHelper maHelper;
 
@@ -39,7 +43,7 @@ public class HistoryMACountAndSaveDBRunner {
 	public void countAndSaved(String stockId) {
 		this.deleteMA(stockId);
 
-		List<StockPriceVO> priceList = qianFuQuanStockPriceTable.getStockPriceById(stockId);
+		List<StockPriceVO> priceList = stockPriceTable.getStockPriceById(stockId);
 
 		List<Double> close = StockPriceFetcher.getClosePrice(priceList);
 
@@ -95,7 +99,6 @@ public class HistoryMACountAndSaveDBRunner {
 	// TODO Auto-generated method stub
 	// 一次性计算数据库中所有KDJ数据，入库
 	public void mainWork(String[] args) {
-		CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 		this.countAndSaved(stockConfig.getAllStockId());
 		// runner.countAndSaved("999999");
 	}

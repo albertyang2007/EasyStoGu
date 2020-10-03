@@ -3,7 +3,6 @@ package org.easystogu.indicator.runner;
 import java.util.List;
 
 import org.easystogu.db.access.table.IndYiMengBSTableHelper;
-import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.db.vo.table.YiMengBSVO;
@@ -12,21 +11,22 @@ import org.easystogu.indicator.YiMengBSHelper;
 import org.easystogu.indicator.runner.utils.StockPriceFetcher;
 import org.easystogu.utils.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import com.google.common.primitives.Doubles;
 
 @Component
-public class DailyYiMengBSCountAndSaveDBRunner implements Runnable {
-    protected StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
-    protected IndYiMengBSTableHelper yiMengBSTable = IndYiMengBSTableHelper.getInstance();
+public class DailyYiMengBSCountAndSaveDBRunner {
+	@Autowired
+	@Qualifier("qianFuQuanStockPriceTable")
+	protected StockPriceTableHelper stockPriceTable;
+	@Autowired
+    protected IndYiMengBSTableHelper yiMengBSTable;
     @Autowired
     protected YiMengBSHelper yiMengBSHelper = new YiMengBSHelper();
-    protected CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
-
-    public DailyYiMengBSCountAndSaveDBRunner() {
-
-    }
+    @Autowired
+    protected CompanyInfoFileHelper stockConfig;
 
     public void deleteYiMengBS(String stockId, String date) {
         yiMengBSTable.delete(stockId, date);
@@ -45,7 +45,7 @@ public class DailyYiMengBSCountAndSaveDBRunner implements Runnable {
     }
 
     public void countAndSaved(String stockId) {
-        List<StockPriceVO> priceList = qianFuQuanStockPriceTable.getStockPriceById(stockId);
+        List<StockPriceVO> priceList = stockPriceTable.getStockPriceById(stockId);
 
         if (priceList.size() <= 108) {
             // System.out.println("StockPrice data is less than 108, skip " +
@@ -82,17 +82,4 @@ public class DailyYiMengBSCountAndSaveDBRunner implements Runnable {
             this.countAndSaved(stockId);
         }
     }
-
-    public void run() {
-
-    }
-
-    // TODO Auto-generated method stub
-    public void mainWork(String[] args) {
-        CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
-        List<String> stockIds = stockConfig.getAllStockId();
-        this.countAndSaved(stockIds);
-        // runner.countAndSaved("002194");
-    }
-
 }

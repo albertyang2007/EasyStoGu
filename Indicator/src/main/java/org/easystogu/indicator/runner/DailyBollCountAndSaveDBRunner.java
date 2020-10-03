@@ -5,7 +5,6 @@ import java.util.List;
 import org.easystogu.config.Constants;
 import org.easystogu.db.access.facde.DBAccessFacdeFactory;
 import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
-import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.helper.IF.IndicatorDBHelperIF;
 import org.easystogu.db.vo.table.BollVO;
 import org.easystogu.db.vo.table.StockPriceVO;
@@ -13,22 +12,22 @@ import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.indicator.BOLLHelper;
 import org.easystogu.utils.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 //每日根据最新数据计算当天的boll值，每天运行一次
 @Component
-public class DailyBollCountAndSaveDBRunner implements Runnable {
+public class DailyBollCountAndSaveDBRunner{
 	@Autowired
 	private DBAccessFacdeFactory dBAccessFacdeFactory;
 	protected IndicatorDBHelperIF bollTable = dBAccessFacdeFactory.getInstance(Constants.indBoll);
-	protected StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
+	@Autowired
+	@Qualifier("qianFuQuanStockPriceTable")
+	protected QianFuQuanStockPriceTableHelper qianFuQuanStockPriceTable;
 	@Autowired
 	protected BOLLHelper bollHelper;
-	protected CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
-
-	public DailyBollCountAndSaveDBRunner() {
-
-	}
+	@Autowired
+	protected CompanyInfoFileHelper stockConfig;
 
 	public void deleteBoll(String stockId, String date) {
 		bollTable.delete(stockId, date);
@@ -83,17 +82,5 @@ public class DailyBollCountAndSaveDBRunner implements Runnable {
 		// }
 		// this.countAndSaved(stockId);
 		// }
-	}
-
-	public void run() {
-		// TODO Auto-generated method stub
-
-	}
-
-	public void mainWork(String[] args) {
-		// TODO Auto-generated method stub
-		CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
-		this.countAndSaved(stockConfig.getAllStockId());
-		// runner.countAndSaved("002214");
 	}
 }

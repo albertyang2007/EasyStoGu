@@ -2,27 +2,35 @@ package org.easystogu.runner;
 
 import java.util.List;
 
-import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.table.ScheduleActionTableHelper;
+import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.vo.table.ScheduleActionVO;
 import org.easystogu.indicator.runner.history.IndicatorHistortOverAllRunner;
 import org.easystogu.sina.runner.history.HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner;
 import org.easystogu.sina.runner.history.HistoryStockPriceDownloadAndStoreDBRunner;
 import org.easystogu.sina.runner.history.HistoryWeekStockPriceCountAndSaveDBRunner;
 import org.easystogu.utils.WeekdayUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component
-public class DailyScheduleActionRunner implements Runnable {
-	private String currentDate = WeekdayUtil.currentDate();
-	private ScheduleActionTableHelper scheduleActionTable = ScheduleActionTableHelper.getInstance();
-	private QianFuQuanStockPriceTableHelper qianfuquanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
-	private HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner historyQianFuQuanRunner = new HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner();
-	private IndicatorHistortOverAllRunner indicatorHistoryRunner = new IndicatorHistortOverAllRunner();
-	private HistoryWeekStockPriceCountAndSaveDBRunner weekPriceHistoryRunner = new HistoryWeekStockPriceCountAndSaveDBRunner();
-	private HistoryStockPriceDownloadAndStoreDBRunner priceHistoryRunner = new HistoryStockPriceDownloadAndStoreDBRunner();
+public class DailyScheduleActionRunner {
+	@Autowired
+	private ScheduleActionTableHelper scheduleActionTable;
+	@Autowired
+	@Qualifier("qianFuQuanStockPriceTable")
+	protected StockPriceTableHelper qianfuquanStockPriceTable;
+	@Autowired
+	private HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner historyQianFuQuanRunner;
+	private IndicatorHistortOverAllRunner indicatorHistoryRunner;
+	@Autowired
+	private HistoryWeekStockPriceCountAndSaveDBRunner weekPriceHistoryRunner;
+	@Autowired
+	private HistoryStockPriceDownloadAndStoreDBRunner priceHistoryRunner;
 
 	public void runAllScheduleAction() {
+		String currentDate = WeekdayUtil.currentDate();
 		List<ScheduleActionVO> actions = this.scheduleActionTable.getAllShouldRunDate(currentDate);
 		actions.parallelStream().forEach(savo -> {
 			// for (ScheduleActionVO savo : actions) {
@@ -32,7 +40,7 @@ public class DailyScheduleActionRunner implements Runnable {
 				if (savo.actionDo.equals(ScheduleActionVO.ActionDo.refresh_history_stockprice.name())) {
 					System.out.println("refresh_history_stockprice for " + savo.stockId);
 					// fetch original history data
-					this.priceHistoryRunner.countAndSave(savo.stockId);
+					this.priceHistoryRunner.countAndSave(savo.stockId, "2000-01-01", currentDate);
 					// for qian fuquan history data
 					this.historyQianFuQuanRunner.countAndSave(savo.stockId);
 					// delete schedule action if success

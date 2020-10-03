@@ -8,11 +8,20 @@ import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.utils.Strings;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
 
+@Component
 public class HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner {
-	private QianFuQuanStockPriceTableHelper qianfuquanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
-	private StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
-	private CompanyInfoFileHelper companyInfoHelper = CompanyInfoFileHelper.getInstance();
+	@Autowired
+	@Qualifier("qianFuQuanStockPriceTable")
+	private QianFuQuanStockPriceTableHelper qianfuquanStockPriceTable;
+	@Autowired
+	@Qualifier("stockPriceTable")
+	private StockPriceTableHelper stockPriceTable;
+	@Autowired
+	protected CompanyInfoFileHelper companyInfoHelper;
 
 	// priceList is order by date from stockPrice
 	// scan stockprce to count chuquan event and count the qian fuquan
@@ -81,12 +90,11 @@ public class HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner {
 		}
 	}
 
-	public static void main(String[] args) {
-		HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner runner = new HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner();
+	public void mainWork(String[] args) {
 		// must include major indicator
-		List<String> stockIds = runner.companyInfoHelper.getAllStockId();
+		List<String> stockIds = this.companyInfoHelper.getAllStockId();
 		// for all stockIds
-		runner.countAndSave(stockIds);
+		this.countAndSave(stockIds);
 		// for specify stockId
 		// runner.countAndSave("999999");
 		// runner.countAndSave("399001");

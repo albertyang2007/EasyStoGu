@@ -3,7 +3,6 @@ package org.easystogu.indicator.runner.history;
 import java.util.List;
 
 import org.easystogu.db.access.table.IndZhuliJinChuTableHelper;
-import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.db.vo.table.ZhuliJinChuVO;
@@ -11,12 +10,16 @@ import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.indicator.ZhuliJinChuHelper;
 import org.easystogu.utils.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component
 public class HistoryZhuliJinChuCountAndSaveDBRunner {
-
-	protected StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
+	@Autowired
+	@Qualifier("qianFuQuanStockPriceTable")
+	protected StockPriceTableHelper stockPriceTable;
+	@Autowired
+	private CompanyInfoFileHelper stockConfig;
 	@Autowired
 	protected IndZhuliJinChuTableHelper zhuliJinChuTable;
 	@Autowired
@@ -37,7 +40,7 @@ public class HistoryZhuliJinChuCountAndSaveDBRunner {
 	public void countAndSaved(String stockId) {
 		deleteZhuliJinChu(stockId);
 
-		List<StockPriceVO> priceList = qianFuQuanStockPriceTable.getStockPriceById(stockId);
+		List<StockPriceVO> priceList = stockPriceTable.getStockPriceById(stockId);
 
 		if (priceList.size() <= 34) {
 			System.out.println("StockPrice data is less than 34, skip " + stockId);
@@ -85,7 +88,6 @@ public class HistoryZhuliJinChuCountAndSaveDBRunner {
 	// TODO Auto-generated method stub
 	// 一次性计算数据库中所有ShenXian数据，入库
 	public void mainWork(String[] args) {
-		CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 		this.countAndSaved(stockConfig.getAllStockId());
 		// runner.countAndSaved("600000");
 	}

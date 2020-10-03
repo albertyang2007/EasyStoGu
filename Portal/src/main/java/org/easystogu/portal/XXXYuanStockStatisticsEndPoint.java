@@ -13,26 +13,27 @@ import org.easystogu.cache.XXXYuanStockStatisticsCache;
 import org.easystogu.db.vo.view.StatisticsViewVO;
 import org.easystogu.portal.util.MergeNDaysStatisticsHelper;
 import org.easystogu.portal.vo.StatisticsVO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.Gson;
 
-
 @RestController
 @RequestMapping(value = "/xxxyuan")
 public class XXXYuanStockStatisticsEndPoint {
-	private ConfigurationServiceCache config = ConfigurationServiceCache.getInstance();
+	@Autowired
+	private ConfigurationServiceCache config;
 	private String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
-	private XXXYuanStockStatisticsCache stockStatisticsCache = XXXYuanStockStatisticsCache.getInstance();
+	@Autowired
+	private XXXYuanStockStatisticsCache stockStatisticsCache;
 
 	private Gson gson = new Gson();
-	
+
 	@GetMapping("/{howMuchYuan}")
 	@Produces("application/json")
-	public String getLatestDate(@PathParam("howMuchYuan") String howMuchYuan,
-			@Context HttpServletResponse response) {
+	public String getLatestDate(@PathParam("howMuchYuan") String howMuchYuan, @Context HttpServletResponse response) {
 		List<StatisticsVO> rtnList = new ArrayList<StatisticsVO>();
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		List<StatisticsViewVO> list = this.stockStatisticsCache.get(howMuchYuan);

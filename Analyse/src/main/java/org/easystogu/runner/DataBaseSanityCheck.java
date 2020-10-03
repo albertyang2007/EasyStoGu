@@ -31,12 +31,19 @@ import org.easystogu.indicator.runner.history.HistoryWeeklyMacdCountAndSaveDBRun
 import org.easystogu.sina.runner.history.HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner;
 import org.easystogu.utils.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component
-public class DataBaseSanityCheck implements Runnable {
-	protected StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
-	protected QianFuQuanStockPriceTableHelper qianfuquanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
+public class DataBaseSanityCheck {
+	@Autowired
+	private CompanyInfoFileHelper stockConfig;
+	@Autowired
+	@Qualifier("stockPriceTable")
+	protected StockPriceTableHelper stockPriceTable;
+	@Autowired
+	@Qualifier("qianFuQuanStockPriceTable")
+	protected QianFuQuanStockPriceTableHelper qianfuquanStockPriceTable;
 	@Autowired
 	private DBAccessFacdeFactory dBAccessFacdeFactory;
 	protected IndicatorDBHelperIF macdTable = dBAccessFacdeFactory.getInstance(Constants.indMacd);
@@ -45,28 +52,40 @@ public class DataBaseSanityCheck implements Runnable {
 	protected IndicatorDBHelperIF shenXianTable = dBAccessFacdeFactory.getInstance(Constants.indShenXian);
 	protected IndicatorDBHelperIF qsddTable = dBAccessFacdeFactory.getInstance(Constants.indQSDD);
 	protected IndicatorDBHelperIF wrTable = dBAccessFacdeFactory.getInstance(Constants.indWR);
+	@Autowired
+	protected IndMATableHelper maTable;
+	@Autowired
+	protected HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner historyQianFuQuanRunner;
+	@Autowired
+	protected CheckPointDailyStatisticsTableHelper checkPointDailyStatisticsTable;
 
-	protected IndMATableHelper maTable = IndMATableHelper.getInstance();
-	protected HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner historyQianFuQuanRunner = new HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner();
-	protected CheckPointDailyStatisticsTableHelper checkPointDailyStatisticsTable = CheckPointDailyStatisticsTableHelper
-			.getInstance();
-
-	protected WeekStockPriceTableHelper weekStockPriceTable = WeekStockPriceTableHelper.getInstance();
+	@Autowired
+	@Qualifier("weekStockPriceTable")
+	protected WeekStockPriceTableHelper weekStockPriceTable;
 	protected IndicatorDBHelperIF weekMacdTable = dBAccessFacdeFactory.getInstance(Constants.indWeekMacd);
 	protected IndicatorDBHelperIF weekKdjTable = dBAccessFacdeFactory.getInstance(Constants.indWeekKDJ);
-
+	@Autowired
 	protected HistoryMacdCountAndSaveDBRunner macdRunner = new HistoryMacdCountAndSaveDBRunner();
-	protected HistoryKDJCountAndSaveDBRunner kdjRunner = new HistoryKDJCountAndSaveDBRunner();
-	protected HistoryBollCountAndSaveDBRunner boolRunner = new HistoryBollCountAndSaveDBRunner();
-	protected HistoryShenXianCountAndSaveDBRunner shenxianRunner = new HistoryShenXianCountAndSaveDBRunner();
-	protected HistoryQSDDCountAndSaveDBRunner qsddRunner = new HistoryQSDDCountAndSaveDBRunner();
-	protected HistoryMACountAndSaveDBRunner maRunner = new HistoryMACountAndSaveDBRunner();
-	protected HistoryWRCountAndSaveDBRunner wrRunner = new HistoryWRCountAndSaveDBRunner();
+	@Autowired
+	protected HistoryKDJCountAndSaveDBRunner kdjRunner;
+	@Autowired
+	protected HistoryBollCountAndSaveDBRunner boolRunner;
+	@Autowired
+	protected HistoryShenXianCountAndSaveDBRunner shenxianRunner;
+	@Autowired
+	protected HistoryQSDDCountAndSaveDBRunner qsddRunner;
+	@Autowired
+	protected HistoryMACountAndSaveDBRunner maRunner;
+	@Autowired
+	protected HistoryWRCountAndSaveDBRunner wrRunner;
 
-	protected HistoryWeeklyMacdCountAndSaveDBRunner weekMacdRunner = new HistoryWeeklyMacdCountAndSaveDBRunner();
-	protected HistoryWeeklyKDJCountAndSaveDBRunner weekKdjRunner = new HistoryWeeklyKDJCountAndSaveDBRunner();
+	@Autowired
+	protected HistoryWeeklyMacdCountAndSaveDBRunner weekMacdRunner;
+	@Autowired
+	protected HistoryWeeklyKDJCountAndSaveDBRunner weekKdjRunner;
 
-	protected DailySelectionRunner dailySelectionRunner = new DailySelectionRunner();
+	@Autowired
+	protected DailySelectionRunner dailySelectionRunner;
 
 	public void sanityDailyCheck(List<String> stockIds) {
 		System.out.println("sanityDailyCheck start.");
@@ -237,13 +256,11 @@ public class DataBaseSanityCheck implements Runnable {
 
 	public void run() {
 		// TODO Auto-generated method stub
-		CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
-		DataBaseSanityCheck check = new DataBaseSanityCheck();
-		check.sanityDailyCheck(stockConfig.getAllStockId());
-		check.sanityWeekCheck(stockConfig.getAllStockId());
-		check.sanityDailyStatisticsCheck(stockConfig.getAllStockId());
+		this.sanityDailyCheck(stockConfig.getAllStockId());
+		this.sanityWeekCheck(stockConfig.getAllStockId());
+		this.sanityDailyStatisticsCheck(stockConfig.getAllStockId());
 
-		// check.sanityDailyCheck("002797");
-		// check.sanityWeekCheck("002797");
+		// this.sanityDailyCheck("002797");
+		// this.sanityWeekCheck("002797");
 	}
 }

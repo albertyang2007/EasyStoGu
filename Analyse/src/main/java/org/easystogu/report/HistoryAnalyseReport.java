@@ -1,10 +1,10 @@
 package org.easystogu.report;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.easystogu.analyse.CombineAnalyseHelper;
 import org.easystogu.analyse.util.IndProcessHelper;
@@ -14,7 +14,6 @@ import org.easystogu.db.access.table.CheckPointDailySelectionTableHelper;
 import org.easystogu.db.access.table.CheckPointDailyStatisticsTableHelper;
 import org.easystogu.db.access.table.CheckPointHistoryAnalyseTableHelper;
 import org.easystogu.db.access.table.CheckPointHistorySelectionTableHelper;
-import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.access.table.StockSuperVOHelper;
 import org.easystogu.db.access.table.WeekStockSuperVOHelper;
@@ -26,31 +25,35 @@ import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.utils.CrossType;
 import org.easystogu.utils.SellPointType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component
 public class HistoryAnalyseReport {
 	@Autowired
 	private DBConfigurationService config;
-	private StockPriceTableHelper stockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
-	private CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
-	private CheckPointHistorySelectionTableHelper checkPointHistorySelectionTable = CheckPointHistorySelectionTableHelper
-			.getInstance();
-	private CheckPointDailyStatisticsTableHelper checkPointDailyStatisticsTable = CheckPointDailyStatisticsTableHelper
-			.getInstance();
-	private WeekStockSuperVOHelper weekStockOverAllHelper = new WeekStockSuperVOHelper();
-	private CombineAnalyseHelper combineAanalyserHelper = new CombineAnalyseHelper();
-	private StockSuperVOHelper stockOverAllHelper = new StockSuperVOHelper();
-	private CheckPointHistoryAnalyseTableHelper cpHistoryAnalyse = CheckPointHistoryAnalyseTableHelper.getInstance();
+	@Autowired
+	@Qualifier("qianFuQuanStockPriceTable")
+	protected StockPriceTableHelper stockPriceTable;
+	@Autowired
+	private CompanyInfoFileHelper stockConfig;
+	@Autowired
+	private CheckPointHistorySelectionTableHelper checkPointHistorySelectionTable;
+	@Autowired
+	private CheckPointDailyStatisticsTableHelper checkPointDailyStatisticsTable;
+	@Autowired
+	private WeekStockSuperVOHelper weekStockOverAllHelper;
+	@Autowired
+	private CombineAnalyseHelper combineAanalyserHelper;
+	@Autowired
+	private StockSuperVOHelper stockOverAllHelper;
+	@Autowired
+	private CheckPointHistoryAnalyseTableHelper cpHistoryAnalyse;
 	@Autowired
 	private CheckPointDailySelectionTableHelper checkPointDailySelectionTable;
+
 	private String specifySelectCheckPoint = config.getString("specify_Select_CheckPoint", "");
 	private String[] specifySelectCheckPoints = specifySelectCheckPoint.split(";");
-	private String[] generalCheckPoints = config.getString("general_CheckPoint", "").split(";");
-	// date, count
-	private Map<String, Integer> generalCheckPointStatisticsMap = new HashMap<String, Integer>();
-
-	// public ForkJoinPool myForkJoinPool = new ForkJoinPool(8);
 
 	public List<HistoryReportDetailsVO> doAnalyseBuySellDate(String stockId,
 			List<DailyCombineCheckPoint> checkPointList) {
@@ -328,8 +331,11 @@ public class HistoryAnalyseReport {
 		System.out.println("\n===============================" + checkPoint + " (sellPoint:"
 				+ checkPoint.getSellPointType() + ")==========================");
 
+		// date, count
+		Map<String, Integer> generalCheckPointStatisticsMap = new ConcurrentHashMap<String, Integer>();
+
 		this.checkPointDailyStatisticsTable.deleteByCheckPoint(checkPoint.name());
-		this.generalCheckPointStatisticsMap.clear();
+		generalCheckPointStatisticsMap.clear();
 
 		int index = 0;
 		List<String> stockIds = stockConfig.getAllStockId();
@@ -353,11 +359,11 @@ public class HistoryAnalyseReport {
 				System.out.println(checkPoint.name() + " Analyse of " + index + "/" + stockIds.size());
 			}
 
-			analyseOneStock(checkPoint, stockId);
+			analyseOneStock(checkPoint, stockId, generalCheckPointStatisticsMap);
 		}
 
 		// save statistics the checkPoint and count at date into DB
-		Iterator it = this.generalCheckPointStatisticsMap.entrySet().iterator();
+		Iterator it = generalCheckPointStatisticsMap.entrySet().iterator();
 		while (it.hasNext()) {
 			CheckPointDailyStatisticsVO cpdsvo = new CheckPointDailyStatisticsVO();
 			Map.Entry entry = (Map.Entry) it.next();
@@ -373,16 +379,17 @@ public class HistoryAnalyseReport {
 				"===============================Job done for " + checkPoint + "===============================");
 	}
 
-	private void analyseOneStock(DailyCombineCheckPoint checkPoint, String stockId) {
+	private void analyseOneStock(DailyCombineCheckPoint checkPoint, String stockId,
+			Map<String, Integer> generalCheckPointStatisticsMap) {
 		List<HistoryReportDetailsVO> historyReportList = this.doAnalyseStatistics(stockId, checkPoint);
 		for (HistoryReportDetailsVO reportVO : historyReportList) {
 			// statistics the checkPoint and count at date
-			Integer count = this.generalCheckPointStatisticsMap.get(reportVO.buyPriceVO.date);
+			Integer count = generalCheckPointStatisticsMap.get(reportVO.buyPriceVO.date);
 			if (count == null) {
 				count = new Integer(0);
 			}
 			// update the count
-			this.generalCheckPointStatisticsMap.put(new String(reportVO.buyPriceVO.date), new Integer(count + 1));
+			generalCheckPointStatisticsMap.put(new String(reportVO.buyPriceVO.date), new Integer(count + 1));
 		}
 	}
 

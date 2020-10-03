@@ -3,7 +3,6 @@ package org.easystogu.indicator.runner.history;
 import java.util.List;
 
 import org.easystogu.db.access.table.IndXueShi2TableHelper;
-import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.db.vo.table.XueShi2VO;
@@ -11,13 +10,18 @@ import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.indicator.TALIBWraper;
 import org.easystogu.utils.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component
 public class HistoryXueShi2CountAndSaveDBRunner {
-
-    protected IndXueShi2TableHelper xueShi2Table = IndXueShi2TableHelper.getInstance();
-    protected StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
+	@Autowired
+    protected IndXueShi2TableHelper xueShi2Table;
+	@Autowired
+	@Qualifier("qianFuQuanStockPriceTable")
+	protected StockPriceTableHelper stockPriceTable;
+	@Autowired
+	private CompanyInfoFileHelper stockConfig;
     @Autowired
     protected TALIBWraper talibWraper;
 
@@ -37,7 +41,7 @@ public class HistoryXueShi2CountAndSaveDBRunner {
         deleteXueShi2(stockId);
 
         try {
-            List<StockPriceVO> priceList = qianFuQuanStockPriceTable.getStockPriceById(stockId);
+            List<StockPriceVO> priceList = stockPriceTable.getStockPriceById(stockId);
 
             int length = priceList.size();
 
@@ -102,7 +106,6 @@ public class HistoryXueShi2CountAndSaveDBRunner {
 
     public void mainWork(String[] args) {
         // TODO Auto-generated method stub
-        CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
         this.countAndSaved(stockConfig.getAllStockId());
         // runner.countAndSaved("600750");
     }

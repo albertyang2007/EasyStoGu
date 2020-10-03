@@ -3,7 +3,6 @@ package org.easystogu.indicator.runner;
 import java.util.List;
 
 import org.easystogu.db.access.table.IndZhuliJinChuTableHelper;
-import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.db.vo.table.ZhuliJinChuVO;
@@ -11,21 +10,20 @@ import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.indicator.ZhuliJinChuHelper;
 import org.easystogu.utils.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component
-public class DailyZhuliJinChuCountAndSaveDBRunner implements Runnable {
-
-	protected StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
+public class DailyZhuliJinChuCountAndSaveDBRunner{
+	@Autowired
+	@Qualifier("qianFuQuanStockPriceTable")
+	protected StockPriceTableHelper stockPriceTable;
 	@Autowired
 	protected IndZhuliJinChuTableHelper zhuliJinChuTable;
 	@Autowired
-	protected ZhuliJinChuHelper zhuliJinChuHelper = new ZhuliJinChuHelper();
-	protected CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
-
-	public DailyZhuliJinChuCountAndSaveDBRunner() {
-
-	}
+	protected ZhuliJinChuHelper zhuliJinChuHelper;
+	@Autowired
+	protected CompanyInfoFileHelper stockConfig;
 
 	public void deleteZhuliJinChu(String stockId, String date) {
 		zhuliJinChuTable.delete(stockId, date);
@@ -44,7 +42,7 @@ public class DailyZhuliJinChuCountAndSaveDBRunner implements Runnable {
 	}
 
 	public void countAndSaved(String stockId) {
-		List<StockPriceVO> priceList = qianFuQuanStockPriceTable.getStockPriceById(stockId);
+		List<StockPriceVO> priceList = stockPriceTable.getStockPriceById(stockId);
 
 		if (priceList.size() <= 34) {
 			// System.out.println("StockPrice data is less than 34, skip " +
@@ -82,15 +80,4 @@ public class DailyZhuliJinChuCountAndSaveDBRunner implements Runnable {
 			this.countAndSaved(stockId);
 		}
 	}
-
-	public void run() {
-	}
-
-	// TODO Auto-generated method stub
-	public void mainWork(String[] args) {
-		CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
-		this.countAndSaved(stockConfig.getAllStockId());
-		// runner.countAndSaved("600000");
-	}
-
 }

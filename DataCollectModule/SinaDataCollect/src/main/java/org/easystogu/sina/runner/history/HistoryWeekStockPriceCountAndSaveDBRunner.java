@@ -3,17 +3,27 @@ package org.easystogu.sina.runner.history;
 import java.util.List;
 
 import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
-import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.access.table.WeekStockPriceTableHelper;
 import org.easystogu.db.util.MergeNDaysPriceUtil;
 import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
 
 //手动将2009年之后的stockprice分成每周入库，weeksotckprice，一次性运行
+@Component
 public class HistoryWeekStockPriceCountAndSaveDBRunner {
-    private StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
-    private MergeNDaysPriceUtil nDaysPriceMergeUtil = new MergeNDaysPriceUtil();
-    private WeekStockPriceTableHelper weekStockPriceTable = WeekStockPriceTableHelper.getInstance();
+	@Autowired
+	@Qualifier("qianFuQuanStockPriceTable")
+    private QianFuQuanStockPriceTableHelper qianFuQuanStockPriceTable;
+	@Autowired
+	@Qualifier("weekStockPriceTable")
+    private WeekStockPriceTableHelper weekStockPriceTable;
+	@Autowired
+    private MergeNDaysPriceUtil nDaysPriceMergeUtil;
+	@Autowired
+	private CompanyInfoFileHelper stockConfig;
 
     public void deleteStockPrice(String stockId) {
         weekStockPriceTable.delete(stockId);
@@ -49,11 +59,8 @@ public class HistoryWeekStockPriceCountAndSaveDBRunner {
         }
     }
 
-    public static void main(String[] args) {
-        // TODO Auto-generated method stub
-        CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
-        HistoryWeekStockPriceCountAndSaveDBRunner runner = new HistoryWeekStockPriceCountAndSaveDBRunner();
-        runner.countAndSave(stockConfig.getAllStockId());
+    public void mainWork(String[] args) {
+        this.countAndSave(stockConfig.getAllStockId());
         //runner.countAndSave("999999");
         //runner.countAndSave("399001");
         //runner.countAndSave("399006");

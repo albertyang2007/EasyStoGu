@@ -2,6 +2,7 @@ package org.easystogu.runner;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.easystogu.db.vo.view.FavoritesStockVO;
 import org.springframework.stereotype.Component;
 
@@ -9,65 +10,65 @@ import org.springframework.stereotype.Component;
 // history and run favorites stockId (not all stockIds) then save into checkpoint_daily_selection
 @Component
 public class HistoryDailySelectionRunner extends DailySelectionRunner {
-  public void runTask(int cpuIndex) {
-    System.out.println("HistoryDailySelectionRunner for cpuIndex:" + cpuIndex);
-    HistoryDailySelectionRunner runner = new HistoryDailySelectionRunner();
-    int totalSotckDay = runner.stockPriceTable.getCounterDaysOfStockDate();
-    List<String> allDates = runner.stockPriceTable.getLatestNStockDate(totalSotckDay);
-    System.out.println("allDates size: " + allDates.size());
-    // System.out.println(dates.get(dates.size() - 1));//first day of stock: 1990-12-19
-    // System.out.println(dates.get(0));//current day of stock
 
-    List<String> stockIds = new ArrayList<String>();
+	public void runTask(int cpuIndex) {
+		System.out.println("HistoryDailySelectionRunner for cpuIndex:" + cpuIndex);
+		int totalSotckDay = stockPriceTable.getCounterDaysOfStockDate();
+		List<String> allDates = stockPriceTable.getLatestNStockDate(totalSotckDay);
+		System.out.println("allDates size: " + allDates.size());
+		// System.out.println(dates.get(dates.size() - 1));//first day of stock:
+		// 1990-12-19
+		// System.out.println(dates.get(0));//current day of stock
 
-    // not count all the stockId since it will cause huge time
-    // so just count the favorites stockId
-    //List<String> stockIds = runner.stockConfig.getAllStockId();
-    List<FavoritesStockVO> favoritesStockIds = runner.favoritesStockHelper.getByUserId("admin");
+		List<String> stockIds = new ArrayList<String>();
 
-    for (int index = 0; index < favoritesStockIds.size(); index++) {
-      stockIds.add(favoritesStockIds.get(index).stockId);
-    }
+		// not count all the stockId since it will cause huge time
+		// so just count the favorites stockId
+		// List<String> stockIds = runner.stockConfig.getAllStockId();
+		List<FavoritesStockVO> favoritesStockIds = favoritesStockHelper.getByUserId("admin");
 
-    // split the date into 4 sub groups for 4 cup run async
-    int startIndex = getStartIndexFromDates(allDates, cpuIndex);
-    int stopIndex = getStopIndexFromDates(allDates, cpuIndex);
-    List<String> sudDateGroups = allDates.subList(startIndex, stopIndex);
+		for (int index = 0; index < favoritesStockIds.size(); index++) {
+			stockIds.add(favoritesStockIds.get(index).stockId);
+		}
 
-    System.out.println(
-        "cpuIndex: " + cpuIndex + ", startIndex: " + startIndex + ", stopIndex: " + stopIndex);
+		// split the date into 4 sub groups for 4 cup run async
+		int startIndex = getStartIndexFromDates(allDates, cpuIndex);
+		int stopIndex = getStopIndexFromDates(allDates, cpuIndex);
+		List<String> sudDateGroups = allDates.subList(startIndex, stopIndex);
 
-    //
-    for (int index = 0; index < sudDateGroups.size(); index++) {
-      String date = sudDateGroups.get(index);
-      System.out.println("Process of data:" + date);
-      this.runForDate(date, stockIds);
-    }
-    System.out.println("HistoryDailySelectionRunner Complete for cpuIndex:" + cpuIndex);
-  }
+		System.out.println("cpuIndex: " + cpuIndex + ", startIndex: " + startIndex + ", stopIndex: " + stopIndex);
 
-  // split into number of logic CPU async run
-  private int getStartIndexFromDates(List<String> allDates, int cpuIndex) {
-    return (allDates.size() / getLogicCPUNumber()) * cpuIndex;
-  }
+		//
+		for (int index = 0; index < sudDateGroups.size(); index++) {
+			String date = sudDateGroups.get(index);
+			System.out.println("Process of data:" + date);
+			this.runForDate(date, stockIds);
+		}
+		System.out.println("HistoryDailySelectionRunner Complete for cpuIndex:" + cpuIndex);
+	}
 
-  private int getStopIndexFromDates(List<String> allDates, int cpuIndex) {
-    if (cpuIndex == getLogicCPUNumber() -1) {
-      return allDates.size();
-    }
-    return (allDates.size() / getLogicCPUNumber()) * (cpuIndex + 1);
-  }
+	// split into number of logic CPU async run
+	private int getStartIndexFromDates(List<String> allDates, int cpuIndex) {
+		return (allDates.size() / getLogicCPUNumber()) * cpuIndex;
+	}
 
-  public static int getLogicCPUNumber() {
-    return Runtime.getRuntime().availableProcessors();
-  }
+	private int getStopIndexFromDates(List<String> allDates, int cpuIndex) {
+		if (cpuIndex == getLogicCPUNumber() - 1) {
+			return allDates.size();
+		}
+		return (allDates.size() / getLogicCPUNumber()) * (cpuIndex + 1);
+	}
 
-  public void runAllUsingMultipCpu() {
-    List<Integer> cpuList = new ArrayList<Integer>();
-    for (int i = 0; i < getLogicCPUNumber() - 1; i++) {
-      cpuList.add(new Integer(i));
-    }
+	public static int getLogicCPUNumber() {
+		return Runtime.getRuntime().availableProcessors();
+	}
 
-    cpuList.parallelStream().forEach(cpuIndex -> this.runTask(cpuIndex));
-  }
+	public void runAllUsingMultipCpu() {
+		List<Integer> cpuList = new ArrayList<Integer>();
+		for (int i = 0; i < getLogicCPUNumber() - 1; i++) {
+			cpuList.add(new Integer(i));
+		}
+
+		cpuList.parallelStream().forEach(cpuIndex -> this.runTask(cpuIndex));
+	}
 }

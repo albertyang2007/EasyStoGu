@@ -24,16 +24,18 @@ import com.google.gson.Gson;
 @RestController
 @RequestMapping(value = "/pricev3")
 public class PriceEndPointV3 {
-	private ConfigurationServiceCache config = ConfigurationServiceCache.getInstance();
+	@Autowired
+	private ConfigurationServiceCache config;
 	private String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
-	protected CompanyInfoFileHelper companyInfoHelper = CompanyInfoFileHelper.getInstance();
+	@Autowired
+	protected CompanyInfoFileHelper companyInfoHelper;
 	@Autowired
 	protected ProcessRequestParmsInPostBody postParmsProcess;
 	@Autowired
 	protected TrendModeLoader trendModeLoader;
 
 	private Gson gson = new Gson();
-	
+
 	@PostMapping("/{stockId}/{date}")
 	@Produces("application/json")
 	public String queryDayPriceByIdWithForecastPrice(@PathParam("stockId") String stockIdParm,

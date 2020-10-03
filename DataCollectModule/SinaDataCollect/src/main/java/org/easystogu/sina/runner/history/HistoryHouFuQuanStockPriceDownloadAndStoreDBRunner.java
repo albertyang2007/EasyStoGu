@@ -9,13 +9,13 @@ import java.util.List;
 import org.easystogu.config.Constants;
 import org.easystogu.config.FileConfigurationService;
 import org.easystogu.db.access.table.CompanyInfoTableHelper;
-import org.easystogu.db.access.table.HouFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.utils.Strings;
 import org.easystogu.utils.WeekdayUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -27,11 +27,16 @@ public class HistoryHouFuQuanStockPriceDownloadAndStoreDBRunner {
 	private static String baseUrl = "http://vip.stock.finance.sina.com.cn/api/json_v2.php/BasicStockSrv.getStockFuQuanData?symbol=stockId&type=hfq";
 	@Autowired
 	private static FileConfigurationService configure;
-	private HouFuQuanStockPriceTableHelper houfuquanStockPriceTable = HouFuQuanStockPriceTableHelper.getInstance();
-	private StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
+	@Autowired
+	@Qualifier("houfuquanStockPriceTable")
+	private StockPriceTableHelper houfuquanStockPriceTable;
+	@Autowired
+	@Qualifier("stockPriceTable")
+	private StockPriceTableHelper stockPriceTable;
 	@Autowired
 	private CompanyInfoTableHelper companyInfoTable;
-	private CompanyInfoFileHelper companyInfoHelper = CompanyInfoFileHelper.getInstance();
+	@Autowired
+	protected CompanyInfoFileHelper companyInfoHelper;
 
 	public List<StockPriceVO> fetchFuQuanStockPriceFromWeb(List<String> stockIds) {
 		List<StockPriceVO> list = new ArrayList<StockPriceVO>();
@@ -166,19 +171,5 @@ public class HistoryHouFuQuanStockPriceDownloadAndStoreDBRunner {
 				this.countAndSave(stockId);
 			}
 		}
-	}
-
-	public static void main(String[] args) {
-		HistoryHouFuQuanStockPriceDownloadAndStoreDBRunner runner = new HistoryHouFuQuanStockPriceDownloadAndStoreDBRunner();
-		List<String> stockIds = runner.companyInfoTable.getAllCompanyStockId();
-		// for all stockIds
-		runner.countAndSave(stockIds);
-		// for specify stockId
-		//runner.countAndSave("601388");
-
-		// for major indicator
-		runner.countAndSavevForMajorIndicator();
-		// finally re run for failure
-		// runner.reRunOnFailure();
 	}
 }

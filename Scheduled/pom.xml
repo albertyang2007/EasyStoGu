@@ -10,7 +10,6 @@
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.albertyang2007.easystogu</groupId>
 	<artifactId>easystogu-scheduled</artifactId>
 	<name>EasyStoGu-Scheduled</name>
 	<packaging>jar</packaging>
@@ -34,11 +33,6 @@
 		</dependency>
 		<dependency>
 			<groupId>org.albertyang2007.easystogu</groupId>
-			<artifactId>easystogu-easymoneycollect</artifactId>
-			<version>${repo-internal-version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.albertyang2007.easystogu</groupId>
 			<artifactId>easystogu-indicator</artifactId>
 			<version>${repo-internal-version}</version>
 		</dependency>
@@ -50,11 +44,6 @@
 		<dependency>
 			<groupId>org.albertyang2007.easystogu</groupId>
 			<artifactId>easystogu-cache</artifactId>
-			<version>${repo-internal-version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.albertyang2007.easystogu</groupId>
-			<artifactId>easystogu-databasereplicate</artifactId>
 			<version>${repo-internal-version}</version>
 		</dependency>
 		<dependency>

@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.easystogu.config.Constants;
 import org.easystogu.db.access.facde.DBAccessFacdeFactory;
-import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.helper.IF.IndicatorDBHelperIF;
 import org.easystogu.db.vo.table.StockPriceVO;
@@ -14,30 +13,30 @@ import org.easystogu.indicator.WRHelper;
 import org.easystogu.indicator.runner.utils.StockPriceFetcher;
 import org.easystogu.utils.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import com.google.common.primitives.Doubles;
 
 @Component
-public class DailyWRCountAndSaveDBRunner implements Runnable {
+public class DailyWRCountAndSaveDBRunner {
 	@Autowired
 	private DBAccessFacdeFactory dBAccessFacdeFactory;
 	protected IndicatorDBHelperIF wrTable = dBAccessFacdeFactory.getInstance(Constants.indWR);
 	@Autowired
-	private WRHelper wrHelper = new WRHelper();
-	protected StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
-	protected CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
-
-	public DailyWRCountAndSaveDBRunner() {
-
-	}
+	private WRHelper wrHelper;
+	@Autowired
+	@Qualifier("qianFuQuanStockPriceTable")
+	protected StockPriceTableHelper stockPriceTable;
+	@Autowired
+	protected CompanyInfoFileHelper stockConfig;
 
 	public void deleteWR(String stockId, String date) {
 		wrTable.delete(stockId, date);
 	}
 
 	public void countAndSaved(String stockId) {
-		List<StockPriceVO> priceList = qianFuQuanStockPriceTable.getStockPriceById(stockId);
+		List<StockPriceVO> priceList = stockPriceTable.getStockPriceById(stockId);
 
 		if (priceList.size() < 1) {
 			return;
@@ -66,28 +65,25 @@ public class DailyWRCountAndSaveDBRunner implements Runnable {
 	}
 
 	public void countAndSaved(List<String> stockIds) {
-	  stockIds.parallelStream().forEach(stockId -> {
-        this.countAndSaved(stockId);
-      });
-	  
-//		int index = 0;
-//		for (String stockId : stockIds) {
-//			if (index++ % 500 == 0) {
-//				System.out.println("WR countAndSaved: " + stockId + " " + (index) + "/" + stockIds.size());
-//			}
-//			this.countAndSaved(stockId);
-//		}
+		stockIds.parallelStream().forEach(stockId -> {
+			this.countAndSaved(stockId);
+		});
+
+		// int index = 0;
+		// for (String stockId : stockIds) {
+		// if (index++ % 500 == 0) {
+		// System.out.println("WR countAndSaved: " + stockId + " " + (index) + "/" +
+		// stockIds.size());
+		// }
+		// this.countAndSaved(stockId);
+		// }
 	}
 
-	public void run() {
-
+	public void setWrTable(IndicatorDBHelperIF wrTable) {
+		this.wrTable = wrTable;
 	}
 
-	public void mainWork(String[] args) {
-		// TODO Auto-generated method stub
-		CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
-		this.countAndSaved(stockConfig.getAllStockId());
-		// runner.countAndSaved("999999");
+	public void setStockPriceTable(StockPriceTableHelper stockPriceTable) {
+		this.stockPriceTable = stockPriceTable;
 	}
-
 }

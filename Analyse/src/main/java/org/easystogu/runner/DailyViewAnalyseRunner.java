@@ -6,22 +6,26 @@ import org.easystogu.db.access.table.CheckPointDailySelectionTableHelper;
 import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.access.view.CommonViewHelper;
 import org.easystogu.db.vo.table.CheckPointDailySelectionVO;
-import org.easystogu.db.vo.view.CommonViewVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 //run analyse views and save selection to table checkpoint_daily_selection
 @Component
-public class DailyViewAnalyseRunner implements Runnable {
-	private StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
-	private String latestDate = stockPriceTable.getLatestStockDate();
-	private CommonViewHelper commonViewHelper = CommonViewHelper.getInstance();
+public class DailyViewAnalyseRunner {
+	@Autowired
+	@Qualifier("stockPriceTable")
+	protected StockPriceTableHelper stockPriceTable;
+
+	@Autowired
+	private CommonViewHelper commonViewHelper;
 	@Autowired
 	private CheckPointDailySelectionTableHelper checkPointDailySelectionTable;
 
 	// daily analyse, if miss one of date analyse, those view only have
 	// latestDate date, there will be no chose to get that date's data
 	private void slowAnalyseForView(String viewName) {
+		String latestDate = stockPriceTable.getLatestStockDate();
 		System.out.println("Analyse for viewName: " + viewName);
 		List<String> stockIds = commonViewHelper.queryAllStockIds(viewName);
 		
@@ -29,7 +33,7 @@ public class DailyViewAnalyseRunner implements Runnable {
           CheckPointDailySelectionVO cpvo = new CheckPointDailySelectionVO();
           cpvo.stockId = stockId;
           cpvo.checkPoint = viewName;
-          cpvo.date = this.latestDate;
+          cpvo.date = latestDate;
 
           checkPointDailySelectionTable.delete(stockId, latestDate, viewName);
           checkPointDailySelectionTable.insert(cpvo);
@@ -44,21 +48,6 @@ public class DailyViewAnalyseRunner implements Runnable {
 //			checkPointDailySelectionTable.delete(stockId, latestDate, viewName);
 //			checkPointDailySelectionTable.insert(cpvo);
 //		}
-	}
-
-	// extract the currentDate from view, those view has many date's date
-	private void fastExtractForView(String viewName) {
-		System.out.println("Extract for viewName: " + viewName);
-		List<CommonViewVO> list = commonViewHelper.queryByDateForCheckPoint(viewName, this.latestDate);
-		for (CommonViewVO vo : list) {
-			CheckPointDailySelectionVO cpvo = new CheckPointDailySelectionVO();
-			cpvo.stockId = vo.stockId;
-			cpvo.checkPoint = viewName;
-			cpvo.date = this.latestDate;
-
-			checkPointDailySelectionTable.delete(vo.stockId, latestDate, viewName);
-			checkPointDailySelectionTable.insert(cpvo);
-		}
 	}
 
 	public void run() {

@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.easystogu.config.Constants;
 import org.easystogu.db.access.facde.DBAccessFacdeFactory;
-import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.helper.IF.IndicatorDBHelperIF;
 import org.easystogu.db.vo.table.ShenXianVO;
@@ -14,6 +13,7 @@ import org.easystogu.indicator.ShenXianHelper;
 import org.easystogu.indicator.runner.utils.StockPriceFetcher;
 import org.easystogu.utils.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import com.google.common.primitives.Doubles;
@@ -23,7 +23,11 @@ public class HistoryShenXianCountAndSaveDBRunner {
 	@Autowired
 	private DBAccessFacdeFactory dBAccessFacdeFactory;
 	protected IndicatorDBHelperIF shenXianTable = dBAccessFacdeFactory.getInstance(Constants.indShenXian);
-	protected StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
+	@Autowired
+	@Qualifier("qianFuQuanStockPriceTable")
+	protected StockPriceTableHelper stockPriceTable;
+	@Autowired
+	private CompanyInfoFileHelper stockConfig;
 	@Autowired
 	protected ShenXianHelper shenXianHelper;
 
@@ -42,7 +46,7 @@ public class HistoryShenXianCountAndSaveDBRunner {
 	public void countAndSaved(String stockId) {
         this.deleteShenXian(stockId);
         
-		List<StockPriceVO> priceList = qianFuQuanStockPriceTable.getStockPriceById(stockId);
+		List<StockPriceVO> priceList = stockPriceTable.getStockPriceById(stockId);
 
 		if (priceList.size() < 1) {
 			return;
@@ -90,7 +94,6 @@ public class HistoryShenXianCountAndSaveDBRunner {
 	// TODO Auto-generated method stub
 	// 一次性计算数据库中所有ShenXian数据，入库
 	public void mainWork(String[] args) {
-		CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 		this.countAndSaved(stockConfig.getAllStockId());
 		// runner.countAndSaved("600750");
 	}

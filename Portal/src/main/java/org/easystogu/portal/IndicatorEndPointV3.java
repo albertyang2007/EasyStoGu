@@ -31,6 +31,7 @@ import org.easystogu.portal.init.TrendModeLoader;
 import org.easystogu.portal.vo.ShenXianUIVO;
 import org.easystogu.utils.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -43,7 +44,8 @@ import com.google.gson.Gson;
 @RestController
 @RequestMapping(value = "/indv3")
 public class IndicatorEndPointV3 {
-	private ConfigurationServiceCache config = ConfigurationServiceCache.getInstance();
+	@Autowired
+	private ConfigurationServiceCache config ;
 	protected String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
 	protected static String HHmmss = "00:00:00";
 	@Autowired
@@ -67,7 +69,7 @@ public class IndicatorEndPointV3 {
 	@Autowired
 	protected TrendModeLoader trendModeLoader;
 	@Autowired
-	FlagsAnalyseHelper flagsAnalyseHelper;
+	protected FlagsAnalyseHelper flagsAnalyseHelper;
 
 	private Gson gson = new Gson();
 

@@ -18,25 +18,31 @@ import org.easystogu.db.vo.view.CommonViewVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.log.LogHelper;
 import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.Gson;
 
-
 @RestController
 @RequestMapping(value = "/view")
 public class ViewEndPoint {
-	private ConfigurationServiceCache config = ConfigurationServiceCache.getInstance();
-	private String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
 	private static Logger logger = LogHelper.getLogger(ViewEndPoint.class);
-	private CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
-	private CheckPointDailySelectionTableCache checkPointDailySelectionCache = CheckPointDailySelectionTableCache
-			.getInstance();
-	protected StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
-	private CommonViewCache commonViewCache = CommonViewCache.getInstance();
-	
+	@Autowired
+	private ConfigurationServiceCache config;
+	private String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
+	@Autowired
+	private CompanyInfoFileHelper stockConfig;
+	@Autowired
+	private CheckPointDailySelectionTableCache checkPointDailySelectionCache;
+	@Autowired
+	@Qualifier("stockPriceTable")
+	protected StockPriceTableHelper stockPriceTable;
+	@Autowired
+	private CommonViewCache commonViewCache;
+
 	private Gson gson = new Gson();
 
 	@GetMapping("/{viewname}")
@@ -52,8 +58,7 @@ public class ViewEndPoint {
 				|| "luzao_phaseII_ddx_bigger_05".equals(viewname) || "luzao_phaseIII_ddx_bigger_05".equals(viewname)) {
 			// get result from view directory, since they are fast
 			String searchViewName = viewname + "_Details";
-			List<CommonViewVO> list = this.commonViewCache
-					.queryByDateForViewDirectlySearch(date, searchViewName);
+			List<CommonViewVO> list = this.commonViewCache.queryByDateForViewDirectlySearch(date, searchViewName);
 
 			return gson.toJson(this.fliterCiXinGu(cixin, list));
 		}
@@ -62,8 +67,7 @@ public class ViewEndPoint {
 		// save to daily table
 		List<CommonViewVO> list = new ArrayList<CommonViewVO>();
 		String checkpoint = viewname;
-		List<CheckPointDailySelectionVO> cps = checkPointDailySelectionCache
-				.queryByDateAndCheckPoint(date, checkpoint);
+		List<CheckPointDailySelectionVO> cps = checkPointDailySelectionCache.queryByDateAndCheckPoint(date, checkpoint);
 		for (CheckPointDailySelectionVO cp : cps) {
 			CommonViewVO cvo = new CommonViewVO();
 			cvo.stockId = cp.stockId;

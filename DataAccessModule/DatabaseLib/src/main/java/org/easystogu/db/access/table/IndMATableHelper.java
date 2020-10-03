@@ -20,7 +20,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class IndMATableHelper {
-
 	private static Logger logger = LogHelper.getLogger(IndMATableHelper.class);
 	@Autowired
 	protected NamedParameterJdbcTemplate namedParameterJdbcTemplate;

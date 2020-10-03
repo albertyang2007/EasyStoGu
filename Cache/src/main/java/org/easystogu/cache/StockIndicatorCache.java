@@ -7,13 +7,17 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import javax.annotation.PostConstruct;
+
 import org.easystogu.config.Constants;
-import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.access.table.cache.CacheAbleStock;
 import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.log.LogHelper;
 import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
 
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
@@ -23,15 +27,24 @@ import com.google.common.util.concurrent.ListenableFutureTask;
 
 //refer to https://github.com/google/guava/wiki/CachesExplained
 //refer to https://bl.ocks.org/kashyapp/5309855
+@Component
 public class StockIndicatorCache {
 	private static Logger logger = LogHelper.getLogger(StockIndicatorCache.class);
-	private static StockIndicatorCache instance = null;
+	@Autowired
+	@Qualifier("stockPriceTable")
+	private StockPriceTableHelper stockPriceTable;
+	
+	@Autowired
+	@Qualifier("qianFuQuanStockPriceTable")
+	private StockPriceTableHelper qianFuQuanstockPriceTable;
+	
 	private LoadingCache<String, List<StockPriceVO>> cache;
 	private ConcurrentHashMap<String, CacheAbleStock> stockTablesMap = new ConcurrentHashMap<String, CacheAbleStock>();
 
-	private StockIndicatorCache() {
-		stockTablesMap.put(Constants.cacheStockPrice, StockPriceTableHelper.getInstance());
-		stockTablesMap.put(Constants.cacheQianFuQuanStockPrice, QianFuQuanStockPriceTableHelper.getInstance());
+	@PostConstruct
+	private void init() {
+		stockTablesMap.put(Constants.cacheStockPrice, stockPriceTable);
+		stockTablesMap.put(Constants.cacheQianFuQuanStockPrice, qianFuQuanstockPriceTable);
 		//stockTablesMap.put(Constants.cacheIndKDJ, IndKDJTableHelper.getInstance());
 		//stockTablesMap.put(Constants.cacheIndMacd, IndMacdTableHelper.getInstance());
 		//stockTablesMap.put(Constants.cacheIndBoll, IndBollTableHelper.getInstance());
@@ -76,13 +89,6 @@ public class StockIndicatorCache {
 						return cacheTable.queryByStockId(key.split(":")[1]);
 					}
 				});
-	}
-
-	public static StockIndicatorCache getInstance() {
-		if (instance == null) {
-			instance = new StockIndicatorCache();
-		}
-		return instance;
 	}
 
 	public LoadingCache<String, List<StockPriceVO>> getLoadingCache() {

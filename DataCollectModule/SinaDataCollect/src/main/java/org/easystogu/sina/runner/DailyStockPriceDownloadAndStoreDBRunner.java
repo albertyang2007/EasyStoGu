@@ -9,25 +9,34 @@ import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.sina.common.RealTimePriceVO;
 import org.easystogu.sina.helper.DailyStockPriceDownloadHelper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
 
 //daily get real time stock price from http://hq.sinajs.cn/list=
 //it need sotckIds as parameter
-public class DailyStockPriceDownloadAndStoreDBRunner implements Runnable {
+@Component
+public class DailyStockPriceDownloadAndStoreDBRunner {
     // private static Logger logger =
     // LogHelper.getLogger(DailyStockPriceDownloadAndStoreDBRunner.class);
-    private CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
-    private StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
-    private StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
-    //private StockPriceTableHelper houFuQuanStockPriceTable = HouFuQuanStockPriceTableHelper.getInstance();
-    private DailyStockPriceDownloadHelper sinaHelper = new DailyStockPriceDownloadHelper();
-    private CompanyInfoFileHelper companyInfoHelper = CompanyInfoFileHelper.getInstance();
-    private int totalError = 0;
-    private int totalSize = 0;
+	@Autowired
+    private CompanyInfoFileHelper stockConfig;
+	@Autowired
+	@Qualifier("stockPriceTable")
+    private StockPriceTableHelper stockPriceTable;
+	@Autowired
+	@Qualifier("qianFuQuanStockPriceTable")
+    private QianFuQuanStockPriceTableHelper qianFuQuanStockPriceTable;
+	@Autowired
+    private DailyStockPriceDownloadHelper sinaHelper;
+    @Autowired
+	protected CompanyInfoFileHelper companyInfoHelper;
+
 
     public void downloadDataAndSaveIntoDB(List<String> allStockIds) {
         int batchSize = 200;
         int batchs = allStockIds.size() / batchSize;
-        totalSize = allStockIds.size();
+        int totalSize = allStockIds.size();
         System.out.println("Process daily price, totalSize= " + totalSize);
         // 分批取数据
         int index = 0;
@@ -70,15 +79,7 @@ public class DailyStockPriceDownloadAndStoreDBRunner implements Runnable {
             // TODO Auto-generated catch block
             System.out.println("Can't save to DB, vo=" + vo + ", error=" + e.getMessage());
             e.printStackTrace();
-            totalError++;
-            // logger.error("Can not save stock price to DB " + vo.toString(),
-            // e);
         }
-    }
-
-    private void printResult() {
-        System.out.println("totalSize=" + this.totalSize);
-        System.out.println("totalError=" + this.totalError);
     }
 
     public void run() {
@@ -94,12 +95,5 @@ public class DailyStockPriceDownloadAndStoreDBRunner implements Runnable {
         allStockIds.addAll(szStockIds);
 
         downloadDataAndSaveIntoDB(allStockIds);
-        printResult();
-    }
-
-    public static void main(String[] args) {
-        // TODO Auto-generated method stub
-        DailyStockPriceDownloadAndStoreDBRunner runner = new DailyStockPriceDownloadAndStoreDBRunner();
-        runner.run();
     }
 }

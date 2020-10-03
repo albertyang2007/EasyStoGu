@@ -38,11 +38,6 @@
 		</dependency>
 		<dependency>
 			<groupId>org.albertyang2007.easystogu</groupId>
-			<artifactId>easystogu-easymoneycollect</artifactId>
-			<version>${repo-internal-version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.albertyang2007.easystogu</groupId>
 			<artifactId>easystogu-indicator</artifactId>
 			<version>${repo-internal-version}</version>
 		</dependency>

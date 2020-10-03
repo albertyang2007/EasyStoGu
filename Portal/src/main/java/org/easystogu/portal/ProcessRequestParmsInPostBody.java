@@ -6,7 +6,6 @@ import java.util.regex.Pattern;
 
 import org.easystogu.cache.StockIndicatorCache;
 import org.easystogu.config.Constants;
-import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.util.MergeNDaysPriceUtil;
 import org.easystogu.db.vo.table.StockPriceVO;
@@ -20,6 +19,7 @@ import org.easystogu.utils.WeekdayUtil;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 //process request parms in post request body, it only apply for IndicatorEndPointV3 and PriceEndPoint
@@ -28,12 +28,20 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ProcessRequestParmsInPostBody {
-	protected StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
-	protected StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
-	protected CompanyInfoFileHelper companyInfoHelper = CompanyInfoFileHelper.getInstance();
-	protected MergeNDaysPriceUtil mergeNdaysPriceHeloer = new MergeNDaysPriceUtil();
-	protected StockIndicatorCache indicatorCache = StockIndicatorCache.getInstance();
-	protected HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner historyQianFuQuanRunner = new HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner();
+	@Autowired
+	@Qualifier("qianFuQuanStockPriceTable")
+	protected StockPriceTableHelper qianFuQuanStockPriceTable;
+	@Autowired
+	@Qualifier("stockPriceTable")
+	protected StockPriceTableHelper stockPriceTable;
+	@Autowired
+	protected CompanyInfoFileHelper companyInfoHelper;
+	@Autowired
+	protected MergeNDaysPriceUtil mergeNdaysPriceHeloer;
+	@Autowired
+	protected StockIndicatorCache indicatorCache;
+	@Autowired
+	protected HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner historyQianFuQuanRunner;
 	@Autowired
 	protected TrendModeLoader trendModeLoader;
 
@@ -133,7 +141,8 @@ public class ProcessRequestParmsInPostBody {
 	// common function to fetch price from stockPrice table
 	private List<StockPriceVO> fetchAllPrices(String stockid) {
 		List<StockPriceVO> spList = new ArrayList<StockPriceVO>();
-		List<StockPriceVO> tmpList = this.indicatorCache.queryByStockId(Constants.cacheQianFuQuanStockPrice + ":" + stockid);
+		List<StockPriceVO> tmpList = this.indicatorCache
+				.queryByStockId(Constants.cacheQianFuQuanStockPrice + ":" + stockid);
 		for (Object obj : tmpList) {
 			spList.add((StockPriceVO) obj);
 		}

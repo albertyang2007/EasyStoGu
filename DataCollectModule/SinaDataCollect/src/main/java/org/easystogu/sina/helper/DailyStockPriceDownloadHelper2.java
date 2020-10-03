@@ -33,7 +33,7 @@ public class DailyStockPriceDownloadHelper2 {
 	private static final String baseUrl = "http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/Market_Center.getHQNodeData?page=1&num="
 			+ numberPerPage + "&sort=symbol&asc=1&node=hs_a";
 	@Autowired
-	private static FileConfigurationService configure;
+	private FileConfigurationService configure;
 
 	public List<SinaQuoteStockPriceVO> fetchAllStockPriceFromWeb() {
 		List<SinaQuoteStockPriceVO> list = new ArrayList<SinaQuoteStockPriceVO>();

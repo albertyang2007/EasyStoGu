@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.annotation.PostConstruct;
+
 import org.easystogu.db.access.table.CompanyInfoTableHelper;
 import org.easystogu.db.vo.table.CompanyInfoVO;
 import org.easystogu.file.TextFileSourceHelper;
@@ -16,28 +18,24 @@ import org.easystogu.utils.StringComparator;
 import org.easystogu.utils.Strings;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 //txt file to store all company base info
 //export all data from easymoney software PC version in "分析"->"财务数据", select xls file format
 //the Table_CompanyBaseInfo.xls is saved in CommonLib\src\main\resources
 //than conver to Table_CompanyBaseInfo.csv format
+@Component
 public class CompanyInfoFileHelper {
 	private static Logger logger = LogHelper.getLogger(CompanyInfoFileHelper.class);
 	@Autowired
 	private CompanyInfoTableHelper companyInfoTable;
-	private static CompanyInfoFileHelper instance = null;
-	protected TextFileSourceHelper fileSource = TextFileSourceHelper.getInstance();
+	@Autowired
+	protected TextFileSourceHelper fileSource;
 	protected String fileName = "./Company_Info/Company_Info.csv";
-	private Map<String, CompanyInfoVO> companyMap = new HashMap<String, CompanyInfoVO>();
+	private static Map<String, CompanyInfoVO> companyMap = new HashMap<String, CompanyInfoVO>();
 
-	public static CompanyInfoFileHelper getInstance() {
-		if (instance == null) {
-			instance = new CompanyInfoFileHelper();
-		}
-		return instance;
-	}
-
-	public CompanyInfoFileHelper() {
+	@PostConstruct
+	public void init() {
 		this.loadDataFromDatabase();
 
 		// add special stockId and name

@@ -4,7 +4,7 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.stereotype.Component;
 
-@Component
+@Component("qianFuQuanStockPriceTable")
 public class QianFuQuanStockPriceTableHelper extends StockPriceTableHelper {
 	@PostConstruct
 	private void refeshTableSQL() {

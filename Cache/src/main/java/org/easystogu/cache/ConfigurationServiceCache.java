@@ -4,6 +4,8 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import javax.annotation.PostConstruct;
+
 import org.easystogu.config.DBConfigurationService;
 import org.easystogu.log.LogHelper;
 import org.slf4j.Logger;
@@ -19,12 +21,12 @@ import com.google.common.util.concurrent.ListenableFutureTask;
 @Component
 public class ConfigurationServiceCache {
 	private Logger logger = LogHelper.getLogger(ConfigurationServiceCache.class);
-	private static ConfigurationServiceCache instance = null;
 	@Autowired
     private DBConfigurationService configServiceTable;
 	private LoadingCache<String, Object> cache;
 
-	private ConfigurationServiceCache() {
+	@PostConstruct
+	private void init() {
 		cache = CacheBuilder.newBuilder().maximumSize(100).refreshAfterWrite(5, TimeUnit.MINUTES)
 				.build(new CacheLoader<String, Object>() {
 					@Override
@@ -55,13 +57,6 @@ public class ConfigurationServiceCache {
 						return configServiceTable.getObject(key);
 					}
 				});
-	}
-
-	public static ConfigurationServiceCache getInstance() {
-		if (instance == null) {
-			instance = new ConfigurationServiceCache();
-		}
-		return instance;
 	}
 
 	public LoadingCache<String, Object> getLoadingCache() {

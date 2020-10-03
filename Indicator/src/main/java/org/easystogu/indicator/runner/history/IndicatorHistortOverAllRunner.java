@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class IndicatorHistortOverAllRunner implements Runnable {
+public class IndicatorHistortOverAllRunner {
 	@Autowired
 	HistoryMacdCountAndSaveDBRunner historyMacdCountAndSaveDBRunner;
 	@Autowired

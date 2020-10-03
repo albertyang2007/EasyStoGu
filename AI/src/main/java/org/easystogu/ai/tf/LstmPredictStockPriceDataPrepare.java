@@ -15,6 +15,7 @@ import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.db.vo.table.WRVO;
 import org.easystogu.file.CSVFileHelper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 // pls refer to:
@@ -22,8 +23,9 @@ import org.springframework.stereotype.Component;
 // python script is: TF_LSTM_Predict_StockPrice.py
 @Component
 public class LstmPredictStockPriceDataPrepare {
-	private static QianFuQuanStockPriceTableHelper qianFuQuanStockPriceTableHelper = QianFuQuanStockPriceTableHelper
-			.getInstance();
+	@Autowired
+	@Qualifier("qianFuQuanStockPriceTable")
+	private QianFuQuanStockPriceTableHelper qianFuQuanStockPriceTableHelper;
 	@Autowired
 	private DBAccessFacdeFactory dBAccessFacdeFactory;
 	protected IndicatorDBHelperIF shenXianTable = dBAccessFacdeFactory.getInstance(Constants.indShenXian);

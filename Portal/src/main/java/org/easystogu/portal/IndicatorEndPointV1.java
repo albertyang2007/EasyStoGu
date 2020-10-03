@@ -31,6 +31,7 @@ import org.easystogu.indicator.runner.utils.StockPriceFetcher;
 import org.easystogu.portal.vo.ShenXianUIVO;
 import org.easystogu.utils.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -44,9 +45,12 @@ import com.google.gson.Gson;
 @RequestMapping(value = "/indv1")
 public class IndicatorEndPointV1 {
 	protected static String HHmmss = "00:00:00";
-	private ConfigurationServiceCache config = ConfigurationServiceCache.getInstance();
+	@Autowired
+	private ConfigurationServiceCache config;
 	protected String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
-	protected QianFuQuanStockPriceTableHelper qianfuquanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
+	@Autowired
+	@Qualifier("qianFuQuanStockPriceTable")
+	protected QianFuQuanStockPriceTableHelper qianfuquanStockPriceTable;
 	@Autowired
 	private DBAccessFacdeFactory dBAccessFacdeFactory;
 	protected IndicatorDBHelperIF kdjTable = dBAccessFacdeFactory.getInstance(Constants.indKDJ);
@@ -57,7 +61,8 @@ public class IndicatorEndPointV1 {
 	protected IndicatorDBHelperIF shenXianTable = dBAccessFacdeFactory.getInstance(Constants.indShenXian);
 	@Autowired
 	protected IndDDXTableHelper ddxTable;
-	protected StockIndicatorCache indicatorCache = StockIndicatorCache.getInstance();
+	@Autowired
+	protected StockIndicatorCache indicatorCache;
 
 	@Autowired
 	protected LuZaoHelper luzaoHelper;

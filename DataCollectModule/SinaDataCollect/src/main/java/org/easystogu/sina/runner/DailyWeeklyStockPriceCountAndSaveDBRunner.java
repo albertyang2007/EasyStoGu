@@ -4,27 +4,35 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
-import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.access.table.WeekStockPriceTableHelper;
 import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.utils.WeekdayUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
 
 //每日stockprice入库之后计算本周的stockprice，入库
-public class DailyWeeklyStockPriceCountAndSaveDBRunner implements Runnable {
-	private StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
-	private WeekStockPriceTableHelper weekStockPriceTable = WeekStockPriceTableHelper.getInstance();
-	private String latestDate = qianFuQuanStockPriceTable.getLatestStockDate();
-	protected CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
+@Component
+public class DailyWeeklyStockPriceCountAndSaveDBRunner {
+	@Autowired
+	@Qualifier("qianFuQuanStockPriceTable")
+    private QianFuQuanStockPriceTableHelper qianFuQuanStockPriceTable;
+	@Autowired
+	@Qualifier("weekStockPriceTable")
+    private WeekStockPriceTableHelper weekStockPriceTable;
+	@Autowired
+	protected CompanyInfoFileHelper stockConfig;
 
 	public void deleteWeekStockPrice(String stockId, String date) {
 		weekStockPriceTable.delete(stockId, date);
 	}
 
 	public void countAndSave(List<String> stockIds) {
-	  
+	String latestDate = qianFuQuanStockPriceTable.getLatestStockDate();
+		
 	  stockIds.parallelStream().forEach(stockId -> {
-        this.countAndSaved(stockId);
+        this.countAndSaved(stockId, latestDate);
       });
 	  
 //		int index = 0;
@@ -36,10 +44,10 @@ public class DailyWeeklyStockPriceCountAndSaveDBRunner implements Runnable {
 //		}
 	}
 
-	public void countAndSaved(String stockId) {
+	public void countAndSaved(String stockId, String latestDate) {
 		// first clean one tuple in week_stockprice table
 		// loop all this week's date, in fact, only one tuple match and
-		// del
+		// del		
 		List<String> dates = WeekdayUtil.getWeekWorkingDates(latestDate);
 		for (String date : dates) {
 			this.deleteWeekStockPrice(stockId, date);
@@ -89,13 +97,5 @@ public class DailyWeeklyStockPriceCountAndSaveDBRunner implements Runnable {
 
 	public void run() {
 		countAndSave(stockConfig.getAllStockId());
-	}
-
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
-		DailyWeeklyStockPriceCountAndSaveDBRunner runner = new DailyWeeklyStockPriceCountAndSaveDBRunner();
-		runner.countAndSave(stockConfig.getAllStockId());
-		//runner.countAndSaved("999999");
 	}
 }

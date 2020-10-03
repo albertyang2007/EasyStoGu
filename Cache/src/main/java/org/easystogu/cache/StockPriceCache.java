@@ -6,10 +6,15 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import javax.annotation.PostConstruct;
+
 import org.easystogu.config.Constants;
 import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.log.LogHelper;
 import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
 
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
@@ -17,13 +22,17 @@ import com.google.common.cache.LoadingCache;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.ListenableFutureTask;
 
+@Component
 public class StockPriceCache {
 	private Logger logger = LogHelper.getLogger(StockPriceCache.class);
-	private static StockPriceCache instance = null;
-	private StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
+	@Autowired
+	@Qualifier("stockPriceTable")
+	private StockPriceTableHelper stockPriceTable;
+	
 	private LoadingCache<String, List<String>> cache;
 
-	private StockPriceCache() {
+	@PostConstruct
+	private void init() {
 		cache = CacheBuilder.newBuilder().maximumSize(100).refreshAfterWrite(5, TimeUnit.MINUTES)
 				.build(new CacheLoader<String, List<String>>() {
 					// key is like: type:parms, for example:
@@ -67,13 +76,6 @@ public class StockPriceCache {
 						return new ArrayList<String>();
 					}
 				});
-	}
-
-	public static StockPriceCache getInstance() {
-		if (instance == null) {
-			instance = new StockPriceCache();
-		}
-		return instance;
 	}
 
 	public LoadingCache<String, List<String>> getLoadingCache() {

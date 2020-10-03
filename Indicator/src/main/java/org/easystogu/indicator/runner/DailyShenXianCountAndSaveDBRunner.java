@@ -5,7 +5,6 @@ import java.util.List;
 import org.easystogu.config.Constants;
 import org.easystogu.db.access.facde.DBAccessFacdeFactory;
 import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
-import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.helper.IF.IndicatorDBHelperIF;
 import org.easystogu.db.vo.table.ShenXianVO;
 import org.easystogu.db.vo.table.StockPriceVO;
@@ -14,23 +13,23 @@ import org.easystogu.indicator.ShenXianHelper;
 import org.easystogu.indicator.runner.utils.StockPriceFetcher;
 import org.easystogu.utils.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import com.google.common.primitives.Doubles;
 
 @Component
-public class DailyShenXianCountAndSaveDBRunner implements Runnable {
+public class DailyShenXianCountAndSaveDBRunner{
 	@Autowired
 	private DBAccessFacdeFactory dBAccessFacdeFactory;
 	protected IndicatorDBHelperIF shenXianTable = dBAccessFacdeFactory.getInstance(Constants.indShenXian);
-	protected StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
 	@Autowired
-	private ShenXianHelper shenXianHelper = new ShenXianHelper();
-	protected CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
-
-	public DailyShenXianCountAndSaveDBRunner() {
-
-	}
+	@Qualifier("qianFuQuanStockPriceTable")
+	protected QianFuQuanStockPriceTableHelper qianFuQuanStockPriceTable;
+	@Autowired
+	private ShenXianHelper shenXianHelper;
+	@Autowired
+	protected CompanyInfoFileHelper stockConfig;
 
 	public void deleteShenXian(String stockId, String date) {
 		shenXianTable.delete(stockId, date);
@@ -86,17 +85,5 @@ public class DailyShenXianCountAndSaveDBRunner implements Runnable {
 //			}
 //			this.countAndSaved(stockId);
 //		}
-	}
-
-	public void run() {
-
-	}
-
-	// TODO Auto-generated method stub
-	public void mainWork(String[] args) {
-		CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
-		List<String> stockIds = stockConfig.getAllStockId();
-		this.countAndSaved(stockIds);
-		// runner.countAndSaved("999999");
 	}
 }

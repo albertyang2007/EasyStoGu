@@ -14,29 +14,33 @@ import org.easystogu.sina.helper.DailyStockPriceDownloadHelper2;
 import org.easystogu.sina.runner.history.HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner;
 import org.easystogu.utils.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
 
 //daily get real time stock price from http://vip.stock.finance.sina.com.cn/quotes_service/api/
 //it will get all the stockId from the web, including the new on board stockId
-public class DailyStockPriceDownloadAndStoreDBRunner2 implements Runnable {
-
-    // private static Logger logger =
-    // LogHelper.getLogger(DailyStockPriceDownloadAndStoreDBRunner2.class);
-    private CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
-    private StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
-    //private HouFuQuanStockPriceTableHelper houfuquanStockPriceTable = HouFuQuanStockPriceTableHelper.getInstance();
-    private QianFuQuanStockPriceTableHelper qianfuquanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
-    //private ScheduleActionTableHelper scheduleActionTable = ScheduleActionTableHelper.getInstance();
+@Component
+public class DailyStockPriceDownloadAndStoreDBRunner2 {
+	@Autowired
+    private CompanyInfoFileHelper stockConfig;
+	@Autowired
+	@Qualifier("stockPriceTable")
+    private StockPriceTableHelper stockPriceTable;
+	@Autowired
+	@Qualifier("qianFuQuanStockPriceTable")
+    private QianFuQuanStockPriceTableHelper qianFuQuanStockPriceTable;
 	@Autowired
 	private CompanyInfoTableHelper companyInfoTable;
-    private DailyStockPriceDownloadAndStoreDBRunner runner1 = new DailyStockPriceDownloadAndStoreDBRunner();
-    private DailyStockPriceDownloadHelper2 sinaHelper2 = new DailyStockPriceDownloadHelper2();
-    private HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner historyQianFuQuanRunner = new HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner();
-    private String latestDate = "";
-    private int totalSize = 0;
+	@Autowired
+    private DailyStockPriceDownloadAndStoreDBRunner runner1;
+	@Autowired
+    private DailyStockPriceDownloadHelper2 sinaHelper2;
+	@Autowired
+    private HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner historyQianFuQuanRunner;
 
     // first download szzs, szcz, cybz,
     // must record the latest date time
-    public void downloadMainBoardIndicator() {
+    public String downloadMainBoardIndicator() {
         List<String> stockIds = new ArrayList<String>();
 
         stockIds.add(stockConfig.getSZZSStockIdForSina());
@@ -47,17 +51,18 @@ public class DailyStockPriceDownloadAndStoreDBRunner2 implements Runnable {
         // important: this json do not contain date information,
         // just time is not enough, so we must get it form hq.sinajs.cn
         // then query the database and get the latest deal date
-        this.latestDate = stockPriceTable.getLatestStockDate();
+        String latestDate = stockPriceTable.getLatestStockDate();
+        return latestDate;
     }
 
-    public void downloadDataAndSaveIntoDB() {
-
-        if (Strings.isEmpty(this.latestDate)) {
+    public int downloadDataAndSaveIntoDB(String latestDate) {
+    	int totalSize = 0;
+        if (Strings.isEmpty(latestDate)) {
             System.out.println("Fatel Error, the latestDate is null! Return.");
-            return;
+            return 0;
         }
 
-        System.out.println("Get stock price for " + this.latestDate);
+        System.out.println("Get stock price for " + latestDate);
 
         List<SinaQuoteStockPriceVO> sqsList = sinaHelper2.fetchAllStockPriceFromWeb();
         for (SinaQuoteStockPriceVO sqvo : sqsList) {
@@ -75,11 +80,13 @@ public class DailyStockPriceDownloadAndStoreDBRunner2 implements Runnable {
                 companyInfoTable.updateName(companyInfo);
             }
             // convert to stockprice and save to DB
-            this.saveIntoDB(sqvo);
+            this.saveIntoDB(sqvo, latestDate, totalSize);
         }
+        
+        return totalSize;
     }
 
-    public void saveIntoDB(SinaQuoteStockPriceVO sqvo) {
+    public void saveIntoDB(SinaQuoteStockPriceVO sqvo, String latestDate , int totalSize) {
         try {
             // update stockprice into table
             StockPriceVO spvo = new StockPriceVO();
@@ -87,7 +94,7 @@ public class DailyStockPriceDownloadAndStoreDBRunner2 implements Runnable {
             spvo.name = sqvo.name;
             // important: this json do not contain date information,
             // just time is not enough, so we must get it form hq.sinajs.cn
-            spvo.date = this.latestDate;
+            spvo.date = latestDate;
             spvo.close = sqvo.trade;
             spvo.open = sqvo.open;
             spvo.low = sqvo.low;
@@ -102,8 +109,8 @@ public class DailyStockPriceDownloadAndStoreDBRunner2 implements Runnable {
             // System.out.println("saving into DB, vo=" + vo);
             this.stockPriceTable.insert(spvo);
             // also insert the qian fuquan stockprice
-            this.qianfuquanStockPriceTable.delete(spvo.stockId, spvo.date);
-            this.qianfuquanStockPriceTable.insert(spvo);
+            this.qianFuQuanStockPriceTable.delete(spvo.stockId, spvo.date);
+            this.qianFuQuanStockPriceTable.insert(spvo);
 
             // check if chu quan event exist
             if (nDaySpList.size() > 0) {
@@ -118,7 +125,7 @@ public class DailyStockPriceDownloadAndStoreDBRunner2 implements Runnable {
                 }
             }
 
-            this.totalSize++;
+            totalSize++;
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -126,14 +133,12 @@ public class DailyStockPriceDownloadAndStoreDBRunner2 implements Runnable {
     }
 
     public void run() {
-        downloadMainBoardIndicator();
-        downloadDataAndSaveIntoDB();
-        System.out.println("\ntotalSize=" + this.totalSize);
+    	String latestDate = downloadMainBoardIndicator();
+        int totalSize = downloadDataAndSaveIntoDB(latestDate);
+        System.out.println("\ntotalSize=" + totalSize);
     }
 
-    public static void main(String[] args) {
-        // TODO Auto-generated method stub
-        DailyStockPriceDownloadAndStoreDBRunner2 runner = new DailyStockPriceDownloadAndStoreDBRunner2();
-        runner.run();
+    public void mainWork(String[] args) {
+        this.run();
     }
 }

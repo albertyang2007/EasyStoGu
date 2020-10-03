@@ -6,10 +6,14 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import javax.annotation.PostConstruct;
+
 import org.easystogu.db.access.view.XXXYuanStockStatisticsViewHelper;
 import org.easystogu.db.vo.view.StatisticsViewVO;
 import org.easystogu.log.LogHelper;
 import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
@@ -17,13 +21,15 @@ import com.google.common.cache.LoadingCache;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.ListenableFutureTask;
 
+@Component
 public class XXXYuanStockStatisticsCache {
 	private Logger logger = LogHelper.getLogger(XXXYuanStockStatisticsCache.class);
-	private static XXXYuanStockStatisticsCache instance = null;
-	private XXXYuanStockStatisticsViewHelper xtockStatisticsViewHelper = XXXYuanStockStatisticsViewHelper.getInstance();
+	@Autowired
+	private XXXYuanStockStatisticsViewHelper xtockStatisticsViewHelper;
 	private LoadingCache<String, List<StatisticsViewVO>> cache;
 
-	private XXXYuanStockStatisticsCache() {
+	@PostConstruct
+	private void init() {
 		cache = CacheBuilder.newBuilder().maximumSize(100).refreshAfterWrite(12, TimeUnit.HOURS)
 				.build(new CacheLoader<String, List<StatisticsViewVO>>() {
 					// key is One, Five or Ten
@@ -53,13 +59,6 @@ public class XXXYuanStockStatisticsCache {
 						return task;
 					}
 				});
-	}
-
-	public static XXXYuanStockStatisticsCache getInstance() {
-		if (instance == null) {
-			instance = new XXXYuanStockStatisticsCache();
-		}
-		return instance;
 	}
 
 	public LoadingCache<String, List<StatisticsViewVO>> getLoadingCache() {

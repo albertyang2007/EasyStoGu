@@ -17,59 +17,48 @@ import org.easystogu.db.access.table.ScheduleActionTableHelper;
 import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.access.table.StockSuperVOHelper;
 import org.easystogu.db.access.table.WeekStockSuperVOHelper;
-import org.easystogu.db.access.table.ZhuLiJingLiuRuTableHelper;
-import org.easystogu.db.access.table.ZiJinLiu3DayTableHelper;
-import org.easystogu.db.access.table.ZiJinLiu5DayTableHelper;
-import org.easystogu.db.access.table.ZiJinLiuTableHelper;
 import org.easystogu.db.vo.table.CheckPointDailySelectionVO;
 import org.easystogu.db.vo.table.CheckPointDailyStatisticsVO;
 import org.easystogu.db.vo.table.ScheduleActionVO;
 import org.easystogu.db.vo.table.StockSuperVO;
-import org.easystogu.db.vo.table.ZiJinLiuVO;
-import org.easystogu.easymoney.helper.RealTimeZiJinLiuFatchDataHelper;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.utils.Strings;
 import org.easystogu.utils.WeekdayUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 // daily select stock that checkpoint is satisfied
 @Component
-public class DailySelectionRunner implements Runnable {
+public class DailySelectionRunner {
 	@Autowired
 	private DBConfigurationService config;
-	private StockSuperVOHelper stockOverAllHelper = new StockSuperVOHelper();
-	private WeekStockSuperVOHelper weekStockOverAllHelper = new WeekStockSuperVOHelper();
+	@Autowired
+	protected FavoritesStockHelper favoritesStockHelper;
+	@Autowired
+	protected CompanyInfoFileHelper stockConfig;
+	@Autowired
+	@Qualifier("stockPriceTable")
+	protected StockPriceTableHelper stockPriceTable;
+	@Autowired
+	private StockSuperVOHelper stockOverAllHelper;
+	@Autowired
+	private WeekStockSuperVOHelper weekStockOverAllHelper;
 	@Autowired
 	private CheckPointDailySelectionTableHelper checkPointDailySelectionTable;
-	private CheckPointDailyStatisticsTableHelper checkPointDailyStatisticsTable = CheckPointDailyStatisticsTableHelper
-			.getInstance();
-	private RealTimeZiJinLiuFatchDataHelper realTimeZiJinLiuHelper = RealTimeZiJinLiuFatchDataHelper.getInstance();
-	private ZiJinLiuTableHelper ziJinLiuTableHelper = ZiJinLiuTableHelper.getInstance();
-	private ZhuLiJingLiuRuTableHelper zhuLiJingLiuRuTableHelper = ZhuLiJingLiuRuTableHelper.getInstance();
-	private ZiJinLiu3DayTableHelper ziJinLiu3DayTableHelper = ZiJinLiu3DayTableHelper.getInstance();
-	private ZiJinLiu5DayTableHelper ziJinLiu5DayTableHelper = ZiJinLiu5DayTableHelper.getInstance();
-	private ScheduleActionTableHelper scheduleActionTableHelper = ScheduleActionTableHelper.getInstance();
-	private CombineAnalyseHelper combineAnalyserHelper = new CombineAnalyseHelper();
+	@Autowired
+	private CheckPointDailyStatisticsTableHelper checkPointDailyStatisticsTable;
+	@Autowired
+	private ScheduleActionTableHelper scheduleActionTableHelper;
+	@Autowired
+	private CombineAnalyseHelper combineAnalyserHelper;
+
 	private String[] specifySelectCheckPoints = config.getString("specify_Select_CheckPoint", "").split(";");
 	private String[] specifyDependCheckPoints = config.getString("specify_Depend_CheckPoint", "").split(";");
 	private String[] generalCheckPoints = config.getString("general_CheckPoint", "").split(";");
-	private StringBuffer recommandStr = new StringBuffer();
-	// StockPriceVO, CheckPoint list
-	private Map<StockSuperVO, List<DailyCombineCheckPoint>> selectedMaps = new java.util.concurrent.ConcurrentHashMap<StockSuperVO, List<DailyCombineCheckPoint>>();
-	private Map<String, ZiJinLiuVO> realTimeZiJinLiuMap = new java.util.concurrent.ConcurrentHashMap<String, ZiJinLiuVO>();
-	private Map<DailyCombineCheckPoint, List<String>> generalCheckPointGordonMap = new java.util.concurrent.ConcurrentHashMap<DailyCombineCheckPoint, List<String>>();
-	private boolean fetchRealTimeZiJinLiu = false;
 
-	// below are for daily and history
-	protected FavoritesStockHelper favoritesStockHelper = FavoritesStockHelper.getInstance();
-	protected CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
-	protected StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
-	protected String latestDate = stockPriceTable.getLatestStockDate();
-	protected boolean addToScheduleActionTable = true;
-	protected boolean checkDayPriceEqualWeekPrice = true;
-
-	public void doAnalyse(String stockId) {
+	public void doAnalyse(String stockId, String latestDate, boolean addToScheduleActionTable,
+			boolean checkDayPriceEqualWeekPrice, Map<DailyCombineCheckPoint, List<String>> generalCheckPointGordonMap) {
 		try {
 			List<StockSuperVO> overDayList = stockOverAllHelper.getAllStockSuperVO(stockId);
 			List<StockSuperVO> overWeekList = weekStockOverAllHelper.getAllStockSuperVO(stockId);
@@ -81,7 +70,7 @@ public class DailySelectionRunner implements Runnable {
 				ScheduleActionVO vo = new ScheduleActionVO();
 				vo.setActionDo(ScheduleActionVO.ActionDo.refresh_history_stockprice.name());
 				vo.setStockId(stockId);
-				vo.setCreateDate(this.latestDate);
+				vo.setCreateDate(latestDate);
 				vo.setRunDate(WeekdayUtil.nextNDateString(latestDate, 20));
 				this.scheduleActionTableHelper.deleteIfExistAndThenInsert(vo);
 				return;
@@ -94,13 +83,13 @@ public class DailySelectionRunner implements Runnable {
 				ScheduleActionVO vo = new ScheduleActionVO();
 				vo.setActionDo(ScheduleActionVO.ActionDo.refresh_history_stockprice.name());
 				vo.setStockId(stockId);
-				vo.setCreateDate(this.latestDate);
+				vo.setCreateDate(latestDate);
 				vo.setRunDate(WeekdayUtil.nextNDateString(latestDate, 20));
 				this.scheduleActionTableHelper.deleteIfExistAndThenInsert(vo);
 				return;
 			}
 
-			int dayListLen = this.getDateIndex(this.latestDate, overDayList) + 1;
+			int dayListLen = this.getDateIndex(latestDate, overDayList) + 1;
 			if (dayListLen >= 120)
 				overDayList = overDayList.subList(dayListLen - 120, dayListLen);
 
@@ -140,13 +129,11 @@ public class DailySelectionRunner implements Runnable {
 				// System.out.println("checkpoint=" + checkPoint);
 				if (this.isSelectedCheckPoint(checkPoint)) {
 					if (combineAnalyserHelper.isConditionSatisfy(checkPoint, overDayList, overWeekList)) {
-						this.setZiJinLiuVO(superVO);
 						this.saveToCheckPointSelectionDB(superVO, checkPoint);
 						// this.addToConditionMapForReportDisplay(superVO, checkPoint);
 					}
 				} else if (this.isDependCheckPoint(checkPoint)) {
 					if (combineAnalyserHelper.isConditionSatisfy(checkPoint, overDayList, overWeekList)) {
-						this.setZiJinLiuVO(superVO);
 						// search if other checkpoint already happen in recent
 						// days
 						CheckPointDailySelectionVO latestCheckPointSelection = checkPointDailySelectionTable
@@ -191,7 +178,7 @@ public class DailySelectionRunner implements Runnable {
 							this.saveToCheckPointSelectionDB(superVO, checkPoint);
 							// this.addToConditionMapForReportDisplay(superVO, checkPoint);
 						}
-						this.addToGeneralCheckPointGordonMap(checkPoint, stockId);
+						this.addToGeneralCheckPointGordonMap(checkPoint, stockId, generalCheckPointGordonMap);
 					}
 				}
 			}
@@ -199,40 +186,6 @@ public class DailySelectionRunner implements Runnable {
 			System.out.println("Exception for " + stockId);
 			e.printStackTrace();
 		}
-	}
-
-	private void setZiJinLiuVO(StockSuperVO superVO) {
-
-		boolean justReturn = true;
-		if (justReturn) {
-			return;
-		}
-
-		// if real time zijinliu is not collect, then find it from total range
-		// zijinliu (59 pages)
-		if (this.fetchRealTimeZiJinLiu) {
-			String stockId = superVO.priceVO.stockId;
-			ZiJinLiuVO realTimeVO = null;
-			if (!this.realTimeZiJinLiuMap.containsKey(stockId)) {
-				realTimeVO = realTimeZiJinLiuHelper.fetchDataFromWeb(stockId);
-				this.realTimeZiJinLiuMap.put(stockId, realTimeVO);
-			} else {
-				realTimeVO = this.realTimeZiJinLiuMap.get(stockId);
-			}
-
-			// put ziJinLiu VO to list
-			superVO.putZiJinLiuVO(ZiJinLiuVO.RealTime, realTimeVO);
-		}
-
-		// also get zijinliu from DB if exist
-		superVO.putZiJinLiuVO(ZiJinLiuVO._1Day, ziJinLiuTableHelper.getZiJinLiu(superVO.priceVO.stockId, latestDate));
-		superVO.putZiJinLiuVO(ZiJinLiuVO._3Day,
-				ziJinLiu3DayTableHelper.getZiJinLiu(superVO.priceVO.stockId, latestDate));
-		superVO.putZiJinLiuVO(ZiJinLiuVO._5Day,
-				ziJinLiu5DayTableHelper.getZiJinLiu(superVO.priceVO.stockId, latestDate));
-
-		// get zhuLiJingLiuRu from DB
-		superVO.setZhuLiJingLiuRuVO(zhuLiJingLiuRuTableHelper.getZhuLiJingLiuRu(superVO.priceVO.stockId, latestDate));
 	}
 
 	private void saveToCheckPointSelectionDB(StockSuperVO superVO, DailyCombineCheckPoint checkPoint) {
@@ -243,22 +196,12 @@ public class DailySelectionRunner implements Runnable {
 		this.checkPointDailySelectionTable.insertIfNotExist(vo);
 	}
 
-	private void addToConditionMapForReportDisplay(StockSuperVO superVO, DailyCombineCheckPoint checkPoint) {
-		List<DailyCombineCheckPoint> checkPointList = selectedMaps.get(superVO);
-		if (checkPointList == null) {
-			checkPointList = new ArrayList<DailyCombineCheckPoint>();
-			checkPointList.add(checkPoint);
-			selectedMaps.put(superVO, checkPointList);
-		} else {
-			checkPointList.add(checkPoint);
-		}
-	}
-
-	private void addToGeneralCheckPointGordonMap(DailyCombineCheckPoint checkPoint, String stockId) {
-		List<String> stockIds = this.generalCheckPointGordonMap.get(checkPoint);
+	private void addToGeneralCheckPointGordonMap(DailyCombineCheckPoint checkPoint, String stockId,
+			Map<DailyCombineCheckPoint, List<String>> generalCheckPointGordonMap) {
+		List<String> stockIds = generalCheckPointGordonMap.get(checkPoint);
 		if (stockIds == null) {
 			stockIds = new ArrayList<String>();
-			this.generalCheckPointGordonMap.put(checkPoint, stockIds);
+			generalCheckPointGordonMap.put(checkPoint, stockIds);
 		}
 		stockIds.add(stockId);
 	}
@@ -296,30 +239,14 @@ public class DailySelectionRunner implements Runnable {
 		return false;
 	}
 
-	public void reportSelectedStockIds() {
-		Set<StockSuperVO> keys = this.selectedMaps.keySet();
-		Iterator<StockSuperVO> keysIt = keys.iterator();
-		while (keysIt.hasNext()) {
-			StockSuperVO superVO = keysIt.next();
-			List<DailyCombineCheckPoint> checkPointList = this.selectedMaps.get(superVO);
-			for (DailyCombineCheckPoint checkPoint : checkPointList) {
-				if (checkPoint.isSatisfyMinEarnPercent()) {
-					recommandStr.append(superVO.priceVO.stockId + " select :" + checkPointList.toString() + " "
-							+ superVO.genZiJinLiuInfo() + " " + superVO.getZhuLiJingLiuRu() + "\n");
-				}
-			}
-		}
-
-		System.out.println(recommandStr.toString());
-	}
-
-	private void addGeneralCheckPointStatisticsResultToDB() {
+	private void addGeneralCheckPointStatisticsResultToDB(String latestDate,
+			Map<DailyCombineCheckPoint, List<String>> generalCheckPointGordonMap) {
 		System.out.println("==================General CheckPoint Statistics=====================");
-		Set<DailyCombineCheckPoint> keys = this.generalCheckPointGordonMap.keySet();
+		Set<DailyCombineCheckPoint> keys = generalCheckPointGordonMap.keySet();
 		Iterator<DailyCombineCheckPoint> keysIt = keys.iterator();
 		while (keysIt.hasNext()) {
 			DailyCombineCheckPoint checkPoint = keysIt.next();
-			List<String> stockIds = this.generalCheckPointGordonMap.get(checkPoint);
+			List<String> stockIds = generalCheckPointGordonMap.get(checkPoint);
 
 			CheckPointDailyStatisticsVO cpdsvo = new CheckPointDailyStatisticsVO();
 			cpdsvo.date = latestDate;
@@ -357,19 +284,15 @@ public class DailySelectionRunner implements Runnable {
 		return overList.size() - 1;
 	}
 
-	public boolean isFetchRealTimeZiJinLiu() {
-		return fetchRealTimeZiJinLiu;
-	}
+	public void runForStockIds(List<String> stockIds, String latestDate, boolean addToScheduleActionTable,
+			boolean checkDayPriceEqualWeekPrice) {
+		System.out.println("DailySelection runForStockIds start for date " + latestDate);
 
-	public void setFetchRealTimeZiJinLiu(boolean fetchRealTimeZiJinLiu) {
-		this.fetchRealTimeZiJinLiu = fetchRealTimeZiJinLiu;
-	}
-
-	public void runForStockIds(List<String> stockIds) {
-		System.out.println("DailySelection runForStockIds start for date " + this.latestDate);
+		Map<DailyCombineCheckPoint, List<String>> generalCheckPointGordonMap = new java.util.concurrent.ConcurrentHashMap<DailyCombineCheckPoint, List<String>>();
 
 		stockIds.parallelStream().forEach(stockId -> {
-			this.doAnalyse(stockId);
+			this.doAnalyse(stockId, latestDate, addToScheduleActionTable, checkDayPriceEqualWeekPrice,
+					generalCheckPointGordonMap);
 		});
 
 		// int index = 0;
@@ -382,31 +305,33 @@ public class DailySelectionRunner implements Runnable {
 		// doAnalyse(stockId);
 		// }
 
-		// reportSelectedStockIds();
-		// reportSelectedHistoryReport();
-		addGeneralCheckPointStatisticsResultToDB();
+		addGeneralCheckPointStatisticsResultToDB(latestDate, generalCheckPointGordonMap);
 
-		System.out.println("DailySelection runForStockIds stop for date " + this.latestDate);
+		System.out.println("DailySelection runForStockIds stop for date " + latestDate);
 	}
 
 	public void run() {
+		String latestDate = stockPriceTable.getLatestStockDate();
+		boolean addToScheduleActionTable = true;
+		boolean checkDayPriceEqualWeekPrice = true;
 		List<String> stockIds = stockConfig.getAllStockId();
-		this.runForStockIds(stockIds);
+		this.runForStockIds(stockIds, latestDate, addToScheduleActionTable, checkDayPriceEqualWeekPrice);
 	}
 
 	// run for CHECKPOINT_DAILY_STATISTICS when all zero statistics for date
 	public void runForDate(String date, List<String> stockIds) {
-		this.latestDate = date;
-		this.addToScheduleActionTable = false;
-		this.checkDayPriceEqualWeekPrice = false;
-		this.runForStockIds(stockIds);
+		String latestDate = date;
+		boolean addToScheduleActionTable = false;
+		boolean checkDayPriceEqualWeekPrice = false;
+		this.runForStockIds(stockIds, latestDate, addToScheduleActionTable, checkDayPriceEqualWeekPrice);
 	}
 
 	// run for CHECKPOINT_DAILY_STATISTICS when all zero statistics for date
 	public void runForDate(String date) {
-		this.latestDate = date;
-		this.addToScheduleActionTable = false;
-		this.checkDayPriceEqualWeekPrice = false;
-		this.runForStockIds(stockConfig.getAllStockId());
+		String latestDate = date;
+		boolean addToScheduleActionTable = false;
+		boolean checkDayPriceEqualWeekPrice = false;
+		this.runForStockIds(stockConfig.getAllStockId(), latestDate, addToScheduleActionTable,
+				checkDayPriceEqualWeekPrice);
 	}
 }

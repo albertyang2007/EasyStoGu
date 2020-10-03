@@ -6,10 +6,14 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import javax.annotation.PostConstruct;
+
 import org.easystogu.db.access.view.CommonViewHelper;
 import org.easystogu.db.vo.view.CommonViewVO;
 import org.easystogu.log.LogHelper;
 import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
@@ -17,13 +21,15 @@ import com.google.common.cache.LoadingCache;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.ListenableFutureTask;
 
+@Component
 public class CommonViewCache {
 	private Logger logger = LogHelper.getLogger(CommonViewCache.class);
-	private static CommonViewCache instance = null;
-	private CommonViewHelper commonViewHelper = CommonViewHelper.getInstance();
+	@Autowired
+	private CommonViewHelper commonViewHelper;
 	private LoadingCache<String, List<CommonViewVO>> cache;
 
-	private CommonViewCache() {
+	@PostConstruct
+	private void init() {
 		cache = CacheBuilder.newBuilder().maximumSize(100).refreshAfterWrite(5, TimeUnit.MINUTES)
 				.build(new CacheLoader<String, List<CommonViewVO>>() {
 					@Override
@@ -57,13 +63,6 @@ public class CommonViewCache {
 						return commonViewHelper.queryByDateForViewDirectlySearch(parms[0], parms[1]);
 					}
 				});
-	}
-
-	public static CommonViewCache getInstance() {
-		if (instance == null) {
-			instance = new CommonViewCache();
-		}
-		return instance;
 	}
 
 	public LoadingCache<String, List<CommonViewVO>> getLoadingCache() {

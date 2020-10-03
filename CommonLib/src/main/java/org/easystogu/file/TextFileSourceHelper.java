@@ -15,22 +15,12 @@ import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.io.support.ResourcePatternUtils;
+import org.springframework.stereotype.Component;
 
+@Component
 public class TextFileSourceHelper {
     private static Logger logger = LogHelper.getLogger(TextFileSourceHelper.class);
     private static ResourceLoader resourceLoader = new DefaultResourceLoader();
-    private static TextFileSourceHelper instance = null;
-
-    public static TextFileSourceHelper getInstance() {
-        if (instance == null) {
-            instance = new TextFileSourceHelper();
-        }
-        return instance;
-    }
-
-    private TextFileSourceHelper() {
-
-    }
 
     public String loadContent(String fileName) {
         try {
@@ -88,11 +78,5 @@ public class TextFileSourceHelper {
             e.printStackTrace();
         }
         return files;
-    }
-
-    public static void main(String[] args) {
-        // TODO Auto-generated method stub
-        TextFileSourceHelper ins = new TextFileSourceHelper();
-        ins.listResourceFiles("classpath:/*.json");
     }
 }

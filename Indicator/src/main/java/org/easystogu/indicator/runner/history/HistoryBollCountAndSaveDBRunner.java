@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.easystogu.config.Constants;
 import org.easystogu.db.access.facde.DBAccessFacdeFactory;
-import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.helper.IF.IndicatorDBHelperIF;
 import org.easystogu.db.vo.table.BollVO;
@@ -13,6 +12,7 @@ import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.indicator.BOLLHelper;
 import org.easystogu.utils.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 //计算数据库中所有boll值，包括最新和历史的，一次性运行
@@ -21,9 +21,13 @@ public class HistoryBollCountAndSaveDBRunner {
 	@Autowired
 	private DBAccessFacdeFactory dBAccessFacdeFactory;
 	protected IndicatorDBHelperIF bollTable = dBAccessFacdeFactory.getInstance(Constants.indBoll);
-	protected StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
+	@Autowired
+	@Qualifier("qianFuQuanStockPriceTable")
+	protected StockPriceTableHelper stockPriceTable;
 	@Autowired
 	private BOLLHelper bollHelper;
+	@Autowired
+	private CompanyInfoFileHelper stockConfig;
 
 	public void deleteBoll(String stockId) {
 		bollTable.delete(stockId);
@@ -41,7 +45,7 @@ public class HistoryBollCountAndSaveDBRunner {
 		this.deleteBoll(stockId);
 
 		try {
-			List<StockPriceVO> priceList = qianFuQuanStockPriceTable.getStockPriceById(stockId);
+			List<StockPriceVO> priceList = stockPriceTable.getStockPriceById(stockId);
 
 			int length = priceList.size();
 
@@ -101,7 +105,6 @@ public class HistoryBollCountAndSaveDBRunner {
 
 	public void mainWork(String[] args) {
 		// TODO Auto-generated method stub
-		CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 		this.countAndSaved(stockConfig.getAllStockId());
 		// runner.countAndSaved("600750");
 	}

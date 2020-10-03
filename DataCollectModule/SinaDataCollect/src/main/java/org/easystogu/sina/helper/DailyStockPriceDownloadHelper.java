@@ -23,8 +23,9 @@ import org.springframework.web.client.RestTemplate;
 public class DailyStockPriceDownloadHelper {
 	private static final String baseUrl = "http://hq.sinajs.cn/list=";
 	@Autowired
-	private static FileConfigurationService configure;
-	private CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
+	private FileConfigurationService configure;
+	@Autowired
+	private CompanyInfoFileHelper stockConfig;
 
 	// stockList is like: sh000001,sh601318
 	// has prefix
@@ -80,12 +81,5 @@ public class DailyStockPriceDownloadHelper {
 			e.printStackTrace();
 		}
 		return list;
-	}
-
-	public static void main(String[] args) {
-		DailyStockPriceDownloadHelper ins = new DailyStockPriceDownloadHelper();
-		List<RealTimePriceVO> list = ins.fetchDataFromWeb("sh600000");
-		System.out.println(list.size());
-		System.out.println(list.get(0));
 	}
 }

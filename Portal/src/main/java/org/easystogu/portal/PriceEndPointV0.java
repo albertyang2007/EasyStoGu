@@ -18,6 +18,7 @@ import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.utils.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,23 +30,28 @@ import com.google.gson.Gson;
 @RestController
 @RequestMapping(value = "/pricev0")
 public class PriceEndPointV0 {
-	protected ConfigurationServiceCache config = ConfigurationServiceCache.getInstance();
+	@Autowired
+	protected ConfigurationServiceCache config;
 	protected String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
 	protected static String HHmmss = "00:00:00";
-	protected CompanyInfoFileHelper companyInfoHelper = CompanyInfoFileHelper.getInstance();
-	private StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
-	protected StockIndicatorCache indicatorCache = StockIndicatorCache.getInstance();
+	@Autowired
+	protected CompanyInfoFileHelper companyInfoHelper;
+	@Autowired
+	@Qualifier("stockPriceTable")
+	private StockPriceTableHelper stockPriceTable;
+	@Autowired
+	protected StockIndicatorCache indicatorCache;
 	@Autowired
 	protected ProcessRequestParmsInPostBody postParmsProcess;
 	protected String dateRegex = "[0-9]{4}-[0-9]{2}-[0-9]{2}";
 	protected String fromToRegex = dateRegex + "_" + dateRegex;
-	
+
 	private Gson gson = new Gson();
 
 	@GetMapping("/{stockId}/{date}")
 	@Produces("application/json")
-	public String queryDayPriceById(@PathParam("stockId") String stockIdParm,
-			@PathParam("date") String dateParm, @Context HttpServletResponse response) {
+	public String queryDayPriceById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
+			@Context HttpServletResponse response) {
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 
 		List<StockPriceVO> spList = new ArrayList<StockPriceVO>();
@@ -53,9 +59,10 @@ public class PriceEndPointV0 {
 		if (Pattern.matches(fromToRegex, dateParm)) {
 			String date1 = dateParm.split("_")[0];
 			String date2 = dateParm.split("_")[1];
-			List<StockPriceVO> cacheSpList = indicatorCache.queryByStockId(Constants.cacheStockPrice + ":" +stockIdParm);
+			List<StockPriceVO> cacheSpList = indicatorCache
+					.queryByStockId(Constants.cacheStockPrice + ":" + stockIdParm);
 			for (Object obj : cacheSpList) {
-				StockPriceVO spvo = (StockPriceVO)obj;
+				StockPriceVO spvo = (StockPriceVO) obj;
 				if (Strings.isDateSelected(date1 + " " + HHmmss, date2 + " " + HHmmss, spvo.date + " " + HHmmss)) {
 					spList.add(spvo);
 				}

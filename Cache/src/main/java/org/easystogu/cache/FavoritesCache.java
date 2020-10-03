@@ -6,12 +6,16 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import javax.annotation.PostConstruct;
+
 import org.easystogu.db.access.table.FavoritesStockHelper;
 import org.easystogu.db.vo.table.CompanyInfoVO;
 import org.easystogu.db.vo.view.FavoritesStockVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.log.LogHelper;
 import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
@@ -19,14 +23,17 @@ import com.google.common.cache.LoadingCache;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.ListenableFutureTask;
 
+@Component
 public class FavoritesCache {
 	private Logger logger = LogHelper.getLogger(FavoritesCache.class);
-	private static FavoritesCache instance = null;
-	private CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
-	private FavoritesStockHelper favoritesStockHelper = FavoritesStockHelper.getInstance();
+	@Autowired
+	private CompanyInfoFileHelper stockConfig;
+	@Autowired
+	private FavoritesStockHelper favoritesStockHelper;
 	private LoadingCache<String, List<FavoritesStockVO>> cache;
 
-	private FavoritesCache() {
+	@PostConstruct
+	private void init() {
 		cache = CacheBuilder.newBuilder().maximumSize(100).refreshAfterWrite(5, TimeUnit.MINUTES)
 				.build(new CacheLoader<String, List<FavoritesStockVO>>() {
 					@Override
@@ -67,13 +74,6 @@ public class FavoritesCache {
 						return rtn;
 					}
 				});
-	}
-
-	public static FavoritesCache getInstance() {
-		if (instance == null) {
-			instance = new FavoritesCache();
-		}
-		return instance;
 	}
 
 	public LoadingCache<String, List<FavoritesStockVO>> getLoadingCache() {

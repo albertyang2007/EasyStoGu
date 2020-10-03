@@ -20,7 +20,7 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
 
-@Component
+@Component("stockPriceTable")
 public class StockPriceTableHelper implements CacheAbleStock {
 	private static Logger logger = LogHelper.getLogger(StockPriceTableHelper.class);
 	@Autowired

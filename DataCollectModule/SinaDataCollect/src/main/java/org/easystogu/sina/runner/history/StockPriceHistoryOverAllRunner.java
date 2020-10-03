@@ -1,36 +1,27 @@
 package org.easystogu.sina.runner.history;
 
-public class StockPriceHistoryOverAllRunner implements Runnable {
-	private String startDate;
-	private String endDate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-	public StockPriceHistoryOverAllRunner(String _startDate, String _endDate) {
-		this.startDate = _startDate;
-		this.endDate = _endDate;
-	}
+@Component
+public class StockPriceHistoryOverAllRunner {
+	@Autowired
+	private HistoryStockPriceDownloadAndStoreDBRunner historyStockPriceDownloadAndStoreDBRunner;
+	@Autowired
+	private HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner historyQianFuQuanStockPriceDownloadAndStoreDBRunner;
+	@Autowired
+	private HistoryWeekStockPriceCountAndSaveDBRunner historyWeekStockPriceCountAndSaveDBRunner;
 
-	public void run() {
+	public void run(String startDate, String endDate) {
 		// had better clean all the data from DB
 		// history stock price
-		HistoryStockPriceDownloadAndStoreDBRunner.main(new String[] { startDate, endDate });
+		historyStockPriceDownloadAndStoreDBRunner.mainWork(new String[] { startDate, endDate });
 		// hou fuquan history price
 		// HistoryHouFuQuanStockPriceDownloadAndStoreDBRunner.main(args);
 		// qian fuquan history price
-		HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner.main(null);
+		historyQianFuQuanStockPriceDownloadAndStoreDBRunner.mainWork(null);
 		// count week price
-		HistoryWeekStockPriceCountAndSaveDBRunner.main(null);
+		historyWeekStockPriceCountAndSaveDBRunner.mainWork(null);
 
-	}
-
-	public static void main(String[] args) {
-		// had better clean all the data from DB
-		// history stock price
-		HistoryStockPriceDownloadAndStoreDBRunner.main(args);
-		// hou fuquan history price
-		// HistoryHouFuQuanStockPriceDownloadAndStoreDBRunner.main(args);
-		// qian fuquan history price
-		HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner.main(args);
-		// count week price
-		HistoryWeekStockPriceCountAndSaveDBRunner.main(args);
 	}
 }

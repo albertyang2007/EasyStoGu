@@ -4,26 +4,26 @@ import java.util.List;
 
 import org.easystogu.db.access.table.IndMai1Mai2TableHelper;
 import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
-import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.vo.table.Mai1Mai2VO;
 import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.indicator.Mai1Mai2Helper;
 import org.easystogu.utils.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component
-public class DailyMai1Mai2CountAndSaveDBRunner implements Runnable {
-    protected StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
-    protected IndMai1Mai2TableHelper mai1mai2Table = IndMai1Mai2TableHelper.getInstance();
+public class DailyMai1Mai2CountAndSaveDBRunner {
+	@Autowired
+	@Qualifier("qianFuQuanStockPriceTable")
+    protected QianFuQuanStockPriceTableHelper qianFuQuanStockPriceTable;
+	@Autowired
+    protected IndMai1Mai2TableHelper mai1mai2Table;
     @Autowired
-    private Mai1Mai2Helper mai1mai2Helper = new Mai1Mai2Helper();
-    protected CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
-
-    public DailyMai1Mai2CountAndSaveDBRunner() {
-
-    }
+    private Mai1Mai2Helper mai1mai2Helper;
+    @Autowired
+    protected CompanyInfoFileHelper stockConfig;
 
     public void deleteMai1Mai2(String stockId, String date) {
         mai1mai2Table.delete(stockId, date);
@@ -79,16 +79,5 @@ public class DailyMai1Mai2CountAndSaveDBRunner implements Runnable {
             }
             this.countAndSaved(stockId);
         }
-    }
-
-    public void run() {
-
-    }
-
-    // TODO Auto-generated method stub
-    public void mainWork(String[] args) {
-        CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
-        this.countAndSaved(stockConfig.getAllStockId());
-        // runner.countAndSaved("600084");
     }
 }

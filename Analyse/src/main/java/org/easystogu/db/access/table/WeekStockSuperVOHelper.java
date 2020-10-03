@@ -3,24 +3,45 @@ package org.easystogu.db.access.table;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
+import org.easystogu.cassandra.access.table.IndWeekKDJCassTableHelper;
+import org.easystogu.cassandra.access.table.IndWeekMacdCassTableHelper;
 import org.easystogu.config.Constants;
-import org.easystogu.db.access.facde.DBAccessFacdeFactory;
 import org.easystogu.db.vo.table.KDJVO;
 import org.easystogu.db.vo.table.MacdVO;
 import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.db.vo.table.StockSuperVO;
+import org.easystogu.postgresql.access.table.IndWeekKDJDBTableHelper;
+import org.easystogu.postgresql.access.table.IndWeekMacdDBTableHelper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component
 public class WeekStockSuperVOHelper extends StockSuperVOHelper {
 	@Autowired
-	private DBAccessFacdeFactory dBAccessFacdeFactory;
+	@Qualifier("weekStockPriceTable")
+	protected StockPriceTableHelper _stockPriceTable;
 
-	public WeekStockSuperVOHelper() {
-		qianFuQuanStockPriceTable = WeekStockPriceTableHelper.getInstance();
+	@PostConstruct
+	public void init() {
+		stockPriceTable = _stockPriceTable;
 		macdTable = dBAccessFacdeFactory.getInstance(Constants.indWeekMacd);
 		kdjTable = dBAccessFacdeFactory.getInstance(Constants.indWeekKDJ);
+	}
+
+	@Override
+	public void validate() {
+		if (this instanceof WeekStockSuperVOHelper && stockPriceTable instanceof WeekStockPriceTableHelper
+				&& (kdjTable instanceof IndWeekKDJCassTableHelper || kdjTable instanceof IndWeekKDJDBTableHelper)
+				&& (macdTable instanceof IndWeekMacdCassTableHelper || macdTable instanceof IndWeekMacdDBTableHelper)) {
+			// pass
+		} else {
+			throw new RuntimeException("SubClass ERROR: This is " + this.getClass().getSimpleName()
+					+ ", stockPriceTable is " + stockPriceTable.getClass().getSimpleName() + ", kdjTable is "
+					+ kdjTable.getClass().getSimpleName() + ", macdTable is " + macdTable.getClass().getSimpleName());
+		}
 	}
 
 	@Override
@@ -34,7 +55,7 @@ public class WeekStockSuperVOHelper extends StockSuperVOHelper {
 		// merge them into one overall VO
 		List<StockSuperVO> overList = new ArrayList<StockSuperVO>();
 
-		List<StockPriceVO> spList = qianFuQuanStockPriceTable.getStockPriceById(stockId);
+		List<StockPriceVO> spList = stockPriceTable.getStockPriceById(stockId);
 		List<MacdVO> macdList = macdTable.getAll(stockId);
 		List<KDJVO> kdjList = kdjTable.getAll(stockId);
 

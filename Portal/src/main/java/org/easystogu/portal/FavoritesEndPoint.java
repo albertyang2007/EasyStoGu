@@ -26,6 +26,8 @@ import org.easystogu.db.vo.view.FavoritesStockVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.log.LogHelper;
 import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,22 +35,29 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.Gson;
 
-
 @RestController
 @RequestMapping(value = "/favorites")
 public class FavoritesEndPoint {
 	private static Logger logger = LogHelper.getLogger(FavoritesEndPoint.class);
-	private ConfigurationServiceCache config = ConfigurationServiceCache.getInstance();
+	@Autowired
+	private ConfigurationServiceCache config;
 	private String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
-	private CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
-	private CheckPointDailySelectionTableCache checkPointDailySelectionCache = CheckPointDailySelectionTableCache
-			.getInstance();
-	protected StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
-	private CommonViewCache commonViewCache = CommonViewCache.getInstance();
-	private FavoritesStockHelper favoritesStockHelper = FavoritesStockHelper.getInstance();
-	private FavoritesCache favoritesCache = FavoritesCache.getInstance();
-	private StockPriceCache stockPriceCache = StockPriceCache.getInstance();
-	
+	@Autowired
+	private CompanyInfoFileHelper stockConfig;
+	@Autowired
+	private CheckPointDailySelectionTableCache checkPointDailySelectionCache;
+	@Autowired
+	@Qualifier("stockPriceTable")
+	protected StockPriceTableHelper stockPriceTable;
+	@Autowired
+	private CommonViewCache commonViewCache;
+	@Autowired
+	private FavoritesStockHelper favoritesStockHelper;
+	@Autowired
+	private FavoritesCache favoritesCache;
+	@Autowired
+	private StockPriceCache stockPriceCache;
+
 	private Gson gson = new Gson();
 
 	@GetMapping("/")

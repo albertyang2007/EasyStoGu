@@ -8,6 +8,8 @@ import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.vo.table.ChuQuanChuXiVO;
 import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 //if table event_gaosongzhuan has update, please run this runner 
@@ -17,10 +19,14 @@ import org.springframework.stereotype.Component;
 
 //do not use this class now, do not use the table EventChuQuanChuXiTableHelper now
 @Component
-public class ChuQuanChuXiCheckerRunner implements Runnable {
-	protected StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
-	protected EventChuQuanChuXiTableHelper chuQuanChuXiTable = EventChuQuanChuXiTableHelper.getInstance();
-	protected CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
+public class ChuQuanChuXiCheckerRunner {
+	@Autowired
+	@Qualifier("stockPriceTable")
+	protected StockPriceTableHelper stockPriceTable;
+	@Autowired
+	protected EventChuQuanChuXiTableHelper chuQuanChuXiTable;
+	@Autowired
+	protected CompanyInfoFileHelper stockConfig;
 
 	public void historyCheckChuQuanEvent(String stockId) {
 		// get all vo

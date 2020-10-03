@@ -2,15 +2,18 @@ package org.easystogu.analyse.behavior;
 
 import java.util.List;
 
-import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.vo.table.StockPriceVO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 //跳空高开和低开当天回补缺口的统计
 @Component
 public class StockBehaviorStatistics {
-    private StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
+	@Autowired
+	@Qualifier("qianFuQuanStockPriceTable")
+    private StockPriceTableHelper qianFuQuanStockPriceTable;
     //跳空高开，当天回补缺口
     public void doAnalyseTiaoKongGaoKaiDay1HuiBu(String stockId, int[] difRange) {
         List<StockPriceVO> spList = qianFuQuanStockPriceTable.getStockPriceById(stockId);

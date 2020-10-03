@@ -2,6 +2,7 @@ package org.easystogu.indicator.runner.history;
 
 import java.util.List;
 
+import org.easystogu.cassandra.access.table.IndKDJCassTableHelper;
 import org.easystogu.config.Constants;
 import org.easystogu.db.access.facde.DBAccessFacdeFactory;
 import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
@@ -12,8 +13,10 @@ import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.indicator.KDJHelper;
 import org.easystogu.indicator.runner.utils.StockPriceFetcher;
+import org.easystogu.postgresql.access.table.IndKDJDBTableHelper;
 import org.easystogu.utils.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import com.google.common.primitives.Doubles;
@@ -21,11 +24,26 @@ import com.google.common.primitives.Doubles;
 @Component
 public class HistoryKDJCountAndSaveDBRunner {
 	@Autowired
-	private DBAccessFacdeFactory dBAccessFacdeFactory;
+	protected DBAccessFacdeFactory dBAccessFacdeFactory;
 	protected IndicatorDBHelperIF kdjTable = dBAccessFacdeFactory.getInstance(Constants.indKDJ);
-	protected StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
+	@Autowired
+	@Qualifier("qianFuQuanStockPriceTable")
+	protected StockPriceTableHelper stockPriceTable;
+	@Autowired
+	protected CompanyInfoFileHelper stockConfig;
 	@Autowired
 	protected KDJHelper kdjHelper;
+
+	public void validate() {
+		if (this instanceof HistoryKDJCountAndSaveDBRunner && stockPriceTable instanceof QianFuQuanStockPriceTableHelper
+				&& (kdjTable instanceof IndKDJCassTableHelper || kdjTable instanceof IndKDJDBTableHelper)) {
+			// pass
+		} else {
+			throw new RuntimeException("SubClass ERROR: This is " + this.getClass().getSimpleName()
+					+ ", stockPriceTable is " + stockPriceTable.getClass().getSimpleName() + ", kdjTable is "
+					+ kdjTable.getClass().getSimpleName());
+		}
+	}
 
 	public void deleteKDJ(String stockId) {
 		kdjTable.delete(stockId);
@@ -42,7 +60,7 @@ public class HistoryKDJCountAndSaveDBRunner {
 	public void countAndSaved(String stockId) {
 		this.deleteKDJ(stockId);
 
-		List<StockPriceVO> priceList = qianFuQuanStockPriceTable.getStockPriceById(stockId);
+		List<StockPriceVO> priceList = stockPriceTable.getStockPriceById(stockId);
 
 		if (priceList.size() <= 9) {
 			System.out.println("StockPrice data is less than 9, skip " + stockId);
@@ -78,6 +96,8 @@ public class HistoryKDJCountAndSaveDBRunner {
 
 	public void countAndSaved(List<String> stockIds) {
 		System.out.println("KDJ countAndSaved start");
+		validate();
+
 		stockIds.parallelStream().forEach(stockId -> {
 			this.countAndSaved(stockId);
 		});
@@ -96,8 +116,15 @@ public class HistoryKDJCountAndSaveDBRunner {
 	// TODO Auto-generated method stub
 	// 一次性计算数据库中所有KDJ数据，入库
 	public void mainWork(String[] args) {
-		CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 		this.countAndSaved(stockConfig.getAllStockId());
 		// runner.countAndSaved("600750");
+	}
+	
+	public void setKdjTable(IndicatorDBHelperIF kdjTable) {
+		this.kdjTable = kdjTable;
+	}
+
+	public void setStockPriceTable(StockPriceTableHelper stockPriceTable) {
+		this.stockPriceTable = stockPriceTable;
 	}
 }

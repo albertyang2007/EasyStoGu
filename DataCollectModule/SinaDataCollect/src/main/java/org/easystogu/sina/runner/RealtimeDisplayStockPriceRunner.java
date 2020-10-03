@@ -30,10 +30,4 @@ public class RealtimeDisplayStockPriceRunner {
 		}
 		return sb.toString();
 	}
-
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		RealtimeDisplayStockPriceRunner runner = new RealtimeDisplayStockPriceRunner();
-		System.out.println(runner.printRealTimeOutput());
-	}
 }

@@ -18,6 +18,7 @@ import org.easystogu.sina.common.SohuQuoteStockPriceVOWrap;
 import org.easystogu.utils.Strings;
 import org.easystogu.utils.WeekdayUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -30,40 +31,24 @@ import net.sf.json.JSONObject;
 @Component
 public class HistoryStockPriceDownloadAndStoreDBRunner {
 	// before 1997, there is no +-10%
-	private String startDate = "1997-01-01";
-	private String endDate = WeekdayUtil.currentDate();
 	private static String baseUrl = "https://q.stock.sohu.com/hisHq?code=cn_stockId&start=startDate&end=endDate&order=D&period=d&rt=json";
 	@Autowired
 	private static FileConfigurationService configure;
-	private StockPriceTableHelper stockPriceTable = StockPriceTableHelper.getInstance();
-	private CompanyInfoFileHelper companyInfoHelper = CompanyInfoFileHelper.getInstance();
+	@Autowired
+	@Qualifier("stockPriceTable")
+	private StockPriceTableHelper stockPriceTable;
+	@Autowired
+	protected CompanyInfoFileHelper companyInfoHelper;
 	@Autowired
 	private CompanyInfoTableHelper companyInfoTable;
+	
 	private static Map<String, Class> classMap = new HashMap<String, Class>();
+	
 	static {
 		classMap.put("hq", List.class);
 	}
 
-	public HistoryStockPriceDownloadAndStoreDBRunner() {
-	}
-
-	public HistoryStockPriceDownloadAndStoreDBRunner(String startDate, String endDate) {
-		this.startDate = startDate;
-		this.endDate = endDate;
-	}
-
-	public List<StockPriceVO> fetchStockPriceFromWeb(List<String> stockIds) {
-		List<StockPriceVO> list = new ArrayList<StockPriceVO>();
-		int index = 0;
-		for (String stockId : stockIds) {
-			if (index++ % 100 == 0)
-				System.out.println("fetchStockPriceFromWeb: " + (index) + " of " + stockIds.size());
-			list.addAll(this.fetchStockPriceFromWeb(stockId));
-		}
-		return list;
-	}
-
-	private List<StockPriceVO> fetchStockPriceFromWeb(String stockId) {
+	private List<StockPriceVO> fetchStockPriceFromWeb(String stockId, String startDate, String endDate) {
 		List<StockPriceVO> spList = new ArrayList<StockPriceVO>();
 		try {
 
@@ -79,8 +64,8 @@ public class HistoryStockPriceDownloadAndStoreDBRunner {
 			}
 
 			String url = baseUrl.replaceFirst("cn_stockId", queryStr);
-			url = url.replaceFirst("startDate", this.startDate.replaceAll("-", ""));
-			url = url.replaceFirst("endDate", this.endDate.replaceAll("-", ""));
+			url = url.replaceFirst("startDate", startDate.replaceAll("-", ""));
+			url = url.replaceFirst("endDate", endDate.replaceAll("-", ""));
 
 			System.out.println("Fetch Sohu History Data for " + stockId);
 
@@ -139,8 +124,8 @@ public class HistoryStockPriceDownloadAndStoreDBRunner {
 		return spList;
 	}
 
-	public void countAndSave(List<String> stockIds) {
-		stockIds.parallelStream().forEach(stockId -> this.countAndSave(stockId));
+	public void countAndSave(List<String> stockIds, String startDate, String endDate) {
+		stockIds.parallelStream().forEach(stockId -> this.countAndSave(stockId, startDate, endDate));
 
 		// int index = 0;
 		// for (String stockId : stockIds) {
@@ -150,17 +135,17 @@ public class HistoryStockPriceDownloadAndStoreDBRunner {
 		// }
 	}
 
-	public void countAndSave(String stockId) {
+	public void countAndSave(String stockId, String startDate, String endDate) {
 		// fetch all history price from sohu api
-		List<StockPriceVO> spList = this.fetchStockPriceFromWeb(stockId);
+		List<StockPriceVO> spList = this.fetchStockPriceFromWeb(stockId, startDate, endDate);
 		if (spList.size() == 0) {
 			System.out.println("Size for " + stockId + " is zero. Just return.");
 			return;
 		}
 		// first delete all price for this stockId
 		System.out
-				.println("Delete stock price for " + stockId + " that between " + this.startDate + "~" + this.endDate);
-		this.stockPriceTable.deleteBetweenDate(stockId, this.startDate, this.endDate);
+				.println("Delete stock price for " + stockId + " that between " + startDate + "~" + endDate);
+		this.stockPriceTable.deleteBetweenDate(stockId, startDate, endDate);
 		System.out.println("Save to database size=" + spList.size());
 		// save to db
 		for (StockPriceVO spvo : spList) {
@@ -168,19 +153,8 @@ public class HistoryStockPriceDownloadAndStoreDBRunner {
 		}
 	}
 
-	public void reRunOnFailure() {
-		List<String> stockIds = companyInfoTable.getAllCompanyStockId();
-		for (String stockId : stockIds) {
-			if (this.stockPriceTable.countTuplesByIDAndBetweenDate(stockId, "1997-01-01",
-					WeekdayUtil.currentDate()) <= 0) {
-				System.out.println("Re run for " + stockId);
-				this.countAndSave(stockId);
-			}
-		}
-	}
-
-	public static void main(String[] args) {
-		String startDate = "2020-05-13";// 1990-01-01
+	public void mainWork(String[] args) {
+		String startDate = "2000-01-01";// 1990-01-01
 		String endDate = WeekdayUtil.currentDate();
 
 		if (args != null && args.length == 2) {
@@ -190,11 +164,9 @@ public class HistoryStockPriceDownloadAndStoreDBRunner {
 
 		System.out.println("startDate=" + startDate + " and endDate=" + endDate);
 
-		HistoryStockPriceDownloadAndStoreDBRunner runner = new HistoryStockPriceDownloadAndStoreDBRunner(startDate,
-				endDate);
-		List<String> stockIds = runner.companyInfoHelper.getAllStockId();
+		List<String> stockIds = this.companyInfoHelper.getAllStockId();
 		// for all stockIds
-		runner.countAndSave(stockIds);
+		this.countAndSave(stockIds, startDate, endDate);
 		// for specify stockId
 		// runner.countAndSave("000001");
 

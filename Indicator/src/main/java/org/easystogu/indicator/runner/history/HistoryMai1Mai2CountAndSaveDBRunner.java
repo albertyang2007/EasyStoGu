@@ -3,7 +3,6 @@ package org.easystogu.indicator.runner.history;
 import java.util.List;
 
 import org.easystogu.db.access.table.IndMai1Mai2TableHelper;
-import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.vo.table.Mai1Mai2VO;
 import org.easystogu.db.vo.table.StockPriceVO;
@@ -11,13 +10,18 @@ import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.indicator.Mai1Mai2Helper;
 import org.easystogu.utils.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component
 public class HistoryMai1Mai2CountAndSaveDBRunner {
-
-	protected StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
-	protected IndMai1Mai2TableHelper mai1mai2Table = IndMai1Mai2TableHelper.getInstance();
+	@Autowired
+	@Qualifier("qianFuQuanStockPriceTable")
+	protected StockPriceTableHelper stockPriceTable;
+	@Autowired
+	private CompanyInfoFileHelper stockConfig;
+	@Autowired
+	protected IndMai1Mai2TableHelper mai1mai2Table;
 	@Autowired
 	protected Mai1Mai2Helper mai1mai2Helper;
 
@@ -36,7 +40,7 @@ public class HistoryMai1Mai2CountAndSaveDBRunner {
 	public void countAndSaved(String stockId) {
         this.deleteMai1Mai2(stockId);
         
-		List<StockPriceVO> priceList = qianFuQuanStockPriceTable.getStockPriceById(stockId);
+		List<StockPriceVO> priceList = stockPriceTable.getStockPriceById(stockId);
 
 		if (priceList.size() <= 20) {
 			System.out.println("StockPrice data is less than 20, skip " + stockId);
@@ -84,7 +88,6 @@ public class HistoryMai1Mai2CountAndSaveDBRunner {
 	// TODO Auto-generated method stub
 	// 一次性计算数据库中所有ShenXian数据，入库
 	public void mainWork(String[] args) {
-		CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 		this.countAndSaved(stockConfig.getAllStockId());
 		// runner.countAndSaved("600750");
 	}

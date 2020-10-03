@@ -8,16 +8,27 @@ import org.easystogu.cache.FavoritesCache;
 import org.easystogu.cache.StockIndicatorCache;
 import org.easystogu.cache.StockPriceCache;
 import org.easystogu.cache.XXXYuanStockStatisticsCache;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-public class AllCacheRunner implements Runnable {
-	private CheckPointStatisticsCache checkPointStatisticsCache = CheckPointStatisticsCache.getInstance();
-	private StockIndicatorCache stockIndicatorCache = StockIndicatorCache.getInstance();
-	private StockPriceCache stockPriceCache = StockPriceCache.getInstance();
-	private CheckPointDailySelectionTableCache checkPointDailySelectionTableCache = CheckPointDailySelectionTableCache.getInstance();
-	private CommonViewCache commonViewCache = CommonViewCache.getInstance();
-	private ConfigurationServiceCache configurationServiceCache = ConfigurationServiceCache.getInstance();
-	private XXXYuanStockStatisticsCache stockStatisticsCache = XXXYuanStockStatisticsCache.getInstance();
-	private FavoritesCache favoritesCache = FavoritesCache.getInstance();
+@Component
+public class AllCacheRunner {
+	@Autowired
+	private CheckPointStatisticsCache checkPointStatisticsCache;
+	@Autowired
+	private StockIndicatorCache stockIndicatorCache;
+	@Autowired
+	private StockPriceCache stockPriceCache;
+	@Autowired
+	private CheckPointDailySelectionTableCache checkPointDailySelectionTableCache;
+	@Autowired
+	private CommonViewCache commonViewCache;
+	@Autowired
+	private ConfigurationServiceCache configurationServiceCache;
+	@Autowired
+	private XXXYuanStockStatisticsCache stockStatisticsCache;
+	@Autowired
+	private FavoritesCache favoritesCache;
 
 	public void refreshAll() {
 		this.configurationServiceCache.refreshAll();
@@ -29,12 +40,4 @@ public class AllCacheRunner implements Runnable {
 		this.stockStatisticsCache.refreshAll();
 		this.favoritesCache.refreshAll();
 	}
-
-	public void run() {
-	}
-
-	public static void main(String[] args) {
-		new AllCacheRunner().run();
-	}
-
 }

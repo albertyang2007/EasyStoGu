@@ -2,6 +2,7 @@ package org.easystogu.indicator.runner.history;
 
 import java.util.List;
 
+import org.easystogu.cassandra.access.table.IndMacdCassTableHelper;
 import org.easystogu.config.Constants;
 import org.easystogu.db.access.facde.DBAccessFacdeFactory;
 import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
@@ -11,19 +12,36 @@ import org.easystogu.db.vo.table.MacdVO;
 import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.indicator.MACDHelper;
+import org.easystogu.postgresql.access.table.IndMacdDBTableHelper;
 import org.easystogu.utils.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 //计算数据库中所有macd值，包括最新和历史的，一次性运行
 @Component
 public class HistoryMacdCountAndSaveDBRunner {
 	@Autowired
-	private DBAccessFacdeFactory dBAccessFacdeFactory;
+	protected DBAccessFacdeFactory dBAccessFacdeFactory;
 	protected IndicatorDBHelperIF macdTable = dBAccessFacdeFactory.getInstance(Constants.indMacd);
-	protected StockPriceTableHelper qianFuQuanStockPriceTable = QianFuQuanStockPriceTableHelper.getInstance();
+	@Autowired
+	@Qualifier("qianFuQuanStockPriceTable")
+	protected StockPriceTableHelper stockPriceTable;
+	@Autowired
+	protected CompanyInfoFileHelper stockConfig;
 	@Autowired
 	protected MACDHelper macdHelper;
+	
+	public void validate() {
+		if (this instanceof HistoryMacdCountAndSaveDBRunner && stockPriceTable instanceof QianFuQuanStockPriceTableHelper
+				&& (macdTable instanceof IndMacdCassTableHelper || macdTable instanceof IndMacdDBTableHelper)) {
+			// pass
+		} else {
+			throw new RuntimeException("SubClass ERROR: This is " + this.getClass().getSimpleName()
+					+ ", stockPriceTable is " + stockPriceTable.getClass().getSimpleName() + ", macdTable is "
+					+ macdTable.getClass().getSimpleName());
+		}
+	}
 
 	public void deleteMacd(String stockId) {
 		macdTable.delete(stockId);
@@ -41,7 +59,7 @@ public class HistoryMacdCountAndSaveDBRunner {
 		this.deleteMacd(stockId);
 
 		try {
-			List<StockPriceVO> priceList = qianFuQuanStockPriceTable.getStockPriceById(stockId);
+			List<StockPriceVO> priceList = stockPriceTable.getStockPriceById(stockId);
 
 			int length = priceList.size();
 
@@ -84,6 +102,8 @@ public class HistoryMacdCountAndSaveDBRunner {
 
 	public void countAndSaved(List<String> stockIds) {
 	  System.out.println("MACD countAndSaved start");
+	  validate();
+	  
 	  stockIds.parallelStream().forEach(stockId -> {
 	    this.countAndSaved(stockId);
 	  });
@@ -100,8 +120,15 @@ public class HistoryMacdCountAndSaveDBRunner {
 
 	public void mainWork(String[] args) {
 		// TODO Auto-generated method stub
-		CompanyInfoFileHelper stockConfig = CompanyInfoFileHelper.getInstance();
 		this.countAndSaved(stockConfig.getAllStockId());
 		// runner.countAndSaved("600750");
+	}
+	
+	public void setStockPriceTable(StockPriceTableHelper stockPriceTable) {
+		this.stockPriceTable = stockPriceTable;
+	}
+
+	public void setMacdTable(IndicatorDBHelperIF macdTable) {
+		this.macdTable = macdTable;
 	}
 }

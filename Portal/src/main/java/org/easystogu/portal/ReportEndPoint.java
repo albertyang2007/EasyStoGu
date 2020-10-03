@@ -14,23 +14,25 @@ import org.easystogu.cache.StockPriceCache;
 import org.easystogu.config.Constants;
 import org.easystogu.db.access.view.FavoritesStockCheckpointViewHelper;
 import org.easystogu.db.vo.view.FavoritesStockCheckpointVO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.Gson;
 
-
 @RestController
 @RequestMapping(value = "/report")
 public class ReportEndPoint {
-	private ConfigurationServiceCache config = ConfigurationServiceCache.getInstance();
-	private FavoritesStockCheckpointViewHelper favoritesStockCheckpointViewHelper = FavoritesStockCheckpointViewHelper
-			.getInstance();
-	private StockPriceCache stockPriceCache = StockPriceCache.getInstance();
+	@Autowired
+	private ConfigurationServiceCache config;
+	@Autowired
+	private FavoritesStockCheckpointViewHelper favoritesStockCheckpointViewHelper;
+	@Autowired
+	private StockPriceCache stockPriceCache;
 	protected String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
 	private Gson gson = new Gson();
-	
+
 	@GetMapping("/{DateOffset}")
 	@Produces("text/html; charset=UTF-8")
 	// @Produces("application/json")

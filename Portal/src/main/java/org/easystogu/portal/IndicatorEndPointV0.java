@@ -46,11 +46,14 @@ import com.google.gson.Gson;
 @RestController
 @RequestMapping(value = "/indv0")
 public class IndicatorEndPointV0 {
-	private ConfigurationServiceCache config = ConfigurationServiceCache.getInstance();
+	@Autowired
+	private ConfigurationServiceCache config;
 	protected String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
 	protected static String HHmmss = "00:00:00";
-	protected CompanyInfoFileHelper companyInfoHelper = CompanyInfoFileHelper.getInstance();
-	protected StockIndicatorCache indicatorCache = StockIndicatorCache.getInstance();
+	@Autowired
+	protected CompanyInfoFileHelper companyInfoHelper;
+	@Autowired
+	protected StockIndicatorCache indicatorCache;
 	@Autowired
 	protected IndDDXTableHelper ddxTable;
 

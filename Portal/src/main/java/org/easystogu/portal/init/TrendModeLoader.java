@@ -12,13 +12,15 @@ import javax.annotation.PreDestroy;
 import org.easystogu.file.TextFileSourceHelper;
 import org.easystogu.trendmode.vo.SimplePriceVO;
 import org.easystogu.trendmode.vo.TrendModeVO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import net.sf.json.JSONObject;
 
 @Component
 public class TrendModeLoader {
-    private TextFileSourceHelper fileSource = TextFileSourceHelper.getInstance();
+	@Autowired
+    private TextFileSourceHelper fileSource;
     private Map<String, TrendModeVO> trendModeMap = new HashMap<String, TrendModeVO>();
     private static Map<String, Class> classMap = new HashMap<String, Class>();
     static {

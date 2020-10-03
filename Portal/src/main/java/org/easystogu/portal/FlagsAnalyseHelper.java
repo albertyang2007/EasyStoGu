@@ -2,6 +2,7 @@ package org.easystogu.portal;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.easystogu.cache.CheckPointDailySelectionTableCache;
 import org.easystogu.db.vo.table.BBIVO;
 import org.easystogu.db.vo.table.CheckPointDailySelectionVO;
@@ -15,14 +16,17 @@ import org.easystogu.log.LogHelper;
 import org.easystogu.portal.vo.CheckPointFlagsVO;
 import org.easystogu.portal.vo.ShenXianUIVO;
 import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
 import com.google.common.primitives.Doubles;
 
 @Component
 public class FlagsAnalyseHelper {
   private static Logger logger = LogHelper.getLogger(FlagsAnalyseHelper.class);
-  private CheckPointDailySelectionTableCache checkPointDailySelectionCache =
-      CheckPointDailySelectionTableCache.getInstance();
+  @Autowired
+  private CheckPointDailySelectionTableCache checkPointDailySelectionCache ;
+  
   private static String[] zijinliuViewnames =
       {"luzao_phaseII_zijinliu_top300", "luzao_phaseIII_zijinliu_top300",
           "luzao_phaseII_ddx_bigger_05", "luzao_phaseIII_ddx_bigger_05",
