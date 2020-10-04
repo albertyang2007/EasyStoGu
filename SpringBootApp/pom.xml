@@ -13,7 +13,7 @@
 	<artifactId>easystogu-springboot-app</artifactId>
 	<name>EasyStoGu-SpringBootApp</name>
 	<packaging>jar</packaging>
-	<description>EasyStoGu-SpringBootApp: SpringBootApp</description>
+	<description>EasyStoGu-SpringBootApp: Portal</description>
 
 	<dependencies>
 		<!-- project sub-modules -->

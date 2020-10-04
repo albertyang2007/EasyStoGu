@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<parent>
@@ -15,68 +16,31 @@
 	<description>EasyStoGu-EWeb: Trend Web Service</description>
 
 	<dependencies>
-		<dependency>
-			<groupId>org.albertyang2007.easystogu</groupId>
-			<artifactId>easystogu-commonlib</artifactId>
-			<version>${repo-internal-version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.albertyang2007.easystogu</groupId>
-			<artifactId>easystogu-databaselib</artifactId>
-			<version>${repo-internal-version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.albertyang2007.easystogu</groupId>
-			<artifactId>easystogu-analyse</artifactId>
-			<version>${repo-internal-version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.albertyang2007.easystogu</groupId>
-			<artifactId>easystogu-indicator</artifactId>
-			<version>${repo-internal-version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.albertyang2007.easystogu</groupId>
-			<artifactId>easystogu-scheduled</artifactId>
-			<version>${repo-internal-version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-core</artifactId>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-beans</artifactId>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-web</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.cxf</groupId>
-			<artifactId>cxf-rt-transports-http</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.cxf</groupId>
-			<artifactId>cxf-rt-ws-policy</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.cxf</groupId>
-			<artifactId>cxf-rt-frontend-jaxrs</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.fasterxml.jackson.jaxrs</groupId>
-			<artifactId>jackson-jaxrs-json-provider</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-webmvc</artifactId>
-		</dependency>
+
 	</dependencies>
+	<profiles>
+		<profile>
+			<id>default</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-war-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>standalone-war</id>
+								<phase>package</phase>
+								<goals>
+									<goal>war</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 </project>

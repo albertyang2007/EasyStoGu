@@ -20,7 +20,7 @@
 			<groupId>org.albertyang2007.easystogu</groupId>
 			<artifactId>easystogu-portal</artifactId>
 			<version>${repo-internal-version}</version>
-			<type>war</type>
+			<type>jar</type>
 		</dependency>
 
 		<dependency>
@@ -30,22 +30,22 @@
 			<type>war</type>
 		</dependency>
 
-		<dependency>
-			<groupId>org.albertyang2007.easystogu</groupId>
-			<artifactId>easystogu-portal</artifactId>
-			<version>${repo-internal-version}</version>
-			<type>pom</type>
-			<exclusions>
-				<exclusion>
-					<groupId>org.springframework.boot</groupId>
-					<artifactId>spring-boot-dependencies</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.springframework.boot</groupId>
-					<artifactId>spring-boot-starter-web</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.albertyang2007.easystogu</groupId> -->
+<!-- 			<artifactId>easystogu-portal</artifactId> -->
+<!-- 			<version>${repo-internal-version}</version> -->
+<!-- 			<type>pom</type> -->
+<!-- 			<exclusions> -->
+<!-- 				<exclusion> -->
+<!-- 					<groupId>org.springframework.boot</groupId> -->
+<!-- 					<artifactId>spring-boot-dependencies</artifactId> -->
+<!-- 				</exclusion> -->
+<!-- 				<exclusion> -->
+<!-- 					<groupId>org.springframework.boot</groupId> -->
+<!-- 					<artifactId>spring-boot-starter-web</artifactId> -->
+<!-- 				</exclusion> -->
+<!-- 			</exclusions> -->
+<!-- 		</dependency> -->
 
 		<dependency>
 			<groupId>org.albertyang2007.easystogu</groupId>
@@ -72,12 +72,12 @@
 				<artifactId>maven-ear-plugin</artifactId>
 				<configuration>
 					<modules>
-						<webModule>
-							<groupId>org.albertyang2007.easystogu</groupId>
-							<artifactId>easystogu-portal</artifactId>
-							<contextRoot>portal</contextRoot>
-							<bundleFileName>easystogu-portal.war</bundleFileName>
-						</webModule>
+<!-- 						<webModule> -->
+<!-- 							<groupId>org.albertyang2007.easystogu</groupId> -->
+<!-- 							<artifactId>easystogu-portal</artifactId> -->
+<!-- 							<contextRoot>/</contextRoot> -->
+<!-- 							<bundleFileName>easystogu-portal.war</bundleFileName> -->
+<!-- 						</webModule> -->
 						<webModule>
 							<groupId>org.albertyang2007.easystogu</groupId>
 							<artifactId>easystogu-eweb</artifactId>

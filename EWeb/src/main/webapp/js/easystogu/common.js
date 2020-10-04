@@ -8,10 +8,10 @@ function getEasyStoGuServerUrl() {
 	// return "http://www.openstock.cn:18080";
 	// return "http://192.168.1.12:8080";
 	// return "http://localhost:8080";
-	// using jboss.easystogu.cn for docker image or real wildjboss container 
+	// using jboss.easystogu.cn for docker image or real wildjboss or singleston jboss container 
 	// return "http://jboss.easystogu.cn:8080"; 
-	// using easystogu-cluster for k8s cluster deploy
-	return "http://easystogu-cluster:8080";
+	// using easystogu-portal for k8s cluster service deploy
+	return "http://easystogu-portal:8080";
 }
 
 /**

@@ -42,7 +42,7 @@
 			</modules>
 		</profile>
 		<profile>
-			<id>springboot</id>
+			<id>portal</id>
 			<activation>
 				<activeByDefault>true</activeByDefault>
 			</activation>
@@ -54,13 +54,20 @@
 				<module>Analyse</module>
 				<module>AI</module>
 				<module>Portal</module>
-				<module>EWeb</module>
 				<module>SpringBootApp</module>
 				<module>Scheduled</module>
 				<module>TrendMode</module>
 				<module>Cache</module>
 				<module>DynamicCompiler</module>
-				<module>Docker</module>
+			</modules>
+		</profile>
+		<profile>
+			<id>eweb</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<modules>
+				<module>EWeb</module>
 			</modules>
 		</profile>
 	</profiles>

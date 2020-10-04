@@ -11,7 +11,8 @@
 
 	<!-- Enable @Autowired -->
 	<context:annotation-config />
-	<context:component-scan base-package="org.easystogu.portal" />
+	<context:component-scan base-package="org.easystogu" />
+    <context:component-scan base-package="com.tictactec.ta.lib" />
 
 	<!-- WS Service -->
 	<bean id="portalServiceHomeEndPoint" class="org.easystogu.portal.HomeEndPoint">

@@ -1,5 +1,5 @@
 # Put this file to /etc/systemd/system/
-# systemctl enable/start/stop/status easystogu.service
+# systemctl enable/start/stop/status easystogu-portal.service
 
 [Unit]
 Description=The EasyStogu Portal SpringBoot Service
