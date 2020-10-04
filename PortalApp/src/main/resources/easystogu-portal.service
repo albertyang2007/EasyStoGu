@@ -1,0 +1,17 @@
+# Put this file to /etc/systemd/system/
+# systemctl enable/start/stop/status easystogu-portal.service
+
+[Unit]
+Description=The EasyStogu Portal SpringBoot Service
+After=syslog.target network.target
+Before=httpd.service
+
+[Service]
+User=root
+LimitNOFILE=102642
+PIDFile=/home/eyaweiw/easystogu/easystogu-portal.pid
+ExecStart=java -Dlogging.config=/home/eyaweiw/easystogu/logback.xml -jar /home/eyaweiw/easystogu/easystogu-portal-app-exec.jar
+StandardOutput=null
+
+[Install]
+WantedBy=multi-user.target

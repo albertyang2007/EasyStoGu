@@ -1,0 +1,5 @@
+server:
+  port: 8080
+  tomcat:
+    max-http-post-size: 2097152
+

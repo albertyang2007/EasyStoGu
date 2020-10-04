@@ -52,15 +52,29 @@
 				<module>DataCollectModule</module>
 				<module>Indicator</module>
 				<module>Analyse</module>
-				<module>AI</module>
-				<module>Portal</module>
-				<module>SpringBootApp</module>
-				<module>Scheduled</module>
 				<module>TrendMode</module>
 				<module>Cache</module>
-				<module>DynamicCompiler</module>
+				<module>Portal</module>
+				<module>PortalApp</module>
 			</modules>
 		</profile>
+		<profile>
+			<id>scheduled</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<modules>
+				<module>CommonLib</module>
+				<module>DataAccessModule</module>
+				<module>DataCollectModule</module>
+				<module>Indicator</module>
+				<module>Analyse</module>
+				<module>TrendMode</module>
+				<module>Cache</module>			
+				<module>Scheduled</module>
+				<module>ScheduledApp</module>
+			</modules>
+		</profile>		
 		<profile>
 			<id>eweb</id>
 			<activation>

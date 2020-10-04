@@ -1,0 +1,3 @@
+This docker file is used for easystogu scheduled springboot k8s deployment.
+
+sudo docker build -t easystogu-scheduled:2.0.0-snapshot .
