@@ -1,0 +1,3 @@
+This docker file is used for easystogu eweb k8s deployment.
+
+sudo docker build -t easystogu-eweb:2.0.0-snapshot .
