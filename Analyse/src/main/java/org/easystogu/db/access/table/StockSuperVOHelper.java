@@ -16,28 +16,35 @@ import org.easystogu.db.vo.table.ShenXianVO;
 import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.db.vo.table.StockSuperVO;
 import org.easystogu.db.vo.table.WRVO;
-import org.easystogu.indicator.runner.history.HistoryKDJCountAndSaveDBRunner;
 import org.easystogu.postgresql.access.table.IndKDJDBTableHelper;
 import org.easystogu.postgresql.access.table.IndMacdDBTableHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
-@Component
+@Component("stockSuperVOHelper")
 public class StockSuperVOHelper {
 	@Autowired
 	@Qualifier("qianFuQuanStockPriceTable")
 	protected StockPriceTableHelper stockPriceTable;
 	@Autowired
-	protected DBAccessFacdeFactory dBAccessFacdeFactory;
-
-	protected IndicatorDBHelperIF macdTable = dBAccessFacdeFactory.getInstance(Constants.indMacd);
-	protected IndicatorDBHelperIF kdjTable = dBAccessFacdeFactory.getInstance(Constants.indKDJ);
-	protected IndicatorDBHelperIF bollTable = dBAccessFacdeFactory.getInstance(Constants.indBoll);
-	protected IndicatorDBHelperIF shenXianTable = dBAccessFacdeFactory.getInstance(Constants.indShenXian);
-	protected IndicatorDBHelperIF qsddTable = dBAccessFacdeFactory.getInstance(Constants.indQSDD);
-	protected IndicatorDBHelperIF wrTable = dBAccessFacdeFactory.getInstance(Constants.indWR);
-
+	@Qualifier("macdTable")
+	protected IndicatorDBHelperIF macdTable;
+	@Autowired
+	@Qualifier("kdjTable")
+	protected IndicatorDBHelperIF kdjTable;
+	@Autowired
+	@Qualifier("bollTable")
+	protected IndicatorDBHelperIF bollTable;
+	@Autowired
+	@Qualifier("shenXianTable")
+	protected IndicatorDBHelperIF shenXianTable;
+	@Autowired
+	@Qualifier("qsddTable")
+	protected IndicatorDBHelperIF qsddTable;
+	@Autowired
+	@Qualifier("wrTable")
+	protected IndicatorDBHelperIF wrTable;
 	@Autowired
 	protected IndDDXTableHelper ddxTable;
 
@@ -55,7 +62,7 @@ public class StockSuperVOHelper {
 
 	public List<StockSuperVO> getAllStockSuperVO(String stockId) {
 		validate();
-		
+
 		// get from map
 		// ValueWrapper valueObj = allStockSuperVOMap.get(stockId);
 		// if (valueObj != null && valueObj.isYangEnough()) {

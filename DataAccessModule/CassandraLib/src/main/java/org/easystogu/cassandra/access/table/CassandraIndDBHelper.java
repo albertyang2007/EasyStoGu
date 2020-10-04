@@ -8,6 +8,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import javax.annotation.PostConstruct;
+
+import org.easystogu.cassandra.ks.CassandraKepSpaceFactory;
 import org.easystogu.db.helper.IF.IndicatorDBHelperIF;
 import org.easystogu.db.vo.table.IndicatorVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +25,7 @@ import com.datastax.driver.core.Session;
 @Service
 public abstract class CassandraIndDBHelper implements IndicatorDBHelperIF {
 	@Autowired
-	protected Session cassandraSession;
+	protected CassandraKepSpaceFactory cassandraKepSpaceFactory;
 	protected Class<?> indicatorVOClass;
 	protected String tableName;// To be set later
 	protected String INSERT_SQL;
@@ -35,7 +38,8 @@ public abstract class CassandraIndDBHelper implements IndicatorDBHelperIF {
 
 	private Map<String, PreparedStatement> prepareStmtMap = new ConcurrentHashMap<String, PreparedStatement>();
 
-	protected CassandraIndDBHelper() {
+	@PostConstruct
+	public void init() {
 		String[] paris = generateFieldsNamePairs();
 
 		// INSERT INTO ind.macd (stockId, date, dif, dea, macd) VALUES (?, ?, ?,
@@ -108,7 +112,7 @@ public abstract class CassandraIndDBHelper implements IndicatorDBHelperIF {
 	private PreparedStatement getPrepareStatement(String CQL) {
 		PreparedStatement stmt = this.prepareStmtMap.get(CQL);
 		if (stmt == null) {
-			stmt = cassandraSession.prepare(CQL);
+			stmt = getCassandraSession().prepare(CQL);
 			this.prepareStmtMap.put(CQL, stmt);
 		}
 		return stmt;
@@ -130,7 +134,7 @@ public abstract class CassandraIndDBHelper implements IndicatorDBHelperIF {
 
 	public <T extends IndicatorVO> void insert(T vo) {
 		PreparedStatement preparedStatement = getPrepareStatement(INSERT_SQL);
-		cassandraSession.execute(preparedStatement.bind(generateBindParms(vo)));
+		getCassandraSession().execute(preparedStatement.bind(generateBindParms(vo)));
 	}
 
 	public <T extends IndicatorVO> void insert(List<T> list) {
@@ -139,40 +143,40 @@ public abstract class CassandraIndDBHelper implements IndicatorDBHelperIF {
 		for (IndicatorVO vo : list) {
 			batchStatement.add(preparedStatement.bind(generateBindParms(vo)));
 		}
-		cassandraSession.execute(batchStatement);
+		getCassandraSession().execute(batchStatement);
 	}
 
 	public <T extends IndicatorVO> T getSingle(String stockId, String date) {
 		PreparedStatement preparedStatement = getPrepareStatement(QUERY_BY_ID_AND_DATE_SQL);
-		ResultSet results = cassandraSession.execute(preparedStatement.bind(stockId, date));
+		ResultSet results = getCassandraSession().execute(preparedStatement.bind(stockId, date));
 		return mapResultSetToSingle(results);
 	}
 
 	public <T extends IndicatorVO> List<T> getAll(String stockId) {
 		PreparedStatement preparedStatement = getPrepareStatement(QUERY_ALL_BY_ID_SQL);
-		ResultSet results = cassandraSession.execute(preparedStatement.bind(stockId));
+		ResultSet results = getCassandraSession().execute(preparedStatement.bind(stockId));
 		return mapResultSetToList(results);
 	}
 
 	public void delete(String stockId) {
 		PreparedStatement preparedStatement = getPrepareStatement(DELETE_BY_STOCKID_SQL);
-		cassandraSession.execute(preparedStatement.bind(stockId));
+		getCassandraSession().execute(preparedStatement.bind(stockId));
 	}
 
 	public void delete(String stockId, String date) {
 		PreparedStatement preparedStatement = getPrepareStatement(DELETE_BY_STOCKID_AND_DATE_SQL);
-		cassandraSession.execute(preparedStatement.bind(stockId, date));
+		getCassandraSession().execute(preparedStatement.bind(stockId, date));
 	}
 
 	public <T extends IndicatorVO> List<T> getByIdAndBetweenDate(String stockId, String startDate, String endDate) {
 		PreparedStatement preparedStatement = getPrepareStatement(QUERY_BY_STOCKID_AND_BETWEEN_DATE);
-		ResultSet results = cassandraSession.execute(preparedStatement.bind(stockId, startDate, endDate));
+		ResultSet results = getCassandraSession().execute(preparedStatement.bind(stockId, startDate, endDate));
 		return mapResultSetToList(results);
 	}
 
 	public <T extends IndicatorVO> List<T> getByIdAndLatestNDate(String stockId, int day) {
 		PreparedStatement preparedStatement = getPrepareStatement(QUERY_LATEST_N_BY_ID_SQL);
-		ResultSet results = cassandraSession.execute(preparedStatement.bind(stockId, day));
+		ResultSet results = getCassandraSession().execute(preparedStatement.bind(stockId, day));
 		return mapResultSetToList(results);
 	}
 
@@ -195,5 +199,9 @@ public abstract class CassandraIndDBHelper implements IndicatorDBHelperIF {
 
 	public void setTableName(String tableName) {
 		this.tableName = tableName;
+	}
+	
+	private Session getCassandraSession(){
+		return cassandraKepSpaceFactory.createCluster().connect();
 	}
 }

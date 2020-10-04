@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
 import org.easystogu.db.vo.table.Mai1Mai2VO;
 import org.easystogu.log.LogHelper;
 import org.slf4j.Logger;
@@ -22,7 +23,7 @@ import org.springframework.stereotype.Component;
 public class IndMai1Mai2TableHelper{
 	private static Logger logger = LogHelper.getLogger(IndMai1Mai2TableHelper.class);
 	@Autowired
-	protected NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+	protected PostgreSqlDataSourceFactory postgreSqlDataSourceFactory;
 	protected String tableName = "IND_MAI1MAI2";
 	// please modify this SQL in all subClass
 	protected String INSERT_SQL = "INSERT INTO " + tableName
@@ -37,6 +38,11 @@ public class IndMai1Mai2TableHelper{
 			+ " WHERE stockId = :stockId AND date = :date";
 	protected String DELETE_BY_DATE_SQL = "DELETE FROM " + tableName + " WHERE date = :date";
 
+	
+	private NamedParameterJdbcTemplate getNamedParameterJdbcTemplate() {
+		return new NamedParameterJdbcTemplate(postgreSqlDataSourceFactory.createDataSource());
+	}
+	
 	private static final class Mai1Mai2VOMapper implements RowMapper<Mai1Mai2VO> {
 		public Mai1Mai2VO mapRow(ResultSet rs, int rowNum) throws SQLException {
 			Mai1Mai2VO vo = new Mai1Mai2VO();
@@ -64,7 +70,7 @@ public class IndMai1Mai2TableHelper{
 			namedParameters.addValue("sd", vo.getSd());
 			namedParameters.addValue("sk", vo.getSk());
 
-			namedParameterJdbcTemplate.execute(INSERT_SQL, namedParameters, new DefaultPreparedStatementCallback());
+			getNamedParameterJdbcTemplate().execute(INSERT_SQL, namedParameters, new DefaultPreparedStatementCallback());
 		} catch (Exception e) {
 			logger.error("exception meets for insert vo: " + vo, e);
 			e.printStackTrace();
@@ -75,7 +81,7 @@ public class IndMai1Mai2TableHelper{
 		try {
 			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 			namedParameters.addValue("stockId", stockId);
-			namedParameterJdbcTemplate.execute(DELETE_BY_STOCKID_SQL, namedParameters,
+			getNamedParameterJdbcTemplate().execute(DELETE_BY_STOCKID_SQL, namedParameters,
 					new DefaultPreparedStatementCallback());
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -87,7 +93,7 @@ public class IndMai1Mai2TableHelper{
 			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 			namedParameters.addValue("stockId", stockId);
 			namedParameters.addValue("date", date);
-			namedParameterJdbcTemplate.execute(DELETE_BY_STOCKID_AND_DATE_SQL, namedParameters,
+			getNamedParameterJdbcTemplate().execute(DELETE_BY_STOCKID_AND_DATE_SQL, namedParameters,
 					new DefaultPreparedStatementCallback());
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -98,7 +104,7 @@ public class IndMai1Mai2TableHelper{
 		try {
 			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 			namedParameters.addValue("date", date);
-			namedParameterJdbcTemplate.execute(DELETE_BY_DATE_SQL, namedParameters,
+			getNamedParameterJdbcTemplate().execute(DELETE_BY_DATE_SQL, namedParameters,
 					new DefaultPreparedStatementCallback());
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -118,7 +124,7 @@ public class IndMai1Mai2TableHelper{
 			namedParameters.addValue("stockId", stockId);
 			namedParameters.addValue("date", date);
 
-			Mai1Mai2VO vo = this.namedParameterJdbcTemplate.queryForObject(QUERY_BY_ID_AND_DATE_SQL, namedParameters,
+			Mai1Mai2VO vo = this.getNamedParameterJdbcTemplate().queryForObject(QUERY_BY_ID_AND_DATE_SQL, namedParameters,
 					new Mai1Mai2VOMapper());
 
 			return vo;
@@ -136,7 +142,7 @@ public class IndMai1Mai2TableHelper{
 			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 			namedParameters.addValue("stockId", stockId);
 
-			List<Mai1Mai2VO> list = this.namedParameterJdbcTemplate.query(QUERY_ALL_BY_ID_SQL, namedParameters,
+			List<Mai1Mai2VO> list = this.getNamedParameterJdbcTemplate().query(QUERY_ALL_BY_ID_SQL, namedParameters,
 					new Mai1Mai2VOMapper());
 
 			return list;
@@ -155,7 +161,7 @@ public class IndMai1Mai2TableHelper{
 			namedParameters.addValue("stockId", stockId);
 			namedParameters.addValue("limit", day);
 
-			List<Mai1Mai2VO> list = this.namedParameterJdbcTemplate.query(QUERY_LATEST_N_BY_ID_SQL, namedParameters,
+			List<Mai1Mai2VO> list = this.getNamedParameterJdbcTemplate().query(QUERY_LATEST_N_BY_ID_SQL, namedParameters,
 					new Mai1Mai2VOMapper());
 
 			return list;

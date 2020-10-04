@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
 import org.easystogu.db.vo.table.YiMengBSVO;
 import org.easystogu.log.LogHelper;
 import org.slf4j.Logger;
@@ -22,7 +23,7 @@ import org.springframework.stereotype.Component;
 public class IndYiMengBSTableHelper {
 	private static Logger logger = LogHelper.getLogger(IndYiMengBSTableHelper.class);
 	@Autowired
-	protected NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+	protected PostgreSqlDataSourceFactory postgreSqlDataSourceFactory;
 	protected String tableName = "IND_YIMENGBS";
 	// please modify this SQL in all subClass
 	protected String INSERT_SQL = "INSERT INTO " + tableName
@@ -37,6 +38,11 @@ public class IndYiMengBSTableHelper {
 			+ " WHERE stockId = :stockId AND date = :date";
 	protected String DELETE_BY_DATE_SQL = "DELETE FROM " + tableName + " WHERE date = :date";
 
+	
+	private NamedParameterJdbcTemplate getNamedParameterJdbcTemplate() {
+		return new NamedParameterJdbcTemplate(postgreSqlDataSourceFactory.createDataSource());
+	}
+	
 	private static final class YiMengBSVOMapper implements RowMapper<YiMengBSVO> {
 		public YiMengBSVO mapRow(ResultSet rs, int rowNum) throws SQLException {
 			YiMengBSVO vo = new YiMengBSVO();
@@ -64,7 +70,7 @@ public class IndYiMengBSTableHelper {
 			namedParameters.addValue("x2", vo.getX2());
 			namedParameters.addValue("x3", vo.getX3());
 
-			namedParameterJdbcTemplate.execute(INSERT_SQL, namedParameters, new DefaultPreparedStatementCallback());
+			getNamedParameterJdbcTemplate().execute(INSERT_SQL, namedParameters, new DefaultPreparedStatementCallback());
 		} catch (Exception e) {
 			logger.error("exception meets for insert vo: " + vo, e);
 			e.printStackTrace();
@@ -75,7 +81,7 @@ public class IndYiMengBSTableHelper {
 		try {
 			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 			namedParameters.addValue("stockId", stockId);
-			namedParameterJdbcTemplate.execute(DELETE_BY_STOCKID_SQL, namedParameters,
+			getNamedParameterJdbcTemplate().execute(DELETE_BY_STOCKID_SQL, namedParameters,
 					new DefaultPreparedStatementCallback());
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -87,7 +93,7 @@ public class IndYiMengBSTableHelper {
 			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 			namedParameters.addValue("stockId", stockId);
 			namedParameters.addValue("date", date);
-			namedParameterJdbcTemplate.execute(DELETE_BY_STOCKID_AND_DATE_SQL, namedParameters,
+			getNamedParameterJdbcTemplate().execute(DELETE_BY_STOCKID_AND_DATE_SQL, namedParameters,
 					new DefaultPreparedStatementCallback());
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -98,7 +104,7 @@ public class IndYiMengBSTableHelper {
 		try {
 			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 			namedParameters.addValue("date", date);
-			namedParameterJdbcTemplate.execute(DELETE_BY_DATE_SQL, namedParameters,
+			getNamedParameterJdbcTemplate().execute(DELETE_BY_DATE_SQL, namedParameters,
 					new DefaultPreparedStatementCallback());
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -117,7 +123,7 @@ public class IndYiMengBSTableHelper {
 			namedParameters.addValue("stockId", stockId);
 			namedParameters.addValue("date", date);
 
-			YiMengBSVO vo = this.namedParameterJdbcTemplate.queryForObject(QUERY_BY_ID_AND_DATE_SQL, namedParameters,
+			YiMengBSVO vo = this.getNamedParameterJdbcTemplate().queryForObject(QUERY_BY_ID_AND_DATE_SQL, namedParameters,
 					new YiMengBSVOMapper());
 
 			return vo;
@@ -135,7 +141,7 @@ public class IndYiMengBSTableHelper {
 			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 			namedParameters.addValue("stockId", stockId);
 
-			List<YiMengBSVO> list = this.namedParameterJdbcTemplate.query(QUERY_ALL_BY_ID_SQL, namedParameters,
+			List<YiMengBSVO> list = this.getNamedParameterJdbcTemplate().query(QUERY_ALL_BY_ID_SQL, namedParameters,
 					new YiMengBSVOMapper());
 
 			return list;
@@ -154,7 +160,7 @@ public class IndYiMengBSTableHelper {
 			namedParameters.addValue("stockId", stockId);
 			namedParameters.addValue("limit", day);
 
-			List<YiMengBSVO> list = this.namedParameterJdbcTemplate.query(QUERY_LATEST_N_BY_ID_SQL, namedParameters,
+			List<YiMengBSVO> list = this.getNamedParameterJdbcTemplate().query(QUERY_LATEST_N_BY_ID_SQL, namedParameters,
 					new YiMengBSVOMapper());
 
 			return list;

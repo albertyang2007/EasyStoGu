@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
 import org.easystogu.db.vo.table.StockPriceHLTimeVO;
 import org.easystogu.log.LogHelper;
 import org.slf4j.Logger;
@@ -21,8 +22,7 @@ import org.springframework.stereotype.Component;
 public class StockPriceHLTimeTableHelper {
 	private static Logger logger = LogHelper.getLogger(StockPriceHLTimeTableHelper.class);
 	@Autowired
-	protected NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-	
+	protected PostgreSqlDataSourceFactory postgreSqlDataSourceFactory;
 	protected String tableName = "STOCKPRICE_HL_TIME";
 	// please modify this SQL in all subClass
 	protected String INSERT_SQL = "INSERT INTO " + tableName
@@ -36,6 +36,11 @@ public class StockPriceHLTimeTableHelper {
 	protected String UPDATE_LOW_PRICE_TIME = "UPDATE " + tableName
 			+ " SET low_time = :low_time WHERE stockId = :stockId AND DATE = :date";
 
+	
+	private NamedParameterJdbcTemplate getNamedParameterJdbcTemplate() {
+		return new NamedParameterJdbcTemplate(postgreSqlDataSourceFactory.createDataSource());
+	}
+	
 	private static final class StockPriceHLTimeVOMapper implements RowMapper<StockPriceHLTimeVO> {
 		public StockPriceHLTimeVO mapRow(ResultSet rs, int rowNum) throws SQLException {
 			StockPriceHLTimeVO vo = new StockPriceHLTimeVO();
@@ -63,7 +68,7 @@ public class StockPriceHLTimeTableHelper {
 			namedParameters.addValue("hight_time", vo.getHightTime());
 			namedParameters.addValue("low_time", vo.getLowTime());
 
-			namedParameterJdbcTemplate.execute(INSERT_SQL, namedParameters, new DefaultPreparedStatementCallback());
+			getNamedParameterJdbcTemplate().execute(INSERT_SQL, namedParameters, new DefaultPreparedStatementCallback());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -75,7 +80,7 @@ public class StockPriceHLTimeTableHelper {
 			namedParameters.addValue("stockId", stockId);
 			namedParameters.addValue("date", date);
 
-			StockPriceHLTimeVO vo = this.namedParameterJdbcTemplate.queryForObject(SELECT_BY_ID_AND_DATE_SQL,
+			StockPriceHLTimeVO vo = this.getNamedParameterJdbcTemplate().queryForObject(SELECT_BY_ID_AND_DATE_SQL,
 					namedParameters, new StockPriceHLTimeVOMapper());
 
 			return vo;
@@ -90,7 +95,7 @@ public class StockPriceHLTimeTableHelper {
 			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 			namedParameters.addValue("stockId", stockId);
 
-			List<StockPriceHLTimeVO> vos = this.namedParameterJdbcTemplate.query(SELECT_BY_ID, namedParameters,
+			List<StockPriceHLTimeVO> vos = this.getNamedParameterJdbcTemplate().query(SELECT_BY_ID, namedParameters,
 					new StockPriceHLTimeVOMapper());
 
 			return vos;
@@ -105,7 +110,7 @@ public class StockPriceHLTimeTableHelper {
 			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 			namedParameters.addValue("date", date);
 
-			List<StockPriceHLTimeVO> vos = this.namedParameterJdbcTemplate.query(SELECT_BY_DATE, namedParameters,
+			List<StockPriceHLTimeVO> vos = this.getNamedParameterJdbcTemplate().query(SELECT_BY_DATE, namedParameters,
 					new StockPriceHLTimeVOMapper());
 
 			return vos;
@@ -122,7 +127,7 @@ public class StockPriceHLTimeTableHelper {
 			namedParameters.addValue("date", vo.date);
 			namedParameters.addValue("hight_time", vo.getHightTime());
 
-			namedParameterJdbcTemplate.execute(UPDATE_HIGH_PRICE_TIME, namedParameters,
+			getNamedParameterJdbcTemplate().execute(UPDATE_HIGH_PRICE_TIME, namedParameters,
 					new DefaultPreparedStatementCallback());
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -136,7 +141,7 @@ public class StockPriceHLTimeTableHelper {
 			namedParameters.addValue("date", vo.date);
 			namedParameters.addValue("low_time", vo.getLowTime());
 
-			namedParameterJdbcTemplate.execute(UPDATE_LOW_PRICE_TIME, namedParameters,
+			getNamedParameterJdbcTemplate().execute(UPDATE_LOW_PRICE_TIME, namedParameters,
 					new DefaultPreparedStatementCallback());
 		} catch (Exception e) {
 			e.printStackTrace();

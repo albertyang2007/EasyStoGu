@@ -31,7 +31,6 @@ import com.google.gson.Gson;
 public class PriceEndPointV1 {
 	@Autowired
 	private ConfigurationServiceCache config;
-	private String accessControlAllowOrgin = "*";//config.getString("Access-Control-Allow-Origin", "");
 	protected static String HHmmss = "00:00:00";
 	@Autowired
 	@Qualifier("qianFuQuanStockPriceTable")
@@ -52,6 +51,7 @@ public class PriceEndPointV1 {
 	@Produces("application/json")
 	public String queryDayPriceById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
 			@Context HttpServletResponse response) {
+		String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		List<StockPriceVO> spList = new ArrayList<StockPriceVO>();
 
@@ -77,6 +77,7 @@ public class PriceEndPointV1 {
 	@Produces("application/json")
 	public String queryDayPriceByIdMonthBased(@PathParam("stockId") String stockIdParm,
 			@PathParam("date") String dateParm, @Context HttpServletResponse response) {
+		String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		List<StockPriceVO> spList = this.queryDayPriceById2(stockIdParm, dateParm, response);
 		// merge to month based
@@ -84,6 +85,7 @@ public class PriceEndPointV1 {
 	}
 
 	private List<StockPriceVO> queryDayPriceById2(String stockIdParm, String dateParm, HttpServletResponse response) {
+		String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		List<StockPriceVO> spList = new ArrayList<StockPriceVO>();
 

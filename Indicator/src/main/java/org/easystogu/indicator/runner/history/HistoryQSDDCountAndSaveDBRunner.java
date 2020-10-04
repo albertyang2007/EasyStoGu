@@ -21,8 +21,8 @@ import com.google.common.primitives.Doubles;
 @Component
 public class HistoryQSDDCountAndSaveDBRunner {
 	@Autowired
-	private DBAccessFacdeFactory dBAccessFacdeFactory;
-	protected IndicatorDBHelperIF qsddTable = dBAccessFacdeFactory.getInstance(Constants.indQSDD);
+	@Qualifier("qsddTable")
+	protected IndicatorDBHelperIF qsddTable;
 	@Autowired
 	@Qualifier("qianFuQuanStockPriceTable")
 	protected StockPriceTableHelper stockPriceTable;

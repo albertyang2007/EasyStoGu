@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
 import org.easystogu.db.vo.table.CheckPointDailySelectionVO;
 import org.easystogu.log.LogHelper;
 import org.slf4j.Logger;
@@ -22,7 +23,7 @@ import org.springframework.stereotype.Component;
 public class CheckPointDailySelectionTableHelper {
 	private static Logger logger = LogHelper.getLogger(CheckPointDailySelectionTableHelper.class);
 	@Autowired
-	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+	protected PostgreSqlDataSourceFactory postgreSqlDataSourceFactory;
 	private String tableName = "CHECKPOINT_DAILY_SELECTION";
 	protected String INSERT_SQL = "INSERT INTO " + tableName
 			+ " (stockid, date, checkpoint) VALUES (:stockid, :date, :checkpoint)";
@@ -44,6 +45,11 @@ public class CheckPointDailySelectionTableHelper {
 	protected String QUERY_BY_RECENT_DAYS_SQL = "SELECT * FROM " + tableName
 			+ " WHERE date >= :date ORDER BY DATE DESC";
 
+	
+	private NamedParameterJdbcTemplate getNamedParameterJdbcTemplate() {
+		return new NamedParameterJdbcTemplate(postgreSqlDataSourceFactory.createDataSource());
+	}
+	
 	private static final class IntVOMapper implements RowMapper<Integer> {
 		public Integer mapRow(ResultSet rs, int rowNum) throws SQLException {
 			return rs.getInt("rtn");
@@ -73,7 +79,7 @@ public class CheckPointDailySelectionTableHelper {
 			namedParameters.addValue("date", vo.getDate());
 			namedParameters.addValue("checkpoint", vo.getCheckPoint());
 
-			namedParameterJdbcTemplate.execute(INSERT_SQL, namedParameters, new DefaultPreparedStatementCallback());
+			getNamedParameterJdbcTemplate().execute(INSERT_SQL, namedParameters, new DefaultPreparedStatementCallback());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -91,7 +97,7 @@ public class CheckPointDailySelectionTableHelper {
 			namedParameters.addValue("date", vo.getDate());
 			namedParameters.addValue("checkpoint", vo.getCheckPoint());
 
-			namedParameterJdbcTemplate.execute(INSERT_SQL, namedParameters, new DefaultPreparedStatementCallback());
+			getNamedParameterJdbcTemplate().execute(INSERT_SQL, namedParameters, new DefaultPreparedStatementCallback());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -111,7 +117,7 @@ public class CheckPointDailySelectionTableHelper {
 			namedParameters.addValue("date", date);
 			namedParameters.addValue("checkpoint", checkpoint);
 
-			CheckPointDailySelectionVO vo = this.namedParameterJdbcTemplate.queryForObject(
+			CheckPointDailySelectionVO vo = this.getNamedParameterJdbcTemplate().queryForObject(
 					QUERY_BY_STOCKID_AND_DATE_AND_CHECKPOINT_SQL, namedParameters, new IndEventVOMapper());
 
 			return vo;
@@ -130,7 +136,7 @@ public class CheckPointDailySelectionTableHelper {
 			namedParameters.addValue("stockid", stockId);
 			namedParameters.addValue("date", date);
 
-			List<CheckPointDailySelectionVO> list = this.namedParameterJdbcTemplate.query(QUERY_BY_STOCKID_AND_DATE_SQL,
+			List<CheckPointDailySelectionVO> list = this.getNamedParameterJdbcTemplate().query(QUERY_BY_STOCKID_AND_DATE_SQL,
 					namedParameters, new IndEventVOMapper());
 
 			return list;
@@ -149,7 +155,7 @@ public class CheckPointDailySelectionTableHelper {
 			namedParameters.addValue("stockid", stockId);
 			namedParameters.addValue("checkpoint", checkPoint);
 
-			CheckPointDailySelectionVO vo = this.namedParameterJdbcTemplate.queryForObject(
+			CheckPointDailySelectionVO vo = this.getNamedParameterJdbcTemplate().queryForObject(
 					QUERY_LATEST_BY_STOCKID_AND_NOT_CHECKPOINT_SQL, namedParameters, new IndEventVOMapper());
 
 			return vo;
@@ -167,7 +173,7 @@ public class CheckPointDailySelectionTableHelper {
 			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 			namedParameters.addValue("date", date);
 
-			List<CheckPointDailySelectionVO> list = this.namedParameterJdbcTemplate.query(QUERY_BY_DATE_SQL,
+			List<CheckPointDailySelectionVO> list = this.getNamedParameterJdbcTemplate().query(QUERY_BY_DATE_SQL,
 					namedParameters, new IndEventVOMapper());
 
 			return list;
@@ -185,7 +191,7 @@ public class CheckPointDailySelectionTableHelper {
 			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 			namedParameters.addValue("stockid", stockId);
 
-			List<CheckPointDailySelectionVO> list = this.namedParameterJdbcTemplate.query(QUERY_BY_STOCKID_SQL,
+			List<CheckPointDailySelectionVO> list = this.getNamedParameterJdbcTemplate().query(QUERY_BY_STOCKID_SQL,
 					namedParameters, new IndEventVOMapper());
 
 			return list;
@@ -203,7 +209,7 @@ public class CheckPointDailySelectionTableHelper {
 			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 			namedParameters.addValue("date", date);
 
-			List<CheckPointDailySelectionVO> list = this.namedParameterJdbcTemplate.query(QUERY_BY_RECENT_DAYS_SQL,
+			List<CheckPointDailySelectionVO> list = this.getNamedParameterJdbcTemplate().query(QUERY_BY_RECENT_DAYS_SQL,
 					namedParameters, new IndEventVOMapper());
 
 			return list;
@@ -222,7 +228,7 @@ public class CheckPointDailySelectionTableHelper {
 			namedParameters.addValue("date", date);
 			namedParameters.addValue("checkpoint", checkPoint);
 
-			List<CheckPointDailySelectionVO> list = this.namedParameterJdbcTemplate
+			List<CheckPointDailySelectionVO> list = this.getNamedParameterJdbcTemplate()
 					.query(QUERY_BY_DATE_AND_CHECKPOINT_SQL, namedParameters, new IndEventVOMapper());
 
 			return list;
@@ -239,7 +245,7 @@ public class CheckPointDailySelectionTableHelper {
 			namedParameters.addValue("date", date);
 			namedParameters.addValue("checkpoint", checkPoint);
 
-			int rtn = this.namedParameterJdbcTemplate.queryForObject(COUNT_BY_DATE_AND_CHECKPOINT_SQL, namedParameters,
+			int rtn = this.getNamedParameterJdbcTemplate().queryForObject(COUNT_BY_DATE_AND_CHECKPOINT_SQL, namedParameters,
 					new IntVOMapper());
 
 			return rtn;
@@ -256,7 +262,7 @@ public class CheckPointDailySelectionTableHelper {
 			namedParameters.addValue("date", date);
 			namedParameters.addValue("checkpoint", checkpoint);
 
-			namedParameterJdbcTemplate.execute(DELETE_SQL, namedParameters, new DefaultPreparedStatementCallback());
+			getNamedParameterJdbcTemplate().execute(DELETE_SQL, namedParameters, new DefaultPreparedStatementCallback());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -270,7 +276,7 @@ public class CheckPointDailySelectionTableHelper {
 			namedParameters.addValue("date", date);
 			namedParameters.addValue("checkpoint", checkpoint);
 
-			CheckPointDailySelectionVO vo = this.namedParameterJdbcTemplate.queryForObject(
+			CheckPointDailySelectionVO vo = this.getNamedParameterJdbcTemplate().queryForObject(
 					QUERY_BY_STOCKID_AND_DATE_AND_CHECKPOINT_SQL, namedParameters, new IndEventVOMapper());
 
 			if (vo != null) {
@@ -288,7 +294,7 @@ public class CheckPointDailySelectionTableHelper {
 		try {
 			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 			namedParameters.addValue("date", date);
-			namedParameterJdbcTemplate.execute(DELETE_BY_DATE_SQL, namedParameters,
+			getNamedParameterJdbcTemplate().execute(DELETE_BY_DATE_SQL, namedParameters,
 					new DefaultPreparedStatementCallback());
 		} catch (Exception e) {
 			e.printStackTrace();

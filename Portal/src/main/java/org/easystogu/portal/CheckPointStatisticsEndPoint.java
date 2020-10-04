@@ -29,7 +29,6 @@ import com.google.gson.Gson;
 public class CheckPointStatisticsEndPoint {
 	@Autowired
 	private ConfigurationServiceCache config;
-	private String accessControlAllowOrgin = "*";//config.getString("Access-Control-Allow-Origin", "");
 	@Autowired
 	private CheckPointStatisticsCache checkPointStatisticsCache;
 	@Autowired
@@ -43,6 +42,7 @@ public class CheckPointStatisticsEndPoint {
 	@GetMapping("/luzao/trend/{date}")
 	@Produces("application/json")
 	public String queryLuZaoTrendStatistics(@PathParam("date") String dateParm, @Context HttpServletResponse response) {
+		String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		List<StatisticsVO> list = new ArrayList<StatisticsVO>();
 		if (Pattern.matches(fromToRegex, dateParm)) {
@@ -74,6 +74,7 @@ public class CheckPointStatisticsEndPoint {
 	@Produces("application/json")
 	public String queryLuZaoGordonStatistics(@PathParam("date") String dateParm,
 			@Context HttpServletResponse response) {
+		String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		List<StatisticsVO> list = new ArrayList<StatisticsVO>();
 		if (Pattern.matches(fromToRegex, dateParm)) {
@@ -111,6 +112,7 @@ public class CheckPointStatisticsEndPoint {
 	@GetMapping("/qsdd/{date}")
 	@Produces("application/json")
 	public String queryQsddStatistics(@PathParam("date") String dateParm, @Context HttpServletResponse response) {
+		String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		List<StatisticsVO> list = new ArrayList<StatisticsVO>();
 		if (Pattern.matches(fromToRegex, dateParm)) {
@@ -141,6 +143,7 @@ public class CheckPointStatisticsEndPoint {
 	@GetMapping("/shenxian/{date}")
 	@Produces("application/json")
 	public String queryShenXianStatistics(@PathParam("date") String dateParm, @Context HttpServletResponse response) {
+		String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		List<StatisticsVO> list = new ArrayList<StatisticsVO>();
 		if (Pattern.matches(fromToRegex, dateParm)) {
@@ -170,6 +173,7 @@ public class CheckPointStatisticsEndPoint {
 	@GetMapping("/macd/{date}")
 	@Produces("application/json")
 	public String queryMACDStatistics(@PathParam("date") String dateParm, @Context HttpServletResponse response) {
+		String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		List<StatisticsVO> list = new ArrayList<StatisticsVO>();
 		if (Pattern.matches(fromToRegex, dateParm)) {
@@ -199,6 +203,7 @@ public class CheckPointStatisticsEndPoint {
 	@GetMapping("/magic9day/{date}")
 	@Produces("application/json")
 	public String queryMagic9DayStatistics(@PathParam("date") String dateParm, @Context HttpServletResponse response) {
+		String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		List<StatisticsVO> list = new ArrayList<StatisticsVO>();
 		if (Pattern.matches(fromToRegex, dateParm)) {
@@ -230,6 +235,7 @@ public class CheckPointStatisticsEndPoint {
 	@GetMapping("/wr/{date}")
 	@Produces("application/json")
 	public String queryWRStatistics(@PathParam("date") String dateParm, @Context HttpServletResponse response) {
+		String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		List<StatisticsVO> list = new ArrayList<StatisticsVO>();
 		if (Pattern.matches(fromToRegex, dateParm)) {
@@ -261,6 +267,7 @@ public class CheckPointStatisticsEndPoint {
 	@Produces("application/json")
 	public String querySameDigitsInHighPriceStatistics(@PathParam("date") String dateParm,
 			@Context HttpServletResponse response) {
+		String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		List<StatisticsVO> list = new ArrayList<StatisticsVO>();
 		if (Pattern.matches(fromToRegex, dateParm)) {

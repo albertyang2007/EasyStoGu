@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
 import org.easystogu.db.vo.table.StockBehaviorStatisticsVO;
 import org.easystogu.log.LogHelper;
 import org.slf4j.Logger;
@@ -22,7 +23,7 @@ import org.springframework.stereotype.Component;
 public class StockBehaviorStatisticsTableHelper {
     private static Logger logger = LogHelper.getLogger(StockBehaviorStatisticsTableHelper.class);
 	@Autowired
-	protected NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+	protected PostgreSqlDataSourceFactory postgreSqlDataSourceFactory;
     private String tableName = "STOCK_BEHAVIOR_STATISTICS";
     protected String INSERT_SQL = "INSERT INTO " + tableName
             + " (stockid, checkpoint, statistics) VALUES (:stockid, :checkpoint, :statistics)";
@@ -34,6 +35,11 @@ public class StockBehaviorStatisticsTableHelper {
     protected String QUERY_BY_STOCKID_AND_CHECK_POINT = "SELECT * FROM " + tableName
             + " WHERE stockid = :stockid AND checkpoint = :checkpoint";
 
+	
+	private NamedParameterJdbcTemplate getNamedParameterJdbcTemplate() {
+		return new NamedParameterJdbcTemplate(postgreSqlDataSourceFactory.createDataSource());
+	}
+	
     private static final class DefaultPreparedStatementCallback implements PreparedStatementCallback<Integer> {
         public Integer doInPreparedStatement(PreparedStatement ps) throws SQLException, DataAccessException {
             return ps.executeUpdate();
@@ -63,7 +69,7 @@ public class StockBehaviorStatisticsTableHelper {
             namedParameters.addValue("stockid", stockId);
             namedParameters.addValue("checkpoint", checkpoint);
 
-            StockBehaviorStatisticsVO vo = this.namedParameterJdbcTemplate.queryForObject(
+            StockBehaviorStatisticsVO vo = this.getNamedParameterJdbcTemplate().queryForObject(
                     QUERY_BY_STOCKID_AND_CHECK_POINT, namedParameters, new StockBehaviorStatisticsVOMapper());
 
             return vo;
@@ -81,7 +87,7 @@ public class StockBehaviorStatisticsTableHelper {
             MapSqlParameterSource namedParameters = new MapSqlParameterSource();
             namedParameters.addValue("stockid", stockId);
 
-            List<StockBehaviorStatisticsVO> list = this.namedParameterJdbcTemplate.query(QUERY_BY_STOCKID,
+            List<StockBehaviorStatisticsVO> list = this.getNamedParameterJdbcTemplate().query(QUERY_BY_STOCKID,
                     namedParameters, new StockBehaviorStatisticsVOMapper());
 
             return list;
@@ -98,7 +104,7 @@ public class StockBehaviorStatisticsTableHelper {
             namedParameters.addValue("checkpoint", vo.getCheckPoint());
             namedParameters.addValue("statistics", vo.getStatistics());
 
-            namedParameterJdbcTemplate.execute(INSERT_SQL, namedParameters, new DefaultPreparedStatementCallback());
+            getNamedParameterJdbcTemplate().execute(INSERT_SQL, namedParameters, new DefaultPreparedStatementCallback());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -116,7 +122,7 @@ public class StockBehaviorStatisticsTableHelper {
             namedParameters.addValue("stockid", stockid);
             namedParameters.addValue("checkpoint", checkpoint);
 
-            namedParameterJdbcTemplate.execute(DELETE_SQL, namedParameters, new DefaultPreparedStatementCallback());
+            getNamedParameterJdbcTemplate().execute(DELETE_SQL, namedParameters, new DefaultPreparedStatementCallback());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -127,7 +133,7 @@ public class StockBehaviorStatisticsTableHelper {
             MapSqlParameterSource namedParameters = new MapSqlParameterSource();
             namedParameters.addValue("checkpoint", checkpoint);
 
-            namedParameterJdbcTemplate.execute(DELETE_BY_CHECK_POINT, namedParameters, new DefaultPreparedStatementCallback());
+            getNamedParameterJdbcTemplate().execute(DELETE_BY_CHECK_POINT, namedParameters, new DefaultPreparedStatementCallback());
         } catch (Exception e) {
             e.printStackTrace();
         }

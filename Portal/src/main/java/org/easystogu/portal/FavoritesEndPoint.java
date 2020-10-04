@@ -41,7 +41,6 @@ public class FavoritesEndPoint {
 	private static Logger logger = LogHelper.getLogger(FavoritesEndPoint.class);
 	@Autowired
 	private ConfigurationServiceCache config;
-	private String accessControlAllowOrgin = "*";//config.getString("Access-Control-Allow-Origin", "");
 	@Autowired
 	private CompanyInfoFileHelper stockConfig;
 	@Autowired
@@ -64,6 +63,7 @@ public class FavoritesEndPoint {
 	@Produces("application/json")
 	public String queryFavoritesSelectionCheckPoints(@Context HttpServletRequest request,
 			@Context HttpServletResponse response) {
+		String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		String date = request.getParameter("date");
 		String isZiXuanGu = request.getParameter("isZiXuanGu");
@@ -102,6 +102,7 @@ public class FavoritesEndPoint {
 	@Produces("application/json")
 	public String getFavorites(@PathParam("userId") String userIdParm, String postBody,
 			@Context HttpServletResponse response) {
+		String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		List<FavoritesStockVO> rtn = favoritesCache.get(userIdParm);
 		for (FavoritesStockVO vo : rtn) {

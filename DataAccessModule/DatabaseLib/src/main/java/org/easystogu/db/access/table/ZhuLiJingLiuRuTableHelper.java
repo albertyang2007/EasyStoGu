@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
 import org.easystogu.db.vo.table.ZhuLiJingLiuRuVO;
 import org.easystogu.log.LogHelper;
 import org.slf4j.Logger;
@@ -22,7 +23,7 @@ import org.springframework.stereotype.Component;
 public class ZhuLiJingLiuRuTableHelper {
 	private static Logger logger = LogHelper.getLogger(ZhuLiJingLiuRuTableHelper.class);
 	@Autowired
-	protected NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+	protected PostgreSqlDataSourceFactory postgreSqlDataSourceFactory;
 	// please modify this SQL in all subClass
 	protected String tableName = "ZHULIJINGLIURU";
 	protected String INSERT_SQL = "INSERT INTO " + tableName
@@ -38,6 +39,11 @@ public class ZhuLiJingLiuRuTableHelper {
 	protected String DELETE_BY_DATE_SQL = "DELETE FROM " + tableName + " WHERE date = :date";
 	protected String QUERY_BY_DATE_SQL = "SELECT * FROM " + tableName + " WHERE date = :date";
 
+	
+	private NamedParameterJdbcTemplate getNamedParameterJdbcTemplate() {
+		return new NamedParameterJdbcTemplate(postgreSqlDataSourceFactory.createDataSource());
+	}
+	
 	private static final class ZhuLiJingLiuRuVOMapper implements RowMapper<ZhuLiJingLiuRuVO> {
 		public ZhuLiJingLiuRuVO mapRow(ResultSet rs, int rowNum) throws SQLException {
 			ZhuLiJingLiuRuVO vo = new ZhuLiJingLiuRuVO();
@@ -70,7 +76,7 @@ public class ZhuLiJingLiuRuTableHelper {
 			namedParameters.addValue("price", vo.getPrice());
 			namedParameters.addValue("majorNetPer", vo.getMajorNetPer());
 
-			namedParameterJdbcTemplate.execute(INSERT_SQL, namedParameters, new DefaultPreparedStatementCallback());
+			getNamedParameterJdbcTemplate().execute(INSERT_SQL, namedParameters, new DefaultPreparedStatementCallback());
 		} catch (Exception e) {
 			logger.error("exception meets for insert vo: " + vo, e);
 			e.printStackTrace();
@@ -94,7 +100,7 @@ public class ZhuLiJingLiuRuTableHelper {
 		try {
 			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 			namedParameters.addValue("stockId", stockId);
-			namedParameterJdbcTemplate.execute(DELETE_BY_STOCKID_SQL, namedParameters,
+			getNamedParameterJdbcTemplate().execute(DELETE_BY_STOCKID_SQL, namedParameters,
 					new DefaultPreparedStatementCallback());
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -106,7 +112,7 @@ public class ZhuLiJingLiuRuTableHelper {
 			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 			namedParameters.addValue("stockId", stockId);
 			namedParameters.addValue("date", date);
-			namedParameterJdbcTemplate.execute(DELETE_BY_STOCKID_AND_DATE_SQL, namedParameters,
+			getNamedParameterJdbcTemplate().execute(DELETE_BY_STOCKID_AND_DATE_SQL, namedParameters,
 					new DefaultPreparedStatementCallback());
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -117,7 +123,7 @@ public class ZhuLiJingLiuRuTableHelper {
 		try {
 			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 			namedParameters.addValue("date", date);
-			namedParameterJdbcTemplate.execute(DELETE_BY_DATE_SQL, namedParameters,
+			getNamedParameterJdbcTemplate().execute(DELETE_BY_DATE_SQL, namedParameters,
 					new DefaultPreparedStatementCallback());
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -131,7 +137,7 @@ public class ZhuLiJingLiuRuTableHelper {
 			namedParameters.addValue("stockId", stockId);
 			namedParameters.addValue("date", date);
 
-			ZhuLiJingLiuRuVO vo = this.namedParameterJdbcTemplate.queryForObject(QUERY_BY_ID_AND_DATE_SQL,
+			ZhuLiJingLiuRuVO vo = this.getNamedParameterJdbcTemplate().queryForObject(QUERY_BY_ID_AND_DATE_SQL,
 					namedParameters, new ZhuLiJingLiuRuVOMapper());
 
 			return vo;
@@ -149,7 +155,7 @@ public class ZhuLiJingLiuRuTableHelper {
 			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 			namedParameters.addValue("date", date);
 
-			List<ZhuLiJingLiuRuVO> vo = this.namedParameterJdbcTemplate.query(QUERY_BY_DATE_SQL, namedParameters,
+			List<ZhuLiJingLiuRuVO> vo = this.getNamedParameterJdbcTemplate().query(QUERY_BY_DATE_SQL, namedParameters,
 					new ZhuLiJingLiuRuVOMapper());
 
 			return vo;
@@ -165,7 +171,7 @@ public class ZhuLiJingLiuRuTableHelper {
 			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 			namedParameters.addValue("stockId", stockId);
 
-			List<ZhuLiJingLiuRuVO> list = this.namedParameterJdbcTemplate.query(QUERY_ALL_BY_ID_SQL, namedParameters,
+			List<ZhuLiJingLiuRuVO> list = this.getNamedParameterJdbcTemplate().query(QUERY_ALL_BY_ID_SQL, namedParameters,
 					new ZhuLiJingLiuRuVOMapper());
 
 			return list;
@@ -184,7 +190,7 @@ public class ZhuLiJingLiuRuTableHelper {
 			namedParameters.addValue("stockId", stockId);
 			namedParameters.addValue("limit", day);
 
-			List<ZhuLiJingLiuRuVO> list = this.namedParameterJdbcTemplate.query(QUERY_LATEST_N_BY_ID_SQL,
+			List<ZhuLiJingLiuRuVO> list = this.getNamedParameterJdbcTemplate().query(QUERY_LATEST_N_BY_ID_SQL,
 					namedParameters, new ZhuLiJingLiuRuVOMapper());
 
 			return list;

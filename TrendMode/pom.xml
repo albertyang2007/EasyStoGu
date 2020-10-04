@@ -9,7 +9,6 @@
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.albertyang2007.easystogu</groupId>
 	<artifactId>easystogu-trendmode</artifactId>
 	<name>EasyStoGu-TrendMode</name>
 	<packaging>jar</packaging>

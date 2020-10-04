@@ -22,8 +22,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class DailyMacdCountAndSaveDBRunner {
 	@Autowired
-	protected DBAccessFacdeFactory dBAccessFacdeFactory;
-	protected IndicatorDBHelperIF macdTable = dBAccessFacdeFactory.getInstance(Constants.indMacd);
+	@Qualifier("macdTable")
+	protected IndicatorDBHelperIF macdTable;
 	@Autowired
 	@Qualifier("qianFuQuanStockPriceTable")
 	protected StockPriceTableHelper stockPriceTable;

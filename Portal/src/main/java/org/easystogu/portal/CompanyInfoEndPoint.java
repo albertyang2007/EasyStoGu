@@ -22,7 +22,6 @@ import com.google.gson.Gson;
 public class CompanyInfoEndPoint {
 	@Autowired
 	private ConfigurationServiceCache config ;
-	private String accessControlAllowOrgin = "*";//config.getString("Access-Control-Allow-Origin", "");
 	@Autowired
 	private CompanyInfoFileHelper stockConfig ;
 	@Autowired
@@ -33,6 +32,7 @@ public class CompanyInfoEndPoint {
 	@GetMapping("/{stockId}")
 	@Produces("application/json")
 	public String getByStockId(@PathParam("stockId") String stockId, @Context HttpServletResponse response) {
+		String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		return gson.toJson(stockConfig.getByStockId(stockId));
 	}
@@ -40,6 +40,7 @@ public class CompanyInfoEndPoint {
 	@GetMapping("/name={name}")
 	@Produces("application/json")
 	public String getByName(@PathParam("name") String name, @Context HttpServletResponse response) {
+		String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		return gson.toJson(stockConfig.getByStockName(name));
 	}
@@ -47,6 +48,7 @@ public class CompanyInfoEndPoint {
 	@GetMapping("/latestndate/{limit}")
 	@Produces("application/json")
 	public String getLatestDate(@PathParam("limit") int limit, @Context HttpServletResponse response) {
+		String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		return gson.toJson(this.stockPriceCache.get(Constants.cacheLatestNStockDate + ":" + limit));
 	}

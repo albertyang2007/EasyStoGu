@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
 import org.easystogu.db.vo.table.WSFConfigVO;
 import org.easystogu.log.LogHelper;
 import org.slf4j.Logger;
@@ -20,11 +21,16 @@ import org.springframework.stereotype.Component;
 public class WSFConfigTableHelper {
 	private static Logger logger = LogHelper.getLogger(WSFConfigTableHelper.class);
 	@Autowired
-	protected NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+	protected PostgreSqlDataSourceFactory postgreSqlDataSourceFactory;
 	protected String tableName = "WSFCONFIG";
 	// please modify this SQL in all subClass
 	protected String QUERY_BY_NAME = "SELECT * FROM " + tableName + " WHERE name = :name";
 
+	
+	private NamedParameterJdbcTemplate getNamedParameterJdbcTemplate() {
+		return new NamedParameterJdbcTemplate(postgreSqlDataSourceFactory.createDataSource());
+	}
+	
 	private static final class ConfigVOMapper implements RowMapper<WSFConfigVO> {
 		public WSFConfigVO mapRow(ResultSet rs, int rowNum) throws SQLException {
 			WSFConfigVO vo = new WSFConfigVO();
@@ -48,7 +54,7 @@ public class WSFConfigTableHelper {
 			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 			namedParameters.addValue("name", name);
 
-			WSFConfigVO vo = this.namedParameterJdbcTemplate.queryForObject(QUERY_BY_NAME, namedParameters,
+			WSFConfigVO vo = this.getNamedParameterJdbcTemplate().queryForObject(QUERY_BY_NAME, namedParameters,
 					new ConfigVOMapper());
 
 			return vo.getValue();
@@ -66,7 +72,7 @@ public class WSFConfigTableHelper {
 			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 			namedParameters.addValue("name", name);
 
-			WSFConfigVO vo = this.namedParameterJdbcTemplate.queryForObject(QUERY_BY_NAME, namedParameters,
+			WSFConfigVO vo = this.getNamedParameterJdbcTemplate().queryForObject(QUERY_BY_NAME, namedParameters,
 					new ConfigVOMapper());
 
 			return vo.getValue();

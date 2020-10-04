@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
 import org.easystogu.db.vo.table.ChuQuanChuXiVO;
 import org.easystogu.log.LogHelper;
 import org.slf4j.Logger;
@@ -22,7 +23,7 @@ import org.springframework.stereotype.Component;
 public class EventChuQuanChuXiTableHelper {
 	private static Logger logger = LogHelper.getLogger(EventChuQuanChuXiTableHelper.class);
 	@Autowired
-	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+	protected PostgreSqlDataSourceFactory postgreSqlDataSourceFactory;
 	protected String tableName = "EVENT_CHUQUANCHUXI";
 	protected String INSERT_SQL = "INSERT INTO " + tableName
 			+ " (stockId, date, rate, alreadyupdateprice) VALUES (:stockId, :date, :rate, :alreadyupdateprice)";
@@ -37,6 +38,11 @@ public class EventChuQuanChuXiTableHelper {
 	protected String UPDATE_FLAG_BY_STOCKID_AND_DATE = "UPDATE " + tableName
 			+ " SET alreadyupdateprice = :alreadyupdateprice" + " WHERE stockId = :stockId AND date = :date";
 
+	
+	private NamedParameterJdbcTemplate getNamedParameterJdbcTemplate() {
+		return new NamedParameterJdbcTemplate(postgreSqlDataSourceFactory.createDataSource());
+	}
+	
 	private static final class GaoSongZhuanVOMapper implements RowMapper<ChuQuanChuXiVO> {
 		public ChuQuanChuXiVO mapRow(ResultSet rs, int rowNum) throws SQLException {
 			ChuQuanChuXiVO vo = new ChuQuanChuXiVO();
@@ -71,7 +77,7 @@ public class EventChuQuanChuXiTableHelper {
 			namedParameters.addValue("rate", vo.getRate());
 			namedParameters.addValue("alreadyupdateprice", vo.isAlreadyUpdatePrice());
 
-			namedParameterJdbcTemplate.execute(INSERT_SQL, namedParameters, new DefaultPreparedStatementCallback());
+			getNamedParameterJdbcTemplate().execute(INSERT_SQL, namedParameters, new DefaultPreparedStatementCallback());
 		} catch (Exception e) {
 			logger.error("exception meets for insert vo: " + vo, e);
 			e.printStackTrace();
@@ -91,7 +97,7 @@ public class EventChuQuanChuXiTableHelper {
 			namedParameters.addValue("stockId", stockId);
 			namedParameters.addValue("date", date);
 
-			ChuQuanChuXiVO vo = this.namedParameterJdbcTemplate.queryForObject(QUERY_BY_ID_AND_DATE_SQL,
+			ChuQuanChuXiVO vo = this.getNamedParameterJdbcTemplate().queryForObject(QUERY_BY_ID_AND_DATE_SQL,
 					namedParameters, new GaoSongZhuanVOMapper());
 
 			return vo;
@@ -109,7 +115,7 @@ public class EventChuQuanChuXiTableHelper {
 			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 			namedParameters.addValue("stockId", stockId);
 
-			List<ChuQuanChuXiVO> list = this.namedParameterJdbcTemplate.query(QUERY_ALL_BY_ID_SQL, namedParameters,
+			List<ChuQuanChuXiVO> list = this.getNamedParameterJdbcTemplate().query(QUERY_ALL_BY_ID_SQL, namedParameters,
 					new GaoSongZhuanVOMapper());
 
 			return list;
@@ -127,7 +133,7 @@ public class EventChuQuanChuXiTableHelper {
 			namedParameters.addValue("stockId", stockId);
 			namedParameters.addValue("limit", day);
 
-			List<ChuQuanChuXiVO> list = this.namedParameterJdbcTemplate.query(QUERY_LATEST_N_BY_ID_SQL, namedParameters,
+			List<ChuQuanChuXiVO> list = this.getNamedParameterJdbcTemplate().query(QUERY_LATEST_N_BY_ID_SQL, namedParameters,
 					new GaoSongZhuanVOMapper());
 
 			return list;
@@ -143,7 +149,7 @@ public class EventChuQuanChuXiTableHelper {
 			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 			namedParameters.addValue("stockId", stockId);
 			namedParameters.addValue("date", date);
-			namedParameterJdbcTemplate.execute(DELETE_BY_STOCKID_AND_DATE_SQL, namedParameters,
+			getNamedParameterJdbcTemplate().execute(DELETE_BY_STOCKID_AND_DATE_SQL, namedParameters,
 					new DefaultPreparedStatementCallback());
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -154,7 +160,7 @@ public class EventChuQuanChuXiTableHelper {
 		try {
 			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 			namedParameters.addValue("stockId", stockId);
-			namedParameterJdbcTemplate.execute(DELETE_BY_STOCKID_SQL, namedParameters,
+			getNamedParameterJdbcTemplate().execute(DELETE_BY_STOCKID_SQL, namedParameters,
 					new DefaultPreparedStatementCallback());
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -168,7 +174,7 @@ public class EventChuQuanChuXiTableHelper {
 			namedParameters.addValue("date", vo.date);
 			namedParameters.addValue("alreadyupdateprice", vo.isAlreadyUpdatePrice());
 
-			namedParameterJdbcTemplate.execute(UPDATE_FLAG_BY_STOCKID_AND_DATE, namedParameters,
+			getNamedParameterJdbcTemplate().execute(UPDATE_FLAG_BY_STOCKID_AND_DATE, namedParameters,
 					new DefaultPreparedStatementCallback());
 		} catch (Exception e) {
 			e.printStackTrace();

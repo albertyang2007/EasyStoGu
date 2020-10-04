@@ -47,18 +47,27 @@ public class IndicatorEndPointV1 {
 	protected static String HHmmss = "00:00:00";
 	@Autowired
 	private ConfigurationServiceCache config;
-	protected String accessControlAllowOrgin = "*";//config.getString("Access-Control-Allow-Origin", "");
 	@Autowired
 	@Qualifier("qianFuQuanStockPriceTable")
 	protected QianFuQuanStockPriceTableHelper qianfuquanStockPriceTable;
 	@Autowired
-	private DBAccessFacdeFactory dBAccessFacdeFactory;
-	protected IndicatorDBHelperIF kdjTable = dBAccessFacdeFactory.getInstance(Constants.indKDJ);
-	protected IndicatorDBHelperIF macdTable = dBAccessFacdeFactory.getInstance(Constants.indMacd);
-	protected IndicatorDBHelperIF bollTable = dBAccessFacdeFactory.getInstance(Constants.indBoll);
-	protected IndicatorDBHelperIF qsddTable = dBAccessFacdeFactory.getInstance(Constants.indQSDD);
-	protected IndicatorDBHelperIF wrTable = dBAccessFacdeFactory.getInstance(Constants.indWR);
-	protected IndicatorDBHelperIF shenXianTable = dBAccessFacdeFactory.getInstance(Constants.indShenXian);
+	@Qualifier("kdjTable")
+	protected IndicatorDBHelperIF kdjTable;
+	@Autowired
+	@Qualifier("macdTable")
+	protected IndicatorDBHelperIF macdTable;
+	@Autowired
+	@Qualifier("bollTable")
+	protected IndicatorDBHelperIF bollTable;
+	@Autowired
+	@Qualifier("qsddTable")
+	protected IndicatorDBHelperIF qsddTable;
+	@Autowired
+	@Qualifier("wrTable")
+	protected IndicatorDBHelperIF wrTable;
+	@Autowired
+	@Qualifier("shenXianTable")
+	protected IndicatorDBHelperIF shenXianTable;
 	@Autowired
 	protected IndDDXTableHelper ddxTable;
 	@Autowired
@@ -78,6 +87,7 @@ public class IndicatorEndPointV1 {
 	@Produces("application/json")
 	public String queryMACDById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
 			@Context HttpServletResponse response) {
+		String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		List<MacdVO> list = new ArrayList<MacdVO>();
 		if (Pattern.matches(fromToRegex, dateParm)) {
@@ -104,6 +114,7 @@ public class IndicatorEndPointV1 {
 	@Produces("application/json")
 	public String queryKDJById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
 			@Context HttpServletResponse response) {
+		String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		List<KDJVO> list = new ArrayList<KDJVO>();
 		if (Pattern.matches(fromToRegex, dateParm)) {
@@ -130,6 +141,7 @@ public class IndicatorEndPointV1 {
 	@Produces("application/json")
 	public String queryBollById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
 			@Context HttpServletResponse response) {
+		String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		List<BollVO> list = new ArrayList<BollVO>();
 		if (Pattern.matches(fromToRegex, dateParm)) {
@@ -157,6 +169,7 @@ public class IndicatorEndPointV1 {
 	@Produces("application/json")
 	public String queryShenXianById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
 			@Context HttpServletResponse response) {
+		String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		List<ShenXianVO> list = new ArrayList<ShenXianVO>();
 		if (Pattern.matches(fromToRegex, dateParm)) {
@@ -185,6 +198,7 @@ public class IndicatorEndPointV1 {
 	@Produces("application/json")
 	public String queryShenXianSellById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
 			@Context HttpServletResponse response) {
+		String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 
 		List<ShenXianUIVO> list = new ArrayList<ShenXianUIVO>();
@@ -214,6 +228,7 @@ public class IndicatorEndPointV1 {
 	@Produces("application/json")
 	public String queryLuZaoById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
 			@Context HttpServletResponse response) {
+		String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		List<LuZaoVO> list = new ArrayList<LuZaoVO>();
 		List<StockPriceVO> spList = this.fetchAllPrices(stockIdParm);
@@ -238,6 +253,7 @@ public class IndicatorEndPointV1 {
 	@Produces("application/json")
 	public String queryQSDDById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
 			@Context HttpServletResponse response) {
+		String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		List<QSDDVO> list = new ArrayList<QSDDVO>();
 		if (Pattern.matches(fromToRegex, dateParm)) {
@@ -265,6 +281,7 @@ public class IndicatorEndPointV1 {
 	@Produces("application/json")
 	public String queryWRById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
 			@Context HttpServletResponse response) {
+		String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		List<WRVO> list = new ArrayList<WRVO>();
 		if (Pattern.matches(fromToRegex, dateParm)) {
@@ -291,6 +308,7 @@ public class IndicatorEndPointV1 {
 	@Produces("application/json")
 	public String queryDDXById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
 			@Context HttpServletResponse response) {
+		String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		List<DDXVO> list = new ArrayList<DDXVO>();
 		if (Pattern.matches(fromToRegex, dateParm)) {

@@ -36,6 +36,7 @@ public class PriceEndPointV2 extends PriceEndPointV0{
 	@Produces("application/json")
 	public String queryDayPriceById(@PathParam("stockId") String stockIdParm,
 			@PathParam("date") String dateParm, @Context HttpServletResponse response) {
+		String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		List<StockPriceVO> spList = new ArrayList<StockPriceVO>();
 		

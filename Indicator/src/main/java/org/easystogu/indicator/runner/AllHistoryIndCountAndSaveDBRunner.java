@@ -6,13 +6,16 @@ import org.easystogu.indicator.runner.history.HistoryMacdCountAndSaveDBRunner;
 import org.easystogu.indicator.runner.history.HistoryQSDDCountAndSaveDBRunner;
 import org.easystogu.indicator.runner.history.HistoryShenXianCountAndSaveDBRunner;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component
 public class AllHistoryIndCountAndSaveDBRunner {
 	@Autowired
+	@Qualifier("macdRunner")
 	HistoryMacdCountAndSaveDBRunner historyMacdCountAndSaveDBRunner;
 	@Autowired
+	@Qualifier("kdjRunner")
 	HistoryKDJCountAndSaveDBRunner historyKDJCountAndSaveDBRunner;
 	@Autowired
 	HistoryBollCountAndSaveDBRunner historyBollCountAndSaveDBRunner;

@@ -27,12 +27,23 @@ public class LstmPredictStockPriceDataPrepare {
 	@Qualifier("qianFuQuanStockPriceTable")
 	private QianFuQuanStockPriceTableHelper qianFuQuanStockPriceTableHelper;
 	@Autowired
-	private DBAccessFacdeFactory dBAccessFacdeFactory;
-	protected IndicatorDBHelperIF shenXianTable = dBAccessFacdeFactory.getInstance(Constants.indShenXian);
-	protected IndicatorDBHelperIF macdTable = dBAccessFacdeFactory.getInstance(Constants.indMacd);
-	protected IndicatorDBHelperIF kdjTable = dBAccessFacdeFactory.getInstance(Constants.indKDJ);
-	protected IndicatorDBHelperIF qsddTable = dBAccessFacdeFactory.getInstance(Constants.indQSDD);
-	protected IndicatorDBHelperIF wrTable = dBAccessFacdeFactory.getInstance(Constants.indWR);
+	@Qualifier("macdTable")
+	protected IndicatorDBHelperIF macdTable;
+	@Autowired
+	@Qualifier("kdjTable")
+	protected IndicatorDBHelperIF kdjTable;
+	@Autowired
+	@Qualifier("bollTable")
+	protected IndicatorDBHelperIF bollTable;
+	@Autowired
+	@Qualifier("shenXianTable")
+	protected IndicatorDBHelperIF shenXianTable;
+	@Autowired
+	@Qualifier("qsddTable")
+	protected IndicatorDBHelperIF qsddTable;
+	@Autowired
+	@Qualifier("wrTable")
+	protected IndicatorDBHelperIF wrTable;
 
 	private static String filePath = "C:/Users/eyaweiw/github/EasyStoGu/AI/mytest/exampleData/";
 	private static String csvHeader = "date,open,close,low,high,volume,change,h1,h2,h3,dea,dif,macd,k,d,j,qsddS,qsddM,qsddL,wrS,wrM,wrL,label1";

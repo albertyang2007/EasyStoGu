@@ -8,6 +8,8 @@ import javax.annotation.PostConstruct;
 import org.easystogu.cassandra.access.table.IndWeekKDJCassTableHelper;
 import org.easystogu.cassandra.access.table.IndWeekMacdCassTableHelper;
 import org.easystogu.config.Constants;
+import org.easystogu.db.access.facde.DBAccessFacdeFactory;
+import org.easystogu.db.helper.IF.IndicatorDBHelperIF;
 import org.easystogu.db.vo.table.KDJVO;
 import org.easystogu.db.vo.table.MacdVO;
 import org.easystogu.db.vo.table.StockPriceVO;
@@ -18,11 +20,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
-@Component
+@Component("weekStockSuperVOHelper")
 public class WeekStockSuperVOHelper extends StockSuperVOHelper {
 	@Autowired
 	@Qualifier("weekStockPriceTable")
 	protected StockPriceTableHelper _stockPriceTable;
+	
+	@Autowired
+	protected DBAccessFacdeFactory dBAccessFacdeFactory;
 
 	@PostConstruct
 	public void init() {

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.easystogu.db.access.table.CompanyInfoTableHelper;
+import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
 import org.easystogu.db.vo.view.FavoritesStockCheckpointVO;
 import org.easystogu.log.LogHelper;
 import org.slf4j.Logger;
@@ -22,8 +23,13 @@ import org.springframework.stereotype.Component;
 public class FavoritesStockCheckpointViewHelper {
 	private static Logger logger = LogHelper.getLogger(CompanyInfoTableHelper.class);
 	@Autowired
-	protected NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+	protected PostgreSqlDataSourceFactory postgreSqlDataSourceFactory;
 
+	
+	private NamedParameterJdbcTemplate getNamedParameterJdbcTemplate() {
+		return new NamedParameterJdbcTemplate(postgreSqlDataSourceFactory.createDataSource());
+	}
+	
 	private static final class FavoritesStockCheckpointVOMapper implements RowMapper<FavoritesStockCheckpointVO> {
 		public FavoritesStockCheckpointVO mapRow(ResultSet rs, int rowNum) throws SQLException {
 			FavoritesStockCheckpointVO vo = new FavoritesStockCheckpointVO();
@@ -51,7 +57,7 @@ public class FavoritesStockCheckpointViewHelper {
 			String viewName = "\"favorites_stock_checkpoint_Details\"";
 			String queryStr = "SELECT * FROM " + viewName + "WHERE date = :date AND userId = :userId";
 
-			List<FavoritesStockCheckpointVO> list = this.namedParameterJdbcTemplate.query(queryStr, namedParameters,
+			List<FavoritesStockCheckpointVO> list = this.getNamedParameterJdbcTemplate().query(queryStr, namedParameters,
 					new FavoritesStockCheckpointVOMapper());
 			return list;
 		} catch (Exception e) {

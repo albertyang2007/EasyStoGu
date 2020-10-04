@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
 import org.easystogu.db.vo.table.CheckPointHistorySelectionVO;
 import org.easystogu.log.LogHelper;
 import org.slf4j.Logger;
@@ -19,12 +20,17 @@ import org.springframework.stereotype.Component;
 public class CheckPointHistorySelectionTableHelper {
 	private static Logger logger = LogHelper.getLogger(CheckPointHistorySelectionTableHelper.class);
 	@Autowired
-	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+	protected PostgreSqlDataSourceFactory postgreSqlDataSourceFactory;
 	protected String tableName = "CHECKPOINT_HISTORY_SELECTION";
 	protected String INSERT_SQL = "INSERT INTO " + tableName
 			+ " (stockId, checkPoint, buyDate, sellDate) VALUES (:stockId, :checkPoint, :buyDate, :sellDate)";
 	protected String DELETE_BY_CHECKPOINT = "DELETE FROM " + tableName + " WHERE checkPoint = :checkPoint";
 
+	
+	private NamedParameterJdbcTemplate getNamedParameterJdbcTemplate() {
+		return new NamedParameterJdbcTemplate(postgreSqlDataSourceFactory.createDataSource());
+	}
+	
 	private static final class HistoryReportMapper implements RowMapper<CheckPointHistorySelectionVO> {
 		public CheckPointHistorySelectionVO mapRow(ResultSet rs, int rowNum) throws SQLException {
 			CheckPointHistorySelectionVO vo = new CheckPointHistorySelectionVO();
@@ -53,7 +59,7 @@ public class CheckPointHistorySelectionTableHelper {
 			namedParameters.addValue("buyDate", vo.getBuyDate());
 			namedParameters.addValue("sellDate", vo.getSellDate());
 
-			namedParameterJdbcTemplate.execute(INSERT_SQL, namedParameters, new DefaultPreparedStatementCallback());
+			getNamedParameterJdbcTemplate().execute(INSERT_SQL, namedParameters, new DefaultPreparedStatementCallback());
 		} catch (Exception e) {
 			logger.error("exception meets for insert vo: " + vo, e);
 			e.printStackTrace();
@@ -64,7 +70,7 @@ public class CheckPointHistorySelectionTableHelper {
 		try {
 			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 			namedParameters.addValue("checkPoint", checkPoint);
-			namedParameterJdbcTemplate.execute(DELETE_BY_CHECKPOINT, namedParameters,
+			getNamedParameterJdbcTemplate().execute(DELETE_BY_CHECKPOINT, namedParameters,
 					new DefaultPreparedStatementCallback());
 		} catch (Exception e) {
 			e.printStackTrace();

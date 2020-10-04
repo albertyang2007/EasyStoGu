@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
 import org.easystogu.db.vo.table.CheckPointHistoryAnalyseVO;
 import org.easystogu.log.LogHelper;
 import org.slf4j.Logger;
@@ -19,12 +20,17 @@ import org.springframework.stereotype.Component;
 public class CheckPointHistoryAnalyseTableHelper {
 	private static Logger logger = LogHelper.getLogger(CheckPointHistoryAnalyseTableHelper.class);
 	@Autowired
-	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+	protected PostgreSqlDataSourceFactory postgreSqlDataSourceFactory;
 	protected String tableName = "CHECKPOINT_HISTORY_ANALYSE";
 	protected String INSERT_SQL = "INSERT INTO " + tableName
 			+ " (checkpoint, total_satisfy, close_earn_percent, high_earn_percent, low_earn_percent, avg_hold_days, total_high_earn) VALUES (:checkpoint, :total_satisfy, :close_earn_percent, :high_earn_percent, :low_earn_percent, :avg_hold_days, :total_high_earn)";
 	protected String DELETE_BY_CHECKPOINT = "DELETE FROM " + tableName + " WHERE checkPoint = :checkPoint";
 
+	
+	private NamedParameterJdbcTemplate getNamedParameterJdbcTemplate() {
+		return new NamedParameterJdbcTemplate(postgreSqlDataSourceFactory.createDataSource());
+	}
+	
 	private static final class HistoryAnalyseMapper implements RowMapper<CheckPointHistoryAnalyseVO> {
 		public CheckPointHistoryAnalyseVO mapRow(ResultSet rs, int rowNum) throws SQLException {
 			CheckPointHistoryAnalyseVO vo = new CheckPointHistoryAnalyseVO();
@@ -59,7 +65,7 @@ public class CheckPointHistoryAnalyseTableHelper {
 			namedParameters.addValue("avg_hold_days", vo.getAvgHoldDays());
 			namedParameters.addValue("total_high_earn", vo.getTotalHighEarn());
 
-			namedParameterJdbcTemplate.execute(INSERT_SQL, namedParameters, new DefaultPreparedStatementCallback());
+			getNamedParameterJdbcTemplate().execute(INSERT_SQL, namedParameters, new DefaultPreparedStatementCallback());
 		} catch (Exception e) {
 			logger.error("exception meets for insert vo: " + vo, e);
 			e.printStackTrace();

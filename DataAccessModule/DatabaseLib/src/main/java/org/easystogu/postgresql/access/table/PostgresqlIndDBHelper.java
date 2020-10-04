@@ -9,6 +9,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
+import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
 import org.easystogu.db.helper.IF.IndicatorDBHelperIF;
 import org.easystogu.db.vo.table.IndicatorVO;
 import org.easystogu.log.LogHelper;
@@ -25,10 +28,10 @@ import org.springframework.stereotype.Service;
 @Service
 public abstract class PostgresqlIndDBHelper implements IndicatorDBHelperIF {
 	private static Logger logger = LogHelper.getLogger(PostgresqlIndDBHelper.class);
+	@Autowired
+	protected PostgreSqlDataSourceFactory postgreSqlDataSourceFactory;
 	protected Class<?> indicatorVOClass;
 	protected String tableName;// To be set later
-	@Autowired
-	protected NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 	protected String INSERT_SQL;
 	protected String QUERY_ALL_BY_ID_SQL;
 	protected String QUERY_BY_ID_AND_DATE_SQL;
@@ -37,7 +40,8 @@ public abstract class PostgresqlIndDBHelper implements IndicatorDBHelperIF {
 	protected String DELETE_BY_STOCKID_SQL;
 	protected String DELETE_BY_STOCKID_AND_DATE_SQL;
 
-	protected PostgresqlIndDBHelper() {
+	@PostConstruct
+	public void init() {
 		String[] paris = generateFieldsNamePairs();
 
 		// INSERT INTO ind.macd (stockId, date, dif, dea, macd) VALUES (:stockId, :date,
@@ -51,6 +55,11 @@ public abstract class PostgresqlIndDBHelper implements IndicatorDBHelperIF {
 				+ " WHERE stockId = :stockId ORDER BY date DESC LIMIT :limit";
 		DELETE_BY_STOCKID_SQL = "DELETE FROM " + tableName + " WHERE stockId = :stockId";
 		DELETE_BY_STOCKID_AND_DATE_SQL = "DELETE FROM " + tableName + " WHERE stockId = :stockId AND date = :date";
+	}
+	
+	
+	private NamedParameterJdbcTemplate getNamedParameterJdbcTemplate() {
+		return new NamedParameterJdbcTemplate(postgreSqlDataSourceFactory.createDataSource());
 	}
 
 	private String[] generateFieldsNamePairs() {
@@ -114,7 +123,7 @@ public abstract class PostgresqlIndDBHelper implements IndicatorDBHelperIF {
 
 	public <T extends IndicatorVO> void insert(T vo) {
 		try {
-			namedParameterJdbcTemplate.execute(INSERT_SQL, generateNameParms(vo),
+			getNamedParameterJdbcTemplate().execute(INSERT_SQL, generateNameParms(vo),
 					new DefaultPreparedStatementCallback());
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -134,7 +143,7 @@ public abstract class PostgresqlIndDBHelper implements IndicatorDBHelperIF {
 			namedParameters.addValue("stockId", stockId);
 			namedParameters.addValue("date", date);
 
-			T vo = (T) this.namedParameterJdbcTemplate.queryForObject(QUERY_BY_ID_AND_DATE_SQL, namedParameters,
+			T vo = (T) this.getNamedParameterJdbcTemplate().queryForObject(QUERY_BY_ID_AND_DATE_SQL, namedParameters,
 					new IndVOMapper());
 
 			return vo;
@@ -152,7 +161,7 @@ public abstract class PostgresqlIndDBHelper implements IndicatorDBHelperIF {
 			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 			namedParameters.addValue("stockId", stockId);
 
-			List<T> list = (List<T>) this.namedParameterJdbcTemplate.query(QUERY_ALL_BY_ID_SQL, namedParameters,
+			List<T> list = (List<T>) this.getNamedParameterJdbcTemplate().query(QUERY_ALL_BY_ID_SQL, namedParameters,
 					new IndVOMapper());
 			return list;
 		} catch (Exception e) {
@@ -165,7 +174,7 @@ public abstract class PostgresqlIndDBHelper implements IndicatorDBHelperIF {
 		try {
 			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 			namedParameters.addValue("stockId", stockId);
-			namedParameterJdbcTemplate.execute(DELETE_BY_STOCKID_SQL, namedParameters,
+			getNamedParameterJdbcTemplate().execute(DELETE_BY_STOCKID_SQL, namedParameters,
 					new DefaultPreparedStatementCallback());
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -177,7 +186,7 @@ public abstract class PostgresqlIndDBHelper implements IndicatorDBHelperIF {
 			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 			namedParameters.addValue("stockId", stockId);
 			namedParameters.addValue("date", date);
-			namedParameterJdbcTemplate.execute(DELETE_BY_STOCKID_AND_DATE_SQL, namedParameters,
+			getNamedParameterJdbcTemplate().execute(DELETE_BY_STOCKID_AND_DATE_SQL, namedParameters,
 					new DefaultPreparedStatementCallback());
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -194,7 +203,7 @@ public abstract class PostgresqlIndDBHelper implements IndicatorDBHelperIF {
 			namedParameters.addValue("date1", startDate);
 			namedParameters.addValue("date2", endDate);
 
-			List<T> list = (List<T>) this.namedParameterJdbcTemplate.query(QUERY_BY_STOCKID_AND_BETWEEN_DATE,
+			List<T> list = (List<T>) this.getNamedParameterJdbcTemplate().query(QUERY_BY_STOCKID_AND_BETWEEN_DATE,
 					namedParameters, new IndVOMapper());
 			return list;
 		} catch (Exception e) {
@@ -210,7 +219,7 @@ public abstract class PostgresqlIndDBHelper implements IndicatorDBHelperIF {
 			namedParameters.addValue("stockId", stockId);
 			namedParameters.addValue("limit", day);
 
-			List<T> list = (List<T>) this.namedParameterJdbcTemplate.query(QUERY_LATEST_N_BY_ID_SQL, namedParameters,
+			List<T> list = (List<T>) this.getNamedParameterJdbcTemplate().query(QUERY_LATEST_N_BY_ID_SQL, namedParameters,
 					new IndVOMapper());
 
 			return list;

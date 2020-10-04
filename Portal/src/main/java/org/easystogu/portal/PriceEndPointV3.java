@@ -26,7 +26,6 @@ import com.google.gson.Gson;
 public class PriceEndPointV3 {
 	@Autowired
 	private ConfigurationServiceCache config;
-	private String accessControlAllowOrgin = "*";//config.getString("Access-Control-Allow-Origin", "");
 	@Autowired
 	protected CompanyInfoFileHelper companyInfoHelper;
 	@Autowired
@@ -40,6 +39,7 @@ public class PriceEndPointV3 {
 	@Produces("application/json")
 	public String queryDayPriceByIdWithForecastPrice(@PathParam("stockId") String stockIdParm,
 			@PathParam("date") String dateParm, String postBody, @Context HttpServletResponse response) {
+		String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		List<StockPriceVO> rtnSpList = new ArrayList<StockPriceVO>();
 		List<StockPriceVO> spList = postParmsProcess.updateStockPriceAccordingToRequest(stockIdParm, postBody);

@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
 import org.easystogu.db.vo.table.CompanyInfoVO;
 import org.easystogu.log.LogHelper;
 import org.slf4j.Logger;
@@ -22,7 +23,7 @@ import org.springframework.stereotype.Component;
 public class CompanyInfoTableHelper {
 	private static Logger logger = LogHelper.getLogger(CompanyInfoTableHelper.class);
 	@Autowired
-	protected NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+	protected PostgreSqlDataSourceFactory postgreSqlDataSourceFactory;
 
 	protected String tableName = "COMPANY_INFO";
 	// please modify this SQL in all subClass
@@ -34,6 +35,11 @@ public class CompanyInfoTableHelper {
 	protected String DELETE_BY_STOCKID = "DELETE FROM " + tableName + " WHERE stockId = :stockId";
 	protected String UPDATE_NAME_BY_STOCKID = "UPDATE " + tableName + " SET name = :name" + " WHERE stockId = :stockId";
 
+	
+	private NamedParameterJdbcTemplate getNamedParameterJdbcTemplate() {
+		return new NamedParameterJdbcTemplate(postgreSqlDataSourceFactory.createDataSource());
+	}
+	
 	private static final class CompanyInfoVOMapper implements RowMapper<CompanyInfoVO> {
 		public CompanyInfoVO mapRow(ResultSet rs, int rowNum) throws SQLException {
 			CompanyInfoVO vo = new CompanyInfoVO();
@@ -77,7 +83,7 @@ public class CompanyInfoTableHelper {
 			namedParameters.addValue("liuTongAGu", vo.getLiuTongAGu());
 			namedParameters.addValue("updateTime", vo.getUpdateTime());
 
-			namedParameterJdbcTemplate.execute(INSERT_SQL, namedParameters, new DefaultPreparedStatementCallback());
+			getNamedParameterJdbcTemplate().execute(INSERT_SQL, namedParameters, new DefaultPreparedStatementCallback());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -100,7 +106,7 @@ public class CompanyInfoTableHelper {
 		try {
 			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 			namedParameters.addValue("stockId", stockId);
-			namedParameterJdbcTemplate.execute(DELETE_BY_STOCKID, namedParameters,
+			getNamedParameterJdbcTemplate().execute(DELETE_BY_STOCKID, namedParameters,
 					new DefaultPreparedStatementCallback());
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -119,7 +125,7 @@ public class CompanyInfoTableHelper {
 			namedParameters.addValue("stockId", vo.stockId);
 			namedParameters.addValue("name", vo.name);
 
-			namedParameterJdbcTemplate.execute(UPDATE_NAME_BY_STOCKID, namedParameters,
+			getNamedParameterJdbcTemplate().execute(UPDATE_NAME_BY_STOCKID, namedParameters,
 					new DefaultPreparedStatementCallback());
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -131,7 +137,7 @@ public class CompanyInfoTableHelper {
 			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 			namedParameters.addValue("stockId", stockId);
 
-			CompanyInfoVO vo = this.namedParameterJdbcTemplate.queryForObject(QUERY_BY_STOCKID, namedParameters,
+			CompanyInfoVO vo = this.getNamedParameterJdbcTemplate().queryForObject(QUERY_BY_STOCKID, namedParameters,
 					new CompanyInfoVOMapper());
 			return vo;
 		} catch (EmptyResultDataAccessException ee) {
@@ -146,7 +152,7 @@ public class CompanyInfoTableHelper {
 		try {
 			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 
-			List<CompanyInfoVO> list = this.namedParameterJdbcTemplate.query(QUERY_ALL, namedParameters,
+			List<CompanyInfoVO> list = this.getNamedParameterJdbcTemplate().query(QUERY_ALL, namedParameters,
 					new CompanyInfoVOMapper());
 			return list;
 		} catch (Exception e) {
@@ -159,7 +165,7 @@ public class CompanyInfoTableHelper {
 		try {
 			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 
-			List<String> list = this.namedParameterJdbcTemplate.query(QUERY_ALL_STOCKID, namedParameters,
+			List<String> list = this.getNamedParameterJdbcTemplate().query(QUERY_ALL_STOCKID, namedParameters,
 					new StringVOMapper());
 			return list;
 		} catch (Exception e) {

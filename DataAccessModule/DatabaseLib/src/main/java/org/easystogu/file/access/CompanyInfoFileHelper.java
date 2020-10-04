@@ -52,7 +52,12 @@ public class CompanyInfoFileHelper {
 	// do not use this method now, since it need manually update
 	private Map<String, CompanyInfoVO> loadDataFromFile() {
 		Map<String, CompanyInfoVO> companyMapFile = new HashMap<String, CompanyInfoVO>();
-		String[] lines = fileSource.loadContent(fileName).split("\n");
+		String content = fileSource.loadContent(fileName);
+		if (Strings.isEmpty(content)) {
+			System.err.println("fileName " + fileName + " content is null");
+			return companyMapFile;
+		}
+		String[] lines = content.split("\n");
 		for (int index = 1; index < lines.length; index++) {
 			String line = lines[index];
 			if (Strings.isNotEmpty(line)) {
@@ -247,9 +252,9 @@ public class CompanyInfoFileHelper {
 			// System.out.println(vo);
 			if (vo.totalGuBen != 0 && vo.liuTongAGu != 0) {
 				this.companyInfoTable.delete(vo.stockId);
-				//System.out.println("Insert Company_Info :" + vo);
+				// System.out.println("Insert Company_Info :" + vo);
 				this.companyInfoTable.insert(vo);
-				//System.out.println(vo);
+				// System.out.println(vo);
 			}
 		}
 	}
@@ -257,7 +262,7 @@ public class CompanyInfoFileHelper {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		CompanyInfoFileHelper ins = new CompanyInfoFileHelper();
-		//ins.companyInfoTable.delete("000001");
+		// ins.companyInfoTable.delete("000001");
 		ins.updateCompanyFromFileToDB();
 	}
 }

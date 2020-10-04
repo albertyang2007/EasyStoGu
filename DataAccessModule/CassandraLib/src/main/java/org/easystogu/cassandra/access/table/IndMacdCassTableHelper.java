@@ -1,13 +1,6 @@
 package org.easystogu.cassandra.access.table;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.commons.lang.math.RandomUtils;
 import org.easystogu.config.Constants;
-import org.easystogu.db.vo.table.IndicatorVO;
-import org.easystogu.db.vo.table.MacdVO;
-import org.easystogu.utils.WeekdayUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 

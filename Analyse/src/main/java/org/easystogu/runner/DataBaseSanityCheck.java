@@ -2,8 +2,6 @@ package org.easystogu.runner;
 
 import java.util.List;
 
-import org.easystogu.config.Constants;
-import org.easystogu.db.access.facde.DBAccessFacdeFactory;
 import org.easystogu.db.access.table.CheckPointDailyStatisticsTableHelper;
 import org.easystogu.db.access.table.IndMATableHelper;
 import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
@@ -45,13 +43,23 @@ public class DataBaseSanityCheck {
 	@Qualifier("qianFuQuanStockPriceTable")
 	protected QianFuQuanStockPriceTableHelper qianfuquanStockPriceTable;
 	@Autowired
-	private DBAccessFacdeFactory dBAccessFacdeFactory;
-	protected IndicatorDBHelperIF macdTable = dBAccessFacdeFactory.getInstance(Constants.indMacd);
-	protected IndicatorDBHelperIF kdjTable = dBAccessFacdeFactory.getInstance(Constants.indKDJ);
-	protected IndicatorDBHelperIF bollTable = dBAccessFacdeFactory.getInstance(Constants.indBoll);
-	protected IndicatorDBHelperIF shenXianTable = dBAccessFacdeFactory.getInstance(Constants.indShenXian);
-	protected IndicatorDBHelperIF qsddTable = dBAccessFacdeFactory.getInstance(Constants.indQSDD);
-	protected IndicatorDBHelperIF wrTable = dBAccessFacdeFactory.getInstance(Constants.indWR);
+	@Qualifier("macdTable")
+	protected IndicatorDBHelperIF macdTable;
+	@Autowired
+	@Qualifier("kdjTable")
+	protected IndicatorDBHelperIF kdjTable;
+	@Autowired
+	@Qualifier("bollTable")
+	protected IndicatorDBHelperIF bollTable;
+	@Autowired
+	@Qualifier("shenXianTable")
+	protected IndicatorDBHelperIF shenXianTable;
+	@Autowired
+	@Qualifier("qsddTable")
+	protected IndicatorDBHelperIF qsddTable;
+	@Autowired
+	@Qualifier("wrTable")
+	protected IndicatorDBHelperIF wrTable;
 	@Autowired
 	protected IndMATableHelper maTable;
 	@Autowired
@@ -62,11 +70,15 @@ public class DataBaseSanityCheck {
 	@Autowired
 	@Qualifier("weekStockPriceTable")
 	protected WeekStockPriceTableHelper weekStockPriceTable;
-	protected IndicatorDBHelperIF weekMacdTable = dBAccessFacdeFactory.getInstance(Constants.indWeekMacd);
-	protected IndicatorDBHelperIF weekKdjTable = dBAccessFacdeFactory.getInstance(Constants.indWeekKDJ);
 	@Autowired
-	protected HistoryMacdCountAndSaveDBRunner macdRunner = new HistoryMacdCountAndSaveDBRunner();
+	protected IndicatorDBHelperIF weekMacdTable;
 	@Autowired
+	protected IndicatorDBHelperIF weekKdjTable;
+	@Autowired
+	@Qualifier("macdRunner")
+	protected HistoryMacdCountAndSaveDBRunner macdRunner;
+	@Autowired
+	@Qualifier("kdjRunner")
 	protected HistoryKDJCountAndSaveDBRunner kdjRunner;
 	@Autowired
 	protected HistoryBollCountAndSaveDBRunner boolRunner;
@@ -80,8 +92,10 @@ public class DataBaseSanityCheck {
 	protected HistoryWRCountAndSaveDBRunner wrRunner;
 
 	@Autowired
+	@Qualifier("weekMacdRunner")
 	protected HistoryWeeklyMacdCountAndSaveDBRunner weekMacdRunner;
 	@Autowired
+	@Qualifier("weekKdjRunner")
 	protected HistoryWeeklyKDJCountAndSaveDBRunner weekKdjRunner;
 
 	@Autowired

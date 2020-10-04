@@ -3,8 +3,6 @@ package org.easystogu.indicator.runner.history;
 import java.util.List;
 
 import org.easystogu.cassandra.access.table.IndMacdCassTableHelper;
-import org.easystogu.config.Constants;
-import org.easystogu.db.access.facde.DBAccessFacdeFactory;
 import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.helper.IF.IndicatorDBHelperIF;
@@ -19,11 +17,11 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 //计算数据库中所有macd值，包括最新和历史的，一次性运行
-@Component
+@Component("macdRunner")
 public class HistoryMacdCountAndSaveDBRunner {
 	@Autowired
-	protected DBAccessFacdeFactory dBAccessFacdeFactory;
-	protected IndicatorDBHelperIF macdTable = dBAccessFacdeFactory.getInstance(Constants.indMacd);
+	@Qualifier("macdTable")
+	protected IndicatorDBHelperIF macdTable;
 	@Autowired
 	@Qualifier("qianFuQuanStockPriceTable")
 	protected StockPriceTableHelper stockPriceTable;

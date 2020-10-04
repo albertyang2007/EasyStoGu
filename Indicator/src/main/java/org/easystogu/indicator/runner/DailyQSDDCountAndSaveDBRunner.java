@@ -21,8 +21,8 @@ import com.google.common.primitives.Doubles;
 @Component
 public class DailyQSDDCountAndSaveDBRunner{
 	@Autowired
-	private DBAccessFacdeFactory dBAccessFacdeFactory;
-	protected IndicatorDBHelperIF qsddTable = dBAccessFacdeFactory.getInstance(Constants.indQSDD);
+	@Qualifier("qsddTable")
+	protected IndicatorDBHelperIF qsddTable;
 	@Autowired
 	private QSDDHelper qsddHelper = new QSDDHelper();
 	@Autowired

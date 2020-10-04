@@ -6,6 +6,7 @@ import javax.annotation.PostConstruct;
 
 import org.easystogu.cassandra.access.table.IndWeekMacdCassTableHelper;
 import org.easystogu.config.Constants;
+import org.easystogu.db.access.facde.DBAccessFacdeFactory;
 import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.access.table.WeekStockPriceTableHelper;
 import org.easystogu.db.helper.IF.IndicatorDBHelperIF;
@@ -21,11 +22,11 @@ public class DailyWeekMacdCountAndSaveDBRunner extends DailyMacdCountAndSaveDBRu
 	@Qualifier("weekStockPriceTable")
 	private StockPriceTableHelper _stockPriceTable;
 	@Autowired
-	protected IndicatorDBHelperIF _macdTable = dBAccessFacdeFactory.getInstance(Constants.indWeekMacd);
+	protected DBAccessFacdeFactory dBAccessFacdeFactory;
 	
 	@PostConstruct
 	public void init() {
-		super.setMacdTable(_macdTable);
+		super.setMacdTable(dBAccessFacdeFactory.getInstance(Constants.indWeekMacd));
 		super.setStockPriceTable(_stockPriceTable);
 	}
 	

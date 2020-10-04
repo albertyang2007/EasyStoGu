@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
 import org.easystogu.db.vo.table.ScheduleActionVO;
 import org.easystogu.log.LogHelper;
 import org.slf4j.Logger;
@@ -22,7 +23,7 @@ import org.springframework.stereotype.Component;
 public class ScheduleActionTableHelper {
 	private static Logger logger = LogHelper.getLogger(ScheduleActionTableHelper.class);
 	@Autowired
-	protected NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+	protected PostgreSqlDataSourceFactory postgreSqlDataSourceFactory;
 	protected String tableName = "SCHEDULE_ACTION";
 	protected String INSERT_SQL = "INSERT INTO " + tableName
 			+ " (stockId, runDate, createDate, actionDo, params) VALUES (:stockId, :runDate, :createDate, :actionDo, :params)";
@@ -40,6 +41,11 @@ public class ScheduleActionTableHelper {
 	protected String DELETE_BY_STOCKID_AND_ACTION_SQL = "DELETE FROM " + tableName
 			+ " WHERE stockId = :stockId AND actionDo = :actionDo";
 
+	
+	private NamedParameterJdbcTemplate getNamedParameterJdbcTemplate() {
+		return new NamedParameterJdbcTemplate(postgreSqlDataSourceFactory.createDataSource());
+	}
+	
 	private static final class ScheduleActionVOMapper implements RowMapper<ScheduleActionVO> {
 		public ScheduleActionVO mapRow(ResultSet rs, int rowNum) throws SQLException {
 			ScheduleActionVO vo = new ScheduleActionVO();
@@ -69,7 +75,7 @@ public class ScheduleActionTableHelper {
 			namedParameters.addValue("actionDo", vo.getActionDo());
 			namedParameters.addValue("params", vo.getParams());
 
-			namedParameterJdbcTemplate.execute(INSERT_SQL, namedParameters, new DefaultPreparedStatementCallback());
+			getNamedParameterJdbcTemplate().execute(INSERT_SQL, namedParameters, new DefaultPreparedStatementCallback());
 		} catch (Exception e) {
 			logger.error("exception meets for insert vo: " + vo, e);
 			e.printStackTrace();
@@ -91,7 +97,7 @@ public class ScheduleActionTableHelper {
 		try {
 			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 			namedParameters.addValue("stockId", stockId);
-			namedParameterJdbcTemplate.execute(DELETE_BY_STOCKID_SQL, namedParameters,
+			getNamedParameterJdbcTemplate().execute(DELETE_BY_STOCKID_SQL, namedParameters,
 					new DefaultPreparedStatementCallback());
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -104,7 +110,7 @@ public class ScheduleActionTableHelper {
 			namedParameters.addValue("stockId", stockId);
 			namedParameters.addValue("runDate", runDate);
 			namedParameters.addValue("actionDo", actionDo);
-			namedParameterJdbcTemplate.execute(DELETE_BY_STOCKID_AND_RUNDATE_AND_ACTION_SQL, namedParameters,
+			getNamedParameterJdbcTemplate().execute(DELETE_BY_STOCKID_AND_RUNDATE_AND_ACTION_SQL, namedParameters,
 					new DefaultPreparedStatementCallback());
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -116,7 +122,7 @@ public class ScheduleActionTableHelper {
 			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 			namedParameters.addValue("stockId", stockId);
 			namedParameters.addValue("actionDo", actionDo);
-			namedParameterJdbcTemplate.execute(DELETE_BY_STOCKID_AND_ACTION_SQL, namedParameters,
+			getNamedParameterJdbcTemplate().execute(DELETE_BY_STOCKID_AND_ACTION_SQL, namedParameters,
 					new DefaultPreparedStatementCallback());
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -130,7 +136,7 @@ public class ScheduleActionTableHelper {
 			namedParameters.addValue("stockId", stockId);
 			namedParameters.addValue("runDate", runDate);
 
-			ScheduleActionVO vo = this.namedParameterJdbcTemplate.queryForObject(QUERY_BY_ID_AND_RUNDATE_SQL,
+			ScheduleActionVO vo = this.getNamedParameterJdbcTemplate().queryForObject(QUERY_BY_ID_AND_RUNDATE_SQL,
 					namedParameters, new ScheduleActionVOMapper());
 
 			return vo;
@@ -149,7 +155,7 @@ public class ScheduleActionTableHelper {
 			namedParameters.addValue("stockId", stockId);
 			namedParameters.addValue("actionDo", actionDo);
 
-			List<ScheduleActionVO> list = this.namedParameterJdbcTemplate.query(QUERY_ALL_BY_ID_AND_ACTION_SQL,
+			List<ScheduleActionVO> list = this.getNamedParameterJdbcTemplate().query(QUERY_ALL_BY_ID_AND_ACTION_SQL,
 					namedParameters, new ScheduleActionVOMapper());
 
 			return list;
@@ -165,7 +171,7 @@ public class ScheduleActionTableHelper {
 			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 			namedParameters.addValue("runDate", runDate);
 
-			List<ScheduleActionVO> list = this.namedParameterJdbcTemplate.query(QUERY_ALL_BY_RUNDATE_SQL,
+			List<ScheduleActionVO> list = this.getNamedParameterJdbcTemplate().query(QUERY_ALL_BY_RUNDATE_SQL,
 					namedParameters, new ScheduleActionVOMapper());
 
 			return list;
@@ -181,7 +187,7 @@ public class ScheduleActionTableHelper {
 			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 			namedParameters.addValue("runDate", runDate);
 
-			List<ScheduleActionVO> list = this.namedParameterJdbcTemplate.query(QUERY_ALL_SHOULD_RUNDATE_SQL,
+			List<ScheduleActionVO> list = this.getNamedParameterJdbcTemplate().query(QUERY_ALL_SHOULD_RUNDATE_SQL,
 					namedParameters, new ScheduleActionVOMapper());
 
 			return list;

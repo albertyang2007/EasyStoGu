@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.easystogu.db.access.table.CompanyInfoTableHelper;
+import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
 import org.easystogu.db.vo.view.StatisticsViewVO;
 import org.easystogu.log.LogHelper;
 import org.slf4j.Logger;
@@ -23,8 +24,13 @@ import org.springframework.stereotype.Component;
 public class XXXYuanStockStatisticsViewHelper {
 	private static Logger logger = LogHelper.getLogger(CompanyInfoTableHelper.class);
 	@Autowired
-	protected NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+	protected PostgreSqlDataSourceFactory postgreSqlDataSourceFactory;
 
+	
+	private NamedParameterJdbcTemplate getNamedParameterJdbcTemplate() {
+		return new NamedParameterJdbcTemplate(postgreSqlDataSourceFactory.createDataSource());
+	}
+	
 	private static final class StatisticsInfoVOMapper implements RowMapper<StatisticsViewVO> {
 		public StatisticsViewVO mapRow(ResultSet rs, int rowNum) throws SQLException {
 			StatisticsViewVO vo = new StatisticsViewVO();
@@ -50,7 +56,7 @@ public class XXXYuanStockStatisticsViewHelper {
 			String viewName = "\"" + howMuchYuan + "_Stock_Statistics\"";
 			String QUERY_ALL = "SELECT date, count FROM " + viewName + "order by date";
 
-			List<StatisticsViewVO> list = this.namedParameterJdbcTemplate.query(QUERY_ALL, namedParameters,
+			List<StatisticsViewVO> list = this.getNamedParameterJdbcTemplate().query(QUERY_ALL, namedParameters,
 					new StatisticsInfoVOMapper());
 			return list;
 		} catch (Exception e) {

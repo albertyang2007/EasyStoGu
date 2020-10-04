@@ -19,8 +19,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class HistoryBollCountAndSaveDBRunner {
 	@Autowired
-	private DBAccessFacdeFactory dBAccessFacdeFactory;
-	protected IndicatorDBHelperIF bollTable = dBAccessFacdeFactory.getInstance(Constants.indBoll);
+	@Qualifier("bollTable")
+	protected IndicatorDBHelperIF bollTable;
 	@Autowired
 	@Qualifier("qianFuQuanStockPriceTable")
 	protected StockPriceTableHelper stockPriceTable;

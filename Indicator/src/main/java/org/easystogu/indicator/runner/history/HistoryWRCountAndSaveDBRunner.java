@@ -21,8 +21,8 @@ import com.google.common.primitives.Doubles;
 @Component
 public class HistoryWRCountAndSaveDBRunner {
 	@Autowired
-	private DBAccessFacdeFactory dBAccessFacdeFactory;
-	protected IndicatorDBHelperIF wrTable = dBAccessFacdeFactory.getInstance(Constants.indWR);
+	@Qualifier("wrTable")
+	protected IndicatorDBHelperIF wrTable;
 	@Autowired
 	@Qualifier("qianFuQuanStockPriceTable")
 	protected StockPriceTableHelper stockPriceTable;

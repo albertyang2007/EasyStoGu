@@ -41,8 +41,10 @@ public class DailySelectionRunner {
 	@Qualifier("stockPriceTable")
 	protected StockPriceTableHelper stockPriceTable;
 	@Autowired
+	@Qualifier("stockSuperVOHelper")
 	private StockSuperVOHelper stockOverAllHelper;
 	@Autowired
+	@Qualifier("weekStockSuperVOHelper")
 	private WeekStockSuperVOHelper weekStockOverAllHelper;
 	@Autowired
 	private CheckPointDailySelectionTableHelper checkPointDailySelectionTable;
@@ -52,10 +54,6 @@ public class DailySelectionRunner {
 	private ScheduleActionTableHelper scheduleActionTableHelper;
 	@Autowired
 	private CombineAnalyseHelper combineAnalyserHelper;
-
-	private String[] specifySelectCheckPoints = config.getString("specify_Select_CheckPoint", "").split(";");
-	private String[] specifyDependCheckPoints = config.getString("specify_Depend_CheckPoint", "").split(";");
-	private String[] generalCheckPoints = config.getString("general_CheckPoint", "").split(";");
 
 	public void doAnalyse(String stockId, String latestDate, boolean addToScheduleActionTable,
 			boolean checkDayPriceEqualWeekPrice, Map<DailyCombineCheckPoint, List<String>> generalCheckPointGordonMap) {
@@ -207,6 +205,7 @@ public class DailySelectionRunner {
 	}
 
 	private boolean isSelectedCheckPoint(DailyCombineCheckPoint checkPoint) {
+		String[] specifySelectCheckPoints = config.getString("specify_Select_CheckPoint", "").split(";");
 		if (specifySelectCheckPoints != null && specifySelectCheckPoints.length > 0) {
 			for (String cp : specifySelectCheckPoints) {
 				if (cp.equals(checkPoint.toString())) {
@@ -220,6 +219,7 @@ public class DailySelectionRunner {
 	}
 
 	private boolean isDependCheckPoint(DailyCombineCheckPoint checkPoint) {
+		String[] specifyDependCheckPoints = config.getString("specify_Depend_CheckPoint", "").split(";");
 		for (String cp : specifyDependCheckPoints) {
 			if (cp.equals(checkPoint.toString())) {
 				return true;
@@ -229,7 +229,7 @@ public class DailySelectionRunner {
 	}
 
 	private boolean isGeneralCheckPoint(DailyCombineCheckPoint checkPoint) {
-		// System.out.println("g:" + config.getString("general_CheckPoint"));
+		String[] generalCheckPoints = config.getString("general_CheckPoint", "").split(";");
 		for (String cp : generalCheckPoints) {
 			if (cp.equals(checkPoint.toString())) {
 				// System.out.println(checkPoint + " is meet");

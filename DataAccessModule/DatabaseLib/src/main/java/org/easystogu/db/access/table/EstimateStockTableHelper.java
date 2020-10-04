@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
 import org.easystogu.db.vo.table.EstimateStockVO;
 import org.easystogu.log.LogHelper;
 import org.slf4j.Logger;
@@ -21,7 +22,7 @@ import org.springframework.stereotype.Component;
 public class EstimateStockTableHelper {
 	private static Logger logger = LogHelper.getLogger(EstimateStockTableHelper.class);
 	@Autowired
-	protected NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+	protected PostgreSqlDataSourceFactory postgreSqlDataSourceFactory;
 	protected String tableName = "ESTIMATE_STOCK";
 	// please modify this SQL in all subClass
 	protected String INSERT_SQL = "INSERT INTO " + tableName + " (stockId, date) VALUES (:stockId, :date)";
@@ -38,6 +39,11 @@ public class EstimateStockTableHelper {
 
 	protected String QUERY_STOCKIDS_BY_DATE_SQL = "SELECT stockId FROM " + tableName + " WHERE date = :date";
 
+	
+	private NamedParameterJdbcTemplate getNamedParameterJdbcTemplate() {
+		return new NamedParameterJdbcTemplate(postgreSqlDataSourceFactory.createDataSource());
+	}
+	
 	private static final class DefaultPreparedStatementCallback implements PreparedStatementCallback<Integer> {
 		public Integer doInPreparedStatement(PreparedStatement ps) throws SQLException, DataAccessException {
 			return ps.executeUpdate();
@@ -67,7 +73,7 @@ public class EstimateStockTableHelper {
 			namedParameters.addValue("stockId", vo.getStockId());
 			namedParameters.addValue("date", vo.getDate());
 
-			namedParameterJdbcTemplate.execute(INSERT_SQL, namedParameters, new DefaultPreparedStatementCallback());
+			getNamedParameterJdbcTemplate().execute(INSERT_SQL, namedParameters, new DefaultPreparedStatementCallback());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -86,7 +92,7 @@ public class EstimateStockTableHelper {
 		try {
 			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 			namedParameters.addValue("date", date);
-			namedParameterJdbcTemplate.execute(DELETE_BY_DATE_SQL, namedParameters,
+			getNamedParameterJdbcTemplate().execute(DELETE_BY_DATE_SQL, namedParameters,
 					new DefaultPreparedStatementCallback());
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -98,7 +104,7 @@ public class EstimateStockTableHelper {
 			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 			namedParameters.addValue("stockId", stockId);
 			namedParameters.addValue("date", date);
-			namedParameterJdbcTemplate.execute(DELETE_BY_STOCKID_AND_DATE_SQL, namedParameters,
+			getNamedParameterJdbcTemplate().execute(DELETE_BY_STOCKID_AND_DATE_SQL, namedParameters,
 					new DefaultPreparedStatementCallback());
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -112,7 +118,7 @@ public class EstimateStockTableHelper {
 			namedParameters.addValue("stockId", stockId);
 			namedParameters.addValue("date", date);
 
-			EstimateStockVO vo = this.namedParameterJdbcTemplate.queryForObject(QUERY_BY_ID_AND_DATE_SQL,
+			EstimateStockVO vo = this.getNamedParameterJdbcTemplate().queryForObject(QUERY_BY_ID_AND_DATE_SQL,
 					namedParameters, new EstimateStockVOMapper());
 
 			return vo;
@@ -130,7 +136,7 @@ public class EstimateStockTableHelper {
 			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 			namedParameters.addValue("date", date);
 
-			List<EstimateStockVO> list = this.namedParameterJdbcTemplate.query(QUERY_BY_DATE_SQL, namedParameters,
+			List<EstimateStockVO> list = this.getNamedParameterJdbcTemplate().query(QUERY_BY_DATE_SQL, namedParameters,
 					new EstimateStockVOMapper());
 
 			return list;
@@ -146,7 +152,7 @@ public class EstimateStockTableHelper {
 			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 			namedParameters.addValue("date", date);
 
-			List<String> list = this.namedParameterJdbcTemplate.query(QUERY_STOCKIDS_BY_DATE_SQL, namedParameters,
+			List<String> list = this.getNamedParameterJdbcTemplate().query(QUERY_STOCKIDS_BY_DATE_SQL, namedParameters,
 					new EstimateStockIdMapper());
 
 			return list;

@@ -25,7 +25,6 @@ import com.google.gson.Gson;
 public class XXXYuanStockStatisticsEndPoint {
 	@Autowired
 	private ConfigurationServiceCache config;
-	private String accessControlAllowOrgin = "*";//config.getString("Access-Control-Allow-Origin", "");
 	@Autowired
 	private XXXYuanStockStatisticsCache stockStatisticsCache;
 
@@ -35,6 +34,7 @@ public class XXXYuanStockStatisticsEndPoint {
 	@Produces("application/json")
 	public String getLatestDate(@PathParam("howMuchYuan") String howMuchYuan, @Context HttpServletResponse response) {
 		List<StatisticsVO> rtnList = new ArrayList<StatisticsVO>();
+		String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		List<StatisticsViewVO> list = this.stockStatisticsCache.get(howMuchYuan);
 

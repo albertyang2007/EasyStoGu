@@ -43,7 +43,7 @@ public class DailyScheduler implements SchedulingConfigurer {
 	private ConfigurationServiceCache config;
 
 	@Autowired
-	@Qualifier("taskScheduler")
+	@Qualifier("taskSchedulerThreadPool")
 	private TaskScheduler taskScheduler;
 
 	public void configureTasks(ScheduledTaskRegistrar taskRegistrar) {

@@ -3,13 +3,16 @@ package org.easystogu.indicator.runner.history;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component
 public class IndicatorHistortOverAllRunner {
 	@Autowired
+	@Qualifier("macdRunner")
 	HistoryMacdCountAndSaveDBRunner historyMacdCountAndSaveDBRunner;
 	@Autowired
+	@Qualifier("kdjRunner")
 	HistoryKDJCountAndSaveDBRunner historyKDJCountAndSaveDBRunner;
 	@Autowired
 	HistoryBollCountAndSaveDBRunner historyBollCountAndSaveDBRunner;
@@ -22,8 +25,10 @@ public class IndicatorHistortOverAllRunner {
 	@Autowired
 	HistoryMACountAndSaveDBRunner historyMACountAndSaveDBRunner;
 	@Autowired
+	@Qualifier("weekMacdRunner")
 	HistoryWeeklyMacdCountAndSaveDBRunner historyWeeklyMacdCountAndSaveDBRunner;
 	@Autowired
+	@Qualifier("weekKdjRunner")
 	HistoryWeeklyKDJCountAndSaveDBRunner historyWeeklyKDJCountAndSaveDBRunner;
 	
 	public void countAndSave(List<String> stockIds) {

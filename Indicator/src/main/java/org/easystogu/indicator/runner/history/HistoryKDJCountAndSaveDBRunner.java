@@ -21,11 +21,11 @@ import org.springframework.stereotype.Component;
 
 import com.google.common.primitives.Doubles;
 
-@Component
+@Component("kdjRunner")
 public class HistoryKDJCountAndSaveDBRunner {
 	@Autowired
-	protected DBAccessFacdeFactory dBAccessFacdeFactory;
-	protected IndicatorDBHelperIF kdjTable = dBAccessFacdeFactory.getInstance(Constants.indKDJ);
+	@Qualifier("kdjTable")
+	protected IndicatorDBHelperIF kdjTable;
 	@Autowired
 	@Qualifier("qianFuQuanStockPriceTable")
 	protected StockPriceTableHelper stockPriceTable;

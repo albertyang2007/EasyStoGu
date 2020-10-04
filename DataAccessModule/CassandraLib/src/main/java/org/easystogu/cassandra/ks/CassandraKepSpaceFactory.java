@@ -15,7 +15,7 @@ import com.datastax.driver.core.Cluster;
 public class CassandraKepSpaceFactory {
 	private static Logger logger = LogHelper.getLogger(CassandraKepSpaceFactory.class);
 	@Autowired
-	private static FileConfigurationService config;
+	private FileConfigurationService config;
 	private static Cluster cluster = null;
 
 	public Cluster createCluster() {

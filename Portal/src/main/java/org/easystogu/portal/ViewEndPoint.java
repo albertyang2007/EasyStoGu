@@ -32,7 +32,6 @@ public class ViewEndPoint {
 	private static Logger logger = LogHelper.getLogger(ViewEndPoint.class);
 	@Autowired
 	private ConfigurationServiceCache config;
-	private String accessControlAllowOrgin = "*";//config.getString("Access-Control-Allow-Origin", "");
 	@Autowired
 	private CompanyInfoFileHelper stockConfig;
 	@Autowired
@@ -49,6 +48,7 @@ public class ViewEndPoint {
 	@Produces("application/json")
 	public String queryDayPriceByIdFromAnalyseViewAtRealTime(@PathParam("viewname") String viewname,
 			@Context HttpServletRequest request, @Context HttpServletResponse response) {
+		String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		String date = request.getParameter("date");
 		String cixin = request.getParameter("cixin");

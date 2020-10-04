@@ -27,7 +27,6 @@ import com.google.gson.Gson;
 public class TrendModeEndPoint {
 	@Autowired
     private DBConfigurationService config;
-	private String accessControlAllowOrgin = "*";//config.getString("Access-Control-Allow-Origin", "");
 	@Autowired
 	private TrendModeLoader modeLoader;
 
@@ -37,6 +36,7 @@ public class TrendModeEndPoint {
 	@Produces("application/json")
 	public String queryTrendModeByName(@PathParam("name") String name,
 			@Context HttpServletResponse response) {
+		String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		List<StockPriceVO> spList = new ArrayList<StockPriceVO>();
 		TrendModeVO tmo = modeLoader.loadTrendMode(name);
@@ -66,6 +66,7 @@ public class TrendModeEndPoint {
 	@GetMapping("/listnames")
 	@Produces("application/json")
 	public String queryAllTrendModeNames(@Context HttpServletResponse response) {
+		String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		return gson.toJson(modeLoader.getAllNames());
 	}

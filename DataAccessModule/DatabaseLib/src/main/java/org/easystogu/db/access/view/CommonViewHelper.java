@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
 import org.easystogu.db.vo.view.CommonViewVO;
 import org.easystogu.log.LogHelper;
 import org.easystogu.utils.Strings;
@@ -18,11 +19,16 @@ import org.springframework.stereotype.Component;
 @Component
 public class CommonViewHelper {
     private static Logger logger = LogHelper.getLogger(CommonViewHelper.class);
-    @Autowired
-    protected NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+	@Autowired
+	protected PostgreSqlDataSourceFactory postgreSqlDataSourceFactory;
 
     protected String QUERY_BY_VIEW_NAMES = "SELECT COUNT(*) AS rtn FROM pg_views WHERE VIEWNAME = :viewName";
 
+	
+	private NamedParameterJdbcTemplate getNamedParameterJdbcTemplate() {
+		return new NamedParameterJdbcTemplate(postgreSqlDataSourceFactory.createDataSource());
+	}
+	
     private static final class IntVOMapper implements RowMapper<Integer> {
         public Integer mapRow(ResultSet rs, int rowNum) throws SQLException {
             return rs.getInt("rtn");
@@ -59,7 +65,7 @@ public class CommonViewHelper {
         MapSqlParameterSource namedParameters = new MapSqlParameterSource();
         namedParameters.addValue("viewName", viewName);
 
-        int rtn = this.namedParameterJdbcTemplate.queryForObject(QUERY_BY_VIEW_NAMES, namedParameters,
+        int rtn = this.getNamedParameterJdbcTemplate().queryForObject(QUERY_BY_VIEW_NAMES, namedParameters,
                 new IntVOMapper());
         return rtn > 0 ? true : false;
     }
@@ -80,7 +86,7 @@ public class CommonViewHelper {
 
             logger.info("queryByDateForViewDirectlySearch sql =" + sql.toString());
 
-            List<CommonViewVO> list = this.namedParameterJdbcTemplate.query(sql.toString(), namedParameters,
+            List<CommonViewVO> list = this.getNamedParameterJdbcTemplate().query(sql.toString(), namedParameters,
                     new CommonViewVOMapper());
             return list;
 
@@ -100,7 +106,7 @@ public class CommonViewHelper {
                 namedParameters.addValue("date", date);
             }
 
-            List<CommonViewVO> list = this.namedParameterJdbcTemplate.query(sql.toString(), namedParameters,
+            List<CommonViewVO> list = this.getNamedParameterJdbcTemplate().query(sql.toString(), namedParameters,
                     new CommonViewVOWithOutNameMapper());
             return list;
 
@@ -116,7 +122,7 @@ public class CommonViewHelper {
             StringBuffer sql = new StringBuffer();
             sql.append("SELECT stockId FROM \"" + viewName + "\"");
 
-            List<String> list = this.namedParameterJdbcTemplate.query(sql.toString(), namedParameters,
+            List<String> list = this.getNamedParameterJdbcTemplate().query(sql.toString(), namedParameters,
                     new StringVOMapper());
             return list;
         } catch (Exception e) {

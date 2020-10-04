@@ -42,18 +42,17 @@ public class HistoryAnalyseReport {
 	@Autowired
 	private CheckPointDailyStatisticsTableHelper checkPointDailyStatisticsTable;
 	@Autowired
+	@Qualifier("weekStockSuperVOHelper")
 	private WeekStockSuperVOHelper weekStockOverAllHelper;
 	@Autowired
 	private CombineAnalyseHelper combineAanalyserHelper;
 	@Autowired
+	@Qualifier("stockSuperVOHelper")
 	private StockSuperVOHelper stockOverAllHelper;
 	@Autowired
 	private CheckPointHistoryAnalyseTableHelper cpHistoryAnalyse;
 	@Autowired
 	private CheckPointDailySelectionTableHelper checkPointDailySelectionTable;
-
-	private String specifySelectCheckPoint = config.getString("specify_Select_CheckPoint", "");
-	private String[] specifySelectCheckPoints = specifySelectCheckPoint.split(";");
 
 	public List<HistoryReportDetailsVO> doAnalyseBuySellDate(String stockId,
 			List<DailyCombineCheckPoint> checkPointList) {
@@ -402,6 +401,8 @@ public class HistoryAnalyseReport {
 	}
 
 	private boolean isCheckPointSelected(DailyCombineCheckPoint checkPoint) {
+		String specifySelectCheckPoint = config.getString("specify_Select_CheckPoint", "");
+		String[] specifySelectCheckPoints = specifySelectCheckPoint.split(";");
 		for (String cp : specifySelectCheckPoints) {
 			if (cp.equals(checkPoint.toString())) {
 				return true;

@@ -21,8 +21,8 @@ import com.google.common.primitives.Doubles;
 @Component
 public class DailyShenXianCountAndSaveDBRunner{
 	@Autowired
-	private DBAccessFacdeFactory dBAccessFacdeFactory;
-	protected IndicatorDBHelperIF shenXianTable = dBAccessFacdeFactory.getInstance(Constants.indShenXian);
+	@Qualifier("shenXianTable")
+	protected IndicatorDBHelperIF shenXianTable;
 	@Autowired
 	@Qualifier("qianFuQuanStockPriceTable")
 	protected QianFuQuanStockPriceTableHelper qianFuQuanStockPriceTable;

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.easystogu.db.access.table.cache.CacheAbleStock;
+import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
 import org.easystogu.db.vo.table.ChuQuanChuXiVO;
 import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.log.LogHelper;
@@ -24,7 +25,7 @@ import org.springframework.stereotype.Component;
 public class StockPriceTableHelper implements CacheAbleStock {
 	private static Logger logger = LogHelper.getLogger(StockPriceTableHelper.class);
 	@Autowired
-	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+	protected PostgreSqlDataSourceFactory postgreSqlDataSourceFactory;
 	protected String tableName = "STOCKPRICE";
 	// please modify this SQL in all subClass
 	protected String INSERT_SQL = "INSERT INTO " + tableName
@@ -134,6 +135,11 @@ public class StockPriceTableHelper implements CacheAbleStock {
 	protected String QUERY_DEAL_DATE_BY_ID = "SELECT date AS rtn FROM " + tableName
 			+ " WHERE stockId = :stockId ORDER BY date DESC";
 
+	
+	private NamedParameterJdbcTemplate getNamedParameterJdbcTemplate() {
+		return new NamedParameterJdbcTemplate(postgreSqlDataSourceFactory.createDataSource());
+	}
+	
 	private static final class StockPriceVOMapper implements RowMapper<StockPriceVO> {
 		public StockPriceVO mapRow(ResultSet rs, int rowNum) throws SQLException {
 			StockPriceVO vo = new StockPriceVO();
@@ -192,7 +198,7 @@ public class StockPriceTableHelper implements CacheAbleStock {
 			namedParameters.addValue("volume", vo.getVolume());
 			namedParameters.addValue("lastclose", vo.getLastClose());
 
-			namedParameterJdbcTemplate.execute(INSERT_SQL, namedParameters, new DefaultPreparedStatementCallback());
+			getNamedParameterJdbcTemplate().execute(INSERT_SQL, namedParameters, new DefaultPreparedStatementCallback());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -202,7 +208,7 @@ public class StockPriceTableHelper implements CacheAbleStock {
 		try {
 			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 			namedParameters.addValue("stockId", stockId);
-			namedParameterJdbcTemplate.execute(DELETE_BY_STOCKID_SQL, namedParameters,
+			getNamedParameterJdbcTemplate().execute(DELETE_BY_STOCKID_SQL, namedParameters,
 					new DefaultPreparedStatementCallback());
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -214,7 +220,7 @@ public class StockPriceTableHelper implements CacheAbleStock {
 			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 			namedParameters.addValue("stockId", stockId);
 			namedParameters.addValue("date", date);
-			namedParameterJdbcTemplate.execute(DELETE_BY_STOCKID_AND_DATE_SQL, namedParameters,
+			getNamedParameterJdbcTemplate().execute(DELETE_BY_STOCKID_AND_DATE_SQL, namedParameters,
 					new DefaultPreparedStatementCallback());
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -226,7 +232,7 @@ public class StockPriceTableHelper implements CacheAbleStock {
 			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 			namedParameters.addValue("stockId", stockId);
 			namedParameters.addValue("date", date);
-			namedParameterJdbcTemplate.execute(DELETE_BY_STOCKID_AND_AFTER_DATE_SQL, namedParameters,
+			getNamedParameterJdbcTemplate().execute(DELETE_BY_STOCKID_AND_AFTER_DATE_SQL, namedParameters,
 					new DefaultPreparedStatementCallback());
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -239,7 +245,7 @@ public class StockPriceTableHelper implements CacheAbleStock {
 			namedParameters.addValue("stockId", stockId);
 			namedParameters.addValue("date1", startDate);
 			namedParameters.addValue("date2", endDate);
-			namedParameterJdbcTemplate.execute(DELETE_BY_STOCKID_AND_BETWEEN_DATE_SQL, namedParameters,
+			getNamedParameterJdbcTemplate().execute(DELETE_BY_STOCKID_AND_BETWEEN_DATE_SQL, namedParameters,
 					new DefaultPreparedStatementCallback());
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -250,7 +256,7 @@ public class StockPriceTableHelper implements CacheAbleStock {
 		try {
 			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 			namedParameters.addValue("date", date);
-			namedParameterJdbcTemplate.execute(DELETE_BY_DATE_SQL, namedParameters,
+			getNamedParameterJdbcTemplate().execute(DELETE_BY_DATE_SQL, namedParameters,
 					new DefaultPreparedStatementCallback());
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -270,7 +276,7 @@ public class StockPriceTableHelper implements CacheAbleStock {
 			namedParameters.addValue("stockId", stockId);
 			namedParameters.addValue("limit", day);
 
-			Double avg = this.namedParameterJdbcTemplate.queryForObject(AVG_CLOSE_PRICE_SQL, namedParameters,
+			Double avg = this.getNamedParameterJdbcTemplate().queryForObject(AVG_CLOSE_PRICE_SQL, namedParameters,
 					new DoubleVOMapper());
 
 			return avg;
@@ -289,7 +295,7 @@ public class StockPriceTableHelper implements CacheAbleStock {
 			namedParameters.addValue("stockId", stockId);
 			namedParameters.addValue("limit", day);
 
-			Double min = this.namedParameterJdbcTemplate.queryForObject(SELECT_LOW_N_PRICE_SQL, namedParameters,
+			Double min = this.getNamedParameterJdbcTemplate().queryForObject(SELECT_LOW_N_PRICE_SQL, namedParameters,
 					new DoubleVOMapper());
 
 			return min;
@@ -308,7 +314,7 @@ public class StockPriceTableHelper implements CacheAbleStock {
 			namedParameters.addValue("stockId", stockId);
 			namedParameters.addValue("limit", day);
 
-			Double max = this.namedParameterJdbcTemplate.queryForObject(SELECT_HIGH_N_PRICE_SQL, namedParameters,
+			Double max = this.getNamedParameterJdbcTemplate().queryForObject(SELECT_HIGH_N_PRICE_SQL, namedParameters,
 					new DoubleVOMapper());
 
 			return max;
@@ -326,7 +332,7 @@ public class StockPriceTableHelper implements CacheAbleStock {
 			namedParameters.addValue("startDate", startDate);
 			namedParameters.addValue("limit", day);
 
-			Double max = this.namedParameterJdbcTemplate.queryForObject(SELECT_HIGH_N_PRICE_START_DATA_SQL,
+			Double max = this.getNamedParameterJdbcTemplate().queryForObject(SELECT_HIGH_N_PRICE_START_DATA_SQL,
 					namedParameters, new DoubleVOMapper());
 
 			return max;
@@ -344,7 +350,7 @@ public class StockPriceTableHelper implements CacheAbleStock {
 			namedParameters.addValue("startDate", startDate);
 			namedParameters.addValue("limit", day);
 
-			Double max = this.namedParameterJdbcTemplate.queryForObject(SELECT_LOW_N_PRICE_START_DATA_SQL,
+			Double max = this.getNamedParameterJdbcTemplate().queryForObject(SELECT_LOW_N_PRICE_START_DATA_SQL,
 					namedParameters, new DoubleVOMapper());
 
 			return max;
@@ -362,7 +368,7 @@ public class StockPriceTableHelper implements CacheAbleStock {
 			namedParameters.addValue("startDate", startDate);
 			namedParameters.addValue("limit", day);
 
-			Double max = this.namedParameterJdbcTemplate.queryForObject(SELECT_CLOSE_N_PRICE_START_DATA_SQL,
+			Double max = this.getNamedParameterJdbcTemplate().queryForObject(SELECT_CLOSE_N_PRICE_START_DATA_SQL,
 					namedParameters, new DoubleVOMapper());
 
 			return max;
@@ -379,7 +385,7 @@ public class StockPriceTableHelper implements CacheAbleStock {
 			namedParameters.addValue("stockId", stockId);
 			namedParameters.addValue("limit", day);
 
-			Double avg = this.namedParameterJdbcTemplate.queryForObject(AVG_VOLUME_SQL, namedParameters,
+			Double avg = this.getNamedParameterJdbcTemplate().queryForObject(AVG_VOLUME_SQL, namedParameters,
 					new DoubleVOMapper());
 
 			return avg.longValue();
@@ -396,7 +402,7 @@ public class StockPriceTableHelper implements CacheAbleStock {
 			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 			namedParameters.addValue("stockId", stockId);
 
-			List<Double> closes = this.namedParameterJdbcTemplate.query(SELECT_CLOSE_PRICE_SQL, namedParameters,
+			List<Double> closes = this.getNamedParameterJdbcTemplate().query(SELECT_CLOSE_PRICE_SQL, namedParameters,
 					new DoubleVOMapper());
 
 			return closes;
@@ -411,7 +417,7 @@ public class StockPriceTableHelper implements CacheAbleStock {
 			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 			namedParameters.addValue("stockId", stockId);
 
-			List<Double> lows = this.namedParameterJdbcTemplate.query(SELECT_LOW_PRICE_SQL, namedParameters,
+			List<Double> lows = this.getNamedParameterJdbcTemplate().query(SELECT_LOW_PRICE_SQL, namedParameters,
 					new DoubleVOMapper());
 
 			return lows;
@@ -426,7 +432,7 @@ public class StockPriceTableHelper implements CacheAbleStock {
 			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 			namedParameters.addValue("stockId", stockId);
 
-			List<Double> highs = this.namedParameterJdbcTemplate.query(SELECT_HIGH_PRICE_SQL, namedParameters,
+			List<Double> highs = this.getNamedParameterJdbcTemplate().query(SELECT_HIGH_PRICE_SQL, namedParameters,
 					new DoubleVOMapper());
 
 			return highs;
@@ -441,7 +447,7 @@ public class StockPriceTableHelper implements CacheAbleStock {
 			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 			namedParameters.addValue("stockId", stockId);
 
-			List<StockPriceVO> list = this.namedParameterJdbcTemplate.query(QUERY_BY_STOCKID_SQL, namedParameters,
+			List<StockPriceVO> list = this.getNamedParameterJdbcTemplate().query(QUERY_BY_STOCKID_SQL, namedParameters,
 					new StockPriceVOMapper());
 
 			return list;
@@ -457,7 +463,7 @@ public class StockPriceTableHelper implements CacheAbleStock {
 			namedParameters.addValue("stockId", stockId);
 			namedParameters.addValue("limit", day);
 
-			List<StockPriceVO> list = this.namedParameterJdbcTemplate.query(QUERY_LATEST_PRICE_N_DATE_STOCKID_SQL,
+			List<StockPriceVO> list = this.getNamedParameterJdbcTemplate().query(QUERY_LATEST_PRICE_N_DATE_STOCKID_SQL,
 					namedParameters, new StockPriceVOMapper());
 
 			return list;
@@ -473,7 +479,7 @@ public class StockPriceTableHelper implements CacheAbleStock {
 			namedParameters.addValue("stockId", stockId);
 			namedParameters.addValue("date", date);
 
-			StockPriceVO vo = this.namedParameterJdbcTemplate.queryForObject(QUERY_BY_STOCKID_DATE_SQL, namedParameters,
+			StockPriceVO vo = this.getNamedParameterJdbcTemplate().queryForObject(QUERY_BY_STOCKID_DATE_SQL, namedParameters,
 					new StockPriceVOMapper());
 			return vo;
 		} catch (EmptyResultDataAccessException ee) {
@@ -491,7 +497,7 @@ public class StockPriceTableHelper implements CacheAbleStock {
 			namedParameters.addValue("date1", StartDate);
 			namedParameters.addValue("date2", endDate);
 
-			List<StockPriceVO> list = this.namedParameterJdbcTemplate.query(QUERY_BY_STOCKID_AND_BETWEEN_DATE,
+			List<StockPriceVO> list = this.getNamedParameterJdbcTemplate().query(QUERY_BY_STOCKID_AND_BETWEEN_DATE,
 					namedParameters, new StockPriceVOMapper());
 			return list;
 		} catch (Exception e) {
@@ -507,7 +513,7 @@ public class StockPriceTableHelper implements CacheAbleStock {
 			namedParameters.addValue("stockId", stockId);
 			namedParameters.addValue("date", endDay);
 
-			List<StockPriceVO> list = this.namedParameterJdbcTemplate.query(QUERY_BY_STOCKID_AND_BEFORE_DATE,
+			List<StockPriceVO> list = this.getNamedParameterJdbcTemplate().query(QUERY_BY_STOCKID_AND_BEFORE_DATE,
 					namedParameters, new StockPriceVOMapper());
 			return list;
 		} catch (Exception e) {
@@ -523,7 +529,7 @@ public class StockPriceTableHelper implements CacheAbleStock {
 			namedParameters.addValue("date1", date1);
 			namedParameters.addValue("date2", date2);
 
-			List<String> dayList = this.namedParameterJdbcTemplate.query(QUERY_DAYS_BETWEEN_DATE1_DATE2,
+			List<String> dayList = this.getNamedParameterJdbcTemplate().query(QUERY_DAYS_BETWEEN_DATE1_DATE2,
 					namedParameters, new StringVOMapper());
 			return dayList.size();
 		} catch (Exception e) {
@@ -539,7 +545,7 @@ public class StockPriceTableHelper implements CacheAbleStock {
 			namedParameters.addValue("date1", date1);
 			namedParameters.addValue("date2", date2);
 
-			List<String> dayList = this.namedParameterJdbcTemplate.query(QUERY_DAYS_BETWEEN_DATE1_DATE2,
+			List<String> dayList = this.getNamedParameterJdbcTemplate().query(QUERY_DAYS_BETWEEN_DATE1_DATE2,
 					namedParameters, new StringVOMapper());
 			return dayList;
 		} catch (Exception e) {
@@ -558,7 +564,7 @@ public class StockPriceTableHelper implements CacheAbleStock {
 			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 			namedParameters.addValue("stockId", "999999");
 
-			String date = this.namedParameterJdbcTemplate.queryForObject(GET_LATEST_STOCK_DATE, namedParameters,
+			String date = this.getNamedParameterJdbcTemplate().queryForObject(GET_LATEST_STOCK_DATE, namedParameters,
 					new StringVOMapper());
 
 			return date;
@@ -577,7 +583,7 @@ public class StockPriceTableHelper implements CacheAbleStock {
 			namedParameters.addValue("stockId", "999999");
 			namedParameters.addValue("limit", limit);
 
-			List<String> date = this.namedParameterJdbcTemplate.query(GET_LATEST_N_STOCK_DATE, namedParameters,
+			List<String> date = this.getNamedParameterJdbcTemplate().query(GET_LATEST_N_STOCK_DATE, namedParameters,
 					new StringVOMapper());
 
 			return date;
@@ -595,7 +601,7 @@ public class StockPriceTableHelper implements CacheAbleStock {
 			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 			namedParameters.addValue("stockId", "999999");
 
-			int count = this.namedParameterJdbcTemplate.queryForObject(GET_COUNT_ALL_DAYS_STOCK_DATE, namedParameters,
+			int count = this.getNamedParameterJdbcTemplate().queryForObject(GET_COUNT_ALL_DAYS_STOCK_DATE, namedParameters,
 					new IntVOMapper());
 
 			return count;
@@ -614,7 +620,7 @@ public class StockPriceTableHelper implements CacheAbleStock {
 			namedParameters.addValue("stockId", "999999");
 			namedParameters.addValue("date", date);
 
-			String rtc = this.namedParameterJdbcTemplate.queryForObject(QUERY_PREVIOUS_DATE_SQL, namedParameters,
+			String rtc = this.getNamedParameterJdbcTemplate().queryForObject(QUERY_PREVIOUS_DATE_SQL, namedParameters,
 					new StringVOMapper());
 
 			return rtc;
@@ -634,7 +640,7 @@ public class StockPriceTableHelper implements CacheAbleStock {
 			namedParameters.addValue("startDate", startDate);
 			namedParameters.addValue("endDate", endDate);
 
-			Double low = this.namedParameterJdbcTemplate.queryForObject(QUERY_LOW_PRICE_BETWEEN_DATE_SQL,
+			Double low = this.getNamedParameterJdbcTemplate().queryForObject(QUERY_LOW_PRICE_BETWEEN_DATE_SQL,
 					namedParameters, new DoubleVOMapper());
 
 			return low;
@@ -654,7 +660,7 @@ public class StockPriceTableHelper implements CacheAbleStock {
 			namedParameters.addValue("startDate", startDate);
 			namedParameters.addValue("endDate", endDate);
 
-			Double high = this.namedParameterJdbcTemplate.queryForObject(QUERY_HIGH_PRICE_BETWEEN_DATE_SQL,
+			Double high = this.getNamedParameterJdbcTemplate().queryForObject(QUERY_HIGH_PRICE_BETWEEN_DATE_SQL,
 					namedParameters, new DoubleVOMapper());
 
 			return high;
@@ -675,7 +681,7 @@ public class StockPriceTableHelper implements CacheAbleStock {
 			namedParameters.addValue("startDate", startDate);
 			namedParameters.addValue("endDate", endDate);
 
-			List<String> dates = this.namedParameterJdbcTemplate.query(QUERY_HIGH_PRICE_DATE_BETWEEN_DATE_SQL,
+			List<String> dates = this.getNamedParameterJdbcTemplate().query(QUERY_HIGH_PRICE_DATE_BETWEEN_DATE_SQL,
 					namedParameters, new StringVOMapper());
 
 			if (dates != null && dates.size() > 0)
@@ -695,7 +701,7 @@ public class StockPriceTableHelper implements CacheAbleStock {
 			namedParameters.addValue("stockId", stockId);
 			namedParameters.addValue("limit", limitDays);
 
-			List<String> dates = this.namedParameterJdbcTemplate.query(QUERY_LATEST_N_DATE_STOCKID_SQL, namedParameters,
+			List<String> dates = this.getNamedParameterJdbcTemplate().query(QUERY_LATEST_N_DATE_STOCKID_SQL, namedParameters,
 					new StringVOMapper());
 
 			if (dates != null && dates.size() > 0)
@@ -715,7 +721,7 @@ public class StockPriceTableHelper implements CacheAbleStock {
 			namedParameters.addValue("stockId", stockId);
 			namedParameters.addValue("limit", limitDays);
 
-			List<String> dates = this.namedParameterJdbcTemplate.query(QUERY_LATEST_N_DATE_STOCKID_SQL, namedParameters,
+			List<String> dates = this.getNamedParameterJdbcTemplate().query(QUERY_LATEST_N_DATE_STOCKID_SQL, namedParameters,
 					new StringVOMapper());
 
 			return dates;
@@ -731,7 +737,7 @@ public class StockPriceTableHelper implements CacheAbleStock {
 			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 			namedParameters.addValue("stockId", stockId);
 
-			List<String> dates = this.namedParameterJdbcTemplate.query(QUERY_DEAL_DATE_BY_ID, namedParameters,
+			List<String> dates = this.getNamedParameterJdbcTemplate().query(QUERY_DEAL_DATE_BY_ID, namedParameters,
 					new StringVOMapper());
 
 			return dates;
@@ -750,7 +756,7 @@ public class StockPriceTableHelper implements CacheAbleStock {
 
 			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 
-			List<String> ids = this.namedParameterJdbcTemplate.query(QUERY_DISTINCT_ID, namedParameters,
+			List<String> ids = this.getNamedParameterJdbcTemplate().query(QUERY_DISTINCT_ID, namedParameters,
 					new StringVOMapper());
 
 			return ids;
@@ -767,7 +773,7 @@ public class StockPriceTableHelper implements CacheAbleStock {
 			namedParameters.addValue("rate", vo.rate);
 			namedParameters.addValue("date", vo.date);
 
-			namedParameterJdbcTemplate.execute(UPDATE_BATCH_PRICE_BASED_ON_CHUQUAN_AND_DATE, namedParameters,
+			getNamedParameterJdbcTemplate().execute(UPDATE_BATCH_PRICE_BASED_ON_CHUQUAN_AND_DATE, namedParameters,
 					new DefaultPreparedStatementCallback());
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -784,7 +790,7 @@ public class StockPriceTableHelper implements CacheAbleStock {
 			namedParameters.addValue("low", vo.low);
 			namedParameters.addValue("close", vo.close);
 
-			namedParameterJdbcTemplate.execute(UPDATE_PRICE_BASED_ON_CHUQUAN_AND_DATE, namedParameters,
+			getNamedParameterJdbcTemplate().execute(UPDATE_PRICE_BASED_ON_CHUQUAN_AND_DATE, namedParameters,
 					new DefaultPreparedStatementCallback());
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -796,7 +802,7 @@ public class StockPriceTableHelper implements CacheAbleStock {
 			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 			namedParameters.addValue("date", date);
 
-			List<StockPriceVO> list = this.namedParameterJdbcTemplate.query(QUERY_ALL_BY_DATE, namedParameters,
+			List<StockPriceVO> list = this.getNamedParameterJdbcTemplate().query(QUERY_ALL_BY_DATE, namedParameters,
 					new StockPriceVOMapper());
 
 			return list;
@@ -811,7 +817,7 @@ public class StockPriceTableHelper implements CacheAbleStock {
 			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 			namedParameters.addValue("date", date);
 
-			int rtn = this.namedParameterJdbcTemplate.queryForObject(IS_DATE_IN_DEAL, namedParameters,
+			int rtn = this.getNamedParameterJdbcTemplate().queryForObject(IS_DATE_IN_DEAL, namedParameters,
 					new IntVOMapper());
 
 			return rtn == 1 ? true : false;
@@ -828,7 +834,7 @@ public class StockPriceTableHelper implements CacheAbleStock {
 			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 			namedParameters.addValue("stockId", stockId);
 
-			int rtn = this.namedParameterJdbcTemplate.queryForObject(COUNT_BY_ID_SQL, namedParameters,
+			int rtn = this.getNamedParameterJdbcTemplate().queryForObject(COUNT_BY_ID_SQL, namedParameters,
 					new IntVOMapper());
 
 			return rtn;
@@ -845,7 +851,7 @@ public class StockPriceTableHelper implements CacheAbleStock {
 			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 			namedParameters.addValue("date", date);
 
-			int rtn = this.namedParameterJdbcTemplate.queryForObject(COUNT_BY_DATE_SQL, namedParameters,
+			int rtn = this.getNamedParameterJdbcTemplate().queryForObject(COUNT_BY_DATE_SQL, namedParameters,
 					new IntVOMapper());
 
 			return rtn;
@@ -861,7 +867,7 @@ public class StockPriceTableHelper implements CacheAbleStock {
 		try {
 			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 
-			int rtn = this.namedParameterJdbcTemplate.queryForObject(COUNT_ALL_SQL, namedParameters, new IntVOMapper());
+			int rtn = this.getNamedParameterJdbcTemplate().queryForObject(COUNT_ALL_SQL, namedParameters, new IntVOMapper());
 			return rtn;
 		} catch (EmptyResultDataAccessException ee) {
 			return 0;
@@ -878,7 +884,7 @@ public class StockPriceTableHelper implements CacheAbleStock {
 			namedParameters.addValue("date1", start);
 			namedParameters.addValue("date2", end);
 
-			int rtn = this.namedParameterJdbcTemplate.queryForObject(COUNT_DAYS_BETWEEN_DATE1_DATE2, namedParameters,
+			int rtn = this.getNamedParameterJdbcTemplate().queryForObject(COUNT_DAYS_BETWEEN_DATE1_DATE2, namedParameters,
 					new IntVOMapper());
 
 			return rtn;

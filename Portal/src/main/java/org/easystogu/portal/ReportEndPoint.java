@@ -30,7 +30,6 @@ public class ReportEndPoint {
 	private FavoritesStockCheckpointViewHelper favoritesStockCheckpointViewHelper;
 	@Autowired
 	private StockPriceCache stockPriceCache;
-	protected String accessControlAllowOrgin = "*";//config.getString("Access-Control-Allow-Origin", "");
 	private Gson gson = new Gson();
 
 	@GetMapping("/{DateOffset}")
@@ -38,6 +37,7 @@ public class ReportEndPoint {
 	// @Produces("application/json")
 	// DateOffset is like 0,1,2,3 means today, yesterday, ...
 	public String queryReportByDate(@PathParam("DateOffset") String dateOffset, @Context HttpServletResponse response) {
+		String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		List<String> latestDates = this.stockPriceCache.get(Constants.cacheLatestNStockDate + ":10");
 		String date = latestDates.get(Math.abs(Integer.parseInt(dateOffset)));
