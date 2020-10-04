@@ -7,7 +7,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 
@@ -30,6 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -82,7 +82,7 @@ public class FavoritesEndPoint {
 
 	@GetMapping("/{userId}/{stockId}")
 	@Produces("application/json")
-	public void addToFavorites(@PathParam("userId") String userIdParm, @PathParam("stockId") String stockIdParm,
+	public void addToFavorites(@PathVariable("userId") String userIdParm, @PathVariable("stockId") String stockIdParm,
 			String postBody, @Context HttpServletResponse response) {
 		// response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		favoritesStockHelper.insert(new FavoritesStockVO(stockIdParm, userIdParm));
@@ -91,7 +91,7 @@ public class FavoritesEndPoint {
 
 	@DeleteMapping("/{userId}/{stockId}")
 	@Produces("application/json")
-	public void deleteFromFavorites(@PathParam("userId") String userIdParm, @PathParam("stockId") String stockIdParm,
+	public void deleteFromFavorites(@PathVariable("userId") String userIdParm, @PathVariable("stockId") String stockIdParm,
 			String postBody, @Context HttpServletResponse response) {
 		// response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		favoritesStockHelper.delete(stockIdParm, userIdParm);
@@ -100,7 +100,7 @@ public class FavoritesEndPoint {
 
 	@GetMapping("/{userId}")
 	@Produces("application/json")
-	public String getFavorites(@PathParam("userId") String userIdParm, String postBody,
+	public String getFavorites(@PathVariable("userId") String userIdParm, String postBody,
 			@Context HttpServletResponse response) {
 		String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);

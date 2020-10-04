@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 
@@ -19,6 +18,7 @@ import org.easystogu.portal.vo.StatisticsVO;
 import org.easystogu.utils.WeekdayUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -41,7 +41,7 @@ public class CheckPointStatisticsEndPoint {
 
 	@GetMapping("/luzao/trend/{date}")
 	@Produces("application/json")
-	public String queryLuZaoTrendStatistics(@PathParam("date") String dateParm, @Context HttpServletResponse response) {
+	public String queryLuZaoTrendStatistics(@PathVariable("date") String dateParm, @Context HttpServletResponse response) {
 		String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		List<StatisticsVO> list = new ArrayList<StatisticsVO>();
@@ -72,7 +72,7 @@ public class CheckPointStatisticsEndPoint {
 
 	@GetMapping("/luzao/gordon/{date}")
 	@Produces("application/json")
-	public String queryLuZaoGordonStatistics(@PathParam("date") String dateParm,
+	public String queryLuZaoGordonStatistics(@PathVariable("date") String dateParm,
 			@Context HttpServletResponse response) {
 		String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
@@ -111,7 +111,7 @@ public class CheckPointStatisticsEndPoint {
 
 	@GetMapping("/qsdd/{date}")
 	@Produces("application/json")
-	public String queryQsddStatistics(@PathParam("date") String dateParm, @Context HttpServletResponse response) {
+	public String queryQsddStatistics(@PathVariable("date") String dateParm, @Context HttpServletResponse response) {
 		String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		List<StatisticsVO> list = new ArrayList<StatisticsVO>();
@@ -142,7 +142,7 @@ public class CheckPointStatisticsEndPoint {
 
 	@GetMapping("/shenxian/{date}")
 	@Produces("application/json")
-	public String queryShenXianStatistics(@PathParam("date") String dateParm, @Context HttpServletResponse response) {
+	public String queryShenXianStatistics(@PathVariable("date") String dateParm, @Context HttpServletResponse response) {
 		String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		List<StatisticsVO> list = new ArrayList<StatisticsVO>();
@@ -172,7 +172,7 @@ public class CheckPointStatisticsEndPoint {
 
 	@GetMapping("/macd/{date}")
 	@Produces("application/json")
-	public String queryMACDStatistics(@PathParam("date") String dateParm, @Context HttpServletResponse response) {
+	public String queryMACDStatistics(@PathVariable("date") String dateParm, @Context HttpServletResponse response) {
 		String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		List<StatisticsVO> list = new ArrayList<StatisticsVO>();
@@ -202,7 +202,7 @@ public class CheckPointStatisticsEndPoint {
 
 	@GetMapping("/magic9day/{date}")
 	@Produces("application/json")
-	public String queryMagic9DayStatistics(@PathParam("date") String dateParm, @Context HttpServletResponse response) {
+	public String queryMagic9DayStatistics(@PathVariable("date") String dateParm, @Context HttpServletResponse response) {
 		String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		List<StatisticsVO> list = new ArrayList<StatisticsVO>();
@@ -234,7 +234,7 @@ public class CheckPointStatisticsEndPoint {
 
 	@GetMapping("/wr/{date}")
 	@Produces("application/json")
-	public String queryWRStatistics(@PathParam("date") String dateParm, @Context HttpServletResponse response) {
+	public String queryWRStatistics(@PathVariable("date") String dateParm, @Context HttpServletResponse response) {
 		String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		List<StatisticsVO> list = new ArrayList<StatisticsVO>();
@@ -265,7 +265,7 @@ public class CheckPointStatisticsEndPoint {
 
 	@GetMapping("/sameDigitsInHighPrice/{date}")
 	@Produces("application/json")
-	public String querySameDigitsInHighPriceStatistics(@PathParam("date") String dateParm,
+	public String querySameDigitsInHighPriceStatistics(@PathVariable("date") String dateParm,
 			@Context HttpServletResponse response) {
 		String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);

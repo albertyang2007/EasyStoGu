@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 
@@ -31,6 +30,7 @@ import org.easystogu.portal.init.TrendModeLoader;
 import org.easystogu.portal.vo.ShenXianUIVO;
 import org.easystogu.utils.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -73,7 +73,7 @@ public class IndicatorEndPointV3 {
 
 	@PostMapping("/macd/{stockId}/{date}")
 	@Produces("application/json")
-	public String queryMACDById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
+	public String queryMACDById(@PathVariable("stockId") String stockIdParm, @PathVariable("date") String dateParm,
 			String postBody, @Context HttpServletResponse response) {
 		String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
@@ -98,7 +98,7 @@ public class IndicatorEndPointV3 {
 
 	@PostMapping("/kdj/{stockId}/{date}")
 	@Produces("application/json")
-	public String queryKDJById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
+	public String queryKDJById(@PathVariable("stockId") String stockIdParm, @PathVariable("date") String dateParm,
 			String postBody, @Context HttpServletResponse response) {
 		String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
@@ -126,7 +126,7 @@ public class IndicatorEndPointV3 {
 
 	@PostMapping("/boll/{stockId}/{date}")
 	@Produces("application/json")
-	public String queryBollById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
+	public String queryBollById(@PathVariable("stockId") String stockIdParm, @PathVariable("date") String dateParm,
 			String postBody, @Context HttpServletResponse response) {
 		String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
@@ -152,7 +152,7 @@ public class IndicatorEndPointV3 {
 
 	@PostMapping("/shenxian/{stockId}/{date}")
 	@Produces("application/json")
-	public String queryShenXianById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
+	public String queryShenXianById(@PathVariable("stockId") String stockIdParm, @PathVariable("date") String dateParm,
 			String postBody, @Context HttpServletResponse response) {
 		String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
@@ -178,7 +178,7 @@ public class IndicatorEndPointV3 {
 
 	@PostMapping("/shenxianSell/{stockId}/{date}")
 	@Produces("application/json")
-	public String queryShenXianSellById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
+	public String queryShenXianSellById(@PathVariable("stockId") String stockIdParm, @PathVariable("date") String dateParm,
 			String postBody, @Context HttpServletResponse response) {
 		String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
@@ -256,7 +256,7 @@ public class IndicatorEndPointV3 {
 
 	@PostMapping("/luzao/{stockId}/{date}")
 	@Produces("application/json")
-	public String queryLuZaoById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
+	public String queryLuZaoById(@PathVariable("stockId") String stockIdParm, @PathVariable("date") String dateParm,
 			String postBody, @Context HttpServletResponse response) {
 		String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
@@ -282,7 +282,7 @@ public class IndicatorEndPointV3 {
 
 	@PostMapping("/qsdd/{stockId}/{date}")
 	@Produces("application/json")
-	public String queryQSDDById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
+	public String queryQSDDById(@PathVariable("stockId") String stockIdParm, @PathVariable("date") String dateParm,
 			String postBody, @Context HttpServletResponse response) {
 		String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
@@ -310,7 +310,7 @@ public class IndicatorEndPointV3 {
 
 	@PostMapping("/wr/{stockId}/{date}")
 	@Produces("application/json")
-	public String queryWRById(@PathParam("stockId") String stockIdParm, @PathParam("date") String dateParm,
+	public String queryWRById(@PathVariable("stockId") String stockIdParm, @PathVariable("date") String dateParm,
 			String postBody, @Context HttpServletResponse response) {
 		String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);

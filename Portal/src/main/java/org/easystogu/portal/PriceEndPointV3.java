@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 
@@ -13,6 +12,7 @@ import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.portal.init.TrendModeLoader;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -37,8 +37,8 @@ public class PriceEndPointV3 {
 
 	@PostMapping("/{stockId}/{date}")
 	@Produces("application/json")
-	public String queryDayPriceByIdWithForecastPrice(@PathParam("stockId") String stockIdParm,
-			@PathParam("date") String dateParm, String postBody, @Context HttpServletResponse response) {
+	public String queryDayPriceByIdWithForecastPrice(@PathVariable("stockId") String stockIdParm,
+			@PathVariable("date") String dateParm, String postBody, @Context HttpServletResponse response) {
 		String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		List<StockPriceVO> rtnSpList = new ArrayList<StockPriceVO>();

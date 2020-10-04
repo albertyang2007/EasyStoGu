@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 
@@ -16,6 +15,7 @@ import org.easystogu.db.access.view.FavoritesStockCheckpointViewHelper;
 import org.easystogu.db.vo.view.FavoritesStockCheckpointVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -36,7 +36,7 @@ public class ReportEndPoint {
 	@Produces("text/html; charset=UTF-8")
 	// @Produces("application/json")
 	// DateOffset is like 0,1,2,3 means today, yesterday, ...
-	public String queryReportByDate(@PathParam("DateOffset") String dateOffset, @Context HttpServletResponse response) {
+	public String queryReportByDate(@PathVariable("DateOffset") String dateOffset, @Context HttpServletResponse response) {
 		String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
 		List<String> latestDates = this.stockPriceCache.get(Constants.cacheLatestNStockDate + ":10");

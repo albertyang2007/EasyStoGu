@@ -2,7 +2,6 @@ package org.easystogu.portal;
 
 import java.util.regex.Pattern;
 
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
@@ -24,6 +23,7 @@ import org.easystogu.sina.runner.RealtimeDisplayStockPriceRunner;
 import org.easystogu.sina.runner.history.StockPriceHistoryOverAllRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -59,8 +59,12 @@ public class HomeEndPoint {
 	protected final String fromToRegex = dateRegex + "_" + dateRegex;
 
 	@GetMapping("/")
+	@Produces("text/html")
 	public Response mainPage() {
-		StringBuffer sb = new StringBuffer();
+		StringBuffer sb = new StringBuffer(
+				"<!DOCTYPE html>\r\n" + 
+				"<html>\r\n" + 
+				"<body>\r\n");
 		sb.append("<a href='/portal/home/DailyUpdateAllStockRunner'>DailyUpdateAllStockRunner</a><br>");
 		sb.append("<a href='/portal/home/DailyOverAllRunner'>DailyOverAllRunner</a><br>");
 		sb.append(
@@ -82,6 +86,9 @@ public class HomeEndPoint {
 		sb.append("<a href='/portal/home/Serverlog'>Serverlog</a><br>");
 
 		sb.append("<br><a href='/eweb/index.htm'>eweb index</a><br>");
+		
+		sb.append("</body>\r\n" + 
+				"</html>");
 
 		return Response.ok().entity(sb.toString()).build();
 	}
@@ -186,7 +193,7 @@ public class HomeEndPoint {
 	}
 
 	@GetMapping("/updateStockPriceHistoryOverAllRunner/{date}")
-	public String updateStockPriceHistoryOverAllRunner(@PathParam("date") String dateParm) {
+	public String updateStockPriceHistoryOverAllRunner(@PathVariable("date") String dateParm) {
 		String zone = config.getString("zone", "");
 		// update the total GuBen and LiuTong GuBen
 		if (Constants.ZONE_OFFICE.equals(zone)) {

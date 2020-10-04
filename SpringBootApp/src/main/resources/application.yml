@@ -1,15 +1,5 @@
 server:
-  name: UE-INFO-EDGE
   port: 8080
-  address: 0.0.0.0
-  servlet:
-    context-path: /
-spring:
-  main:
-    web-application-type: reactive
-  http:
-    converters:
-      preferred-json-mapper: jackson
-  jackson:
-    default-property-inclusion: NON_NULL
+  tomcat:
+    max-http-post-size: 2097152
 

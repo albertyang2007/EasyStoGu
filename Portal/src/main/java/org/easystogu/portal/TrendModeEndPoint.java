@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 
@@ -17,6 +16,7 @@ import org.easystogu.utils.Strings;
 import org.easystogu.utils.WeekdayUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -34,7 +34,7 @@ public class TrendModeEndPoint {
 	
 	@GetMapping("/query/{name}")
 	@Produces("application/json")
-	public String queryTrendModeByName(@PathParam("name") String name,
+	public String queryTrendModeByName(@PathVariable("name") String name,
 			@Context HttpServletResponse response) {
 		String accessControlAllowOrgin = config.getString("Access-Control-Allow-Origin", "");
 		response.addHeader("Access-Control-Allow-Origin", accessControlAllowOrgin);
