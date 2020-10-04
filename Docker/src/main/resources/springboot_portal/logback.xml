@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration scan="true" scanPeriod="60 seconds">
     <statusListener class="ch.qos.logback.core.status.OnConsoleStatusListener"/>
-    <property name="SERVER_LOG_HOME" value="/home/eyaweiw/easystogu/serverlog/"/>
+    <property name="SERVER_LOG_HOME" value="./serverlog/"/>
 
     <!--Server log -->
     <appender name="TRAFFIC_LOG_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">

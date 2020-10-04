@@ -84,6 +84,14 @@
 						</goals>
 						<configuration>
 							<classifier>exec</classifier>
+							<excludes>
+								<exclude>
+								    <!--due to unknown reason, the javax servlet-api 2.4 is introduced 
+								    and conflicts with javax.servlet-api-4.0.1.jar, so exclude it -->
+									<groupId>javax.servlet</groupId>
+									<artifactId>servlet-api</artifactId>
+								</exclude>
+							</excludes>
 						</configuration>
 					</execution>
 				</executions>
