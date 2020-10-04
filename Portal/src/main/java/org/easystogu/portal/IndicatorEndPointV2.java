@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 //V2, query price and count in real time, qian FuQuan
 
 @RestController
-@RequestMapping(value = "/indv2")
+@RequestMapping(value = "/portal/indv2")
 public class IndicatorEndPointV2 extends IndicatorEndPointV0{
 	@Override
 	protected List<StockPriceVO> fetchAllPrices(String stockid) {

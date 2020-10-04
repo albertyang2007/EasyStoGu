@@ -44,7 +44,7 @@ import com.google.gson.Gson;
 //V0, query stockprice (no chuquan) and count in real time
 
 @RestController
-@RequestMapping(value = "/indv0")
+@RequestMapping(value = "/portal/indv0")
 public class IndicatorEndPointV0 {
 	@Autowired
 	private ConfigurationServiceCache config;

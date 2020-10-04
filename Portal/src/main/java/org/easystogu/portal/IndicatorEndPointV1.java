@@ -12,7 +12,6 @@ import javax.ws.rs.core.Context;
 import org.easystogu.cache.ConfigurationServiceCache;
 import org.easystogu.cache.StockIndicatorCache;
 import org.easystogu.config.Constants;
-import org.easystogu.db.access.facde.DBAccessFacdeFactory;
 import org.easystogu.db.access.table.IndDDXTableHelper;
 import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.helper.IF.IndicatorDBHelperIF;
@@ -42,7 +41,7 @@ import com.google.gson.Gson;
 //V1, query indicator from DB, qian FuQuan (suggest to use this v1)
 
 @RestController
-@RequestMapping(value = "/indv1")
+@RequestMapping(value = "/portal/indv1")
 public class IndicatorEndPointV1 {
 	protected static String HHmmss = "00:00:00";
 	@Autowired

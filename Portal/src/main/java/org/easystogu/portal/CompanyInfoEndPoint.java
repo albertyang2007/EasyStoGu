@@ -18,7 +18,7 @@ import com.google.gson.Gson;
 
 
 @RestController
-@RequestMapping(value = "/company")
+@RequestMapping(value = "/portal/company")
 public class CompanyInfoEndPoint {
 	@Autowired
 	private ConfigurationServiceCache config ;

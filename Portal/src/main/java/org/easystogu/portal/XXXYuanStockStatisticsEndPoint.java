@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.google.gson.Gson;
 
 @RestController
-@RequestMapping(value = "/xxxyuan")
+@RequestMapping(value = "/portal/xxxyuan")
 public class XXXYuanStockStatisticsEndPoint {
 	@Autowired
 	private ConfigurationServiceCache config;

@@ -24,7 +24,7 @@ import com.google.gson.Gson;
 //v2, qian FuQuan stockprice (v2 same as v1, can be delete?)
 
 @RestController
-@RequestMapping(value = "/pricev2")
+@RequestMapping(value = "/portal/pricev2")
 public class PriceEndPointV2 extends PriceEndPointV0{
 	@Autowired
 	@Qualifier("qianFuQuanStockPriceTable")

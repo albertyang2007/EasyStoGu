@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.google.gson.Gson;
 
 @RestController
-@RequestMapping(value = "/report")
+@RequestMapping(value = "/portal/report")
 public class ReportEndPoint {
 	@Autowired
 	private ConfigurationServiceCache config;

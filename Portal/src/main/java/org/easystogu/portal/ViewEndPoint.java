@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.google.gson.Gson;
 
 @RestController
-@RequestMapping(value = "/view")
+@RequestMapping(value = "/portal/view")
 public class ViewEndPoint {
 	private static Logger logger = LogHelper.getLogger(ViewEndPoint.class);
 	@Autowired

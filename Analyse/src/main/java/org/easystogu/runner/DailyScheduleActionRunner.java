@@ -23,6 +23,7 @@ public class DailyScheduleActionRunner {
 	protected StockPriceTableHelper qianfuquanStockPriceTable;
 	@Autowired
 	private HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner historyQianFuQuanRunner;
+	@Autowired
 	private IndicatorHistortOverAllRunner indicatorHistoryRunner;
 	@Autowired
 	private HistoryWeekStockPriceCountAndSaveDBRunner weekPriceHistoryRunner;

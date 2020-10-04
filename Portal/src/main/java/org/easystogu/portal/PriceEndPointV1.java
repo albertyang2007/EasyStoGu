@@ -27,7 +27,7 @@ import com.google.gson.Gson;
 //v1, qian FuQuan stockprice data (suggest to use this v1)
 
 @RestController
-@RequestMapping(value = "/pricev1")
+@RequestMapping(value = "/portal/pricev1")
 public class PriceEndPointV1 {
 	@Autowired
 	private ConfigurationServiceCache config;

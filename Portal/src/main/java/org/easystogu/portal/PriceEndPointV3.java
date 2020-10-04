@@ -22,7 +22,7 @@ import com.google.gson.Gson;
 //v3, with forecast data, query qian fuquan stockprice and count in real time
 
 @RestController
-@RequestMapping(value = "/pricev3")
+@RequestMapping(value = "/portal/pricev3")
 public class PriceEndPointV3 {
 	@Autowired
 	private ConfigurationServiceCache config;

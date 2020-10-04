@@ -36,7 +36,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.google.gson.Gson;
 
 @RestController
-@RequestMapping(value = "/favorites")
+@RequestMapping(value = "/portal/favorites")
 public class FavoritesEndPoint {
 	private static Logger logger = LogHelper.getLogger(FavoritesEndPoint.class);
 	@Autowired

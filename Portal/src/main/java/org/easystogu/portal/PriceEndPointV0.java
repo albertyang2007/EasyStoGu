@@ -28,7 +28,7 @@ import com.google.gson.Gson;
 //v0, stockprice (no chuquan)
 
 @RestController
-@RequestMapping(value = "/pricev0")
+@RequestMapping(value = "/portal/pricev0")
 public class PriceEndPointV0 {
 	@Autowired
 	protected ConfigurationServiceCache config;

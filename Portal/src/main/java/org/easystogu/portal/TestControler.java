@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import net.sf.json.JSONObject;
 
 @RestController
-@RequestMapping(value = "/")
+@RequestMapping(value = "/portal/")
 public class TestControler {
 	@PostMapping("/holle")
 	@Consumes(MediaType.APPLICATION_JSON)
