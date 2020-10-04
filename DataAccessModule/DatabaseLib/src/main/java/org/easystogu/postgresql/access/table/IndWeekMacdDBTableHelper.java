@@ -1,11 +1,12 @@
 package org.easystogu.postgresql.access.table;
 
+import org.easystogu.db.vo.table.MacdVO;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
-public class IndWeekMacdDBTableHelper extends PostgresqlIndDBHelper implements InitializingBean{
+public class IndWeekMacdDBTableHelper extends PostgresqlIndDBHelper<MacdVO> implements InitializingBean{
 	@Override
 	@Value("ind_week_macd")
 	public void setTableName(String tableName) {
@@ -14,7 +15,7 @@ public class IndWeekMacdDBTableHelper extends PostgresqlIndDBHelper implements I
 	
 	@Override
 	public void afterPropertiesSet() {
-		super.setIndicatorVOClass(org.easystogu.db.vo.table.MacdVO.class);
+		super.setIndicatorVOClass(MacdVO.class);
 		super.init();
 	}
 }

@@ -24,11 +24,11 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Service;
 
 @Service
-public abstract class PostgresqlIndDBHelper implements IndicatorDBHelperIF {
+public abstract class PostgresqlIndDBHelper<T extends IndicatorVO> implements IndicatorDBHelperIF {
 	private static Logger logger = LogHelper.getLogger(PostgresqlIndDBHelper.class);
 	@Autowired
 	protected PostgreSqlDataSourceFactory postgreSqlDataSourceFactory;
-	protected Class<? extends IndicatorVO> indicatorVOClass;
+	protected Class<T> indicatorVOClass;
 	protected String tableName;// To be set later
 	protected String INSERT_SQL;
 	protected String QUERY_ALL_BY_ID_SQL;
@@ -135,7 +135,7 @@ public abstract class PostgresqlIndDBHelper implements IndicatorDBHelperIF {
 	}
 
 	@SuppressWarnings("unchecked")
-	public <T extends IndicatorVO> T getSingle(String stockId, String date) {
+	public T getSingle(String stockId, String date) {
 		try {
 			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 			namedParameters.addValue("stockId", stockId);
@@ -154,7 +154,7 @@ public abstract class PostgresqlIndDBHelper implements IndicatorDBHelperIF {
 	}
 
 	@SuppressWarnings("unchecked")
-	public <T extends IndicatorVO> List<T> getAll(String stockId) {
+	public List<T> getAll(String stockId) {
 		try {
 			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 			namedParameters.addValue("stockId", stockId);
@@ -192,7 +192,7 @@ public abstract class PostgresqlIndDBHelper implements IndicatorDBHelperIF {
 	}
 
 	@SuppressWarnings("unchecked")
-	public <T extends IndicatorVO> List<T> getByIdAndBetweenDate(String stockId, String startDate, String endDate) {
+	public List<T> getByIdAndBetweenDate(String stockId, String startDate, String endDate) {
 		logger.info("getByIdAndBetweenDate: stockId=" + stockId + ",startDate=" + startDate + ",endDate=" + endDate
 				+ ",SQL=" + QUERY_BY_STOCKID_AND_BETWEEN_DATE);
 		try {
@@ -211,7 +211,7 @@ public abstract class PostgresqlIndDBHelper implements IndicatorDBHelperIF {
 	}
 
 	@SuppressWarnings("unchecked")
-	public <T extends IndicatorVO> List<T> getByIdAndLatestNDate(String stockId, int day) {
+	public List<T> getByIdAndLatestNDate(String stockId, int day) {
 		try {
 			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 			namedParameters.addValue("stockId", stockId);
@@ -226,33 +226,13 @@ public abstract class PostgresqlIndDBHelper implements IndicatorDBHelperIF {
 			return new ArrayList<T>();
 		}
 	}
-	
-	public Class<?> getIndicatorVOClass() {
-		return indicatorVOClass;
-	}
-
-//	@SuppressWarnings("unchecked")
-//	public void setIndicatorVOClass(String indicatorVOClass) {
-//		try {
-//			this.indicatorVOClass = (Class<? extends IndicatorVO>) ClassLoader.getSystemClassLoader().loadClass(indicatorVOClass);
-//			logger.info(this.getClass().getSimpleName() + " setIndicatorVOClass tableName: " + this.tableName);
-//			//Class.forName(indicatorVOClass).getClass();
-//		} catch (Exception e) {
-//			// TODO Auto-generated catch block
-//			logger.error("setIndicatorVOClass exception: "+ e.getMessage());
-//			e.printStackTrace();
-//		}
-//	}
-	
-	public void setIndicatorVOClass(Class<? extends IndicatorVO> indicatorVOClass) {
-		this.indicatorVOClass = indicatorVOClass;
-	}
-
-	public String getTableName() {
-		return tableName;
-	}
 
 	public void setTableName(String tableName) {
 		this.tableName = tableName;
+	}
+
+
+	public void setIndicatorVOClass(Class<T> indicatorVOClass) {
+		this.indicatorVOClass = indicatorVOClass;
 	}
 }

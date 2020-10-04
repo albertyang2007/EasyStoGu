@@ -1,11 +1,12 @@
 package org.easystogu.postgresql.access.table;
 
+import org.easystogu.db.vo.table.KDJVO;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
-public class IndWeekKDJDBTableHelper extends PostgresqlIndDBHelper implements InitializingBean{
+public class IndWeekKDJDBTableHelper extends PostgresqlIndDBHelper<KDJVO> implements InitializingBean{
 	@Override
 	@Value("ind_week_kdj")
 	public void setTableName(String tableName) {
@@ -14,7 +15,7 @@ public class IndWeekKDJDBTableHelper extends PostgresqlIndDBHelper implements In
 	
 	@Override
 	public void afterPropertiesSet() {
-		super.setIndicatorVOClass(org.easystogu.db.vo.table.KDJVO.class);
+		super.setIndicatorVOClass(KDJVO.class);
 		super.init();
 	}
 }
