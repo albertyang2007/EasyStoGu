@@ -14,6 +14,7 @@ import org.easystogu.trendmode.vo.SimplePriceVO;
 import org.easystogu.trendmode.vo.TrendModeVO;
 import org.easystogu.utils.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 
 import net.sf.json.JSONObject;
@@ -31,10 +32,11 @@ public class TrendModeLoader {
 	@PostConstruct
 	public void startUp() {
 		try {
-			List<String> names = fileSource.listResourceFiles("classpath:/TrendMode/*.json");
-			System.out.println("Initialization loadTrendModeFromResource, len=" + names.size());
-			for (String name : names) {
-				String content = fileSource.loadContent("TrendMode/" + name);
+			List<Resource> resources = fileSource.listResourceFile("classpath:/TrendMode/*.json");
+			System.out.println("Initialization loadTrendModeFromResource, len=" + resources.size());
+			for (Resource resource : resources) {
+				String name = resource.getFilename();
+				String content = fileSource.loadContent(resource);
 				if (Strings.isEmpty(content)) {
 					System.err.println("fileName " + name + " content is null");
 					continue;

@@ -11,7 +11,7 @@ import java.util.List;
 import org.easystogu.log.LogHelper;
 import org.easystogu.utils.Strings;
 import org.slf4j.Logger;
-import org.springframework.core.io.DefaultResourceLoader;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.io.support.ResourcePatternUtils;
@@ -20,7 +20,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class TextFileSourceHelper {
     private static Logger logger = LogHelper.getLogger(TextFileSourceHelper.class);
-    private static ResourceLoader resourceLoader = new DefaultResourceLoader();
+    @Autowired
+    private ResourceLoader resourceLoader;
 
     public String loadContent(String fileName) {
         try {
@@ -40,7 +41,7 @@ public class TextFileSourceHelper {
 
         InputStream fis = null;
         try {
-            fis = new FileInputStream(resource.getFile());
+            fis = resource.getInputStream();
             BufferedReader reader = new BufferedReader(new InputStreamReader(fis, "UTF-8"));
             String line = reader.readLine();
             while (line != null) {
@@ -65,13 +66,28 @@ public class TextFileSourceHelper {
         return lines.toString();
     }
 
-    public List<String> listResourceFiles(String pattern) {
+    public List<String> listResourceFileName(String pattern) {
         List<String> files = new ArrayList<String>();
         try {
             Resource[] resources = ResourcePatternUtils.getResourcePatternResolver(resourceLoader)
                     .getResources(pattern);
             for (Resource res : resources) {
                 files.add(res.getFilename());
+            }
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return files;
+    }
+    
+    public List<Resource> listResourceFile(String pattern) {
+        List<Resource> files = new ArrayList<Resource>();
+        try {
+            Resource[] resources = ResourcePatternUtils.getResourcePatternResolver(resourceLoader)
+                    .getResources(pattern);
+            for (Resource res : resources) {
+                files.add(res);
             }
         } catch (IOException e) {
             // TODO Auto-generated catch block

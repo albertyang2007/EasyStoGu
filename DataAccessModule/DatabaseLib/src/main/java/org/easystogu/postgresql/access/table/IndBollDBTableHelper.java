@@ -1,22 +1,11 @@
 package org.easystogu.postgresql.access.table;
 
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
-public class IndBollDBTableHelper extends PostgresqlIndDBHelper {
-//	private static IndBollDBTableHelper instance = null;
-//
-//	public static IndBollDBTableHelper getInstance() {
-//		if (instance == null) {
-//			instance = new IndBollDBTableHelper("ind_boll", BollVO.class);
-//		}
-//		return instance;
-//	}
-//
-//	protected IndBollDBTableHelper(String tableNameParm, Class<? extends IndicatorVO> indicatorVOClass) {
-//		super(tableNameParm, indicatorVOClass);
-//	}
+public class IndBollDBTableHelper extends PostgresqlIndDBHelper implements InitializingBean{
 
 	@Override
 	@Value("ind_boll")
@@ -25,8 +14,8 @@ public class IndBollDBTableHelper extends PostgresqlIndDBHelper {
 	}
 	
 	@Override
-	@Value("org.easystogu.db.vo.table.BollVO")
-	public void setIndicatorVOClass(String indicatorVOClass) {
-		super.setIndicatorVOClass(indicatorVOClass);
+	public void afterPropertiesSet() {
+		super.setIndicatorVOClass(org.easystogu.db.vo.table.BollVO.class);
+		super.init();
 	}
 }

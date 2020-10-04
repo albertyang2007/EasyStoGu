@@ -9,8 +9,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
-
 import org.easystogu.db.ds.PostgreSqlDataSourceFactory;
 import org.easystogu.db.helper.IF.IndicatorDBHelperIF;
 import org.easystogu.db.vo.table.IndicatorVO;
@@ -30,7 +28,7 @@ public abstract class PostgresqlIndDBHelper implements IndicatorDBHelperIF {
 	private static Logger logger = LogHelper.getLogger(PostgresqlIndDBHelper.class);
 	@Autowired
 	protected PostgreSqlDataSourceFactory postgreSqlDataSourceFactory;
-	protected Class<?> indicatorVOClass;
+	protected Class<? extends IndicatorVO> indicatorVOClass;
 	protected String tableName;// To be set later
 	protected String INSERT_SQL;
 	protected String QUERY_ALL_BY_ID_SQL;
@@ -40,8 +38,7 @@ public abstract class PostgresqlIndDBHelper implements IndicatorDBHelperIF {
 	protected String DELETE_BY_STOCKID_SQL;
 	protected String DELETE_BY_STOCKID_AND_DATE_SQL;
 
-	@PostConstruct
-	public void init() {
+	protected void init() {
 		String[] paris = generateFieldsNamePairs();
 
 		// INSERT INTO ind.macd (stockId, date, dif, dea, macd) VALUES (:stockId, :date,
@@ -126,6 +123,7 @@ public abstract class PostgresqlIndDBHelper implements IndicatorDBHelperIF {
 			getNamedParameterJdbcTemplate().execute(INSERT_SQL, generateNameParms(vo),
 					new DefaultPreparedStatementCallback());
 		} catch (Exception e) {
+			logger.error("insert error: tableName: {}, INSERT_SQL: {}", this.tableName, INSERT_SQL);
 			e.printStackTrace();
 		}
 	}
@@ -233,13 +231,21 @@ public abstract class PostgresqlIndDBHelper implements IndicatorDBHelperIF {
 		return indicatorVOClass;
 	}
 
-	public void setIndicatorVOClass(String indicatorVOClass) {
-		try {
-			this.indicatorVOClass = Class.forName(indicatorVOClass).getClass();
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//	@SuppressWarnings("unchecked")
+//	public void setIndicatorVOClass(String indicatorVOClass) {
+//		try {
+//			this.indicatorVOClass = (Class<? extends IndicatorVO>) ClassLoader.getSystemClassLoader().loadClass(indicatorVOClass);
+//			logger.info(this.getClass().getSimpleName() + " setIndicatorVOClass tableName: " + this.tableName);
+//			//Class.forName(indicatorVOClass).getClass();
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			logger.error("setIndicatorVOClass exception: "+ e.getMessage());
+//			e.printStackTrace();
+//		}
+//	}
+	
+	public void setIndicatorVOClass(Class<? extends IndicatorVO> indicatorVOClass) {
+		this.indicatorVOClass = indicatorVOClass;
 	}
 
 	public String getTableName() {

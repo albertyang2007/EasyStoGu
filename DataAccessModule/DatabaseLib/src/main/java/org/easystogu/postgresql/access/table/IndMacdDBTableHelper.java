@@ -1,24 +1,11 @@
 package org.easystogu.postgresql.access.table;
 
-import org.easystogu.config.Constants;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
-public class IndMacdDBTableHelper extends PostgresqlIndDBHelper {
-//	private static IndMacdDBTableHelper instance = null;
-//
-//	public static IndMacdDBTableHelper getInstance() {
-//		if (instance == null) {
-//			instance = new IndMacdDBTableHelper("ind_macd", MacdVO.class);
-//		}
-//		return instance;
-//	}
-//
-//	protected IndMacdDBTableHelper(String tableNameParm, Class<? extends IndicatorVO> indicatorVOClass) {
-//		super(tableNameParm, indicatorVOClass);
-//	}
-	
+public class IndMacdDBTableHelper extends PostgresqlIndDBHelper implements InitializingBean{
 	@Override
 	@Value("ind_macd")
 	public void setTableName(String tableName) {
@@ -26,8 +13,8 @@ public class IndMacdDBTableHelper extends PostgresqlIndDBHelper {
 	}
 	
 	@Override
-	@Value("org.easystogu.db.vo.table.MacdVO")
-	public void setIndicatorVOClass(String indicatorVOClass) {
-		super.setIndicatorVOClass(indicatorVOClass);
+	public void afterPropertiesSet() {
+		super.setIndicatorVOClass(org.easystogu.db.vo.table.MacdVO.class);
+		super.init();
 	}
 }

@@ -1,23 +1,11 @@
 package org.easystogu.postgresql.access.table;
 
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
-public class IndKDJDBTableHelper extends PostgresqlIndDBHelper {
-//	private static IndKDJDBTableHelper instance = null;
-//
-//	public static IndKDJDBTableHelper getInstance() {
-//		if (instance == null) {
-//			instance = new IndKDJDBTableHelper("ind_kdj", KDJVO.class);
-//		}
-//		return instance;
-//	}
-//
-//	protected IndKDJDBTableHelper(String tableNameParm, Class<? extends IndicatorVO> indicatorVOClass) {
-//		super(tableNameParm, indicatorVOClass);
-//	}
-
+public class IndKDJDBTableHelper extends PostgresqlIndDBHelper implements InitializingBean{
 	@Override
 	@Value("ind_kdj")
 	public void setTableName(String tableName) {
@@ -25,8 +13,8 @@ public class IndKDJDBTableHelper extends PostgresqlIndDBHelper {
 	}
 	
 	@Override
-	@Value("org.easystogu.db.vo.table.KDJVO")
-	public void setIndicatorVOClass(String indicatorVOClass) {
-		super.setIndicatorVOClass(indicatorVOClass);
+	public void afterPropertiesSet() {
+		super.setIndicatorVOClass(org.easystogu.db.vo.table.KDJVO.class);
+		super.init();
 	}
 }

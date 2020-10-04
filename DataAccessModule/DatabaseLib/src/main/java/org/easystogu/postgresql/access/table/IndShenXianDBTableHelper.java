@@ -1,23 +1,11 @@
 package org.easystogu.postgresql.access.table;
 
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
-public class IndShenXianDBTableHelper extends PostgresqlIndDBHelper {
-//	private static IndShenXianDBTableHelper instance = null;
-//
-//	public static IndShenXianDBTableHelper getInstance() {
-//		if (instance == null) {
-//			instance = new IndShenXianDBTableHelper("ind_shenxian", ShenXianVO.class);
-//		}
-//		return instance;
-//	}
-//
-//	protected IndShenXianDBTableHelper(String tableNameParm, Class<? extends IndicatorVO> indicatorVOClass) {
-//		super(tableNameParm, indicatorVOClass);
-//	}
-
+public class IndShenXianDBTableHelper extends PostgresqlIndDBHelper implements InitializingBean{
 	@Override
 	@Value("ind_shenxian")
 	public void setTableName(String tableName) {
@@ -25,8 +13,8 @@ public class IndShenXianDBTableHelper extends PostgresqlIndDBHelper {
 	}
 	
 	@Override
-	@Value("org.easystogu.db.vo.table.ShenXianVO")
-	public void setIndicatorVOClass(String indicatorVOClass) {
-		super.setIndicatorVOClass(indicatorVOClass);
+	public void afterPropertiesSet() {
+		super.setIndicatorVOClass(org.easystogu.db.vo.table.ShenXianVO.class);
+		super.init();
 	}
 }
