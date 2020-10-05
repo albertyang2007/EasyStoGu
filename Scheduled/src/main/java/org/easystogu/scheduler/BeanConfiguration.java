@@ -1,4 +1,4 @@
-package org.easystogu.portal.config;
+package org.easystogu.scheduler;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
