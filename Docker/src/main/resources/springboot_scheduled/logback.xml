@@ -26,6 +26,10 @@
         <appender-ref ref="TRAFFIC_LOG_FILE"/>
     </logger>
 
+    <logger name="org.springframework" additivity="false" level="INFO">
+        <appender-ref ref="TRAFFIC_LOG_FILE"/>
+    </logger>
+    
     <logger name="io.grpc.netty.NettyServerTransport" level="OFF"> </logger>
 
     <root level="DEBUG">

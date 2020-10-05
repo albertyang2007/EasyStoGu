@@ -54,6 +54,8 @@ public class HomeEndPoint {
 	private HistoryDailySelectionRunner historyDailySelectionRunner;
 	@Autowired
 	private HistoryAnalyseReport historyAnalyseReport;
+	@Autowired
+	private CompanyInfoFileHelper companyInfoFileHelper;
 	
 	protected final String dateRegex = "[0-9]{4}-[0-9]{2}-[0-9]{2}";
 	protected final String fromToRegex = dateRegex + "_" + dateRegex;
@@ -185,8 +187,7 @@ public class HomeEndPoint {
 		String zone = config.getString("zone", "");
 		// update the total GuBen and LiuTong GuBen
 		if (Constants.ZONE_OFFICE.equals(zone)) {
-			CompanyInfoFileHelper ins = new CompanyInfoFileHelper();
-			ins.updateCompanyFromFileToDB();
+			new Thread(() -> companyInfoFileHelper.updateCompanyFromFileToDB()).start();
 			return "UpdateCompanyFromFileToDB already running, please check folder result.";
 		}
 		return zone + " not allow to run this method.";
