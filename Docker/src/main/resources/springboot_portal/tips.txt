@@ -1,3 +1,5 @@
 This docker file is used for easystogu portal springboot k8s deployment.
 
-sudo docker build -t easystogu-portal:2.0.0-snapshot .
+docker build -t easystogu-portal:2.0.0-snapshot .
+docker tag easystogu-portal:2.0.0-snapshot eyaweiw.cn:5000/easystogu-portal:2.0.0-snapshot
+docker push eyaweiw.cn:5000/easystogu-portal:2.0.0-snapshot
