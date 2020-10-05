@@ -240,8 +240,7 @@ public class CompanyInfoFileHelper {
 	// DDX use this data
 	public void updateCompanyFromFileToDB() {
 		// TODO Auto-generated method stub
-		CompanyInfoFileHelper ins = new CompanyInfoFileHelper();
-		Map<String, CompanyInfoVO> companyMap = ins.loadDataFromFile();
+		Map<String, CompanyInfoVO> companyMap = this.loadDataFromFile();
 
 		Set keys = companyMap.keySet();
 		Iterator it = keys.iterator();
