@@ -7,13 +7,16 @@ import org.easystogu.config.Constants;
 import org.easystogu.db.access.facde.DBAccessFacdeFactory;
 import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.access.table.WeekStockPriceTableHelper;
+import org.easystogu.log.LogHelper;
 import org.easystogu.postgresql.access.table.IndWeekMacdDBTableHelper;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component("weekMacdRunner")
 public class HistoryWeeklyMacdCountAndSaveDBRunner extends HistoryMacdCountAndSaveDBRunner {
+	private static Logger logger = LogHelper.getLogger(HistoryWeeklyMacdCountAndSaveDBRunner.class);
 	@Autowired
 	@Qualifier("weekStockPriceTable")
 	private StockPriceTableHelper _stockPriceTable;

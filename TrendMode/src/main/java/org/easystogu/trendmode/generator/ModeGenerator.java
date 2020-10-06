@@ -7,9 +7,11 @@ import java.util.List;
 import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
+import org.easystogu.log.LogHelper;
 import org.easystogu.trendmode.vo.SimplePriceVO;
 import org.easystogu.trendmode.vo.TrendModeVO;
 import org.easystogu.utils.Strings;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -18,6 +20,7 @@ import net.sf.json.JSONObject;
 
 @Component
 public class ModeGenerator {
+	private static Logger logger = LogHelper.getLogger(ModeGenerator.class);
 	@Autowired
 	private CompanyInfoFileHelper stockConfig;
 	@Autowired
@@ -79,7 +82,7 @@ public class ModeGenerator {
 
 	private void saveToFile(TrendModeVO tmo) {
 		String file = trendModeJsonFilePath + tmo.name + ".json";
-		System.out.println("Saving TrendMode to " + file);
+		logger.debug("Saving TrendMode to " + file);
 		try {
 			BufferedWriter fout = new BufferedWriter(new FileWriter(file));
 			fout.write(JSONObject.fromObject(tmo).toString());

@@ -8,13 +8,16 @@ import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.db.vo.table.XueShi2VO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.indicator.TALIBWraper;
+import org.easystogu.log.LogHelper;
 import org.easystogu.utils.Strings;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component
 public class HistoryXueShi2CountAndSaveDBRunner {
+	private static Logger logger = LogHelper.getLogger(HistoryXueShi2CountAndSaveDBRunner.class);
 	@Autowired
     protected IndXueShi2TableHelper xueShi2Table;
 	@Autowired
@@ -32,7 +35,7 @@ public class HistoryXueShi2CountAndSaveDBRunner {
     public void deleteXueShi2(List<String> stockIds) {
         int index = 0;
         for (String stockId : stockIds) {
-            System.out.println("Delete YiMengBS for " + stockId + " " + (++index) + " of " + stockIds.size());
+            logger.debug("Delete YiMengBS for " + stockId + " " + (++index) + " of " + stockIds.size());
             this.deleteXueShi2(stockId);
         }
     }
@@ -76,8 +79,8 @@ public class HistoryXueShi2CountAndSaveDBRunner {
             for (index = priceList.size() - 1; index >= 0; index--) {
                 double up = xueShi2Upper[index];
                 double dn = xueShi2Low[index];
-                // System.out.println("UP=" + up);
-                // System.out.println("DN=" + dn);
+                // logger.debug("UP=" + up);
+                // logger.debug("DN=" + dn);
 
                 XueShi2VO xueShi2VO = new XueShi2VO();
                 xueShi2VO.setStockId(stockId);
@@ -99,7 +102,7 @@ public class HistoryXueShi2CountAndSaveDBRunner {
         int index = 0;
         for (String stockId : stockIds) {
             if (index++ % 100 == 0)
-                System.out.println("XueShi2 countAndSaved: " + stockId + " " + (index) + "/" + stockIds.size());
+                logger.debug("XueShi2 countAndSaved: " + stockId + " " + (index) + "/" + stockIds.size());
             this.countAndSaved(stockId);
         }
     }

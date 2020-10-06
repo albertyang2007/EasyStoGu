@@ -9,7 +9,9 @@ import org.easystogu.db.vo.table.YiMengBSVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.indicator.YiMengBSHelper;
 import org.easystogu.indicator.runner.utils.StockPriceFetcher;
+import org.easystogu.log.LogHelper;
 import org.easystogu.utils.Strings;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -18,6 +20,7 @@ import com.google.common.primitives.Doubles;
 
 @Component
 public class DailyYiMengBSCountAndSaveDBRunner {
+	private static Logger logger = LogHelper.getLogger(DailyYiMengBSCountAndSaveDBRunner.class);
 	@Autowired
 	@Qualifier("qianFuQuanStockPriceTable")
 	protected StockPriceTableHelper stockPriceTable;
@@ -39,7 +42,7 @@ public class DailyYiMengBSCountAndSaveDBRunner {
     public void deleteYiMengBS(List<String> stockIds) {
         int index = 0;
         for (String stockId : stockIds) {
-            System.out.println("Delete YiMengBS for " + stockId + " " + (++index) + "/" + stockIds.size());
+            logger.debug("Delete YiMengBS for " + stockId + " " + (++index) + "/" + stockIds.size());
             this.deleteYiMengBS(stockId);
         }
     }
@@ -48,7 +51,7 @@ public class DailyYiMengBSCountAndSaveDBRunner {
         List<StockPriceVO> priceList = stockPriceTable.getStockPriceById(stockId);
 
         if (priceList.size() <= 108) {
-            // System.out.println("StockPrice data is less than 108, skip " +
+            // logger.debug("StockPrice data is less than 108, skip " +
             // stockId);
             return;
         }
@@ -77,7 +80,7 @@ public class DailyYiMengBSCountAndSaveDBRunner {
         int index = 0;
         for (String stockId : stockIds) {
             if (index++ % 500 == 0) {
-                System.out.println("YiMengBS countAndSaved: " + stockId + " " + (index) + "/" + stockIds.size());
+                logger.debug("YiMengBS countAndSaved: " + stockId + " " + (index) + "/" + stockIds.size());
             }
             this.countAndSaved(stockId);
         }

@@ -97,17 +97,4 @@ public class DigitInOrderHelper {
 			return true;
 		return false;
 	}
-
-	public static void main(String[] args) {
-		System.out.println(checkAll(11.11));
-		System.out.println(checkAll(21.43));
-		System.out.println(checkAll(31.75));
-		System.out.println(checkAll(42.86));
-		System.out.println(checkAll(56.56));
-		System.out.println(checkAll(56.65));
-		System.out.println(checkAll(240.68));
-		System.out.println(checkAll(121.21));
-		System.out.println(checkAll(351.53));
-		System.out.println(checkAll(36.15));
-	}
 }

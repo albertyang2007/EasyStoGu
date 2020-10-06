@@ -2,8 +2,6 @@ package org.easystogu.indicator.runner;
 
 import java.util.List;
 
-import org.easystogu.config.Constants;
-import org.easystogu.db.access.facde.DBAccessFacdeFactory;
 import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.helper.IF.IndicatorDBHelperIF;
 import org.easystogu.db.vo.table.QSDDVO;
@@ -11,7 +9,9 @@ import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.indicator.QSDDHelper;
 import org.easystogu.indicator.runner.utils.StockPriceFetcher;
+import org.easystogu.log.LogHelper;
 import org.easystogu.utils.Strings;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -20,6 +20,7 @@ import com.google.common.primitives.Doubles;
 
 @Component
 public class DailyQSDDCountAndSaveDBRunner{
+	private static Logger logger = LogHelper.getLogger(DailyQSDDCountAndSaveDBRunner.class);
 	@Autowired
 	@Qualifier("qsddTable")
 	protected IndicatorDBHelperIF qsddTable;
@@ -71,7 +72,7 @@ public class DailyQSDDCountAndSaveDBRunner{
 //		int index = 0;
 //		for (String stockId : stockIds) {
 //			if (index++ % 500 == 0) {
-//				System.out.println("QSDD countAndSaved: " + stockId + " " + (index) + "/" + stockIds.size());
+//				logger.debug("QSDD countAndSaved: " + stockId + " " + (index) + "/" + stockIds.size());
 //			}
 //			this.countAndSaved(stockId);
 //		}

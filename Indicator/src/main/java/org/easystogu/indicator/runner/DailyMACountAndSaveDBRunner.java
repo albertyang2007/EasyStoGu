@@ -8,13 +8,16 @@ import org.easystogu.db.vo.table.MAVO;
 import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.indicator.MAHelper;
+import org.easystogu.log.LogHelper;
 import org.easystogu.utils.Strings;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component
 public class DailyMACountAndSaveDBRunner {
+	private static Logger logger = LogHelper.getLogger(DailyMACountAndSaveDBRunner.class);
 	@Autowired
 	protected IndMATableHelper maTable;
 	@Autowired
@@ -77,7 +80,7 @@ public class DailyMACountAndSaveDBRunner {
 		vo.setMa250(Strings.convert2ScaleDecimal(ma250[index], 2));
 		vo.setClose(Strings.convert2ScaleDecimal(cls[index], 2));
 
-		// System.out.println(vo);
+		// logger.debug(vo);
 		this.deleteMa(stockId, vo.date);
 		maTable.insert(vo);
 
@@ -91,7 +94,7 @@ public class DailyMACountAndSaveDBRunner {
 //		int index = 0;
 //		for (String stockId : stockIds) {
 //			if (index++ % 500 == 0) {
-//				System.out.println("MA countAndSaved: " + stockId + " " + (index) + "/" + stockIds.size());
+//				logger.debug("MA countAndSaved: " + stockId + " " + (index) + "/" + stockIds.size());
 //			}
 //			this.countAndSaved(stockId);
 //		}

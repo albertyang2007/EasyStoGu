@@ -6,16 +6,19 @@ import org.easystogu.db.access.table.ScheduleActionTableHelper;
 import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.vo.table.ScheduleActionVO;
 import org.easystogu.indicator.runner.history.IndicatorHistortOverAllRunner;
+import org.easystogu.log.LogHelper;
 import org.easystogu.sina.runner.history.HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner;
 import org.easystogu.sina.runner.history.HistoryStockPriceDownloadAndStoreDBRunner;
 import org.easystogu.sina.runner.history.HistoryWeekStockPriceCountAndSaveDBRunner;
 import org.easystogu.utils.WeekdayUtil;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component
 public class DailyScheduleActionRunner {
+	private static Logger logger = LogHelper.getLogger(DailyScheduleActionRunner.class);
 	@Autowired
 	private ScheduleActionTableHelper scheduleActionTable;
 	@Autowired
@@ -39,7 +42,7 @@ public class DailyScheduleActionRunner {
 			if (currentDate.compareTo(savo.getRunDate()) >= 0) {
 
 				if (savo.actionDo.equals(ScheduleActionVO.ActionDo.refresh_history_stockprice.name())) {
-					System.out.println("refresh_history_stockprice for " + savo.stockId);
+					logger.debug("refresh_history_stockprice for " + savo.stockId);
 					// fetch original history data
 					this.priceHistoryRunner.countAndSave(savo.stockId, "2000-01-01", currentDate);
 					// for qian fuquan history data
@@ -54,7 +57,7 @@ public class DailyScheduleActionRunner {
 					// update indicator
 					indicatorHistoryRunner.countAndSave(savo.stockId);
 				} else if (savo.actionDo.equals(ScheduleActionVO.ActionDo.refresh_fuquan_history_stockprice.name())) {
-					System.out.println("refresh_fuquan_history_stockprice for " + savo.stockId);
+					logger.debug("refresh_fuquan_history_stockprice for " + savo.stockId);
 					// fetch hou ququan history data
 					// this.historyHouFuQuanRunner.countAndSave(savo.stockId);
 					// for qian fuquan

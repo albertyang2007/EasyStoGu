@@ -13,6 +13,8 @@ import javax.annotation.PostConstruct;
 import org.easystogu.cassandra.ks.CassandraKepSpaceFactory;
 import org.easystogu.db.helper.IF.IndicatorDBHelperIF;
 import org.easystogu.db.vo.table.IndicatorVO;
+import org.easystogu.log.LogHelper;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +26,7 @@ import com.datastax.driver.core.Session;
 
 @Service
 public abstract class CassandraIndDBHelper implements IndicatorDBHelperIF {
+	private static Logger logger = LogHelper.getLogger(CassandraIndDBHelper.class);
 	@Autowired
 	protected CassandraKepSpaceFactory cassandraKepSpaceFactory;
 	protected Class<?> indicatorVOClass;
@@ -88,7 +91,7 @@ public abstract class CassandraIndDBHelper implements IndicatorDBHelperIF {
 					wM.invoke(vo, r.getFloat(f.getName()));
 				}
 			}
-			//System.out.println(vo);
+			//logger.debug(vo);
 			return (T) vo;
 		} catch (Exception e) {
 			e.printStackTrace();

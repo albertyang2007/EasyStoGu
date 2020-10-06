@@ -2,15 +2,15 @@ package org.easystogu.indicator.runner.history;
 
 import java.util.List;
 
-import org.easystogu.config.Constants;
-import org.easystogu.db.access.facde.DBAccessFacdeFactory;
 import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.helper.IF.IndicatorDBHelperIF;
 import org.easystogu.db.vo.table.BollVO;
 import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.indicator.BOLLHelper;
+import org.easystogu.log.LogHelper;
 import org.easystogu.utils.Strings;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -18,6 +18,7 @@ import org.springframework.stereotype.Component;
 //计算数据库中所有boll值，包括最新和历史的，一次性运行
 @Component
 public class HistoryBollCountAndSaveDBRunner {
+	private static Logger logger = LogHelper.getLogger(HistoryBollCountAndSaveDBRunner.class);
 	@Autowired
 	@Qualifier("bollTable")
 	protected IndicatorDBHelperIF bollTable;
@@ -36,7 +37,7 @@ public class HistoryBollCountAndSaveDBRunner {
 	public void deleteBoll(List<String> stockIds) {
 		int index = 0;
 		for (String stockId : stockIds) {
-			System.out.println("Delete Boll for " + stockId + " " + (++index) + " of " + stockIds.size());
+			logger.debug("Delete Boll for " + stockId + " " + (++index) + " of " + stockIds.size());
 			this.deleteBoll(stockId);
 		}
 	}
@@ -65,9 +66,9 @@ public class HistoryBollCountAndSaveDBRunner {
 				double up = Strings.convert2ScaleDecimal(boll[0][index], 3);
 				double mb = Strings.convert2ScaleDecimal(boll[1][index], 3);
 				double dn = Strings.convert2ScaleDecimal(boll[2][index], 3);
-				// System.out.println("MB=" + mb);
-				// System.out.println("UP=" + up);
-				// System.out.println("DN=" + dn);
+				// logger.debug("MB=" + mb);
+				// logger.debug("UP=" + up);
+				// logger.debug("DN=" + dn);
 
 				BollVO bollVO = new BollVO();
 				bollVO.setStockId(stockId);
@@ -87,7 +88,7 @@ public class HistoryBollCountAndSaveDBRunner {
 	}
 
 	public void countAndSaved(List<String> stockIds) {
-		System.out.println("Boll countAndSaved start");
+		logger.debug("Boll countAndSaved start");
 		stockIds.parallelStream().forEach(stockId -> {
 			this.countAndSaved(stockId);
 		});
@@ -95,12 +96,12 @@ public class HistoryBollCountAndSaveDBRunner {
 		// int index = 0;
 		// for (String stockId : stockIds) {
 		// if (index++ % 100 == 0)
-		// System.out.println("Boll countAndSaved: " + stockId + " " + (index) + "/" +
+		// logger.debug("Boll countAndSaved: " + stockId + " " + (index) + "/" +
 		// stockIds.size());
 		// this.countAndSaved(stockId);
 		// }
 
-		System.out.println("Boll countAndSaved stop");
+		logger.debug("Boll countAndSaved stop");
 	}
 
 	public void mainWork(String[] args) {

@@ -2,8 +2,6 @@ package org.easystogu.indicator.runner.history;
 
 import java.util.List;
 
-import org.easystogu.config.Constants;
-import org.easystogu.db.access.facde.DBAccessFacdeFactory;
 import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.helper.IF.IndicatorDBHelperIF;
 import org.easystogu.db.vo.table.QSDDVO;
@@ -11,7 +9,9 @@ import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.indicator.QSDDHelper;
 import org.easystogu.indicator.runner.utils.StockPriceFetcher;
+import org.easystogu.log.LogHelper;
 import org.easystogu.utils.Strings;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -20,6 +20,7 @@ import com.google.common.primitives.Doubles;
 
 @Component
 public class HistoryQSDDCountAndSaveDBRunner {
+	private static Logger logger = LogHelper.getLogger(HistoryQSDDCountAndSaveDBRunner.class);
 	@Autowired
 	@Qualifier("qsddTable")
 	protected IndicatorDBHelperIF qsddTable;
@@ -38,7 +39,7 @@ public class HistoryQSDDCountAndSaveDBRunner {
 	public void deleteQSDD(List<String> stockIds) {
 		int index = 0;
 		for (String stockId : stockIds) {
-			System.out.println("Delete QSDD for " + stockId + " " + (++index) + " of " + stockIds.size());
+			logger.debug("Delete QSDD for " + stockId + " " + (++index) + " of " + stockIds.size());
 			this.deleteQSDD(stockId);
 		}
 	}
@@ -78,7 +79,7 @@ public class HistoryQSDDCountAndSaveDBRunner {
 	}
 
 	public void countAndSaved(List<String> stockIds) {
-      System.out.println("QSDD countAndSaved start");
+      logger.debug("QSDD countAndSaved start");
       stockIds.parallelStream().forEach(stockId -> {
         this.countAndSaved(stockId);
       });
@@ -86,11 +87,11 @@ public class HistoryQSDDCountAndSaveDBRunner {
 //      int index = 0;
 //      for (String stockId : stockIds) {
 //          if (index++ % 100 == 0)
-//              System.out.println("QSDD countAndSaved: " + stockId + " " + (index) + "/" + stockIds.size());
+//              logger.debug("QSDD countAndSaved: " + stockId + " " + (index) + "/" + stockIds.size());
 //          this.countAndSaved(stockId);
 //      }
       
-      System.out.println("QSDD countAndSaved stop");
+      logger.debug("QSDD countAndSaved stop");
     }
 
 	// TODO Auto-generated method stub

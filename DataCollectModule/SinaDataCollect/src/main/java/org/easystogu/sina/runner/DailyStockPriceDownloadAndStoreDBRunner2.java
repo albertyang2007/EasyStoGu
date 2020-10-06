@@ -9,10 +9,12 @@ import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.vo.table.CompanyInfoVO;
 import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
+import org.easystogu.log.LogHelper;
 import org.easystogu.sina.common.SinaQuoteStockPriceVO;
 import org.easystogu.sina.helper.DailyStockPriceDownloadHelper2;
 import org.easystogu.sina.runner.history.HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner;
 import org.easystogu.utils.Strings;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -21,6 +23,7 @@ import org.springframework.stereotype.Component;
 //it will get all the stockId from the web, including the new on board stockId
 @Component
 public class DailyStockPriceDownloadAndStoreDBRunner2 {
+	private static Logger logger = LogHelper.getLogger(DailyStockPriceDownloadAndStoreDBRunner2.class);
 	@Autowired
     private CompanyInfoFileHelper stockConfig;
 	@Autowired
@@ -58,11 +61,11 @@ public class DailyStockPriceDownloadAndStoreDBRunner2 {
     public int downloadDataAndSaveIntoDB(String latestDate) {
     	int totalSize = 0;
         if (Strings.isEmpty(latestDate)) {
-            System.out.println("Fatel Error, the latestDate is null! Return.");
+            logger.debug("Fatel Error, the latestDate is null! Return.");
             return 0;
         }
 
-        System.out.println("Get stock price for " + latestDate);
+        logger.debug("Get stock price for " + latestDate);
 
         List<SinaQuoteStockPriceVO> sqsList = sinaHelper2.fetchAllStockPriceFromWeb();
         for (SinaQuoteStockPriceVO sqvo : sqsList) {
@@ -72,10 +75,10 @@ public class DailyStockPriceDownloadAndStoreDBRunner2 {
             if (companyInfo == null) {
                 CompanyInfoVO cinvo = new CompanyInfoVO(sqvo.code, sqvo.name);
                 companyInfoTable.insert(cinvo);
-                System.out.println("New company on board " + sqvo.code + " " + sqvo.name);
+                logger.debug("New company on board " + sqvo.code + " " + sqvo.name);
             } else if (Strings.isNotEmpty(companyInfo.name) && !companyInfo.name.equals(sqvo.name)) {
                 //update the company name
-                System.out.println("Company change name from " + companyInfo.name + " to " + sqvo.name);
+                logger.debug("Company change name from " + companyInfo.name + " to " + sqvo.name);
                 companyInfo.name = sqvo.name;
                 companyInfoTable.updateName(companyInfo);
             }
@@ -106,7 +109,7 @@ public class DailyStockPriceDownloadAndStoreDBRunner2 {
             // delete if today old data is exist
             this.stockPriceTable.delete(spvo.stockId, spvo.date);
             List<StockPriceVO> nDaySpList = this.stockPriceTable.getNdateStockPriceById(spvo.stockId, 1);
-            // System.out.println("saving into DB, vo=" + vo);
+            // logger.debug("saving into DB, vo=" + vo);
             this.stockPriceTable.insert(spvo);
             // also insert the qian fuquan stockprice
             this.qianFuQuanStockPriceTable.delete(spvo.stockId, spvo.date);
@@ -119,7 +122,7 @@ public class DailyStockPriceDownloadAndStoreDBRunner2 {
                     double rate = prevo.close / spvo.lastClose;
                     if (rate <= 0.95 || rate >= 1.05) {
                         // chu quan event
-                        System.out.println("Chu Quan happens for " + spvo.stockId + ", rate=" + rate);
+                        logger.debug("Chu Quan happens for " + spvo.stockId + ", rate=" + rate);
                         this.historyQianFuQuanRunner.countAndSave(spvo.stockId);
                     }
                 }
@@ -135,7 +138,7 @@ public class DailyStockPriceDownloadAndStoreDBRunner2 {
     public void run() {
     	String latestDate = downloadMainBoardIndicator();
         int totalSize = downloadDataAndSaveIntoDB(latestDate);
-        System.out.println("\ntotalSize=" + totalSize);
+        logger.debug("\ntotalSize=" + totalSize);
     }
 
     public void mainWork(String[] args) {

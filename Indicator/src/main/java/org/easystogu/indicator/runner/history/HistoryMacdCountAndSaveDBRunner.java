@@ -10,8 +10,10 @@ import org.easystogu.db.vo.table.MacdVO;
 import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.indicator.MACDHelper;
+import org.easystogu.log.LogHelper;
 import org.easystogu.postgresql.access.table.IndMacdDBTableHelper;
 import org.easystogu.utils.Strings;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -19,6 +21,7 @@ import org.springframework.stereotype.Component;
 //计算数据库中所有macd值，包括最新和历史的，一次性运行
 @Component("macdRunner")
 public class HistoryMacdCountAndSaveDBRunner {
+	private static Logger logger = LogHelper.getLogger(HistoryMacdCountAndSaveDBRunner.class);
 	@Autowired
 	@Qualifier("macdTable")
 	protected IndicatorDBHelperIF macdTable;
@@ -48,7 +51,7 @@ public class HistoryMacdCountAndSaveDBRunner {
 	public void deleteMacd(List<String> stockIds) {
 		int index = 0;
 		for (String stockId : stockIds) {
-			System.out.println("Delete MACD for " + stockId + " " + (++index) + " of " + stockIds.size());
+			logger.debug("Delete MACD for " + stockId + " " + (++index) + " of " + stockIds.size());
 			this.deleteMacd(stockId);
 		}
 	}
@@ -77,9 +80,9 @@ public class HistoryMacdCountAndSaveDBRunner {
 				double dif = macd[0][index];
 				double dea = macd[1][index];
 				double macdRtn = macd[2][index];
-				// System.out.println("DIF=" + dif);
-				// System.out.println("DEA=" + dea);
-				// System.out.println("MACD=" + macdRtn);
+				// logger.debug("DIF=" + dif);
+				// logger.debug("DEA=" + dea);
+				// logger.debug("MACD=" + macdRtn);
 
 				MacdVO macdVo = new MacdVO();
 				macdVo.setStockId(stockId);
@@ -99,7 +102,7 @@ public class HistoryMacdCountAndSaveDBRunner {
 	}
 
 	public void countAndSaved(List<String> stockIds) {
-	  System.out.println("MACD countAndSaved start");
+	  logger.debug("MACD countAndSaved start");
 	  validate();
 	  
 	  stockIds.parallelStream().forEach(stockId -> {
@@ -109,11 +112,11 @@ public class HistoryMacdCountAndSaveDBRunner {
 //		int index = 0;
 //		for (String stockId : stockIds) {
 //			if (index++ % 100 == 0)
-//				System.out.println("MACD countAndSaved: " + stockId + " " + (index) + "/" + stockIds.size());
+//				logger.debug("MACD countAndSaved: " + stockId + " " + (index) + "/" + stockIds.size());
 //			this.countAndSaved(stockId);
 //		}
 	  
-	  System.out.println("MACD countAndSaved stop");
+	  logger.debug("MACD countAndSaved stop");
 	}
 
 	public void mainWork(String[] args) {

@@ -3,8 +3,6 @@ package org.easystogu.indicator.runner.history;
 import java.util.List;
 
 import org.easystogu.cassandra.access.table.IndKDJCassTableHelper;
-import org.easystogu.config.Constants;
-import org.easystogu.db.access.facde.DBAccessFacdeFactory;
 import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.helper.IF.IndicatorDBHelperIF;
@@ -13,8 +11,10 @@ import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.indicator.KDJHelper;
 import org.easystogu.indicator.runner.utils.StockPriceFetcher;
+import org.easystogu.log.LogHelper;
 import org.easystogu.postgresql.access.table.IndKDJDBTableHelper;
 import org.easystogu.utils.Strings;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -23,6 +23,7 @@ import com.google.common.primitives.Doubles;
 
 @Component("kdjRunner")
 public class HistoryKDJCountAndSaveDBRunner {
+	private static Logger logger = LogHelper.getLogger(HistoryKDJCountAndSaveDBRunner.class);
 	@Autowired
 	@Qualifier("kdjTable")
 	protected IndicatorDBHelperIF kdjTable;
@@ -52,7 +53,7 @@ public class HistoryKDJCountAndSaveDBRunner {
 	public void deleteKDJ(List<String> stockIds) {
 		int index = 0;
 		for (String stockId : stockIds) {
-			System.out.println("Delete KDJ for " + stockId + " " + (++index) + " of " + stockIds.size());
+			logger.debug("Delete KDJ for " + stockId + " " + (++index) + " of " + stockIds.size());
 			this.deleteKDJ(stockId);
 		}
 	}
@@ -63,7 +64,7 @@ public class HistoryKDJCountAndSaveDBRunner {
 		List<StockPriceVO> priceList = stockPriceTable.getStockPriceById(stockId);
 
 		if (priceList.size() <= 9) {
-			System.out.println("StockPrice data is less than 9, skip " + stockId);
+			logger.debug("StockPrice data is less than 9, skip " + stockId);
 			return;
 		}
 
@@ -95,7 +96,7 @@ public class HistoryKDJCountAndSaveDBRunner {
 	}
 
 	public void countAndSaved(List<String> stockIds) {
-		System.out.println("KDJ countAndSaved start");
+		logger.debug("KDJ countAndSaved start");
 		validate();
 
 		stockIds.parallelStream().forEach(stockId -> {
@@ -105,12 +106,12 @@ public class HistoryKDJCountAndSaveDBRunner {
 		// int index = 0;
 		// for (String stockId : stockIds) {
 		// if (index++ % 100 == 0)
-		// System.out.println("JDK countAndSaved: " + stockId + " " + (index) + "/" +
+		// logger.debug("JDK countAndSaved: " + stockId + " " + (index) + "/" +
 		// stockIds.size());
 		// this.countAndSaved(stockId);
 		// }
 
-		System.out.println("JDK countAndSaved stop");
+		logger.debug("JDK countAndSaved stop");
 	}
 
 	// TODO Auto-generated method stub

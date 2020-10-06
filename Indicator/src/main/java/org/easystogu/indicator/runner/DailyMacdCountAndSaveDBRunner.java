@@ -3,8 +3,6 @@ package org.easystogu.indicator.runner;
 import java.util.List;
 
 import org.easystogu.cassandra.access.table.IndMacdCassTableHelper;
-import org.easystogu.config.Constants;
-import org.easystogu.db.access.facde.DBAccessFacdeFactory;
 import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.helper.IF.IndicatorDBHelperIF;
@@ -12,8 +10,10 @@ import org.easystogu.db.vo.table.MacdVO;
 import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.indicator.MACDHelper;
+import org.easystogu.log.LogHelper;
 import org.easystogu.postgresql.access.table.IndMacdDBTableHelper;
 import org.easystogu.utils.Strings;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -21,6 +21,7 @@ import org.springframework.stereotype.Component;
 //每日根据最新数据计算当天的macd值，每天运行一次
 @Component
 public class DailyMacdCountAndSaveDBRunner {
+	private static Logger logger = LogHelper.getLogger(DailyMacdCountAndSaveDBRunner.class);
 	@Autowired
 	@Qualifier("macdTable")
 	protected IndicatorDBHelperIF macdTable;
@@ -93,7 +94,7 @@ public class DailyMacdCountAndSaveDBRunner {
 		// int index = 0;
 		// for (String stockId : stockIds) {
 		// if (index++ % 500 == 0) {
-		// System.out.println("MACD countAndSaved: " + stockId + " " + (index) + "/" +
+		// logger.debug("MACD countAndSaved: " + stockId + " " + (index) + "/" +
 		// stockIds.size());
 		// }
 		// this.countAndSaved(stockId);

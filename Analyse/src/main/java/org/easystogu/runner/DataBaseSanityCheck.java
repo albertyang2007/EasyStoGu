@@ -26,14 +26,17 @@ import org.easystogu.indicator.runner.history.HistoryShenXianCountAndSaveDBRunne
 import org.easystogu.indicator.runner.history.HistoryWRCountAndSaveDBRunner;
 import org.easystogu.indicator.runner.history.HistoryWeeklyKDJCountAndSaveDBRunner;
 import org.easystogu.indicator.runner.history.HistoryWeeklyMacdCountAndSaveDBRunner;
+import org.easystogu.log.LogHelper;
 import org.easystogu.sina.runner.history.HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner;
 import org.easystogu.utils.Strings;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component
 public class DataBaseSanityCheck {
+	private static Logger logger = LogHelper.getLogger(DataBaseSanityCheck.class);
 	@Autowired
 	private CompanyInfoFileHelper stockConfig;
 	@Autowired
@@ -102,7 +105,7 @@ public class DataBaseSanityCheck {
 	protected DailySelectionRunner dailySelectionRunner;
 
 	public void sanityDailyCheck(List<String> stockIds) {
-		System.out.println("sanityDailyCheck start.");
+		logger.debug("sanityDailyCheck start.");
 		stockIds.parallelStream().forEach(stockId -> {
 			this.sanityDailyCheck(stockId);
 		});
@@ -110,11 +113,11 @@ public class DataBaseSanityCheck {
 		// int index = 0;
 		// for (String stockId : stockIds) {
 		// if (index++ % 100 == 0) {
-		// System.out.println("Processing " + index + "/" + stockIds.size());
+		// logger.debug("Processing " + index + "/" + stockIds.size());
 		// }
 		// this.sanityDailyCheck(stockId);
 		// }
-		System.out.println("sanityDailyCheck completed.");
+		logger.debug("sanityDailyCheck completed.");
 	}
 
 	public void sanityDailyCheck(String stockId) {
@@ -131,18 +134,18 @@ public class DataBaseSanityCheck {
 
 		for (StockPriceVO vo : spList) {
 			if (vo.close == 0 || vo.open == 0 || vo.high == 0 || vo.low == 0 || Strings.isEmpty(vo.date)) {
-				System.out.println("Sanity Delete StockPrice " + vo);
+				logger.debug("Sanity Delete StockPrice " + vo);
 				this.stockPriceTable.delete(vo.stockId, vo.date);
 			}
 		}
 
 		if (spList.size() != qianfuquan_spList.size()) {
-			System.out.println(stockId + " StockPrice Length is not equal to Qian FuQuan StockPrice");
+			logger.debug(stockId + " StockPrice Length is not equal to Qian FuQuan StockPrice");
 			this.historyQianFuQuanRunner.countAndSave(stockId);
 		}
 
 		if ((spList.size() != macdList.size())) {
-			System.out.println(stockId + " size of macd is not equal:" + spList.size() + "!=" + macdList.size());
+			logger.debug(stockId + " size of macd is not equal:" + spList.size() + "!=" + macdList.size());
 
 			// figureOutDifferenceDate(spList, macdList);
 
@@ -150,12 +153,12 @@ public class DataBaseSanityCheck {
 			macdRunner.countAndSaved(stockId);
 		}
 		if ((spList.size() != kdjList.size())) {
-			System.out.println(stockId + " size of kdj is not equal:" + spList.size() + "!=" + kdjList.size());
+			logger.debug(stockId + " size of kdj is not equal:" + spList.size() + "!=" + kdjList.size());
 			kdjTable.delete(stockId);
 			kdjRunner.countAndSaved(stockId);
 		}
 		if ((spList.size() != bollList.size())) {
-			System.out.println(stockId + " size of boll is not equal:" + spList.size() + "!=" + bollList.size());
+			logger.debug(stockId + " size of boll is not equal:" + spList.size() + "!=" + bollList.size());
 			bollTable.delete(stockId);
 			boolRunner.countAndSaved(stockId);
 		}
@@ -166,17 +169,17 @@ public class DataBaseSanityCheck {
 			shenxianRunner.countAndSaved(stockId);
 		}
 		if ((spList.size() != qsddList.size())) {
-			System.out.println(stockId + " size of QSDD is not equal:" + spList.size() + "!=" + qsddList.size());
+			logger.debug(stockId + " size of QSDD is not equal:" + spList.size() + "!=" + qsddList.size());
 			qsddTable.delete(stockId);
 			qsddRunner.countAndSaved(stockId);
 		}
 		if ((spList.size() != maList.size())) {
-			System.out.println(stockId + " size of MA is not equal:" + spList.size() + "!=" + maList.size());
+			logger.debug(stockId + " size of MA is not equal:" + spList.size() + "!=" + maList.size());
 			maTable.delete(stockId);
 			maRunner.countAndSaved(stockId);
 		}
 		if ((spList.size() != wrList.size())) {
-			System.out.println(stockId + " size of WR is not equal:" + spList.size() + "!=" + wrList.size());
+			logger.debug(stockId + " size of WR is not equal:" + spList.size() + "!=" + wrList.size());
 			wrTable.delete(stockId);
 			wrRunner.countAndSaved(stockId);
 		}
@@ -184,7 +187,7 @@ public class DataBaseSanityCheck {
 	}
 
 	public void sanityWeekCheck(List<String> stockIds) {
-		System.out.println("sanityWeekCheck completed.");
+		logger.debug("sanityWeekCheck completed.");
 
 		stockIds.parallelStream().forEach(stockId -> {
 			this.sanityWeekCheck(stockId);
@@ -193,11 +196,11 @@ public class DataBaseSanityCheck {
 		// int index = 0;
 		// for (String stockId : stockIds) {
 		// if (index++ % 100 == 0) {
-		// System.out.println("Processing week " + index + "/" + stockIds.size());
+		// logger.debug("Processing week " + index + "/" + stockIds.size());
 		// }
 		// this.sanityWeekCheck(stockId);
 		// }
-		System.out.println("sanityWeekCheck completed.");
+		logger.debug("sanityWeekCheck completed.");
 	}
 
 	public void sanityWeekCheck(String stockId) {
@@ -208,7 +211,7 @@ public class DataBaseSanityCheck {
 		boolean refresh = false;
 		for (StockPriceVO vo : spList) {
 			if (vo.close == 0 || vo.open == 0 || vo.high == 0 || vo.low == 0 || Strings.isEmpty(vo.date)) {
-				System.out.println("Sanity Delete WeekStockPrice " + vo);
+				logger.debug("Sanity Delete WeekStockPrice " + vo);
 				this.weekStockPriceTable.delete(vo.stockId, vo.date);
 				refresh = true;
 			}
@@ -218,7 +221,7 @@ public class DataBaseSanityCheck {
 			spList = weekStockPriceTable.getStockPriceById(stockId);
 
 		if ((spList.size() != macdList.size())) {
-			System.out.println(stockId + " size of week macd is not equal:" + spList.size() + "!=" + macdList.size());
+			logger.debug(stockId + " size of week macd is not equal:" + spList.size() + "!=" + macdList.size());
 
 			figureOutDifferenceDate(spList, macdList);
 
@@ -226,7 +229,7 @@ public class DataBaseSanityCheck {
 			weekMacdRunner.countAndSaved(stockId);
 		}
 		if ((spList.size() != kdjList.size())) {
-			System.out.println(stockId + " size of week kdj is not equal:" + spList.size() + "!=" + kdjList.size());
+			logger.debug(stockId + " size of week kdj is not equal:" + spList.size() + "!=" + kdjList.size());
 			weekKdjTable.delete(stockId);
 			weekKdjRunner.countAndSaved(stockId);
 		}
@@ -234,19 +237,19 @@ public class DataBaseSanityCheck {
 	}
 
 	public void sanityDailyStatisticsCheck(List<String> stockIds) {
-		System.out.println("sanityDailyStatisticsCheck start.");
+		logger.info("sanityDailyStatisticsCheck start.");
 		List<String> dates = stockPriceTable.getAllDealDate("999999");
 		for (String date : dates) {
 			// do not care the count date before 2000 year
 			if (date.compareTo("2000-01-01") >= 0) {
 				int rtn = checkPointDailyStatisticsTable.countByDate(date);
 				if (rtn == 0) {
-					System.out.println("Daily Statistics is all zero for date " + date + ", try to re-count it.");
+					logger.debug("Daily Statistics is all zero for date " + date + ", try to re-count it.");
 					dailySelectionRunner.runForDate(date, stockIds);
 				}
 			}
 		}
-		System.out.println("sanityDailyStatisticsCheck completed.");
+		logger.info("sanityDailyStatisticsCheck completed.");
 	}
 
 	public void figureOutDifferenceDate(List<StockPriceVO> spList, List<MacdVO> macdList) {
@@ -256,24 +259,26 @@ public class DataBaseSanityCheck {
 			StockPriceVO spvo = spList.get(index);
 			MacdVO macdvo = macdList.get(index);
 			if (!spvo.date.equals(macdvo.date)) {
-				System.out.println("spList date != macdList @" + spvo.date);
+				logger.debug("spList date != macdList @" + spvo.date);
 			}
 		}
 		if (index == spList.size()) {
-			System.out.println("spList has, but macdList do not have @" + macdList.get(index).date);
+			logger.debug("spList has, but macdList do not have @" + macdList.get(index).date);
 		}
 
 		if (index == macdList.size()) {
-			System.out.println("macdList has, but spList do not have @" + spList.get(index).date);
+			logger.debug("macdList has, but spList do not have @" + spList.get(index).date);
 		}
 	}
 
 	public void run() {
 		// TODO Auto-generated method stub
+		logger.info("start DataBaseSanityCheck");
+		long st = System.currentTimeMillis();
 		this.sanityDailyCheck(stockConfig.getAllStockId());
 		this.sanityWeekCheck(stockConfig.getAllStockId());
 		this.sanityDailyStatisticsCheck(stockConfig.getAllStockId());
-
+		logger.info("stop DataBaseSanityCheck using " + (System.currentTimeMillis() - st) / 1000 + " seconds");
 		// this.sanityDailyCheck("002797");
 		// this.sanityWeekCheck("002797");
 	}

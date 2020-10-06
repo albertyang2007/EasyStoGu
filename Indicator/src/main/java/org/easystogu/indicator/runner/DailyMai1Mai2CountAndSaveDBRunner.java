@@ -8,13 +8,16 @@ import org.easystogu.db.vo.table.Mai1Mai2VO;
 import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.indicator.Mai1Mai2Helper;
+import org.easystogu.log.LogHelper;
 import org.easystogu.utils.Strings;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component
 public class DailyMai1Mai2CountAndSaveDBRunner {
+	private static Logger logger = LogHelper.getLogger(DailyMai1Mai2CountAndSaveDBRunner.class);
 	@Autowired
 	@Qualifier("qianFuQuanStockPriceTable")
     protected QianFuQuanStockPriceTableHelper qianFuQuanStockPriceTable;
@@ -36,7 +39,7 @@ public class DailyMai1Mai2CountAndSaveDBRunner {
     public void deleteMai1Mai2(List<String> stockIds) {
         int index = 0;
         for (String stockId : stockIds) {
-            System.out.println("Delete Mai1Mai2 for " + stockId + " " + (++index) + "/" + stockIds.size());
+            logger.debug("Delete Mai1Mai2 for " + stockId + " " + (++index) + "/" + stockIds.size());
             this.deleteMai1Mai2(stockId);
         }
     }
@@ -45,7 +48,7 @@ public class DailyMai1Mai2CountAndSaveDBRunner {
         List<StockPriceVO> priceList = qianFuQuanStockPriceTable.getStockPriceById(stockId);
 
         if (priceList.size() <= 20) {
-            // System.out.println("StockPrice data is less than 20, skip " +
+            // logger.debug("StockPrice data is less than 20, skip " +
             // stockId);
             return;
         }
@@ -75,7 +78,7 @@ public class DailyMai1Mai2CountAndSaveDBRunner {
         int index = 0;
         for (String stockId : stockIds) {
             if (index++ % 500 == 0) {
-                System.out.println("Mai1Mai2 countAndSaved: " + stockId + " " + (index) + "/" + stockIds.size());
+                logger.debug("Mai1Mai2 countAndSaved: " + stockId + " " + (index) + "/" + stockIds.size());
             }
             this.countAndSaved(stockId);
         }

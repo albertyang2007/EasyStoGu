@@ -9,7 +9,9 @@ import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.indicator.MAHelper;
 import org.easystogu.indicator.runner.utils.StockPriceFetcher;
+import org.easystogu.log.LogHelper;
 import org.easystogu.utils.Strings;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -18,6 +20,7 @@ import com.google.common.primitives.Doubles;
 
 @Component
 public class HistoryMACountAndSaveDBRunner {
+	private static Logger logger = LogHelper.getLogger(HistoryMACountAndSaveDBRunner.class);
 	@Autowired
 	@Qualifier("qianFuQuanStockPriceTable")
 	protected StockPriceTableHelper stockPriceTable;
@@ -35,7 +38,7 @@ public class HistoryMACountAndSaveDBRunner {
 	public void deleteMA(List<String> stockIds) {
 		int index = 0;
 		for (String stockId : stockIds) {
-			System.out.println("Delete MA for " + stockId + " " + (++index) + " of " + stockIds.size());
+			logger.debug("Delete MA for " + stockId + " " + (++index) + " of " + stockIds.size());
 			this.deleteMA(stockId);
 		}
 	}
@@ -91,7 +94,7 @@ public class HistoryMACountAndSaveDBRunner {
 		int index = 0;
 		for (String stockId : stockIds) {
 			if (index++ % 100 == 0)
-				System.out.println("MA countAndSaved: " + stockId + " " + (index) + " of " + stockIds.size());
+				logger.debug("MA countAndSaved: " + stockId + " " + (index) + " of " + stockIds.size());
 			this.countAndSaved(stockId);
 		}
 	}

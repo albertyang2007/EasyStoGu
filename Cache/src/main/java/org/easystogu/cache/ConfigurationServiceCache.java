@@ -20,7 +20,7 @@ import com.google.common.util.concurrent.ListenableFutureTask;
 
 @Component
 public class ConfigurationServiceCache {
-	private Logger logger = LogHelper.getLogger(ConfigurationServiceCache.class);
+	private static Logger logger = LogHelper.getLogger(ConfigurationServiceCache.class);
 	@Autowired
     private DBConfigurationService configServiceTable;
 	private LoadingCache<String, Object> cache;
@@ -145,9 +145,5 @@ public class ConfigurationServiceCache {
 			return (Double) obj;
 		}
 		return defaultValue;
-	}
-
-	public static void main(String[] args) {
-		System.out.println(Boolean.parseBoolean("True"));
 	}
 }

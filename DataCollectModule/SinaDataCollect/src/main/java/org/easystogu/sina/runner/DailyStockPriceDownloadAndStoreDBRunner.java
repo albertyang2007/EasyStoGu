@@ -7,8 +7,10 @@ import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
+import org.easystogu.log.LogHelper;
 import org.easystogu.sina.common.RealTimePriceVO;
 import org.easystogu.sina.helper.DailyStockPriceDownloadHelper;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -17,8 +19,7 @@ import org.springframework.stereotype.Component;
 //it need sotckIds as parameter
 @Component
 public class DailyStockPriceDownloadAndStoreDBRunner {
-    // private static Logger logger =
-    // LogHelper.getLogger(DailyStockPriceDownloadAndStoreDBRunner.class);
+	private static Logger logger = LogHelper.getLogger(DailyStockPriceDownloadAndStoreDBRunner.class);
 	@Autowired
     private CompanyInfoFileHelper stockConfig;
 	@Autowired
@@ -37,11 +38,11 @@ public class DailyStockPriceDownloadAndStoreDBRunner {
         int batchSize = 200;
         int batchs = allStockIds.size() / batchSize;
         int totalSize = allStockIds.size();
-        System.out.println("Process daily price, totalSize= " + totalSize);
+        logger.debug("Process daily price, totalSize= " + totalSize);
         // 分批取数据
         int index = 0;
         for (; index < batchs; index++) {
-            System.out.println("Process daily price " + index + "/" + batchs);
+            logger.debug("Process daily price " + index + "/" + batchs);
             List<RealTimePriceVO> list = sinaHelper.fetchDataFromWeb(allStockIds.subList(index * batchSize, (index + 1)
                     * batchSize));
             for (RealTimePriceVO vo : list) {
@@ -49,7 +50,7 @@ public class DailyStockPriceDownloadAndStoreDBRunner {
             }
         }
         // 去剩余数据
-        System.out.println("Process daily price " + index + "/" + batchs);
+        logger.debug("Process daily price " + index + "/" + batchs);
         List<RealTimePriceVO> list = sinaHelper.fetchDataFromWeb(allStockIds.subList(index * batchSize,
                 allStockIds.size()));
         for (RealTimePriceVO vo : list) {
@@ -60,7 +61,7 @@ public class DailyStockPriceDownloadAndStoreDBRunner {
     public void saveIntoDB(StockPriceVO vo) {
         try {
             if (vo.isValidated()) {
-                // System.out.println("saving into DB, vo=" + vo);
+                // logger.debug("saving into DB, vo=" + vo);
                 stockPriceTable.delete(vo.stockId, vo.date);
                 qianFuQuanStockPriceTable.delete(vo.stockId, vo.date);
                 //houFuQuanStockPriceTable.delete(vo.stockId, vo.date);
@@ -73,11 +74,11 @@ public class DailyStockPriceDownloadAndStoreDBRunner {
                 qianFuQuanStockPriceTable.insert(vo);
                 //houFuQuanStockPriceTable.insert(vo);
             } else {
-                System.out.println("vo invalidate: " + vo);
+                logger.debug("vo invalidate: " + vo);
             }
         } catch (Exception e) {
             // TODO Auto-generated catch block
-            System.out.println("Can't save to DB, vo=" + vo + ", error=" + e.getMessage());
+            logger.debug("Can't save to DB, vo=" + vo + ", error=" + e.getMessage());
             e.printStackTrace();
         }
     }

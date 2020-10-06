@@ -7,7 +7,9 @@ import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.table.WeekStockPriceTableHelper;
 import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
+import org.easystogu.log.LogHelper;
 import org.easystogu.utils.WeekdayUtil;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Component;
 //每日stockprice入库之后计算本周的stockprice，入库
 @Component
 public class DailyWeeklyStockPriceCountAndSaveDBRunner {
+	private static Logger logger = LogHelper.getLogger(DailyWeeklyStockPriceCountAndSaveDBRunner.class);
 	@Autowired
 	@Qualifier("qianFuQuanStockPriceTable")
     private QianFuQuanStockPriceTableHelper qianFuQuanStockPriceTable;
@@ -38,7 +41,7 @@ public class DailyWeeklyStockPriceCountAndSaveDBRunner {
 //		int index = 0;
 //		for (String stockId : stockIds) {
 //			if (index++ % 500 == 0) {
-//				System.out.println("Process weekly price " + (index) + "/" + stockIds.size());
+//				logger.debug("Process weekly price " + (index) + "/" + stockIds.size());
 //			}
 //			this.countAndSaved(stockId);
 //		}
@@ -78,7 +81,7 @@ public class DailyWeeklyStockPriceCountAndSaveDBRunner {
 						}
 					}
 				}
-				// System.out.println(mergeVO);
+				// logger.debug(mergeVO);
 				weekStockPriceTable.insert(mergeVO);
 			}
 		}

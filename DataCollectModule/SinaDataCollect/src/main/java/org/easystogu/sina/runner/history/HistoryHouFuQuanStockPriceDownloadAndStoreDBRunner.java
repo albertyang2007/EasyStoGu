@@ -12,8 +12,10 @@ import org.easystogu.db.access.table.CompanyInfoTableHelper;
 import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
+import org.easystogu.log.LogHelper;
 import org.easystogu.utils.Strings;
 import org.easystogu.utils.WeekdayUtil;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
@@ -24,6 +26,7 @@ import org.springframework.web.client.RestTemplate;
 //get hou fuquan history stock price from sina
 @Component
 public class HistoryHouFuQuanStockPriceDownloadAndStoreDBRunner {
+	private static Logger logger = LogHelper.getLogger(HistoryHouFuQuanStockPriceDownloadAndStoreDBRunner.class);
 	private static String baseUrl = "http://vip.stock.finance.sina.com.cn/api/json_v2.php/BasicStockSrv.getStockFuQuanData?symbol=stockId&type=hfq";
 	@Autowired
 	private FileConfigurationService configure;
@@ -51,7 +54,7 @@ public class HistoryHouFuQuanStockPriceDownloadAndStoreDBRunner {
 		try {
 
 			String url = baseUrl.replaceFirst("stockId", stockId);
-			System.out.println("Fetch Sina FuQuan Data for " + stockId);
+			logger.debug("Fetch Sina FuQuan Data for " + stockId);
 
 			SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
 			requestFactory.setConnectTimeout(10000);
@@ -65,34 +68,34 @@ public class HistoryHouFuQuanStockPriceDownloadAndStoreDBRunner {
 
 			RestTemplate restTemplate = new RestTemplate(requestFactory);
 
-			// System.out.println("url=" + urlStr.toString());
+			// logger.debug("url=" + urlStr.toString());
 			String contents = restTemplate.getForObject(url.toString(), String.class);
 
 			if (Strings.isEmpty(contents)) {
-				System.out.println("Contents is empty");
+				logger.debug("Contents is empty");
 				return spList;
 			}
 
 			// convert json to vo list
 			// remove the outside ()
 			contents = contents.substring(1, contents.length() - 1);
-			// System.out.println(contents);
+			// logger.debug(contents);
 			// extract only data value
 			contents = contents.split("data:")[1];
 			// remove outside {}
 			contents = contents.substring(1, contents.length() - 2);
-			// System.out.println(contents);
+			// logger.debug(contents);
 			// one item is : _2016_04_25:"80.3423"
 			String[] items = contents.split(",");
 
 			for (int i = 0; i < items.length; i++) {
-				// System.out.println(items[i]);
+				// logger.debug(items[i]);
 				String[] tmp = items[i].split(":");
 				StockPriceVO spvo = new StockPriceVO();
 				spvo.stockId = stockId;
 				spvo.date = tmp[0].substring(1, tmp[0].length()).replaceAll("_", "-");
 				spvo.close = this.parseDouble(tmp[1].replaceAll("\"", ""));
-				// System.out.println(spvo);
+				// logger.debug(spvo);
 				spList.add(spvo);
 			}
 
@@ -112,19 +115,19 @@ public class HistoryHouFuQuanStockPriceDownloadAndStoreDBRunner {
 	public void countAndSave(List<String> stockIds) {
 		int index = 0;
 		for (String stockId : stockIds) {
-			System.out.println("Process hou fuquan price for " + stockId + ", " + (++index) + " of " + stockIds.size());
+			logger.debug("Process hou fuquan price for " + stockId + ", " + (++index) + " of " + stockIds.size());
 			this.countAndSave(stockId);
 		}
 	}
 
 	public void countAndSave(String stockId) {
 		// first delete all price for this stockId
-		System.out.println("Delete hou fuquan stock price for " + stockId);
+		logger.debug("Delete hou fuquan stock price for " + stockId);
 		this.houfuquanStockPriceTable.delete(stockId);
 		// fetch all history price from sohu api
 		// FuQuan data is in date order desc
 		List<StockPriceVO> fqspList = this.fetchFuQuanStockPriceFromWeb(stockId);
-		System.out.println("Save to database size=" + fqspList.size());
+		logger.debug("Save to database size=" + fqspList.size());
 		// save to db
 		for (StockPriceVO fqspvo : fqspList) {
 			StockPriceVO spvo = this.stockPriceTable.getStockPriceByIdAndDate(stockId, fqspvo.date);
@@ -138,7 +141,7 @@ public class HistoryHouFuQuanStockPriceDownloadAndStoreDBRunner {
 				houfuquanStockPriceTable.insert(fqspvo);
 			} else {
 				// sohu data is not so correct, shift!!!
-				// System.out.println("Missging StockPrice for " + stockId +
+				// logger.debug("Missging StockPrice for " + stockId +
 				// " at " + fqspvo.date);
 			}
 		}
@@ -167,7 +170,7 @@ public class HistoryHouFuQuanStockPriceDownloadAndStoreDBRunner {
 		for (String stockId : stockIds) {
 			if (this.houfuquanStockPriceTable.countTuplesByIDAndBetweenDate(stockId, "1997-01-01",
 					WeekdayUtil.currentDate()) <= 0) {
-				System.out.println("Re run for " + stockId);
+				logger.debug("Re run for " + stockId);
 				this.countAndSave(stockId);
 			}
 		}

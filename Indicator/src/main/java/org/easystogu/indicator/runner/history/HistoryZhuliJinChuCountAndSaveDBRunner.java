@@ -8,13 +8,16 @@ import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.db.vo.table.ZhuliJinChuVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.indicator.ZhuliJinChuHelper;
+import org.easystogu.log.LogHelper;
 import org.easystogu.utils.Strings;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component
 public class HistoryZhuliJinChuCountAndSaveDBRunner {
+	private static Logger logger = LogHelper.getLogger(HistoryZhuliJinChuCountAndSaveDBRunner.class);
 	@Autowired
 	@Qualifier("qianFuQuanStockPriceTable")
 	protected StockPriceTableHelper stockPriceTable;
@@ -32,7 +35,7 @@ public class HistoryZhuliJinChuCountAndSaveDBRunner {
 	public void deleteZhuliJinChu(List<String> stockIds) {
 		int index = 0;
 		for (String stockId : stockIds) {
-			System.out.println("Delete ZhuliJinChu for " + stockId + " " + (++index) + " of " + stockIds.size());
+			logger.debug("Delete ZhuliJinChu for " + stockId + " " + (++index) + " of " + stockIds.size());
 			this.deleteZhuliJinChu(stockId);
 		}
 	}
@@ -43,7 +46,7 @@ public class HistoryZhuliJinChuCountAndSaveDBRunner {
 		List<StockPriceVO> priceList = stockPriceTable.getStockPriceById(stockId);
 
 		if (priceList.size() <= 34) {
-			System.out.println("StockPrice data is less than 34, skip " + stockId);
+			logger.debug("StockPrice data is less than 34, skip " + stockId);
 			return;
 		}
 
@@ -80,7 +83,7 @@ public class HistoryZhuliJinChuCountAndSaveDBRunner {
 		int index = 0;
 		for (String stockId : stockIds) {
 			if (index++ % 100 == 0)
-				System.out.println("ZhuliJinChu countAndSaved: " + stockId + " " + (index) + " of " + stockIds.size());
+				logger.debug("ZhuliJinChu countAndSaved: " + stockId + " " + (index) + " of " + stockIds.size());
 			this.countAndSaved(stockId);
 		}
 	}

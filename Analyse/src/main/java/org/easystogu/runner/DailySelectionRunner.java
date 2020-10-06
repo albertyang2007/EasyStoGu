@@ -22,8 +22,10 @@ import org.easystogu.db.vo.table.CheckPointDailyStatisticsVO;
 import org.easystogu.db.vo.table.ScheduleActionVO;
 import org.easystogu.db.vo.table.StockSuperVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
+import org.easystogu.log.LogHelper;
 import org.easystogu.utils.Strings;
 import org.easystogu.utils.WeekdayUtil;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -31,6 +33,7 @@ import org.springframework.stereotype.Component;
 // daily select stock that checkpoint is satisfied
 @Component
 public class DailySelectionRunner {
+	private static Logger logger = LogHelper.getLogger(DailySelectionRunner.class);
 	@Autowired
 	private DBConfigurationService config;
 	@Autowired
@@ -62,7 +65,7 @@ public class DailySelectionRunner {
 			List<StockSuperVO> overWeekList = weekStockOverAllHelper.getAllStockSuperVO(stockId);
 
 			if (addToScheduleActionTable && overDayList.size() == 0) {
-				System.out.println("No stockprice data for " + stockId + ", add to Schedule Action.");
+				logger.debug("No stockprice data for " + stockId + ", add to Schedule Action.");
 				// next action should be fetch all the data from web, it must be
 				// a new board id
 				ScheduleActionVO vo = new ScheduleActionVO();
@@ -75,7 +78,7 @@ public class DailySelectionRunner {
 			}
 
 			if (addToScheduleActionTable && overWeekList.size() == 0) {
-				System.out.println("No stockprice data for " + stockId + ", add to Schedule Action.");
+				logger.debug("No stockprice data for " + stockId + ", add to Schedule Action.");
 				// next action should be fetch all the data from web, it must be
 				// a new board id
 				ScheduleActionVO vo = new ScheduleActionVO();
@@ -110,21 +113,21 @@ public class DailySelectionRunner {
 			StockSuperVO weekSuperVO = overWeekList.get(overWeekList.size() - 1);
 
 			if (checkDayPriceEqualWeekPrice && !superVO.priceVO.date.equals(weekSuperVO.priceVO.date)) {
-				System.out.println(stockId + " DayPrice VO date (" + superVO.priceVO.date
+				logger.debug(stockId + " DayPrice VO date (" + superVO.priceVO.date
 						+ ") is not equal WeekPrice VO date (" + weekSuperVO.priceVO.date + ")");
 				return;
 			}
 
 			// exclude ting pai
 			if (!superVO.priceVO.date.equals(latestDate)) {
-				System.out.println(stockId + " priveVO date (" + superVO.priceVO.date + " ) is not equal latestDate ("
+				logger.debug(stockId + " priveVO date (" + superVO.priceVO.date + " ) is not equal latestDate ("
 						+ latestDate + ")");
 				return;
 			}
 
 			// check all combine check point
 			for (DailyCombineCheckPoint checkPoint : DailyCombineCheckPoint.values()) {
-				// System.out.println("checkpoint=" + checkPoint);
+				// logger.debug("checkpoint=" + checkPoint);
 				if (this.isSelectedCheckPoint(checkPoint)) {
 					if (combineAnalyserHelper.isConditionSatisfy(checkPoint, overDayList, overWeekList)) {
 						this.saveToCheckPointSelectionDB(superVO, checkPoint);
@@ -181,7 +184,7 @@ public class DailySelectionRunner {
 				}
 			}
 		} catch (Exception e) {
-			System.out.println("Exception for " + stockId);
+			logger.debug("Exception for " + stockId);
 			e.printStackTrace();
 		}
 	}
@@ -232,7 +235,7 @@ public class DailySelectionRunner {
 		String[] generalCheckPoints = config.getString("general_CheckPoint", "").split(";");
 		for (String cp : generalCheckPoints) {
 			if (cp.equals(checkPoint.toString())) {
-				// System.out.println(checkPoint + " is meet");
+				// logger.debug(checkPoint + " is meet");
 				return true;
 			}
 		}
@@ -241,7 +244,7 @@ public class DailySelectionRunner {
 
 	private void addGeneralCheckPointStatisticsResultToDB(String latestDate,
 			Map<DailyCombineCheckPoint, List<String>> generalCheckPointGordonMap) {
-		System.out.println("==================General CheckPoint Statistics=====================");
+		logger.debug("==================General CheckPoint Statistics=====================");
 		Set<DailyCombineCheckPoint> keys = generalCheckPointGordonMap.keySet();
 		Iterator<DailyCombineCheckPoint> keysIt = keys.iterator();
 		while (keysIt.hasNext()) {
@@ -267,7 +270,7 @@ public class DailySelectionRunner {
 			if (lastVO != null) {
 				diff = Integer.toString(cpdsvo.count - lastVO.count);
 			}
-			System.out.println(cpdsvo.checkPoint + " = " + cpdsvo.count + " (Diff: " + diff + ")");
+			logger.debug(cpdsvo.checkPoint + " = " + cpdsvo.count + " (Diff: " + diff + ")");
 		}
 	}
 
@@ -286,7 +289,7 @@ public class DailySelectionRunner {
 
 	public void runForStockIds(List<String> stockIds, String latestDate, boolean addToScheduleActionTable,
 			boolean checkDayPriceEqualWeekPrice) {
-		System.out.println("DailySelection runForStockIds start for date " + latestDate);
+		logger.debug("DailySelection runForStockIds start for date " + latestDate);
 
 		Map<DailyCombineCheckPoint, List<String>> generalCheckPointGordonMap = new java.util.concurrent.ConcurrentHashMap<DailyCombineCheckPoint, List<String>>();
 
@@ -300,14 +303,14 @@ public class DailySelectionRunner {
 		// // if (!stockId.equals("300300"))
 		// // continue;
 		// if (index++ % 500 == 0) {
-		// System.out.println("Analyse of " + index + "/" + stockIds.size());
+		// logger.debug("Analyse of " + index + "/" + stockIds.size());
 		// }
 		// doAnalyse(stockId);
 		// }
 
 		addGeneralCheckPointStatisticsResultToDB(latestDate, generalCheckPointGordonMap);
 
-		System.out.println("DailySelection runForStockIds stop for date " + latestDate);
+		logger.debug("DailySelection runForStockIds stop for date " + latestDate);
 	}
 
 	public void run() {

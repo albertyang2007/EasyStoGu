@@ -8,13 +8,16 @@ import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.db.vo.table.XueShi2VO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.indicator.TALIBWraper;
+import org.easystogu.log.LogHelper;
 import org.easystogu.utils.Strings;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component
 public class DailyXueShi2CountAndSaveDBRunner{
+	private static Logger logger = LogHelper.getLogger(DailyXueShi2CountAndSaveDBRunner.class);
 	@Autowired
     protected IndXueShi2TableHelper xueShi2Table;
 	@Autowired
@@ -36,7 +39,7 @@ public class DailyXueShi2CountAndSaveDBRunner{
         int length = priceList.size();
 
         if (length < 60) {
-            // System.out.println(stockId
+            // logger.debug(stockId
             // +
             // " price data is not enough to count XueShi2, please wait until it has at least 60 days. Skip");
             return;
@@ -65,8 +68,8 @@ public class DailyXueShi2CountAndSaveDBRunner{
 
         double up = xueShi2Upper[length - 1];
         double dn = xueShi2Low[length - 1];
-        // System.out.println("UP=" + up);
-        // System.out.println("DN=" + dn);
+        // logger.debug("UP=" + up);
+        // logger.debug("DN=" + dn);
 
         XueShi2VO xueShi2VO = new XueShi2VO();
         xueShi2VO.setStockId(stockId);
@@ -82,7 +85,7 @@ public class DailyXueShi2CountAndSaveDBRunner{
         int index = 0;
         for (String stockId : stockIds) {
             if (index++ % 500 == 0) {
-                System.out.println("Boll countAndSaved: " + stockId + " " + (index) + "/" + stockIds.size());
+                logger.debug("Boll countAndSaved: " + stockId + " " + (index) + "/" + stockIds.size());
             }
             this.countAndSaved(stockId);
         }

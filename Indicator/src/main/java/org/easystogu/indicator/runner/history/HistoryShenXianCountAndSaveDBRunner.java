@@ -2,8 +2,6 @@ package org.easystogu.indicator.runner.history;
 
 import java.util.List;
 
-import org.easystogu.config.Constants;
-import org.easystogu.db.access.facde.DBAccessFacdeFactory;
 import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.helper.IF.IndicatorDBHelperIF;
 import org.easystogu.db.vo.table.ShenXianVO;
@@ -11,7 +9,9 @@ import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.indicator.ShenXianHelper;
 import org.easystogu.indicator.runner.utils.StockPriceFetcher;
+import org.easystogu.log.LogHelper;
 import org.easystogu.utils.Strings;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -20,6 +20,7 @@ import com.google.common.primitives.Doubles;
 
 @Component
 public class HistoryShenXianCountAndSaveDBRunner {
+	private static Logger logger = LogHelper.getLogger(HistoryShenXianCountAndSaveDBRunner.class);
 	@Autowired
 	@Qualifier("shenXianTable")
 	protected IndicatorDBHelperIF shenXianTable;
@@ -38,7 +39,7 @@ public class HistoryShenXianCountAndSaveDBRunner {
 	public void deleteShenXian(List<String> stockIds) {
 		int index = 0;
 		for (String stockId : stockIds) {
-			System.out.println("Delete ShenXian for " + stockId + " " + (++index) + " of " + stockIds.size());
+			logger.debug("Delete ShenXian for " + stockId + " " + (++index) + " of " + stockIds.size());
 			this.deleteShenXian(stockId);
 		}
 	}
@@ -76,7 +77,7 @@ public class HistoryShenXianCountAndSaveDBRunner {
 	}
 
 	public void countAndSaved(List<String> stockIds) {
-      System.out.println("Shenxian countAndSaved start");
+      logger.debug("Shenxian countAndSaved start");
       stockIds.parallelStream().forEach(stockId -> {
         this.countAndSaved(stockId);
       });
@@ -84,11 +85,11 @@ public class HistoryShenXianCountAndSaveDBRunner {
 //      int index = 0;
 //      for (String stockId : stockIds) {
 //          if (index++ % 100 == 0)
-//              System.out.println("Shenxian countAndSaved: " + stockId + " " + (index) + "/" + stockIds.size());
+//              logger.debug("Shenxian countAndSaved: " + stockId + " " + (index) + "/" + stockIds.size());
 //          this.countAndSaved(stockId);
 //      }
       
-      System.out.println("Shenxian countAndSaved stop");
+      logger.debug("Shenxian countAndSaved stop");
     }
 
 	// TODO Auto-generated method stub

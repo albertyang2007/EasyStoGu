@@ -9,8 +9,10 @@ import java.util.List;
 import org.easystogu.config.Constants;
 import org.easystogu.config.FileConfigurationService;
 import org.easystogu.db.access.table.CompanyInfoTableHelper;
+import org.easystogu.log.LogHelper;
 import org.easystogu.sina.common.SinaQuoteStockPriceVO;
 import org.easystogu.utils.Strings;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
@@ -24,6 +26,7 @@ import net.sf.json.JSONObject;
 //it will get all the stockId from the web, including the new on board stockId
 @Component
 public class DailyStockPriceDownloadHelper2 {
+	private static Logger logger = LogHelper.getLogger(DailyStockPriceDownloadHelper2.class);
 	@Autowired
 	private CompanyInfoTableHelper companyInfoTable;
 	@Autowired
@@ -40,7 +43,7 @@ public class DailyStockPriceDownloadHelper2 {
 		for (int pageNumber = 1; pageNumber <= totalNumberPage; pageNumber++) {
 			list.addAll(this.fetchAPageDataFromWeb(pageNumber));
 		}
-		System.out.println("Total fetch size=" + list.size());
+		logger.debug("Total fetch size=" + list.size());
 		return list;
 	}
 
@@ -63,11 +66,11 @@ public class DailyStockPriceDownloadHelper2 {
 
 			RestTemplate restTemplate = new RestTemplate(requestFactory);
 
-			// System.out.println("url=" + urlStr.toString());
+			// logger.debug("url=" + urlStr.toString());
 			String contents = restTemplate.getForObject(url.toString(), String.class);
 
 			if (Strings.isEmpty(contents)) {
-				System.out.println("Contents is empty");
+				logger.debug("Contents is empty");
 				return list;
 			}
 
@@ -85,21 +88,13 @@ public class DailyStockPriceDownloadHelper2 {
 				}
 			}
 
-			System.out.println(", result size= " + jsonArray.size());
+			logger.debug(", result size= " + jsonArray.size());
 
 		} catch (JSONException e) {
-			System.out.println("JSONException at fetchAPageDataFromWeb : " + e.getMessage());
+			logger.debug("JSONException at fetchAPageDataFromWeb : " + e.getMessage());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return list;
-	}
-
-	public static void main(String[] args) {
-		DailyStockPriceDownloadHelper2 ins = new DailyStockPriceDownloadHelper2();
-		List<SinaQuoteStockPriceVO> list = ins.fetchAllStockPriceFromWeb();
-		SinaQuoteStockPriceVO vo = list.get(list.size() - 1);
-		System.out.println(list.size());
-		System.out.println(vo);
 	}
 }

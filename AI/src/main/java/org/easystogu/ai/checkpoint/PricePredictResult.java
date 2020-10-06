@@ -54,14 +54,4 @@ public enum PricePredictResult {
     
     return -1;
   }
-  
-  public static void main(String[] args) {
-    System.out.println(PricePredictResult.countCsvHeaderIndex(-0.15, true));
-    System.out.println(PricePredictResult.countCsvHeaderIndex(0.0, true));
-    System.out.println(PricePredictResult.countCsvHeaderIndex(0.15, true));
-    
-    System.out.println(PricePredictResult.countCsvHeaderIndex(-0.15, false));
-    System.out.println(PricePredictResult.countCsvHeaderIndex(0.0, false));
-    System.out.println(PricePredictResult.countCsvHeaderIndex(0.15, false));
-  }
 }

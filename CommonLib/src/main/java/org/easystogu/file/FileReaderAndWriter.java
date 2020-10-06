@@ -7,7 +7,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import org.easystogu.log.LogHelper;
+import org.slf4j.Logger;
+
 public class FileReaderAndWriter {
+	private static Logger logger = LogHelper.getLogger(FileReaderAndWriter.class);
+
 	public static String readFromFile(String filePath) {
 		StringBuffer content = new StringBuffer();
 		try {
@@ -22,7 +27,7 @@ public class FileReaderAndWriter {
 				}
 				read.close();
 			} else {
-				System.out.println("file not found:" + filePath);
+				logger.debug("file not found:" + filePath);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -51,14 +56,8 @@ public class FileReaderAndWriter {
 		//
 		StringBuffer rtns = new StringBuffer();
 		for (int index = contents.length - tailLen; index < contents.length; index++) {
-			rtns.append(contents[index]+"\n");
+			rtns.append(contents[index] + "\n");
 		}
 		return rtns.toString();
-	}
-
-	public static void main(String argv[]) {
-		String filePath = "C:/temp/Service-Information.html";
-		String content = tailFile(filePath, 20);
-		System.out.println(content);
 	}
 }

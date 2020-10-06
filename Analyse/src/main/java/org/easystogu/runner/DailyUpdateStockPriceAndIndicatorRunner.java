@@ -4,13 +4,16 @@ import java.util.List;
 
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.indicator.runner.AllDailyIndCountAndSaveDBRunner;
+import org.easystogu.log.LogHelper;
 import org.easystogu.sina.runner.DailyStockPriceDownloadAndStoreDBRunner2;
 import org.easystogu.sina.runner.DailyWeeklyStockPriceCountAndSaveDBRunner;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class DailyUpdateStockPriceAndIndicatorRunner {
+	private static Logger logger = LogHelper.getLogger(DailyUpdateStockPriceAndIndicatorRunner.class);
 	@Autowired
 	private CompanyInfoFileHelper stockConfig;
 	@Autowired
@@ -21,6 +24,7 @@ public class DailyUpdateStockPriceAndIndicatorRunner {
 	private DailyWeeklyStockPriceCountAndSaveDBRunner dailyWeeklyStockPriceCountAndSaveDBRunner;
 
 	public void run() {
+		logger.info("start DailyUpdateStockPriceAndIndicatorRunner");
 		String[] args = null;
 		long st = System.currentTimeMillis();
 		List<String> allStockIds = stockConfig.getAllStockId();
@@ -33,6 +37,6 @@ public class DailyUpdateStockPriceAndIndicatorRunner {
 		// week ind
 		allDailyIndCountAndSaveDBRunner.runDailyWeekIndForStockIds(allStockIds);
 
-		System.out.println("stop using " + (System.currentTimeMillis() - st) / 1000 + " seconds");
+		logger.info("stop DailyUpdateStockPriceAndIndicatorRunner using " + (System.currentTimeMillis() - st) / 1000 + " seconds");
 	}
 }

@@ -4,12 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.easystogu.db.vo.table.StockPriceVO;
+import org.easystogu.log.LogHelper;
 import org.easystogu.utils.WeekdayUtil;
+import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
 
 //merge days price vo into week price vo
 @Component
 public class MergeNDaysPriceUtil {
+	private static Logger logger = LogHelper.getLogger(MergeNDaysPriceUtil.class);
 	public List<StockPriceVO> generateAllWeekPriceVO(String stockId, List<StockPriceVO> spList) {
 		List<StockPriceVO> spWeekList = new ArrayList<StockPriceVO>();
 		for (int year = 2000; year <= WeekdayUtil.currentYear(); year++) {
@@ -63,7 +66,7 @@ public class MergeNDaysPriceUtil {
 
 		int startIndex = spDayList.size() % nDays;
 
-		// System.out.println("sub startDay=" + spDayList.get(0).date + ",
+		// logger.debug("sub startDay=" + spDayList.get(0).date + ",
 		// size=" + spDayList.size() + ", startIndex="
 		// + startIndex);
 

@@ -6,17 +6,20 @@ import org.easystogu.analyse.util.DigitInOrderHelper;
 import org.easystogu.analyse.util.StockPriceUtils;
 import org.easystogu.checkpoint.DailyCombineCheckPoint;
 import org.easystogu.db.vo.table.StockSuperVO;
+import org.easystogu.log.LogHelper;
 import org.easystogu.utils.CrossType;
+import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
 
 @Component
 public class CombineAnalyseHelper {
+	private static Logger logger = LogHelper.getLogger(CombineAnalyseHelper.class);
 	// overList is order by date, it is daily price and ind
 	public boolean isConditionSatisfy(DailyCombineCheckPoint checkPoint, List<StockSuperVO> overDayList,
 			List<StockSuperVO> overWeekList) {
 
 		if ((overWeekList == null) || (overWeekList.size() < 1)) {
-			// System.out.println("CombineAnalyseHelper overWeekList size is
+			// logger.debug("CombineAnalyseHelper overWeekList size is
 			// 0");
 			return false;
 		}
@@ -1170,9 +1173,9 @@ public class CombineAnalyseHelper {
 		case YiMengBS_KDJ_Gordon_SuoLiang_HuiTiao: {
 			if (curSuperDayVO.kdjCorssType == CrossType.GORDON || curSuperDayVO.kdjCorssType == CrossType.NEAR_GORDON
 					|| curSuperDayVO.rsvCorssType == CrossType.GORDON) {
-				// System.out.println(" here 2");
+				// logger.debug(" here 2");
 				if (curSuperDayVO.yiMengBSCrossType == CrossType.GORDON) {
-					// System.out.println(" here 3");
+					// logger.debug(" here 3");
 					// suoLiang HuiTiao
 					if (StockPriceUtils.isKLineGreen(pre2SuperDayVO.priceVO)
 							&& StockPriceUtils.isKLineGreen(pre1SuperDayVO.priceVO)
@@ -1180,7 +1183,7 @@ public class CombineAnalyseHelper {
 							&& pre1SuperDayVO.priceVO.volume > curSuperDayVO.priceVO.volume
 							&& pre1SuperDayVO.priceVO.volume <= pre1SuperDayVO.avgVol5
 							&& curSuperDayVO.priceVO.volume <= curSuperDayVO.avgVol5) {
-						// System.out.println(" here 4");
+						// logger.debug(" here 4");
 						return true;
 					}
 				}
@@ -1624,7 +1627,7 @@ public class CombineAnalyseHelper {
 					if (preLowestPriceVO1 != null && preLowestPriceVO2 != null) {
 						if (preLowestPriceVO1.priceVO.low > preLowestPriceVO2.priceVO.low
 								&& preLowestPriceVO1.macdVO.dif < preLowestPriceVO2.macdVO.dif) {
-							// System.out.println(pNdaysVO.macdVO + " " +
+							// logger.debug(pNdaysVO.macdVO + " " +
 							// curSuperDayVO.macdVO);
 							return true;
 						}
@@ -1719,7 +1722,7 @@ public class CombineAnalyseHelper {
 											if (pre8SuperDayVO.priceVO.close > pre12SuperDayVO.priceVO.close) {
 												// 1 st day is up
 												if (pre8SuperDayVO.priceVO.close > pre9SuperDayVO.priceVO.close) {
-													// System.out.println(pre8SuperDayVO.priceVO.date);
+													// logger.debug(pre8SuperDayVO.priceVO.date);
 													return true;
 												}
 											}
@@ -1765,7 +1768,7 @@ public class CombineAnalyseHelper {
 											if (pre8SuperDayVO.priceVO.close < pre12SuperDayVO.priceVO.close) {
 												// 1 st day is down
 												if (pre8SuperDayVO.priceVO.close < pre9SuperDayVO.priceVO.close) {
-													// System.out.println(pre8SuperDayVO.priceVO.date);
+													// logger.debug(pre8SuperDayVO.priceVO.date);
 													return true;
 												}
 											}
@@ -1930,18 +1933,18 @@ public class CombineAnalyseHelper {
 
 		String Sdate = startVO.priceVO.date;
 		String Edate = endVO.priceVO.date;
-		// System.out.println("debug 1 " + Sdate + " ~ " + Edate + " " +
+		// logger.debug("debug 1 " + Sdate + " ~ " + Edate + " " +
 		// startVO.kdjVO);
 
 		if (startVO.kdjVO.j < 73)
 			return false;
 
-		// System.out.println("debug 2 " + Sdate + " ~ " + Edate);
+		// logger.debug("debug 2 " + Sdate + " ~ " + Edate);
 
 		if (startVO.macdVO.macd < 0)
 			return false;
 
-		// System.out.println("debug 3 " + Sdate + " ~ " + Edate);
+		// logger.debug("debug 3 " + Sdate + " ~ " + Edate);
 
 		double startPriceIncrease = ((startVO.priceVO.close - startVO.priceVO.lastClose) * 100.0)
 				/ startVO.priceVO.lastClose;
@@ -1952,7 +1955,7 @@ public class CombineAnalyseHelper {
 		double minKDJ_K = 100;
 
 		if (startPriceIncrease < 12) {
-			// System.out.println("debug 4 " + Sdate + " ~ " + Edate);
+			// logger.debug("debug 4 " + Sdate + " ~ " + Edate);
 			return false;
 		}
 
@@ -1963,26 +1966,26 @@ public class CombineAnalyseHelper {
 			// if next week find one priceIncrease is bigger then startVO,
 			// then not the platform
 			if (priceIncrease > startPriceIncrease) {
-				// System.out.println("debug 4 " + Sdate + " ~ " + Edate);
+				// logger.debug("debug 4 " + Sdate + " ~ " + Edate);
 				return false;
 			}
 
 			// if next week find one high is greater since platform
 			// startVO.hight, then not the platform
 			if (vo.priceVO.high > startVO.priceVO.high * 1.05) {
-				// System.out.println("debug 5 " + Sdate + " ~ " + Edate);
+				// logger.debug("debug 5 " + Sdate + " ~ " + Edate);
 				return false;
 			}
 
 			// if next week find one low is less than the platform
 			// startVO.open or less then ma20
 			if (vo.priceVO.low < startVO.priceVO.low * 0.975) {
-				// System.out.println("debug 6 " + Sdate + " ~ " + Edate);
+				// logger.debug("debug 6 " + Sdate + " ~ " + Edate);
 				return false;
 			}
 
 			if (vo.kdjCorssType == CrossType.DEAD) {
-				// System.out.println("debug 7 " + Sdate + " ~ " + Edate);
+				// logger.debug("debug 7 " + Sdate + " ~ " + Edate);
 				findKDJDead = true;
 			}
 
@@ -1996,13 +1999,13 @@ public class CombineAnalyseHelper {
 
 		// if no found KDJ dead, not the long platform
 		if (!findKDJDead) {
-			// System.out.println("debug 8 " + Sdate + " ~ " + Edate);
+			// logger.debug("debug 8 " + Sdate + " ~ " + Edate);
 			return false;
 		}
 
 		// max KDJ_K and min KDJ_K must between 15%
 		if ((maxKDJ_K - minKDJ_K) / minKDJ_K * 100 >= 25) {
-			// System.out.println("debug 9 " + Sdate + " ~ " + Edate);
+			// logger.debug("debug 9 " + Sdate + " ~ " + Edate);
 			return false;
 		}
 
@@ -2010,11 +2013,11 @@ public class CombineAnalyseHelper {
 		// next avg close is greater than the middle platform startVO.open +
 		// close / 2
 		if (avgClose < ((startVO.priceVO.open + startVO.priceVO.close) / 2.05)) {
-			// System.out.println("debug 10 " + Sdate + " ~ " + Edate);
+			// logger.debug("debug 10 " + Sdate + " ~ " + Edate);
 			return false;
 		}
-		// System.out.println("debug 11 " + Sdate + " ~ " + Edate);
-		// System.out.println("findLongPlatformBasedOnWeekDateOrig from " +
+		// logger.debug("debug 11 " + Sdate + " ~ " + Edate);
+		// logger.debug("findLongPlatformBasedOnWeekDateOrig from " +
 		// startVO.priceVO.date + " to "
 		// + endVO.priceVO.date);
 		return true;
@@ -2037,18 +2040,18 @@ public class CombineAnalyseHelper {
 		String Edate = endVO.priceVO.date;
 		int redKLineCount = 0;
 
-		// System.out.println("debug 1 " + Sdate + " ~ " + Edate + " " +
+		// logger.debug("debug 1 " + Sdate + " ~ " + Edate + " " +
 		// startVO.kdjVO);
 
 		if (startVO.kdjVO.j < 73)
 			return false;
 
-		// System.out.println("debug 2 " + Sdate + " ~ " + Edate);
+		// logger.debug("debug 2 " + Sdate + " ~ " + Edate);
 
 		if (startVO.macdVO.macd < 0)
 			return false;
 
-		// System.out.println("debug 3 " + Sdate + " ~ " + Edate);
+		// logger.debug("debug 3 " + Sdate + " ~ " + Edate);
 
 		double startPriceIncrease = ((startVO.priceVO.close - startVO.priceVO.lastClose) * 100.0)
 				/ startVO.priceVO.lastClose;
@@ -2059,7 +2062,7 @@ public class CombineAnalyseHelper {
 		double minKDJ_K = 100;
 
 		if (startPriceIncrease < 12) {
-			// System.out.println("debug 41 " + Sdate + " ~ " + Edate);
+			// logger.debug("debug 41 " + Sdate + " ~ " + Edate);
 			return false;
 		}
 
@@ -2072,14 +2075,14 @@ public class CombineAnalyseHelper {
 			// if next week find one priceIncrease is bigger then startVO,
 			// then not the platform
 			if (priceIncrease > startPriceIncrease) {
-				// System.out.println("debug 42 " + Sdate + " ~ " + Edate);
+				// logger.debug("debug 42 " + Sdate + " ~ " + Edate);
 				return false;
 			}
 
 			// if next week find one high is greater since platform
 			// startVO.hight, then not the platform
 			if (vo.priceVO.high > startVO.priceVO.high * 1.05) {
-				// System.out.println("debug 5 " + Sdate + " ~ " + Edate +
+				// logger.debug("debug 5 " + Sdate + " ~ " + Edate +
 				// " High Price=" + vo.priceVO.high
 				// + ", start High Price=" + startVO.priceVO.high);
 				return false;// reasonable???????
@@ -2088,12 +2091,12 @@ public class CombineAnalyseHelper {
 			// if next week find one low is less than the platform
 			// startVO.open or less then ma20
 			if (vo.priceVO.low < startVO.priceVO.low * 0.975) {
-				// System.out.println("debug 6 " + Sdate + " ~ " + Edate);
+				// logger.debug("debug 6 " + Sdate + " ~ " + Edate);
 				return false;
 			}
 
 			if (vo.kdjCorssType == CrossType.DEAD) {
-				// System.out.println("debug 7 " + Sdate + " ~ " + Edate);
+				// logger.debug("debug 7 " + Sdate + " ~ " + Edate);
 				findKDJDead = true;
 			}
 
@@ -2111,13 +2114,13 @@ public class CombineAnalyseHelper {
 
 		// if no found KDJ dead, not the long platform
 		if (!findKDJDead) {
-			// System.out.println("debug 8 " + Sdate + " ~ " + Edate);
+			// logger.debug("debug 8 " + Sdate + " ~ " + Edate);
 			return false;
 		}
 
 		// max KDJ_K and min KDJ_K must between 15%
 		if ((maxKDJ_K - minKDJ_K) / minKDJ_K * 100 >= 25) {
-			// System.out.println("debug 9 " + Sdate + " ~ " + Edate);
+			// logger.debug("debug 9 " + Sdate + " ~ " + Edate);
 			// return false;
 		}
 
@@ -2125,17 +2128,17 @@ public class CombineAnalyseHelper {
 		// next avg close is greater than the middle platform startVO.open +
 		// close / 2.05
 		if (avgClose < ((startVO.priceVO.open + startVO.priceVO.close) / 2.05)) {
-			// System.out.println("debug 10 " + avgClose + " " + Sdate + " ~ " +
+			// logger.debug("debug 10 " + avgClose + " " + Sdate + " ~ " +
 			// Edate);
 			return false;
 		}
 
 		if (redKLineCount < (endIndex - startIndex) / 2) {
-			// System.out.println("debug 11 " + Sdate + " ~ " + Edate);
+			// logger.debug("debug 11 " + Sdate + " ~ " + Edate);
 			// return false;
 		}
-		// System.out.println("debug OK " + Sdate + " ~ " + Edate);
-		// System.out.println("findLongPlatformBasedOnWeekDate from " +
+		// logger.debug("debug OK " + Sdate + " ~ " + Edate);
+		// logger.debug("findLongPlatformBasedOnWeekDate from " +
 		// overDayList.get(startIndex).priceVO.date + " to "
 		// + overDayList.get(endIndex).priceVO.date);
 		return true;

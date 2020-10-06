@@ -12,7 +12,9 @@ import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.vo.table.CheckPointDailyStatisticsVO;
 import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.file.CSVFileHelper;
+import org.easystogu.log.LogHelper;
 import org.easystogu.utils.StringComparator;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -21,6 +23,7 @@ import org.springframework.stereotype.Component;
 //related python sctips is: EasyStock_Predict_High.py and EasyStock_Predict_Low.py
 @Component
 public class StockPriceHighLowFinder {
+	private static Logger logger = LogHelper.getLogger(StockPriceHighLowFinder.class);
 	@Autowired
 	@Qualifier("qianFuQuanStockPriceTable")
 	private StockPriceTableHelper qianFuQuanStockPriceTable;
@@ -57,7 +60,6 @@ public class StockPriceHighLowFinder {
 				indexs[index + lowIndex + 1] = -1;
 			}
 		} catch (Exception e) {
-			System.out.println();
 			e.printStackTrace();
 		}
 		return indexs;
@@ -162,7 +164,7 @@ public class StockPriceHighLowFinder {
 					// must update it
 					count.set(cpIndex, vo.getCount() + "");
 				} else {
-					System.out.println("Fatel Error, map does not contains date:" + vo.getDate());
+					logger.error("Fatel Error, map does not contains date:" + vo.getDate());
 				}
 			}
 		}

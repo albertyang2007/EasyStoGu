@@ -10,9 +10,11 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
 import org.easystogu.file.TextFileSourceHelper;
+import org.easystogu.log.LogHelper;
 import org.easystogu.trendmode.vo.SimplePriceVO;
 import org.easystogu.trendmode.vo.TrendModeVO;
 import org.easystogu.utils.Strings;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
@@ -21,6 +23,7 @@ import net.sf.json.JSONObject;
 
 @Component
 public class TrendModeLoader {
+	private static Logger logger = LogHelper.getLogger(TrendModeLoader.class);
 	@Autowired
 	private TextFileSourceHelper fileSource;
 	private Map<String, TrendModeVO> trendModeMap = new HashMap<String, TrendModeVO>();
@@ -33,7 +36,7 @@ public class TrendModeLoader {
 	public void startUp() {
 		try {
 			List<Resource> resources = fileSource.listResourceFile("classpath:/TrendMode/*.json");
-			System.out.println("Initialization loadTrendModeFromResource, len=" + resources.size());
+			logger.debug("Initialization loadTrendModeFromResource, len=" + resources.size());
 			for (Resource resource : resources) {
 				String name = resource.getFilename();
 				String content = fileSource.loadContent(resource);
@@ -58,7 +61,7 @@ public class TrendModeLoader {
 	public TrendModeVO loadTrendMode(String name) {
 		TrendModeVO tmo = this.trendModeMap.get(name);
 		if (tmo == null) {
-			System.out.println("loadTrendMode is null for " + name);
+			logger.debug("loadTrendMode is null for " + name);
 		}
 		return tmo;
 	}

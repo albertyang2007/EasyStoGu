@@ -7,13 +7,16 @@ import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
+import org.easystogu.log.LogHelper;
 import org.easystogu.utils.Strings;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component
 public class HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner {
+	private static Logger logger = LogHelper.getLogger(HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner.class);
 	@Autowired
 	@Qualifier("qianFuQuanStockPriceTable")
 	private QianFuQuanStockPriceTableHelper qianfuquanStockPriceTable;
@@ -45,7 +48,7 @@ public class HistoryQianFuQuanStockPriceDownloadAndStoreDBRunner {
 			if (vo.lastClose != 0 && prevo.close != 0 && vo.lastClose != prevo.close) {
 				chuquan_index = index - 1;
 				rate = prevo.close / vo.lastClose;
-				// System.out.println("chuquan index= " + chuquan_index + " at "
+				// logger.debug("chuquan index= " + chuquan_index + " at "
 				// + prevo.date + " rate=" + rate);
 			}
 			// add the chuQuan VO

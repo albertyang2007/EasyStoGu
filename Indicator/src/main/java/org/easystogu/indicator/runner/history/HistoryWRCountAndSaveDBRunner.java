@@ -2,8 +2,6 @@ package org.easystogu.indicator.runner.history;
 
 import java.util.List;
 
-import org.easystogu.config.Constants;
-import org.easystogu.db.access.facde.DBAccessFacdeFactory;
 import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.helper.IF.IndicatorDBHelperIF;
 import org.easystogu.db.vo.table.StockPriceVO;
@@ -11,7 +9,9 @@ import org.easystogu.db.vo.table.WRVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.indicator.WRHelper;
 import org.easystogu.indicator.runner.utils.StockPriceFetcher;
+import org.easystogu.log.LogHelper;
 import org.easystogu.utils.Strings;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -20,6 +20,7 @@ import com.google.common.primitives.Doubles;
 
 @Component
 public class HistoryWRCountAndSaveDBRunner {
+	private static Logger logger = LogHelper.getLogger(HistoryWRCountAndSaveDBRunner.class);
 	@Autowired
 	@Qualifier("wrTable")
 	protected IndicatorDBHelperIF wrTable;
@@ -38,7 +39,7 @@ public class HistoryWRCountAndSaveDBRunner {
 	public void deleteWR(List<String> stockIds) {
 		int index = 0;
 		for (String stockId : stockIds) {
-			System.out.println("Delete WR for " + stockId + " " + (++index) + " of " + stockIds.size());
+			logger.debug("Delete WR for " + stockId + " " + (++index) + " of " + stockIds.size());
 			this.deleteWR(stockId);
 		}
 	}
@@ -79,7 +80,7 @@ public class HistoryWRCountAndSaveDBRunner {
 	}
 
 	public void countAndSaved(List<String> stockIds) {
-      System.out.println("WR countAndSaved start");
+      logger.debug("WR countAndSaved start");
       stockIds.parallelStream().forEach(stockId -> {
         this.countAndSaved(stockId);
       });
@@ -87,11 +88,11 @@ public class HistoryWRCountAndSaveDBRunner {
 //      int index = 0;
 //      for (String stockId : stockIds) {
 //          if (index++ % 100 == 0)
-//              System.out.println("WR countAndSaved: " + stockId + " " + (index) + "/" + stockIds.size());
+//              logger.debug("WR countAndSaved: " + stockId + " " + (index) + "/" + stockIds.size());
 //          this.countAndSaved(stockId);
 //      }
       
-      System.out.println("WR countAndSaved stop");
+      logger.debug("WR countAndSaved stop");
     }
 
 	// TODO Auto-generated method stub

@@ -5,8 +5,6 @@ import java.util.List;
 
 import org.easystogu.cassandra.access.table.IndKDJCassTableHelper;
 import org.easystogu.cassandra.access.table.IndMacdCassTableHelper;
-import org.easystogu.config.Constants;
-import org.easystogu.db.access.facde.DBAccessFacdeFactory;
 import org.easystogu.db.helper.IF.IndicatorDBHelperIF;
 import org.easystogu.db.vo.table.BollVO;
 import org.easystogu.db.vo.table.KDJVO;
@@ -16,14 +14,17 @@ import org.easystogu.db.vo.table.ShenXianVO;
 import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.db.vo.table.StockSuperVO;
 import org.easystogu.db.vo.table.WRVO;
+import org.easystogu.log.LogHelper;
 import org.easystogu.postgresql.access.table.IndKDJDBTableHelper;
 import org.easystogu.postgresql.access.table.IndMacdDBTableHelper;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component("stockSuperVOHelper")
 public class StockSuperVOHelper {
+	private static Logger logger = LogHelper.getLogger(StockSuperVOHelper.class);
 	@Autowired
 	@Qualifier("qianFuQuanStockPriceTable")
 	protected StockPriceTableHelper stockPriceTable;
@@ -84,13 +85,13 @@ public class StockSuperVOHelper {
 				|| (kdjList.size() != spList.size()) || (bollList.size() != spList.size())
 				|| (shenXianList.size() != spList.size()) || (qsddList.size() != spList.size())
 				|| (wrList.size() != spList.size())) {
-			// System.out.println("rtn 1");
+			// logger.debug("rtn 1");
 			return overList;
 		}
 
 		if ((spList.size() == 0) || (macdList.size() == 0) || (kdjList.size() == 0) || (bollList.size() == 0)
 				|| (shenXianList.size() == 0) || (qsddList.size() == 0) || (wrList.size() == 0)) {
-			// System.out.println("rtn 2");
+			// logger.debug("rtn 2");
 			return overList;
 		}
 
@@ -98,7 +99,7 @@ public class StockSuperVOHelper {
 				|| !spList.get(0).date.equals(bollList.get(0).date)
 				|| !spList.get(0).date.equals(shenXianList.get(0).date)
 				|| !spList.get(0).date.equals(qsddList.get(0).date) || !spList.get(0).date.equals(wrList.get(0).date)) {
-			// System.out.println("rtn 3");
+			// logger.debug("rtn 3");
 			return overList;
 		}
 

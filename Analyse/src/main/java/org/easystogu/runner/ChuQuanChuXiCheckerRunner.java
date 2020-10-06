@@ -8,6 +8,8 @@ import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.vo.table.ChuQuanChuXiVO;
 import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
+import org.easystogu.log.LogHelper;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -20,6 +22,7 @@ import org.springframework.stereotype.Component;
 //do not use this class now, do not use the table EventChuQuanChuXiTableHelper now
 @Component
 public class ChuQuanChuXiCheckerRunner {
+	private static Logger logger = LogHelper.getLogger(ChuQuanChuXiCheckerRunner.class);
 	@Autowired
 	@Qualifier("stockPriceTable")
 	protected StockPriceTableHelper stockPriceTable;
@@ -41,8 +44,8 @@ public class ChuQuanChuXiCheckerRunner {
 		for (int index = 0; index < list.size() - 1; index++) {
 			StockPriceVO spvo = list.get(index);
 			StockPriceVO yesterday_spvo = list.get(index + 1);
-			// System.out.println(cur);
-			// System.out.println(pre);
+			// logger.debug(cur);
+			// logger.debug(pre);
 
 			if ((spvo.close > 0 && yesterday_spvo.close > 0) && (spvo.close / yesterday_spvo.close <= 0.85)) {
 				// chuQuan happen!
@@ -52,14 +55,14 @@ public class ChuQuanChuXiCheckerRunner {
 				vo.setRate(spvo.lastClose / yesterday_spvo.close);
 				vo.setAlreadyUpdatePrice(false);
 
-				System.out.println("ChuQuan happen for " + vo);
+				logger.debug("ChuQuan happen for " + vo);
 				chuQuanChuXiTable.insert(vo);
 			}
 		}
 	}
 
 	public void historyCheckChuQuanEvent(List<String> stockIds) {
-		System.out.println("Run chuQuan for all stocks.");
+		logger.debug("Run chuQuan for all stocks.");
 		for (String stockId : stockIds) {
 			if (stockId.equals(stockConfig.getSZZSStockIdForDB()) || stockId.equals(stockConfig.getSZCZStockIdForDB())
 					|| stockId.equals(stockConfig.getCYBZStockIdForDB())) {
@@ -76,8 +79,8 @@ public class ChuQuanChuXiCheckerRunner {
 		if (list != null && list.size() == 2) {
 			StockPriceVO spvo = list.get(0);
 			StockPriceVO yesterday_spvo = list.get(1);
-			// System.out.println(cur);
-			// System.out.println(pre);
+			// logger.debug(cur);
+			// logger.debug(pre);
 			if ((spvo.close > 0 && yesterday_spvo.close > 0) && (spvo.close / yesterday_spvo.close <= 0.85)) {
 				// chuQuan happen!
 				ChuQuanChuXiVO vo = chuQuanChuXiTable.getChuQuanChuXiVO(stockId, spvo.date);
@@ -88,7 +91,7 @@ public class ChuQuanChuXiCheckerRunner {
 					vo.setRate(spvo.lastClose / yesterday_spvo.close);
 					vo.setAlreadyUpdatePrice(false);
 
-					// System.out.println("ChuQuan happen for " + vo);
+					// logger.debug("ChuQuan happen for " + vo);
 					chuQuanChuXiTable.insert(vo);
 				}
 			}
@@ -97,7 +100,7 @@ public class ChuQuanChuXiCheckerRunner {
 	}
 
 	public void dailyCheckChuQuanEvent(List<String> stockIds) {
-		System.out.println("Run chuQuan for all stocks.");
+		logger.debug("Run chuQuan for all stocks.");
 		for (String stockId : stockIds) {
 			if (stockId.equals(stockConfig.getSZZSStockIdForDB()) || stockId.equals(stockConfig.getSZCZStockIdForDB())
 					|| stockId.equals(stockConfig.getCYBZStockIdForDB())) {

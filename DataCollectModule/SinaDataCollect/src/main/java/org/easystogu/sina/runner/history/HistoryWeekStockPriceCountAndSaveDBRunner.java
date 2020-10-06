@@ -7,6 +7,8 @@ import org.easystogu.db.access.table.WeekStockPriceTableHelper;
 import org.easystogu.db.util.MergeNDaysPriceUtil;
 import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
+import org.easystogu.log.LogHelper;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Component;
 //手动将2009年之后的stockprice分成每周入库，weeksotckprice，一次性运行
 @Component
 public class HistoryWeekStockPriceCountAndSaveDBRunner {
+	private static Logger logger = LogHelper.getLogger(HistoryWeekStockPriceCountAndSaveDBRunner.class);
 	@Autowired
 	@Qualifier("qianFuQuanStockPriceTable")
     private QianFuQuanStockPriceTableHelper qianFuQuanStockPriceTable;
@@ -32,7 +35,7 @@ public class HistoryWeekStockPriceCountAndSaveDBRunner {
     public void deleteStockPrice(List<String> stockIds) {
         int index = 0;
         for (String stockId : stockIds) {
-            System.out.println("Delete stock price for " + stockId + " " + (++index) + " of " + stockIds.size());
+            logger.debug("Delete stock price for " + stockId + " " + (++index) + " of " + stockIds.size());
             this.deleteStockPrice(stockId);
         }
     }
@@ -43,7 +46,7 @@ public class HistoryWeekStockPriceCountAndSaveDBRunner {
         );
         //int index = 0;
         //for (String stockId : stockIds) {
-        //    System.out.println("Process weekly price for " + stockId + " " + (++index) + " of " + stockIds.size());
+        //    logger.debug("Process weekly price for " + stockId + " " + (++index) + " of " + stockIds.size());
         //    this.countAndSave(stockId);
         //}
     }

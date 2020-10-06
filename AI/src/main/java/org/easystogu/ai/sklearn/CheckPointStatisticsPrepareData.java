@@ -10,7 +10,9 @@ import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.vo.table.CheckPointDailyStatisticsVO;
 import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.file.CSVFileHelper;
+import org.easystogu.log.LogHelper;
 import org.easystogu.utils.Strings;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Component;
 // the python scripts is: EasyStock_Predict_High.py
 @Component
 public class CheckPointStatisticsPrepareData {
+	private static Logger logger = LogHelper.getLogger(CheckPointStatisticsPrepareData.class);
 	@Autowired
 	@Qualifier("stockPriceTable")
 	protected StockPriceTableHelper stockPriceTableHelper;
@@ -30,7 +33,7 @@ public class CheckPointStatisticsPrepareData {
 		List<StockPriceVO> spList = stockPriceTableHelper.queryByStockId(stockId);
 		int[] indexs = new int[spList.size()];
 		for (int index = dayRange; index < spList.size() - dayRange; index++) {
-			// System.out.println("search index: " + index + ", date:" +
+			// logger.info("search index: " + index + ", date:" +
 			// spList.get(index).date + ", vo:" + spList.get(index).toString());
 			List<StockPriceVO> subSpList1 = spList.subList(index - dayRange, index + 1);
 			List<StockPriceVO> subSpList2 = spList.subList(index, index + dayRange);
@@ -41,7 +44,7 @@ public class CheckPointStatisticsPrepareData {
 			// dayRange
 			if ((highIndex1 == subSpList1.size() - 1) && (highIndex2 == 0)) {
 				indexs[index] = 1;
-				// System.out.println("find one highest index: " + index + ", date:" +
+				// logger.info("find one highest index: " + index + ", date:" +
 				// spList.get(index).date);
 			}
 
@@ -51,7 +54,7 @@ public class CheckPointStatisticsPrepareData {
 			// if the index is highest same as current index, then this is the highest in
 			// dayRange
 			if ((lowIndex1 == subSpList1.size() - 1) && (lowIndex2 == 0)) {
-				// System.out.println("find one lowest index: " + index + ", date:" +
+				// logger.info("find one lowest index: " + index + ", date:" +
 				// spList.get(index).date);
 				indexs[index] = -1;
 			}
@@ -81,7 +84,7 @@ public class CheckPointStatisticsPrepareData {
 			int totalCompanyDeal = stockPriceTableHelper.countByDate(date);
 
 			if (count++ % 100 == 0) {
-				System.out.println("CheckPointStatisticsPrepareData Process count " + count + " of " + dates.size());
+				logger.debug("CheckPointStatisticsPrepareData Process count " + count + " of " + dates.size());
 			}
 
 			// count MACD Cross Statistics

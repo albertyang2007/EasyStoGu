@@ -2,15 +2,15 @@ package org.easystogu.indicator.runner;
 
 import java.util.List;
 
-import org.easystogu.config.Constants;
-import org.easystogu.db.access.facde.DBAccessFacdeFactory;
 import org.easystogu.db.access.table.QianFuQuanStockPriceTableHelper;
 import org.easystogu.db.helper.IF.IndicatorDBHelperIF;
 import org.easystogu.db.vo.table.BollVO;
 import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.indicator.BOLLHelper;
+import org.easystogu.log.LogHelper;
 import org.easystogu.utils.Strings;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -18,6 +18,7 @@ import org.springframework.stereotype.Component;
 //每日根据最新数据计算当天的boll值，每天运行一次
 @Component
 public class DailyBollCountAndSaveDBRunner{
+	private static Logger logger = LogHelper.getLogger(DailyBollCountAndSaveDBRunner.class);
 	@Autowired
 	@Qualifier("bollTable")
 	protected IndicatorDBHelperIF bollTable;
@@ -77,7 +78,7 @@ public class DailyBollCountAndSaveDBRunner{
 		// int index = 0;
 		// for (String stockId : stockIds) {
 		// if (index++ % 500 == 0) {
-		// System.out.println("Boll countAndSaved: " + stockId + " " + (index) + "/" +
+		// logger.debug("Boll countAndSaved: " + stockId + " " + (index) + "/" +
 		// stockIds.size());
 		// }
 		// this.countAndSaved(stockId);

@@ -10,8 +10,10 @@ import java.util.List;
 import org.easystogu.config.Constants;
 import org.easystogu.config.FileConfigurationService;
 import org.easystogu.file.access.CompanyInfoFileHelper;
+import org.easystogu.log.LogHelper;
 import org.easystogu.sina.common.RealTimePriceVO;
 import org.easystogu.utils.Strings;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
@@ -21,6 +23,7 @@ import org.springframework.web.client.RestTemplate;
 //it need sotckIds as parameter
 @Component
 public class DailyStockPriceDownloadHelper {
+	private static Logger logger = LogHelper.getLogger(DailyStockPriceDownloadHelper.class);
 	private static final String baseUrl = "http://hq.sinajs.cn/list=";
 	@Autowired
 	private FileConfigurationService configure;
@@ -55,11 +58,11 @@ public class DailyStockPriceDownloadHelper {
 
 			RestTemplate restTemplate = new RestTemplate(requestFactory);
 
-			// System.out.println("url=" + urlStr.toString());
+			// logger.debug("url=" + urlStr.toString());
 			String contents = restTemplate.getForObject(urlStr.toString(), String.class);
 
 			if (Strings.isEmpty(contents)) {
-				System.out.println("Contents is empty");
+				logger.debug("Contents is empty");
 				return list;
 			}
 
@@ -69,7 +72,7 @@ public class DailyStockPriceDownloadHelper {
 				if (items.length <= 1) {
 					continue;
 				}
-				// System.out.println(items[1]);
+				// logger.debug(items[1]);
 				String realStockId = stockConfig.getStockIdMapping(stockIds.get(index));
 				RealTimePriceVO vo = new RealTimePriceVO(realStockId, items[1]);
 				if (vo.isValidated()) {

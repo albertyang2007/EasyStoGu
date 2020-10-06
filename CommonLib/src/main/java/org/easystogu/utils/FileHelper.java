@@ -3,14 +3,17 @@ package org.easystogu.utils;
 import java.io.File;
 
 import org.apache.commons.io.FileUtils;
+import org.easystogu.log.LogHelper;
+import org.slf4j.Logger;
 
 public class FileHelper {
+	private static Logger logger = LogHelper.getLogger(FileHelper.class);
 	// full path file name
 	public static void RenameFile(String srcFile, String destFile) {
 		try {
 			File source = new File(srcFile);
 			File target = new File(destFile);
-			System.out.println("Rename file " + source + " to " + target);
+			logger.debug("Rename file " + source + " to " + target);
 			FileUtils.copyFile(source, target);
 			FileUtils.deleteQuietly(source);
 		} catch (Exception e) {

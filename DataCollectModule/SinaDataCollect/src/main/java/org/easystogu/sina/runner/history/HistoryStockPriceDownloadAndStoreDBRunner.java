@@ -14,9 +14,11 @@ import org.easystogu.db.access.table.CompanyInfoTableHelper;
 import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.vo.table.StockPriceVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
+import org.easystogu.log.LogHelper;
 import org.easystogu.sina.common.SohuQuoteStockPriceVOWrap;
 import org.easystogu.utils.Strings;
 import org.easystogu.utils.WeekdayUtil;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
@@ -30,6 +32,7 @@ import net.sf.json.JSONObject;
 //         https://q.stock.sohu.com/hisHq?code=cn_600036&start=20200610&end=20200616&order=D&period=d&rt=json
 @Component
 public class HistoryStockPriceDownloadAndStoreDBRunner {
+	private static Logger logger = LogHelper.getLogger(HistoryStockPriceDownloadAndStoreDBRunner.class);
 	// before 1997, there is no +-10%
 	private static String baseUrl = "https://q.stock.sohu.com/hisHq?code=cn_stockId&start=startDate&end=endDate&order=D&period=d&rt=json";
 	@Autowired
@@ -67,7 +70,7 @@ public class HistoryStockPriceDownloadAndStoreDBRunner {
 			url = url.replaceFirst("startDate", startDate.replaceAll("-", ""));
 			url = url.replaceFirst("endDate", endDate.replaceAll("-", ""));
 
-			System.out.println("Fetch Sohu History Data for " + stockId);
+			logger.debug("Fetch Sohu History Data for " + stockId);
 
 			SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
 			requestFactory.setConnectTimeout(10000);
@@ -81,11 +84,11 @@ public class HistoryStockPriceDownloadAndStoreDBRunner {
 
 			RestTemplate restTemplate = new RestTemplate(requestFactory);
 
-			// System.out.println("url=" + urlStr.toString());
+			// logger.debug("url=" + urlStr.toString());
 			String contents = restTemplate.getForObject(url.toString(), String.class).trim();
 
 			if (Strings.isEmpty(contents) || contents.trim().length() <= 2) {
-				System.out.println("Contents is empty");
+				logger.debug("Contents is empty");
 				return spList;
 			}
 
@@ -113,7 +116,7 @@ public class HistoryStockPriceDownloadAndStoreDBRunner {
 					spvo.lastClose = spvo.close - Double.parseDouble(values[3].trim());
 					spvo.volume = Long.parseLong(values[7].trim());
 
-					// System.out.println(spvo);
+					// logger.debug(spvo);
 					spList.add(spvo);
 				}
 			}
@@ -129,7 +132,7 @@ public class HistoryStockPriceDownloadAndStoreDBRunner {
 
 		// int index = 0;
 		// for (String stockId : stockIds) {
-		// System.out.println("Process daily price for " + stockId + ", " + (++index) +
+		// logger.debug("Process daily price for " + stockId + ", " + (++index) +
 		// " of " + stockIds.size());
 		// this.countAndSave(stockId);
 		// }
@@ -139,14 +142,14 @@ public class HistoryStockPriceDownloadAndStoreDBRunner {
 		// fetch all history price from sohu api
 		List<StockPriceVO> spList = this.fetchStockPriceFromWeb(stockId, startDate, endDate);
 		if (spList.size() == 0) {
-			System.out.println("Size for " + stockId + " is zero. Just return.");
+			logger.debug("Size for " + stockId + " is zero. Just return.");
 			return;
 		}
 		// first delete all price for this stockId
 		System.out
 				.println("Delete stock price for " + stockId + " that between " + startDate + "~" + endDate);
 		this.stockPriceTable.deleteBetweenDate(stockId, startDate, endDate);
-		System.out.println("Save to database size=" + spList.size());
+		logger.debug("Save to database size=" + spList.size());
 		// save to db
 		for (StockPriceVO spvo : spList) {
 			stockPriceTable.insert(spvo);
@@ -162,7 +165,7 @@ public class HistoryStockPriceDownloadAndStoreDBRunner {
 			endDate = args[1];
 		}
 
-		System.out.println("startDate=" + startDate + " and endDate=" + endDate);
+		logger.debug("startDate=" + startDate + " and endDate=" + endDate);
 
 		List<String> stockIds = this.companyInfoHelper.getAllStockId();
 		// for all stockIds
