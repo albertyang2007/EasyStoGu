@@ -3,6 +3,9 @@
    should change the zone to office
 3. add the company info from properties: 
    http://localhost:8080/portal/home/UpdateCompanyFromFileToDB
+   
+   and download today's stockprice:
+   http://localhost:8080/portal/home/DownloadStockPrice
 4. add the history stock price: 
    http://localhost:8080/portal/home/updateStockPriceHistoryOverAllRunner/2000-01-01_2020-06-24
 5. run the sanity checking (also include the indicator and daily statistics re-count from 2000-01-01)

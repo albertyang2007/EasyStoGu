@@ -4,6 +4,7 @@ public class Constants {
 	public static final String httpProxyServer = "http.proxy.server";
 	public static final String httpProxyPort = "http.proxy.port";
 
+	//jdbc config will be set from system environment for k8s deployment
 	public static final String JdbcDriver = "jdbc.driver";
 	public static final String JdbcUrl = "jdbc.url";
 	public static final String JdbcUser = "jdbc.user";

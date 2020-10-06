@@ -36,7 +36,7 @@ public abstract class CassandraIndDBHelper implements IndicatorDBHelperIF {
 	protected String DELETE_BY_STOCKID_SQL;
 	protected String DELETE_BY_STOCKID_AND_DATE_SQL;
 
-	private Map<String, PreparedStatement> prepareStmtMap = new ConcurrentHashMap<String, PreparedStatement>();
+	private static Map<String, PreparedStatement> prepareStmtMap = new ConcurrentHashMap<String, PreparedStatement>();
 
 	@PostConstruct
 	public void init() {
@@ -110,10 +110,10 @@ public abstract class CassandraIndDBHelper implements IndicatorDBHelperIF {
 	}
 
 	private PreparedStatement getPrepareStatement(String CQL) {
-		PreparedStatement stmt = this.prepareStmtMap.get(CQL);
+		PreparedStatement stmt = prepareStmtMap.get(CQL);
 		if (stmt == null) {
 			stmt = getCassandraSession().prepare(CQL);
-			this.prepareStmtMap.put(CQL, stmt);
+			prepareStmtMap.put(CQL, stmt);
 		}
 		return stmt;
 	}
