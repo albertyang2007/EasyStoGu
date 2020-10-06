@@ -272,13 +272,17 @@ public class DataBaseSanityCheck {
 
 	public void run() {
 		// TODO Auto-generated method stub
-		logger.info("start DataBaseSanityCheck");
-		long st = System.currentTimeMillis();
-		this.sanityDailyCheck(stockConfig.getAllStockId());
-		this.sanityWeekCheck(stockConfig.getAllStockId());
-		this.sanityDailyStatisticsCheck(stockConfig.getAllStockId());
-		logger.info("stop DataBaseSanityCheck using " + (System.currentTimeMillis() - st) / 1000 + " seconds");
-		// this.sanityDailyCheck("002797");
-		// this.sanityWeekCheck("002797");
+		try {
+			logger.info("start DataBaseSanityCheck");
+			long st = System.currentTimeMillis();
+			this.sanityDailyCheck(stockConfig.getAllStockId());
+			this.sanityWeekCheck(stockConfig.getAllStockId());
+			this.sanityDailyStatisticsCheck(stockConfig.getAllStockId());
+			logger.info("stop DataBaseSanityCheck using " + (System.currentTimeMillis() - st) / 1000 + " seconds");
+			// this.sanityDailyCheck("002797");
+			// this.sanityWeekCheck("002797");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }
