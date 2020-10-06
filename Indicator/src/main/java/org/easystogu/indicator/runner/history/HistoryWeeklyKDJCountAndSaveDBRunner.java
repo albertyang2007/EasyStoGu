@@ -7,7 +7,6 @@ import org.easystogu.config.Constants;
 import org.easystogu.db.access.facde.DBAccessFacdeFactory;
 import org.easystogu.db.access.table.StockPriceTableHelper;
 import org.easystogu.db.access.table.WeekStockPriceTableHelper;
-import org.easystogu.db.helper.IF.IndicatorDBHelperIF;
 import org.easystogu.postgresql.access.table.IndWeekKDJDBTableHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

@@ -9,7 +9,6 @@ import org.easystogu.cassandra.access.table.IndWeekKDJCassTableHelper;
 import org.easystogu.cassandra.access.table.IndWeekMacdCassTableHelper;
 import org.easystogu.config.Constants;
 import org.easystogu.db.access.facde.DBAccessFacdeFactory;
-import org.easystogu.db.helper.IF.IndicatorDBHelperIF;
 import org.easystogu.db.vo.table.KDJVO;
 import org.easystogu.db.vo.table.MacdVO;
 import org.easystogu.db.vo.table.StockPriceVO;

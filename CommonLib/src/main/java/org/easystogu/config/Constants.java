@@ -48,7 +48,7 @@ public class Constants {
 	public static String fromToRegex = dateRegex + "_" + dateRegex;
 	public static String HHmmss = "00:00:00";
 
-	public static final String CassandraKeySpace = "EasyStoGu";
+	public static final String CassandraKeySpace = "EasyStoGu.";
 	
 	//indicatorDBType indicator store in Cassandra or Postgresql
 	//It will be set from system environment, default is SQL

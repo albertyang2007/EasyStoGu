@@ -16,6 +16,7 @@ import org.easystogu.cassandra.access.table.IndWeekKDJCassTableHelper;
 import org.easystogu.cassandra.access.table.IndWeekMacdCassTableHelper;
 import org.easystogu.config.Constants;
 import org.easystogu.db.helper.IF.IndicatorDBHelperIF;
+import org.easystogu.log.LogHelper;
 import org.easystogu.postgresql.access.table.IndBollDBTableHelper;
 import org.easystogu.postgresql.access.table.IndKDJDBTableHelper;
 import org.easystogu.postgresql.access.table.IndMacdDBTableHelper;
@@ -26,11 +27,13 @@ import org.easystogu.postgresql.access.table.IndWeekKDJDBTableHelper;
 import org.easystogu.postgresql.access.table.IndWeekMacdDBTableHelper;
 import org.easystogu.postgresql.access.table.PostgresqlIndDBHelper;
 import org.easystogu.utils.Strings;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class DBAccessFacdeFactory {
+	private static Logger logger = LogHelper.getLogger(DBAccessFacdeFactory.class);
 	static Map<String, PostgresqlIndDBHelper> sqlFacdeMap = new HashMap<String, PostgresqlIndDBHelper>();
 	static Map<String, CassandraIndDBHelper> cqlFacdeMap = new HashMap<String, CassandraIndDBHelper>();
 
@@ -102,7 +105,7 @@ public class DBAccessFacdeFactory {
 				indicatorDBType = "SQL";
 			}
 			
-			System.out.println("indicatorDBType is:" + indicatorDBType);
+			logger.info("indicatorDBType is: {}", indicatorDBType);
 
 			IndicatorDBHelperIF instance = null;
 			if ("CQL".equals(indicatorDBType)) {
