@@ -36,7 +36,7 @@
     
     <logger name="io.grpc.netty.NettyServerTransport" level="OFF"> </logger>
 
-    <root level="DEBUG">
+    <root level="INFO">
         <appender-ref ref="TRAFFIC_LOG_FILE"/>
     </root>
 </configuration>
