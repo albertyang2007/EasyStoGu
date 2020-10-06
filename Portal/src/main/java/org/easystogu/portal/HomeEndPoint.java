@@ -288,6 +288,7 @@ public class HomeEndPoint {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+			return "exception: " + e.getMessage();
 		}
 		return "TestCassandra result: \n" + sb.toString();
 	}
