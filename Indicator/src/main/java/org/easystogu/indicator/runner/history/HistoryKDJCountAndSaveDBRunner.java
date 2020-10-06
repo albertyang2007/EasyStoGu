@@ -32,8 +32,7 @@ public class HistoryKDJCountAndSaveDBRunner {
 	protected StockPriceTableHelper stockPriceTable;
 	@Autowired
 	protected CompanyInfoFileHelper stockConfig;
-	@Autowired
-	protected KDJHelper kdjHelper;
+	protected KDJHelper kdjHelper = new KDJHelper();
 
 	public void validate() {
 		if (this instanceof HistoryKDJCountAndSaveDBRunner && stockPriceTable instanceof QianFuQuanStockPriceTableHelper

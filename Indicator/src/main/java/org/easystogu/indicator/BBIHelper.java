@@ -1,8 +1,5 @@
 package org.easystogu.indicator;
 
-import org.springframework.stereotype.Component;
-
-@Component
 public class BBIHelper extends IND {
 	public double[][] getBBIList(double[] CLOSE) {
 		double[][] bbi = new double[2][CLOSE.length];

@@ -29,8 +29,8 @@ public class HistoryQSDDCountAndSaveDBRunner {
 	protected StockPriceTableHelper stockPriceTable;
 	@Autowired
 	private CompanyInfoFileHelper stockConfig;
-	@Autowired
-	protected QSDDHelper qsddHelper;
+
+	protected QSDDHelper qsddHelper = new QSDDHelper();
 
 	public void deleteQSDD(String stockId) {
 		qsddTable.delete(stockId);

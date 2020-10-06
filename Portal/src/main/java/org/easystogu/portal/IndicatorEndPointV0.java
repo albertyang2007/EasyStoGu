@@ -56,20 +56,13 @@ public class IndicatorEndPointV0 {
 	@Autowired
 	protected IndDDXTableHelper ddxTable;
 
-	@Autowired
-	protected MACDHelper macdHelper;
-	@Autowired
-	protected KDJHelper kdjHelper;
-	@Autowired
-	protected ShenXianHelper shenXianHelper;
-	@Autowired
-	protected QSDDHelper qsddHelper;
-	@Autowired
-	protected BOLLHelper bollHelper;
-	@Autowired
-	protected LuZaoHelper luzaoHelper;
-	@Autowired
-	protected WRHelper wrHelper;
+	protected MACDHelper macdHelper = new MACDHelper();
+	protected KDJHelper kdjHelper = new KDJHelper();
+	protected ShenXianHelper shenXianHelper = new ShenXianHelper();
+	protected QSDDHelper qsddHelper = new QSDDHelper();
+	protected WRHelper wrHelper = new WRHelper();
+	protected BOLLHelper bollHelper = new BOLLHelper();
+	protected LuZaoHelper luzaoHelper = new LuZaoHelper();
 
 	protected String dateRegex = "[0-9]{4}-[0-9]{2}-[0-9]{2}";
 	protected String fromToRegex = dateRegex + "_" + dateRegex;

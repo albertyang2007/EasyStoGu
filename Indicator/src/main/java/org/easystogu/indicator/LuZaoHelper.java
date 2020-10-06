@@ -1,15 +1,11 @@
 package org.easystogu.indicator;
 
-import org.springframework.stereotype.Component;
-
 /*
  {鲁兆大趋势}
  MA19:MA(CLOSE, 19);
  MA43:EMA(MA19, 43);
  MA86:MA(CLOSE, 86);
  */
-
-@Component
 public class LuZaoHelper extends IND {
 	public double[][] getLuZaoList(double[] CLOSE) {
 		int length = CLOSE.length + mockLength;

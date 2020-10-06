@@ -30,8 +30,8 @@ public class DailyKDJCountAndSaveDBRunner {
 	@Autowired
 	@Qualifier("qianFuQuanStockPriceTable")
 	protected StockPriceTableHelper stockPriceTable;
-	@Autowired
-	protected KDJHelper kdjHelper;
+	
+	protected KDJHelper kdjHelper = new KDJHelper();
 	@Autowired
 	protected CompanyInfoFileHelper stockConfig;
 

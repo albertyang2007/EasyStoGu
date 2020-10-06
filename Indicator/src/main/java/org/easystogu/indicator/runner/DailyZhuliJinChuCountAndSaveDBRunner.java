@@ -23,8 +23,8 @@ public class DailyZhuliJinChuCountAndSaveDBRunner{
 	protected StockPriceTableHelper stockPriceTable;
 	@Autowired
 	protected IndZhuliJinChuTableHelper zhuliJinChuTable;
-	@Autowired
-	protected ZhuliJinChuHelper zhuliJinChuHelper;
+
+	protected ZhuliJinChuHelper zhuliJinChuHelper = new ZhuliJinChuHelper();
 	@Autowired
 	protected CompanyInfoFileHelper stockConfig;
 

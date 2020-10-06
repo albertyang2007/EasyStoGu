@@ -23,8 +23,8 @@ public class DailyMACountAndSaveDBRunner {
 	@Autowired
 	@Qualifier("qianFuQuanStockPriceTable")
 	protected QianFuQuanStockPriceTableHelper qianFuQuanStockPriceTable;
-	@Autowired
-	protected MAHelper maHelper;
+
+	protected MAHelper maHelper = new MAHelper();
 	@Autowired
 	protected CompanyInfoFileHelper stockConfig;
 

@@ -43,31 +43,24 @@ import com.google.gson.Gson;
 @RestController
 @RequestMapping(value = "/portal/indv3")
 public class IndicatorEndPointV3 {
-	@Autowired
-	private ConfigurationServiceCache config ;
 	protected static String HHmmss = "00:00:00";
 	@Autowired
-	protected MACDHelper macdHelper;
-	@Autowired
-	protected KDJHelper kdjHelper;
-	@Autowired
-	protected ShenXianHelper shenXianHelper;
-	@Autowired
-	protected QSDDHelper qsddHelper;
-	@Autowired
-	protected WRHelper wrHelper;
-	@Autowired
-	protected BOLLHelper bollHelper;
-	@Autowired
-	protected BBIHelper bbiHelper;
-	@Autowired
-	protected LuZaoHelper luzaoHelper;
+	private ConfigurationServiceCache config ;
 	@Autowired
 	protected ProcessRequestParmsInPostBody postParmsProcess;
 	@Autowired
 	protected TrendModeLoader trendModeLoader;
 	@Autowired
 	protected FlagsAnalyseHelper flagsAnalyseHelper;
+	
+	protected MACDHelper macdHelper = new MACDHelper();
+	protected KDJHelper kdjHelper = new KDJHelper();
+	protected ShenXianHelper shenXianHelper = new ShenXianHelper();
+	protected QSDDHelper qsddHelper = new QSDDHelper();
+	protected WRHelper wrHelper = new WRHelper();
+	protected BOLLHelper bollHelper = new BOLLHelper();
+	protected BBIHelper bbiHelper = new BBIHelper();
+	protected LuZaoHelper luzaoHelper = new LuZaoHelper();
 
 	private Gson gson = new Gson();
 

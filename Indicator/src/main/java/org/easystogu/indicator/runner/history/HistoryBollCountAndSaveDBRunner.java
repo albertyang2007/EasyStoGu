@@ -25,8 +25,7 @@ public class HistoryBollCountAndSaveDBRunner {
 	@Autowired
 	@Qualifier("qianFuQuanStockPriceTable")
 	protected StockPriceTableHelper stockPriceTable;
-	@Autowired
-	private BOLLHelper bollHelper;
+	private BOLLHelper bollHelper = new BOLLHelper();
 	@Autowired
 	private CompanyInfoFileHelper stockConfig;
 

@@ -30,8 +30,8 @@ public class HistoryMacdCountAndSaveDBRunner {
 	protected StockPriceTableHelper stockPriceTable;
 	@Autowired
 	protected CompanyInfoFileHelper stockConfig;
-	@Autowired
-	protected MACDHelper macdHelper;
+	
+	protected MACDHelper macdHelper = new MACDHelper();
 	
 	public void validate() {
 		if (this instanceof HistoryMacdCountAndSaveDBRunner && stockPriceTable instanceof QianFuQuanStockPriceTableHelper

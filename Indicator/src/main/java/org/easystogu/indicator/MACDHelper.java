@@ -1,19 +1,11 @@
 package org.easystogu.indicator;
 
-import java.util.List;
-
-import org.springframework.stereotype.Component;
-
-import com.google.common.primitives.Doubles;
-
 /*
  {MACD}
  DIF := EMA(CLOSE,12) - EMA(CLOSE,26);
  DEA := EMA(DIF,9);
  MACD:= 2*(DIF-DEA);
  */
-
-@Component
 public class MACDHelper extends IND {
 
 	public double[][] getMACDList(double[] CLOSE) {

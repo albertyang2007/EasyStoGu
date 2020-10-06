@@ -24,8 +24,8 @@ public class DailyWRCountAndSaveDBRunner {
 	@Autowired
 	@Qualifier("wrTable")
 	protected IndicatorDBHelperIF wrTable;
-	@Autowired
-	private WRHelper wrHelper;
+	
+	private WRHelper wrHelper = new WRHelper();
 	@Autowired
 	@Qualifier("qianFuQuanStockPriceTable")
 	protected StockPriceTableHelper stockPriceTable;

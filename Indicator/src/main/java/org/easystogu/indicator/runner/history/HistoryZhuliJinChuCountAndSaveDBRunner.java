@@ -25,8 +25,8 @@ public class HistoryZhuliJinChuCountAndSaveDBRunner {
 	private CompanyInfoFileHelper stockConfig;
 	@Autowired
 	protected IndZhuliJinChuTableHelper zhuliJinChuTable;
-	@Autowired
-	private ZhuliJinChuHelper zhuliJinChuHelper;
+
+	private ZhuliJinChuHelper zhuliJinChuHelper = new ZhuliJinChuHelper();
 
 	public void deleteZhuliJinChu(String stockId) {
 		zhuliJinChuTable.delete(stockId);

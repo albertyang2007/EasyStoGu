@@ -75,10 +75,8 @@ public class IndicatorEndPointV1 {
 	@Autowired
 	protected StockIndicatorCache indicatorCache;
 
-	@Autowired
-	protected LuZaoHelper luzaoHelper;
-	@Autowired
-	protected ShenXianHelper shenXianHelper;
+	protected LuZaoHelper luzaoHelper = new LuZaoHelper();
+	protected ShenXianHelper shenXianHelper = new ShenXianHelper();
 
 	protected String dateRegex = "[0-9]{4}-[0-9]{2}-[0-9]{2}";
 	protected String fromToRegex = dateRegex + "_" + dateRegex;

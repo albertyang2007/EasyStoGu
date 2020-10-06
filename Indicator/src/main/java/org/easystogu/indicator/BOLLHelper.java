@@ -1,7 +1,5 @@
 package org.easystogu.indicator;
 
-import org.springframework.stereotype.Component;
-
 import com.tictactec.ta.lib.MAType;
 import com.tictactec.ta.lib.MInteger;
 
@@ -12,8 +10,6 @@ import com.tictactec.ta.lib.MInteger;
  UPPER:=MA20+2*STD(CLOSE,20);
  LOWER:=MA20-2*STD(CLOSE,20);
  */
-
-@Component
 public class BOLLHelper extends IND {
 
 	public double[][] getBOLLList(double[] prices, int optInTimePeriod, double optInNbDevUp, double optInNbDevDn) {

@@ -25,8 +25,8 @@ public class HistoryXueShi2CountAndSaveDBRunner {
 	protected StockPriceTableHelper stockPriceTable;
 	@Autowired
 	private CompanyInfoFileHelper stockConfig;
-    @Autowired
-    protected TALIBWraper talibWraper;
+
+    protected TALIBWraper talibWraper = new TALIBWraper();
 
     public void deleteXueShi2(String stockId) {
         xueShi2Table.delete(stockId);

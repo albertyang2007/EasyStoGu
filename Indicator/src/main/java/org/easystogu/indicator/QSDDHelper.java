@@ -1,7 +1,5 @@
 package org.easystogu.indicator;
 
-import org.springframework.stereotype.Component;
-
 /*
  {趋势顶底}
  A:= MA(-100*(HHV(HIGH,34)-CLOSE)/(HHV(HIGH,34)-LLV(LOW,34)),19);
@@ -12,14 +10,12 @@ import org.springframework.stereotype.Component;
  短期线:B+100,COLOR888888;
  中期线:D+100,COLORYELLOW,LINETHICK2;
  */
-
-@Component
 public class QSDDHelper extends IND {
 
 	public double[][] getQSDDList(double[] CLOSE, double[] LOW, double[] HIGH) {
 		int length = CLOSE.length + mockLength;
 		double[][] qsdd = new double[3][length];
-
+		
 		// always add 120 mock date price before the list
 		// append mock data at the begging
 		CLOSE = insertBefore(CLOSE, LOW[0], mockLength);

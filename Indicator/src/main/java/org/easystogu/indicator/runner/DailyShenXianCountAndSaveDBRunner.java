@@ -27,8 +27,8 @@ public class DailyShenXianCountAndSaveDBRunner{
 	@Autowired
 	@Qualifier("qianFuQuanStockPriceTable")
 	protected QianFuQuanStockPriceTableHelper qianFuQuanStockPriceTable;
-	@Autowired
-	private ShenXianHelper shenXianHelper;
+
+	private ShenXianHelper shenXianHelper = new ShenXianHelper();
 	@Autowired
 	protected CompanyInfoFileHelper stockConfig;
 

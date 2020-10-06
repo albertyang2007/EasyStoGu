@@ -26,7 +26,7 @@ public class DailyYiMengBSCountAndSaveDBRunner {
 	protected StockPriceTableHelper stockPriceTable;
 	@Autowired
     protected IndYiMengBSTableHelper yiMengBSTable;
-    @Autowired
+
     protected YiMengBSHelper yiMengBSHelper = new YiMengBSHelper();
     @Autowired
     protected CompanyInfoFileHelper stockConfig;

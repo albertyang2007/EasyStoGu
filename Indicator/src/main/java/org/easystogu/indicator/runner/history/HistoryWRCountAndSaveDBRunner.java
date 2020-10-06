@@ -29,8 +29,8 @@ public class HistoryWRCountAndSaveDBRunner {
 	protected StockPriceTableHelper stockPriceTable;
 	@Autowired
 	private CompanyInfoFileHelper stockConfig;
-	@Autowired
-	protected WRHelper wrHelper;
+
+	protected WRHelper wrHelper = new WRHelper();
 
 	public void deleteWR(String stockId) {
 		wrTable.delete(stockId);

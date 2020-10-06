@@ -29,8 +29,8 @@ public class HistoryShenXianCountAndSaveDBRunner {
 	protected StockPriceTableHelper stockPriceTable;
 	@Autowired
 	private CompanyInfoFileHelper stockConfig;
-	@Autowired
-	protected ShenXianHelper shenXianHelper;
+
+	protected ShenXianHelper shenXianHelper = new ShenXianHelper();
 
 	public void deleteShenXian(String stockId) {
 		shenXianTable.delete(stockId);

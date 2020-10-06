@@ -1,10 +1,6 @@
 package org.easystogu.indicator;
 
-import org.springframework.stereotype.Component;
-
 //WR:=100-100*(HHV(HIGH,N)-CLOSE)/(HHV(HIGH,N)-LLV(LOW,N));
-
-@Component
 public class WRHelper extends IND {
 	public double[][] getWRList(double[] CLOSE, double[] LOW, double[] HIGH, int N1, int N2, int N3) {
 		int length = CLOSE.length + mockLength;

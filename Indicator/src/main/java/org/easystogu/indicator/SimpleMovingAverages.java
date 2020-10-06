@@ -3,10 +3,6 @@ package org.easystogu.indicator;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.stereotype.Component;
-
-
-@Component
 public class SimpleMovingAverages {
 	/**
 	 * Calculate the Simple Moving Average value, summing up the previous
@@ -71,5 +67,16 @@ public class SimpleMovingAverages {
 			ema = list.get(i) * k + ema * (1 - k);
 		}
 		return ema;
+	}
+
+	public static void main(String[] args) {
+		SimpleMovingAverages ins = new SimpleMovingAverages();
+		double[] arr = { 1, 2, 3, 4, 3, 2, 1 };
+		int period = 2;
+		double[] avg2 = ins.getSma(arr, period);
+
+		for (int i = 0; i < avg2.length; i++) {
+			System.out.println(avg2[i]);
+		}
 	}
 }

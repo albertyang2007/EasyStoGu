@@ -28,8 +28,8 @@ public class DailyMacdCountAndSaveDBRunner {
 	@Autowired
 	@Qualifier("qianFuQuanStockPriceTable")
 	protected StockPriceTableHelper stockPriceTable;
-	@Autowired
-	protected MACDHelper macdHelper;
+
+	protected MACDHelper macdHelper = new MACDHelper();
 	@Autowired
 	protected CompanyInfoFileHelper stockConfig;
 

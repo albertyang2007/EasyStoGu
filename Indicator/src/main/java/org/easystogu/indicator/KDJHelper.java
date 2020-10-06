@@ -1,15 +1,11 @@
 package org.easystogu.indicator;
 
-import org.springframework.stereotype.Component;
-
 /*
  RSV:=(CLOSE-LLV(LOW,9))/(HHV(HIGH,9)-LLV(LOW,9))*100;
  K:=SMA(RSV,3,1);
  D:=SMA(K,3,1);
  J:=3*K-2*D;
  */
-
-@Component
 public class KDJHelper extends IND {
 	public static final double DEFAULT_VALUE = 50.0;
 

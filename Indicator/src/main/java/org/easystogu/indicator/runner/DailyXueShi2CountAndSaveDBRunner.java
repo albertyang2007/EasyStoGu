@@ -23,8 +23,8 @@ public class DailyXueShi2CountAndSaveDBRunner{
 	@Autowired
 	@Qualifier("qianFuQuanStockPriceTable")
 	protected StockPriceTableHelper stockPriceTable;
-    @Autowired
-    private TALIBWraper talibHelper;
+
+    private TALIBWraper talibHelper = new TALIBWraper();
     @Autowired
     protected CompanyInfoFileHelper stockConfig;
 

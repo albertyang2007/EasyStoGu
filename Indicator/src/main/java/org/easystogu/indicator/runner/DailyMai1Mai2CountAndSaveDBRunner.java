@@ -23,8 +23,8 @@ public class DailyMai1Mai2CountAndSaveDBRunner {
     protected QianFuQuanStockPriceTableHelper qianFuQuanStockPriceTable;
 	@Autowired
     protected IndMai1Mai2TableHelper mai1mai2Table;
-    @Autowired
-    private Mai1Mai2Helper mai1mai2Helper;
+
+    private Mai1Mai2Helper mai1mai2Helper = new Mai1Mai2Helper();
     @Autowired
     protected CompanyInfoFileHelper stockConfig;
 

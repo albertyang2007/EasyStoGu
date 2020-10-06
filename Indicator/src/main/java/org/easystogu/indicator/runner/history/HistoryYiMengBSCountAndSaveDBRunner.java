@@ -28,8 +28,8 @@ public class HistoryYiMengBSCountAndSaveDBRunner {
 	private CompanyInfoFileHelper stockConfig;
 	@Autowired
 	protected IndYiMengBSTableHelper yiMengBSTable;
-	@Autowired
-	protected YiMengBSHelper yiMengBSHelper;
+
+	protected YiMengBSHelper yiMengBSHelper = new YiMengBSHelper();
 
 	public void deleteYiMengBS(String stockId) {
 		yiMengBSTable.delete(stockId);

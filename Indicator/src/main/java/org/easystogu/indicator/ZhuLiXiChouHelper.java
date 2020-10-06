@@ -3,15 +3,12 @@ package org.easystogu.indicator;
 import java.util.List;
 
 import org.easystogu.db.vo.table.StockPriceVO;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 //主力吸筹
-
-@Component
 public class ZhuLiXiChouHelper {
-	@Autowired
-	private TALIBWraper talibHelper;
+
+	private TALIBWraper talibHelper = new TALIBWraper();
+	private SimpleMovingAverages smaHelper = new SimpleMovingAverages();
 
 	// 返回筹码
 	// list is order by date

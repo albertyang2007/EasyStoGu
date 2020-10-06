@@ -1,9 +1,6 @@
 package org.easystogu.indicator;
 
-import org.springframework.stereotype.Component;
-
 //绝对顶底
-@Component
 public class JueDuiDingDiHelper {
 
 	public static double hhv(double[] list, int before) {

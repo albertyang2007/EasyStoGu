@@ -24,7 +24,7 @@ public class DailyQSDDCountAndSaveDBRunner{
 	@Autowired
 	@Qualifier("qsddTable")
 	protected IndicatorDBHelperIF qsddTable;
-	@Autowired
+
 	private QSDDHelper qsddHelper = new QSDDHelper();
 	@Autowired
 	@Qualifier("qianFuQuanStockPriceTable")

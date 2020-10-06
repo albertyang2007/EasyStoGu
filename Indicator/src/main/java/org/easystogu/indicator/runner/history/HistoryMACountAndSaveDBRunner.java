@@ -28,8 +28,8 @@ public class HistoryMACountAndSaveDBRunner {
 	private CompanyInfoFileHelper stockConfig;
 	@Autowired
 	protected IndMATableHelper maTable;
-	@Autowired
-	protected MAHelper maHelper;
+
+	protected MAHelper maHelper = new MAHelper();
 
 	public void deleteMA(String stockId) {
 		maTable.delete(stockId);

@@ -25,8 +25,8 @@ public class DailyBollCountAndSaveDBRunner{
 	@Autowired
 	@Qualifier("qianFuQuanStockPriceTable")
 	protected QianFuQuanStockPriceTableHelper qianFuQuanStockPriceTable;
-	@Autowired
-	protected BOLLHelper bollHelper;
+
+	protected BOLLHelper bollHelper = new BOLLHelper();
 	@Autowired
 	protected CompanyInfoFileHelper stockConfig;
 

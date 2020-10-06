@@ -1,7 +1,5 @@
 package org.easystogu.indicator;
 
-import org.springframework.stereotype.Component;
-
 //yiMengBS indicator
 //{网上两种说法1: (用这个)}
 //X1:=(C+L+H)/3;
@@ -19,8 +17,6 @@ import org.springframework.stereotype.Component;
 //卖: IF(CROSS(X3,X2), 1, 0);
 //DRAWTEXT(买,L*0.98,'B');
 //DRAWTEXT(卖,H*1.05,'S');
-
-@Component
 public class YiMengBSHelper extends IND {
 
 	public double[][] getYiMengBSList(double[] close, double[] low, double[] high) {

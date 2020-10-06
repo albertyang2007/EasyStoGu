@@ -25,8 +25,8 @@ public class HistoryMai1Mai2CountAndSaveDBRunner {
 	private CompanyInfoFileHelper stockConfig;
 	@Autowired
 	protected IndMai1Mai2TableHelper mai1mai2Table;
-	@Autowired
-	protected Mai1Mai2Helper mai1mai2Helper;
+
+	protected Mai1Mai2Helper mai1mai2Helper = new Mai1Mai2Helper();
 
 	public void deleteMai1Mai2(String stockId) {
 		mai1mai2Table.delete(stockId);

@@ -105,7 +105,7 @@ public class DBAccessFacdeFactory {
 				indicatorDBType = "SQL";
 			}
 			
-			logger.info("indicatorDBType is: {}", indicatorDBType);
+			logger.info("indicatorDBType is: {} for table: {}", indicatorDBType, name);
 
 			IndicatorDBHelperIF instance = null;
 			if ("CQL".equals(indicatorDBType)) {
