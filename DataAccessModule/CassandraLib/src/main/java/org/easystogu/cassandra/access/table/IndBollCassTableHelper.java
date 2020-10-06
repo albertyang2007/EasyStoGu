@@ -1,24 +1,13 @@
 package org.easystogu.cassandra.access.table;
 
 import org.easystogu.config.Constants;
+import org.easystogu.db.vo.table.BollVO;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
-public class IndBollCassTableHelper extends CassandraIndDBHelper {
-//	private static IndMacdCassTableHelper instance = null;
-//
-//	public static IndMacdCassTableHelper getInstance() {
-//		if (instance == null) {
-//			instance = new IndMacdCassTableHelper("ind_boll", BollVO.class);
-//		}
-//		return instance;
-//	}
-//
-//	protected IndBollCassTableHelper(String tableName, Class<? extends IndicatorVO> indicatorVOClass) {
-//		super(tableName, indicatorVOClass);
-//	}
-	
+public class IndBollCassTableHelper extends CassandraIndDBHelper<BollVO> implements InitializingBean {
 	@Override
 	@Value(Constants.CassandraKeySpace + "ind_boll")
 	public void setTableName(String tableName) {
@@ -26,8 +15,8 @@ public class IndBollCassTableHelper extends CassandraIndDBHelper {
 	}
 	
 	@Override
-	@Value("org.easystogu.db.vo.table.BollVO")
-	public void setIndicatorVOClass(String indicatorVOClass) {
-		super.setIndicatorVOClass(indicatorVOClass);
+	public void afterPropertiesSet() {
+		super.setIndicatorVOClass(BollVO.class);
+		super.init();
 	}
 }

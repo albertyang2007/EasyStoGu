@@ -8,8 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import javax.annotation.PostConstruct;
-
 import org.easystogu.cassandra.ks.CassandraKepSpaceFactory;
 import org.easystogu.db.helper.IF.IndicatorDBHelperIF;
 import org.easystogu.db.vo.table.IndicatorVO;
@@ -25,7 +23,7 @@ import com.datastax.driver.core.Row;
 import com.datastax.driver.core.Session;
 
 @Service
-public abstract class CassandraIndDBHelper implements IndicatorDBHelperIF {
+public abstract class CassandraIndDBHelper<T extends IndicatorVO> implements IndicatorDBHelperIF {
 	private static Logger logger = LogHelper.getLogger(CassandraIndDBHelper.class);
 	@Autowired
 	protected CassandraKepSpaceFactory cassandraKepSpaceFactory;
@@ -41,8 +39,7 @@ public abstract class CassandraIndDBHelper implements IndicatorDBHelperIF {
 
 	private static Map<String, PreparedStatement> prepareStmtMap = new ConcurrentHashMap<String, PreparedStatement>();
 
-	@PostConstruct
-	public void init() {
+	protected void init() {
 		String[] paris = generateFieldsNamePairs();
 
 		// INSERT INTO ind.macd (stockId, date, dif, dea, macd) VALUES (?, ?, ?,
@@ -70,7 +67,7 @@ public abstract class CassandraIndDBHelper implements IndicatorDBHelperIF {
 	}
 
 	@SuppressWarnings("unchecked")
-	protected <T extends IndicatorVO> T mapRowToVO(Row r) {
+	protected T mapRowToVO(Row r) {
 		try {
 			if (r == null)
 				return null;
@@ -122,7 +119,7 @@ public abstract class CassandraIndDBHelper implements IndicatorDBHelperIF {
 	}
 
 	@SuppressWarnings("unchecked")
-	protected <T extends IndicatorVO> List<T> mapResultSetToList(ResultSet results) {
+	protected List<T> mapResultSetToList(ResultSet results) {
 		List<IndicatorVO> list = new ArrayList<IndicatorVO>();
 		for (Row r : results.all()) {
 			list.add(mapRowToVO(r));
@@ -131,7 +128,7 @@ public abstract class CassandraIndDBHelper implements IndicatorDBHelperIF {
 	}
 
 	@SuppressWarnings("unchecked")
-	protected <T extends IndicatorVO> T mapResultSetToSingle(ResultSet results) {
+	protected T mapResultSetToSingle(ResultSet results) {
 		return (T) mapRowToVO(results.one());
 	}
 
@@ -149,13 +146,13 @@ public abstract class CassandraIndDBHelper implements IndicatorDBHelperIF {
 		getCassandraSession().execute(batchStatement);
 	}
 
-	public <T extends IndicatorVO> T getSingle(String stockId, String date) {
+	public T getSingle(String stockId, String date) {
 		PreparedStatement preparedStatement = getPrepareStatement(QUERY_BY_ID_AND_DATE_SQL);
 		ResultSet results = getCassandraSession().execute(preparedStatement.bind(stockId, date));
 		return mapResultSetToSingle(results);
 	}
 
-	public <T extends IndicatorVO> List<T> getAll(String stockId) {
+	public List<T> getAll(String stockId) {
 		PreparedStatement preparedStatement = getPrepareStatement(QUERY_ALL_BY_ID_SQL);
 		ResultSet results = getCassandraSession().execute(preparedStatement.bind(stockId));
 		return mapResultSetToList(results);
@@ -171,13 +168,13 @@ public abstract class CassandraIndDBHelper implements IndicatorDBHelperIF {
 		getCassandraSession().execute(preparedStatement.bind(stockId, date));
 	}
 
-	public <T extends IndicatorVO> List<T> getByIdAndBetweenDate(String stockId, String startDate, String endDate) {
+	public List<T> getByIdAndBetweenDate(String stockId, String startDate, String endDate) {
 		PreparedStatement preparedStatement = getPrepareStatement(QUERY_BY_STOCKID_AND_BETWEEN_DATE);
 		ResultSet results = getCassandraSession().execute(preparedStatement.bind(stockId, startDate, endDate));
 		return mapResultSetToList(results);
 	}
 
-	public <T extends IndicatorVO> List<T> getByIdAndLatestNDate(String stockId, int day) {
+	public List<T> getByIdAndLatestNDate(String stockId, int day) {
 		PreparedStatement preparedStatement = getPrepareStatement(QUERY_LATEST_N_BY_ID_SQL);
 		ResultSet results = getCassandraSession().execute(preparedStatement.bind(stockId, day));
 		return mapResultSetToList(results);
@@ -187,13 +184,8 @@ public abstract class CassandraIndDBHelper implements IndicatorDBHelperIF {
 		return indicatorVOClass;
 	}
 
-	public void setIndicatorVOClass(String indicatorVOClass) {
-		try {
-			this.indicatorVOClass = Class.forName(indicatorVOClass).getClass();
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	public void setIndicatorVOClass(Class<T> indicatorVOClass) {
+		this.indicatorVOClass = indicatorVOClass;
 	}
 
 	public String getTableName() {

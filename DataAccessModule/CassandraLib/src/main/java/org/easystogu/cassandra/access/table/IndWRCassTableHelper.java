@@ -1,24 +1,13 @@
 package org.easystogu.cassandra.access.table;
 
 import org.easystogu.config.Constants;
+import org.easystogu.db.vo.table.WRVO;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
-public class IndWRCassTableHelper extends CassandraIndDBHelper {
-//	private static IndWRCassTableHelper instance = null;
-//
-//	public static IndWRCassTableHelper getInstance() {
-//		if (instance == null) {
-//			instance = new IndWRCassTableHelper("ind_wr", WRVO.class);
-//		}
-//		return instance;
-//	}
-//
-//	protected IndWRCassTableHelper(String tableName, Class<? extends IndicatorVO> indicatorVOClass) {
-//		super(tableName, indicatorVOClass);
-//	}
-	
+public class IndWRCassTableHelper extends CassandraIndDBHelper<WRVO> implements InitializingBean {
 	@Override
 	@Value(Constants.CassandraKeySpace + "ind_wr")
 	public void setTableName(String tableName) {
@@ -26,8 +15,8 @@ public class IndWRCassTableHelper extends CassandraIndDBHelper {
 	}
 	
 	@Override
-	@Value("org.easystogu.db.vo.table.WRVO")
-	public void setIndicatorVOClass(String indicatorVOClass) {
-		super.setIndicatorVOClass(indicatorVOClass);
+	public void afterPropertiesSet() {
+		super.setIndicatorVOClass(WRVO.class);
+		super.init();
 	}
 }

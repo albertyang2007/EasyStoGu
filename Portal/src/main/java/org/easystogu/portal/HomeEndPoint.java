@@ -5,11 +5,16 @@ import java.util.regex.Pattern;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
+import org.easystogu.cassandra.access.table.IndMacdCassTableHelper;
 import org.easystogu.config.Constants;
 import org.easystogu.config.DBConfigurationService;
-import org.easystogu.file.FileReaderAndWriter;
+import org.easystogu.db.access.facde.DBAccessFacdeFactory;
+import org.easystogu.db.helper.IF.IndicatorDBHelperIF;
+import org.easystogu.db.vo.table.IndicatorVO;
+import org.easystogu.db.vo.table.MacdVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.indicator.runner.history.IndicatorHistortOverAllRunner;
+import org.easystogu.postgresql.access.table.IndMacdDBTableHelper;
 import org.easystogu.report.HistoryAnalyseReport;
 import org.easystogu.runner.DailyOverAllRunner;
 import org.easystogu.runner.DailySelectionRunner;
@@ -57,16 +62,21 @@ public class HomeEndPoint {
 	@Autowired
 	private CompanyInfoFileHelper companyInfoFileHelper;
 	
+	//just for test
+	@Autowired
+	DBAccessFacdeFactory dBAccessFacdeFactory;
+	@Autowired
+	IndMacdDBTableHelper indMacdDBTableHelper;
+	@Autowired
+	IndMacdCassTableHelper indMacdCassTableHelper;
+
 	protected final String dateRegex = "[0-9]{4}-[0-9]{2}-[0-9]{2}";
 	protected final String fromToRegex = dateRegex + "_" + dateRegex;
 
 	@GetMapping("/")
 	@Produces("text/html")
 	public Response mainPage() {
-		StringBuffer sb = new StringBuffer(
-				"<!DOCTYPE html>\r\n" + 
-				"<html>\r\n" + 
-				"<body>\r\n");
+		StringBuffer sb = new StringBuffer("<!DOCTYPE html>\r\n" + "<html>\r\n" + "<body>\r\n");
 		sb.append("<a href='/portal/home/DailyUpdateAllStockRunner'>DailyUpdateAllStockRunner</a><br>");
 		sb.append("<a href='/portal/home/DailyOverAllRunner'>DailyOverAllRunner</a><br>");
 		sb.append(
@@ -85,12 +95,11 @@ public class HomeEndPoint {
 		sb.append("<a href='/portal/home/HistoryAnalyseReport'>HistoryAnalyseReport Count All Check Point</a><br>");
 		sb.append(
 				"<a href='/portal/home/HistoryDailySelectionRunner'>HistoryDailySelectionRunner Count All Daily Check Point Statistics</a><br>");
-		sb.append("<a href='/portal/home/Serverlog'>Serverlog</a><br>");
+		sb.append("<a href='/portal/home/TestDB'>TestDB</a><br>");
 
 		sb.append("<br><a href='/eweb/index.htm'>eweb index</a><br>");
-		
-		sb.append("</body>\r\n" + 
-				"</html>");
+
+		sb.append("</body>\r\n" + "</html>");
 
 		return Response.ok().entity(sb.toString()).build();
 	}
@@ -203,12 +212,12 @@ public class HomeEndPoint {
 				startDate = dateParm.split("_")[0];
 				endDate = dateParm.split("_")[1];
 			}
-			
+
 			final String _startDate = new String(startDate);
 			final String _endDate = new String(endDate);
-			
+
 			new Thread(() -> stockPriceHistoryOverAllRunner.run(_startDate, _endDate)).start();
-			
+
 			return "StockPriceHistoryOverAllRunner already running, startDate=" + startDate + ", endDate=" + endDate;
 		}
 		return zone + " not allow to run this method.";
@@ -241,15 +250,45 @@ public class HomeEndPoint {
 		return zone + " not allow to run this method.";
 	}
 
-	@GetMapping("/Serverlog")
-	public String serverlog() {
-		return FileReaderAndWriter.tailFile("/home/eyaweiw/software/jboss-eap-6.4/standalone/log/server.log", 20);
-	}
-
 	@GetMapping("/HistoryDailySelectionRunner")
 	public String test() {
 		new Thread(() -> historyDailySelectionRunner.run()).start();
 
 		return "start CheckPointStatisticsPrepareData";
+	}
+
+	@GetMapping("/TestDB")
+	public String serverlog() {
+		StringBuffer sb = new StringBuffer();
+		try {
+			MacdVO vo = new MacdVO();
+			vo.setDate("2020-10-03");
+			vo.setDea(1.0);
+			vo.setDif(1.0);
+			vo.setMacd(1.0);
+			
+			//facde insert
+			vo.setStockId("900001");
+			IndicatorDBHelperIF macdTable = dBAccessFacdeFactory.getInstance(Constants.indMacd);
+			macdTable.insert(vo);
+			IndicatorVO rtn1 = macdTable.getSingle(vo.getStockId(), vo.getDate());
+			sb.append("facde get rtn1: "+rtn1.getClass().getSimpleName() + ", " + rtn1.toString());
+			
+			//cassandra insert
+			vo.setStockId("900002");
+			indMacdCassTableHelper.insert(vo);
+			IndicatorVO rtn2 = indMacdCassTableHelper.getSingle(vo.getStockId(), vo.getDate());
+			sb.append("cass get rtn2: "+rtn2.getClass().getSimpleName() + ", " + rtn2.toString());
+			
+			//postgres insert
+			vo.setStockId("900003");
+			indMacdDBTableHelper.insert(vo);
+			IndicatorVO rtn3 = indMacdDBTableHelper.getSingle(vo.getStockId(), vo.getDate());
+			sb.append("postgres get rtn3: "+rtn3.getClass().getSimpleName() + ", " + rtn3.toString());
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "TestCassandra result: \n" + sb.toString();
 	}
 }

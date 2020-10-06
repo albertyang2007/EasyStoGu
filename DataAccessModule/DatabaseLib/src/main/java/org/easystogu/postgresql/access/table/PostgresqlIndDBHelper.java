@@ -231,7 +231,6 @@ public abstract class PostgresqlIndDBHelper<T extends IndicatorVO> implements In
 		this.tableName = tableName;
 	}
 
-
 	public void setIndicatorVOClass(Class<T> indicatorVOClass) {
 		this.indicatorVOClass = indicatorVOClass;
 	}
