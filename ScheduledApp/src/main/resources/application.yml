@@ -1,5 +1,14 @@
 server:
+  name: EasyStoGu-Scheduled
   port: 8080
-  tomcat:
-    max-http-post-size: 2097152
-
+  address: 0.0.0.0
+  servlet:
+    context-path: /
+spring:
+  main:
+    web-application-type: reactive
+  http:
+    converters:
+      preferred-json-mapper: jackson
+  jackson:
+    default-property-inclusion: NON_NULL

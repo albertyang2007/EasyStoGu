@@ -14,6 +14,7 @@ import org.easystogu.db.vo.table.IndicatorVO;
 import org.easystogu.db.vo.table.MacdVO;
 import org.easystogu.file.access.CompanyInfoFileHelper;
 import org.easystogu.indicator.runner.history.IndicatorHistortOverAllRunner;
+import org.easystogu.log.LogHelper;
 import org.easystogu.postgresql.access.table.IndMacdDBTableHelper;
 import org.easystogu.report.HistoryAnalyseReport;
 import org.easystogu.runner.DailyOverAllRunner;
@@ -26,6 +27,7 @@ import org.easystogu.runner.HistoryDailySelectionRunner;
 import org.easystogu.sina.runner.DailyStockPriceDownloadAndStoreDBRunner2;
 import org.easystogu.sina.runner.RealtimeDisplayStockPriceRunner;
 import org.easystogu.sina.runner.history.StockPriceHistoryOverAllRunner;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,6 +37,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(value = "/portal/home")
 public class HomeEndPoint {
+	private static Logger logger = LogHelper.getLogger(HomeEndPoint.class);
 	@Autowired
 	private DBConfigurationService config;
 	@Autowired
@@ -155,7 +158,7 @@ public class HomeEndPoint {
 		String zone = config.getString("zone", "");
 		if (Constants.ZONE_OFFICE.equals(zone)) {
 			new Thread(() -> dailyOverAllRunner.run()).start();
-			return "FastDailyOverAllRunner (withour zijinliu) already running, please check DB result.";
+			return "FastDailyOverAllRunner (without zijinliu) already running, please check DB result.";
 		}
 		return zone + " not allow to run this method.";
 	}

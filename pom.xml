@@ -25,6 +25,7 @@
 				<activeByDefault>true</activeByDefault>
 			</activation>
 			<modules>
+			    <module>Parent</module>
 				<module>CommonLib</module>
 				<module>DataAccessModule</module>
 				<module>DataCollectModule</module>
@@ -34,7 +35,6 @@
 				<module>Portal</module>
 				<module>EWeb</module>
 				<module>App</module>
-				<module>Scheduled</module>
 				<module>TrendMode</module>
 				<module>Cache</module>
 				<module>DynamicCompiler</module>
@@ -64,14 +64,7 @@
 				<activeByDefault>true</activeByDefault>
 			</activation>
 			<modules>
-				<module>CommonLib</module>
-				<module>DataAccessModule</module>
-				<module>DataCollectModule</module>
-				<module>Indicator</module>
-				<module>Analyse</module>
-				<module>TrendMode</module>
-				<module>Cache</module>			
-				<module>Scheduled</module>
+			    <module>Parent2</module>
 				<module>ScheduledApp</module>
 			</modules>
 		</profile>		

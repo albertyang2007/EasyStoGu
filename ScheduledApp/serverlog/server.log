@@ -1,0 +1,218 @@
+####<2020-10-07 09:57:00.328> <INFO> <org.easystogu.app.EasyStoGuScheduledApp> <main> - <Starting EasyStoGu ScheduledApp...>
+####<2020-10-07 09:57:00.879> <INFO> <org.easystogu.app.EasyStoGuScheduledApp> <main> - <Starting EasyStoGuScheduledApp on CN-00012450 with PID 72456 (C:\Users\eyaweiw\github\EasyStoGu\ScheduledApp\target\easystogu-scheduled-app-2.0.0-SNAPSHOT-exec.jar started by eyaweiw in C:\Users\eyaweiw\github\EasyStoGu\ScheduledApp)>
+####<2020-10-07 09:57:00.879> <INFO> <org.easystogu.app.EasyStoGuScheduledApp> <main> - <No active profile set, falling back to default profiles: default>
+####<2020-10-07 09:57:01.823> <INFO> <org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler> <main> - <Initializing ExecutorService 'taskSchedulerThreadPool'>
+####<2020-10-07 09:57:02.061> <INFO> <org.springframework.boot.actuate.endpoint.web.EndpointLinksResolver> <main> - <Exposing 2 endpoint(s) beneath base path '/actuator'>
+####<2020-10-07 09:57:04.636> <INFO> <org.springframework.boot.web.embedded.netty.NettyWebServer> <main> - <Netty started on port(s): 8080>
+####<2020-10-07 09:57:04.648> <INFO> <org.easystogu.app.EasyStoGuScheduledApp> <main> - <Started EasyStoGuScheduledApp in 4.171 seconds (JVM running for 4.85)>
+####<2020-10-07 09:57:04.649> <INFO> <org.easystogu.app.EasyStoGuScheduledApp> <main> - <EasyStoGu ScheduledApp started.>
+####<2020-10-07 09:57:35.698> <INFO> <org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler> <SpringContextShutdownHook> - <Shutting down ExecutorService 'taskSchedulerThreadPool'>
+####<2020-10-07 10:06:56.166> <INFO> <org.easystogu.app.EasyStoGuScheduledApp> <main> - <Starting EasyStoGu ScheduledApp...>
+####<2020-10-07 10:06:56.714> <INFO> <org.easystogu.app.EasyStoGuScheduledApp> <main> - <Starting EasyStoGuScheduledApp on CN-00012450 with PID 65852 (C:\Users\eyaweiw\github\EasyStoGu\ScheduledApp\target\easystogu-scheduled-app-2.0.0-SNAPSHOT-exec.jar started by eyaweiw in C:\Users\eyaweiw\github\EasyStoGu\ScheduledApp)>
+####<2020-10-07 10:06:56.714> <INFO> <org.easystogu.app.EasyStoGuScheduledApp> <main> - <No active profile set, falling back to default profiles: default>
+####<2020-10-07 10:06:57.668> <INFO> <org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler> <main> - <Initializing ExecutorService 'taskSchedulerThreadPool'>
+####<2020-10-07 10:06:57.905> <INFO> <org.springframework.boot.actuate.endpoint.web.EndpointLinksResolver> <main> - <Exposing 2 endpoint(s) beneath base path '/actuator'>
+####<2020-10-07 10:06:59.003> <WARN> <org.springframework.boot.web.reactive.context.AnnotationConfigReactiveWebServerApplicationContext> <main> - <Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Failed to start bean 'webServerStartStop'; nested exception is java.lang.NoClassDefFoundError: reactor/core/CorePublisher>
+####<2020-10-07 10:06:59.004> <INFO> <org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler> <main> - <Shutting down ExecutorService 'taskSchedulerThreadPool'>
+####<2020-10-07 10:07:01.045> <INFO> <org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener> <main> - <
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.>
+####<2020-10-07 10:07:01.050> <ERROR> <org.springframework.boot.SpringApplication> <main> - <Application run failed>
+org.springframework.context.ApplicationContextException: Failed to start bean 'webServerStartStop'; nested exception is java.lang.NoClassDefFoundError: reactor/core/CorePublisher
+	at org.springframework.context.support.DefaultLifecycleProcessor.doStart(DefaultLifecycleProcessor.java:185)
+	at org.springframework.context.support.DefaultLifecycleProcessor.access$200(DefaultLifecycleProcessor.java:53)
+	at org.springframework.context.support.DefaultLifecycleProcessor$LifecycleGroup.start(DefaultLifecycleProcessor.java:360)
+	at org.springframework.context.support.DefaultLifecycleProcessor.startBeans(DefaultLifecycleProcessor.java:158)
+	at org.springframework.context.support.DefaultLifecycleProcessor.onRefresh(DefaultLifecycleProcessor.java:122)
+	at org.springframework.context.support.AbstractApplicationContext.finishRefresh(AbstractApplicationContext.java:894)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:553)
+	at org.springframework.boot.web.reactive.context.ReactiveWebServerApplicationContext.refresh(ReactiveWebServerApplicationContext.java:62)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:758)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:750)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:397)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:315)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1237)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1226)
+	at org.easystogu.app.EasyStoGuScheduledApp.main(EasyStoGuScheduledApp.java:28)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.springframework.boot.loader.MainMethodRunner.run(MainMethodRunner.java:48)
+	at org.springframework.boot.loader.Launcher.launch(Launcher.java:87)
+	at org.springframework.boot.loader.Launcher.launch(Launcher.java:50)
+	at org.springframework.boot.loader.JarLauncher.main(JarLauncher.java:51)
+Caused by: java.lang.NoClassDefFoundError: reactor/core/CorePublisher
+	at reactor.netty.ConnectionObserver.emptyListener(ConnectionObserver.java:42)
+	at reactor.netty.channel.BootstrapHandlers.childConnectionObserver(BootstrapHandlers.java:297)
+	at reactor.netty.tcp.TcpServerChannelGroup.configure(TcpServerChannelGroup.java:46)
+	at reactor.netty.tcp.TcpServerBootstrap.configure(TcpServerBootstrap.java:39)
+	at reactor.netty.tcp.TcpServerBootstrap.configure(TcpServerBootstrap.java:39)
+	at reactor.netty.tcp.TcpServer.bind(TcpServer.java:162)
+	at reactor.netty.http.server.HttpServerBind.bind(HttpServerBind.java:99)
+	at reactor.netty.http.server.HttpServerOperator.bind(HttpServerOperator.java:42)
+	at reactor.netty.http.server.HttpServerOperator.bind(HttpServerOperator.java:42)
+	at reactor.netty.http.server.HttpServerOperator.bind(HttpServerOperator.java:42)
+	at reactor.netty.http.server.HttpServerOperator.bind(HttpServerOperator.java:42)
+	at reactor.netty.http.server.HttpServerOperator.bind(HttpServerOperator.java:42)
+	at reactor.netty.http.server.HttpServerOperator.bind(HttpServerOperator.java:42)
+	at reactor.netty.http.server.HttpServer.bind(HttpServer.java:103)
+	at reactor.netty.http.server.HttpServer.bindNow(HttpServer.java:132)
+	at reactor.netty.http.server.HttpServer.bindNow(HttpServer.java:115)
+	at org.springframework.boot.web.embedded.netty.NettyWebServer.startHttpServer(NettyWebServer.java:145)
+	at org.springframework.boot.web.embedded.netty.NettyWebServer.start(NettyWebServer.java:99)
+	at org.springframework.boot.web.reactive.context.WebServerManager.start(WebServerManager.java:54)
+	at org.springframework.boot.web.reactive.context.WebServerStartStopLifecycle.start(WebServerStartStopLifecycle.java:40)
+	at org.springframework.context.support.DefaultLifecycleProcessor.doStart(DefaultLifecycleProcessor.java:182)
+	... 22 common frames omitted
+Caused by: java.lang.ClassNotFoundException: reactor.core.CorePublisher
+	at java.net.URLClassLoader.findClass(Unknown Source)
+	at java.lang.ClassLoader.loadClass(Unknown Source)
+	at org.springframework.boot.loader.LaunchedURLClassLoader.loadClass(LaunchedURLClassLoader.java:93)
+	at java.lang.ClassLoader.loadClass(Unknown Source)
+	... 43 common frames omitted
+####<2020-10-07 10:07:01.054> <ERROR> <org.easystogu.app.EasyStoGuScheduledApp> <main> - <Fail to start EasyStoGu ScheduledApp: Failed to start bean 'webServerStartStop'; nested exception is java.lang.NoClassDefFoundError: reactor/core/CorePublisher>
+####<2020-10-07 10:10:49.785> <INFO> <org.easystogu.app.EasyStoGuScheduledApp> <main> - <Starting EasyStoGu ScheduledApp...>
+####<2020-10-07 10:10:50.421> <INFO> <org.easystogu.app.EasyStoGuScheduledApp> <main> - <Starting EasyStoGuScheduledApp on CN-00012450 with PID 70292 (C:\Users\eyaweiw\github\EasyStoGu\ScheduledApp\target\easystogu-scheduled-app-2.0.0-SNAPSHOT-exec.jar started by eyaweiw in C:\Users\eyaweiw\github\EasyStoGu\ScheduledApp)>
+####<2020-10-07 10:10:50.423> <INFO> <org.easystogu.app.EasyStoGuScheduledApp> <main> - <No active profile set, falling back to default profiles: default>
+####<2020-10-07 10:10:51.552> <INFO> <org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler> <main> - <Initializing ExecutorService 'taskSchedulerThreadPool'>
+####<2020-10-07 10:10:51.903> <INFO> <org.springframework.boot.actuate.endpoint.web.EndpointLinksResolver> <main> - <Exposing 2 endpoint(s) beneath base path '/actuator'>
+####<2020-10-07 10:10:55.581> <INFO> <org.springframework.boot.web.embedded.netty.NettyWebServer> <main> - <Netty started on port(s): 8080>
+####<2020-10-07 10:10:55.602> <INFO> <org.easystogu.app.EasyStoGuScheduledApp> <main> - <Started EasyStoGuScheduledApp in 5.638 seconds (JVM running for 6.323)>
+####<2020-10-07 10:10:55.603> <INFO> <org.easystogu.app.EasyStoGuScheduledApp> <main> - <EasyStoGu ScheduledApp started.>
+####<2020-10-07 10:11:59.442> <INFO> <org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler> <SpringContextShutdownHook> - <Shutting down ExecutorService 'taskSchedulerThreadPool'>
+####<2020-10-07 10:12:30.562> <INFO> <org.easystogu.app.EasyStoGuScheduledApp> <main> - <Starting EasyStoGu ScheduledApp...>
+####<2020-10-07 10:12:31.223> <INFO> <org.easystogu.app.EasyStoGuScheduledApp> <main> - <Starting EasyStoGuScheduledApp on CN-00012450 with PID 74320 (C:\Users\eyaweiw\github\EasyStoGu\ScheduledApp\target\easystogu-scheduled-app-2.0.0-SNAPSHOT-exec.jar started by eyaweiw in C:\Users\eyaweiw\github\EasyStoGu\ScheduledApp)>
+####<2020-10-07 10:12:31.224> <INFO> <org.easystogu.app.EasyStoGuScheduledApp> <main> - <No active profile set, falling back to default profiles: default>
+####<2020-10-07 10:12:32.368> <INFO> <org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler> <main> - <Initializing ExecutorService 'taskSchedulerThreadPool'>
+####<2020-10-07 10:12:32.641> <INFO> <org.springframework.boot.actuate.endpoint.web.EndpointLinksResolver> <main> - <Exposing 2 endpoint(s) beneath base path '/actuator'>
+####<2020-10-07 10:12:35.948> <INFO> <org.springframework.boot.web.embedded.netty.NettyWebServer> <main> - <Netty started on port(s): 8080>
+####<2020-10-07 10:12:35.964> <INFO> <org.easystogu.app.EasyStoGuScheduledApp> <main> - <Started EasyStoGuScheduledApp in 5.244 seconds (JVM running for 5.91)>
+####<2020-10-07 10:12:35.965> <INFO> <org.easystogu.app.EasyStoGuScheduledApp> <main> - <EasyStoGu ScheduledApp started.>
+####<2020-10-07 10:33:53.783> <INFO> <org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler> <SpringContextShutdownHook> - <Shutting down ExecutorService 'taskSchedulerThreadPool'>
+####<2020-10-07 10:34:18.016> <INFO> <org.easystogu.app.EasyStoGuScheduledApp> <main> - <Starting EasyStoGu ScheduledApp...>
+####<2020-10-07 10:34:18.564> <INFO> <org.easystogu.app.EasyStoGuScheduledApp> <main> - <Starting EasyStoGuScheduledApp on CN-00012450 with PID 56060 (C:\Users\eyaweiw\github\EasyStoGu\ScheduledApp\target\easystogu-scheduled-app-2.0.0-SNAPSHOT-exec.jar started by eyaweiw in C:\Users\eyaweiw\github\EasyStoGu\ScheduledApp)>
+####<2020-10-07 10:34:18.564> <INFO> <org.easystogu.app.EasyStoGuScheduledApp> <main> - <No active profile set, falling back to default profiles: default>
+####<2020-10-07 10:34:20.227> <INFO> <org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler> <main> - <Initializing ExecutorService 'taskSchedulerThreadPool'>
+####<2020-10-07 10:34:20.463> <INFO> <org.springframework.boot.actuate.endpoint.web.EndpointLinksResolver> <main> - <Exposing 2 endpoint(s) beneath base path '/actuator'>
+####<2020-10-07 10:34:22.407> <INFO> <org.springframework.boot.web.embedded.netty.NettyWebServer> <main> - <Netty started on port(s): 8080>
+####<2020-10-07 10:34:22.421> <INFO> <org.easystogu.app.EasyStoGuScheduledApp> <main> - <Started EasyStoGuScheduledApp in 4.256 seconds (JVM running for 4.836)>
+####<2020-10-07 10:34:22.422> <INFO> <org.easystogu.app.EasyStoGuScheduledApp> <main> - <EasyStoGu ScheduledApp started.>
+####<2020-10-07 10:35:08.416> <INFO> <org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler> <SpringContextShutdownHook> - <Shutting down ExecutorService 'taskSchedulerThreadPool'>
+####<2020-10-07 10:35:21.050> <INFO> <org.easystogu.app.EasyStoGuScheduledApp> <main> - <Starting EasyStoGu ScheduledApp...>
+####<2020-10-07 10:35:21.602> <INFO> <org.easystogu.app.EasyStoGuScheduledApp> <main> - <Starting EasyStoGuScheduledApp on CN-00012450 with PID 71312 (C:\Users\eyaweiw\github\EasyStoGu\ScheduledApp\target\easystogu-scheduled-app-2.0.0-SNAPSHOT-exec.jar started by eyaweiw in C:\Users\eyaweiw\github\EasyStoGu\ScheduledApp)>
+####<2020-10-07 10:35:21.603> <INFO> <org.easystogu.app.EasyStoGuScheduledApp> <main> - <No active profile set, falling back to default profiles: default>
+####<2020-10-07 10:35:23.288> <INFO> <org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler> <main> - <Initializing ExecutorService 'taskSchedulerThreadPool'>
+####<2020-10-07 10:35:23.529> <INFO> <org.springframework.boot.actuate.endpoint.web.EndpointLinksResolver> <main> - <Exposing 2 endpoint(s) beneath base path '/actuator'>
+####<2020-10-07 10:35:25.410> <INFO> <org.springframework.boot.web.embedded.netty.NettyWebServer> <main> - <Netty started on port(s): 8080>
+####<2020-10-07 10:35:25.422> <INFO> <org.easystogu.app.EasyStoGuScheduledApp> <main> - <Started EasyStoGuScheduledApp in 4.231 seconds (JVM running for 4.811)>
+####<2020-10-07 10:35:25.423> <INFO> <org.easystogu.app.EasyStoGuScheduledApp> <main> - <EasyStoGu ScheduledApp started.>
+####<2020-10-07 10:35:25.673> <INFO> <org.easystogu.scheduler.DailyScheduler> <reactor-http-nio-2> - <dataBaseSanityCheck start>
+####<2020-10-07 10:35:25.760> <ERROR> <org.springframework.boot.autoconfigure.web.reactive.error.AbstractErrorWebExceptionHandler> <reactor-http-nio-2> - <[a8ae0c18-1]  500 Server Error for HTTP GET "/health/">
+java.lang.IllegalStateException: block()/blockFirst()/blockLast() are blocking, which is not supported in thread reactor-http-nio-2
+	at reactor.core.publisher.BlockingSingleSubscriber.blockingGet(BlockingSingleSubscriber.java:83)
+	Suppressed: reactor.core.publisher.FluxOnAssembly$OnAssemblyException: 
+Error has been observed at the following site(s):
+	|_ checkpoint ? org.springframework.boot.actuate.metrics.web.reactive.server.MetricsWebFilter [DefaultWebFilterChain]
+	|_ checkpoint ? HTTP GET "/health/" [ExceptionHandlingWebHandler]
+Stack trace:
+		at reactor.core.publisher.BlockingSingleSubscriber.blockingGet(BlockingSingleSubscriber.java:83)
+		at reactor.core.publisher.Mono.block(Mono.java:1680)
+		at org.easystogu.scheduler.DailyScheduler.dataBaseSanityCheck(DailyScheduler.java:56)
+		at org.easystogu.app.endpoint.HealthCheck.mainPage(HealthCheck.java:16)
+		at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+		at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+		at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+		at java.lang.reflect.Method.invoke(Unknown Source)
+		at org.springframework.web.reactive.result.method.InvocableHandlerMethod.lambda$invoke$0(InvocableHandlerMethod.java:147)
+		at reactor.core.publisher.FluxFlatMap.trySubscribeScalarMap(FluxFlatMap.java:151)
+		at reactor.core.publisher.MonoFlatMap.subscribeOrReturn(MonoFlatMap.java:53)
+		at reactor.core.publisher.InternalMonoOperator.subscribe(InternalMonoOperator.java:57)
+		at reactor.core.publisher.MonoDefer.subscribe(MonoDefer.java:52)
+		at reactor.core.publisher.MonoIgnoreThen$ThenIgnoreMain.drain(MonoIgnoreThen.java:153)
+		at reactor.core.publisher.MonoIgnoreThen.subscribe(MonoIgnoreThen.java:56)
+		at reactor.core.publisher.InternalMonoOperator.subscribe(InternalMonoOperator.java:64)
+		at reactor.core.publisher.MonoFlatMap$FlatMapMain.onNext(MonoFlatMap.java:150)
+		at reactor.core.publisher.FluxSwitchIfEmpty$SwitchIfEmptySubscriber.onNext(FluxSwitchIfEmpty.java:67)
+		at reactor.core.publisher.MonoNext$NextSubscriber.onNext(MonoNext.java:76)
+		at reactor.core.publisher.FluxConcatMap$ConcatMapImmediate.innerNext(FluxConcatMap.java:274)
+		at reactor.core.publisher.FluxConcatMap$ConcatMapInner.onNext(FluxConcatMap.java:851)
+		at reactor.core.publisher.FluxMapFuseable$MapFuseableSubscriber.onNext(FluxMapFuseable.java:121)
+		at reactor.core.publisher.MonoPeekTerminal$MonoTerminalPeekSubscriber.onNext(MonoPeekTerminal.java:173)
+		at reactor.core.publisher.Operators$ScalarSubscription.request(Operators.java:2344)
+		at reactor.core.publisher.MonoPeekTerminal$MonoTerminalPeekSubscriber.request(MonoPeekTerminal.java:132)
+		at reactor.core.publisher.FluxMapFuseable$MapFuseableSubscriber.request(FluxMapFuseable.java:162)
+		at reactor.core.publisher.Operators$MultiSubscriptionSubscriber.set(Operators.java:2152)
+		at reactor.core.publisher.Operators$MultiSubscriptionSubscriber.onSubscribe(Operators.java:2026)
+		at reactor.core.publisher.FluxMapFuseable$MapFuseableSubscriber.onSubscribe(FluxMapFuseable.java:90)
+		at reactor.core.publisher.MonoPeekTerminal$MonoTerminalPeekSubscriber.onSubscribe(MonoPeekTerminal.java:145)
+		at reactor.core.publisher.MonoJust.subscribe(MonoJust.java:54)
+		at reactor.core.publisher.Mono.subscribe(Mono.java:4213)
+		at reactor.core.publisher.FluxConcatMap$ConcatMapImmediate.drain(FluxConcatMap.java:441)
+		at reactor.core.publisher.FluxConcatMap$ConcatMapImmediate.onSubscribe(FluxConcatMap.java:211)
+		at reactor.core.publisher.FluxIterable.subscribe(FluxIterable.java:161)
+		at reactor.core.publisher.FluxIterable.subscribe(FluxIterable.java:86)
+		at reactor.core.publisher.InternalMonoOperator.subscribe(InternalMonoOperator.java:64)
+		at reactor.core.publisher.MonoDefer.subscribe(MonoDefer.java:52)
+		at reactor.core.publisher.InternalMonoOperator.subscribe(InternalMonoOperator.java:64)
+		at reactor.core.publisher.MonoDefer.subscribe(MonoDefer.java:52)
+		at reactor.core.publisher.InternalMonoOperator.subscribe(InternalMonoOperator.java:64)
+		at reactor.core.publisher.MonoDefer.subscribe(MonoDefer.java:52)
+		at reactor.core.publisher.Mono.subscribe(Mono.java:4213)
+		at reactor.core.publisher.MonoIgnoreThen$ThenIgnoreMain.drain(MonoIgnoreThen.java:172)
+		at reactor.core.publisher.MonoIgnoreThen.subscribe(MonoIgnoreThen.java:56)
+		at reactor.core.publisher.InternalMonoOperator.subscribe(InternalMonoOperator.java:64)
+		at reactor.netty.http.server.HttpServerHandle.onStateChange(HttpServerHandle.java:64)
+		at reactor.netty.ReactorNetty$CompositeConnectionObserver.onStateChange(ReactorNetty.java:514)
+		at reactor.netty.tcp.TcpServerBind$ChildObserver.onStateChange(TcpServerBind.java:262)
+		at reactor.netty.http.server.HttpServerOperations.onInboundNext(HttpServerOperations.java:465)
+		at reactor.netty.channel.ChannelOperationsHandler.channelRead(ChannelOperationsHandler.java:96)
+		at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:379)
+		at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:365)
+		at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:357)
+		at reactor.netty.http.server.HttpTrafficHandler.channelRead(HttpTrafficHandler.java:170)
+		at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:379)
+		at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:365)
+		at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:357)
+		at io.netty.channel.CombinedChannelDuplexHandler$DelegatingChannelHandlerContext.fireChannelRead(CombinedChannelDuplexHandler.java:436)
+		at io.netty.handler.codec.ByteToMessageDecoder.fireChannelRead(ByteToMessageDecoder.java:324)
+		at io.netty.handler.codec.ByteToMessageDecoder.channelRead(ByteToMessageDecoder.java:296)
+		at io.netty.channel.CombinedChannelDuplexHandler.channelRead(CombinedChannelDuplexHandler.java:251)
+		at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:379)
+		at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:365)
+		at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:357)
+		at io.netty.channel.DefaultChannelPipeline$HeadContext.channelRead(DefaultChannelPipeline.java:1410)
+		at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:379)
+		at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:365)
+		at io.netty.channel.DefaultChannelPipeline.fireChannelRead(DefaultChannelPipeline.java:919)
+		at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:163)
+		at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:714)
+		at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:650)
+		at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:576)
+		at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:493)
+		at io.netty.util.concurrent.SingleThreadEventExecutor$4.run(SingleThreadEventExecutor.java:989)
+		at io.netty.util.internal.ThreadExecutorMap$2.run(ThreadExecutorMap.java:74)
+		at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+		at java.lang.Thread.run(Unknown Source)
+####<2020-10-07 10:35:42.367> <INFO> <org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler> <SpringContextShutdownHook> - <Shutting down ExecutorService 'taskSchedulerThreadPool'>
+####<2020-10-07 10:36:16.262> <INFO> <org.easystogu.app.EasyStoGuScheduledApp> <main> - <Starting EasyStoGu ScheduledApp...>
+####<2020-10-07 10:36:16.829> <INFO> <org.easystogu.app.EasyStoGuScheduledApp> <main> - <Starting EasyStoGuScheduledApp on CN-00012450 with PID 72608 (C:\Users\eyaweiw\github\EasyStoGu\ScheduledApp\target\easystogu-scheduled-app-2.0.0-SNAPSHOT-exec.jar started by eyaweiw in C:\Users\eyaweiw\github\EasyStoGu\ScheduledApp)>
+####<2020-10-07 10:36:16.830> <INFO> <org.easystogu.app.EasyStoGuScheduledApp> <main> - <No active profile set, falling back to default profiles: default>
+####<2020-10-07 10:36:18.519> <INFO> <org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler> <main> - <Initializing ExecutorService 'taskSchedulerThreadPool'>
+####<2020-10-07 10:36:18.744> <INFO> <org.springframework.boot.actuate.endpoint.web.EndpointLinksResolver> <main> - <Exposing 2 endpoint(s) beneath base path '/actuator'>
+####<2020-10-07 10:36:20.636> <INFO> <org.springframework.boot.web.embedded.netty.NettyWebServer> <main> - <Netty started on port(s): 8080>
+####<2020-10-07 10:36:20.654> <INFO> <org.easystogu.app.EasyStoGuScheduledApp> <main> - <Started EasyStoGuScheduledApp in 4.258 seconds (JVM running for 4.819)>
+####<2020-10-07 10:36:20.655> <INFO> <org.easystogu.app.EasyStoGuScheduledApp> <main> - <EasyStoGu ScheduledApp started.>
+####<2020-10-07 10:36:24.702> <INFO> <org.easystogu.scheduler.DailyScheduler> <reactor-http-nio-2> - <dataBaseSanityCheck start>
+####<2020-10-07 10:38:39.930> <INFO> <org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler> <SpringContextShutdownHook> - <Shutting down ExecutorService 'taskSchedulerThreadPool'>
+####<2020-10-07 10:38:53.971> <INFO> <org.easystogu.app.EasyStoGuScheduledApp> <main> - <Starting EasyStoGu ScheduledApp...>
+####<2020-10-07 10:38:54.542> <INFO> <org.easystogu.app.EasyStoGuScheduledApp> <main> - <Starting EasyStoGuScheduledApp on CN-00012450 with PID 68336 (C:\Users\eyaweiw\github\EasyStoGu\ScheduledApp\target\easystogu-scheduled-app-2.0.0-SNAPSHOT-exec.jar started by eyaweiw in C:\Users\eyaweiw\github\EasyStoGu\ScheduledApp)>
+####<2020-10-07 10:38:54.542> <INFO> <org.easystogu.app.EasyStoGuScheduledApp> <main> - <No active profile set, falling back to default profiles: default>
+####<2020-10-07 10:38:56.233> <INFO> <org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler> <main> - <Initializing ExecutorService 'taskSchedulerThreadPool'>
+####<2020-10-07 10:38:56.472> <INFO> <org.springframework.boot.actuate.endpoint.web.EndpointLinksResolver> <main> - <Exposing 2 endpoint(s) beneath base path '/actuator'>
+####<2020-10-07 10:38:58.365> <INFO> <org.springframework.boot.web.embedded.netty.NettyWebServer> <main> - <Netty started on port(s): 8080>
+####<2020-10-07 10:38:58.377> <INFO> <org.easystogu.app.EasyStoGuScheduledApp> <main> - <Started EasyStoGuScheduledApp in 4.254 seconds (JVM running for 4.83)>
+####<2020-10-07 10:38:58.378> <INFO> <org.easystogu.app.EasyStoGuScheduledApp> <main> - <EasyStoGu ScheduledApp started.>
+####<2020-10-07 10:38:59.821> <INFO> <org.easystogu.scheduler.DailyScheduler> <reactor-http-nio-2> - <dailyOverAllRunnerMorning start>
+####<2020-10-07 10:38:59.836> <INFO> <org.easystogu.scheduler.DailyScheduler> <reactor-http-nio-2> - <dailyOverAllRunnerMorning stop, response: MonoFlatMap>
+####<2020-10-07 10:39:41.526> <INFO> <org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler> <SpringContextShutdownHook> - <Shutting down ExecutorService 'taskSchedulerThreadPool'>
