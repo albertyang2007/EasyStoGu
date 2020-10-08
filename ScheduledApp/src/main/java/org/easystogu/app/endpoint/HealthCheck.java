@@ -13,11 +13,6 @@ public class HealthCheck {
 	DailyScheduler DailyScheduler;
 	@GetMapping("/health")
 	public Mono<String> mainPage() {
-		try {
-		DailyScheduler.dailyOverAllRunnerMorning();
-		}catch(Exception e) {
-			e.printStackTrace();
-		}
 		return Mono.just("The SchedulerApp is OK.");
 	}
 }

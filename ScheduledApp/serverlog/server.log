@@ -216,3 +216,26 @@ Stack trace:
 ####<2020-10-07 10:38:59.821> <INFO> <org.easystogu.scheduler.DailyScheduler> <reactor-http-nio-2> - <dailyOverAllRunnerMorning start>
 ####<2020-10-07 10:38:59.836> <INFO> <org.easystogu.scheduler.DailyScheduler> <reactor-http-nio-2> - <dailyOverAllRunnerMorning stop, response: MonoFlatMap>
 ####<2020-10-07 10:39:41.526> <INFO> <org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler> <SpringContextShutdownHook> - <Shutting down ExecutorService 'taskSchedulerThreadPool'>
+####<2020-10-08 07:25:40.033> <INFO> <org.easystogu.app.EasyStoGuScheduledApp> <main> - <Starting EasyStoGu ScheduledApp...>
+####<2020-10-08 07:25:40.614> <INFO> <org.easystogu.app.EasyStoGuScheduledApp> <main> - <Starting EasyStoGuScheduledApp on CN-00012450 with PID 40096 (C:\Users\eyaweiw\github\EasyStoGu\ScheduledApp\target\easystogu-scheduled-app-2.0.0-SNAPSHOT-exec.jar started by eyaweiw in C:\Users\eyaweiw\github\EasyStoGu\ScheduledApp)>
+####<2020-10-08 07:25:40.615> <INFO> <org.easystogu.app.EasyStoGuScheduledApp> <main> - <No active profile set, falling back to default profiles: default>
+####<2020-10-08 07:25:42.414> <INFO> <org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler> <main> - <Initializing ExecutorService 'taskSchedulerThreadPool'>
+####<2020-10-08 07:25:42.660> <INFO> <org.springframework.boot.actuate.endpoint.web.EndpointLinksResolver> <main> - <Exposing 2 endpoint(s) beneath base path '/actuator'>
+####<2020-10-08 07:25:44.854> <INFO> <org.springframework.boot.web.embedded.netty.NettyWebServer> <main> - <Netty started on port(s): 8080>
+####<2020-10-08 07:25:44.872> <INFO> <org.easystogu.app.EasyStoGuScheduledApp> <main> - <Started EasyStoGuScheduledApp in 4.694 seconds (JVM running for 5.294)>
+####<2020-10-08 07:25:44.873> <INFO> <org.easystogu.app.EasyStoGuScheduledApp> <main> - <EasyStoGu ScheduledApp started.>
+####<2020-10-08 07:26:13.661> <INFO> <org.easystogu.scheduler.DailyScheduler> <reactor-http-nio-2> - <dailyOverAllRunnerMorning start>
+####<2020-10-08 07:26:13.684> <INFO> <org.easystogu.scheduler.DailyScheduler> <reactor-http-nio-2> - <dailyOverAllRunnerMorning stop, response: MonoFlatMap>
+####<2020-10-08 07:29:12.719> <INFO> <org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler> <SpringContextShutdownHook> - <Shutting down ExecutorService 'taskSchedulerThreadPool'>
+####<2020-10-08 07:30:17.546> <INFO> <org.easystogu.app.EasyStoGuScheduledApp> <main> - <Starting EasyStoGu ScheduledApp...>
+####<2020-10-08 07:30:18.090> <INFO> <org.easystogu.app.EasyStoGuScheduledApp> <main> - <Starting EasyStoGuScheduledApp on CN-00012450 with PID 26400 (C:\Users\eyaweiw\github\EasyStoGu\ScheduledApp\target\easystogu-scheduled-app-2.0.0-SNAPSHOT-exec.jar started by eyaweiw in C:\Users\eyaweiw\github\EasyStoGu\ScheduledApp)>
+####<2020-10-08 07:30:18.090> <DEBUG> <org.easystogu.app.EasyStoGuScheduledApp> <main> - <Running with Spring Boot v2.3.0.RELEASE, Spring v5.2.6.RELEASE>
+####<2020-10-08 07:30:18.091> <INFO> <org.easystogu.app.EasyStoGuScheduledApp> <main> - <No active profile set, falling back to default profiles: default>
+####<2020-10-08 07:30:19.771> <INFO> <org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler> <main> - <Initializing ExecutorService 'taskSchedulerThreadPool'>
+####<2020-10-08 07:30:19.983> <INFO> <org.springframework.boot.actuate.endpoint.web.EndpointLinksResolver> <main> - <Exposing 2 endpoint(s) beneath base path '/actuator'>
+####<2020-10-08 07:30:21.991> <INFO> <org.springframework.boot.web.embedded.netty.NettyWebServer> <main> - <Netty started on port(s): 8080>
+####<2020-10-08 07:30:22.004> <INFO> <org.easystogu.app.EasyStoGuScheduledApp> <main> - <Started EasyStoGuScheduledApp in 4.32 seconds (JVM running for 4.884)>
+####<2020-10-08 07:30:22.005> <INFO> <org.easystogu.app.EasyStoGuScheduledApp> <main> - <EasyStoGu ScheduledApp started.>
+####<2020-10-08 07:30:22.230> <INFO> <org.easystogu.scheduler.DailyScheduler> <reactor-http-nio-2> - <dailyOverAllRunnerMorning start>
+####<2020-10-08 07:30:22.250> <INFO> <org.easystogu.scheduler.DailyScheduler> <reactor-http-nio-2> - <dailyOverAllRunnerMorning stop, response: MonoFlatMap>
+####<2020-10-08 09:14:25.386> <INFO> <org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler> <SpringContextShutdownHook> - <Shutting down ExecutorService 'taskSchedulerThreadPool'>

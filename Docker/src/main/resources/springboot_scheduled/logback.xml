@@ -22,7 +22,7 @@
         </triggeringPolicy>
     </appender>
 
-    <logger name="org.easystogu.runner" additivity="false" level="DEBUG">
+    <logger name="org.easystogu" additivity="false" level="DEBUG">
         <appender-ref ref="TRAFFIC_LOG_FILE"/>
     </logger>
 
