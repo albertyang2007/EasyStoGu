@@ -278,7 +278,7 @@ public class DataBaseSanityCheck {
 			this.sanityDailyCheck(stockConfig.getAllStockId());
 			this.sanityWeekCheck(stockConfig.getAllStockId());
 			this.sanityDailyStatisticsCheck(stockConfig.getAllStockId());
-			logger.info("stop DataBaseSanityCheck using " + (System.currentTimeMillis() - st) / 1000 + " seconds");
+			logger.info("stop DataBaseSanityCheck using " + (System.currentTimeMillis() - st) / (1000*60) + " mins");
 			// this.sanityDailyCheck("002797");
 			// this.sanityWeekCheck("002797");
 		} catch (Exception e) {

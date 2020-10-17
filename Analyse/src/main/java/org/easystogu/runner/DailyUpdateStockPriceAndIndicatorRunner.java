@@ -37,6 +37,6 @@ public class DailyUpdateStockPriceAndIndicatorRunner {
 		// week ind
 		allDailyIndCountAndSaveDBRunner.runDailyWeekIndForStockIds(allStockIds);
 
-		logger.info("stop DailyUpdateStockPriceAndIndicatorRunner using " + (System.currentTimeMillis() - st) / 1000 + " seconds");
+		logger.info("stop DailyUpdateStockPriceAndIndicatorRunner using " + (System.currentTimeMillis() - st) / (1000 * 60) + " mins");
 	}
 }

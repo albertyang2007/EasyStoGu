@@ -55,6 +55,6 @@ public class DailyUpdateAllStockRunner {
 		// alaylse by view names
 		dailyViewAnalyseRunner.run();
 
-		logger.info("stop DailyUpdateAllStockRunner using " + (System.currentTimeMillis() - st) / 1000 + " seconds");
+		logger.info("stop DailyUpdateAllStockRunner using " + (System.currentTimeMillis() - st) / (1000 * 60) + " mins");
 	}
 }

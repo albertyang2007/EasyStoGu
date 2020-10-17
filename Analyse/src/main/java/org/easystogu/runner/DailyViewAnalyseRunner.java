@@ -74,6 +74,6 @@ public class DailyViewAnalyseRunner {
 		this.slowAnalyseForView("luzao_phaseII_wr_midTerm_lonTerm_same");
 		this.slowAnalyseForView("luzao_phaseII_wr_shoTerm_midTerm_same");
 		
-		logger.info("stop DailyViewAnalyseRunner using " + (System.currentTimeMillis() - st) / 1000 + " seconds");
+		logger.info("stop DailyViewAnalyseRunner using " + (System.currentTimeMillis() - st) / (1000 * 60) + " mins");
 	}
 }

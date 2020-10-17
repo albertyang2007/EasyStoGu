@@ -18,9 +18,10 @@ public class DailyOverAllRunner {
 
 	public void run() {
 		logger.info("start overall runner");
+		long st = System.currentTimeMillis();
 		dailyScheduleActionRunner.run();
 		dailyUpdateAllStockRunner.run();
 		allCacheRunner.refreshAll();
-		logger.info("stop overall runner");
+		logger.info("stop overall runner, spent mins: {}", (System.currentTimeMillis() - st)/(1000 * 60));
 	}
 }
