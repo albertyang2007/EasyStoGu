@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="60 seconds">
+    <statusListener class="ch.qos.logback.core.status.OnConsoleStatusListener"/>
+    <property name="SERVER_LOG_HOME" value="./serverlog/"/>
+
+    <!--Server log -->
+    <appender name="TRAFFIC_LOG_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${SERVER_LOG_HOME}/server.log</file>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>DEBUG</level>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+            <FileNamePattern>${SERVER_LOG_HOME}/server.log.%i</FileNamePattern>
+            <MinIndex>1</MinIndex>
+            <MaxIndex>10</MaxIndex>
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>####&lt;%d{yyyy-MM-dd HH:mm:ss.SSS}&gt; &lt;%level&gt; &lt;%logger&gt; &lt;%thread&gt; - &lt;%msg&gt;%n</pattern>
+        </encoder>
+        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <MaxFileSize>10MB</MaxFileSize>
+        </triggeringPolicy>
+    </appender>
+
+    <logger name="org.easystogu" additivity="false" level="DEBUG">
+        <appender-ref ref="TRAFFIC_LOG_FILE"/>
+    </logger>
+
+    <logger name="org.springframework" additivity="false" level="INFO">
+        <appender-ref ref="TRAFFIC_LOG_FILE"/>
+    </logger>
+    
+    <logger name="io.grpc.netty.NettyServerTransport" level="OFF"> </logger>
+
+    <root level="INFO">
+        <appender-ref ref="TRAFFIC_LOG_FILE"/>
+    </root>
+</configuration>

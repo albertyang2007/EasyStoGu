@@ -1,4 +1,4 @@
-package org.easystogu.app;
+package org.easystogu.schedule.app;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 @Configuration
-@ComponentScan(basePackages = { "org.easystogu", "com.tictactec.ta.lib" })
+@ComponentScan(basePackages = { "org.easystogu" })
 @EnableAutoConfiguration(exclude = { HibernateJpaAutoConfiguration.class, JpaRepositoriesAutoConfiguration.class,
 		DataSourceAutoConfiguration.class, CassandraDataAutoConfiguration.class,
 		PersistenceExceptionTranslationAutoConfiguration.class})

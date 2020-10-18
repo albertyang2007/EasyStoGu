@@ -77,6 +77,15 @@
 				<module>EWeb</module>
 			</modules>
 		</profile>
+		<profile>
+			<id>kafuka</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<modules>
+				<module>KafakaBroker</module>
+			</modules>
+		</profile>
 	</profiles>
 
 	<build>

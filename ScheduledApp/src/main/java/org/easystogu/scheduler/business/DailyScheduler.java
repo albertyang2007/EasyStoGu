@@ -1,4 +1,4 @@
-package org.easystogu.scheduler;
+package org.easystogu.scheduler.business;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

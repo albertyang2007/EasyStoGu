@@ -1,4 +1,4 @@
-package org.easystogu.app;
+package org.easystogu.kafuka.app;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,22 +14,22 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 @Configuration
-@ComponentScan(basePackages = { "org.easystogu", "com.tictactec.ta.lib" })
+@ComponentScan(basePackages = { "org.easystogu" })
 @EnableAutoConfiguration(exclude = { HibernateJpaAutoConfiguration.class, JpaRepositoriesAutoConfiguration.class,
 		DataSourceAutoConfiguration.class, CassandraDataAutoConfiguration.class,
 		PersistenceExceptionTranslationAutoConfiguration.class})
 @EnableScheduling
-public class EasyStoGuPortalApp {
-	private static final Logger LOGGER = LoggerFactory.getLogger(EasyStoGuPortalApp.class);
+public class EasyStoGuKafukaBrokerApp {
+	private static final Logger LOGGER = LoggerFactory.getLogger(EasyStoGuKafukaBrokerApp.class);
 
 	public static void main(String[] args) {
 		try {
-			LOGGER.info("Starting EasyStoGu PortalApp...");
-			SpringApplication.run(EasyStoGuPortalApp.class, args);
-			LOGGER.info("EasyStoGu PortalApp started.");
+			LOGGER.info("Starting EasyStoGu KafukaBroker...");
+			SpringApplication.run(EasyStoGuKafukaBrokerApp.class, args);
+			LOGGER.info("EasyStoGu KafukaBroker started.");
 		} catch (Exception e) {
 			e.printStackTrace();
-			LOGGER.error("Fail to start EasyStoGu PortalApp: {}", e.getMessage());
+			LOGGER.error("Fail to start EasyStoGu KafukaBroker: {}", e.getMessage());
 
 			System.exit(-1);
 		}

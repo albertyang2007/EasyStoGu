@@ -1,4 +1,4 @@
-package org.easystogu.scheduler;
+package org.easystogu.scheduler.business;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
