@@ -3,3 +3,4 @@ This docker file is used for easystogu eweb k8s deployment.
 docker build -t easystogu-eweb:2.0.0-snapshot .
 docker tag easystogu-eweb:2.0.0-snapshot eyaweiw.cn:5000/easystogu-eweb:2.0.0-snapshot
 docker push eyaweiw.cn:5000/easystogu-eweb:2.0.0-snapshot
+

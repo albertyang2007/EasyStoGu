@@ -17,7 +17,7 @@ docker tag easystogu-portal:2.0.0-snapshot eyaweiw.cn:5000/easystogu-portal:2.0.
 docker push eyaweiw.cn:5000/easystogu-portal:2.0.0-snapshot
 
 echo 'scheduled docker build image and upload'
-/home/eyaweiw/github/EasyStoGu/Docker/src/main/resources/springboot_scheduled
+cd /home/eyaweiw/github/EasyStoGu/Docker/src/main/resources/springboot_scheduled
 cp /home/eyaweiw/github/EasyStoGu/ScheduledApp/target/easystogu-scheduled-app-2.0.0-SNAPSHOT-exec.jar ./easystogu-scheduled-app.jar
 
 docker build -t easystogu-scheduled:2.0.0-snapshot .
