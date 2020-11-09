@@ -11,7 +11,9 @@ function getEasyStoGuServerUrl() {
 	// using jboss.easystogu.cn for docker image or real wildjboss or singleston jboss container 
 	// return "http://jboss.easystogu.cn:8080"; 
 	// using easystogu-portal for k8s cluster service deploy
-	return "http://easystogu-portal:8080";
+	// return "http://easystogu-portal:8080";
+	// using easystogu-portal for k8s and istio cluster service deploy
+	return "http://easystogu-portal";
 }
 
 /**
