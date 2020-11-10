@@ -7,8 +7,12 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import org.easystogu.log.LogHelper;
+import org.slf4j.Logger;
 
 public class WeekdayUtil {
+    private static Logger logger = LogHelper.getLogger(WeekdayUtil.class);
+  
 	public static SimpleDateFormat sdf_yyyy = new SimpleDateFormat("yyyy");
 	public static SimpleDateFormat sdf_MM = new SimpleDateFormat("MM");
 	public static SimpleDateFormat sdf_dd = new SimpleDateFormat("dd");
@@ -122,6 +126,7 @@ public class WeekdayUtil {
 
 	// 返回某年第几周的所有工作日，年底交叉的分开，一年最多53周，
 	public static List<String> getWorkingDaysOfWeek(int year, int week) {
+	    try {
 		List<String> dates = new ArrayList<String>();
 		Calendar cal = Calendar.getInstance();
 		cal.clear();
@@ -154,6 +159,10 @@ public class WeekdayUtil {
 		}
 
 		return dates;
+	    }catch(Exception e) {	  
+	      logger.error("Exeption meets when getWorkingDaysOfWeek year=" + year + ", week=" + week, e);
+	    }
+	    return new ArrayList<String>();
 	}
 
 	public static List<String> getCurrentWeekDates() {
