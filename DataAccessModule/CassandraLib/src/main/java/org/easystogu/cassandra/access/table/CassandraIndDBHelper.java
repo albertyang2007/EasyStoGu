@@ -38,6 +38,8 @@ public abstract class CassandraIndDBHelper<T extends IndicatorVO> implements Ind
 	protected String DELETE_BY_STOCKID_AND_DATE_SQL;
 
 	private static Map<String, PreparedStatement> prepareStmtMap = new ConcurrentHashMap<String, PreparedStatement>();
+	
+	private static Session cassandraSession = null;
 
 	protected void init() {
 		String[] paris = generateFieldsNamePairs();
@@ -197,6 +199,11 @@ public abstract class CassandraIndDBHelper<T extends IndicatorVO> implements Ind
 	}
 	
 	private Session getCassandraSession(){
-		return cassandraKepSpaceFactory.createCluster().connect();
+	    if(cassandraSession !=null && !cassandraSession.isClosed()) {
+	      return cassandraSession;
+	    }else {
+	      cassandraSession = cassandraKepSpaceFactory.createCluster().connect();
+		  return cassandraSession;
+	    }
 	}
 }

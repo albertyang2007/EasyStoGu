@@ -7,7 +7,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import javax.annotation.PostConstruct;
 import org.easystogu.db.access.table.CompanyInfoTableHelper;
 import org.easystogu.db.vo.table.CompanyInfoVO;
 import org.easystogu.file.TextFileSourceHelper;
@@ -139,22 +138,6 @@ public class CompanyInfoFileHelper {
     }
     // stockId has prefix, so remove it (sh, sz)
     return stockIdWithPrefix.substring(2);
-  }
-
-  public List<String> getAllSHStockId() {
-    if (companyMap.size() == 0) {
-      this.init();
-    }
-
-
-    List<String> stockIds = new ArrayList<String>();
-    Set<String> set = this.companyMap.keySet();
-    for (String stockId : set) {
-      if (stockId.startsWith("6")) {
-        stockIds.add(stockId);
-      }
-    }
-    return stockIds;
   }
 
   public List<String> getAllSHStockId(String prefix) {
