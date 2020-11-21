@@ -38,6 +38,19 @@ public class CassandraKepSpaceFactory {
 			logger.info("Using env: {}, value: {}", Constants.CassandraPort, port);
 		}
 		
+		String user = config.getString(Constants.CassandraUser);
+		String userFromEnv = System.getenv(Constants.CassandraUser);
+		if(Strings.isNotEmpty(userFromEnv)) {
+			logger.info("Using env: {}, value: {}", Constants.CassandraUser, userFromEnv);
+		}
+		
+		String pwd = config.getString(Constants.CassandraPassword);
+		String pwdFromEnv = System.getenv(Constants.CassandraPassword);
+		if(Strings.isNotEmpty(pwdFromEnv)) {
+			logger.info("Using env: {}, value: {}", Constants.CassandraPassword, pwdFromEnv);
+		}
+		
+		
 		cluster = Cluster.builder().addContactPoints(contactPoints).withPort(port).build();
 
 		return cluster;
