@@ -51,7 +51,9 @@ public class CassandraKepSpaceFactory {
 		}
 		
 		
-		cluster = Cluster.builder().addContactPoints(contactPoints).withPort(port).build();
+		//cluster = Cluster.builder().addContactPoints(contactPoints).withPort(port).build();
+	    //If docker using Authentication in cassandra, refer to https://hopding.com/cassandra-authentication-in-docker-container
+        cluster = Cluster.builder().addContactPoints(contactPoints).withPort(port).withCredentials(user, pwd).build();
 
 		return cluster;
 	}
