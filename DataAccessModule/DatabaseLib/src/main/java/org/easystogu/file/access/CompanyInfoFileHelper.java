@@ -8,7 +8,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import org.easystogu.db.access.table.CompanyInfoTableHelper;
+import org.easystogu.db.access.table.FavoritesStockHelper;
 import org.easystogu.db.vo.table.CompanyInfoVO;
+import org.easystogu.db.vo.view.FavoritesStockVO;
 import org.easystogu.file.TextFileSourceHelper;
 import org.easystogu.log.LogHelper;
 import org.easystogu.utils.StringComparator;
@@ -30,9 +32,25 @@ public class CompanyInfoFileHelper {
   protected TextFileSourceHelper fileSource;
   protected String fileName = "./Company_Info/Company_Info.csv";
   private static Map<String, CompanyInfoVO> companyMap = new HashMap<String, CompanyInfoVO>();
+  
+  @Autowired
+  protected FavoritesStockHelper favoritesStockHelper;
 
   private void init() {
-    this.loadDataFromDatabase();
+    //the env onlyUseFavoritesStocksInK8s shold be set in the application.properties
+    //and config to configMap in K8s
+    if("true".equalsIgnoreCase(System.getenv("onlyUseFavoritesStocksInK8s"))) {
+      List<FavoritesStockVO> list = this.favoritesStockHelper.getByUserId("admin");
+      for(FavoritesStockVO fstock : list) {
+        CompanyInfoVO cInfo = companyInfoTable.getCompanyInfoByStockId(fstock.getStockId());
+        if(cInfo != null) {
+          companyMap.put(cInfo.stockId, cInfo);
+        }
+      }
+    }else {
+      //load all the company info from database
+      this.loadDataFromDatabase();
+    }
 
     // add special stockId and name
     CompanyInfoVO vo1 = new CompanyInfoVO("999999", "上证指数");
@@ -93,7 +111,7 @@ public class CompanyInfoFileHelper {
   }
 
   @SuppressWarnings("unchecked")
-  public List<String> getAllStockId() {
+  public List<String> getAllStockId() {    
     if (companyMap.size() == 0) {
       this.init();
     }

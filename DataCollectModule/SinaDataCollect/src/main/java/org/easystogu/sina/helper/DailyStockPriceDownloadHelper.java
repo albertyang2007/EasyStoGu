@@ -19,7 +19,7 @@ import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-//get real time stock price from http://hq.sinajs.cn/list=
+//get real time stock price from http://hq.sinajs.cn/list=sh000001
 //it need sotckIds as parameter
 @Component
 public class DailyStockPriceDownloadHelper {
