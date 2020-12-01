@@ -1,10 +1,10 @@
 package org.easystogu.portal;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.regex.Pattern;
-
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
-
 import org.easystogu.cassandra.access.table.IndMacdCassTableHelper;
 import org.easystogu.config.Constants;
 import org.easystogu.config.DBConfigurationService;
@@ -101,6 +101,8 @@ public class HomeEndPoint {
 		sb.append("<a href='/portal/home/TestDB'>TestDB</a><br>");
 
 		sb.append("<br><a href='/eweb/index.htm'>eweb index</a><br>");
+		
+		sb.append("<br>HostName: "+ getHostName() +"</br>");
 
 		sb.append("</body>\r\n" + "</html>");
 
@@ -112,7 +114,7 @@ public class HomeEndPoint {
 		String zone = config.getString("zone", "");
 		if (Constants.ZONE_OFFICE.equals(zone)) {
 			new Thread(() -> dailyUpdateAllStockRunner.run()).start();
-			return "DailyUpdateAllStockRunner already running, please check folder result.";
+			return getHostName() + " DailyUpdateAllStockRunner already running, please check folder result.";
 		}
 		return zone + " not allow to run this method.";
 	}
@@ -122,7 +124,7 @@ public class HomeEndPoint {
 		String zone = config.getString("zone", "");
 		if (Constants.ZONE_OFFICE.equals(zone)) {
 			new Thread(() -> dailySelectionRunner.run()).start();
-			return "DailySelectionRunner already running, please check folder result.";
+			return getHostName() + " DailySelectionRunner already running, please check folder result.";
 		}
 		return zone + " not allow to run this method.";
 	}
@@ -138,7 +140,7 @@ public class HomeEndPoint {
 		String zone = config.getString("zone", "");
 		if (Constants.ZONE_OFFICE.equals(zone)) {
 			new Thread(() -> dataBaseSanityCheck.run()).start();
-			return "DataBaseSanityCheck already running, please check DB result.";
+			return getHostName() + " DataBaseSanityCheck already running, please check DB result.";
 		}
 		return zone + " not allow to run this method.";
 	}
@@ -148,7 +150,7 @@ public class HomeEndPoint {
 		String zone = config.getString("zone", "");
 		if (Constants.ZONE_OFFICE.equals(zone)) {
 			new Thread(() -> dailyOverAllRunner.run()).start();
-			return "DailyOverAllRunner already running, please check DB result.";
+			return getHostName() + " DailyOverAllRunner already running, please check DB result.";
 		}
 		return zone + " not allow to run this method.";
 	}
@@ -158,7 +160,7 @@ public class HomeEndPoint {
 		String zone = config.getString("zone", "");
 		if (Constants.ZONE_OFFICE.equals(zone)) {
 			new Thread(() -> dailyOverAllRunner.run()).start();
-			return "FastDailyOverAllRunner (without zijinliu) already running, please check DB result.";
+			return getHostName() + " FastDailyOverAllRunner (without zijinliu) already running, please check DB result.";
 		}
 		return zone + " not allow to run this method.";
 	}
@@ -168,7 +170,7 @@ public class HomeEndPoint {
 		String zone = config.getString("zone", "");
 		if (Constants.ZONE_OFFICE.equals(zone)) {
 			new Thread(() -> dailyUpdateStockPriceAndIndicatorRunner.run()).start();
-			return "DailyUpdateStockPriceAndIndicatorRunner already running, please check DB result.";
+			return getHostName() + " DailyUpdateStockPriceAndIndicatorRunner already running, please check DB result.";
 		}
 		return zone + " not allow to run this method.";
 	}
@@ -178,7 +180,7 @@ public class HomeEndPoint {
 		String zone = config.getString("zone", "");
 		if (Constants.ZONE_OFFICE.equals(zone)) {
 			new Thread(() -> dailyViewAnalyseRunner.run()).start();
-			return "DailyViewAnalyseRunner already running, please check folder result.";
+			return getHostName() + " DailyViewAnalyseRunner already running, please check folder result.";
 		}
 		return zone + " not allow to run this method.";
 	}
@@ -189,7 +191,7 @@ public class HomeEndPoint {
 		// day (download all stockIds price)
 		if (Constants.ZONE_OFFICE.equals(zone)) {
 			new Thread(() -> dailyStockPriceDownloadAndStoreDBRunner2.run()).start();
-			return "DailyStockPriceDownloadAndStoreDBRunner2 already running, please check folder result.";
+			return getHostName() + " DailyStockPriceDownloadAndStoreDBRunner2 already running, please check folder result.";
 		}
 		return zone + " not allow to run this method.";
 	}
@@ -200,7 +202,7 @@ public class HomeEndPoint {
 		// update the total GuBen and LiuTong GuBen
 		if (Constants.ZONE_OFFICE.equals(zone)) {
 			new Thread(() -> companyInfoFileHelper.updateCompanyFromFileToDB()).start();
-			return "UpdateCompanyFromFileToDB already running, please check folder result.";
+			return getHostName() + " UpdateCompanyFromFileToDB already running, please check folder result.";
 		}
 		return zone + " not allow to run this method.";
 	}
@@ -221,7 +223,7 @@ public class HomeEndPoint {
 
 			new Thread(() -> stockPriceHistoryOverAllRunner.run(_startDate, _endDate)).start();
 
-			return "StockPriceHistoryOverAllRunner already running, startDate=" + startDate + ", endDate=" + endDate;
+			return getHostName() + " StockPriceHistoryOverAllRunner already running, startDate=" + startDate + ", endDate=" + endDate;
 		}
 		return zone + " not allow to run this method.";
 	}
@@ -231,7 +233,7 @@ public class HomeEndPoint {
 		String zone = config.getString("zone", "");
 		if (Constants.ZONE_OFFICE.equals(zone)) {
 			new Thread(() -> indicatorHistortOverAllRunner.run()).start();
-			return "IndicatorHistortOverAllRunner already running, please check folder result.";
+			return getHostName() + " IndicatorHistortOverAllRunner already running, please check folder result.";
 		}
 		return zone + " not allow to run this method.";
 	}
@@ -248,7 +250,7 @@ public class HomeEndPoint {
 			});
 			t.start();
 
-			return "OneTimeTempRunner already running, please check folder result.";
+			return getHostName() + " OneTimeTempRunner already running, please check folder result.";
 		}
 		return zone + " not allow to run this method.";
 	}
@@ -257,7 +259,7 @@ public class HomeEndPoint {
 	public String test() {
 		new Thread(() -> historyDailySelectionRunner.run()).start();
 
-		return "start CheckPointStatisticsPrepareData";
+		return getHostName() + " start CheckPointStatisticsPrepareData";
 	}
 
 	@GetMapping("/TestDB")
@@ -293,6 +295,20 @@ public class HomeEndPoint {
 			e.printStackTrace();
 			return "exception: " + e.getMessage();
 		}
-		return "TestCassandra result: \n" + sb.toString();
+		return getHostName() + " TestCassandra result: \n" + sb.toString();
+	}
+	
+	private String getHostName() {
+	  InetAddress ip;
+      String hostname;
+      try {
+          ip = InetAddress.getLocalHost();
+          hostname = ip.getHostName();
+          return hostname;
+
+      } catch (UnknownHostException e) {
+          e.printStackTrace();
+      }
+      return "Unknown Hostname";
 	}
 }
